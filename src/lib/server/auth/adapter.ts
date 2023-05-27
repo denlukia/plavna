@@ -1,6 +1,6 @@
 import type { Adapter, AdapterFunction } from 'lucia-auth';
 import type { Database } from '../db';
-import { user, session, key, type User, type Session, type Key } from '../schema';
+import { user, session, key, type User, type Session, type Key } from '../db/schema';
 import { eq, and } from 'drizzle-orm';
 import { transformDatabaseKey, transformDatabaseSession, transformToSqliteValue } from './utils';
 

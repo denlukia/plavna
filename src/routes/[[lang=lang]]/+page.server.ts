@@ -1,7 +1,7 @@
 // routes/+page.server.ts
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	};
 };
 
-export const actions = {
+export const actions: Actions = {
 	default: async ({ locals }) => {
 		const { session } = await locals.auth.validateUser();
 		if (!session) return fail(401);

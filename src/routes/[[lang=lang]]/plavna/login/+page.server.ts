@@ -1,6 +1,6 @@
 // routes/login/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/auth';
 import type { PageServerLoad, Actions } from './$types';
 
 // If the user exists, redirect authenticated users to the profile page.

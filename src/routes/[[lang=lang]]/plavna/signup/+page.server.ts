@@ -1,6 +1,6 @@
 // routes/signup/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/auth';
 
 export const load = async ({ locals }) => {
 	const { session } = await locals.auth.validateUser();
