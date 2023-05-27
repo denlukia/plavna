@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1684990782168,
+      "tag": "0000_moaning_maverick",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1684990795636,
+      "tag": "0001_stale_agent_zero",
+      "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1684990806802,
+      "tag": "0002_crazy_warhawk",
+      "breakpoints": false
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1685152848607,
+      "tag": "0003_confused_power_pack",
+      "breakpoints": false
+    }
+  ]
+}
