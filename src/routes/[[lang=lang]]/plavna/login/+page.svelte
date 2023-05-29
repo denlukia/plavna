@@ -1,15 +1,15 @@
-<!-- routes/login/+page.svelte -->
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import T from '$lib/components/T.svelte';
 </script>
 
 <div>
-	<h1>Sign in</h1>
+	<h1><T key="login" /></h1>
 	<form method="POST" use:enhance={() => {}}>
-		<label for="username">Username</label><br />
+		<label for="username"><T key="username" /></label><br />
 		<input id="username" name="username" /><br />
-		<label for="password">Password</label><br />
+		<label for="password"><T key="password" /></label><br />
 		<input type="password" id="password" name="password" /><br />
-		<input type="submit" value="Continue" />
+		<button type="submit"><T key="to_login" /></button>
 	</form>
 </div>

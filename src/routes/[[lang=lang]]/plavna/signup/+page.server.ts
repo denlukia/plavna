@@ -1,11 +1,14 @@
-// routes/signup/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
+import { transGroups } from '$lib/server/i18n';
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, parent, params }) => {
 	const { session } = await locals.auth.validateUser();
 	if (session) throw redirect(302, '/');
-	return {};
+	const { translations } = await parent();
+	return {
+		translations: { ...translations, ...transGroups.signup(params.lang) }
+	};
 };
 
 export const actions = {

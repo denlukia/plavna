@@ -2,12 +2,16 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
+import { transGroups } from '$lib/server/i18n';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { user } = await locals.auth.validateUser();
 	if (!user) throw redirect(302, '/plavna/login');
+
+	const { translations } = await parent();
 	return {
-		user
+		user,
+		translations: { ...translations, ...transGroups.main(params.lang) }
 	};
 };
 

@@ -2,11 +2,17 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import type { PageServerLoad, Actions } from './$types';
+import { transGroups } from '$lib/server/i18n';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { session } = await locals.auth.validateUser();
 	if (session) throw redirect(302, '/');
+
+	const { translations } = await parent();
+	return {
+		translations: { ...translations, ...transGroups.login(params.lang) }
+	};
 };
 
 export const actions: Actions = {
