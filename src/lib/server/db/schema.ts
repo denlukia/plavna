@@ -1,5 +1,5 @@
 import type { InferModel } from 'drizzle-orm';
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, primaryKey, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('auth_user', {
 	id: text('id').primaryKey(),
@@ -30,3 +30,19 @@ export const key = sqliteTable('auth_key', {
 });
 export type Key = InferModel<typeof key, 'select'>;
 export type InsertKey = InferModel<typeof key, 'insert'>;
+
+export const userpage = sqliteTable(
+	'page',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		user_id: text('user_id')
+			.notNull()
+			.references(() => user.id),
+		slug: text('slug').notNull()
+	},
+	(table) => {
+		return { slugIndex: uniqueIndex('idx_unique_user_slug').on(table.user_id, table.slug) };
+	}
+);
+export type Page = InferModel<typeof userpage, 'select'>;
+export type InsertPage = InferModel<typeof userpage, 'insert'>;

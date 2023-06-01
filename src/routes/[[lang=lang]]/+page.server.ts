@@ -5,12 +5,8 @@ import { auth } from '$lib/server/auth';
 import { transGroups } from '$lib/server/i18n';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
-	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/plavna/login');
-
 	const { translations } = await parent();
 	return {
-		user,
 		translations: { ...translations, ...transGroups.main(params.lang) }
 	};
 };

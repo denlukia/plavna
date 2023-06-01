@@ -20,8 +20,16 @@ export const createGroup = (keys: PossibleTransKey[]) => (lang: string | undefin
 	getTransByLangAndKeys(lang, keys);
 
 export const transGroups = {
-	login: createGroup(['login', 'to_login', 'username', 'password']),
-	signup: createGroup(['signup', 'to_signup', 'username', 'password']),
+	auth: createGroup(['login', 'signup', 'username', 'password']),
+	login: createGroup(['to_login', 'username', 'password']),
+	signup: createGroup(['to_signup', 'username', 'password']),
 	layout: createGroup(['language']),
-	main: createGroup(['profile', 'user_id', 'username', 'to_sign_out'])
+	main: createGroup(['landing', 'to_sign_out']),
+	userPages: createGroup([
+		'couldnt_create_page',
+		'invalid_slug',
+		'slug_in_use',
+		'only_one_default_slug',
+		'delete_page'
+	])
 };

@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"gen-migrations": "pnpm drizzle-kit generate:sqlite --schema=./src/lib/server/schema.ts --out=./drizzle",
+		"gen-migrations": "pnpm drizzle-kit generate:sqlite",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -35,6 +35,7 @@
 		"@lucia-auth/adapter-sqlite": "^1.1.1",
 		"@lucia-auth/adapter-test": "^3.0.1",
 		"drizzle-orm": "^0.26.1",
-		"lucia-auth": "^1.7.0"
+		"lucia-auth": "^1.7.0",
+		"zod": "^3.21.4"
 	}
 }

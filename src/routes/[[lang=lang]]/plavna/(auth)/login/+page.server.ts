@@ -5,10 +5,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { transGroups } from '$lib/server/i18n';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals, params, parent }) => {
-	const { session } = await locals.auth.validateUser();
-	if (session) throw redirect(302, '/');
-
+export const load: PageServerLoad = async ({ params, parent }) => {
 	const { translations } = await parent();
 	return {
 		translations: { ...translations, ...transGroups.login(params.lang) }
@@ -25,7 +22,6 @@ export const actions: Actions = {
 		try {
 			const key = await auth.useKey('username', username, password);
 			const session = await auth.createSession(key.userId);
-			console.log(session);
 			locals.auth.setSession(session);
 		} catch {
 			// invalid username/password

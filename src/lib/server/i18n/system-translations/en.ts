@@ -6,9 +6,15 @@ const translations = {
 	language: 'Language',
 	username: 'Username',
 	password: 'Password',
-	profile: 'Profile',
+	landing: 'Landing',
 	user_id: 'User ID',
-	to_sign_out: 'Sign out'
+	to_sign_out: 'Sign out',
+	couldnt_create_page: "Could not create a page and I don't know why",
+	invalid_slug: 'Invalid slug',
+	slug_in_use: 'Slug in use',
+	only_one_default_slug: 'Only one default slug is allowed',
+	delete_page: 'Delete page',
+	couldnt_delete_page: "Could not delete a page and I don't know why"
 };
 
 export type FullTranslation = Record<keyof typeof translations, any>;

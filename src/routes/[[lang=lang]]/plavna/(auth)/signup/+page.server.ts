@@ -2,9 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { transGroups } from '$lib/server/i18n';
 
-export const load = async ({ locals, parent, params }) => {
-	const { session } = await locals.auth.validateUser();
-	if (session) throw redirect(302, '/');
+export const load = async ({ parent, params }) => {
 	const { translations } = await parent();
 	return {
 		translations: { ...translations, ...transGroups.signup(params.lang) }
