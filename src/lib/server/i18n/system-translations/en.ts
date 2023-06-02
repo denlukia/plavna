@@ -14,7 +14,9 @@ const translations = {
 	slug_in_use: 'Slug in use',
 	only_one_default_slug: 'Only one default slug is allowed',
 	delete_page: 'Delete page',
-	couldnt_delete_page: "Could not delete a page and I don't know why"
+	couldnt_delete_page: "Could not delete a page and I don't know why",
+	edit_slug: 'Edit slug',
+	couldnt_edit_page: "Could not edit a page slug and I don't know why"
 };
 
 export type FullTranslation = Record<keyof typeof translations, any>;

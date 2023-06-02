@@ -8,15 +8,21 @@
 </script>
 
 {#each data.pages as page}
-	<div>
+	<fieldset>
 		<a href="./{page.slug || ''}">{page.slug || 'default'}</a>
+		<form method="POST" action="?/edit" use:enhance>
+			<input name="id" type="hidden" value={page.id} />
+			<input name="slug" value={page.slug} />
+			<button><T key="edit_slug" /></button>
+		</form>
 		<form method="POST" action="?/delete" use:enhance>
-			<input name="slug" type="hidden" value={page.slug} /><button><T key="delete_page" /></button>
+			<input name="id" type="hidden" value={page.id} />
+			<button><T key="delete_page" /></button>
 		</form>
 		{#if form?.deletion?.errorKey && form?.deletion?.slug === page.slug}
 			<T key={form?.deletion?.errorKey} />
 		{/if}
-	</div>
+	</fieldset>
 {/each}
 
 <form method="POST" use:enhance action="?/create">

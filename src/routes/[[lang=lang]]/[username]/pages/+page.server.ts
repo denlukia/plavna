@@ -5,7 +5,7 @@ import { db } from '$lib/server/db';
 import { userpage } from '$lib/server/db/schema';
 import { and, eq } from 'drizzle-orm';
 import type { AuthUser } from '$lib/server/auth';
-import { SlugValidator } from '$lib/common/validators';
+import { PageId, Slug } from '$lib/common/validators';
 import { ZodError } from 'zod';
 import { LibsqlError } from '@libsql/client';
 import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
@@ -34,7 +34,7 @@ export const actions = {
 		const slug = formData.get('slug');
 
 		try {
-			const parsedSlug = slug ? SlugValidator.parse(slug) : '';
+			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
 				.insert(userpage)
 				.values({
@@ -53,6 +53,31 @@ export const actions = {
 			return fail(400, { creation: { slug, errorKey } });
 		}
 	},
+	edit: async ({ request, locals, params }) => {
+		const { user }: { user: AuthUser } = await locals.auth.validateUser();
+		if (!user) throw redirect(302, '/plavna/login');
+		if (user.username !== params.username) throw error(403);
+
+		const formData = await request.formData();
+		const id = formData.get('id');
+		const slug = formData.get('slug');
+
+		try {
+			const parsedId = PageId.parse(id);
+			const parsedSlug = slug ? Slug.parse(slug) : '';
+			await db
+				.update(userpage)
+				.set({ slug: parsedSlug })
+				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, parsedId)))
+				.run();
+		} catch (e) {
+			let errorKey: PossibleTransKey = 'couldnt_edit_page';
+			if (e instanceof ZodError) {
+				errorKey = 'invalid_slug';
+			}
+			return fail(400, { edit: { slug, errorKey } });
+		}
+	},
 	delete: async ({ request, locals, params }) => {
 		const { user }: { user: AuthUser } = await locals.auth.validateUser();
 		if (!user) throw redirect(302, '/plavna/login');
@@ -62,7 +87,7 @@ export const actions = {
 		const slug = formData.get('slug');
 
 		try {
-			const parsedSlug = slug ? SlugValidator.parse(slug) : '';
+			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
 				.delete(userpage)
 				.where(and(eq(userpage.user_id, user.userId), eq(userpage.slug, parsedSlug)))

@@ -30,6 +30,7 @@ export const transGroups = {
 		'invalid_slug',
 		'slug_in_use',
 		'only_one_default_slug',
-		'delete_page'
+		'delete_page',
+		'edit_slug'
 	])
 };

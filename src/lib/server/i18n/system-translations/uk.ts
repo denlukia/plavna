@@ -16,7 +16,9 @@ const translations: FullTranslation = {
 	slug_in_use: 'Така адреса вже використовується вами',
 	only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням',
 	delete_page: 'Видалити сторінку',
-	couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому'
+	couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому',
+	edit_slug: 'Змінити адресу',
+	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому'
 };
 
 export default translations;
