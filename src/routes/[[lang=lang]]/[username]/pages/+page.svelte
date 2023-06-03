@@ -12,21 +12,24 @@
 		<a href="./{page.slug || ''}">{page.slug || 'default'}</a>
 		<form method="POST" action="?/edit" use:enhance>
 			<input name="id" type="hidden" value={page.id} />
-			<input name="slug" value={page.slug} />
+			<input name="slug" value={form?.creation?.slug ?? page.slug} />
 			<button><T key="edit_slug" /></button>
+			{#if form?.edit?.errorKey && form?.edit?.id === page.id}
+				<T key={form?.edit?.errorKey} />
+			{/if}
 		</form>
 		<form method="POST" action="?/delete" use:enhance>
 			<input name="id" type="hidden" value={page.id} />
 			<button><T key="delete_page" /></button>
+			{#if form?.deletion?.errorKey && form?.deletion?.id === page.id}
+				<T key={form?.deletion?.errorKey} />
+			{/if}
 		</form>
-		{#if form?.deletion?.errorKey && form?.deletion?.slug === page.slug}
-			<T key={form?.deletion?.errorKey} />
-		{/if}
 	</fieldset>
 {/each}
 
 <form method="POST" use:enhance action="?/create">
 	<input name="slug" hidden={!data.pages.length} value={form?.creation?.slug ?? ''} />
-	<button>Create new page</button>
+	<button><T key="create_new_page" /></button>
 </form>
 {#if form?.creation?.errorKey}<T key={form?.creation?.errorKey} />{/if}

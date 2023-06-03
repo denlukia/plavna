@@ -1,19 +1,16 @@
-import { error, fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { transGroups } from '$lib/server/i18n';
 import { db } from '$lib/server/db';
 import { userpage } from '$lib/server/db/schema';
 import { and, eq } from 'drizzle-orm';
-import type { AuthUser } from '$lib/server/auth';
-import { PageId, Slug } from '$lib/common/validators';
+import { Slug } from '$lib/common/validators';
 import { ZodError } from 'zod';
 import { LibsqlError } from '@libsql/client';
 import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
-	const { user }: { user: AuthUser } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/plavna/login');
-	if (user.username !== params.username) throw error(404);
+	const { user } = await locals.auth.validateUser();
 
 	const pages = await db.select().from(userpage).where(eq(userpage.user_id, user.userId)).all();
 	const { translations } = await parent();
@@ -25,10 +22,8 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 };
 
 export const actions = {
-	create: async ({ request, locals, params }) => {
-		const { user }: { user: AuthUser } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/plavna/login');
-		if (user.username !== params.username) throw error(403);
+	create: async ({ request, locals }) => {
+		const { user } = await locals.auth.validateUser();
 
 		const formData = await request.formData();
 		const slug = formData.get('slug');
@@ -53,51 +48,45 @@ export const actions = {
 			return fail(400, { creation: { slug, errorKey } });
 		}
 	},
-	edit: async ({ request, locals, params }) => {
-		const { user }: { user: AuthUser } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/plavna/login');
-		if (user.username !== params.username) throw error(403);
+	edit: async ({ request, locals }) => {
+		const { user } = await locals.auth.validateUser();
 
 		const formData = await request.formData();
-		const id = formData.get('id');
-		const slug = formData.get('slug');
+		let id = Number(formData.get('id'));
+		let slug = formData.get('slug');
 
 		try {
-			const parsedId = PageId.parse(id);
 			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
 				.update(userpage)
 				.set({ slug: parsedSlug })
-				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, parsedId)))
+				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: PossibleTransKey = 'couldnt_edit_page';
 			if (e instanceof ZodError) {
 				errorKey = 'invalid_slug';
 			}
-			return fail(400, { edit: { slug, errorKey } });
+			return fail(400, { edit: { id, slug, errorKey } });
 		}
 	},
-	delete: async ({ request, locals, params }) => {
-		const { user }: { user: AuthUser } = await locals.auth.validateUser();
-		if (!user) throw redirect(302, '/plavna/login');
-		if (user.username !== params.username) throw error(403);
+	delete: async ({ request, locals }) => {
+		const { user } = await locals.auth.validateUser();
 
 		const formData = await request.formData();
-		const slug = formData.get('slug');
+		const id = Number(formData.get('id'));
 
 		try {
-			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
 				.delete(userpage)
-				.where(and(eq(userpage.user_id, user.userId), eq(userpage.slug, parsedSlug)))
+				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: PossibleTransKey = 'couldnt_delete_page';
 			if (e instanceof ZodError) {
 				errorKey = 'invalid_slug';
 			}
-			return fail(400, { deletion: { slug, errorKey } });
+			return fail(400, { deletion: { id, errorKey } });
 		}
 	}
 };

@@ -31,6 +31,9 @@ export const transGroups = {
 		'slug_in_use',
 		'only_one_default_slug',
 		'delete_page',
-		'edit_slug'
+		'edit_slug',
+		'create_new_page',
+		'couldnt_delete_page',
+		'couldnt_edit_page'
 	])
 };

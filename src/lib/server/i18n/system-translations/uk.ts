@@ -18,7 +18,8 @@ const translations: FullTranslation = {
 	delete_page: 'Видалити сторінку',
 	couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому',
 	edit_slug: 'Змінити адресу',
-	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому'
+	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому',
+	create_new_page: 'Створити сторінку'
 };
 
 export default translations;

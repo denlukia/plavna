@@ -16,7 +16,8 @@ const translations = {
 	delete_page: 'Delete page',
 	couldnt_delete_page: "Could not delete a page and I don't know why",
 	edit_slug: 'Edit slug',
-	couldnt_edit_page: "Could not edit a page slug and I don't know why"
+	couldnt_edit_page: "Could not edit a page slug and I don't know why",
+	create_new_page: 'Create new page'
 };
 
 export type FullTranslation = Record<keyof typeof translations, any>;
