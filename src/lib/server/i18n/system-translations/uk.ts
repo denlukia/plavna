@@ -13,7 +13,7 @@ const translations: FullTranslation = {
 	to_sign_out: 'Вийти',
 	couldnt_create_page: 'Не вдалося створти сторінку і я не знаю чому',
 	invalid_slug: 'Не підходяща адреса сторінки',
-	slug_in_use: 'Така адреса вже використовується вами',
+	slug_in_use: 'Така адреса сторінки у вас вже є',
 	only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням',
 	delete_page: 'Видалити сторінку',
 	couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому',

@@ -12,7 +12,7 @@
 		<a href="./{page.slug || ''}">{page.slug || 'default'}</a>
 		<form method="POST" action="?/edit" use:enhance>
 			<input name="id" type="hidden" value={page.id} />
-			<input name="slug" value={form?.creation?.slug ?? page.slug} />
+			<input name="slug" value={form?.edit?.slug ?? page.slug} />
 			<button><T key="edit_slug" /></button>
 			{#if form?.edit?.errorKey && form?.edit?.id === page.id}
 				<T key={form?.edit?.errorKey} />
