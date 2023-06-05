@@ -1,4 +1,4 @@
-import { supportedLanguages, type SupportedLang } from '$lib/common/languages';
+import type { SupportedLang } from '$lib/common/languages';
 import type { InferModel } from 'drizzle-orm';
 import { sqliteTable, text, integer, uniqueIndex, primaryKey } from 'drizzle-orm/sqlite-core';
 
@@ -95,8 +95,19 @@ export const tagPost = sqliteTable(
 	}
 );
 
-export const post = sqliteTable('post', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	slug: text('slug').notNull(),
-	titleTranslation: integer('title_translation').references(() => translation.id)
-});
+export const post = sqliteTable(
+	'post',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		user_id: text('user_id')
+			.notNull()
+			.references(() => user.id),
+		slug: text('slug').notNull(),
+		titleTranslation: integer('title_translation').references(() => translation.id)
+	},
+	(table) => {
+		return {
+			uniqueIndex: uniqueIndex('idx_unique_user_slug').on(table.slug, table.user_id)
+		};
+	}
+);

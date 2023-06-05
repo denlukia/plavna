@@ -4,4 +4,4 @@
 	// export let data: PageData;
 </script>
 
-POST
+Post View
