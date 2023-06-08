@@ -1,28 +1,34 @@
-import { db } from '$lib/server/db';
-import { post, translation, user } from '$lib/server/db/schema';
-import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
-import { ZodError } from 'zod';
-import type { PageServerLoad } from './$types';
 import { LibsqlError } from '@libsql/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { Slug } from '$lib/common/validators';
 import { and, eq } from 'drizzle-orm';
-import { defaultLang, type SupportedLang } from '$lib/common/languages';
+import { ZodError } from 'zod';
+
 import { generatePath } from '$lib/common/url';
+import { Slug } from '$lib/common/validators';
+import { db } from '$lib/server/db';
+import { post, translation, user } from '$lib/server/db/schema';
+
+import type { SupportedLang } from '$lib/common/languages';
+import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
+import type { PageServerLoad } from './$types';
 import type { Redirect } from '@sveltejs/kit';
 
 export const load = (async ({ params, locals }) => {
-	const { username, post: postSlug, lang } = params;
-	const userSq = await db
-		.select({ id: user.id })
-		.from(user)
-		.where(eq(user.username, username))
+	const { username, post: postSlug } = params;
+
+	const response = await db
+		.select({ post, title_translation: translation })
+		.from(post)
+		.innerJoin(user, eq(post.user_id, user.id))
+		.innerJoin(translation, eq(post.title_translation_id, translation._id))
+		.where(and(eq(post.slug, postSlug), eq(user.username, username)))
 		.get();
-	const postRecord = await db.query.post.findFirst({
-		where: and(eq(post.slug, postSlug), eq(post.user_id, userSq.id)),
-		with: { title_translation: { columns: { _id: true, [lang || defaultLang]: true } } }
-	});
-	return { post: postRecord };
+	type ExtendedPost = typeof response.post & {
+		title_translation: typeof response.title_translation;
+	};
+	const postObj = response.post;
+	(postObj as ExtendedPost).title_translation = response.title_translation;
+	return { post: postObj };
 }) satisfies PageServerLoad;
 
 type TranslationsFromForm = {

@@ -5,5 +5,8 @@
 	"printWidth": 100,
 	"plugins": ["prettier-plugin-svelte"],
 	"pluginSearchDirs": ["."],
-	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
+	"importOrder": ["^\\$lib/(.*)$", "<TS_TYPES>"],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
 }

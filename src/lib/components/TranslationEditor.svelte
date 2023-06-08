@@ -4,9 +4,18 @@
 	export let prefix: string;
 	export let id: number | undefined;
 	export let currentLang = defaultLang;
+	export let initial: Record<string, number | string>;
 </script>
 
 <input type="hidden" name="{prefix}._id" value={id || null} />
+{#each supportedLanguages as language}
+	<input
+		type={currentLang === language ? 'text' : 'hidden'}
+		name="{prefix}.{language}"
+		placeholder="Текст {prefix}"
+		value={initial?.[language] || null}
+	/>
+{/each}
 {#each supportedLanguages as language}
 	<button
 		type="button"
@@ -15,11 +24,4 @@
 	>
 		{language}
 	</button>
-{/each}
-{#each supportedLanguages as language}
-	<input
-		type={currentLang === language ? 'text' : 'hidden'}
-		name="{prefix}.{language}"
-		placeholder="Текст {prefix}"
-	/>
 {/each}

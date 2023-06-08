@@ -1,6 +1,6 @@
 import type { SupportedLang } from '$lib/common/languages';
-import { relations, type InferModel } from 'drizzle-orm';
-import { sqliteTable, text, integer, uniqueIndex, primaryKey } from 'drizzle-orm/sqlite-core';
+import { type InferModel, relations } from 'drizzle-orm';
+import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable(
 	'auth_user',
@@ -51,9 +51,7 @@ export const userpage = sqliteTable(
 	}
 );
 
-const langs: {
-	[key in SupportedLang]: any;
-} = {
+const langs = {
 	en: text('en'),
 	uk: text('uk')
 };

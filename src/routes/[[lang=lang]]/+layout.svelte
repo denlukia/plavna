@@ -18,7 +18,7 @@
 
 	function generateCreateArticleURL(lang: string, username: string) {
 		return generatePath('/[lang]/[username]/[draftId]/edit', {
-			'[lang]': lang === defaultLang ? '' : lang,
+			'[lang]': lang || '',
 			'[username]': username || '',
 			'[draftId]': (Math.random() + 1).toString(36).substring(7)
 		});

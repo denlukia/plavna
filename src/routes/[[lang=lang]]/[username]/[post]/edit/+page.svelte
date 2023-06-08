@@ -28,10 +28,18 @@
 <h1>Post id: {data.post?.id}</h1>
 <form method="POST" use:enhance>
 	<input type="hidden" name="id" value={data?.post?.id ?? null} />
-	<input type="text" name="slug" value={data?.post?.slug ?? null} placeholder="Slug" />
-	<TranslationEditor prefix="title_translation" id={data?.post?.title_translation_id} />
-	<button formaction="?/update">Зберегти</button>
-	<button formaction="?/publish">Опубликувати</button>
+	<div><input type="text" name="slug" value={data?.post?.slug ?? null} placeholder="Slug" /></div>
+	<div>
+		<TranslationEditor
+			prefix="title_translation"
+			id={data?.post?.title_translation_id}
+			initial={data?.post?.title_translation}
+		/>
+	</div>
+	<div>
+		<button formaction="?/update">Зберегти</button>
+		<button formaction="?/publish">Опубликувати</button>
+	</div>
 	{#if form?.save.errorKey}
 		<T key={form?.save.errorKey} />
 	{/if}
