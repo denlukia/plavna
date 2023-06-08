@@ -2,7 +2,11 @@
 import { auth, type PossiblyUser } from '$lib/server/auth';
 import { redirect, type Handle, error } from '@sveltejs/kit';
 
-const userCheckRequired = ['/[[lang=lang]]/[username]/pages'];
+const userCheckRequired = [
+	'/[[lang=lang]]/[username]/pages',
+	'/[[lang=lang]]/[username]/[post]/edit',
+	'/[[lang=lang]]/[username]/page-[pagename]/[post]/edit'
+];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const authRequest = auth.handleRequest(event);

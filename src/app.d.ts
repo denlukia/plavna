@@ -14,9 +14,9 @@ declare global {
 /// <reference types="lucia-auth" />
 declare global {
 	namespace Lucia {
-		type Auth = import('$lib/lucia').Auth;
+		type Auth = import('$lib/server/auth').Auth;
+		type User = import('$lib/server/auth').User;
 		type UserAttributes = { username: string };
-		type User = import('$lib/lucia').User;
 	}
 }
 

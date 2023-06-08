@@ -1,11 +1,19 @@
 import type { SupportedLang } from '$lib/common/languages';
-import type { InferModel } from 'drizzle-orm';
+import { relations, type InferModel } from 'drizzle-orm';
 import { sqliteTable, text, integer, uniqueIndex, primaryKey } from 'drizzle-orm/sqlite-core';
 
-export const user = sqliteTable('auth_user', {
-	id: text('id').primaryKey(),
-	username: text('username').notNull()
-});
+export const user = sqliteTable(
+	'auth_user',
+	{
+		id: text('id').primaryKey(),
+		username: text('username').notNull()
+	},
+	(table) => {
+		return {
+			slugIndex: uniqueIndex('idx_user_unique_username').on(table.username)
+		};
+	}
+);
 export type User = InferModel<typeof user, 'select'>;
 
 export const session = sqliteTable('auth_session', {
@@ -37,7 +45,9 @@ export const userpage = sqliteTable(
 		slug: text('slug').notNull()
 	},
 	(table) => {
-		return { slugIndex: uniqueIndex('idx_unique_user_slug').on(table.user_id, table.slug) };
+		return {
+			slugIndex: uniqueIndex('idx_userpage_unique_user_slug').on(table.user_id, table.slug)
+		};
 	}
 );
 
@@ -49,7 +59,8 @@ const langs: {
 };
 
 export const translation = sqliteTable('translation', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
+	// underscore cause "id" is Indonasian lang code
+	_id: integer('id').primaryKey({ autoIncrement: true }),
 	...langs
 });
 
@@ -61,14 +72,20 @@ export const section = sqliteTable('section', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => user.id),
-	titleTranslation: integer('title_translation').references(() => translation.id)
+	title_translation_id: integer('title_translation')
+		.notNull()
+		.references(() => translation._id)
 });
 
 export const sectionTag = sqliteTable(
 	'section_tag',
 	{
-		section_id: integer('section_id').references(() => section.id),
-		tag_id: integer('tag_id').references(() => tag.id)
+		section_id: integer('section_id')
+			.notNull()
+			.references(() => section.id),
+		tag_id: integer('tag_id')
+			.notNull()
+			.references(() => tag.id)
 	},
 	(table) => {
 		return {
@@ -79,14 +96,20 @@ export const sectionTag = sqliteTable(
 
 export const tag = sqliteTable('tag', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	nameTranslation: integer('name_translation').references(() => translation.id)
+	name_translation_id: integer('name_translation')
+		.notNull()
+		.references(() => translation._id)
 });
 
 export const tagPost = sqliteTable(
 	'tag_post',
 	{
-		tag_id: integer('tag_id').references(() => tag.id),
-		post_id: integer('post_id').references(() => post.id)
+		tag_id: integer('tag_id')
+			.notNull()
+			.references(() => tag.id),
+		post_id: integer('post_id')
+			.notNull()
+			.references(() => post.id)
 	},
 	(table) => {
 		return {
@@ -103,11 +126,20 @@ export const post = sqliteTable(
 			.notNull()
 			.references(() => user.id),
 		slug: text('slug').notNull(),
-		titleTranslation: integer('title_translation').references(() => translation.id)
+		title_translation_id: integer('title_translation')
+			.notNull()
+			.references(() => translation._id)
 	},
 	(table) => {
 		return {
-			uniqueIndex: uniqueIndex('idx_unique_user_slug').on(table.slug, table.user_id)
+			uniqueIndex: uniqueIndex('idx_post_unique_user_slug').on(table.slug, table.user_id)
 		};
 	}
 );
+
+export const postRelations = relations(post, ({ one }) => ({
+	title_translation: one(translation, {
+		fields: [post.title_translation_id],
+		references: [translation._id]
+	})
+}));

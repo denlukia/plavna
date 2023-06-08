@@ -19,7 +19,8 @@ const translations: FullTranslation = {
 	couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому',
 	edit_slug: 'Змінити адресу',
 	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому',
-	create_new_page: 'Створити сторінку'
+	create_new_page: 'Створити сторінку',
+	couldnt_save_post: 'Не вдалося зберігти пост і я не знаю чому'
 };
 
 export default translations;

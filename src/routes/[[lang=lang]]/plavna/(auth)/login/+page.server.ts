@@ -4,7 +4,6 @@ import { auth } from '$lib/server/auth';
 import type { PageServerLoad, Actions } from './$types';
 import { transGroups } from '$lib/server/i18n';
 
-// If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ params, parent }) => {
 	const { translations } = await parent();
 	return {

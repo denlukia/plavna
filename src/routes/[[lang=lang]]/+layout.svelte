@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { defaultLang, supportedLanguages } from '$lib/common/languages';
+	import { generatePath } from '$lib/common/url.js';
 	import T from '$lib/components/T.svelte';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
@@ -16,13 +17,14 @@
 	}
 
 	function generateCreateArticleURL(lang: string, username: string) {
-		const draftId = (Math.random() + 1).toString(36).substring(7);
-		let template = `/lang/username/draft-${draftId}/edit`;
-		template = template.replace('lang', lang || '');
-		template = template.replace('username', username || '');
-		template = template.replace('//', '/');
-		return template;
+		return generatePath('/[lang]/[username]/[draftId]/edit', {
+			'[lang]': lang === defaultLang ? '' : lang,
+			'[username]': username || '',
+			'[draftId]': (Math.random() + 1).toString(36).substring(7)
+		});
 	}
+
+	export let data;
 </script>
 
 <header>
@@ -30,8 +32,9 @@
 	{#each supportedLanguages as language}
 		<a href={generateLangURL($page.url.pathname, language)}>{language}</a>{' '}
 	{/each}
-	<a href={generateCreateArticleURL($page.params.lang, $page.data.user.username)}>
-		Створити статтю
-	</a>
+	{#if data.user}
+		<a href={generateCreateArticleURL($page.params.lang, data.user.username)}>
+			Створити статтю
+		</a>{/if}
 </header>
 <slot />

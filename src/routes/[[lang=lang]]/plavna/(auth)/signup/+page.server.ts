@@ -31,7 +31,7 @@ export const actions = {
 					username
 				}
 			});
-			const session = await auth.createSession(user.userId);
+			const session = await auth.createSession(user.id);
 			locals.auth.setSession(session);
 		} catch {
 			// username taken

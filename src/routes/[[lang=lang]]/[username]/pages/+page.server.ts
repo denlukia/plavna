@@ -12,7 +12,7 @@ import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { user } = await locals.auth.validateUser();
 
-	const pages = await db.select().from(userpage).where(eq(userpage.user_id, user.userId)).all();
+	const pages = await db.select().from(userpage).where(eq(userpage.user_id, user.id)).all();
 	const { translations } = await parent();
 
 	return {
@@ -33,7 +33,7 @@ export const actions = {
 			await db
 				.insert(userpage)
 				.values({
-					user_id: user.userId,
+					user_id: user.id,
 					slug: parsedSlug
 				})
 				.run();
@@ -60,7 +60,7 @@ export const actions = {
 			await db
 				.update(userpage)
 				.set({ slug: parsedSlug })
-				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, id)))
+				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: PossibleTransKey = 'couldnt_edit_page';
@@ -79,7 +79,7 @@ export const actions = {
 		try {
 			await db
 				.delete(userpage)
-				.where(and(eq(userpage.user_id, user.userId), eq(userpage.id, id)))
+				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: PossibleTransKey = 'couldnt_delete_page';
