@@ -1,13 +1,15 @@
+import { LibsqlError } from '@libsql/client';
 import { fail } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { transGroups } from '$lib/server/i18n';
+import { and, eq } from 'drizzle-orm';
+import { ZodError } from 'zod';
+
+import { Slug } from '$lib/common/validators';
 import { db } from '$lib/server/db';
 import { userpage } from '$lib/server/db/schema';
-import { and, eq } from 'drizzle-orm';
-import { Slug } from '$lib/common/validators';
-import { ZodError } from 'zod';
-import { LibsqlError } from '@libsql/client';
-import type { PossibleTransKey } from '$lib/server/i18n/system-translations/en';
+import { transGroups } from '$lib/server/i18n';
+
+import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { user } = await locals.auth.validateUser();
@@ -38,7 +40,7 @@ export const actions = {
 				})
 				.run();
 		} catch (e) {
-			let errorKey: PossibleTransKey = 'couldnt_create_page';
+			let errorKey: TranslationKey = 'couldnt_create_page';
 			if (e instanceof ZodError) {
 				errorKey = 'invalid_slug';
 			}
@@ -63,7 +65,7 @@ export const actions = {
 				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
-			let errorKey: PossibleTransKey = 'couldnt_edit_page';
+			let errorKey: TranslationKey = 'couldnt_edit_page';
 			if (e instanceof ZodError) {
 				errorKey = 'invalid_slug';
 			}
@@ -82,7 +84,7 @@ export const actions = {
 				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
 				.run();
 		} catch (e) {
-			let errorKey: PossibleTransKey = 'couldnt_delete_page';
+			let errorKey: TranslationKey = 'couldnt_delete_page';
 			if (e instanceof ZodError) {
 				errorKey = 'invalid_slug';
 			}

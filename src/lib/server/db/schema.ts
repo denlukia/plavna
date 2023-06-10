@@ -1,6 +1,14 @@
-import type { SupportedLang } from '$lib/common/languages';
 import { type InferModel, relations } from 'drizzle-orm';
-import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import {
+	type SQLiteTextBuilderInitial,
+	integer,
+	primaryKey,
+	sqliteTable,
+	text,
+	uniqueIndex
+} from 'drizzle-orm/sqlite-core';
+
+import type { SupportedLang } from '$lib/common/languages';
 
 export const user = sqliteTable(
 	'auth_user',
@@ -51,7 +59,7 @@ export const userpage = sqliteTable(
 	}
 );
 
-const langs = {
+const langs: Record<SupportedLang, SQLiteTextBuilderInitial<string, [string, ...string[]]>> = {
 	en: text('en'),
 	uk: text('uk')
 };
@@ -59,6 +67,9 @@ const langs = {
 export const translation = sqliteTable('translation', {
 	// underscore cause "id" is Indonasian lang code
 	_id: integer('id').primaryKey({ autoIncrement: true }),
+	user_id: text('user_id')
+		.notNull()
+		.references(() => user.id),
 	...langs
 });
 
@@ -126,7 +137,8 @@ export const post = sqliteTable(
 		slug: text('slug').notNull(),
 		title_translation_id: integer('title_translation')
 			.notNull()
-			.references(() => translation._id)
+			.references(() => translation._id),
+		published_at: integer('published_at', { mode: 'timestamp' })
 	},
 	(table) => {
 		return {
@@ -134,6 +146,7 @@ export const post = sqliteTable(
 		};
 	}
 );
+export type PostInsert = InferModel<typeof post, 'insert'>;
 
 export const postRelations = relations(post, ({ one }) => ({
 	title_translation: one(translation, {

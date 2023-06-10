@@ -25,6 +25,6 @@ export type FullTranslation = Record<keyof typeof translations, any>;
 // Import this type from here to any next translations
 // to check presence of all the keys present here
 
-export type PossibleTransKey = keyof typeof translations;
+export type TranslationKey = keyof typeof translations;
 
 export default translations;

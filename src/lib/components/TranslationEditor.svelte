@@ -1,13 +1,15 @@
 <script lang="ts">
-	import { defaultLang, supportedLanguages } from '$lib/common/languages';
+	import { page } from '$app/stores';
+	import { number } from 'zod';
+
+	import { type SupportedLang, supportedLanguages } from '$lib/common/languages';
 
 	export let prefix: string;
-	export let id: number | undefined;
-	export let currentLang = defaultLang;
-	export let initial: Record<string, number | string>;
+	export let currentLang = $page.params.lang;
+	export let initial: ({ _id: number } & { [key in SupportedLang]: string | null }) | undefined;
 </script>
 
-<input type="hidden" name="{prefix}._id" value={id || null} />
+<input type="hidden" name="{prefix}._id" value={initial?._id ?? null} />
 {#each supportedLanguages as language}
 	<input
 		type={currentLang === language ? 'text' : 'hidden'}

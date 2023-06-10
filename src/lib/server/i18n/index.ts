@@ -1,11 +1,13 @@
-import { supportedLanguages, type SupportedLang, defaultLang } from '$lib/common/languages';
-import type { PossibleTransKey } from './system-translations/en';
 import en from './system-translations/en';
 import uk from './system-translations/uk';
 
+import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/common/languages';
+
+import type { TranslationKey } from './system-translations/en';
+
 export const systemTranslations = { en, uk };
 
-export function getTransByLangAndKeys(lang: string | undefined, keys: PossibleTransKey[]) {
+export function getTransByLangAndKeys(lang: string | undefined, keys: TranslationKey[]) {
 	if (lang && !supportedLanguages.includes(lang as SupportedLang)) {
 		return null;
 	}
@@ -16,7 +18,7 @@ export function getTransByLangAndKeys(lang: string | undefined, keys: PossibleTr
 	);
 }
 
-export const createGroup = (keys: PossibleTransKey[]) => (lang: string | undefined) =>
+export const createGroup = (keys: TranslationKey[]) => (lang: string | undefined) =>
 	getTransByLangAndKeys(lang, keys);
 
 export const transGroups = {

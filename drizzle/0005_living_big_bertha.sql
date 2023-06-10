@@ -1,0 +1,1 @@
+ALTER TABLE translation ADD `user_id` text NOT NULL REFERENCES auth_user(id);
