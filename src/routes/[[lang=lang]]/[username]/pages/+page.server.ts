@@ -3,7 +3,7 @@ import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
-import { Slug } from '$lib/common/validators';
+import { Slug } from '$lib/common/parsers';
 import { db } from '$lib/server/db';
 import { userpage } from '$lib/server/db/schema';
 import { transGroups } from '$lib/server/i18n';

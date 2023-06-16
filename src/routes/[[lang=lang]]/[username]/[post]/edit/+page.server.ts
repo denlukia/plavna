@@ -3,8 +3,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
+import { Slug } from '$lib/common/parsers';
 import { generatePath } from '$lib/common/url';
-import { Slug } from '$lib/common/validators';
 import { db } from '$lib/server/db';
 import { type PostInsert, post, translation, user } from '$lib/server/db/schema';
 import {
@@ -14,33 +14,11 @@ import {
 } from '$lib/server/utils';
 
 import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
-import type { PageServerLoad, RouteParams } from './$types';
+import type { RouteParams } from './$types';
 import type { Redirect } from '@sveltejs/kit';
 import type { User } from 'lucia-auth';
 
-export const load = (async ({ params }) => {
-	const { username, post: postSlug } = params;
-
-	try {
-		const response = await db
-			.select({ post, title_translation: translation })
-			.from(post)
-			.innerJoin(user, eq(post.user_id, user.id))
-			.innerJoin(translation, eq(post.title_translation_id, translation._id))
-			.where(and(eq(post.slug, postSlug), eq(user.username, username)))
-			.get();
-		if (response) {
-			type ExtendedPost = typeof response.post & {
-				title_translation: typeof response.title_translation;
-			};
-			const postObj = response.post as ExtendedPost;
-			postObj.title_translation = response.title_translation;
-			return { post: postObj };
-		}
-	} catch (e) {
-		console.log('Error while fetching post', e);
-	}
-}) satisfies PageServerLoad;
+export { load as load } from '../../post-edit-load';
 
 async function validateData(request: Request, locals: App.Locals, params: RouteParams) {
 	const user = await getUserOrThrow(locals, params);
@@ -119,7 +97,7 @@ async function savePost(
 	publish: boolean | null
 ) {
 	const { user, translations, postId, slug } = await validateData(request, locals, params);
-	// console.log('After validation', translations, user, postId, slug);
+
 	try {
 		if (translations._id !== null && postId !== null) {
 			type TranslationsWithId = typeof translations & { _id: number };

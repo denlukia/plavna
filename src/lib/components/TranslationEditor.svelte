@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { number } from 'zod';
 
-	import { type SupportedLang, supportedLanguages } from '$lib/common/languages';
+	import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/common/languages';
 
 	export let prefix: string;
-	export let currentLang = $page.params.lang;
+	export let currentLang = $page.params.lang || defaultLang;
 	export let initial: ({ _id: number } & { [key in SupportedLang]: string | null }) | undefined;
 </script>
 
