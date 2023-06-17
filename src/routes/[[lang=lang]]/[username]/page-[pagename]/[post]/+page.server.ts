@@ -1,0 +1,1 @@
+export { postLoad } from '../../loaders';

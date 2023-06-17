@@ -72,6 +72,8 @@ export const translation = sqliteTable('translation', {
 		.references(() => user.id),
 	...langs
 });
+export type TranslationSelect = InferModel<typeof translation, 'select'>;
+export type TranslationInsert = InferModel<typeof translation, 'insert'>;
 
 export const section = sqliteTable('section', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
@@ -146,6 +148,7 @@ export const post = sqliteTable(
 		};
 	}
 );
+export type PostSelect = InferModel<typeof post, 'select'>;
 export type PostInsert = InferModel<typeof post, 'insert'>;
 
 export const postRelations = relations(post, ({ one }) => ({

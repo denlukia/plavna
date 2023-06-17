@@ -29,3 +29,37 @@ export function nestify(arg: any): any {
 
 	return result;
 }
+
+interface FlattenedObject {
+	[key: string]: any;
+}
+
+export function flatify(obj: any, parentKey = '', result: FlattenedObject = {}): FlattenedObject {
+	for (const key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			const value = obj[key];
+			const formattedKey = parentKey ? `${parentKey}.${key}` : key;
+
+			if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+				flatify(value, formattedKey, result);
+			} else {
+				result[formattedKey] = value;
+			}
+		}
+	}
+
+	return result;
+}
+
+export function addPrefixDotToKeys(obj: Record<string, any>, prefix: string): Record<string, any> {
+	const prefixedObj = {} as Record<string, any>;
+
+	for (const key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			const prefixedKey = `${prefix}.${key}`;
+			prefixedObj[prefixedKey] = obj[key];
+		}
+	}
+
+	return prefixedObj;
+}

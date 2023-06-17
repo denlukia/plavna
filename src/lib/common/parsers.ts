@@ -1,4 +1,4 @@
-import { nestify } from './utils/objects';
+import { addPrefixDotToKeys, nestify } from './utils/objects';
 import { z } from 'zod';
 
 import type { SupportedLang } from './languages';
@@ -10,18 +10,18 @@ export const Translation = z.string().optional();
 export const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/g);
 
 // Forms
-const FormLanguages = z.object({
+
+const langsTemplate = {
+	_id: Id,
 	uk: Translation,
 	en: Translation
-});
-type FormLangs = z.infer<typeof FormLanguages>;
-const keysCheck: UnionIncludesAll<keyof FormLangs, SupportedLang> = true;
+};
+const _: UnionIncludesAll<keyof typeof langsTemplate, SupportedLang> = true;
+const titleTransLangs = addPrefixDotToKeys(langsTemplate, 'title_translation');
 
-export const PostEditForm = z.preprocess(
-	nestify,
-	z.object({
+export const PostSchema = z
+	.object({
 		id: Id.optional(),
-		slug: Slug.optional(),
-		titleTranslations: FormLanguages
+		slug: Slug.optional()
 	})
-);
+	.merge(z.object(titleTransLangs));

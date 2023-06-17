@@ -1,8 +1,17 @@
 import { SQL, and, eq } from 'drizzle-orm';
 
 import { db } from '$lib/server/db';
-import { post, translation, user } from '$lib/server/db/schema';
+import {
+	type PostSelect,
+	type TranslationSelect,
+	post,
+	translation,
+	user
+} from '$lib/server/db/schema';
 
+export type ExtendedPost = PostSelect & {
+	title_translation: TranslationSelect;
+};
 export async function getPostWithTranslations(
 	postSlug: string,
 	username: string,
@@ -16,9 +25,6 @@ export async function getPostWithTranslations(
 		.where(and(eq(post.slug, postSlug), eq(user.username, username), additionalCheck))
 		.get();
 	if (response) {
-		type ExtendedPost = typeof response.post & {
-			title_translation: typeof response.title_translation;
-		};
 		const postObj = response.post as ExtendedPost;
 		postObj.title_translation = response.title_translation;
 		return postObj;

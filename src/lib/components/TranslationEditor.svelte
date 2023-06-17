@@ -1,20 +1,23 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/common/languages';
+	import { defaultLang, supportedLanguages } from '$lib/common/languages';
 
 	export let prefix: string;
 	export let currentLang = $page.params.lang || defaultLang;
-	export let initial: ({ _id: number } & { [key in SupportedLang]: string | null }) | undefined;
+	export let form: any;
+
+	console.log(form);
 </script>
 
-<input type="hidden" name="{prefix}._id" value={initial?._id ?? null} />
+<input type="hidden" name="{prefix}._id" value={form?._id ?? null} />
 {#each supportedLanguages as language}
+	{@const prefixedName = `${prefix}.${language}`}
 	<input
 		type={currentLang === language ? 'text' : 'hidden'}
-		name="{prefix}.{language}"
+		name={prefixedName}
 		placeholder="Текст {prefix}"
-		value={initial?.[language] || null}
+		value={form?.[prefixedName] || null}
 	/>
 {/each}
 {#each supportedLanguages as language}
