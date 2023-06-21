@@ -3,9 +3,9 @@ import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
-import { Slug } from '$lib/common/parsers';
+import { Slug } from '$lib/client-server/parsers';
 import { db } from '$lib/server/db';
-import { userpage } from '$lib/server/db/schema';
+import { userpages } from '$lib/server/db/schema';
 import { transGroups } from '$lib/server/i18n';
 
 import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
@@ -14,7 +14,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { user } = await locals.auth.validateUser();
 
-	const pages = await db.select().from(userpage).where(eq(userpage.user_id, user.id)).all();
+	const pages = await db.select().from(userpages).where(eq(userpages.user_id, user.id)).all();
 	const { translations } = await parent();
 
 	return {
@@ -33,7 +33,7 @@ export const actions = {
 		try {
 			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
-				.insert(userpage)
+				.insert(userpages)
 				.values({
 					user_id: user.id,
 					slug: parsedSlug
@@ -60,9 +60,9 @@ export const actions = {
 		try {
 			const parsedSlug = slug ? Slug.parse(slug) : '';
 			await db
-				.update(userpage)
+				.update(userpages)
 				.set({ slug: parsedSlug })
-				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
+				.where(and(eq(userpages.user_id, user.id), eq(userpages.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: TranslationKey = 'couldnt_edit_page';
@@ -80,8 +80,8 @@ export const actions = {
 
 		try {
 			await db
-				.delete(userpage)
-				.where(and(eq(userpage.user_id, user.id), eq(userpage.id, id)))
+				.delete(userpages)
+				.where(and(eq(userpages.user_id, user.id), eq(userpages.id, id)))
 				.run();
 		} catch (e) {
 			let errorKey: TranslationKey = 'couldnt_delete_page';

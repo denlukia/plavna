@@ -3,9 +3,9 @@ import { error } from '@sveltejs/kit';
 import { isNotNull } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import { PostSchema } from '$lib/common/parsers';
-import { flatify } from '$lib/common/utils/objects';
-import { post } from '$lib/server/db/schema';
+import { PostFormParser } from '$lib/client-server/parsers';
+import { flatify } from '$lib/client-server/utils/objects';
+import { posts } from '$lib/server/db/schema';
 import { getUserOrThrow } from '$lib/server/utils';
 
 import type { PageServerLoad } from './[post]/$types';
@@ -15,14 +15,15 @@ export const postEditorLoad = (async ({ params, locals }) => {
 	const { username, post: postSlug } = params;
 
 	const actorIsAuthor = userObj && username === userObj.username;
-	const additionalCheck = actorIsAuthor ? undefined : isNotNull(post.published_at);
+	const additionalCheck = actorIsAuthor ? undefined : isNotNull(posts.published_at);
 
 	try {
 		const response = await getPostWithTranslations(postSlug, username, additionalCheck);
 		if (!response) throw error(404);
 
 		const flatResponse = flatify(response);
-		const form = await superValidate(flatResponse, PostSchema);
+		const form = await superValidate(flatResponse, PostFormParser);
+
 		return { form };
 	} catch (e: any) {
 		console.log('Error while fetching post', e);
@@ -35,7 +36,7 @@ export const postLoad = (async ({ params, route, locals }) => {
 	const { username, post: postSlug } = params;
 
 	const actorIsAuthor = userObj && username === userObj.username;
-	const additionalCheck = actorIsAuthor ? undefined : isNotNull(post.published_at);
+	const additionalCheck = actorIsAuthor ? undefined : isNotNull(posts.published_at);
 
 	try {
 		const response = await getPostWithTranslations(postSlug, username, additionalCheck);

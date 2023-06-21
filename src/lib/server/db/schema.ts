@@ -8,9 +8,9 @@ import {
 	uniqueIndex
 } from 'drizzle-orm/sqlite-core';
 
-import type { SupportedLang } from '$lib/common/languages';
+import type { SupportedLang } from '$lib/client-server/languages';
 
-export const user = sqliteTable(
+export const users = sqliteTable(
 	'auth_user',
 	{
 		id: text('id').primaryKey(),
@@ -22,34 +22,34 @@ export const user = sqliteTable(
 		};
 	}
 );
-export type User = InferModel<typeof user, 'select'>;
+export type User = InferModel<typeof users, 'select'>;
 
-export const session = sqliteTable('auth_session', {
+export const sessions = sqliteTable('auth_session', {
 	id: text('id').primaryKey(),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => users.id),
 	active_expires: integer('active_expires').notNull(),
 	idle_expires: integer('idle_expires').notNull()
 });
 
-export const key = sqliteTable('auth_key', {
+export const keys = sqliteTable('auth_key', {
 	id: text('id').primaryKey(),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => users.id),
 	primary_key: integer('primary_key').notNull(),
 	hashed_password: text('hashed_password'),
 	expires: integer('expires')
 });
 
-export const userpage = sqliteTable(
+export const userpages = sqliteTable(
 	'page',
 	{
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		user_id: text('user_id')
 			.notNull()
-			.references(() => user.id),
+			.references(() => users.id),
 		slug: text('slug').notNull()
 	},
 	(table) => {
@@ -64,39 +64,39 @@ const langs: Record<SupportedLang, SQLiteTextBuilderInitial<string, [string, ...
 	uk: text('uk')
 };
 
-export const translation = sqliteTable('translation', {
+export const translations = sqliteTable('translation', {
 	// underscore cause "id" is Indonasian lang code
 	_id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => users.id),
 	...langs
 });
-export type TranslationSelect = InferModel<typeof translation, 'select'>;
-export type TranslationInsert = InferModel<typeof translation, 'insert'>;
+export type TranslationSelect = InferModel<typeof translations, 'select'>;
+export type TranslationInsert = InferModel<typeof translations, 'insert'>;
 
-export const section = sqliteTable('section', {
+export const sections = sqliteTable('section', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	page_id: integer('page_id')
 		.notNull()
-		.references(() => userpage.id),
+		.references(() => userpages.id),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => users.id),
 	title_translation_id: integer('title_translation')
 		.notNull()
-		.references(() => translation._id)
+		.references(() => translations._id)
 });
 
-export const sectionTag = sqliteTable(
+export const sectionsTags = sqliteTable(
 	'section_tag',
 	{
 		section_id: integer('section_id')
 			.notNull()
-			.references(() => section.id),
+			.references(() => sections.id),
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tag.id)
+			.references(() => tags.id)
 	},
 	(table) => {
 		return {
@@ -105,22 +105,22 @@ export const sectionTag = sqliteTable(
 	}
 );
 
-export const tag = sqliteTable('tag', {
+export const tags = sqliteTable('tag', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	name_translation_id: integer('name_translation')
 		.notNull()
-		.references(() => translation._id)
+		.references(() => translations._id)
 });
 
-export const tagPost = sqliteTable(
+export const tagsPosts = sqliteTable(
 	'tag_post',
 	{
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tag.id),
+			.references(() => tags.id),
 		post_id: integer('post_id')
 			.notNull()
-			.references(() => post.id)
+			.references(() => posts.id)
 	},
 	(table) => {
 		return {
@@ -129,17 +129,17 @@ export const tagPost = sqliteTable(
 	}
 );
 
-export const post = sqliteTable(
+export const posts = sqliteTable(
 	'post',
 	{
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		user_id: text('user_id')
 			.notNull()
-			.references(() => user.id),
+			.references(() => users.id),
 		slug: text('slug').notNull(),
 		title_translation_id: integer('title_translation')
 			.notNull()
-			.references(() => translation._id),
+			.references(() => translations._id),
 		published_at: integer('published_at', { mode: 'timestamp' })
 	},
 	(table) => {
@@ -148,12 +148,12 @@ export const post = sqliteTable(
 		};
 	}
 );
-export type PostSelect = InferModel<typeof post, 'select'>;
-export type PostInsert = InferModel<typeof post, 'insert'>;
+export type PostSelect = InferModel<typeof posts, 'select'>;
+export type PostInsert = InferModel<typeof posts, 'insert'>;
 
-export const postRelations = relations(post, ({ one }) => ({
-	title_translation: one(translation, {
-		fields: [post.title_translation_id],
-		references: [translation._id]
+export const postsRelations = relations(posts, ({ one }) => ({
+	title_translation: one(translations, {
+		fields: [posts.title_translation_id],
+		references: [translations._id]
 	})
 }));

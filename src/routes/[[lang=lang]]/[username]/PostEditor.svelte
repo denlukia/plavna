@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	const { form, enhance } = superForm(data.form as NonNullable<typeof data.form>);
+	const { form, errors, enhance } = superForm(data.form as NonNullable<typeof data.form>);
 </script>
 
 <h1>Post id: {$form.id}</h1>
@@ -24,7 +24,9 @@
 			>{$form.published_at ? 'Сховати' : 'Опублікувати'}</button
 		>
 	</div>
-	<!-- {#if $form?.save.errorKey}
-		<T key={$form?.save.errorKey} />
-	{/if} -->
+	{#if $errors._errors}
+		{#each $errors._errors as error}
+			<p>{error}</p>
+		{/each}
+	{/if}
 </form>

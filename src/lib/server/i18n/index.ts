@@ -1,7 +1,7 @@
 import en from './system-translations/en';
 import uk from './system-translations/uk';
 
-import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/common/languages';
+import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/client-server/languages';
 
 import type { TranslationKey } from './system-translations/en';
 

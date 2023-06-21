@@ -1,4 +1,5 @@
-import { type SupportedLang, supportedLanguages } from '$lib/common/languages';
+import { type SupportedLang, supportedLanguages } from '$lib/client-server/languages';
+
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match = ((param) => {

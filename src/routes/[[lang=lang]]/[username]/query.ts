@@ -4,9 +4,9 @@ import { db } from '$lib/server/db';
 import {
 	type PostSelect,
 	type TranslationSelect,
-	post,
-	translation,
-	user
+	posts,
+	translations,
+	users
 } from '$lib/server/db/schema';
 
 export type ExtendedPost = PostSelect & {
@@ -18,11 +18,11 @@ export async function getPostWithTranslations(
 	additionalCheck: SQL<unknown> | undefined
 ) {
 	const response = await db
-		.select({ post, title_translation: translation })
-		.from(post)
-		.innerJoin(user, eq(post.user_id, user.id))
-		.innerJoin(translation, eq(post.title_translation_id, translation._id))
-		.where(and(eq(post.slug, postSlug), eq(user.username, username), additionalCheck))
+		.select({ post: posts, title_translation: translations })
+		.from(posts)
+		.innerJoin(users, eq(posts.user_id, users.id))
+		.innerJoin(translations, eq(posts.title_translation_id, translations._id))
+		.where(and(eq(posts.slug, postSlug), eq(users.username, username), additionalCheck))
 		.get();
 	if (response) {
 		const postObj = response.post as ExtendedPost;

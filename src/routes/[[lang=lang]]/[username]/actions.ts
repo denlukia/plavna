@@ -1,38 +1,33 @@
-import { LibsqlError } from '@libsql/client';
 import { fail, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { ZodError } from 'zod';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 
-import { generatePath } from '$lib/common/url';
+import { PostFormParser, type PostSchema, type PostWithIdSchema } from '$lib/client-server/parsers';
+import { generatePath } from '$lib/client-server/url';
+import { nestify } from '$lib/client-server/utils/objects';
 import { db } from '$lib/server/db';
-import { type PostInsert, post, translation } from '$lib/server/db/schema';
+import { type PostInsert, posts, translations } from '$lib/server/db/schema';
+import { getUserOrThrow } from '$lib/server/utils';
 
-import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
-import type { TranslationsFromForm } from '$lib/server/utils';
 import type { RouteParams } from './$types';
-import type { Redirect, RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 import type { User } from 'lucia-auth';
 
-async function createPost(
-	translations: TranslationsFromForm,
-	userId: string,
-	slug: string,
-	publish: boolean | null
-) {
-	await db.transaction(async (trx) => {
+async function createPost(post: PostSchema, user: User, publish?: boolean) {
+	return await db.transaction(async (trx) => {
 		const { lastInsertRowid: titleTransId } = await trx
-			.insert(translation)
+			.insert(translations)
 			.values({
-				...translations,
+				...post.title_translation,
 				_id: undefined,
-				user_id: userId
+				user_id: user.id
 			})
 			.run();
 		await trx
-			.insert(post)
+			.insert(posts)
 			.values({
-				user_id: userId,
-				slug: slug,
+				user_id: user.id,
+				slug: post.slug,
 				title_translation_id: Number(titleTransId),
 				published_at: publish ? new Date() : null
 			})
@@ -40,76 +35,57 @@ async function createPost(
 	});
 }
 
-async function updatePost(
-	translations: TranslationsFromForm & { _id: number },
-	user: User,
-	postId: number,
-	slug: string,
-	publish: boolean | null
-) {
-	await db.transaction(async (trx) => {
+async function updatePost(post: PostWithIdSchema, user: User, publish?: boolean) {
+	return await db.transaction(async (trx) => {
 		await trx
-			.update(translation)
+			.update(translations)
 			.set({
-				...translations
+				...post.title_translation
 			})
-			.where(and(eq(translation.user_id, user.id), eq(translation._id, translations._id)))
+			.where(
+				and(eq(translations.user_id, user.id), eq(translations._id, post.title_translation._id))
+			)
 			.run();
-		const newPostValues = { slug } as Partial<PostInsert>;
-		if (publish !== null) newPostValues.published_at = publish ? new Date() : null;
-		await trx.update(post).set(newPostValues).where(eq(post.id, postId)).run();
+		const postUpdateObj: Partial<PostInsert> = {
+			slug: post.slug,
+			published_at: publish === undefined ? undefined : publish ? new Date() : null
+		};
+		await trx.update(posts).set(postUpdateObj).where(eq(posts.id, post.id)).run();
 	});
 }
 
-function chooseErrorKey(e: any, slug: string) {
-	let errorKey: TranslationKey = 'couldnt_save_post';
-	if (e instanceof ZodError) {
-		errorKey = 'invalid_slug';
-	}
-	if (e instanceof LibsqlError && e.message.includes('UNIQUE constraint failed')) {
-		errorKey = slug ? 'slug_in_use' : 'only_one_default_slug';
-	}
-	return errorKey;
+function isExistingPost(post: PostSchema): post is PostWithIdSchema {
+	return typeof post.id === 'number' && typeof post.title_translation._id === 'number';
 }
 
-async function savePost(
-	request: Request,
-	locals: App.Locals,
-	params: RouteParams,
-	url: URL,
-	publish: boolean | null
-) {
-	const { user, translations, postId, slug } = await validateData(request, locals, params);
+async function savePost({ locals, params, request, url }: ActionRequestEvt, publish?: boolean) {
+	const user = await getUserOrThrow(locals, params);
+	const form = await superValidate(request, PostFormParser);
+	if (!form.valid) return fail(400, { form });
+
+	const post = nestify(form.data);
 
 	try {
-		if (translations._id !== null && postId !== null) {
-			type TranslationsWithId = typeof translations & { _id: number };
-			await updatePost(translations as TranslationsWithId, user, postId, slug, publish);
+		if (isExistingPost(post)) {
+			await updatePost(post, user, publish);
 		} else {
-			await createPost(translations, user.id, slug, publish);
-		}
-		const correctPath = generatePath('/[lang]/[username]/[slug]/edit', {
-			'[lang]': params.lang || '',
-			'[username]': params.username,
-			'[slug]': slug
-		});
-		if (url.pathname !== correctPath) {
-			throw redirect(302, correctPath);
+			await createPost(post, user, publish);
 		}
 	} catch (e) {
-		if ((e as Redirect).location) throw e;
-		let errorKey = chooseErrorKey(e, slug);
-		return fail(400, { save: { slug, errorKey } });
+		return setError(form, '', 'Something went wrong');
 	}
+
+	const correctPath = generatePath('/[lang]/[username]/[slug]/edit', {
+		'[lang]': params.lang,
+		'[username]': params.username,
+		'[slug]': post.slug
+	});
+	if (url.pathname !== correctPath) throw redirect(302, correctPath);
 }
 
 type ActionRequestEvt = RequestEvent<RouteParams, '/[[lang=lang]]/[username]/[post]/edit'>;
-
 export const actions = {
-	save: ({ request, locals, params, url }: ActionRequestEvt) =>
-		savePost(request, locals, params, url, null),
-	publish: ({ request, locals, params, url }: ActionRequestEvt) =>
-		savePost(request, locals, params, url, true),
-	hide: ({ request, locals, params, url }: ActionRequestEvt) =>
-		savePost(request, locals, params, url, false)
+	save: (event: ActionRequestEvt) => savePost(event),
+	publish: (event: ActionRequestEvt) => savePost(event, true),
+	hide: (event: ActionRequestEvt) => savePost(event, false)
 };

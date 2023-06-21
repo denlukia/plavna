@@ -7,5 +7,7 @@
 			"path": "../src"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"typescript.tsdk": "Denis 2023 (2)/node_modules/typescript/lib"
+	}
 }

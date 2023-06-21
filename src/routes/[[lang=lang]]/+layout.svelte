@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { defaultLang, supportedLanguages } from '$lib/common/languages';
-	import { generatePath } from '$lib/common/url.js';
+
+	import { defaultLang, supportedLanguages } from '$lib/client-server/languages.js';
+	import { generatePath } from '$lib/client-server/url.js';
 	import T from '$lib/components/T.svelte';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
@@ -18,8 +19,8 @@
 
 	function generateCreateArticleURL(lang: string, username: string) {
 		return generatePath('/[lang]/[username]/[draftId]/edit', {
-			'[lang]': lang || '',
-			'[username]': username || '',
+			'[lang]': lang,
+			'[username]': username,
 			'[draftId]': (Math.random() + 1).toString(36).substring(7)
 		});
 	}
