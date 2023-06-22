@@ -1,4 +1,4 @@
-import { addPrefixDotToKeys } from './utils/objects';
+import { addPrefixDotToKeys } from '../server/utils/objects';
 import { z } from 'zod';
 
 import type { SupportedLang } from './languages';

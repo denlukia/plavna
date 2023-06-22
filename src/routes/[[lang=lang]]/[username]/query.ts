@@ -1,13 +1,13 @@
 import { SQL, and, eq } from 'drizzle-orm';
 
-import { db } from '$lib/server/db';
 import {
 	type PostSelect,
 	type TranslationSelect,
 	posts,
 	translations,
 	users
-} from '$lib/server/db/schema';
+} from '$lib/server/schemas/db';
+import { db } from '$lib/server/services/db';
 
 export type ExtendedPost = PostSelect & {
 	title_translation: TranslationSelect;

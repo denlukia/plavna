@@ -1,8 +1,8 @@
-import lucia from 'lucia-auth';
-import { sveltekit } from 'lucia-auth/middleware';
-import { specificAdapter } from './adapter';
 import { dev } from '$app/environment';
 import { db } from '../db';
+import { specificAdapter } from './adapter';
+import lucia from 'lucia-auth';
+import { sveltekit } from 'lucia-auth/middleware';
 
 export type User = { id: string; username: string };
 export type PossiblyUser = User | null;

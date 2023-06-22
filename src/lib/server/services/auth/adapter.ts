@@ -1,4 +1,4 @@
-import { type Key, type Session, type User, keys, sessions, users } from '../db/schema';
+import { type Key, type Session, type User, keys, sessions, users } from '../../schemas/db';
 import { transformDatabaseKey, transformDatabaseSession, transformToSqliteValue } from './utils';
 import { and, eq } from 'drizzle-orm';
 

@@ -8,7 +8,7 @@ import {
 	uniqueIndex
 } from 'drizzle-orm/sqlite-core';
 
-import type { SupportedLang } from '$lib/client-server/languages';
+import type { SupportedLang } from '$lib/isomorphic/languages';
 
 export const users = sqliteTable(
 	'auth_user',
@@ -43,7 +43,7 @@ export const keys = sqliteTable('auth_key', {
 	expires: integer('expires')
 });
 
-export const userpages = sqliteTable(
+export const pages = sqliteTable(
 	'page',
 	{
 		id: integer('id').primaryKey({ autoIncrement: true }),
@@ -79,7 +79,7 @@ export const sections = sqliteTable('section', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	page_id: integer('page_id')
 		.notNull()
-		.references(() => userpages.id),
+		.references(() => pages.id),
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id),
@@ -148,8 +148,6 @@ export const posts = sqliteTable(
 		};
 	}
 );
-export type PostSelect = InferModel<typeof posts, 'select'>;
-export type PostInsert = InferModel<typeof posts, 'insert'>;
 
 export const postsRelations = relations(posts, ({ one }) => ({
 	title_translation: one(translations, {

@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { auth } from '$lib/server/auth';
+
 import { transGroups } from '$lib/server/i18n';
+import { auth } from '$lib/server/services/auth';
 
 export const load = async ({ parent, params }) => {
 	const { translations } = await parent();

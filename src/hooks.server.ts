@@ -1,4 +1,4 @@
-import { auth } from '$lib/server/auth';
+import { auth } from '$lib/server/services/auth';
 
 import type { Handle } from '@sveltejs/kit';
 

@@ -2,12 +2,12 @@ import { fail, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 
-import { PostFormParser, type PostSchema, type PostWithIdSchema } from '$lib/client-server/parsers';
-import { generatePath } from '$lib/client-server/url';
-import { nestify } from '$lib/client-server/utils/objects';
-import { db } from '$lib/server/db';
-import { type PostInsert, posts, translations } from '$lib/server/db/schema';
-import { getUserOrThrow } from '$lib/server/utils';
+import { PostFormParser, type PostSchema, type PostWithIdSchema } from '$lib/isomorphic/parsers';
+import { generatePath } from '$lib/isomorphic/url';
+import { type PostInsert, posts, translations } from '$lib/server/schemas/db';
+import { db } from '$lib/server/services/db';
+import { nestify } from '$lib/server/utils/objects';
+import { getUserOrThrow } from '$lib/server/utils/user';
 
 import type { RouteParams } from './$types';
 import type { RequestEvent } from '@sveltejs/kit';

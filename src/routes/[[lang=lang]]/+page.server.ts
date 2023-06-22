@@ -1,8 +1,10 @@
 // routes/+page.server.ts
-import { fail, redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { auth } from '$lib/server/auth';
+import { type Actions, fail, redirect } from '@sveltejs/kit';
+
 import { transGroups } from '$lib/server/i18n';
+import { auth } from '$lib/server/services/auth';
+
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { translations } = await parent();

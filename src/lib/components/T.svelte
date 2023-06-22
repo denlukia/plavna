@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { type SupportedLang, defaultLang } from '$lib/client-server/languages';
+	import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
 	import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
 

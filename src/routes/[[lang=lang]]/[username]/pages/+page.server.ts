@@ -3,10 +3,10 @@ import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
-import { Slug } from '$lib/client-server/parsers';
-import { db } from '$lib/server/db';
-import { userpages } from '$lib/server/db/schema';
+import { Slug } from '$lib/isomorphic/parsers';
 import { transGroups } from '$lib/server/i18n';
+import { userpages } from '$lib/server/schemas/db';
+import { db } from '$lib/server/services/db';
 
 import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
 import type { PageServerLoad } from './$types';

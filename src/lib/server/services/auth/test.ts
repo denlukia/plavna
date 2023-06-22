@@ -1,47 +1,47 @@
-import { type UserSchema, type SessionSchema, type KeySchema, LuciaError } from 'lucia-auth';
+import { keys, sessions, users } from '../../schemas/db';
 import { db } from '../db';
-import { user, session, key } from '../schema';
 import { specificAdapter } from './adapter';
-import { transformDatabaseSession, transformDatabaseKey, transformToSqliteValue } from './utils';
+import { transformDatabaseKey, transformDatabaseSession, transformToSqliteValue } from './utils';
 import { testAdapter } from '@lucia-auth/adapter-test';
+import { type KeySchema, LuciaError, type SessionSchema, type UserSchema } from 'lucia-auth';
 
 const queryHandler = {
 	user: {
 		get: async () => {
-			return db.select().from(user).all();
+			return db.select().from(users).all();
 		},
 		insert: async (data: UserSchema) => {
 			const transformedData = transformToSqliteValue(data);
-			await db.insert(user).values(transformedData).run();
+			await db.insert(users).values(transformedData).run();
 		},
 		clear: async () => {
-			await db.delete(user).run();
+			await db.delete(users).run();
 		}
 	},
 	session: {
 		get: async () => {
-			const result = await db.select().from(session).all();
+			const result = await db.select().from(sessions).all();
 			return result.map(transformDatabaseSession);
 		},
 		insert: async (data: SessionSchema) => {
 			const transformedData = transformToSqliteValue(data);
-			await db.insert(session).values(transformedData).run();
+			await db.insert(sessions).values(transformedData).run();
 		},
 		clear: async () => {
-			await db.delete(session).run();
+			await db.delete(sessions).run();
 		}
 	},
 	key: {
 		get: async () => {
-			const results = await db.select().from(key).all();
+			const results = await db.select().from(keys).all();
 			return results.map(transformDatabaseKey);
 		},
 		insert: async (data: KeySchema) => {
 			const transformedData = transformToSqliteValue(data);
-			await db.insert(key).values(transformedData).run();
+			await db.insert(keys).values(transformedData).run();
 		},
 		clear: async () => {
-			await db.delete(key).run();
+			await db.delete(keys).run();
 		}
 	}
 };

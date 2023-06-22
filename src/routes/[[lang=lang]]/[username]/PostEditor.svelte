@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	const { form, errors, enhance } = superForm(data.form as NonNullable<typeof data.form>);
+	const { form, errors, enhance } = superForm(data.form);
 </script>
 
 <h1>Post id: {$form.id}</h1>

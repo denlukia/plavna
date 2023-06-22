@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { defaultLang, supportedLanguages } from '$lib/client-server/languages';
+	import { defaultLang, supportedLanguages } from '$lib/isomorphic/languages';
 
 	export let prefix: string;
 	export let currentLang = $page.params.lang || defaultLang;
