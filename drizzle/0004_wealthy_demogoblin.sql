@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX `idx_user_unique_username` ON `auth_user` (`username`);

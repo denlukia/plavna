@@ -1,3 +1,5 @@
+import type { RemoveNullValues } from './typing';
+
 export function nestify<T extends object>(obj: T): any {
 	const nestedObj = {} as any;
 
@@ -73,4 +75,38 @@ export function addPrefixDotToKeys<T extends object, P extends string>(
 	}
 
 	return prefixedObj;
+}
+
+export function removeDupesByField(fieldName: string) {
+	return (obj: any, index: number, arr: any[]) =>
+		index === arr.findIndex((innerTag) => innerTag[fieldName] === obj[fieldName]);
+}
+
+const emptyStringToken = '__plavna_empty_string__';
+
+export function tokenizeEmptyStrings(form: FormData) {
+	const formCopy = new FormData();
+	for (const [key, value] of form.entries()) {
+		formCopy.set(key, value === '' ? emptyStringToken : value);
+	}
+	return formCopy;
+}
+
+export function detokenizeEmptyStrings<T extends Object>(obj: T): T {
+	return Object.fromEntries(
+		Object.entries(obj).map(([key, value]) => {
+			if (value === emptyStringToken) return [key, ''];
+			return [key, value];
+		})
+	) as T;
+}
+
+export function removeNullValues<T extends Object>(obj: T) {
+	return Object.fromEntries(
+		Object.entries(obj).filter(([key, value]) => value !== null)
+	) as RemoveNullValues<T>;
+}
+
+export function nonNull<T>(value: T): value is NonNullable<T> {
+	return value !== null;
 }

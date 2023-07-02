@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1685616999870,
-      "tag": "0000_colossal_deathbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1686054860944,
-      "tag": "0001_sudden_shaman",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1686055053029,
-      "tag": "0002_ancient_vector",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1686055091449,
-      "tag": "0003_chemical_jackal",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1686058092607,
-      "tag": "0004_wealthy_demogoblin",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1686306667035,
-      "tag": "0005_living_big_bertha",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1686392103012,
-      "tag": "0006_magenta_selene",
+      "when": 1688309901628,
+      "tag": "0000_yummy_rick_jones",
       "breakpoints": true
     }
   ]

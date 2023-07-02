@@ -1,91 +1,52 @@
-import { fail, redirect } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms/server';
 
-import { PostFormParser, type PostSchema, type PostWithIdSchema } from '$lib/isomorphic/parsers';
-import { generatePath } from '$lib/isomorphic/url';
-import { type PostInsert, posts, translations } from '$lib/server/schemas/db';
-import { db } from '$lib/server/services/db';
-import { nestify } from '$lib/server/utils/objects';
-import { getUserOrThrow } from '$lib/server/utils/user';
+import { update_translation } from '$lib/server/actions';
+import {
+	postUpdateSchema,
+	tagDeleteSchema,
+	tagUpdateSchema,
+	translationInsertSchema
+} from '$lib/server/schemas/zod';
 
-import type { RouteParams } from './$types';
+import type { RouteParams } from './[slug]/edit/$types';
 import type { RequestEvent } from '@sveltejs/kit';
-import type { User } from 'lucia-auth';
 
-async function createPost(post: PostSchema, user: User, publish?: boolean) {
-	return await db.transaction(async (trx) => {
-		const { lastInsertRowid: titleTransId } = await trx
-			.insert(translations)
-			.values({
-				...post.title_translation,
-				_id: undefined,
-				user_id: user.id
-			})
-			.run();
-		await trx
-			.insert(posts)
-			.values({
-				user_id: user.id,
-				slug: post.slug,
-				title_translation_id: Number(titleTransId),
-				published_at: publish ? new Date() : null
-			})
-			.run();
-	});
+async function switch_tag(event: ActionRequestEvt) {
+	const { slug } = event.params;
+	const form = await superValidate(event.request, tagUpdateSchema);
+
+	const { plavna } = event.locals;
+	await plavna.tags.switchChecked(form.data, slug);
 }
 
-async function updatePost(post: PostWithIdSchema, user: User, publish?: boolean) {
-	return await db.transaction(async (trx) => {
-		await trx
-			.update(translations)
-			.set({
-				...post.title_translation
-			})
-			.where(
-				and(eq(translations.user_id, user.id), eq(translations._id, post.title_translation._id))
-			)
-			.run();
-		const postUpdateObj: Partial<PostInsert> = {
-			slug: post.slug,
-			published_at: publish === undefined ? undefined : publish ? new Date() : null
-		};
-		await trx.update(posts).set(postUpdateObj).where(eq(posts.id, post.id)).run();
-	});
+async function create_tag(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, translationInsertSchema);
+
+	const { plavna } = event.locals;
+	await plavna.tags.create(form.data);
 }
 
-function isExistingPost(post: PostSchema): post is PostWithIdSchema {
-	return typeof post.id === 'number' && typeof post.title_translation._id === 'number';
+async function delete_tag(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, tagDeleteSchema);
+
+	const { plavna } = event.locals;
+	await plavna.tags.delete(form.data);
 }
 
-async function savePost({ locals, params, request, url }: ActionRequestEvt, publish?: boolean) {
-	const user = await getUserOrThrow(locals, params);
-	const form = await superValidate(request, PostFormParser);
-	if (!form.valid) return fail(400, { form });
+async function edit_post(event: ActionRequestEvt, subtype: 'save' | 'publish' | 'hide') {
+	const form = await superValidate(event.request, postUpdateSchema);
 
-	const post = nestify(form.data);
-
-	try {
-		if (isExistingPost(post)) {
-			await updatePost(post, user, publish);
-		} else {
-			await createPost(post, user, publish);
-		}
-	} catch (e) {
-		return setError(form, '', 'Something went wrong');
-	}
-
-	const correctPath = generatePath('/[lang]/[username]/[slug]/edit', {
-		'[lang]': params.lang,
-		'[username]': params.username,
-		'[slug]': post.slug
-	});
-	if (url.pathname !== correctPath) throw redirect(302, correctPath);
+	const { plavna } = event.locals;
+	await plavna.posts[subtype](form.data);
 }
 
-type ActionRequestEvt = RequestEvent<RouteParams, '/[[lang=lang]]/[username]/[post]/edit'>;
+type ActionRequestEvt = RequestEvent<RouteParams, '/[[lang=lang]]/[username]/[slug]/edit'>;
 export const actions = {
-	save: (event: ActionRequestEvt) => savePost(event),
-	publish: (event: ActionRequestEvt) => savePost(event, true),
-	hide: (event: ActionRequestEvt) => savePost(event, false)
+	update_translation,
+	switch_tag,
+	create_tag,
+	delete_tag,
+	save: (event: ActionRequestEvt) => edit_post(event, 'save'),
+	publish: (event: ActionRequestEvt) => edit_post(event, 'publish'),
+	hide: (event: ActionRequestEvt) => edit_post(event, 'hide')
 };

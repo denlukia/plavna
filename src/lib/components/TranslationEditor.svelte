@@ -1,29 +1,38 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { superForm } from 'sveltekit-superforms/client';
 
-	import { defaultLang, supportedLanguages } from '$lib/isomorphic/languages';
+	import { defaultLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
+	import { generatePath } from '$lib/isomorphic/url';
 
-	export let prefix: string;
-	export let currentLang = $page.params.lang || defaultLang;
-	export let form: any;
+	import type { TranslationUpdateZod } from '$lib/server/schemas/types';
+	import type { SuperValidated } from 'sveltekit-superforms';
+
+	export let superFormObj: SuperValidated<TranslationUpdateZod>;
+
+	const { form, errors, enhance } = superForm(superFormObj);
+
+	let currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
 </script>
 
-<input type="hidden" name="{prefix}._id" value={form?.[`${prefix}._id`] ?? null} />
-{#each supportedLanguages as language}
-	{@const prefixedName = `${prefix}.${language}`}
-	<input
-		type={currentLang === language ? 'text' : 'hidden'}
-		name={prefixedName}
-		placeholder="Текст {prefix}"
-		value={form?.[prefixedName] ?? null}
-	/>
-{/each}
-{#each supportedLanguages as language}
-	<button
-		type="button"
-		on:click={() => (currentLang = language)}
-		style="font-weight: {currentLang === language ? 'bold' : 'normal'};"
-	>
-		{language}
-	</button>
-{/each}
+<fieldset>
+	Редагування перекладу
+	<form use:enhance action="?/update_translation" method="POST">
+		<input name="_id" type="hidden" bind:value={$form._id} />
+		<input name={currentLang} type="text" bind:value={$form[currentLang]} />
+		<button type="submit">Save</button>
+	</form>
+
+	{#each supportedLanguages as lang}
+		<svelte:element
+			this={browser ? 'button' : 'a'}
+			style={currentLang === lang ? 'font-weight: bold;' : 'font-weight: normal;'}
+			role={browser ? 'button' : 'link'}
+			on:click={() => (currentLang = lang)}
+			href={browser ? undefined : generatePath($page.route.id || '', { '[lang]': lang })}
+		>
+			{lang}
+		</svelte:element>
+	{/each}
+</fieldset>

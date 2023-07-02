@@ -1,32 +1,34 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
 
+	import TagCreator from '$lib/components/TagCreator.svelte';
+	import TagEditor from '$lib/components/TagEditor.svelte';
 	import TranslationEditor from '$lib/components/TranslationEditor.svelte';
 
-	import type { PageData } from './[post]/edit/$types';
+	import type { PageData } from './[slug]/edit/$types';
 
 	export let data: PageData;
 
-	const { form, errors, enhance } = superForm(data.form);
+	const { form, errors, enhance } = superForm(data.postForm);
 </script>
 
-<h1>Post id: {$form.id}</h1>
-<h2>Published: {$form.published_at}</h2>
-<form method="POST" use:enhance>
-	<input type="hidden" name="id" value={$form.id ?? null} />
-	<div><input type="text" name="slug" value={$form.slug ?? null} placeholder="Slug" /></div>
-	<div>
-		<TranslationEditor prefix="title_translation" form={$form} />
-	</div>
-	<div>
-		<button formaction="?/save">Зберегти</button>
-		<button formaction="?/{$form.published_at ? 'hide' : 'publish'}"
-			>{$form.published_at ? 'Сховати' : 'Опублікувати'}</button
-		>
-	</div>
-	{#if $errors._errors}
-		{#each $errors._errors as error}
-			<p>{error}</p>
-		{/each}
-	{/if}
-</form>
+<fieldset>
+	Редагування слага
+	<form use:enhance method="POST">
+		<input name="id" type="hidden" bind:value={$form.id} />
+		<input name="slug" type="text" bind:value={$form.slug} />
+		<button formaction="?/save">Save</button>
+		<button formaction="?/publish">Publish</button>
+		<button formaction="?/hide">Hide</button>
+		<!-- TODO: Add "delete" -->
+	</form>
+</fieldset>
+<TranslationEditor superFormObj={data.titleForm} />
+<TranslationEditor superFormObj={data.contentForm} />
+
+<fieldset>
+	{#each data.tagForms as tag}
+		<TagEditor {tag} />
+	{/each}
+	<TagCreator superFormObj={data.tagCreationForm} />
+</fieldset>

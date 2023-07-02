@@ -1,7 +1,7 @@
 <script lang="ts">
 	import T from '$lib/components/T.svelte';
 
-	import type { PageData } from './[post]/$types';
+	import type { PageData } from './[slug]/$types';
 
 	export let data: PageData;
 </script>

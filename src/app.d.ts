@@ -5,6 +5,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			auth: import('lucia-auth').AuthRequest;
+			plavna: import('$lib/server/services/plavna').default;
 		}
 		// interface PageData {}
 		// interface Platform {}
@@ -14,9 +15,8 @@ declare global {
 /// <reference types="lucia-auth" />
 declare global {
 	namespace Lucia {
-		type Auth = import('$lib/server/services/auth').Auth;
-		type User = import('$lib/server/services/auth').User;
-		type UserAttributes = { username: string };
+		type Auth = import('$lib/server/schemas/types').Auth;
+		type User = import('$lib/server/schemas/types').User;
 	}
 }
 

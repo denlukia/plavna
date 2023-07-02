@@ -4,19 +4,13 @@ import { specificAdapter } from './adapter';
 import lucia from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
 
-export type User = { id: string; username: string };
-export type PossiblyUser = User | null;
+import type { User } from '$lib/server/schemas/types';
 
 export const auth = lucia({
 	adapter: specificAdapter(db),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
-	transformDatabaseUser: (userData): User => {
-		return {
-			id: userData.id,
-			username: userData.username
-		};
+	transformDatabaseUser: (user): User => {
+		return { id: user.id, username: user.username, uploadcare_token: user.uploadcare_token };
 	}
 });
-
-export type Auth = typeof auth;

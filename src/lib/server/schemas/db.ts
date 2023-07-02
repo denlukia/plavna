@@ -1,20 +1,11 @@
-import { type InferModel, relations } from 'drizzle-orm';
-import {
-	type SQLiteTextBuilderInitial,
-	integer,
-	primaryKey,
-	sqliteTable,
-	text,
-	uniqueIndex
-} from 'drizzle-orm/sqlite-core';
-
-import type { SupportedLang } from '$lib/isomorphic/languages';
+import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 export const users = sqliteTable(
 	'auth_user',
 	{
 		id: text('id').primaryKey(),
-		username: text('username').notNull()
+		username: text('username').notNull(),
+		uploadcare_token: text('uploadcare_token')
 	},
 	(table) => {
 		return {
@@ -22,7 +13,6 @@ export const users = sqliteTable(
 		};
 	}
 );
-export type User = InferModel<typeof users, 'select'>;
 
 export const sessions = sqliteTable('auth_session', {
 	id: text('id').primaryKey(),
@@ -49,7 +39,7 @@ export const pages = sqliteTable(
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		user_id: text('user_id')
 			.notNull()
-			.references(() => users.id),
+			.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull()
 	},
 	(table) => {
@@ -59,33 +49,27 @@ export const pages = sqliteTable(
 	}
 );
 
-const langs: Record<SupportedLang, SQLiteTextBuilderInitial<string, [string, ...string[]]>> = {
-	en: text('en'),
-	uk: text('uk')
-};
-
 export const translations = sqliteTable('translation', {
-	// underscore cause "id" is Indonasian lang code
+	// _id cause "id" is Indonasian lang code
 	_id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => users.id),
-	...langs
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	en: text('en'),
+	uk: text('uk')
 });
-export type TranslationSelect = InferModel<typeof translations, 'select'>;
-export type TranslationInsert = InferModel<typeof translations, 'insert'>;
 
 export const sections = sqliteTable('section', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	page_id: integer('page_id')
 		.notNull()
-		.references(() => pages.id),
+		.references(() => pages.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => users.id),
-	title_translation_id: integer('title_translation')
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	title_translation_id: integer('title_translation_id')
 		.notNull()
-		.references(() => translations._id)
+		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
 export const sectionsTags = sqliteTable(
@@ -93,10 +77,10 @@ export const sectionsTags = sqliteTable(
 	{
 		section_id: integer('section_id')
 			.notNull()
-			.references(() => sections.id),
+			.references(() => sections.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tags.id)
+			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 	},
 	(table) => {
 		return {
@@ -107,9 +91,12 @@ export const sectionsTags = sqliteTable(
 
 export const tags = sqliteTable('tag', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	name_translation_id: integer('name_translation')
+	user_id: text('user_id')
 		.notNull()
-		.references(() => translations._id)
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	name_translation_id: integer('name_translation_id')
+		.notNull()
+		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
 export const tagsPosts = sqliteTable(
@@ -117,10 +104,10 @@ export const tagsPosts = sqliteTable(
 	{
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tags.id),
+			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		post_id: integer('post_id')
 			.notNull()
-			.references(() => posts.id)
+			.references(() => posts.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 	},
 	(table) => {
 		return {
@@ -135,12 +122,24 @@ export const posts = sqliteTable(
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		user_id: text('user_id')
 			.notNull()
-			.references(() => users.id),
+			.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull(),
-		title_translation_id: integer('title_translation')
+		title_translation_id: integer('title_translation_id')
 			.notNull()
-			.references(() => translations._id),
-		published_at: integer('published_at', { mode: 'timestamp' })
+			.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		content_translation_id: integer('content_translation_id')
+			.notNull()
+			.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		published_at: integer('published_at', { mode: 'timestamp' }),
+		static_preivew_id: integer('static_preview_id').references(() => previewTypes.id, {
+			onDelete: 'set null',
+			onUpdate: 'set null'
+		}),
+		dynmaic_preview_id: integer('dynamic_preview_id').references(() => previewTypes.id, {
+			onDelete: 'set null',
+			onUpdate: 'set null'
+		}),
+		dynamic_preview_show_on: text('dynamic_preview_show_on').$type<'hover' | 'click'>()
 	},
 	(table) => {
 		return {
@@ -149,9 +148,37 @@ export const posts = sqliteTable(
 	}
 );
 
-export const postsRelations = relations(posts, ({ one }) => ({
-	title_translation: one(translations, {
-		fields: [posts.title_translation_id],
-		references: [translations._id]
+export const previewTypes = sqliteTable('preview_type', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	name_translation_id: integer('name')
+		.notNull()
+		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	info_image: integer('info_image').references(() => images.id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	}),
+	code_reference: text('code_reference').notNull(),
+	prop_1_name: text('prop_1_name'),
+	prop_2_name: text('prop_2_name'),
+	prop_3_name: text('prop_3_name'),
+	prop_1_translation_id: integer('prop_1_translation_id').references(() => translations._id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	}),
+	prop_2_translation_id: integer('prop_2_translation_id').references(() => translations._id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	}),
+	prop_3_translation_id: integer('prop_3_translation_id').references(() => translations._id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
 	})
-}));
+});
+
+export const images = sqliteTable('image', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	source: text('type').$type<'uploadcare'>().notNull(),
+	reference: text('reference').notNull()
+});

@@ -29,9 +29,8 @@
 </script>
 
 <header>
-	<T key="language" />{':'}
 	{#each supportedLanguages as language}
-		<a href={generateLangURL($page.url.pathname, language)}>{language}</a>{' '}
+		<a href={generateLangURL($page.url.pathname, language)}>{language.toUpperCase()}</a>{' '}
 	{/each}
 	{#if data.user}
 		<a href={generateCreateArticleURL($page.params.lang, data.user.username)}>

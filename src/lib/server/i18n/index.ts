@@ -1,14 +1,14 @@
 import en from './system-translations/en';
 import uk from './system-translations/uk';
 
-import { type SupportedLang, defaultLang, supportedLanguages } from '$lib/isomorphic/languages';
+import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 
 import type { TranslationKey } from './system-translations/en';
 
 export const systemTranslations = { en, uk };
 
 export function getTransByLangAndKeys(lang: string | undefined, keys: TranslationKey[]) {
-	if (lang && !supportedLanguages.includes(lang as SupportedLang)) {
+	if (lang && !isSupportedLang(lang)) {
 		return null;
 	}
 	return Object.fromEntries(

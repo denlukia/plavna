@@ -1,9 +1,59 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "77e0ce70-d9c8-4fcf-92bd-e9064b385d0f",
+  "id": "748df1e8-9562-40b5-be2d-0dbaf1832f20",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "image": {
+      "name": "image",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reference": {
+          "name": "reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "image_user_id_auth_user_id_fk": {
+          "name": "image_user_id_auth_user_id_fk",
+          "tableFrom": "image",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
     "auth_key": {
       "name": "auth_key",
       "columns": {
@@ -11,13 +61,15 @@
           "name": "id",
           "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "primary_key": {
           "name": "primary_key",
@@ -30,7 +82,8 @@
           "name": "hashed_password",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "expires": {
           "name": "expires",
@@ -51,10 +104,506 @@
           ],
           "columnsTo": [
             "id"
-          ]
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {}
+    },
+    "page": {
+      "name": "page",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_userpage_unique_user_slug": {
+          "name": "idx_userpage_unique_user_slug",
+          "columns": [
+            "user_id",
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "page_user_id_auth_user_id_fk": {
+          "name": "page_user_id_auth_user_id_fk",
+          "tableFrom": "page",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "post": {
+      "name": "post",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_translation_id": {
+          "name": "title_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content_translation_id": {
+          "name": "content_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "static_preview_id": {
+          "name": "static_preview_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "dynamic_preview_id": {
+          "name": "dynamic_preview_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "dynamic_preview_show_on": {
+          "name": "dynamic_preview_show_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_post_unique_user_slug": {
+          "name": "idx_post_unique_user_slug",
+          "columns": [
+            "slug",
+            "user_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "post_user_id_auth_user_id_fk": {
+          "name": "post_user_id_auth_user_id_fk",
+          "tableFrom": "post",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "post_title_translation_id_translation_id_fk": {
+          "name": "post_title_translation_id_translation_id_fk",
+          "tableFrom": "post",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "title_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "post_content_translation_id_translation_id_fk": {
+          "name": "post_content_translation_id_translation_id_fk",
+          "tableFrom": "post",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "content_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "post_static_preview_id_preview_type_id_fk": {
+          "name": "post_static_preview_id_preview_type_id_fk",
+          "tableFrom": "post",
+          "tableTo": "preview_type",
+          "columnsFrom": [
+            "static_preview_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "set null"
+        },
+        "post_dynamic_preview_id_preview_type_id_fk": {
+          "name": "post_dynamic_preview_id_preview_type_id_fk",
+          "tableFrom": "post",
+          "tableTo": "preview_type",
+          "columnsFrom": [
+            "dynamic_preview_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "set null"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "preview_type": {
+      "name": "preview_type",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "info_image": {
+          "name": "info_image",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "code_reference": {
+          "name": "code_reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "prop_1_name": {
+          "name": "prop_1_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prop_2_name": {
+          "name": "prop_2_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prop_3_name": {
+          "name": "prop_3_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prop_1_translation_id": {
+          "name": "prop_1_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prop_2_translation_id": {
+          "name": "prop_2_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prop_3_translation_id": {
+          "name": "prop_3_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "preview_type_user_id_auth_user_id_fk": {
+          "name": "preview_type_user_id_auth_user_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "preview_type_name_translation_id_fk": {
+          "name": "preview_type_name_translation_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "name"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "preview_type_info_image_image_id_fk": {
+          "name": "preview_type_info_image_image_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "image",
+          "columnsFrom": [
+            "info_image"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "preview_type_prop_1_translation_id_translation_id_fk": {
+          "name": "preview_type_prop_1_translation_id_translation_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "prop_1_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "preview_type_prop_2_translation_id_translation_id_fk": {
+          "name": "preview_type_prop_2_translation_id_translation_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "prop_2_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "preview_type_prop_3_translation_id_translation_id_fk": {
+          "name": "preview_type_prop_3_translation_id_translation_id_fk",
+          "tableFrom": "preview_type",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "prop_3_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "section": {
+      "name": "section",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "page_id": {
+          "name": "page_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_translation_id": {
+          "name": "title_translation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "section_page_id_page_id_fk": {
+          "name": "section_page_id_page_id_fk",
+          "tableFrom": "section",
+          "tableTo": "page",
+          "columnsFrom": [
+            "page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "section_user_id_auth_user_id_fk": {
+          "name": "section_user_id_auth_user_id_fk",
+          "tableFrom": "section",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "section_title_translation_id_translation_id_fk": {
+          "name": "section_title_translation_id_translation_id_fk",
+          "tableFrom": "section",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "title_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "section_tag": {
+      "name": "section_tag",
+      "columns": {
+        "section_id": {
+          "name": "section_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "section_tag_section_id_section_id_fk": {
+          "name": "section_tag_section_id_section_id_fk",
+          "tableFrom": "section_tag",
+          "tableTo": "section",
+          "columnsFrom": [
+            "section_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "section_tag_tag_id_tag_id_fk": {
+          "name": "section_tag_tag_id_tag_id_fk",
+          "tableFrom": "section_tag",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "section_tag_section_id_tag_id_pk": {
+          "columns": [
+            "section_id",
+            "tag_id"
+          ]
+        }
+      }
     },
     "auth_session": {
       "name": "auth_session",
@@ -63,13 +612,15 @@
           "name": "id",
           "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "active_expires": {
           "name": "active_expires",
@@ -97,33 +648,15 @@
           ],
           "columnsTo": [
             "id"
-          ]
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {}
     },
-    "auth_user": {
-      "name": "auth_user",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "username": {
-          "name": "username",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {}
-    },
-    "page": {
-      "name": "page",
+    "tag": {
+      "name": "tag",
       "columns": {
         "id": {
           "name": "id",
@@ -136,38 +669,189 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "slug": {
-          "name": "slug",
-          "type": "text",
+        "name_translation_id": {
+          "name": "name_translation_id",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
-      "indexes": {
-        "idx_unique_user_slug": {
-          "name": "idx_unique_user_slug",
-          "columns": [
-            "user_id",
-            "slug"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "page_user_id_auth_user_id_fk": {
-          "name": "page_user_id_auth_user_id_fk",
-          "tableFrom": "page",
+        "tag_user_id_auth_user_id_fk": {
+          "name": "tag_user_id_auth_user_id_fk",
+          "tableFrom": "tag",
           "tableTo": "auth_user",
           "columnsFrom": [
             "user_id"
           ],
           "columnsTo": [
             "id"
-          ]
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "tag_name_translation_id_translation_id_fk": {
+          "name": "tag_name_translation_id_translation_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "translation",
+          "columnsFrom": [
+            "name_translation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
+      "compositePrimaryKeys": {}
+    },
+    "tag_post": {
+      "name": "tag_post",
+      "columns": {
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "post_id": {
+          "name": "post_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tag_post_tag_id_tag_id_fk": {
+          "name": "tag_post_tag_id_tag_id_fk",
+          "tableFrom": "tag_post",
+          "tableTo": "tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "tag_post_post_id_post_id_fk": {
+          "name": "tag_post_post_id_post_id_fk",
+          "tableFrom": "tag_post",
+          "tableTo": "post",
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "tag_post_tag_id_post_id_pk": {
+          "columns": [
+            "post_id",
+            "tag_id"
+          ]
+        }
+      }
+    },
+    "translation": {
+      "name": "translation",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "en": {
+          "name": "en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "uk": {
+          "name": "uk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "translation_user_id_auth_user_id_fk": {
+          "name": "translation_user_id_auth_user_id_fk",
+          "tableFrom": "translation",
+          "tableTo": "auth_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "auth_user": {
+      "name": "auth_user",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "uploadcare_token": {
+          "name": "uploadcare_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_user_unique_username": {
+          "name": "idx_user_unique_username",
+          "columns": [
+            "username"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {}
     }
   },

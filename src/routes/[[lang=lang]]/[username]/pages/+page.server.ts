@@ -3,7 +3,6 @@ import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
-import { Slug } from '$lib/isomorphic/parsers';
 import { transGroups } from '$lib/server/i18n';
 import { userpages } from '$lib/server/schemas/db';
 import { db } from '$lib/server/services/db';
@@ -31,7 +30,8 @@ export const actions = {
 		const slug = formData.get('slug');
 
 		try {
-			const parsedSlug = slug ? Slug.parse(slug) : '';
+			// const parsedSlug = slug ? Slug.parse(slug) : '';
+			const parsedSlug = slug;
 			await db
 				.insert(userpages)
 				.values({
