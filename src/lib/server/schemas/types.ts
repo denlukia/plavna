@@ -1,12 +1,15 @@
 import type { auth } from '../services/auth';
 import type { users } from './db';
 import type {
+	imageSelectSchema,
 	pageFormSchema,
 	pageInsertSchema,
 	pageSelectSchema,
 	postInsertSchema,
+	postPreviewValuesUpdateSchema,
 	postSelectSchema,
 	postUpdateSchema,
+	previewTypeSelectSchema,
 	readerPageConfigSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
@@ -55,6 +58,13 @@ export type TranslationUpdateZod = typeof translationUpdateSchema;
 export type PostSelect = z.infer<typeof postSelectSchema>;
 export type PostInsert = z.infer<typeof postInsertSchema>;
 export type PostUpdate = z.infer<typeof postUpdateSchema>;
+export type PostPreviewValuesUpdate = z.infer<typeof postPreviewValuesUpdateSchema>;
+
+// Previews
+export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;
+
+// Images
+export type ImageSelect = z.infer<typeof imageSelectSchema>;
 
 // Reader Page Config
 export type ReaderPageConfig = z.infer<typeof readerPageConfigSchema>;

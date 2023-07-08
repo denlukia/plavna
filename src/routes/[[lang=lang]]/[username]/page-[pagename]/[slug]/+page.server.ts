@@ -1,1 +1,1 @@
-export { postLoad } from '../../loaders';
+export { postServerLoad as postLoad } from '../../loaders';

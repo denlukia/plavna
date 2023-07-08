@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import T from '$lib/components/T.svelte';
+
+	import T from '$lib/components/Translation.svelte';
 </script>
+
 <!-- TODO Why ()=>{} ? -->
 <form method="POST" use:enhance={() => {}}>
 	<label for="username"><T key="username" /></label><br />

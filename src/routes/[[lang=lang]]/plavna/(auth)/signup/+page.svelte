@@ -1,7 +1,8 @@
 <!-- routes/signup/+page.svelte -->
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import T from '$lib/components/T.svelte';
+
+	import T from '$lib/components/Translation.svelte';
 </script>
 
 <form method="POST" use:enhance>

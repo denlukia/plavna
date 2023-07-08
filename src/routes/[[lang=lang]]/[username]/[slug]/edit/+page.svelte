@@ -1,6 +1,5 @@
 <script lang="ts">
 	import PostEditor from '../../PostEditor.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { PageData } from './$types';
 

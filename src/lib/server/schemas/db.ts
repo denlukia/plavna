@@ -52,9 +52,7 @@ export const pages = sqliteTable(
 export const translations = sqliteTable('translation', {
 	// _id cause "id" is Indonasian lang code
 	_id: integer('id').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	en: text('en'),
 	uk: text('uk')
 });
@@ -131,15 +129,14 @@ export const posts = sqliteTable(
 			.notNull()
 			.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		published_at: integer('published_at', { mode: 'timestamp' }),
-		static_preivew_id: integer('static_preview_id').references(() => previewTypes.id, {
+		preview_type_id: integer('preview_type_id').references(() => previewTypes.id, {
 			onDelete: 'set null',
 			onUpdate: 'set null'
 		}),
-		dynmaic_preview_id: integer('dynamic_preview_id').references(() => previewTypes.id, {
-			onDelete: 'set null',
-			onUpdate: 'set null'
-		}),
-		dynamic_preview_show_on: text('dynamic_preview_show_on').$type<'hover' | 'click'>()
+		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
+		preview_prop_1_value: text('preview_prop_1_value'),
+		preview_prop_2_value: text('preview_prop_2_value'),
+		preview_prop_3_value: text('preview_prop_3_value')
 	},
 	(table) => {
 		return {
@@ -151,34 +148,23 @@ export const posts = sqliteTable(
 export const previewTypes = sqliteTable('preview_type', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	name_translation_id: integer('name')
+	name_translation_id: integer('name_translation_id')
 		.notNull()
 		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	info_image: integer('info_image').references(() => images.id, {
+	info_image_id: integer('info_image_id').references(() => images.id, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade'
 	}),
-	code_reference: text('code_reference').notNull(),
-	prop_1_name: text('prop_1_name'),
-	prop_2_name: text('prop_2_name'),
-	prop_3_name: text('prop_3_name'),
-	prop_1_translation_id: integer('prop_1_translation_id').references(() => translations._id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade'
-	}),
-	prop_2_translation_id: integer('prop_2_translation_id').references(() => translations._id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade'
-	}),
-	prop_3_translation_id: integer('prop_3_translation_id').references(() => translations._id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade'
-	})
+	component_reference: text('component_reference').notNull()
 });
 
 export const images = sqliteTable('image', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	source: text('type').$type<'uploadcare'>().notNull(),
-	reference: text('reference').notNull()
+	source: text('source').$type<'uploadcare'>().notNull(),
+	reference: text('reference').notNull(),
+	reference_translation_id: integer('reference_translation_id').references(() => translations._id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	})
 });

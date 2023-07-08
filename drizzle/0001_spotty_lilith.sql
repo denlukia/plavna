@@ -1,0 +1,1 @@
+ALTER TABLE `preview_type` RENAME COLUMN `info_image` TO `info_image_id`;

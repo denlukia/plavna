@@ -1,6 +1,8 @@
-import { pages, posts, sections, tags, translations } from './db';
+import { images, pages, posts, previewTypes, sections, tags, translations } from './db';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
+
+// TODO Refine all slug schemas to accept only valid slugs
 
 // Pages
 export const pageSelectSchema = createSelectSchema(pages);
@@ -31,6 +33,19 @@ export const postInsertSchema = createInsertSchema(posts);
 export const postUpdateSchema = postInsertSchema
 	.pick({ id: true, slug: true })
 	.required({ id: true, slug: true });
+
+export const postPreviewValuesUpdateSchema = postInsertSchema.pick({
+	preview_prop_1_value: true,
+	preview_prop_2_value: true,
+	preview_prop_3_value: true
+});
+
+// Preview Types
+export const previewTypeSelectSchema = createSelectSchema(previewTypes);
+export const previewTypeInsertSchema = createInsertSchema(previewTypes);
+
+// Images
+export const imageSelectSchema = createSelectSchema(images);
 
 // Reader Page Config
 export const readerPageConfigSchema = z.record(

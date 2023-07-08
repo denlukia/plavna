@@ -1,5 +1,5 @@
 <script lang="ts">
-	import T from '$lib/components/T.svelte';
+	import T from '$lib/components/Translation.svelte';
 
 	import type { PageData } from './[slug]/$types';
 

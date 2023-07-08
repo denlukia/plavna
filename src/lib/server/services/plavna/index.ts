@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { error } from '@sveltejs/kit';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, isNull, or, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
@@ -8,6 +8,7 @@ import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphi
 import {
 	pages,
 	posts,
+	previewTypes,
 	sections,
 	tags,
 	tagsPosts,
@@ -15,6 +16,7 @@ import {
 	users
 } from '$lib/server/schemas/db';
 import {
+	postPreviewValuesUpdateSchema,
 	postUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
@@ -217,12 +219,14 @@ class Plavna {
 					contentTranslations,
 					tagsPosts,
 					tags,
-					tagsTranslations
+					tagsTranslations,
+					previewTypes
 				})
 
 				.from(posts)
 				.innerJoin(titleTranslations, eq(titleTranslations._id, posts.title_translation_id))
 				.innerJoin(contentTranslations, eq(contentTranslations._id, posts.content_translation_id))
+				.leftJoin(previewTypes, or(eq(previewTypes.user_id, user.id), isNull(previewTypes.user_id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
 				.leftJoin(tagsTranslations, eq(tagsTranslations._id, tags.name_translation_id))
 				.leftJoin(tagsPosts, eq(tagsPosts.post_id, exisingId))
@@ -232,6 +236,11 @@ class Plavna {
 			const postObj = query[0].posts;
 			const titleTranslationObj = query[0].titleTranslations;
 			const contentTranslationObj = query[0].contentTranslations;
+			const previewsArr = query
+				.map((rows) => rows.previewTypes)
+				.filter(nonNull)
+				.filter(removeDupesByField('id'));
+
 			const allTags = query
 				.map((rows) => rows.tags)
 				.filter(nonNull)
@@ -269,6 +278,9 @@ class Plavna {
 				contentForm: superValidateSync(contentTranslationObj, translationUpdateSchema, {
 					id: String(contentTranslationObj._id)
 				}),
+				previews: previewsArr,
+				currentPreviewId: postObj.preview_type_id,
+				currentPreviewValues: postPreviewValuesUpdateSchema.parse(postObj),
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema)
 			};
@@ -279,7 +291,8 @@ class Plavna {
 				.update(posts)
 				.set(post)
 				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
-				.run();
+				.returning({ slug: posts.slug })
+				.get();
 		},
 		publish: async (post: PostUpdate) => {
 			const user = await this.user.getOrThrow();
@@ -287,13 +300,22 @@ class Plavna {
 				.update(posts)
 				.set({ ...post, published_at: new Date() })
 				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
-				.run();
+				.returning({ slug: posts.slug })
+				.get();
 		},
 		hide: async (post: PostUpdate) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(posts)
 				.set({ ...post, published_at: null })
+				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
+				.returning({ slug: posts.slug })
+				.get();
+		},
+		delete: async (post: PostUpdate) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.delete(posts)
 				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
 				.run();
 		}

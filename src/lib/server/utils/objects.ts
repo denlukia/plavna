@@ -1,4 +1,5 @@
 import type { RemoveNullValues } from './typing';
+import type { SvelteComponent } from 'svelte/types';
 
 export function nestify<T extends object>(obj: T): any {
 	const nestedObj = {} as any;

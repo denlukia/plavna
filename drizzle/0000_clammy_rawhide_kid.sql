@@ -1,9 +1,11 @@
 CREATE TABLE `image` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text,
-	`type` text NOT NULL,
+	`source` text NOT NULL,
 	`reference` text NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade
+	`reference_translation_id` integer,
+	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`reference_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `auth_key` (
@@ -29,30 +31,31 @@ CREATE TABLE `post` (
 	`title_translation_id` integer NOT NULL,
 	`content_translation_id` integer NOT NULL,
 	`published_at` integer,
-	`static_preview_id` integer,
-	`dynamic_preview_id` integer,
-	`dynamic_preview_show_on` text,
+	`preview_type_id` integer,
+	`preview_interactions_show_on` text,
+	`preview_prop_1_value` text,
+	`preview_prop_2_value` text,
+	`preview_prop_3_value` text,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`title_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`content_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`static_preview_id`) REFERENCES `preview_type`(`id`) ON UPDATE set null ON DELETE set null,
-	FOREIGN KEY (`dynamic_preview_id`) REFERENCES `preview_type`(`id`) ON UPDATE set null ON DELETE set null
+	FOREIGN KEY (`preview_type_id`) REFERENCES `preview_type`(`id`) ON UPDATE set null ON DELETE set null
 );
 --> statement-breakpoint
 CREATE TABLE `preview_type` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text,
-	`name` integer NOT NULL,
+	`name_translation_id` integer NOT NULL,
 	`info_image` integer,
-	`code_reference` text NOT NULL,
-	`prop_1_name` text,
-	`prop_2_name` text,
-	`prop_3_name` text,
+	`component_reference` text NOT NULL,
 	`prop_1_translation_id` integer,
 	`prop_2_translation_id` integer,
 	`prop_3_translation_id` integer,
+	`prop_1_type` text,
+	`prop_2_type` text,
+	`prop_3_type` text,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`name`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`name_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`info_image`) REFERENCES `image`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`prop_1_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`prop_2_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
@@ -103,7 +106,7 @@ CREATE TABLE `tag_post` (
 --> statement-breakpoint
 CREATE TABLE `translation` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`user_id` text NOT NULL,
+	`user_id` text,
 	`en` text,
 	`uk` text,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade

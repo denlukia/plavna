@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
 
+	import PreviewEditorsList from '$lib/components/PreviewEditorsList.svelte';
 	import TagCreator from '$lib/components/TagCreator.svelte';
 	import TagEditor from '$lib/components/TagEditor.svelte';
 	import TranslationEditor from '$lib/components/TranslationEditor.svelte';
@@ -10,6 +11,8 @@
 	export let data: PageData;
 
 	const { form, errors, enhance } = superForm(data.postForm);
+
+	$: ({ previews, currentPreviewValues, currentPreviewId, previewComponent } = data);
 </script>
 
 <fieldset>
@@ -20,9 +23,10 @@
 		<button formaction="?/save">Save</button>
 		<button formaction="?/publish">Publish</button>
 		<button formaction="?/hide">Hide</button>
-		<!-- TODO: Add "delete" -->
+		<button formaction="?/delete">Delete</button>
 	</form>
 </fieldset>
+<PreviewEditorsList {previews} {currentPreviewValues} {currentPreviewId} {previewComponent} />
 <TranslationEditor superFormObj={data.titleForm} />
 <TranslationEditor superFormObj={data.contentForm} />
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import T from '$lib/components/T.svelte';
+	import T from '$lib/components/Translation.svelte';
 	import { defaultLang, supportedLanguages } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
 
@@ -30,10 +30,16 @@
 
 <header>
 	{#each supportedLanguages as language}
-		<a href={generateLangURL($page.url.pathname, language)}>{language.toUpperCase()}</a>{' '}
+		<a href={generateLangURL($page.url.pathname, language)}>
+			{language.toUpperCase()}
+		</a>{' '}
 	{/each}
 	{#if data.user}
-		<a href={generateCreateArticleURL($page.params.lang, data.user.username)}>
+		<a
+			href={generateCreateArticleURL($page.params.lang, data.user.username)}
+			data-sveltekit-preload-data="off"
+			data-sveltekit-preload-code="hover"
+		>
 			Створити статтю
 		</a>{/if}
 </header>
