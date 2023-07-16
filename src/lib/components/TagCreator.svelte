@@ -6,7 +6,7 @@
 	import { defaultLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
 	import { generatePath } from '$lib/isomorphic/url';
 
-	import type { TranslationInsertZod } from '$lib/server/schemas/types';
+	import type { TranslationInsertZod } from '$lib/server/domain/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let superFormObj: SuperValidated<TranslationInsertZod>;
@@ -27,7 +27,6 @@
 				bind:value={$form[lang]}
 			/>
 		{/each}
-
 		{#each supportedLanguages as lang}
 			<svelte:element
 				this={browser ? 'button' : 'a'}

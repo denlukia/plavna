@@ -6,13 +6,13 @@
 	import TagEditor from '$lib/components/TagEditor.svelte';
 	import TranslationEditor from '$lib/components/TranslationEditor.svelte';
 
-	import type { PageData } from './[slug]/edit/$types';
+	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 
 	export let data: PageData;
 
 	const { form, errors, enhance } = superForm(data.postForm);
 
-	$: ({ previews, currentPreviewValues, currentPreviewId, previewComponent } = data);
+	$: ({ previews, previewComponent, post } = data);
 </script>
 
 <fieldset>
@@ -26,9 +26,9 @@
 		<button formaction="?/delete">Delete</button>
 	</form>
 </fieldset>
-<PreviewEditorsList {previews} {currentPreviewValues} {currentPreviewId} {previewComponent} />
-<TranslationEditor superFormObj={data.titleForm} />
-<TranslationEditor superFormObj={data.contentForm} />
+<PreviewEditorsList {previews} {post} {previewComponent} />
+<TranslationEditor key={post.title_translation_id} />
+<TranslationEditor key={post.content_translation_id} />
 
 <fieldset>
 	{#each data.tagForms as tag}

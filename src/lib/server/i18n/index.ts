@@ -13,7 +13,8 @@ export function getTransByLangAndKeys(lang: string | undefined, keys: Translatio
 	}
 	return Object.fromEntries(
 		keys.map((key) => {
-			return [key, systemTranslations[(lang as SupportedLang) || defaultLang][key]];
+			const translation: string = systemTranslations[(lang as SupportedLang) || defaultLang][key];
+			return [key, translation];
 		})
 	);
 }

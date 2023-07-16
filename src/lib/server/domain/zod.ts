@@ -1,4 +1,6 @@
+import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker } from '../utils/objects';
 import { images, pages, posts, previewTypes, sections, tags, translations } from './db';
+import { ERRORS } from './errors';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -24,8 +26,19 @@ export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
 
 // Translations
 export const translationSelectSchema = createSelectSchema(translations);
-export const translationInsertSchema = createInsertSchema(translations).omit({ user_id: true });
-export const translationUpdateSchema = translationInsertSchema.required({ _id: true });
+export const translationInsertSchema = createInsertSchema(translations);
+export const translationUpdateSchema = translationInsertSchema
+	.omit({ user_id: true })
+	.required({ _id: true });
+
+export const translationInsertNonEmptySchema = translationSelectSchema
+	.omit({
+		user_id: true,
+		_id: true
+	})
+	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']), {
+		message: ERRORS.AT_LEAST_ONE_TRANSLATION
+	});
 
 // Posts
 export const postSelectSchema = createSelectSchema(posts);

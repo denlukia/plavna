@@ -111,3 +111,24 @@ export function removeNullValues<T extends Object>(obj: T) {
 export function nonNull<T>(value: T): value is NonNullable<T> {
 	return value !== null;
 }
+
+export function hasNonEmptyProperties<T extends Record<string, any>>(
+	obj: T,
+	properties: (keyof T)[]
+) {
+	for (const property in obj) {
+		if (!properties.includes(property) && obj[property] !== undefined && obj[property] !== null) {
+			return true;
+		}
+	}
+	return false;
+}
+
+export function createAtLeastOnePropBeyondTheseIsNonEmptyChecker(
+	ignoreKeys?: Array<string | number | symbol>
+) {
+	return (obj: Record<string | number | symbol, unknown>) =>
+		Object.entries(obj)
+			.filter(([key, _]) => !ignoreKeys || !ignoreKeys.includes(key))
+			.some(([_, value]) => value !== undefined && value !== null);
+}

@@ -3,8 +3,8 @@ import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { ZodError } from 'zod';
 
+import { userpages } from '$lib/server/domain/db';
 import { transGroups } from '$lib/server/i18n';
-import { userpages } from '$lib/server/schemas/db';
 import { db } from '$lib/server/services/db';
 
 import type { TranslationKey } from '$lib/server/i18n/system-translations/en';

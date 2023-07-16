@@ -1,7 +1,7 @@
 import { db } from '../db';
 import { error } from '@sveltejs/kit';
-import { and, eq, isNull, or, sql } from 'drizzle-orm';
-import { alias } from 'drizzle-orm/sqlite-core';
+import { type ExtractTablesWithRelations, and, eq, isNull, or, sql } from 'drizzle-orm';
+import { SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
@@ -14,7 +14,8 @@ import {
 	tagsPosts,
 	translations,
 	users
-} from '$lib/server/schemas/db';
+} from '$lib/server/domain/db';
+import { ERRORS } from '$lib/server/domain/errors';
 import {
 	postPreviewValuesUpdateSchema,
 	postUpdateSchema,
@@ -22,8 +23,8 @@ import {
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema
-} from '$lib/server/schemas/zod';
-import { nonNull, removeDupesByField } from '$lib/server/utils/objects';
+} from '$lib/server/domain/zod';
+import { hasNonEmptyProperties, nonNull, removeDupesByField } from '$lib/server/utils/objects';
 
 import type {
 	PageInsert,
@@ -36,9 +37,17 @@ import type {
 	TagUpdate,
 	TranslationInsert,
 	TranslationUpdate
-} from '$lib/server/schemas/types';
-import type { User } from '../../schemas/types';
+} from '$lib/server/domain/types';
+import type { User } from '../../domain/types';
+import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia-auth';
+
+type TransactionContext = SQLiteTransaction<
+	'async',
+	ResultSet,
+	typeof import('$lib/server/domain/db'),
+	ExtractTablesWithRelations<typeof import('$lib/server/domain/db')>
+>;
 
 class Plavna {
 	private readonly auth: AuthRequest;
@@ -74,6 +83,38 @@ class Plavna {
 	};
 
 	public readonly translations = {
+		create: async (
+			newTranslations: TranslationInsert[],
+			mode: 'allow-empty' | 'disallow-empty',
+			trx?: TransactionContext,
+			user?: User
+		) => {
+			if (mode === 'disallow-empty') {
+				newTranslations.forEach((translation) => {
+					if (!hasNonEmptyProperties(translation, ['user_id', '_id'])) {
+						throw error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
+					}
+				});
+			}
+			if (user === undefined) {
+				user = await this.user.getOrThrow();
+			}
+			if (user) {
+				const userCopy = user;
+				newTranslations = newTranslations.map((translation) => ({
+					...translation,
+					// It only sees that user is not empty via copy and
+					// I'm not in the mood for such a plain type guard
+					user_id: userCopy.id
+				}));
+			}
+			const dbLocal = trx || db;
+			return dbLocal
+				.insert(translations)
+				.values(newTranslations)
+				.returning({ _id: translations._id })
+				.all();
+		},
 		update: async (translation: TranslationUpdate) => {
 			const user = await this.user.getOrThrow();
 			return db
@@ -88,12 +129,12 @@ class Plavna {
 		create: async (translation: TranslationInsert) => {
 			const user = await this.user.getOrThrow();
 			return db.transaction(async (trx) => {
-				const { _id } = await trx
-					.insert(translations)
-					.values({ ...translation, user_id: user.id })
-					.returning({ _id: translations._id })
-					.get();
-
+				const [{ _id }] = await this.translations.create(
+					[translation],
+					'disallow-empty',
+					trx,
+					user
+				);
 				return trx.insert(tags).values({ name_translation_id: _id, user_id: user.id }).run();
 			});
 		},
@@ -182,11 +223,13 @@ class Plavna {
 				const newTranslation = {
 					user_id: user.id
 				};
-				const [{ _id: title_translation_id }, { _id: content_translation_id }] = await trx
-					.insert(translations)
-					.values([newTranslation, newTranslation])
-					.returning({ _id: translations._id })
-					.all();
+				const [{ _id: title_translation_id }, { _id: content_translation_id }] =
+					await this.translations.create(
+						[newTranslation, newTranslation],
+						'allow-empty',
+						trx,
+						user
+					);
 				const post = await trx
 					.insert(posts)
 					.values({
@@ -200,7 +243,7 @@ class Plavna {
 				return post.id;
 			});
 		},
-		createAndOrLoadEditingForms: async (username: User['username'], slug: PostSelect['slug']) => {
+		createAndOrLoadPostEditor: async (username: User['username'], slug: PostSelect['slug']) => {
 			const user = await this.user.checkOrThrow(null, username);
 
 			let exisingId = await this.posts.getIdIfExists(slug);
@@ -208,39 +251,27 @@ class Plavna {
 				exisingId = await this.posts.createFromSlug(slug);
 			}
 
-			const titleTranslations = alias(translations, 'titleTranslations');
-			const contentTranslations = alias(translations, 'contentTranslations');
-			const tagsTranslations = alias(translations, 'tagsTranslations');
-
 			const query = await db
-				.select({
-					posts,
-					titleTranslations,
-					contentTranslations,
-					tagsPosts,
-					tags,
-					tagsTranslations,
-					previewTypes
-				})
-
+				.select({ posts, tagsPosts, tags, translations, previewTypes })
 				.from(posts)
-				.innerJoin(titleTranslations, eq(titleTranslations._id, posts.title_translation_id))
-				.innerJoin(contentTranslations, eq(contentTranslations._id, posts.content_translation_id))
 				.leftJoin(previewTypes, or(eq(previewTypes.user_id, user.id), isNull(previewTypes.user_id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
-				.leftJoin(tagsTranslations, eq(tagsTranslations._id, tags.name_translation_id))
+				.leftJoin(
+					translations,
+					or(
+						eq(translations._id, posts.content_translation_id),
+						eq(translations._id, posts.title_translation_id),
+						eq(translations._id, tags.name_translation_id)
+					)
+				)
 				.leftJoin(tagsPosts, eq(tagsPosts.post_id, exisingId))
 				.where(eq(posts.id, exisingId))
 				.all();
 
-			const postObj = query[0].posts;
-			const titleTranslationObj = query[0].titleTranslations;
-			const contentTranslationObj = query[0].contentTranslations;
 			const previewsArr = query
 				.map((rows) => rows.previewTypes)
 				.filter(nonNull)
 				.filter(removeDupesByField('id'));
-
 			const allTags = query
 				.map((rows) => rows.tags)
 				.filter(nonNull)
@@ -249,40 +280,31 @@ class Plavna {
 				.map((rows) => rows.tagsPosts)
 				.filter(nonNull)
 				.filter(removeDupesByField('tag_id'));
-			const allTagsTranslations = query
-				.map((rows) => rows.tagsTranslations)
+			const translationsArr = query
+				.map((rows) => rows.translations)
 				.filter(nonNull)
 				.filter(removeDupesByField('_id'));
-
 			const tagForms = allTags.map((tag) => ({
 				isCheckedForm: superValidateSync(
 					{ ...tag, checked: !!postTags.find((t) => t.tag_id === tag.id) },
 					tagUpdateSchema
 				),
-				nameForm: superValidateSync(
-					{
-						_id: tag.name_translation_id,
-						...allTagsTranslations.find((t) => t._id === tag.name_translation_id)
-					},
-					translationUpdateSchema,
-					{ id: String(tag.name_translation_id) }
-				),
+				name_translation_id: tag.name_translation_id,
 				deletionForm: superValidateSync({ id: tag.id }, tagDeleteSchema)
 			}));
 
 			return {
-				postForm: superValidateSync(postObj, postUpdateSchema),
-				titleForm: superValidateSync(titleTranslationObj, translationUpdateSchema, {
-					id: String(titleTranslationObj._id)
-				}),
-				contentForm: superValidateSync(contentTranslationObj, translationUpdateSchema, {
-					id: String(contentTranslationObj._id)
-				}),
+				post: query[0].posts,
+				postForm: superValidateSync(query[0].posts, postUpdateSchema),
 				previews: previewsArr,
-				currentPreviewId: postObj.preview_type_id,
-				currentPreviewValues: postPreviewValuesUpdateSchema.parse(postObj),
 				tagForms,
-				tagCreationForm: superValidateSync(translationInsertSchema)
+				tagCreationForm: superValidateSync(translationInsertSchema),
+				translations: Object.fromEntries(
+					translationsArr.map((translation) => {
+						const { _id, ...other } = translation;
+						return [_id, superValidateSync(other, translationUpdateSchema)];
+					})
+				)
 			};
 		},
 		save: async (post: PostUpdate) => {

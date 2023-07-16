@@ -17,6 +17,7 @@ import type {
 	tagInsertSchema,
 	tagSelectSchema,
 	tagUpdateSchema,
+	translationInsertNonEmptySchema,
 	translationInsertSchema,
 	translationSelectSchema,
 	translationUpdateSchema
@@ -53,6 +54,7 @@ export type TranslationInsert = z.infer<typeof translationInsertSchema>;
 export type TranslationInsertZod = typeof translationInsertSchema;
 export type TranslationUpdate = z.infer<typeof translationUpdateSchema>;
 export type TranslationUpdateZod = typeof translationUpdateSchema;
+export type TranslationInsertNonEmpty = z.infer<typeof translationInsertNonEmptySchema>;
 
 // Posts
 export type PostSelect = z.infer<typeof postSelectSchema>;

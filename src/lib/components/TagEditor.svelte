@@ -1,13 +1,13 @@
 <script lang="ts">
-	import TEditor from './TranslationEditor.svelte';
+	import TranslationEditor from './TranslationEditor.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	import type { TagDeleteZod, TagUpdateZod, TranslationUpdateZod } from '$lib/server/schemas/types';
+	import type { TagDeleteZod, TagUpdateZod, TranslationUpdate } from '$lib/server/domain/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let tag: {
 		isCheckedForm: SuperValidated<TagUpdateZod>;
-		nameForm: SuperValidated<TranslationUpdateZod>;
+		name_translation_id: TranslationUpdate['_id'];
 		deletionForm: SuperValidated<TagDeleteZod>;
 	};
 
@@ -21,7 +21,7 @@
 		<input style="display: none" name="checked" type="checkbox" bind:checked={$form.checked} />
 		<button>{$form.checked ? 'Uncheck' : 'Check'}</button>
 	</form>
-	<TEditor superFormObj={tag.nameForm} />
+	<TranslationEditor key={tag.name_translation_id} />
 	<form use:enhance method="POST" action="?/delete_tag">
 		<input name="id" type="hidden" bind:value={$form.id} />
 		<button>Delete</button>

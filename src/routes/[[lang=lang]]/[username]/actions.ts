@@ -1,4 +1,4 @@
-import { type RequestEvent, redirect } from '@sveltejs/kit';
+import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
 import { generatePath } from '$lib/isomorphic/url';
@@ -7,22 +7,25 @@ import {
 	postUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
+	translationInsertNonEmptySchema,
 	translationInsertSchema
-} from '$lib/server/schemas/zod';
+} from '$lib/server/domain/zod';
 
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
 
 async function switch_tag(event: ActionRequestEvt) {
-	const { slug } = event.params;
 	const form = await superValidate(event.request, tagUpdateSchema);
+	if (!form.valid) return fail(400, { form });
 
+	const { slug } = event.params;
 	const { plavna } = event.locals;
 	await plavna.tags.switchChecked(form.data, slug);
 }
 
 async function create_tag(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, translationInsertSchema);
+	const form = await superValidate(event.request, translationInsertNonEmptySchema);
+	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.tags.create(form.data);
@@ -30,6 +33,7 @@ async function create_tag(event: ActionRequestEvt) {
 
 async function delete_tag(event: ActionRequestEvt) {
 	const form = await superValidate(event.request, tagDeleteSchema);
+	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.tags.delete(form.data);
@@ -37,26 +41,26 @@ async function delete_tag(event: ActionRequestEvt) {
 
 async function edit_post(event: ActionRequestEvt, subtype: 'save' | 'publish' | 'hide' | 'delete') {
 	const form = await superValidate(event.request, postUpdateSchema);
+	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-
 	const result = await plavna.posts[subtype](form.data);
 
-	let replacementsObject: Record<string, string | undefined> = {
-		'[[lang=lang]]': event.params.lang,
-		'[username]': event.params.username
-	};
-
-	let urlBase = '/[[lang=lang]]/[username]/';
-
-	if ('slug' in result) {
-		urlBase = event.route.id;
-		replacementsObject['[slug]'] = result.slug;
+	{
+		let replacementsObject: Record<string, string | undefined> = {
+			'[[lang=lang]]': event.params.lang,
+			'[username]': event.params.username
+		};
+		let urlBase = '/[[lang=lang]]/[username]/';
+		if ('slug' in result) {
+			urlBase = event.route.id;
+			replacementsObject['[slug]'] = result.slug;
+		}
+		if ('pagename' in event.params) {
+			replacementsObject['[pagename]'] = event.params.pagename;
+		}
+		throw redirect(302, generatePath(urlBase, replacementsObject));
 	}
-	if ('pagename' in event.params) {
-		replacementsObject['[pagename]'] = event.params.pagename;
-	}
-	throw redirect(302, generatePath(urlBase, replacementsObject));
 }
 
 type ActionRequestEvt =

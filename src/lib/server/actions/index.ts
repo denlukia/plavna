@@ -1,4 +1,4 @@
-import { translationUpdateSchema } from '../schemas/zod';
+import { translationUpdateSchema } from '../domain/zod';
 import { detokenizeEmptyStrings, removeNullValues, tokenizeEmptyStrings } from '../utils/objects';
 import { type RequestEvent, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';

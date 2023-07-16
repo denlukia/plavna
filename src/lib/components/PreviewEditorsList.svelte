@@ -1,11 +1,10 @@
 <script lang="ts">
 	import T from './Translation.svelte';
 
-	import type { PostPreviewValuesUpdate, PreviewTypeSelect } from '$lib/server/schemas/types';
+	import type { PostSelect, PreviewTypeSelect } from '$lib/server/domain/types';
 
 	export let previews: PreviewTypeSelect[];
-	export let currentPreviewId: PreviewTypeSelect['id'] | null;
-	export let currentPreviewValues: PostPreviewValuesUpdate;
+	export let post: PostSelect;
 	export let previewComponent: ConstructorOfATypedSvelteComponent;
 </script>
 
@@ -14,4 +13,4 @@
 		<T key={preview.name_translation_id} />
 	</div>
 {/each}
-<svelte:component this={previewComponent} {currentPreviewValues} />
+<svelte:component this={previewComponent} {post} />

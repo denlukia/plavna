@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PostEditor from '../../PostEditor.svelte';
+	import PostEditor from '../../../../../lib/components/PostEditor.svelte';
 
 	import type { PageData } from './$types';
 

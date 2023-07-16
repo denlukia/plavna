@@ -4,7 +4,9 @@ import { specificAdapter } from './adapter';
 import lucia from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
 
-import type { User } from '$lib/server/schemas/types';
+import type { User } from '$lib/server/domain/types';
+
+// TODO update lucia to v2, replace own adapter with libsql from lucia
 
 export const auth = lucia({
 	adapter: specificAdapter(db),

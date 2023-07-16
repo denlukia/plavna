@@ -3,8 +3,8 @@
 
 	import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
+	import type { TranslationSelect } from '$lib/server/domain/types';
 	import type { TranslationKey } from '$lib/server/i18n/system-translations/en';
-	import type { TranslationSelect } from '$lib/server/schemas/types';
 
 	export let key: TranslationKey | TranslationSelect['_id'] | null = null;
 	export let translation:

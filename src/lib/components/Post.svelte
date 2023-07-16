@@ -1,7 +1,7 @@
 <script lang="ts">
 	import T from '$lib/components/Translation.svelte';
 
-	import type { PageData } from './[slug]/$types';
+	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/$types';
 
 	export let data: PageData;
 </script>

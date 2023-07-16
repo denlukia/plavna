@@ -1,4 +1,4 @@
-import { keys, sessions, users } from '../../schemas/db';
+import { keys, sessions, users } from '../../domain/db';
 import { db } from '../db';
 import { specificAdapter } from './adapter';
 import { transformDatabaseKey, transformDatabaseSession, transformToSqliteValue } from './utils';
