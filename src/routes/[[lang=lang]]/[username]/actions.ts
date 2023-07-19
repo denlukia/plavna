@@ -2,9 +2,10 @@ import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
 import { generatePath } from '$lib/isomorphic/url';
-import { update_translation } from '$lib/server/actions';
+import { update_translation } from '$lib/server/common-actions';
 import {
-	postUpdateSchema,
+	postPreviewUpdateSchema,
+	postSlugUpdate,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertNonEmptySchema,
@@ -39,28 +40,51 @@ async function delete_tag(event: ActionRequestEvt) {
 	await plavna.tags.delete(form.data);
 }
 
-async function edit_post(event: ActionRequestEvt, subtype: 'save' | 'publish' | 'hide' | 'delete') {
-	const form = await superValidate(event.request, postUpdateSchema);
+async function update_slug(event: ActionRequestEvt) {
+	const { slug } = event.params;
+	const form = await superValidate(event.request, postSlugUpdate);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	const result = await plavna.posts[subtype](form.data);
+	const result = await plavna.posts.updateSlug(slug, form.data);
 
-	{
+	let replacementsObject: Record<string, string | undefined> = {
+		'[[lang=lang]]': event.params.lang,
+		'[username]': event.params.username,
+		'[slug]': result.slug
+	};
+	if ('pagename' in event.params) {
+		replacementsObject['[pagename]'] = event.params.pagename;
+	}
+	throw redirect(302, generatePath(event.route.id, replacementsObject));
+}
+
+async function edit_post(event: ActionRequestEvt, type: 'publish' | 'hide' | 'delete') {
+	const { slug } = event.params;
+	const { plavna } = event.locals;
+	await plavna.posts[type](slug);
+
+	if (type === 'delete') {
+		let destinationRouteId = '/[[lang=lang]]/[username]';
 		let replacementsObject: Record<string, string | undefined> = {
 			'[[lang=lang]]': event.params.lang,
 			'[username]': event.params.username
 		};
-		let urlBase = '/[[lang=lang]]/[username]/';
-		if ('slug' in result) {
-			urlBase = event.route.id;
-			replacementsObject['[slug]'] = result.slug;
-		}
 		if ('pagename' in event.params) {
+			destinationRouteId = '/[[lang=lang]]/[username]/page-[pagename]';
 			replacementsObject['[pagename]'] = event.params.pagename;
 		}
-		throw redirect(302, generatePath(urlBase, replacementsObject));
+		throw redirect(302, generatePath(destinationRouteId, replacementsObject));
 	}
+}
+
+async function update_preview(event: ActionRequestEvt) {
+	const { slug } = event.params;
+	const form = await superValidate(event.request, postPreviewUpdateSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	const result = await plavna.posts.updatePreview(slug, form.data);
 }
 
 type ActionRequestEvt =
@@ -72,8 +96,9 @@ export const actions = {
 	switch_tag,
 	create_tag,
 	delete_tag,
-	save: (event: ActionRequestEvt) => edit_post(event, 'save'),
+	update_slug,
 	publish: (event: ActionRequestEvt) => edit_post(event, 'publish'),
 	hide: (event: ActionRequestEvt) => edit_post(event, 'hide'),
-	delete: (event: ActionRequestEvt) => edit_post(event, 'delete')
+	delete: (event: ActionRequestEvt) => edit_post(event, 'delete'),
+	update_preview
 };

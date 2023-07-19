@@ -5,7 +5,7 @@ import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const authRequest = auth.handleRequest(event);
-	event.locals.auth = authRequest;
+	event.locals.authRequest = authRequest;
 
 	const plavnaService = new Plavna(authRequest, event.params.lang);
 	event.locals.plavna = plavnaService;

@@ -78,9 +78,13 @@ export function addPrefixDotToKeys<T extends object, P extends string>(
 	return prefixedObj;
 }
 
-export function removeDupesByField(fieldName: string) {
-	return (obj: any, index: number, arr: any[]) =>
-		index === arr.findIndex((innerTag) => innerTag[fieldName] === obj[fieldName]);
+export function removeNullAndDup(fieldName: string) {
+	return <T extends null | Record<string, any>>(
+		obj: T,
+		index: number,
+		arr: any[]
+	): obj is NonNullable<T> =>
+		obj !== null && index === arr.findIndex((innerTag) => innerTag[fieldName] === obj[fieldName]);
 }
 
 const emptyStringToken = '__plavna_empty_string__';

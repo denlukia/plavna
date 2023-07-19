@@ -30,7 +30,6 @@ export const translationInsertSchema = createInsertSchema(translations);
 export const translationUpdateSchema = translationInsertSchema
 	.omit({ user_id: true })
 	.required({ _id: true });
-
 export const translationInsertNonEmptySchema = translationSelectSchema
 	.omit({
 		user_id: true,
@@ -43,11 +42,16 @@ export const translationInsertNonEmptySchema = translationSelectSchema
 // Posts
 export const postSelectSchema = createSelectSchema(posts);
 export const postInsertSchema = createInsertSchema(posts);
-export const postUpdateSchema = postInsertSchema
-	.pick({ id: true, slug: true })
-	.required({ id: true, slug: true });
-
-export const postPreviewValuesUpdateSchema = postInsertSchema.pick({
+export const postUpdateSchema = z.object({});
+export const postSlugUpdateSchema = postSelectSchema.pick({ slug: true });
+export const postPreviewUpdateSchema = postInsertSchema.pick({
+	preview_type_id: true,
+	preview_prop_1_value: true,
+	preview_prop_2_value: true,
+	preview_prop_3_value: true
+});
+export const postSelectWithoutPreviewValuesSchema = postSelectSchema.omit({
+	preview_type_id: true,
 	preview_prop_1_value: true,
 	preview_prop_2_value: true,
 	preview_prop_3_value: true

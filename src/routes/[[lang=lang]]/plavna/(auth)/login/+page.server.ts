@@ -1,4 +1,3 @@
-// routes/login/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 
 import { transGroups } from '$lib/server/i18n';
@@ -22,8 +21,8 @@ export const actions: Actions = {
 		if (typeof username !== 'string' || typeof password !== 'string') return fail(400);
 		try {
 			const key = await auth.useKey('username', username, password);
-			const session = await auth.createSession(key.userId);
-			locals.auth.setSession(session);
+			const session = await auth.createSession({ userId: key.userId, attributes: {} });
+			locals.authRequest.setSession(session);
 		} catch {
 			// invalid username/password
 			return fail(400);

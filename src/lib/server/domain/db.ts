@@ -28,9 +28,7 @@ export const keys = sqliteTable('auth_key', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id),
-	primary_key: integer('primary_key').notNull(),
-	hashed_password: text('hashed_password'),
-	expires: integer('expires')
+	hashed_password: text('hashed_password')
 });
 
 export const pages = sqliteTable(

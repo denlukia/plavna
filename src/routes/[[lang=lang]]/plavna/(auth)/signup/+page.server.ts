@@ -1,4 +1,5 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
+import { generateRandomString } from 'lucia/utils';
 
 import { transGroups } from '$lib/server/i18n';
 import { auth } from '$lib/server/services/auth';
@@ -23,7 +24,7 @@ export const actions = {
 
 		try {
 			const user = await auth.createUser({
-				primaryKey: {
+				key: {
 					providerId: 'username',
 					providerUserId: username,
 					password
@@ -32,9 +33,10 @@ export const actions = {
 					username
 				}
 			});
-			const session = await auth.createSession(user.id);
-			locals.auth.setSession(session);
-		} catch {
+			const session = await auth.createSession({ userId: user.id, attributes: {} });
+			locals.authRequest.setSession(session);
+		} catch (e) {
+			console.log(e);
 			// username taken
 			return fail(400);
 		}

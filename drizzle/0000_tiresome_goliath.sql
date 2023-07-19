@@ -11,9 +11,7 @@ CREATE TABLE `image` (
 CREATE TABLE `auth_key` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
-	`primary_key` integer NOT NULL,
 	`hashed_password` text,
-	`expires` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -46,20 +44,11 @@ CREATE TABLE `preview_type` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text,
 	`name_translation_id` integer NOT NULL,
-	`info_image` integer,
+	`info_image_id` integer,
 	`component_reference` text NOT NULL,
-	`prop_1_translation_id` integer,
-	`prop_2_translation_id` integer,
-	`prop_3_translation_id` integer,
-	`prop_1_type` text,
-	`prop_2_type` text,
-	`prop_3_type` text,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`name_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`info_image`) REFERENCES `image`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`prop_1_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`prop_2_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`prop_3_translation_id`) REFERENCES `translation`(`id`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`info_image_id`) REFERENCES `image`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `section` (

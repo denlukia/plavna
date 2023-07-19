@@ -6,9 +6,11 @@ import type {
 	pageInsertSchema,
 	pageSelectSchema,
 	postInsertSchema,
-	postPreviewValuesUpdateSchema,
+	postPreviewUpdateSchema,
 	postSelectSchema,
-	postUpdateSchema,
+	postSelectWithoutPreviewValuesSchema,
+	postSlugUpdate,
+	postSlugUpdateSchema,
 	previewTypeSelectSchema,
 	readerPageConfigSchema,
 	sectionInsertSchema,
@@ -59,8 +61,10 @@ export type TranslationInsertNonEmpty = z.infer<typeof translationInsertNonEmpty
 // Posts
 export type PostSelect = z.infer<typeof postSelectSchema>;
 export type PostInsert = z.infer<typeof postInsertSchema>;
-export type PostUpdate = z.infer<typeof postUpdateSchema>;
-export type PostPreviewValuesUpdate = z.infer<typeof postPreviewValuesUpdateSchema>;
+export type PostSlugUpdate = z.infer<typeof postSlugUpdateSchema>;
+export type PostPreviewUpdate = z.infer<typeof postPreviewUpdateSchema>;
+export type PostPreviewUpdateZod = typeof postPreviewUpdateSchema;
+export type PostSelectWithoutPreviewValues = z.infer<typeof postSelectWithoutPreviewValuesSchema>;
 
 // Previews
 export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;

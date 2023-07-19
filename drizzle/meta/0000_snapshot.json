@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "187f13fb-09a7-4dc4-a343-13929c422626",
+  "id": "51130f35-cac5-4174-8739-a034ce2ff555",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "image": {
@@ -72,7 +72,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "auth_key": {
       "name": "auth_key",
@@ -91,23 +92,9 @@
           "notNull": true,
           "autoincrement": false
         },
-        "primary_key": {
-          "name": "primary_key",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "hashed_password": {
           "name": "hashed_password",
           "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "expires": {
-          "name": "expires",
-          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -129,7 +116,8 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "page": {
       "name": "page",
@@ -181,7 +169,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "post": {
       "name": "post",
@@ -328,7 +317,8 @@
           "onUpdate": "set null"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "preview_type": {
       "name": "preview_type",
@@ -354,8 +344,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "info_image": {
-          "name": "info_image",
+        "info_image_id": {
+          "name": "info_image_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -366,48 +356,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
-        },
-        "prop_1_translation_id": {
-          "name": "prop_1_translation_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "prop_2_translation_id": {
-          "name": "prop_2_translation_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "prop_3_translation_id": {
-          "name": "prop_3_translation_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "prop_1_type": {
-          "name": "prop_1_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "prop_2_type": {
-          "name": "prop_2_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "prop_3_type": {
-          "name": "prop_3_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         }
       },
@@ -439,51 +387,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "preview_type_info_image_image_id_fk": {
-          "name": "preview_type_info_image_image_id_fk",
+        "preview_type_info_image_id_image_id_fk": {
+          "name": "preview_type_info_image_id_image_id_fk",
           "tableFrom": "preview_type",
           "tableTo": "image",
           "columnsFrom": [
-            "info_image"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
-        "preview_type_prop_1_translation_id_translation_id_fk": {
-          "name": "preview_type_prop_1_translation_id_translation_id_fk",
-          "tableFrom": "preview_type",
-          "tableTo": "translation",
-          "columnsFrom": [
-            "prop_1_translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
-        "preview_type_prop_2_translation_id_translation_id_fk": {
-          "name": "preview_type_prop_2_translation_id_translation_id_fk",
-          "tableFrom": "preview_type",
-          "tableTo": "translation",
-          "columnsFrom": [
-            "prop_2_translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
-        "preview_type_prop_3_translation_id_translation_id_fk": {
-          "name": "preview_type_prop_3_translation_id_translation_id_fk",
-          "tableFrom": "preview_type",
-          "tableTo": "translation",
-          "columnsFrom": [
-            "prop_3_translation_id"
+            "info_image_id"
           ],
           "columnsTo": [
             "id"
@@ -492,7 +401,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "section": {
       "name": "section",
@@ -568,7 +478,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "section_tag": {
       "name": "section_tag",
@@ -624,7 +535,8 @@
             "tag_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "auth_session": {
       "name": "auth_session",
@@ -674,7 +586,8 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "tag": {
       "name": "tag",
@@ -730,7 +643,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "tag_post": {
       "name": "tag_post",
@@ -786,7 +700,8 @@
             "tag_id"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "translation": {
       "name": "translation",
@@ -836,7 +751,8 @@
           "onUpdate": "cascade"
         }
       },
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "auth_user": {
       "name": "auth_user",
@@ -873,7 +789,8 @@
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
   "enums": {},

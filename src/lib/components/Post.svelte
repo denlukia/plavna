@@ -10,5 +10,5 @@
 <h2>Published: {data.post?.published_at}</h2>
 <p>{data.post?.slug}</p>
 <div>
-	<T translation={data.post?.title_translation} />
+	<!-- <T translation={data.post?.title_translation} /> -->
 </div>

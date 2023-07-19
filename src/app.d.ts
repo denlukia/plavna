@@ -4,7 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			auth: import('lucia-auth').AuthRequest;
+			authRequest: import('lucia').AuthRequest;
 			plavna: import('$lib/server/services/plavna').default;
 		}
 		// interface PageData {}

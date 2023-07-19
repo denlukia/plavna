@@ -1,10 +1,12 @@
 import { redirect } from '@sveltejs/kit';
-import type { LayoutServerLoad } from './$types';
+
 import { transGroups } from '$lib/server/i18n';
 
+import type { LayoutServerLoad } from './$types';
+
 export const load = (async ({ locals, params, parent }) => {
-	const { session, user } = await locals.auth.validateUser();
-	if (session) throw redirect(302, `/${user.username}/pages`);
+	const session = await locals.authRequest.validate();
+	if (session) throw redirect(302, `/${session.user.username}/pages`);
 
 	const { translations } = await parent();
 	return {

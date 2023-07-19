@@ -1,7 +1,7 @@
-import { db } from '../db';
+import { db } from './db';
 import { error } from '@sveltejs/kit';
 import { type ExtractTablesWithRelations, and, eq, isNull, or, sql } from 'drizzle-orm';
-import { SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
+import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
@@ -17,30 +17,33 @@ import {
 } from '$lib/server/domain/db';
 import { ERRORS } from '$lib/server/domain/errors';
 import {
-	postPreviewValuesUpdateSchema,
+	postPreviewUpdateSchema,
+	postSelectWithoutPreviewValuesSchema,
+	postSlugUpdateSchema,
 	postUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/domain/zod';
-import { hasNonEmptyProperties, nonNull, removeDupesByField } from '$lib/server/utils/objects';
+import { hasNonEmptyProperties, nonNull, removeNullAndDup } from '$lib/server/utils/objects';
 
 import type {
 	PageInsert,
 	PageSelect,
 	PostInsert,
+	PostPreviewUpdate,
 	PostSelect,
-	PostUpdate,
+	PostSlugUpdate,
 	ReaderPageConfig,
 	TagDelete,
 	TagUpdate,
 	TranslationInsert,
 	TranslationUpdate
 } from '$lib/server/domain/types';
-import type { User } from '../../domain/types';
+import type { User } from '../domain/types';
 import type { ResultSet } from '@libsql/client';
-import type { AuthRequest } from 'lucia-auth';
+import type { AuthRequest } from 'lucia';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -50,11 +53,11 @@ type TransactionContext = SQLiteTransaction<
 >;
 
 class Plavna {
-	private readonly auth: AuthRequest;
+	private readonly authRequest: AuthRequest;
 	private readonly lang: SupportedLang;
 
-	constructor(auth: AuthRequest, langParam: string | undefined) {
-		this.auth = auth;
+	constructor(authRequest: AuthRequest, langParam: string | undefined) {
+		this.authRequest = authRequest;
 		if (!langParam) {
 			this.lang = defaultLang;
 		} else if (isSupportedLang(langParam)) {
@@ -66,7 +69,8 @@ class Plavna {
 
 	private readonly user = {
 		get: async () => {
-			return (await this.auth.validateUser()).user;
+			const session = await this.authRequest.validate();
+			return session && session.user;
 		},
 		getOrThrow: async () => {
 			const user = await this.user.get();
@@ -251,39 +255,37 @@ class Plavna {
 				exisingId = await this.posts.createFromSlug(slug);
 			}
 
+			const translForForms = alias(translations, 'translForForms');
 			const query = await db
-				.select({ posts, tagsPosts, tags, translations, previewTypes })
+				.select({
+					posts,
+					tagsPosts,
+					tags,
+					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
+					translForForms,
+					previewTypes
+				})
 				.from(posts)
 				.leftJoin(previewTypes, or(eq(previewTypes.user_id, user.id), isNull(previewTypes.user_id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
+				.leftJoin(translations, eq(translations._id, previewTypes.name_translation_id))
 				.leftJoin(
-					translations,
+					translForForms,
 					or(
-						eq(translations._id, posts.content_translation_id),
-						eq(translations._id, posts.title_translation_id),
-						eq(translations._id, tags.name_translation_id)
+						eq(translForForms._id, posts.content_translation_id),
+						eq(translForForms._id, posts.title_translation_id),
+						eq(translForForms._id, tags.name_translation_id)
 					)
 				)
 				.leftJoin(tagsPosts, eq(tagsPosts.post_id, exisingId))
 				.where(eq(posts.id, exisingId))
 				.all();
 
-			const previewsArr = query
-				.map((rows) => rows.previewTypes)
-				.filter(nonNull)
-				.filter(removeDupesByField('id'));
-			const allTags = query
-				.map((rows) => rows.tags)
-				.filter(nonNull)
-				.filter(removeDupesByField('id'));
-			const postTags = query
-				.map((rows) => rows.tagsPosts)
-				.filter(nonNull)
-				.filter(removeDupesByField('tag_id'));
-			const translationsArr = query
-				.map((rows) => rows.translations)
-				.filter(nonNull)
-				.filter(removeDupesByField('_id'));
+			const previewsArr = query.map((rows) => rows.previewTypes).filter(removeNullAndDup('id'));
+			const allTags = query.map((rows) => rows.tags).filter(removeNullAndDup('id'));
+			const postTags = query.map((rows) => rows.tagsPosts).filter(removeNullAndDup('tag_id'));
+			const translArr = query.map((rows) => rows.translations).filter(removeNullAndDup('_id'));
+			const translForms = query.map(({ translForForms: t }) => t).filter(removeNullAndDup('_id'));
 			const tagForms = allTags.map((tag) => ({
 				isCheckedForm: superValidateSync(
 					{ ...tag, checked: !!postTags.find((t) => t.tag_id === tag.id) },
@@ -294,52 +296,64 @@ class Plavna {
 			}));
 
 			return {
-				post: query[0].posts,
+				post: postSelectWithoutPreviewValuesSchema.parse(query[0].posts),
+				postSlugForm: superValidateSync(query[0].posts, postSlugUpdateSchema),
 				postForm: superValidateSync(query[0].posts, postUpdateSchema),
+				postPreviewForm: superValidateSync(query[0].posts, postPreviewUpdateSchema),
 				previews: previewsArr,
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema),
-				translations: Object.fromEntries(
-					translationsArr.map((translation) => {
+				translations: Object.fromEntries([
+					...translForms.map((translation) => {
 						const { _id, ...other } = translation;
 						return [_id, superValidateSync(other, translationUpdateSchema)];
-					})
-				)
+					}),
+					...translArr.map((translation) => [translation._id, translation[this.lang]])
+				])
 			};
 		},
-		save: async (post: PostUpdate) => {
+		updateSlug: async (slug: string, post: PostSlugUpdate) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(posts)
 				.set(post)
-				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
 				.returning({ slug: posts.slug })
 				.get();
 		},
-		publish: async (post: PostUpdate) => {
+		publish: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(posts)
-				.set({ ...post, published_at: new Date() })
-				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
+				.set({ published_at: new Date() })
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
 				.returning({ slug: posts.slug })
 				.get();
 		},
-		hide: async (post: PostUpdate) => {
+		hide: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(posts)
-				.set({ ...post, published_at: null })
-				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
+				.set({ published_at: null })
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
 				.returning({ slug: posts.slug })
 				.get();
 		},
-		delete: async (post: PostUpdate) => {
+		delete: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.delete(posts)
-				.where(and(eq(posts.id, post.id), eq(posts.user_id, user.id)))
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
 				.run();
+		},
+		updatePreview: async (slug: string, preview: PostPreviewUpdate) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.update(posts)
+				.set(preview)
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
+				.returning({ slug: posts.slug })
+				.get();
 		}
 	};
 }

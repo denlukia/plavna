@@ -1,7 +1,23 @@
 <script lang="ts">
-	import type { PostSelect } from '$lib/server/domain/types';
+	import TranslationEditor from '../TranslationEditor.svelte';
+	import { superForm } from 'sveltekit-superforms/client';
 
-	export let post: PostSelect;
+	import type {
+		PostPreviewValuesUpdateZod,
+		PostSelectWithoutPreviewValues
+	} from '$lib/server/domain/types';
+	import type { SuperValidated } from 'sveltekit-superforms';
+
+	export let post: PostSelectWithoutPreviewValues;
+	export let postPreviewForm: SuperValidated<PostPreviewValuesUpdateZod>;
+
+	const { form, errors, enhance } = superForm(postPreviewForm);
 </script>
 
-РЕДАКТОР ПРЕВЬЮ PLAVNA
+<TranslationEditor key={post.title_translation_id} />
+<form use:enhance method="POST" action="?/update_preview">
+	<input name="preview_prop_1_value" type="text" bind:value={$form.preview_prop_1_value} />
+	<input name="preview_prop_2_value" type="text" bind:value={$form.preview_prop_2_value} />
+	<input name="preview_prop_3_value" type="text" bind:value={$form.preview_prop_3_value} />
+	<button>Update preview</button>
+</form>
