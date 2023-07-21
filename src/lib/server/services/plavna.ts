@@ -1,6 +1,6 @@
 import { db } from './db';
 import { error } from '@sveltejs/kit';
-import { type ExtractTablesWithRelations, and, eq, isNull, or, sql } from 'drizzle-orm';
+import { type ExtractTablesWithRelations, and, eq, isNotNull, isNull, or, sql } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
@@ -166,13 +166,11 @@ class Plavna {
 					.delete(tagsPosts)
 					.where(and(eq(tagsPosts.tag_id, tagSql), eq(tagsPosts.post_id, postSql)))
 					.run();
-				console.log('delete result', result);
 			} else {
 				const result = await db
 					.insert(tagsPosts)
 					.values({ tag_id: tagSql, post_id: postSql })
 					.run();
-				console.log('insert result', result);
 			}
 		}
 	};
@@ -247,7 +245,7 @@ class Plavna {
 				return post.id;
 			});
 		},
-		createAndOrLoadPostEditor: async (username: User['username'], slug: PostSelect['slug']) => {
+		createAndOrLoadEditor: async (username: User['username'], slug: PostSelect['slug']) => {
 			const user = await this.user.checkOrThrow(null, username);
 
 			let exisingId = await this.posts.getIdIfExists(slug);
@@ -354,6 +352,51 @@ class Plavna {
 				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
 				.returning({ slug: posts.slug })
 				.get();
+		},
+		load: async (username: string, slug: string) => {
+			const userPromise = this.user.get();
+			const queryPromise = db
+				.select({
+					posts,
+					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
+					previewTypes,
+					tags
+				})
+				.from(posts)
+				.innerJoin(users, eq(users.id, posts.user_id))
+				.leftJoin(previewTypes, eq(previewTypes.id, posts.preview_type_id))
+				.leftJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
+				.leftJoin(tags, eq(tags.id, tagsPosts.tag_id))
+				.leftJoin(
+					translations,
+					or(
+						eq(translations._id, posts.title_translation_id),
+						eq(translations._id, posts.content_translation_id),
+						eq(translations._id, tags.name_translation_id)
+					)
+				)
+				.where(and(eq(users.username, username), eq(posts.slug, slug)))
+				.all();
+
+			const [query, user] = await Promise.all([queryPromise, userPromise]);
+
+			if (!query.length) {
+				throw error(404);
+			}
+			if (!user && query[0].posts.published_at === null) {
+				throw error(404);
+			}
+			return {
+				post: query[0].posts,
+				previewType: query[0].previewTypes,
+				translations: Object.fromEntries(
+					query
+						.map((rows) => rows.translations)
+						.filter(removeNullAndDup('_id'))
+						.map((rows) => [rows._id, rows[this.lang]])
+				),
+				tags: query.map((rows) => rows.tags).filter(removeNullAndDup('id'))
+			};
 		}
 	};
 }

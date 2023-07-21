@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import SvelteMarkdown from 'svelte-markdown';
 
 	import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
@@ -7,16 +8,22 @@
 	import type { TranslationKey } from '$lib/server/i18n/en';
 
 	export let key: TranslationKey | TranslationSelect['_id'] | null = null;
+	export let markdownMode: boolean = false;
 
 	$: currentLang = ($page.params.lang || defaultLang) as SupportedLang;
+	$: translation = key !== null ? $page.data.translations[key] : null;
 </script>
 
 {#if key}
-	{#if typeof $page.data.translations[key] === 'string'}
-		{$page.data.translations[key]}
+	{#if typeof translation === 'string'}
+		{#if markdownMode}
+			<SvelteMarkdown source={translation} />
+		{:else}
+			{translation}
+		{/if}
 	{:else}
 		<!-- If we're displaying translation that is form object right now -->
-		{$page.data.translations[key].data[currentLang]}
+		{translation.data[currentLang]}
 	{/if}
 {:else}
 	Translation error

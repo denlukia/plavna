@@ -1,17 +1,12 @@
 <script lang="ts">
 	import T from './Translation.svelte';
 
-	import type {
-		PostPreviewValuesUpdateZod,
-		PostSelectWithoutPreviewValues,
-		PreviewTypeSelect
-	} from '$lib/server/domain/types';
+	import type { PostPreviewUpdateZod, PreviewTypeSelect } from '$lib/server/domain/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let previews: PreviewTypeSelect[];
-	export let post: PostSelectWithoutPreviewValues;
 	export let previewComponent: ConstructorOfATypedSvelteComponent;
-	export let postPreviewForm: SuperValidated<PostPreviewValuesUpdateZod>;
+	export let postPreviewForm: SuperValidated<PostPreviewUpdateZod>;
 </script>
 
 Всі первью:
@@ -22,4 +17,4 @@
 {/each}
 
 Поточне превью:
-<svelte:component this={previewComponent} {post} {postPreviewForm} />
+<svelte:component this={previewComponent} {postPreviewForm} />

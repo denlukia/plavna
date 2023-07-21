@@ -6,9 +6,9 @@
 	export let data: PageData;
 </script>
 
-<h1>Post id: {data.post?.id}</h1>
-<h2>Published: {data.post?.published_at}</h2>
-<p>{data.post?.slug}</p>
-<div>
-	<!-- <T translation={data.post?.title_translation} /> -->
-</div>
+{JSON.stringify(data, null, 2)}
+<h1>
+	<T key={data.post.title_translation_id} />
+</h1>
+<T key={data.post.content_translation_id} markdownMode />
+<svelte:component this={data.previewComponent} />

@@ -5,7 +5,7 @@ import { generatePath } from '$lib/isomorphic/url';
 import { update_translation } from '$lib/server/common-actions';
 import {
 	postPreviewUpdateSchema,
-	postSlugUpdate,
+	postSlugUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertNonEmptySchema,
@@ -42,7 +42,7 @@ async function delete_tag(event: ActionRequestEvt) {
 
 async function update_slug(event: ActionRequestEvt) {
 	const { slug } = event.params;
-	const form = await superValidate(event.request, postSlugUpdate);
+	const form = await superValidate(event.request, postSlugUpdateSchema);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;

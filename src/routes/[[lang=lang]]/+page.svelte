@@ -3,9 +3,7 @@
 
 	import T from '$lib/components/Translation.svelte';
 
-	import type { PageData } from './$types';
-
-	export let data: PageData;
+	export let data;
 </script>
 
 <h1><T key="landing" /></h1>

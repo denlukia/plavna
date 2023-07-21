@@ -16,6 +16,8 @@
 	$: ({ previews, previewComponent, postPreviewForm, post } = data);
 </script>
 
+Редагування тайтла:
+<TranslationEditor key={post.title_translation_id} />
 Редагування слага:
 <form use:slugEnhance method="POST" action="?/update_slug">
 	<input name="slug" type="text" bind:value={$slugFrom.slug} />
@@ -27,7 +29,7 @@
 	<button formaction="?/hide">Hide</button>
 	<button formaction="?/delete">Delete</button>
 </form>
-<PreviewEditorsList {previews} {post} {postPreviewForm} {previewComponent} />
+<PreviewEditorsList {previews} {postPreviewForm} {previewComponent} />
 <fieldset>
 	{#each data.tagForms as tag}
 		<TagEditor {tag} />
