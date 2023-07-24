@@ -1,6 +1,7 @@
 import type { auth } from '../services/auth';
 import type { users } from './db';
 import type {
+	excludedTags,
 	imageSelectSchema,
 	pageFormSchema,
 	pageInsertSchema,
@@ -12,7 +13,6 @@ import type {
 	postSlugUpdate,
 	postSlugUpdateSchema,
 	previewTypeSelectSchema,
-	readerPageConfigSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
 	tagDeleteSchema,
@@ -72,5 +72,5 @@ export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
 
-// Reader Page Config
-export type ReaderPageConfig = z.infer<typeof readerPageConfigSchema>;
+// Excluded Tags Config
+export type ExcludedTags = z.infer<typeof excludedTags>;

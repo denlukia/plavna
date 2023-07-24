@@ -1,6 +1,16 @@
 import { db } from './db';
 import { error } from '@sveltejs/kit';
-import { type ExtractTablesWithRelations, and, eq, isNotNull, isNull, or, sql } from 'drizzle-orm';
+import {
+	type ExtractTablesWithRelations,
+	and,
+	desc,
+	eq,
+	inArray,
+	isNotNull,
+	isNull,
+	or,
+	sql
+} from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
@@ -10,6 +20,7 @@ import {
 	posts,
 	previewTypes,
 	sections,
+	sectionsTags,
 	tags,
 	tagsPosts,
 	translations,
@@ -29,13 +40,13 @@ import {
 import { hasNonEmptyProperties, nonNull, removeNullAndDup } from '$lib/server/utils/objects';
 
 import type {
+	ExcludedTags,
 	PageInsert,
 	PageSelect,
 	PostInsert,
 	PostPreviewUpdate,
 	PostSelect,
 	PostSlugUpdate,
-	ReaderPageConfig,
 	TagDelete,
 	TagUpdate,
 	TranslationInsert,
@@ -200,10 +211,35 @@ class Plavna {
 			return db.select().from(pages).where(eq(pages.user_id, user.id)).all();
 		},
 		getOneWithSectionsAndPosts: async (
+			username: User['username'],
 			slug: PageSelect['slug'],
-			readerPageConfig?: ReaderPageConfig
+			excludedTags?: ExcludedTags
 		) => {
-			// return db.select().from(sections).where(eq(sections.page_id, slug)).get();
+			// 3 sections, with descriptions, with tags mentioned, with 10 articles each without excluded, with translations for title and articles
+			const postsSubquery = db
+				.select()
+				.from(posts)
+				.innerJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
+				.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+				.orderBy(desc(posts.id))
+				.limit(10)
+				.as('postsSubquery');
+			const sectionsSubquery = db
+				.select({ id: sections.id })
+				.from(sections)
+				.where(eq(sections.page_id, pages.id))
+				.orderBy(desc(sections.id))
+				.limit(3);
+			const query = db
+				.select()
+				.from(pages)
+				.innerJoin(sections, eq(sections.page_id, pages.id))
+				.innerJoin(sectionsTags, eq(sectionsTags.section_id, sections.id))
+				.innerJoin(tags, eq(sectionsTags.tag_id, tags.id))
+				.leftJoin(postsSubquery, eq(postsSubquery.tag.id, tags.id))
+				.where(and(eq(pages.slug, slug), inArray(sections.id, sectionsSubquery)))
+				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id));
+			console.log(query);
 		}
 	};
 	public readonly posts = {

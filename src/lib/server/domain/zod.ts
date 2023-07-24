@@ -64,8 +64,8 @@ export const previewTypeInsertSchema = createInsertSchema(previewTypes);
 // Images
 export const imageSelectSchema = createSelectSchema(images);
 
-// Reader Page Config
-export const readerPageConfigSchema = z.record(
+// Excluded Tags Config
+export const excludedTags = z.record(
 	sectionSelectSchema.shape.id,
 	z.array(tagSelectSchema.shape.id)
 );

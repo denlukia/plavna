@@ -19,14 +19,7 @@ export const postEditLoad = (async ({ data }) => {
 	const previewType = data.previews.find(
 		(preview) => preview.id === data.postPreviewForm.data.preview_type_id
 	);
-	let previewComponent = null;
-	if (previewType) {
-		previewComponent = (
-			await import(
-				`../../../lib/components/previews/${previewType?.component_reference}Editor.svelte`
-			)
-		).default;
-	}
+	let previewComponent = await getPreviewComponent(previewType?.component_reference, 'Editor');
 	return { ...data, previewComponent };
 }) satisfies PostEditLoad;
 
