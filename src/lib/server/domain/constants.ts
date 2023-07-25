@@ -1,1 +1,2 @@
-export const SECTIONS_PER_LOAD = 3;
+export const SECTIONS_PER_LOAD = 2;
+export const ARTICLES_PER_SECTION = 10;

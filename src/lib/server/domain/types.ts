@@ -3,9 +3,10 @@ import type { users } from './db';
 import type {
 	excludedTags,
 	imageSelectSchema,
-	pageFormSchema,
+	pageCreateFormSchema,
 	pageInsertSchema,
 	pageSelectSchema,
+	pageUpdateFormSchema,
 	postInsertSchema,
 	postPreviewUpdateSchema,
 	postSelectSchema,
@@ -36,7 +37,9 @@ export type User = InferModel<typeof users, 'select'>;
 // Pages
 export type PageSelect = z.infer<typeof pageSelectSchema>;
 export type PageInsert = z.infer<typeof pageInsertSchema>;
-export type PageForm = z.infer<typeof pageFormSchema>;
+export type PageCreateForm = z.infer<typeof pageCreateFormSchema>;
+export type PageUpdateForm = z.infer<typeof pageUpdateFormSchema>;
+export type PageUpdateFormZod = typeof pageUpdateFormSchema;
 
 // Sections
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;

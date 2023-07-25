@@ -1,3 +1,4 @@
+import { ARTICLES_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
 import {
@@ -28,6 +29,8 @@ import {
 } from '$lib/server/domain/db';
 import { ERRORS } from '$lib/server/domain/errors';
 import {
+	pageSelectSchema,
+	pageUpdateFormSchema,
 	postPreviewUpdateSchema,
 	postSelectWithoutPreviewValuesSchema,
 	postSlugUpdateSchema,
@@ -41,8 +44,10 @@ import { hasNonEmptyProperties, nonNull, removeNullAndDup } from '$lib/server/ut
 
 import type {
 	ExcludedTags,
+	PageCreateForm,
 	PageInsert,
 	PageSelect,
+	PageUpdateForm,
 	PostInsert,
 	PostPreviewUpdate,
 	PostSelect,
@@ -187,58 +192,75 @@ class Plavna {
 	};
 
 	public readonly pages = {
-		create: async (page: PageInsert) => {
-			await this.user.checkOrThrow(page.user_id);
-			return db.insert(pages).values(page).run();
+		create: async (page: PageCreateForm) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.insert(pages)
+				.values({ ...page, user_id: user.id })
+				.run();
 		},
-		edit: async (id: NonNullable<PageInsert['id']>, page: PageInsert) => {
+		update: async (page: PageUpdateForm) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(pages)
 				.set(page)
-				.where(and(eq(pages.id, id), eq(pages.user_id, user.id)))
+				.where(and(eq(pages.id, page.id), eq(pages.user_id, user.id)))
 				.run();
 		},
-		delete: async (id: NonNullable<PageInsert['id']>) => {
+		delete: async (id: PageSelect['id']) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.delete(pages)
 				.where(and(eq(pages.id, id), eq(pages.user_id, user.id)))
 				.run();
 		},
-		getAllMy: async () => {
-			const user = await this.user.getOrThrow();
-			return db.select().from(pages).where(eq(pages.user_id, user.id)).all();
+		getAllMyAsForms: async (username: string) => {
+			const user = await this.user.checkOrThrow(null, username);
+			const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
+
+			return query.map((page) => superValidateSync(page, pageUpdateFormSchema));
 		},
 		getOneWithSectionsAndPosts: async (
-			username: User['username'],
-			slug: PageSelect['slug'],
+			username: string,
+			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			// 3 sections, with descriptions, with tags mentioned, with 10 articles each without excluded, with translations for title and articles
+			// 3 sections on given slug page, with descriptions,
+			// with tags mentioned, with 10 articles each but without excluded, with translations for descriptions and articles
 			const postsSubquery = db
 				.select()
 				.from(posts)
 				.innerJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
 				.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
 				.orderBy(desc(posts.id))
-				.limit(10)
+				.limit(ARTICLES_PER_SECTION)
 				.as('postsSubquery');
 			const sectionsSubquery = db
 				.select({ id: sections.id })
 				.from(sections)
 				.where(eq(sections.page_id, pages.id))
 				.orderBy(desc(sections.id))
-				.limit(3);
-			const query = db
+				.limit(SECTIONS_PER_LOAD);
+			const userIdSubquery = db
+				.select({ id: users.id })
+				.from(users)
+				.where(eq(users.username, username));
+			const query = await db
 				.select()
 				.from(pages)
 				.innerJoin(sections, eq(sections.page_id, pages.id))
 				.innerJoin(sectionsTags, eq(sectionsTags.section_id, sections.id))
-				.innerJoin(tags, eq(sectionsTags.tag_id, tags.id))
+				.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
 				.leftJoin(postsSubquery, eq(postsSubquery.tag.id, tags.id))
-				.where(and(eq(pages.slug, slug), inArray(sections.id, sectionsSubquery)))
-				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id));
+				.where(
+					and(
+						eq(pages.slug, pagename),
+						eq(pages.user_id, userIdSubquery),
+						inArray(sections.id, sectionsSubquery)
+					)
+				)
+				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id))
+				.all();
 			console.log(query);
 		}
 	};
@@ -389,7 +411,7 @@ class Plavna {
 				.returning({ slug: posts.slug })
 				.get();
 		},
-		load: async (username: string, slug: string) => {
+		getOne: async (username: string, slug: string) => {
 			const userPromise = this.user.get();
 			const queryPromise = db
 				.select({

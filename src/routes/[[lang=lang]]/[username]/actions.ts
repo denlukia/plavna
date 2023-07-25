@@ -84,7 +84,7 @@ async function update_preview(event: ActionRequestEvt) {
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	const result = await plavna.posts.updatePreview(slug, form.data);
+	await plavna.posts.updatePreview(slug, form.data);
 }
 
 type ActionRequestEvt =

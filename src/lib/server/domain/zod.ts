@@ -9,7 +9,8 @@ import { z } from 'zod';
 // Pages
 export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
-export const pageFormSchema = pageInsertSchema.omit({ user_id: true });
+export const pageCreateFormSchema = pageInsertSchema.omit({ user_id: true });
+export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });
 
 // Sections
 export const sectionSelectSchema = createSelectSchema(sections);
