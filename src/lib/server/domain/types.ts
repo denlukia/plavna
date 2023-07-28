@@ -38,6 +38,7 @@ export type User = InferModel<typeof users, 'select'>;
 export type PageSelect = z.infer<typeof pageSelectSchema>;
 export type PageInsert = z.infer<typeof pageInsertSchema>;
 export type PageCreateForm = z.infer<typeof pageCreateFormSchema>;
+export type PageCreateFormZod = typeof pageCreateFormSchema;
 export type PageUpdateForm = z.infer<typeof pageUpdateFormSchema>;
 export type PageUpdateFormZod = typeof pageUpdateFormSchema;
 

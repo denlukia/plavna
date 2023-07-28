@@ -1,9 +1,11 @@
 <script lang="ts">
-	import PageForm from '$lib/components/PageForm.svelte';
+	import PageCreateForm from '$lib/components/PageCreateForm.svelte';
+	import PageEditForm from '$lib/components/PageEditForm.svelte';
 
 	export let data;
 </script>
 
-{#each data.pagesForms as formObj}
-	<PageForm {formObj} />
+{#each data.editForms as formObj}
+	<PageEditForm {formObj} />
 {/each}
+<PageCreateForm formObj={data.createForm} />

@@ -7,11 +7,11 @@ import { transGroups } from '$lib/server/i18n';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { plavna }, params, parent }) => {
-	const pagesForms = await plavna.pages.getAllMyAsForms(params.username);
+	const forms = await plavna.pages.getMyAsForms(params.username);
 	const { translations } = await parent();
 
 	return {
-		pagesForms,
+		...forms,
 		translations: { ...translations, ...transGroups.userPages(params.lang) }
 	};
 };

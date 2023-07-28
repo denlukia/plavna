@@ -29,6 +29,7 @@ import {
 } from '$lib/server/domain/db';
 import { ERRORS } from '$lib/server/domain/errors';
 import {
+	pageCreateFormSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
 	postPreviewUpdateSchema,
@@ -214,11 +215,16 @@ class Plavna {
 				.where(and(eq(pages.id, id), eq(pages.user_id, user.id)))
 				.run();
 		},
-		getAllMyAsForms: async (username: string) => {
+		getMyAsForms: async (username: string) => {
 			const user = await this.user.checkOrThrow(null, username);
 			const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
 
-			return query.map((page) => superValidateSync(page, pageUpdateFormSchema));
+			return {
+				editForms: query.map((page) =>
+					superValidateSync(page, pageUpdateFormSchema, { id: String(page.id) })
+				),
+				createForm: superValidateSync(pageCreateFormSchema)
+			};
 		},
 		getOneWithSectionsAndPosts: async (
 			username: string,
