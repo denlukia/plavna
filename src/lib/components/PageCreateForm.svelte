@@ -7,6 +7,7 @@
 	export let formObj: SuperValidated<PageCreateFormZod>;
 
 	const { form, errors, enhance } = superForm(formObj);
+	// TODO Turn with editor into one form
 </script>
 
 <form use:enhance method="POST">

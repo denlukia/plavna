@@ -27,15 +27,15 @@ export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
 
 // Translations
 export const translationSelectSchema = createSelectSchema(translations);
-export const translationInsertSchema = createInsertSchema(translations);
-export const translationUpdateSchema = translationInsertSchema
+export const translationInsertSchema = createInsertSchema(translations).refine(
+	createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']),
+	{
+		message: ERRORS.AT_LEAST_ONE_TRANSLATION
+	}
+);
+export const translationUpdateSchema = createInsertSchema(translations)
 	.omit({ user_id: true })
-	.required({ _id: true });
-export const translationInsertNonEmptySchema = translationSelectSchema
-	.omit({
-		user_id: true,
-		_id: true
-	})
+	.required({ _id: true })
 	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']), {
 		message: ERRORS.AT_LEAST_ONE_TRANSLATION
 	});

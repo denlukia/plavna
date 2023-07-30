@@ -6,13 +6,16 @@ import {
 	and,
 	desc,
 	eq,
+	exists,
 	inArray,
 	isNotNull,
 	isNull,
+	notExists,
 	or,
 	sql
 } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
+import { marked } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
@@ -36,12 +39,17 @@ import {
 	postSelectWithoutPreviewValuesSchema,
 	postSlugUpdateSchema,
 	postUpdateSchema,
+	sectionInsertSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/domain/zod';
-import { hasNonEmptyProperties, nonNull, removeNullAndDup } from '$lib/server/utils/objects';
+import {
+	removeNullAndDup as getNullAndDupFilter,
+	hasNonEmptyProperties,
+	nonNull
+} from '$lib/server/utils/objects';
 
 import type {
 	ExcludedTags,
@@ -103,95 +111,6 @@ class Plavna {
 		}
 	};
 
-	public readonly translations = {
-		create: async (
-			newTranslations: TranslationInsert[],
-			mode: 'allow-empty' | 'disallow-empty',
-			trx?: TransactionContext,
-			user?: User
-		) => {
-			if (mode === 'disallow-empty') {
-				newTranslations.forEach((translation) => {
-					if (!hasNonEmptyProperties(translation, ['user_id', '_id'])) {
-						throw error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
-					}
-				});
-			}
-			if (user === undefined) {
-				user = await this.user.getOrThrow();
-			}
-			if (user) {
-				const userCopy = user;
-				newTranslations = newTranslations.map((translation) => ({
-					...translation,
-					// It only sees that user is not empty via copy and
-					// I'm not in the mood for such a plain type guard
-					user_id: userCopy.id
-				}));
-			}
-			const dbLocal = trx || db;
-			return dbLocal
-				.insert(translations)
-				.values(newTranslations)
-				.returning({ _id: translations._id })
-				.all();
-		},
-		update: async (translation: TranslationUpdate) => {
-			const user = await this.user.getOrThrow();
-			return db
-				.update(translations)
-				.set(translation)
-				.where(and(eq(translations._id, translation._id), eq(translations.user_id, user.id)))
-				.run();
-		}
-	};
-
-	public readonly tags = {
-		create: async (translation: TranslationInsert) => {
-			const user = await this.user.getOrThrow();
-			return db.transaction(async (trx) => {
-				const [{ _id }] = await this.translations.create(
-					[translation],
-					'disallow-empty',
-					trx,
-					user
-				);
-				return trx.insert(tags).values({ name_translation_id: _id, user_id: user.id }).run();
-			});
-		},
-		delete: async (tag: TagDelete) => {
-			const user = await this.user.getOrThrow();
-			return db
-				.delete(tags)
-				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))
-				.run();
-		},
-		switchChecked: async (tag: TagUpdate, slug: string) => {
-			const user = await this.user.getOrThrow();
-			const currentlyChecked = tag.checked;
-			const postSql = sql`${db
-				.select({ id: posts.id })
-				.from(posts)
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))}`;
-			const tagSql = sql`${db
-				.select({ id: tags.id })
-				.from(tags)
-				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))}`;
-
-			if (currentlyChecked) {
-				const result = await db
-					.delete(tagsPosts)
-					.where(and(eq(tagsPosts.tag_id, tagSql), eq(tagsPosts.post_id, postSql)))
-					.run();
-			} else {
-				const result = await db
-					.insert(tagsPosts)
-					.values({ tag_id: tagSql, post_id: postSql })
-					.run();
-			}
-		}
-	};
-
 	public readonly pages = {
 		create: async (page: PageCreateForm) => {
 			const user = await this.user.getOrThrow();
@@ -231,45 +150,76 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			// 3 sections on given slug page, with descriptions,
-			// with tags mentioned, with 10 articles each but without excluded, with translations for descriptions and articles
 			const postsSubquery = db
 				.select()
 				.from(posts)
 				.innerJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
 				.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
-				.orderBy(desc(posts.id))
 				.limit(ARTICLES_PER_SECTION)
 				.as('postsSubquery');
 			const sectionsSubquery = db
 				.select({ id: sections.id })
 				.from(sections)
 				.where(eq(sections.page_id, pages.id))
-				.orderBy(desc(sections.id))
 				.limit(SECTIONS_PER_LOAD);
 			const userIdSubquery = db
 				.select({ id: users.id })
 				.from(users)
 				.where(eq(users.username, username));
+			const sectionsTranslations = alias(translations, 'sectionTranslations');
 			const query = await db
-				.select()
+				.select({
+					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
+					sections,
+					sectionsTranslations,
+					tags
+				})
 				.from(pages)
-				.innerJoin(sections, eq(sections.page_id, pages.id))
-				.innerJoin(sectionsTags, eq(sectionsTags.section_id, sections.id))
-				.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
+				.leftJoin(sections, eq(sections.page_id, pages.id))
+				.leftJoin(sectionsTags, eq(sectionsTags.section_id, sections.id))
+				.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
 				.leftJoin(postsSubquery, eq(postsSubquery.tag.id, tags.id))
+				.leftJoin(sectionsTranslations, eq(sectionsTranslations._id, sections.title_translation_id))
+				.leftJoin(
+					translations,
+					or(
+						eq(translations._id, postsSubquery.post.title_translation_id),
+						eq(translations._id, postsSubquery.tag.name_translation_id)
+					)
+				)
 				.where(
 					and(
 						eq(pages.slug, pagename),
 						eq(pages.user_id, userIdSubquery),
-						inArray(sections.id, sectionsSubquery)
+						or(inArray(sections.id, sectionsSubquery), isNull(sections.id))
 					)
 				)
 				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id))
 				.all();
-			console.log(query);
+			const translationsObj = Object.fromEntries(
+				query
+					.map((row) => row.translations)
+					.filter(getNullAndDupFilter('_id'))
+					.map((row) => [row._id, row[this.lang]])
+			);
+			const sectionsTranslationsForms = Object.fromEntries(
+				query
+					.map((row) => row.sectionsTranslations)
+					.filter(getNullAndDupFilter('_id'))
+					.map((row) => [
+						row._id,
+						superValidateSync(row, translationUpdateSchema, { id: String(row._id) })
+					])
+			);
+			return {
+				tags: query.map((row) => row.tags).filter(getNullAndDupFilter('id')),
+				translations: { ...translationsObj, ...sectionsTranslationsForms },
+				sections: query.map((row) => row.sections).filter(getNullAndDupFilter('id')),
+				createSectionForm: superValidateSync(translationInsertSchema)
+			};
 		}
 	};
+
 	public readonly posts = {
 		getIdIfExists: async (slug: PostSelect['slug']) => {
 			try {
@@ -343,11 +293,13 @@ class Plavna {
 				.where(eq(posts.id, exisingId))
 				.all();
 
-			const previewsArr = query.map((rows) => rows.previewTypes).filter(removeNullAndDup('id'));
-			const allTags = query.map((rows) => rows.tags).filter(removeNullAndDup('id'));
-			const postTags = query.map((rows) => rows.tagsPosts).filter(removeNullAndDup('tag_id'));
-			const translArr = query.map((rows) => rows.translations).filter(removeNullAndDup('_id'));
-			const translForms = query.map(({ translForForms: t }) => t).filter(removeNullAndDup('_id'));
+			const previewsArr = query.map((rows) => rows.previewTypes).filter(getNullAndDupFilter('id'));
+			const allTags = query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
+			const postTags = query.map((rows) => rows.tagsPosts).filter(getNullAndDupFilter('tag_id'));
+			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('_id'));
+			const translForms = query
+				.map(({ translForForms: t }) => t)
+				.filter(getNullAndDupFilter('_id'));
 			const tagForms = allTags.map((tag) => ({
 				isCheckedForm: superValidateSync(
 					{ ...tag, checked: !!postTags.find((t) => t.tag_id === tag.id) },
@@ -455,12 +407,127 @@ class Plavna {
 				previewType: query[0].previewTypes,
 				translations: Object.fromEntries(
 					query
-						.map((rows) => rows.translations)
-						.filter(removeNullAndDup('_id'))
-						.map((rows) => [rows._id, rows[this.lang]])
+						.map((row) => row.translations)
+						.filter(getNullAndDupFilter('_id'))
+						.map((row) => [row._id, row[this.lang]])
 				),
-				tags: query.map((rows) => rows.tags).filter(removeNullAndDup('id'))
+				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
+		}
+	};
+
+	public readonly sections = {
+		create: async (username: string, pagename: string, translation: TranslationInsert) => {
+			const user = await this.user.checkOrThrow(null, username);
+			if (typeof translation.en === 'string') {
+				const tokens = marked.lexer(translation.en, { mangle: false, headerIds: false });
+				console.log(tokens[0].tokens);
+			}
+			// return db.transaction(async (trx) => {
+			// 	const { title_translation_id } = await trx
+			// 		.insert(translations)
+			// 		.values(translation)
+			// 		.returning({ title_translation_id: translations._id })
+			// 		.get();
+			// 	const { page_id } = await trx
+			// 		.select({ page_id: pages.id })
+			// 		.from(pages)
+			// 		.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
+			// 		.get();
+			// 	return trx
+			// 		.insert(sections)
+			// 		.values({ user_id: user.id, page_id, title_translation_id })
+			// 		.run();
+			// });
+		}
+	};
+
+	public readonly tags = {
+		create: async (translation: TranslationInsert) => {
+			const user = await this.user.getOrThrow();
+			return db.transaction(async (trx) => {
+				const [{ _id }] = await this.translations.create(
+					[translation],
+					'disallow-empty',
+					trx,
+					user
+				);
+				return trx.insert(tags).values({ name_translation_id: _id, user_id: user.id }).run();
+			});
+		},
+		delete: async (tag: TagDelete) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.delete(tags)
+				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))
+				.run();
+		},
+		switchChecked: async (tag: TagUpdate, slug: string) => {
+			const user = await this.user.getOrThrow();
+			const currentlyChecked = tag.checked;
+			const postSql = sql`${db
+				.select({ id: posts.id })
+				.from(posts)
+				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))}`;
+			const tagSql = sql`${db
+				.select({ id: tags.id })
+				.from(tags)
+				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))}`;
+
+			if (currentlyChecked) {
+				const result = await db
+					.delete(tagsPosts)
+					.where(and(eq(tagsPosts.tag_id, tagSql), eq(tagsPosts.post_id, postSql)))
+					.run();
+			} else {
+				const result = await db
+					.insert(tagsPosts)
+					.values({ tag_id: tagSql, post_id: postSql })
+					.run();
+			}
+		}
+	};
+
+	public readonly translations = {
+		create: async (
+			newTranslations: TranslationInsert[],
+			mode: 'allow-empty' | 'disallow-empty',
+			trx?: TransactionContext,
+			user?: User
+		) => {
+			if (mode === 'disallow-empty') {
+				newTranslations.forEach((translation) => {
+					if (!hasNonEmptyProperties(translation, ['user_id', '_id'])) {
+						throw error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
+					}
+				});
+			}
+			if (user === undefined) {
+				user = await this.user.getOrThrow();
+			}
+			if (user) {
+				const userCopy = user;
+				newTranslations = newTranslations.map((translation) => ({
+					...translation,
+					// It only sees that user is not empty via copy and
+					// I'm not in the mood for such a plain type guard
+					user_id: userCopy.id
+				}));
+			}
+			const dbLocal = trx || db;
+			return dbLocal
+				.insert(translations)
+				.values(newTranslations)
+				.returning({ _id: translations._id })
+				.all();
+		},
+		update: async (translation: TranslationUpdate) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.update(translations)
+				.set(translation)
+				.where(and(eq(translations._id, translation._id), eq(translations.user_id, user.id)))
+				.run();
 		}
 	};
 }

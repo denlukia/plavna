@@ -6,7 +6,7 @@
 	import TagEditor from '$lib/components/TagEditor.svelte';
 	import TranslationEditor from '$lib/components/TranslationEditor.svelte';
 
-	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
+	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 
 	export let data: PageData;
 

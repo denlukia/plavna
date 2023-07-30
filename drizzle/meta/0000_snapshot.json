@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "51130f35-cac5-4174-8739-a034ce2ff555",
+  "id": "72518236-b310-4064-ba0a-06a96fb26625",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "image": {
@@ -497,6 +497,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "lang": {
+          "name": "lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -529,8 +536,9 @@
         }
       },
       "compositePrimaryKeys": {
-        "section_tag_section_id_tag_id_pk": {
+        "section_tag_section_id_tag_id_lang_pk": {
           "columns": [
+            "lang",
             "section_id",
             "tag_id"
           ]

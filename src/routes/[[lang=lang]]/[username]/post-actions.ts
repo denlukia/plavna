@@ -8,7 +8,6 @@ import {
 	postSlugUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
-	translationInsertNonEmptySchema,
 	translationInsertSchema
 } from '$lib/server/domain/zod';
 
@@ -25,7 +24,7 @@ async function switch_tag(event: ActionRequestEvt) {
 }
 
 async function create_tag(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, translationInsertNonEmptySchema);
+	const form = await superValidate(event.request, translationInsertSchema);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;

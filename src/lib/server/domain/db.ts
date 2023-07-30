@@ -1,5 +1,7 @@
 import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
+import type { SupportedLang } from '$lib/isomorphic/languages';
+
 export const users = sqliteTable(
 	'auth_user',
 	{
@@ -76,11 +78,12 @@ export const sectionsTags = sqliteTable(
 			.references(() => sections.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		lang: text('lang').$type<SupportedLang>().notNull()
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.section_id, table.tag_id)
+			pk: primaryKey(table.section_id, table.tag_id, table.lang)
 		};
 	}
 );

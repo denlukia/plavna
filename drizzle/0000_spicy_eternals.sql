@@ -64,7 +64,8 @@ CREATE TABLE `section` (
 CREATE TABLE `section_tag` (
 	`section_id` integer NOT NULL,
 	`tag_id` integer NOT NULL,
-	PRIMARY KEY(`section_id`, `tag_id`),
+	`lang` text NOT NULL,
+	PRIMARY KEY(`lang`, `section_id`, `tag_id`),
 	FOREIGN KEY (`section_id`) REFERENCES `section`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON UPDATE cascade ON DELETE cascade
 );
