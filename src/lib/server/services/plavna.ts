@@ -18,7 +18,13 @@ import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { marked } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
-import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
+import {
+	type SupportedLang,
+	defaultLang,
+	isSupportedLang,
+	supportedLanguages
+} from '$lib/isomorphic/languages';
+import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
 	pages,
 	posts,
@@ -61,7 +67,9 @@ import type {
 	PostPreviewUpdate,
 	PostSelect,
 	PostSlugUpdate,
+	SectionTagInsert,
 	TagDelete,
+	TagSelect,
 	TagUpdate,
 	TranslationInsert,
 	TranslationUpdate
@@ -419,26 +427,38 @@ class Plavna {
 	public readonly sections = {
 		create: async (username: string, pagename: string, translation: TranslationInsert) => {
 			const user = await this.user.checkOrThrow(null, username);
-			if (typeof translation.en === 'string') {
-				const tokens = marked.lexer(translation.en, { mangle: false, headerIds: false });
-				console.log(tokens[0].tokens);
-			}
-			// return db.transaction(async (trx) => {
-			// 	const { title_translation_id } = await trx
-			// 		.insert(translations)
-			// 		.values(translation)
-			// 		.returning({ title_translation_id: translations._id })
-			// 		.get();
-			// 	const { page_id } = await trx
-			// 		.select({ page_id: pages.id })
-			// 		.from(pages)
-			// 		.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
-			// 		.get();
-			// 	return trx
-			// 		.insert(sections)
-			// 		.values({ user_id: user.id, page_id, title_translation_id })
-			// 		.run();
-			// });
+			const tags = [] as { tag_id: TagSelect['id']; lang: SupportedLang }[];
+
+			supportedLanguages.forEach((lang) => {
+				const translationText = translation[lang];
+				if (nonNull(translationText)) {
+					const tokens = marked.lexer(translationText, { mangle: false, headerIds: false });
+					const thisLangTags = findTagIdsInLinks(tokens);
+					tags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
+				}
+			});
+
+			await db.transaction(async (trx) => {
+				const { title_translation_id } = await trx
+					.insert(translations)
+					.values(translation)
+					.returning({ title_translation_id: translations._id })
+					.get();
+				const { page_id } = await trx
+					.select({ page_id: pages.id })
+					.from(pages)
+					.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
+					.get();
+				const { section_id } = await trx
+					.insert(sections)
+					.values({ user_id: user.id, page_id, title_translation_id })
+					.returning({ section_id: sections.id })
+					.get();
+				await trx
+					.insert(sectionsTags)
+					.values(tags.map((tag) => ({ ...tag, section_id })))
+					.run();
+			});
 		}
 	};
 

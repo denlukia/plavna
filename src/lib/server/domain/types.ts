@@ -15,6 +15,8 @@ import type {
 	previewTypeSelectSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
+	sectionTagInsertSchema,
+	sectionTagSelectSchema,
 	tagDeleteSchema,
 	tagInsertSchema,
 	tagSelectSchema,
@@ -43,6 +45,10 @@ export type PageUpdateFormZod = typeof pageUpdateFormSchema;
 // Sections
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;
 export type SectionInsert = z.infer<typeof sectionInsertSchema>;
+
+// Sections to Tags
+export type SectionTagSelect = z.infer<typeof sectionTagSelectSchema>;
+export type SectionTagInsert = z.infer<typeof sectionTagInsertSchema>;
 
 // Tags
 export type TagSelect = z.infer<typeof tagSelectSchema>;

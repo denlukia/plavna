@@ -1,5 +1,14 @@
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker } from '../utils/objects';
-import { images, pages, posts, previewTypes, sections, tags, translations } from './db';
+import {
+	images,
+	pages,
+	posts,
+	previewTypes,
+	sections,
+	sectionsTags,
+	tags,
+	translations
+} from './db';
 import { ERRORS } from './errors';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -15,6 +24,10 @@ export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });
 // Sections
 export const sectionSelectSchema = createSelectSchema(sections);
 export const sectionInsertSchema = createInsertSchema(sections);
+
+// Sections to Tags
+export const sectionTagSelectSchema = createSelectSchema(sectionsTags);
+export const sectionTagInsertSchema = createInsertSchema(sectionsTags);
 
 // Tags
 export const tagSelectSchema = createSelectSchema(tags);
