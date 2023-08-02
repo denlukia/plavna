@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionEditor from '../SectionEditor.svelte';
+	import SectionEditor from '../editors/SectionEditor.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/$types';
 

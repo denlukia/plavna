@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import TranslationInput from './TranslationInput.svelte';
+	import TranslationInput from '../TranslationInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { TranslationUpdateZod } from '$lib/server/domain/types';

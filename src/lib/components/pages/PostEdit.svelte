@@ -2,9 +2,9 @@
 	import { superForm } from 'sveltekit-superforms/client';
 
 	import PreviewEditorsList from '$lib/components/PreviewEditorsList.svelte';
-	import TagCreator from '$lib/components/TagCreator.svelte';
-	import TagEditor from '$lib/components/TagEditor.svelte';
-	import TranslationEditor from '$lib/components/TranslationEditor.svelte';
+	import TagCreator from '$lib/components/editors/TagCreator.svelte';
+	import TagEditor from '$lib/components/editors/TagEditor.svelte';
+	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 

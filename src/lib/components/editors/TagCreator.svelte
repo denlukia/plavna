@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TranslationInput from './TranslationInput.svelte';
+	import TranslationInput from '../TranslationInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { TranslationInsertZod } from '$lib/server/domain/types';
@@ -8,10 +8,13 @@
 	export let superFormObj: SuperValidated<TranslationInsertZod>;
 
 	$: superFormStores = superForm(superFormObj);
-	$: ({ enhance, errors } = superFormStores);
+	$: ({ enhance } = superFormStores);
 </script>
 
-<form use:enhance action="?/create_section" method="POST">
-	<TranslationInput {superFormStores} />
-	<button type="submit">Create Section</button>
-</form>
+<fieldset>
+	Створення тегу
+	<form use:enhance action="?/create_tag" method="POST">
+		<TranslationInput {superFormStores} />
+		<button type="submit">Save</button>
+	</form>
+</fieldset>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PostEditor from '$lib/components/pages/PostEditor.svelte';
+	import PostEditor from '$lib/components/pages/PostEdit.svelte';
 
 	export let data;
 </script>
