@@ -1,7 +1,7 @@
 import { type RequestEvent, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import { translationInsertSchema } from '$lib/server/domain/zod';
+import { sectionUpdateSchema, translationInsertSchema } from '$lib/server/domain/zod';
 
 import type { RouteParams as RouteParams1 } from './$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/$types';
@@ -22,5 +22,13 @@ export const actions = {
 			pagename = event.params.pagename;
 		}
 		await plavna.sections.create(username, pagename, form.data);
+	},
+	update_section: async (event: ActionRequestEvt) => {
+		const form = await superValidate(event.request, sectionUpdateSchema);
+		if (!form.valid) return fail(400, { form });
+
+		const { plavna } = event.locals;
+		const { username } = event.params;
+		await plavna.sections.update(username, form.data);
 	}
 };

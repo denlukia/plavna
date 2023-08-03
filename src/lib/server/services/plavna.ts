@@ -67,7 +67,9 @@ import type {
 	PostPreviewUpdate,
 	PostSelect,
 	PostSlugUpdate,
+	SectionSelect,
 	SectionTagInsert,
+	SectionUpdate,
 	TagDelete,
 	TagSelect,
 	TagUpdate,
@@ -439,11 +441,11 @@ class Plavna {
 			});
 
 			await db.transaction(async (trx) => {
-				const { title_translation_id } = await trx
-					.insert(translations)
-					.values(translation)
-					.returning({ title_translation_id: translations._id })
-					.get();
+				const [createdTranslation] = await this.translations.create(
+					[translation],
+					'disallow-empty',
+					trx
+				);
 				const { page_id } = await trx
 					.select({ page_id: pages.id })
 					.from(pages)
@@ -451,12 +453,53 @@ class Plavna {
 					.get();
 				const { section_id } = await trx
 					.insert(sections)
-					.values({ user_id: user.id, page_id, title_translation_id })
+					.values({ user_id: user.id, page_id, title_translation_id: createdTranslation._id })
 					.returning({ section_id: sections.id })
 					.get();
+				// TODO Check if all tag ids are ours
 				await trx
 					.insert(sectionsTags)
 					.values(tags.map((tag) => ({ ...tag, section_id })))
+					.run();
+			});
+		},
+		update: async (username: string, sectionUpdate: SectionUpdate) => {
+			const user = await this.user.checkOrThrow(null, username);
+			const { section_id, ...translation } = sectionUpdate;
+			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
+
+			supportedLanguages.forEach((lang) => {
+				const translationText = translation[lang];
+				if (nonNull(translationText)) {
+					const tokens = marked.lexer(translationText, { mangle: false, headerIds: false });
+					const thisLangTags = findTagIdsInLinks(tokens);
+					foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
+				}
+			});
+
+			await db.transaction(async (trx) => {
+				await this.translations.update(translation, trx);
+
+				// Will throw if section does not exist
+				await trx
+					.select({ section_id: sections.id })
+					.from(sections)
+					.where(and(eq(sections.id, section_id), eq(sections.user_id, user.id)))
+					.get();
+				const ownershipCheckArray = [...new Set(foundTags.map((tag) => tag.tag_id))];
+				const tagsOwnershipCheck = await trx
+					.select({ tag_id: tags.id })
+					.from(tags)
+					.where(and(inArray(tags.id, ownershipCheckArray), eq(tags.user_id, user.id)))
+					.all();
+
+				if (tagsOwnershipCheck.length !== foundTags.length) {
+					throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+				}
+				await trx.delete(sectionsTags).where(eq(sectionsTags.section_id, section_id)).run();
+				await trx
+					.insert(sectionsTags)
+					.values(foundTags.map((tag) => ({ ...tag, section_id })))
 					.run();
 			});
 		}
@@ -534,14 +577,14 @@ class Plavna {
 					user_id: userCopy.id
 				}));
 			}
-			const dbLocal = trx || db;
-			return dbLocal
+			const chosenDBInstance = trx || db;
+			return chosenDBInstance
 				.insert(translations)
 				.values(newTranslations)
 				.returning({ _id: translations._id })
 				.all();
 		},
-		update: async (translation: TranslationUpdate) => {
+		update: async (translation: TranslationUpdate, trx?: TransactionContext) => {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(translations)

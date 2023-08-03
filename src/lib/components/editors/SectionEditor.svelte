@@ -1,17 +1,22 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import TranslationInput from '../TranslationInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	import type { TranslationInsertZod } from '$lib/server/domain/types';
+	import type { SectionSelect, TranslationUpdateZod } from '$lib/server/domain/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let superFormObj: SuperValidated<TranslationInsertZod>;
+	export let section: SectionSelect;
 
+	$: superFormObj = $page.data.translations[
+		section.title_translation_id
+	] as SuperValidated<TranslationUpdateZod>;
 	$: superFormStores = superForm(superFormObj);
-	$: ({ enhance, errors } = superFormStores);
+	$: ({ form, enhance } = superFormStores);
 </script>
 
-<form use:enhance action="?/create_section" method="POST">
+<form use:enhance action="?/update_section" method="POST">
+	<input name="section_id" type="hidden" bind:value={section.id} />
 	<TranslationInput {superFormStores} />
-	<button type="submit">Create Section</button>
+	<button type="submit">Update Section</button>
 </form>

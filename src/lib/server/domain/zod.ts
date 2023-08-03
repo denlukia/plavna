@@ -24,6 +24,9 @@ export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });
 // Sections
 export const sectionSelectSchema = createSelectSchema(sections);
 export const sectionInsertSchema = createInsertSchema(sections);
+export const sectionUpdateSchema = createSelectSchema(translations).extend({
+	section_id: sectionSelectSchema.shape.id
+});
 
 // Sections to Tags
 export const sectionTagSelectSchema = createSelectSchema(sectionsTags);
