@@ -20,3 +20,7 @@
 	<TranslationInput {superFormStores} />
 	<button type="submit">Update Section</button>
 </form>
+<form use:enhance action="?/delete_section" method="POST">
+	<input name="id" type="hidden" bind:value={section.id} />
+	<button type="submit">Delete Section</button>
+</form>

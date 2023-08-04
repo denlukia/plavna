@@ -24,9 +24,10 @@ export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });
 // Sections
 export const sectionSelectSchema = createSelectSchema(sections);
 export const sectionInsertSchema = createInsertSchema(sections);
-export const sectionUpdateSchema = createSelectSchema(translations).extend({
+export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
 	section_id: sectionSelectSchema.shape.id
 });
+export const sectionDeleteSchema = sectionSelectSchema.pick({ id: true });
 
 // Sections to Tags
 export const sectionTagSelectSchema = createSelectSchema(sectionsTags);
@@ -55,6 +56,7 @@ export const translationUpdateSchema = createInsertSchema(translations)
 	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']), {
 		message: ERRORS.AT_LEAST_ONE_TRANSLATION
 	});
+export const translationDeleteSchema = translationSelectSchema.pick({ _id: true });
 
 // Posts
 export const postSelectSchema = createSelectSchema(posts);

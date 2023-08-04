@@ -13,6 +13,7 @@ import type {
 	postSelectWithoutPreviewValuesSchema,
 	postSlugUpdateSchema,
 	previewTypeSelectSchema,
+	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
 	sectionTagInsertSchema,
@@ -22,6 +23,7 @@ import type {
 	tagInsertSchema,
 	tagSelectSchema,
 	tagUpdateSchema,
+	translationDeleteSchema,
 	translationInsertSchema,
 	translationSelectSchema,
 	translationUpdateSchema
@@ -47,6 +49,7 @@ export type PageUpdateFormZod = typeof pageUpdateFormSchema;
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;
 export type SectionInsert = z.infer<typeof sectionInsertSchema>;
 export type SectionUpdate = z.infer<typeof sectionUpdateSchema>;
+export type SectionDelete = z.infer<typeof sectionDeleteSchema>;
 
 // Sections to Tags
 export type SectionTagSelect = z.infer<typeof sectionTagSelectSchema>;
@@ -66,6 +69,7 @@ export type TranslationInsert = z.infer<typeof translationInsertSchema>;
 export type TranslationInsertZod = typeof translationInsertSchema;
 export type TranslationUpdate = z.infer<typeof translationUpdateSchema>;
 export type TranslationUpdateZod = typeof translationUpdateSchema;
+export type TranslationDelete = z.infer<typeof translationDeleteSchema>;
 
 // Posts
 export type PostSelect = z.infer<typeof postSelectSchema>;
