@@ -152,7 +152,7 @@ class Plavna {
 
 			return {
 				editForms: query.map((page) =>
-					superValidateSync(page, pageUpdateFormSchema, { id: String(page.id) })
+					superValidateSync(page, pageUpdateFormSchema, { id: 'pages-' + page.id })
 				),
 				createForm: superValidateSync(pageCreateFormSchema)
 			};
@@ -220,7 +220,7 @@ class Plavna {
 					.filter(getNullAndDupFilter('_id'))
 					.map((row) => [
 						row._id,
-						superValidateSync(row, translationUpdateSchema, { id: String(row._id) })
+						superValidateSync(row, translationUpdateSchema, { id: 'translations-' + row._id })
 					])
 			);
 			return {
@@ -315,10 +315,13 @@ class Plavna {
 			const tagForms = allTags.map((tag) => ({
 				isCheckedForm: superValidateSync(
 					{ ...tag, checked: !!postTags.find((t) => t.tag_id === tag.id) },
-					tagUpdateSchema
+					tagUpdateSchema,
+					{ id: 'is-checked-' + tag.id }
 				),
 				name_translation_id: tag.name_translation_id,
-				deletionForm: superValidateSync({ id: tag.id }, tagDeleteSchema)
+				deletionForm: superValidateSync({ id: tag.id }, tagDeleteSchema, {
+					id: 'deletion-' + tag.id
+				})
 			}));
 
 			return {
@@ -332,7 +335,10 @@ class Plavna {
 				translations: Object.fromEntries([
 					...translForms.map((translation) => {
 						const { _id, ...other } = translation;
-						return [_id, superValidateSync(other, translationUpdateSchema)];
+						return [
+							_id,
+							superValidateSync(other, translationUpdateSchema, { id: 'translation-' + _id })
+						];
 					}),
 					...translArr.map((translation) => [translation._id, translation[this.lang]])
 				])
@@ -462,13 +468,13 @@ class Plavna {
 
 				if (foundTags.length) {
 					// Tag ownership check
-					const ownershipCheckArray = [...new Set(foundTags.map((tag) => tag.tag_id))];
-					const tagsOwnershipCheck = await trx
+					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
+					const existingForUser = await trx
 						.select({ tag_id: tags.id })
 						.from(tags)
-						.where(and(inArray(tags.id, ownershipCheckArray), eq(tags.user_id, user.id)))
+						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
 						.all();
-					if (tagsOwnershipCheck.length !== foundTags.length) {
+					if (existingForUser.length !== foundUnique.length) {
 						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
 					}
 
@@ -505,13 +511,13 @@ class Plavna {
 
 				// Tag ownership check
 				if (foundTags.length) {
-					const ownershipCheckArray = [...new Set(foundTags.map((tag) => tag.tag_id))];
-					const tagsOwnershipCheck = await trx
+					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
+					const existingForUser = await trx
 						.select({ tag_id: tags.id })
 						.from(tags)
-						.where(and(inArray(tags.id, ownershipCheckArray), eq(tags.user_id, user.id)))
+						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
 						.all();
-					if (tagsOwnershipCheck.length !== foundTags.length) {
+					if (existingForUser.length !== foundUnique.length) {
 						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
 					}
 				}

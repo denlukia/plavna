@@ -31,8 +31,8 @@
 </form>
 <PreviewEditorsList {previews} {postPreviewForm} {previewComponent} />
 <fieldset>
-	{#each data.tagForms as tag}
-		<TagEditor {tag} />
+	{#each data.tagForms as editorForms}
+		<TagEditor {editorForms} />
 	{/each}
 	<TagCreator superFormObj={data.tagCreationForm} />
 </fieldset>

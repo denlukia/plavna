@@ -3,12 +3,7 @@
 	import TranslationEditor from './TranslationEditor.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	import type {
-		TagDeleteZod,
-		TagUpdateZod,
-		TranslationInsertZod,
-		TranslationUpdate
-	} from '$lib/server/domain/types';
+	import type { TagDeleteZod, TagUpdateZod, TranslationUpdate } from '$lib/server/domain/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let editorForms: {
