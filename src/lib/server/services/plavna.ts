@@ -184,7 +184,8 @@ class Plavna {
 					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
 					sections,
 					sectionsTranslations,
-					tags
+					tags,
+					posts: postsSubquery.post
 				})
 				.from(pages)
 				.leftJoin(sections, eq(sections.page_id, pages.id))
@@ -208,6 +209,7 @@ class Plavna {
 				)
 				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id))
 				.all();
+			// TODO Попробовать вторую версию запроса с Relational Queries
 			const translationsObj = Object.fromEntries(
 				query
 					.map((row) => row.translations)
@@ -224,6 +226,7 @@ class Plavna {
 					])
 			);
 			return {
+				posts: query.map((row) => row.posts).filter(getNullAndDupFilter('id')),
 				tags: query.map((row) => row.tags).filter(getNullAndDupFilter('id')),
 				translations: { ...translationsObj, ...sectionsTranslationsForms },
 				sections: query.map((row) => row.sections).filter(getNullAndDupFilter('id')),
@@ -560,7 +563,11 @@ class Plavna {
 					trx,
 					user
 				);
-				return trx.insert(tags).values({ name_translation_id: _id, user_id: user.id }).run();
+				return trx
+					.insert(tags)
+					.values({ name_translation_id: _id, user_id: user.id })
+					.returning()
+					.get();
 			});
 		},
 		delete: async (tag: TagDelete) => {
