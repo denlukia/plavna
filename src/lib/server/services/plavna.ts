@@ -1,3 +1,4 @@
+import { page } from '$app/stores';
 import { ARTICLES_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
@@ -10,6 +11,7 @@ import {
 	inArray,
 	isNotNull,
 	isNull,
+	lte,
 	notExists,
 	or,
 	sql
@@ -162,76 +164,71 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			const postsSubquery = db
+			const sectionsSq = db
 				.select()
-				.from(posts)
-				.innerJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
-				.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
-				.limit(ARTICLES_PER_SECTION)
-				.as('postsSubquery');
-			const sectionsSubquery = db
-				.select({ id: sections.id })
 				.from(sections)
-				.where(eq(sections.page_id, pages.id))
-				.limit(SECTIONS_PER_LOAD);
-			const userIdSubquery = db
-				.select({ id: users.id })
-				.from(users)
-				.where(eq(users.username, username));
-			const sectionsTranslations = alias(translations, 'sectionTranslations');
-			const query = await db
-				.select({
-					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
-					sections,
-					sectionsTranslations,
-					tags,
-					posts: postsSubquery.post
-				})
-				.from(pages)
-				.leftJoin(sections, eq(sections.page_id, pages.id))
-				.leftJoin(sectionsTags, eq(sectionsTags.section_id, sections.id))
-				.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
-				.leftJoin(postsSubquery, eq(postsSubquery.tag.id, tags.id))
-				.leftJoin(sectionsTranslations, eq(sectionsTranslations._id, sections.title_translation_id))
-				.leftJoin(
-					translations,
-					or(
-						eq(translations._id, postsSubquery.post.title_translation_id),
-						eq(translations._id, postsSubquery.tag.name_translation_id)
-					)
-				)
 				.where(
-					and(
-						eq(pages.slug, pagename),
-						eq(pages.user_id, userIdSubquery),
-						or(inArray(sections.id, sectionsSubquery), isNull(sections.id))
+					eq(
+						sections.page_id,
+						db
+							.select({ id: pages.id })
+							.from(pages)
+							.where(
+								and(
+									eq(pages.slug, pagename),
+									eq(
+										pages.user_id,
+										db.select({ id: users.id }).from(users).where(eq(users.username, username))
+									)
+								)
+							)
 					)
 				)
-				.orderBy(pages.slug, sections.id, desc(postsSubquery.post.id))
+				.limit(SECTIONS_PER_LOAD)
+				.as('sections_sq');
+
+			const result = await db
+				.select({
+					sections: { id: sectionsSq.id },
+					sectionsTags,
+					tags,
+					tagsPosts,
+					posts
+				})
+				.from(sectionsSq)
+				.leftJoin(
+					sectionsTags,
+					and(eq(sectionsTags.section_id, sectionsSq.id), eq(sectionsTags.lang, this.lang))
+				)
+				.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
+				.leftJoin(
+					tagsPosts,
+					and(
+						eq(tagsPosts.tag_id, tags.id),
+						isNotNull(
+							db
+								.select({ published_at: posts.published_at })
+								.from(posts)
+								.where(eq(posts.id, tagsPosts.post_id))
+						)
+					)
+				)
+				.leftJoin(posts, and(eq(posts.id, tagsPosts.post_id), isNotNull(posts.published_at)))
+				.where(
+					or(
+						isNull(posts.id),
+						lte(
+							sql`row_number() over (PARTITION by ${sectionsSq.id} ORDER BY ${posts.published_at} DESC)`.as(
+								'post_idx_in_section'
+							),
+							ARTICLES_PER_SECTION
+						)
+					)
+				)
+				.orderBy(desc(posts.published_at))
 				.all();
-			// TODO Попробовать вторую версию запроса с Relational Queries
-			const translationsObj = Object.fromEntries(
-				query
-					.map((row) => row.translations)
-					.filter(getNullAndDupFilter('_id'))
-					.map((row) => [row._id, row[this.lang]])
-			);
-			const sectionsTranslationsForms = Object.fromEntries(
-				query
-					.map((row) => row.sectionsTranslations)
-					.filter(getNullAndDupFilter('_id'))
-					.map((row) => [
-						row._id,
-						superValidateSync(row, translationUpdateSchema, { id: 'translations-' + row._id })
-					])
-			);
-			return {
-				posts: query.map((row) => row.posts).filter(getNullAndDupFilter('id')),
-				tags: query.map((row) => row.tags).filter(getNullAndDupFilter('id')),
-				translations: { ...translationsObj, ...sectionsTranslationsForms },
-				sections: query.map((row) => row.sections).filter(getNullAndDupFilter('id')),
-				createSectionForm: superValidateSync(translationInsertSchema)
-			};
+
+			return result;
 		}
 	};
 

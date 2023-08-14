@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 import type { SupportedLang } from '$lib/isomorphic/languages';
@@ -49,13 +50,9 @@ export const pages = sqliteTable(
 	}
 );
 
-export const translations = sqliteTable('translation', {
-	// _id cause "id" is Indonasian lang code
-	_id: integer('id').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	en: text('en'),
-	uk: text('uk')
-});
+export const pagesRelations = relations(pages, ({ many }) => ({
+	sections: many(sections)
+}));
 
 export const sections = sqliteTable('section', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
@@ -69,6 +66,37 @@ export const sections = sqliteTable('section', {
 		.notNull()
 		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
+
+export const sectionsRelations = relations(sections, ({ one, many }) => ({
+	page: one(pages, {
+		fields: [sections.page_id],
+		references: [pages.id]
+	}),
+	title_translation: one(translations, {
+		fields: [sections.title_translation_id],
+		references: [translations._id]
+	}),
+	sectionsTags: many(sectionsTags)
+}));
+
+export const tags = sqliteTable('tag', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	user_id: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	name_translation_id: integer('name_translation_id')
+		.notNull()
+		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' })
+});
+
+export const tagsRelations = relations(tags, ({ one, many }) => ({
+	name_translation: one(translations, {
+		fields: [tags.name_translation_id],
+		references: [translations._id]
+	}),
+	sectionsTags: many(sectionsTags),
+	tagsPosts: many(tagsPosts)
+}));
 
 export const sectionsTags = sqliteTable(
 	'section_tag',
@@ -88,32 +116,16 @@ export const sectionsTags = sqliteTable(
 	}
 );
 
-export const tags = sqliteTable('tag', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	name_translation_id: integer('name_translation_id')
-		.notNull()
-		.references(() => translations._id, { onDelete: 'cascade', onUpdate: 'cascade' })
-});
-
-export const tagsPosts = sqliteTable(
-	'tag_post',
-	{
-		tag_id: integer('tag_id')
-			.notNull()
-			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-		post_id: integer('post_id')
-			.notNull()
-			.references(() => posts.id, { onDelete: 'cascade', onUpdate: 'cascade' })
-	},
-	(table) => {
-		return {
-			pk: primaryKey(table.tag_id, table.post_id)
-		};
-	}
-);
+export const sectionsTagsRelations = relations(sectionsTags, ({ one }) => ({
+	section: one(sections, {
+		fields: [sectionsTags.section_id],
+		references: [sections.id]
+	}),
+	tag: one(tags, {
+		fields: [sectionsTags.tag_id],
+		references: [tags.id]
+	})
+}));
 
 export const posts = sqliteTable(
 	'post',
@@ -146,6 +158,46 @@ export const posts = sqliteTable(
 	}
 );
 
+export const postsRelations = relations(posts, ({ one, many }) => ({
+	title_translation: one(translations, {
+		fields: [posts.title_translation_id],
+		references: [translations._id]
+	}),
+	content_translation: one(translations, {
+		fields: [posts.content_translation_id],
+		references: [translations._id]
+	}),
+	tagsPosts: many(tagsPosts)
+}));
+
+export const tagsPosts = sqliteTable(
+	'tag_post',
+	{
+		tag_id: integer('tag_id')
+			.notNull()
+			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		post_id: integer('post_id')
+			.notNull()
+			.references(() => posts.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.tag_id, table.post_id)
+		};
+	}
+);
+
+export const tagsPostsRelations = relations(tagsPosts, ({ one }) => ({
+	tags: one(tags, {
+		fields: [tagsPosts.tag_id],
+		references: [tags.id]
+	}),
+	posts: one(posts, {
+		fields: [tagsPosts.post_id],
+		references: [posts.id]
+	})
+}));
+
 export const previewTypes = sqliteTable('preview_type', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
@@ -168,4 +220,12 @@ export const images = sqliteTable('image', {
 		onDelete: 'cascade',
 		onUpdate: 'cascade'
 	})
+});
+
+export const translations = sqliteTable('translation', {
+	// _id cause "id" is Indonasian lang code
+	_id: integer('id').primaryKey({ autoIncrement: true }),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	en: text('en'),
+	uk: text('uk')
 });

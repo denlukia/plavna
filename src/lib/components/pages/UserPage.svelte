@@ -8,7 +8,7 @@
 </script>
 
 <pre>{JSON.stringify(data, null, '    ')}</pre>
-{#each data.sections as section}
+<!-- {#each data.sections as section}
 	<SectionEditor {section} />
 {/each}
-<SectionCreator superFormObj={data.createSectionForm} />
+<SectionCreator superFormObj={data.createSectionForm} /> -->

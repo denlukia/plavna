@@ -26,7 +26,7 @@ export const pageServerLoad = (async ({
 	if ('pagename' in params) {
 		pagename = params.pagename;
 	}
-	const response = await plavna.pages.getOneWithSectionsAndPosts(username, pagename);
+	const result = await plavna.pages.getOneWithSectionsAndPosts(username, pagename);
 	const { translations } = await parent();
-	return { ...response, translations: { ...translations, ...response.translations } };
+	return { result, translations: { ...translations } };
 }) satisfies PageViewerServerLoad;
