@@ -1,5 +1,5 @@
 import { page } from '$app/stores';
-import { ARTICLES_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
+import { ARTICLES_PER_SECTION, POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
 import {
@@ -8,9 +8,11 @@ import {
 	desc,
 	eq,
 	exists,
+	gte,
 	inArray,
 	isNotNull,
 	isNull,
+	lt,
 	lte,
 	notExists,
 	or,
@@ -164,69 +166,84 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			const sectionsSq = db
-				.select()
-				.from(sections)
-				.where(
-					eq(
-						sections.page_id,
-						db
-							.select({ id: pages.id })
-							.from(pages)
-							.where(
-								and(
-									eq(pages.slug, pagename),
-									eq(
-										pages.user_id,
-										db.select({ id: users.id }).from(users).where(eq(users.username, username))
+			const sectionsCTE = db.$with('sections_cte').as(
+				db
+					.select()
+					.from(sections)
+					.where(
+						eq(
+							sections.page_id,
+							db
+								.select({ id: pages.id })
+								.from(pages)
+								.where(
+									and(
+										eq(pages.slug, pagename),
+										eq(
+											pages.user_id,
+											db.select({ id: users.id }).from(users).where(eq(users.username, username))
+										)
 									)
 								)
-							)
+						)
 					)
-				)
-				.limit(SECTIONS_PER_LOAD)
-				.as('sections_sq');
+					.limit(SECTIONS_PER_LOAD)
+			);
+
+			const postsCTE = db.$with('posts_cte').as(
+				db
+					.with(sectionsCTE)
+					.select({
+						sections: {
+							id: sectionsCTE.id,
+							page_id: sectionsCTE.page_id,
+							user_id: sectionsCTE.user_id,
+							title_translation_id: sectionsCTE.title_translation_id
+						},
+						sectionsTags,
+						tags,
+						tagsPosts,
+						posts,
+						postsIdx:
+							sql<number>`row_number() over (PARTITION BY ${sectionsCTE.id} ORDER BY ${posts.published_at} DESC)`.as(
+								'posts_idx'
+							)
+					})
+					.from(sectionsCTE)
+					.leftJoin(
+						sectionsTags,
+						and(eq(sectionsTags.section_id, sectionsCTE.id), eq(sectionsTags.lang, this.lang))
+					)
+					.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
+					.leftJoin(
+						tagsPosts,
+						and(
+							eq(tagsPosts.tag_id, tags.id),
+							isNotNull(
+								db
+									.select({ published_at: posts.published_at })
+									.from(posts)
+									.where(eq(posts.id, tagsPosts.post_id))
+							)
+						)
+					)
+					.leftJoin(posts, and(eq(posts.id, tagsPosts.post_id), isNotNull(posts.published_at)))
+			);
 
 			const result = await db
+				.with(sectionsCTE, postsCTE)
 				.select({
-					sections: { id: sectionsSq.id },
-					sectionsTags,
-					tags,
-					tagsPosts,
-					posts
+					sections: postsCTE.sections,
+					sectionsTags: { section_id: sectionsTags.section_id },
+					tags: postsCTE.tags,
+					tagsPosts: postsCTE.tagsPosts,
+					posts: postsCTE.posts,
+					postsIdx: postsCTE.postsIdx
 				})
-				.from(sectionsSq)
-				.leftJoin(
-					sectionsTags,
-					and(eq(sectionsTags.section_id, sectionsSq.id), eq(sectionsTags.lang, this.lang))
-				)
-				.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
-				.leftJoin(
-					tagsPosts,
-					and(
-						eq(tagsPosts.tag_id, tags.id),
-						isNotNull(
-							db
-								.select({ published_at: posts.published_at })
-								.from(posts)
-								.where(eq(posts.id, tagsPosts.post_id))
-						)
-					)
-				)
-				.leftJoin(posts, and(eq(posts.id, tagsPosts.post_id), isNotNull(posts.published_at)))
-				.where(
-					or(
-						isNull(posts.id),
-						lte(
-							sql`row_number() over (PARTITION by ${sectionsSq.id} ORDER BY ${posts.published_at} DESC)`.as(
-								'post_idx_in_section'
-							),
-							ARTICLES_PER_SECTION
-						)
-					)
-				)
-				.orderBy(desc(posts.published_at))
+				.from(postsCTE)
 				.all();
+
+			console.log(result);
 
 			return result;
 		}
