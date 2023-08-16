@@ -166,86 +166,104 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			const sectionsCTE = db.$with('sections_cte').as(
-				db
+			const sectionPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
+				const userIdSq = db
+					.select({ id: users.id })
+					.from(users)
+					.where(eq(users.username, username));
+				const pageIdSq = db
 					.select()
-					.from(sections)
+					.from(pages)
+					.where(and(eq(pages.slug, pagename), eq(pages.user_id, userIdSq)))
+					.as('page_sq');
+
+				const getSectionQuery = (type: 'main' | 'for-translations') => {
+					const mainSelect = {
+						id: sections.id,
+						title_translation_id: sections.title_translation_id
+					};
+					const forTranslationsSelect = { id: sections.title_translation_id };
+
+					return db
+						.select(type === 'for-translations' ? forTranslationsSelect : mainSelect)
+						.from(pageIdSq)
+						.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
+						.limit(1)
+						.offset(index);
+				};
+
+				const sectionQueryForPosts = getSectionQuery('main');
+				const sectionQueryForTranslatins = getSectionQuery('for-translations');
+				const sectionQueryAliased = sectionQueryForPosts.as('section_sq');
+
+				const getPostsQuery = (type: 'main' | 'for-translations') => {
+					const mainSelect = {
+						id: posts.id,
+						published_at: posts.published_at,
+						slug: posts.slug,
+						title_translation_id: posts.title_translation_id
+					};
+					const forTranslationSelect = { id: posts.title_translation_id };
+					return db
+						.select(type === 'for-translations' ? forTranslationSelect : mainSelect)
+						.from(sectionQueryAliased)
+						.innerJoin(
+							sectionsTags,
+							and(
+								eq(sectionsTags.section_id, sectionQueryAliased.id),
+								eq(sectionsTags.lang, this.lang)
+							)
+						)
+						.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
+						.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
+						.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+						.where(isNotNull(posts.published_at))
+						.orderBy(desc(posts.published_at))
+						.groupBy(posts.id)
+						.limit(ARTICLES_PER_SECTION);
+				};
+
+				const postsQuery = getPostsQuery('main');
+				const postsQueryAliased = postsQuery.as('posts_sq');
+				const postsQueryForTranslations = getPostsQuery('for-translations');
+
+				const getTagsQuery = (type: 'main' | 'for-translations') => {
+					const mainSelect = { tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id };
+					const forTranslationsSelect = { id: tags.name_translation_id };
+					const queryBase = db
+						.select(type === 'for-translations' ? forTranslationsSelect : mainSelect)
+						.from(postsQueryAliased)
+						.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id));
+					if (type === 'for-translations') {
+						return queryBase.innerJoin(tags, eq(tags.id, tagsPosts.tag_id));
+					} else {
+						return queryBase;
+					}
+				};
+
+				const tagsQuery = getTagsQuery('main');
+				const tagsQueryForTranslations = getTagsQuery('for-translations');
+
+				const allTranslationsQuery = db
+					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
+					.from(translations)
 					.where(
-						eq(
-							sections.page_id,
-							db
-								.select({ id: pages.id })
-								.from(pages)
-								.where(
-									and(
-										eq(pages.slug, pagename),
-										eq(
-											pages.user_id,
-											db.select({ id: users.id }).from(users).where(eq(users.username, username))
-										)
-									)
-								)
+						or(
+							inArray(translations._id, sectionQueryForTranslatins),
+							inArray(translations._id, postsQueryForTranslations),
+							inArray(translations._id, tagsQueryForTranslations)
 						)
-					)
-					.limit(SECTIONS_PER_LOAD)
-			);
+					);
 
-			const postsCTE = db.$with('posts_cte').as(
-				db
-					.with(sectionsCTE)
-					.select({
-						sections: {
-							id: sectionsCTE.id,
-							page_id: sectionsCTE.page_id,
-							user_id: sectionsCTE.user_id,
-							title_translation_id: sectionsCTE.title_translation_id
-						},
-						sectionsTags,
-						tags,
-						tagsPosts,
-						posts,
-						postsIdx:
-							sql<number>`row_number() over (PARTITION BY ${sectionsCTE.id} ORDER BY ${posts.published_at} DESC)`.as(
-								'posts_idx'
-							)
-					})
-					.from(sectionsCTE)
-					.leftJoin(
-						sectionsTags,
-						and(eq(sectionsTags.section_id, sectionsCTE.id), eq(sectionsTags.lang, this.lang))
-					)
-					.leftJoin(tags, eq(tags.id, sectionsTags.tag_id))
-					.leftJoin(
-						tagsPosts,
-						and(
-							eq(tagsPosts.tag_id, tags.id),
-							isNotNull(
-								db
-									.select({ published_at: posts.published_at })
-									.from(posts)
-									.where(eq(posts.id, tagsPosts.post_id))
-							)
-						)
-					)
-					.leftJoin(posts, and(eq(posts.id, tagsPosts.post_id), isNotNull(posts.published_at)))
-			);
+				const sectionInfo = sectionQueryForPosts.all();
+				const postsInfo = postsQuery.all();
+				const tagsPostsInfo = tagsQuery.all();
+				const translationsInfo = allTranslationsQuery.all();
 
-			const result = await db
-				.with(sectionsCTE, postsCTE)
-				.select({
-					sections: postsCTE.sections,
-					sectionsTags: { section_id: sectionsTags.section_id },
-					tags: postsCTE.tags,
-					tagsPosts: postsCTE.tagsPosts,
-					posts: postsCTE.posts,
-					postsIdx: postsCTE.postsIdx
-				})
-				.from(postsCTE)
-				.all();
-
-			console.log(result);
-
-			return result;
+				return Promise.all([sectionInfo, postsInfo, tagsPostsInfo, translationsInfo]);
+			});
+			const sectionsResponses = await Promise.all(sectionPromises);
+			return sectionsResponses;
 		}
 	};
 
