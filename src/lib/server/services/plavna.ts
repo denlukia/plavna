@@ -178,10 +178,7 @@ class Plavna {
 					.as('page_sq');
 
 				const getSectionQuery = (type: 'main' | 'for-translations') => {
-					const mainSelect = {
-						id: sections.id,
-						title_translation_id: sections.title_translation_id
-					};
+					const { _, ...mainSelect } = sections;
 					const forTranslationsSelect = { id: sections.title_translation_id };
 
 					return db
@@ -196,16 +193,12 @@ class Plavna {
 				const sectionQueryForTranslatins = getSectionQuery('for-translations');
 				const sectionQueryAliased = sectionQueryForPosts.as('section_sq');
 
-				const getPostsQuery = (type: 'main' | 'for-translations') => {
-					const mainSelect = {
-						id: posts.id,
-						published_at: posts.published_at,
-						slug: posts.slug,
-						title_translation_id: posts.title_translation_id
-					};
+				const postsQueryGenerator = (type: 'main' | 'for-translations') => {
+					const { _, ...mainSelect } = posts;
 					const forTranslationSelect = { id: posts.title_translation_id };
+
 					return db
-						.select(type === 'for-translations' ? forTranslationSelect : mainSelect)
+						.select(type === 'main' ? mainSelect : forTranslationSelect)
 						.from(sectionQueryAliased)
 						.innerJoin(
 							sectionsTags,
@@ -223,11 +216,11 @@ class Plavna {
 						.limit(ARTICLES_PER_SECTION);
 				};
 
-				const postsQuery = getPostsQuery('main');
+				const postsQuery = postsQueryGenerator('main');
 				const postsQueryAliased = postsQuery.as('posts_sq');
-				const postsQueryForTranslations = getPostsQuery('for-translations');
+				const postsQueryForTranslations = postsQueryGenerator('for-translations');
 
-				const getTagsQuery = (type: 'main' | 'for-translations') => {
+				const tagsQueryGenerator = (type: 'main' | 'for-translations') => {
 					const mainSelect = { tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id };
 					const forTranslationsSelect = { id: tags.name_translation_id };
 					const queryBase = db
@@ -241,8 +234,8 @@ class Plavna {
 					}
 				};
 
-				const tagsQuery = getTagsQuery('main');
-				const tagsQueryForTranslations = getTagsQuery('for-translations');
+				const tagsQuery = tagsQueryGenerator('main');
+				const tagsQueryForTranslations = tagsQueryGenerator('for-translations');
 
 				const allTranslationsQuery = db
 					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
@@ -255,12 +248,26 @@ class Plavna {
 						)
 					);
 
+				const allPreviewTypesQuery = db
+					.select({ id: previewTypes.id, component_reference: previewTypes.component_reference })
+					.from(postsQueryAliased)
+					// @ts-ignore
+					.innerJoin(previewTypes, eq(previewTypes.id, postsQueryAliased.preview_type_id))
+					.groupBy(previewTypes.id);
+
 				const sectionInfo = sectionQueryForPosts.all();
 				const postsInfo = postsQuery.all();
 				const tagsPostsInfo = tagsQuery.all();
 				const translationsInfo = allTranslationsQuery.all();
+				const previewTypesInfo = allPreviewTypesQuery.all();
 
-				return Promise.all([sectionInfo, postsInfo, tagsPostsInfo, translationsInfo]);
+				return Promise.all([
+					sectionInfo,
+					postsInfo,
+					tagsPostsInfo,
+					translationsInfo,
+					previewTypesInfo
+				]);
 			});
 			const sectionsResponses = await Promise.all(sectionPromises);
 			return sectionsResponses;
