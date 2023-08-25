@@ -1,5 +1,5 @@
 import { page } from '$app/stores';
-import { ARTICLES_PER_SECTION, POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
+import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
 import {
@@ -167,6 +167,9 @@ class Plavna {
 			excludedTags?: ExcludedTags
 		) => {
 			const sectionPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
+				// TODO Currently I see no way of removing duplication in there queries as this looses strict typing
+
+				// 1. Sections query
 				const userIdSq = db
 					.select({ id: users.id })
 					.from(users)
@@ -177,66 +180,81 @@ class Plavna {
 					.where(and(eq(pages.slug, pagename), eq(pages.user_id, userIdSq)))
 					.as('page_sq');
 
-				const getSectionQuery = (type: 'main' | 'for-translations') => {
-					const { _, ...mainSelect } = sections;
-					const forTranslationsSelect = { id: sections.title_translation_id };
-
-					return db
-						.select(type === 'for-translations' ? forTranslationsSelect : mainSelect)
-						.from(pageIdSq)
-						.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-						.limit(1)
-						.offset(index);
-				};
-
-				const sectionQueryForPosts = getSectionQuery('main');
-				const sectionQueryForTranslatins = getSectionQuery('for-translations');
+				const {
+					$inferInsert: $inferInsertSections,
+					$inferSelect: $inferSelectSections,
+					_: sectionsMeta,
+					...sectionsFields
+				} = sections;
+				const sectionQueryForPosts = db
+					.select({ ...sectionsFields })
+					.from(pageIdSq)
+					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
+					.limit(1)
+					.offset(index);
+				const sectionQueryForTranslatins = db
+					.select({ id: sections.title_translation_id })
+					.from(pageIdSq)
+					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
+					.limit(1)
+					.offset(index);
 				const sectionQueryAliased = sectionQueryForPosts.as('section_sq');
 
-				const postsQueryGenerator = (type: 'main' | 'for-translations') => {
-					const { _, ...mainSelect } = posts;
-					const forTranslationSelect = { id: posts.title_translation_id };
-
-					return db
-						.select(type === 'main' ? mainSelect : forTranslationSelect)
-						.from(sectionQueryAliased)
-						.innerJoin(
-							sectionsTags,
-							and(
-								eq(sectionsTags.section_id, sectionQueryAliased.id),
-								eq(sectionsTags.lang, this.lang)
-							)
+				// 2. Posts query
+				const {
+					$inferInsert: $inferInsertPosts,
+					$inferSelect: $inferSelectPosts,
+					_: postsMeta,
+					...postsFields
+				} = posts;
+				const postsQuery = db
+					.select({ ...postsFields })
+					.from(sectionQueryAliased)
+					.innerJoin(
+						sectionsTags,
+						and(
+							eq(sectionsTags.section_id, sectionQueryAliased.id),
+							eq(sectionsTags.lang, this.lang)
 						)
-						.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
-						.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
-						.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
-						.where(isNotNull(posts.published_at))
-						.orderBy(desc(posts.published_at))
-						.groupBy(posts.id)
-						.limit(ARTICLES_PER_SECTION);
-				};
-
-				const postsQuery = postsQueryGenerator('main');
+					)
+					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
+					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
+					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.where(isNotNull(posts.published_at))
+					.orderBy(desc(posts.published_at))
+					.groupBy(posts.id)
+					.limit(POSTS_PER_SECTION);
+				const postsQueryForTranslations = db
+					.select({ id: posts.title_translation_id })
+					.from(sectionQueryAliased)
+					.innerJoin(
+						sectionsTags,
+						and(
+							eq(sectionsTags.section_id, sectionQueryAliased.id),
+							eq(sectionsTags.lang, this.lang)
+						)
+					)
+					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
+					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
+					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.where(isNotNull(posts.published_at))
+					.orderBy(desc(posts.published_at))
+					.groupBy(posts.id)
+					.limit(POSTS_PER_SECTION);
 				const postsQueryAliased = postsQuery.as('posts_sq');
-				const postsQueryForTranslations = postsQueryGenerator('for-translations');
 
-				const tagsQueryGenerator = (type: 'main' | 'for-translations') => {
-					const mainSelect = { tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id };
-					const forTranslationsSelect = { id: tags.name_translation_id };
-					const queryBase = db
-						.select(type === 'for-translations' ? forTranslationsSelect : mainSelect)
-						.from(postsQueryAliased)
-						.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id));
-					if (type === 'for-translations') {
-						return queryBase.innerJoin(tags, eq(tags.id, tagsPosts.tag_id));
-					} else {
-						return queryBase;
-					}
-				};
+				// 3. Tags posts query
+				const tagsQuery = db
+					.select({ tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id })
+					.from(postsQueryAliased)
+					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id));
+				const tagsQueryForTranslations = db
+					.select({ id: tags.name_translation_id })
+					.from(postsQueryAliased)
+					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
+					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id));
 
-				const tagsQuery = tagsQueryGenerator('main');
-				const tagsQueryForTranslations = tagsQueryGenerator('for-translations');
-
+				// 4. Translations query
 				const allTranslationsQuery = db
 					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
 					.from(translations)
@@ -248,10 +266,10 @@ class Plavna {
 						)
 					);
 
+				// 5. Preview types query
 				const allPreviewTypesQuery = db
 					.select({ id: previewTypes.id, component_reference: previewTypes.component_reference })
 					.from(postsQueryAliased)
-					// @ts-ignore
 					.innerJoin(previewTypes, eq(previewTypes.id, postsQueryAliased.preview_type_id))
 					.groupBy(previewTypes.id);
 
@@ -276,14 +294,10 @@ class Plavna {
 
 	public readonly posts = {
 		getIdIfExists: async (slug: PostSelect['slug']) => {
-			try {
-				const post = await db
-					.select({ id: posts.id })
-					.from(posts)
-					.where(eq(posts.slug, slug))
-					.get();
+			const post = await db.select({ id: posts.id }).from(posts).where(eq(posts.slug, slug)).get();
+			if (post) {
 				return post.id;
-			} catch (e) {
+			} else {
 				return null;
 			}
 		},
@@ -497,11 +511,15 @@ class Plavna {
 					'disallow-empty',
 					trx
 				);
-				const { page_id } = await trx
+				const page = await trx
 					.select({ page_id: pages.id })
 					.from(pages)
 					.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
 					.get();
+				if (!page) {
+					throw error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
+				}
+				const { page_id } = page;
 				const { section_id } = await trx
 					.insert(sections)
 					.values({ user_id: user.id, page_id, title_translation_id: createdTranslation._id })
@@ -578,11 +596,15 @@ class Plavna {
 			const user = await this.user.getOrThrow();
 
 			await db.transaction(async (trx) => {
-				const { title_translation_id } = await trx
+				const translation = await trx
 					.select({ title_translation_id: sections.title_translation_id })
 					.from(sections)
 					.where(and(eq(sections.id, sectionDelete.id), eq(sections.user_id, user.id)))
 					.get();
+				if (!translation) {
+					throw error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
+				}
+				const { title_translation_id } = translation;
 				await this.translations.delete({ _id: title_translation_id }, trx);
 				await trx
 					.delete(sectionsTags)
