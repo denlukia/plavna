@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/domain/zod';
+import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/domain/parsers';
 import { transGroups } from '$lib/server/i18n';
 
 import type { PageServerLoad } from './$types';

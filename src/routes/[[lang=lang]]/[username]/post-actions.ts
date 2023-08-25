@@ -9,7 +9,7 @@ import {
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema
-} from '$lib/server/domain/zod';
+} from '$lib/server/domain/parsers';
 
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';

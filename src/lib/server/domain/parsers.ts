@@ -7,6 +7,7 @@ import {
 	sections,
 	sectionsTags,
 	tags,
+	tagsPosts,
 	translations
 } from './db';
 import { ERRORS } from './errors';
@@ -41,6 +42,9 @@ export const tagUpdateSchema = tagInsertSchema
 	.required({ id: true })
 	.extend({ checked: z.boolean() });
 export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
+
+// Tags to Posts
+export const tagPostSelectSchema = createSelectSchema(tagsPosts);
 
 // Translations
 export const translationSelectSchema = createSelectSchema(translations);

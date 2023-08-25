@@ -21,13 +21,14 @@ import type {
 	sectionUpdateSchema,
 	tagDeleteSchema,
 	tagInsertSchema,
+	tagPostSelectSchema,
 	tagSelectSchema,
 	tagUpdateSchema,
 	translationDeleteSchema,
 	translationInsertSchema,
 	translationSelectSchema,
 	translationUpdateSchema
-} from './zod';
+} from './parsers';
 import type { InferModel } from 'drizzle-orm';
 import type { z } from 'zod';
 
@@ -62,6 +63,9 @@ export type TagUpdate = z.infer<typeof tagUpdateSchema>;
 export type TagUpdateZod = typeof tagUpdateSchema;
 export type TagDelete = z.infer<typeof tagDeleteSchema>;
 export type TagDeleteZod = typeof tagDeleteSchema;
+
+// Tags to Posts
+export type TagPostSelect = z.infer<typeof tagPostSelectSchema>;
 
 // Translations
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;

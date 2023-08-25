@@ -54,7 +54,7 @@ import {
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema
-} from '$lib/server/domain/zod';
+} from '$lib/server/domain/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
 	hasNonEmptyProperties,
@@ -71,15 +71,19 @@ import type {
 	PostPreviewUpdate,
 	PostSelect,
 	PostSlugUpdate,
+	PreviewTypeInObject,
+	PreviewTypeSelect,
 	SectionDelete,
 	SectionSelect,
 	SectionTagInsert,
 	SectionUpdate,
 	TagDelete,
+	TagPostSelect,
 	TagSelect,
 	TagUpdate,
 	TranslationDelete,
 	TranslationInsert,
+	TranslationSelect,
 	TranslationUpdate
 } from '$lib/server/domain/types';
 import type { User } from '../domain/types';
@@ -166,8 +170,8 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
-			const sectionPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
-				// TODO Currently I see no way of removing duplication in there queries as this looses strict typing
+			const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
+				// TODO Currently I see no way of DRYing with keeping good types
 
 				// 1. Sections query
 				const userIdSq = db
@@ -287,8 +291,31 @@ class Plavna {
 					previewTypesInfo
 				]);
 			});
-			const sectionsResponses = await Promise.all(sectionPromises);
-			return sectionsResponses;
+			const sectionsResponses = await Promise.all(sectionsPromises);
+			const sectionsNonEmpty = sectionsResponses.filter((res) => res[0].length);
+
+			return {
+				sections: sectionsNonEmpty.map(([sectionInfo, postsInfo, tagsPostsInfo]) => {
+					return { section: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
+				}),
+				// TODO Make sure we're not loading sections or posts or tags without translation
+				translations: sectionsNonEmpty.reduce((acc, [a, b, c, translationsInfo]) => {
+					return {
+						...acc,
+						...Object.fromEntries(translationsInfo.map((t) => [t._id, t[this.lang]]))
+					};
+				}, {}),
+				previewTypes: sectionsNonEmpty.reduce((acc, [a, b, c, d, previewTypesInfo]) => {
+					return {
+						...acc,
+						...Object.fromEntries(
+							previewTypesInfo.map((p) => {
+								return [p.id, { component_reference: p.component_reference }];
+							})
+						)
+					};
+				}, {})
+			};
 		}
 	};
 
