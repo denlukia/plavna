@@ -71,7 +71,6 @@ import type {
 	PostPreviewUpdate,
 	PostSelect,
 	PostSlugUpdate,
-	PreviewTypeInObject,
 	PreviewTypeSelect,
 	SectionDelete,
 	SectionSelect,
@@ -194,13 +193,17 @@ class Plavna {
 					.select({ ...sectionsFields })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.limit(1)
+					.innerJoin(translations, eq(translations._id, sections.title_translation_id))
+					.where(isNotNull(translations[this.lang]))
+					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
 				const sectionQueryForTranslatins = db
 					.select({ id: sections.title_translation_id })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.limit(1)
+					.innerJoin(translations, eq(translations._id, sections.title_translation_id))
+					.where(isNotNull(translations[this.lang]))
+					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
 				const sectionQueryAliased = sectionQueryForPosts.as('section_sq');
 
@@ -211,6 +214,8 @@ class Plavna {
 					_: postsMeta,
 					...postsFields
 				} = posts;
+				const translationForTag = alias(translations, 'translation_for_tag');
+				const translationForPost = alias(translations, 'translation_for_post');
 				const postsQuery = db
 					.select({ ...postsFields })
 					.from(sectionQueryAliased)
@@ -224,6 +229,20 @@ class Plavna {
 					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
 					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
 					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.innerJoin(
+						translationForTag,
+						and(
+							eq(translationForTag._id, tags.name_translation_id),
+							isNotNull(translationForTag[this.lang])
+						)
+					)
+					.innerJoin(
+						translationForPost,
+						and(
+							eq(translationForPost._id, posts.title_translation_id),
+							isNotNull(translationForPost[this.lang])
+						)
+					)
 					.where(isNotNull(posts.published_at))
 					.orderBy(desc(posts.published_at))
 					.groupBy(posts.id)
@@ -241,6 +260,20 @@ class Plavna {
 					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
 					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
 					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.innerJoin(
+						translationForTag,
+						and(
+							eq(translationForTag._id, tags.name_translation_id),
+							isNotNull(translationForTag[this.lang])
+						)
+					)
+					.innerJoin(
+						translationForPost,
+						and(
+							eq(translationForPost._id, posts.title_translation_id),
+							isNotNull(translationForPost[this.lang])
+						)
+					)
 					.where(isNotNull(posts.published_at))
 					.orderBy(desc(posts.published_at))
 					.groupBy(posts.id)
@@ -248,17 +281,40 @@ class Plavna {
 				const postsQueryAliased = postsQuery.as('posts_sq');
 
 				// 3. Tags posts query
-				const tagsQuery = db
+				const tagsPostsQuery = db
 					.select({ tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id })
 					.from(postsQueryAliased)
-					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id));
-				const tagsQueryForTranslations = db
+					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
+					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+					.innerJoin(
+						translations,
+						and(eq(translations._id, tags.name_translation_id), isNotNull(translations[this.lang]))
+					);
+				const tagsPostsQueryForTranslations = db
 					.select({ id: tags.name_translation_id })
 					.from(postsQueryAliased)
 					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
-					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id));
+					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+					.innerJoin(
+						translations,
+						and(eq(translations._id, tags.name_translation_id), isNotNull(translations[this.lang]))
+					);
+				const tagsPostsQueryAliased = tagsPostsQuery.as('tags_posts_sq');
 
-				// 4. Translations query
+				// 4. Tags
+				const {
+					$inferInsert: $inferInsertTags,
+					$inferSelect: $inferSelectTags,
+					_: tagsMeta,
+					...tagsFields
+				} = tags;
+				const tagsQuery = db
+					.select({ ...tagsFields })
+					.from(tagsPostsQueryAliased)
+					.innerJoin(tags, eq(tags.id, tagsPostsQueryAliased.tag_id))
+					.groupBy(tags.id);
+
+				// 5. Translations query
 				const allTranslationsQuery = db
 					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
 					.from(translations)
@@ -266,11 +322,12 @@ class Plavna {
 						or(
 							inArray(translations._id, sectionQueryForTranslatins),
 							inArray(translations._id, postsQueryForTranslations),
-							inArray(translations._id, tagsQueryForTranslations)
+							inArray(translations._id, tagsPostsQueryForTranslations)
 						)
-					);
+					)
+					.groupBy(translations._id);
 
-				// 5. Preview types query
+				// 6. Preview types query
 				const allPreviewTypesQuery = db
 					.select({ id: previewTypes.id, component_reference: previewTypes.component_reference })
 					.from(postsQueryAliased)
@@ -279,7 +336,8 @@ class Plavna {
 
 				const sectionInfo = sectionQueryForPosts.all();
 				const postsInfo = postsQuery.all();
-				const tagsPostsInfo = tagsQuery.all();
+				const tagsPostsInfo = tagsPostsQuery.all();
+				const tagsInfo = tagsQuery.all();
 				const translationsInfo = allTranslationsQuery.all();
 				const previewTypesInfo = allPreviewTypesQuery.all();
 
@@ -287,6 +345,7 @@ class Plavna {
 					sectionInfo,
 					postsInfo,
 					tagsPostsInfo,
+					tagsInfo,
 					translationsInfo,
 					previewTypesInfo
 				]);
@@ -299,13 +358,20 @@ class Plavna {
 					return { section: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
 				}),
 				// TODO Make sure we're not loading sections or posts or tags without translation
-				translations: sectionsNonEmpty.reduce((acc, [a, b, c, translationsInfo]) => {
+				// TODO Transform section translations into forms
+				tags: sectionsNonEmpty.reduce((acc, [a, b, c, tagsInfo]) => {
+					return {
+						...acc,
+						...Object.fromEntries(tagsInfo.map((t) => [t.id, t]))
+					};
+				}, {}),
+				translations: sectionsNonEmpty.reduce((acc, [a, b, c, d, translationsInfo]) => {
 					return {
 						...acc,
 						...Object.fromEntries(translationsInfo.map((t) => [t._id, t[this.lang]]))
 					};
 				}, {}),
-				previewTypes: sectionsNonEmpty.reduce((acc, [a, b, c, d, previewTypesInfo]) => {
+				previewTypes: sectionsNonEmpty.reduce((acc, [a, b, c, d, e, previewTypesInfo]) => {
 					return {
 						...acc,
 						...Object.fromEntries(
