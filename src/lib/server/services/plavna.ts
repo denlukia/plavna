@@ -169,6 +169,7 @@ class Plavna {
 			pagename: string,
 			excludedTags?: ExcludedTags
 		) => {
+			const user = await this.user.get();
 			const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
 				// TODO Currently I see no way of DRYing with keeping good types
 
@@ -314,13 +315,25 @@ class Plavna {
 					.innerJoin(tags, eq(tags.id, tagsPostsQueryAliased.tag_id))
 					.groupBy(tags.id);
 
-				// 5. Translations query
-				const allTranslationsQuery = db
+				// 5. Sections Translations query
+				const {
+					$inferInsert: $inferInsertTranslations,
+					$inferSelect: $inferSelectTranslations,
+					_: translationsMeta,
+					...translationsFields
+				} = translations;
+				const sectionsTranslationsQuery = db
+					.select({ ...translationsFields })
+					.from(translations)
+					.where(inArray(translations._id, sectionQueryForTranslatins))
+					.groupBy(translations._id);
+
+				// 6. Other Translations query
+				const otherTranslationsQuery = db
 					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
 					.from(translations)
 					.where(
 						or(
-							inArray(translations._id, sectionQueryForTranslatins),
 							inArray(translations._id, postsQueryForTranslations),
 							inArray(translations._id, tagsPostsQueryForTranslations)
 						)
@@ -338,7 +351,8 @@ class Plavna {
 				const postsInfo = postsQuery.all();
 				const tagsPostsInfo = tagsPostsQuery.all();
 				const tagsInfo = tagsQuery.all();
-				const translationsInfo = allTranslationsQuery.all();
+				const sectionsTranslationsInfo = sectionsTranslationsQuery.all();
+				const otherTranslationsInfo = otherTranslationsQuery.all();
 				const previewTypesInfo = allPreviewTypesQuery.all();
 
 				return Promise.all([
@@ -346,7 +360,8 @@ class Plavna {
 					postsInfo,
 					tagsPostsInfo,
 					tagsInfo,
-					translationsInfo,
+					sectionsTranslationsInfo,
+					otherTranslationsInfo,
 					previewTypesInfo
 				]);
 			});
@@ -357,7 +372,6 @@ class Plavna {
 				sections: sectionsNonEmpty.map(([sectionInfo, postsInfo, tagsPostsInfo]) => {
 					return { section: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
 				}),
-				// TODO Make sure we're not loading sections or posts or tags without translation
 				// TODO Transform section translations into forms
 				tags: sectionsNonEmpty.reduce((acc, [a, b, c, tagsInfo]) => {
 					return {
@@ -365,13 +379,38 @@ class Plavna {
 						...Object.fromEntries(tagsInfo.map((t) => [t.id, t]))
 					};
 				}, {}),
-				translations: sectionsNonEmpty.reduce((acc, [a, b, c, d, translationsInfo]) => {
-					return {
-						...acc,
-						...Object.fromEntries(translationsInfo.map((t) => [t._id, t[this.lang]]))
-					};
-				}, {}),
-				previewTypes: sectionsNonEmpty.reduce((acc, [a, b, c, d, e, previewTypesInfo]) => {
+				translations: {
+					...sectionsNonEmpty.reduce((acc, [a, b, c, d, sectionsTranslationsInfo]) => {
+						return {
+							...acc,
+							...Object.fromEntries(
+								sectionsTranslationsInfo.map((t) => {
+									if (user?.username === username) {
+										return [
+											t._id,
+											superValidateSync(t, translationUpdateSchema, {
+												id: 'section-translation-' + t._id
+											})
+										];
+									} else {
+										return [t._id, t[this.lang]];
+									}
+								})
+							)
+						};
+					}, {}),
+					...sectionsNonEmpty.reduce((acc, [a, b, c, d, e, otherTranslationsInfo]) => {
+						return {
+							...acc,
+							...Object.fromEntries(
+								otherTranslationsInfo.map((t) => {
+									return [t._id, t[this.lang]];
+								})
+							)
+						};
+					}, {})
+				},
+				previewTypes: sectionsNonEmpty.reduce((acc, [a, b, c, d, e, f, previewTypesInfo]) => {
 					return {
 						...acc,
 						...Object.fromEntries(
