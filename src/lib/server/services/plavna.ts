@@ -419,7 +419,8 @@ class Plavna {
 							})
 						)
 					};
-				}, {})
+				}, {}),
+				sectionCreationForm: superValidateSync(translationInsertSchema)
 			};
 		}
 	};

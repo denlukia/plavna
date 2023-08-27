@@ -1,14 +1,13 @@
 <script lang="ts">
+	import Section from '../Section.svelte';
 	import SectionCreator from '../editors/SectionCreator.svelte';
-	import SectionEditor from '../editors/SectionEditor.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/$types';
 
 	export let data: PageData;
 </script>
 
-<pre>{JSON.stringify(data, null, '    ')}</pre>
-<!-- {#each data.sections as section}
-	<SectionEditor {section} />
+{#each data.sections as sectionData}
+	<Section {sectionData} />
 {/each}
-<SectionCreator superFormObj={data.createSectionForm} /> -->
+<SectionCreator superFormObj={data.sectionCreationForm} />

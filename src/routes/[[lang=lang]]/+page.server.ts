@@ -18,6 +18,6 @@ export const actions: Actions = {
 		const session = await locals.authRequest.validate();
 		if (!session) return fail(401);
 		await auth.invalidateSession(session.sessionId); // invalidate session
-		locals.auth.setSession(null); // remove cookie
+		locals.authRequest.setSession(null);
 	}
 };
