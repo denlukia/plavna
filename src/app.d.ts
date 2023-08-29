@@ -1,5 +1,10 @@
 // See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
+
+import type { TagSelect, TranslationInsertZod } from '$lib/server/domain/types';
+
+import type { SuperValidated } from 'sveltekit-superforms';
+import type { SuperForm } from 'sveltekit-superforms/client';
+
 declare global {
 	namespace App {
 		// interface Error {}
@@ -7,7 +12,11 @@ declare global {
 			authRequest: import('lucia').AuthRequest;
 			plavna: import('$lib/server/services/plavna').default;
 		}
-		// interface PageData {}
+		interface PageData {
+			user: Lucia.User | null;
+			translations: Record<string, string | SuperValidated<TranslationInsertZod>>;
+			tags?: Record<string, TagSelect>;
+		}
 		// interface Platform {}
 	}
 }

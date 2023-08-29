@@ -370,9 +370,8 @@ class Plavna {
 
 			return {
 				sections: sectionsNonEmpty.map(([sectionInfo, postsInfo, tagsPostsInfo]) => {
-					return { section: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
+					return { meta: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
 				}),
-				// TODO Transform section translations into forms
 				tags: sectionsNonEmpty.reduce((acc, [a, b, c, tagsInfo]) => {
 					return {
 						...acc,
@@ -578,9 +577,11 @@ class Plavna {
 		},
 		getOne: async (username: string, slug: string) => {
 			const userPromise = this.user.get();
+			const titleTranslationAlias = alias(translations, 'title_translation');
 			const queryPromise = db
 				.select({
 					posts,
+					titleTranslationAlias,
 					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
 					previewTypes,
 					tags
@@ -590,15 +591,21 @@ class Plavna {
 				.leftJoin(previewTypes, eq(previewTypes.id, posts.preview_type_id))
 				.leftJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
 				.leftJoin(tags, eq(tags.id, tagsPosts.tag_id))
+				.leftJoin(titleTranslationAlias, eq(titleTranslationAlias._id, posts.title_translation_id))
 				.leftJoin(
 					translations,
 					or(
-						eq(translations._id, posts.title_translation_id),
 						eq(translations._id, posts.content_translation_id),
 						eq(translations._id, tags.name_translation_id)
 					)
 				)
-				.where(and(eq(users.username, username), eq(posts.slug, slug)))
+				.where(
+					and(
+						eq(users.username, username),
+						eq(posts.slug, slug),
+						isNotNull(titleTranslationAlias[this.lang])
+					)
+				)
 				.all();
 
 			const [query, user] = await Promise.all([queryPromise, userPromise]);
@@ -606,18 +613,22 @@ class Plavna {
 			if (!query.length) {
 				throw error(404);
 			}
-			if (!user && query[0].posts.published_at === null) {
+			if ((!user || user.username !== username) && query[0].posts.published_at === null) {
 				throw error(404);
 			}
 			return {
 				post: query[0].posts,
 				previewType: query[0].previewTypes,
-				translations: Object.fromEntries(
-					query
+				translations: Object.fromEntries([
+					...query
 						.map((row) => row.translations)
 						.filter(getNullAndDupFilter('_id'))
+						.map((row) => [row._id, row[this.lang]]),
+					...query
+						.map((row) => row.titleTranslationAlias)
+						.filter(getNullAndDupFilter('_id'))
 						.map((row) => [row._id, row[this.lang]])
-				),
+				]),
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
 		}

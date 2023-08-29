@@ -19,11 +19,11 @@
 		{#if markdownMode}
 			<SvelteMarkdown source={translation} />
 		{:else}
-			{translation}
+			{translation ?? 'No translation'}
 		{/if}
 	{:else}
 		<!-- If we're displaying translation that is form object right now -->
-		{translation.data[currentLang]}
+		{translation?.data[currentLang] ?? 'No translation'}
 	{/if}
 {:else}
 	Translation error

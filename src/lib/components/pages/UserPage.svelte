@@ -7,7 +7,8 @@
 	export let data: PageData;
 </script>
 
-{#each data.sections as sectionData}
-	<Section {sectionData} />
+<!-- <pre>{JSON.stringify(data, null, '  ')}</pre> -->
+{#each data.sections as section}
+	<Section {section} />
 {/each}
 <SectionCreator superFormObj={data.sectionCreationForm} />

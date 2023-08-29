@@ -1,16 +1,13 @@
 import en from './en';
 import uk from './uk';
 
-import { type SupportedLang, defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
+import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
 import type { TranslationKey } from './en';
 
 export const systemTranslations = { en, uk };
 
-export function getTransByLangAndKeys(lang: string | undefined, keys: TranslationKey[]) {
-	if (lang && !isSupportedLang(lang)) {
-		return null;
-	}
+export function getTransByLangAndKeys(lang: string, keys: TranslationKey[]) {
 	return Object.fromEntries(
 		keys.map((key) => {
 			const translation: string = systemTranslations[(lang as SupportedLang) || defaultLang][key];
@@ -19,7 +16,7 @@ export function getTransByLangAndKeys(lang: string | undefined, keys: Translatio
 	);
 }
 
-export const createGroup = (keys: TranslationKey[]) => (lang: string | undefined) =>
+export const createGroup = (keys: TranslationKey[]) => (lang: string) =>
 	getTransByLangAndKeys(lang, keys);
 
 export const transGroups = {

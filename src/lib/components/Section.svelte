@@ -1,29 +1,42 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import PostPreview from './PostPreview.svelte';
 	import SectionEditor from './editors/SectionEditor.svelte';
 
-	import type { PostSelect, SectionSelect, TagPostSelect } from '$lib/server/domain/types';
+	import type {
+		PostSelect,
+		SectionSelect,
+		TagPostSelect,
+		TagSelect
+	} from '$lib/server/domain/types';
+	import SectionViewer from './SectionViewer.svelte';
 
-	export let sectionData: {
-		section: SectionSelect;
+	export let section: {
+		meta: SectionSelect;
 		posts: PostSelect[];
 		tagsPosts: TagPostSelect[];
 	};
+
+	function getTagsForPost(
+		post: PostSelect,
+		tagsPosts: TagPostSelect[],
+		tags: Record<string, TagSelect> | undefined
+	) {
+		const selectedTags = tagsPosts.filter((el) => el.post_id === post.id);
+		if (tags) {
+			return selectedTags.map((tagPost) => tags[tagPost.tag_id]).filter(Boolean);
+		} else {
+			return [];
+		}
+	}
 </script>
 
-<SectionEditor section={sectionData.section} />
-{#each sectionData.posts as post}
-	<div class="post">
-		Id: {post.id}
-	</div>
-{/each}
+{#if $page.data.user && $page.data.user.username === $page.params.username}
+	<SectionEditor section={section.meta} />
+{:else}
+	<SectionViewer section={section.meta} />
+{/if}
 
-<style>
-	.post {
-		display: block;
-		background-color: #eee;
-		width: 200px;
-		padding: 20px;
-		margin: 10px;
-		border-radius: 10px;
-	}
-</style>
+{#each section.posts as post (post.id)}
+	<PostPreview {post} tags={getTagsForPost(post, section.tagsPosts, $page.data.tags)} />
+{/each}
