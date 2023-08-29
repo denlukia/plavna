@@ -3,6 +3,7 @@
 	import SectionCreator from '../editors/SectionCreator.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/$types';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 </script>
@@ -11,4 +12,6 @@
 {#each data.sections as section}
 	<Section {section} />
 {/each}
-<SectionCreator superFormObj={data.sectionCreationForm} />
+{#if $page.data.user && $page.data.user.username === $page.params.username}
+	<SectionCreator superFormObj={data.sectionCreationForm} />
+{/if}

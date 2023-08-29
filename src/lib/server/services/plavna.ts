@@ -291,15 +291,6 @@ class Plavna {
 						translations,
 						and(eq(translations._id, tags.name_translation_id), isNotNull(translations[this.lang]))
 					);
-				const tagsPostsQueryForTranslations = db
-					.select({ id: tags.name_translation_id })
-					.from(postsQueryAliased)
-					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
-					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
-					.innerJoin(
-						translations,
-						and(eq(translations._id, tags.name_translation_id), isNotNull(translations[this.lang]))
-					);
 				const tagsPostsQueryAliased = tagsPostsQuery.as('tags_posts_sq');
 
 				// 4. Tags
@@ -309,11 +300,36 @@ class Plavna {
 					_: tagsMeta,
 					...tagsFields
 				} = tags;
-				const tagsQuery = db
-					.select({ ...tagsFields })
-					.from(tagsPostsQueryAliased)
-					.innerJoin(tags, eq(tags.id, tagsPostsQueryAliased.tag_id))
-					.groupBy(tags.id);
+
+				const tagsQuery =
+					user?.username === username
+						? db
+								.select({ ...tagsFields })
+								.from(tags)
+								.where(eq(tags.user_id, user?.id))
+						: db
+								.select({ ...tagsFields })
+								.from(tagsPostsQueryAliased)
+								.innerJoin(tags, eq(tags.id, tagsPostsQueryAliased.tag_id))
+								.groupBy(tags.id);
+				const tagsQueryForTranslations =
+					user?.username === username
+						? db
+								.select({ id: tags.name_translation_id })
+								.from(tags)
+								.where(eq(tags.user_id, user?.id))
+						: db
+								.select({ id: tags.name_translation_id })
+								.from(postsQueryAliased)
+								.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
+								.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+								.innerJoin(
+									translations,
+									and(
+										eq(translations._id, tags.name_translation_id),
+										isNotNull(translations[this.lang])
+									)
+								);
 
 				// 5. Sections Translations query
 				const {
@@ -335,7 +351,7 @@ class Plavna {
 					.where(
 						or(
 							inArray(translations._id, postsQueryForTranslations),
-							inArray(translations._id, tagsPostsQueryForTranslations)
+							inArray(translations._id, tagsQueryForTranslations)
 						)
 					)
 					.groupBy(translations._id);
