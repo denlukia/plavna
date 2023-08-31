@@ -85,6 +85,11 @@ export type PostSelectWithoutPreviewValues = z.infer<typeof postSelectWithoutPre
 
 // Previews
 export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;
+export type PreviewTypeExtended = PreviewTypeSelect & {
+	component_static?: ConstructorOfATypedSvelteComponent;
+	component_dynamic?: ConstructorOfATypedSvelteComponent;
+	component_editor?: ConstructorOfATypedSvelteComponent;
+};
 
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;

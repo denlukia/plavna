@@ -13,7 +13,7 @@
 	const { form: slugFrom, errors: slugErrors, enhance: slugEnhance } = superForm(data.postSlugForm);
 	const { form, errors, enhance } = superForm(data.postForm);
 
-	$: ({ previews, previewComponent, postPreviewForm, post } = data);
+	$: ({ previews, postPreviewForm, post } = data);
 </script>
 
 Редагування тайтла:
@@ -29,7 +29,7 @@
 	<button formaction="?/hide">Hide</button>
 	<button formaction="?/delete">Delete</button>
 </form>
-<PreviewEditorsList {previews} {postPreviewForm} {previewComponent} />
+<PreviewEditorsList {previews} {postPreviewForm} />
 <fieldset>
 	{#each data.tagForms as editorForms}
 		<TagEditor {editorForms} />

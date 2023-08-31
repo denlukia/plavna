@@ -1,5 +1,5 @@
 import { page } from '$app/stores';
-import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../domain/constants';
+import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
 import {

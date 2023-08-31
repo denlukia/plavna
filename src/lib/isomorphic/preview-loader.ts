@@ -1,10 +1,4 @@
-export async function getPreviewComponent(
-	folder: string | null | undefined,
-	type: 'Static' | 'Editor' | 'Dynamic'
-) {
-	if (!folder) {
-		return null;
-	}
+export async function getPreviewComponent(folder: string, type: 'Static' | 'Editor' | 'Dynamic') {
 	const previewComponents = import.meta.glob('../../lib/components/previews/*/*.svelte');
 	const getModule = previewComponents[`../components/previews/${folder}/${type}.svelte`];
 	const module = await getModule();

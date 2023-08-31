@@ -1,4 +1,6 @@
+import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
 import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
+import type { PreviewTypeExtended } from '$lib/server/domain/types';
 
 import type { PageLoad as PostLoad, PageServerLoad as PostServerLoad } from './[slug]/$types';
 import type {
@@ -16,12 +18,23 @@ export const postEditServerLoad = (async ({ params, parent, locals: { plavna } }
 	return { ...other, translations: { ...translations, ...newTranslations } };
 }) satisfies PostEditServerLoad;
 
-export const postEditLoad = (async ({ data }) => {
-	const previewType = data.previews.find(
-		(preview) => preview.id === data.postPreviewForm.data.preview_type_id
-	);
-	let previewComponent = await getPreviewComponent(previewType?.component_reference, 'Editor');
-	return { ...data, previewComponent };
+export const postEditLoad = (async ({ data, url }) => {
+	data = structuredClone(data);
+	const previewIdFromParam = url.searchParams.get(PREVIEW_EDITOR_PARAM_NAME);
+	const previewIdToShow = previewIdFromParam
+		? Number(previewIdFromParam)
+		: data.postPreviewForm.data.preview_type_id;
+
+	const previewTypeIndex = data.previews.findIndex((preview) => preview.id === previewIdToShow);
+
+	if (previewTypeIndex !== -1) {
+		const previewType = data.previews[previewTypeIndex] as PreviewTypeExtended;
+		previewType.component_editor = await getPreviewComponent(
+			previewType.component_reference,
+			'Editor'
+		);
+	}
+	return { ...data };
 }) satisfies PostEditLoad;
 
 // Post Viewer ---------------------------------------------------------------
@@ -35,7 +48,11 @@ export const postServerLoad = (async ({ params, parent, locals: { plavna } }) =>
 }) satisfies PostServerLoad;
 
 export const postLoad = (async ({ data }) => {
-	const previewType = data.previewType;
-	let previewComponent = await getPreviewComponent(previewType?.component_reference, 'Static');
-	return { ...data, previewComponent };
+	data = structuredClone(data);
+	const previewType = data.previewType as PreviewTypeExtended;
+	previewType.component_editor = await getPreviewComponent(
+		previewType.component_reference,
+		'Static'
+	);
+	return { ...data };
 }) satisfies PostLoad;
