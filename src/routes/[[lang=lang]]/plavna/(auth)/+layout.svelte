@@ -1,12 +1,11 @@
 <script lang="ts">
-	import T from '$lib/components/Translation.svelte';
-
-	import type { LayoutData } from './$types';
+	import Translation from '$lib/components/Translation.svelte';
 </script>
 
 <div>
 	<h1>
-		<a href="/plavna/login"><T key="login" /></a> <a href="/plavna/signup"><T key="signup" /></a>
+		<a href="/plavna/login"><Translation key="login" /></a>
+		<a href="/plavna/signup"><Translation key="signup" /></a>
 	</h1>
 	<slot />
 </div>

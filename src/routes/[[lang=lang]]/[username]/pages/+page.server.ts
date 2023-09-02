@@ -1,10 +1,11 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/domain/parsers';
+import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/collections/parsers';
 import { transGroups } from '$lib/server/i18n';
 
 import type { PageServerLoad } from './$types';
+import { defaultLang } from '$lib/isomorphic/languages';
 
 export const load: PageServerLoad = async ({ locals: { plavna }, params, parent }) => {
 	const forms = await plavna.pages.getMyAsForms(params.username);
@@ -12,7 +13,7 @@ export const load: PageServerLoad = async ({ locals: { plavna }, params, parent 
 
 	return {
 		...forms,
-		translations: { ...translations, ...transGroups.userPages(params.lang) }
+		translations: { ...translations, ...transGroups.userPages(params.lang || defaultLang) }
 	};
 };
 

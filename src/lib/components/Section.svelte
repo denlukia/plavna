@@ -8,7 +8,7 @@
 		SectionSelect,
 		TagPostSelect,
 		TagSelect
-	} from '$lib/server/domain/types';
+	} from '$lib/server/collections/types';
 	import SectionViewer from './SectionViewer.svelte';
 
 	export let section: {

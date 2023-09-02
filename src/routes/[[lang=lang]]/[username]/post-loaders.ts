@@ -1,6 +1,6 @@
 import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
 import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
-import type { PreviewTypeExtended } from '$lib/server/domain/types';
+import type { PreviewTypeExtended } from '$lib/server/collections/types';
 
 import type { PageLoad as PostLoad, PageServerLoad as PostServerLoad } from './[slug]/$types';
 import type {
@@ -29,10 +29,7 @@ export const postEditLoad = (async ({ data, url }) => {
 
 	if (previewTypeIndex !== -1) {
 		const previewType = data.previews[previewTypeIndex] as PreviewTypeExtended;
-		previewType.component_editor = await getPreviewComponent(
-			previewType.component_reference,
-			'Editor'
-		);
+		previewType.component_editor = await getPreviewComponent(previewType.url, 'Editor');
 	}
 	return { ...data };
 }) satisfies PostEditLoad;
@@ -50,9 +47,6 @@ export const postServerLoad = (async ({ params, parent, locals: { plavna } }) =>
 export const postLoad = (async ({ data }) => {
 	data = structuredClone(data);
 	const previewType = data.previewType as PreviewTypeExtended;
-	previewType.component_editor = await getPreviewComponent(
-		previewType.component_reference,
-		'Static'
-	);
+	previewType.component_editor = await getPreviewComponent(previewType.url, 'Static');
 	return { ...data };
 }) satisfies PostLoad;

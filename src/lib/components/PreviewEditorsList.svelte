@@ -1,7 +1,7 @@
 <script lang="ts">
-	import T from './Translation.svelte';
+	import Translation from './Translation.svelte';
 
-	import type { PostPreviewUpdateZod, PreviewTypeExtended } from '$lib/server/domain/types';
+	import type { PostPreviewUpdateZod, PreviewTypeExtended } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { page } from '$app/stores';
 	import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
@@ -11,23 +11,20 @@
 	export let previews: PreviewTypeExtended[];
 	export let postPreviewForm: SuperValidated<PostPreviewUpdateZod>;
 
-	let overridenPreviewId: null | PreviewTypeExtended['id'] = null;
 	let superFormObj = superForm(postPreviewForm);
 
-	// TODO what forms are served for what state, switching with js
 	$: previewIdFromParam = $page.url.searchParams.get(PREVIEW_EDITOR_PARAM_NAME);
 	$: initialPreviewId = previewIdFromParam
 		? Number(previewIdFromParam)
 		: postPreviewForm.data.preview_type_id;
+
+	let overridenPreviewId: null | PreviewTypeExtended['id'] = null;
 	$: finalPreviewId = overridenPreviewId ?? initialPreviewId;
 
-	function getPreviewComponent(
+	function formPreviewsArray(
 		previews: PreviewTypeExtended[],
-		previewId: PreviewTypeExtended['id']
-	) {
-		let previewRecord = previews.find((preview) => preview.id === previewId);
-		return previewRecord?.component_editor;
-	}
+		postPreviewForm: SuperValidated<PostPreviewUpdateZod>
+	) {}
 
 	function getPreviewSpecificLink(preview: PreviewTypeExtended, currentURL: URL) {
 		let url = new URL(currentURL);
@@ -39,7 +36,7 @@
 Всі первью:
 {#each previews as preview}
 	<a href={getPreviewSpecificLink(preview, $page.url)}>
-		<T key={preview.name_translation_id} />
+		<Translation key={preview.name_translation_id} />
 	</a>
 {/each}
 

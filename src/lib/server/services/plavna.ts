@@ -39,8 +39,8 @@ import {
 	tagsPosts,
 	translations,
 	users
-} from '$lib/server/domain/db';
-import { ERRORS } from '$lib/server/domain/errors';
+} from '$lib/server/collections/db';
+import { ERRORS } from '$lib/server/collections/errors';
 import {
 	pageCreateFormSchema,
 	pageSelectSchema,
@@ -54,7 +54,7 @@ import {
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema
-} from '$lib/server/domain/parsers';
+} from '$lib/server/collections/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
 	hasNonEmptyProperties,
@@ -84,16 +84,16 @@ import type {
 	TranslationInsert,
 	TranslationSelect,
 	TranslationUpdate
-} from '$lib/server/domain/types';
-import type { User } from '../domain/types';
+} from '$lib/server/collections/types';
+import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
 	ResultSet,
-	typeof import('$lib/server/domain/db'),
-	ExtractTablesWithRelations<typeof import('$lib/server/domain/db')>
+	typeof import('$lib/server/collections/db'),
+	ExtractTablesWithRelations<typeof import('$lib/server/collections/db')>
 >;
 
 class Plavna {
@@ -358,7 +358,7 @@ class Plavna {
 
 				// 6. Preview types query
 				const allPreviewTypesQuery = db
-					.select({ id: previewTypes.id, component_reference: previewTypes.component_reference })
+					.select({ id: previewTypes.id, component_reference: previewTypes.url })
 					.from(postsQueryAliased)
 					.innerJoin(previewTypes, eq(previewTypes.id, postsQueryAliased.preview_type_id))
 					.groupBy(previewTypes.id);

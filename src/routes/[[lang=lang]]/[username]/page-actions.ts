@@ -5,7 +5,7 @@ import {
 	sectionDeleteSchema,
 	sectionUpdateSchema,
 	translationInsertSchema
-} from '$lib/server/domain/parsers';
+} from '$lib/server/collections/parsers';
 
 import type { RouteParams as RouteParams1 } from './$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/$types';

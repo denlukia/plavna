@@ -4,7 +4,7 @@
 
 	import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
-	import type { TranslationSelect } from '$lib/server/domain/types';
+	import type { TranslationSelect } from '$lib/server/collections/types';
 	import type { TranslationKey } from '$lib/server/i18n/en';
 
 	export let key: TranslationKey | TranslationSelect['_id'] | null = null;

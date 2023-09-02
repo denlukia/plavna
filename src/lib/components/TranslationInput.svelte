@@ -5,7 +5,7 @@
 	import { defaultLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
 	import { generatePath } from '$lib/isomorphic/url';
 
-	import type { TranslationInsertZod, TranslationUpdateZod } from '$lib/server/domain/types';
+	import type { TranslationInsertZod, TranslationUpdateZod } from '$lib/server/collections/types';
 	import type { SuperForm } from 'sveltekit-superforms/client';
 
 	export let superFormStores: SuperForm<TranslationUpdateZod> | SuperForm<TranslationInsertZod>;

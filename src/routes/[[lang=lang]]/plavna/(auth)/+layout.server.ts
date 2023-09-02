@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import { transGroups } from '$lib/server/i18n';
 
 import type { LayoutServerLoad } from './$types';
+import { defaultLang } from '$lib/isomorphic/languages';
 
 export const load = (async ({ locals, params, parent }) => {
 	const session = await locals.authRequest.validate();
@@ -10,6 +11,6 @@ export const load = (async ({ locals, params, parent }) => {
 
 	const { translations } = await parent();
 	return {
-		translations: { ...translations, ...transGroups.auth(params.lang) }
+		translations: { ...translations, ...transGroups.auth(params.lang || defaultLang) }
 	};
 }) satisfies LayoutServerLoad;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SuperForm } from 'sveltekit-superforms/client';
-	import type { PostPreviewUpdateZod, PreviewTypeExtended } from '$lib/server/domain/types';
+	import type { PostPreviewUpdateZod, PreviewTypeExtended } from '$lib/server/collections/types';
 
 	export let superForm: SuperForm<PostPreviewUpdateZod>;
 	export let previewTypeId: PreviewTypeExtended['id'];

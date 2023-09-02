@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import T from '$lib/components/Translation.svelte';
+	import Translation from '$lib/components/Translation.svelte';
 	import { defaultLang, supportedLanguages } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
 

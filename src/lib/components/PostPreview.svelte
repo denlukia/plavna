@@ -4,7 +4,7 @@
 
 	import { generatePath } from '$lib/isomorphic/url';
 
-	import type { PostSelect, TagSelect } from '$lib/server/domain/types';
+	import type { PostSelect, TagSelect } from '$lib/server/collections/types';
 	import type { Page } from '@sveltejs/kit';
 
 	export let post: PostSelect;

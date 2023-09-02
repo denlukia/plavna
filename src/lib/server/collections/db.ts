@@ -208,7 +208,7 @@ export const previewTypes = sqliteTable('preview_type', {
 		onDelete: 'cascade',
 		onUpdate: 'cascade'
 	}),
-	component_reference: text('component_reference').notNull()
+	url: text('url').notNull()
 });
 
 export const images = sqliteTable('image', {

@@ -1,9 +1,9 @@
-import type { TagSelect } from '$lib/server/domain/types';
-import type { marked } from 'marked';
+import type { TagSelect } from '$lib/server/collections/types';
+import type { TokensList } from 'marked';
 
-export function findTagIdsInLinks(tokens: marked.TokensList) {
+export function findTagIdsInLinks(tokens: TokensList) {
 	const tags: TagSelect['id'][] = [];
-	function parseTokensArray(tokens: marked.TokensList) {
+	function parseTokensArray(tokens: TokensList) {
 		tokens.forEach((token) => {
 			if (token.type === 'link' && token.href.startsWith('tag:')) {
 				tags.push(Number(token.href.split('tag:')[1]));

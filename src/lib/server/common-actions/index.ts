@@ -1,4 +1,4 @@
-import { translationUpdateSchema } from '../domain/parsers';
+import { translationUpdateSchema } from '../collections/parsers';
 import { detokenizeEmptyStrings, removeNullValues, tokenizeEmptyStrings } from '../utils/objects';
 import { type RequestEvent, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';

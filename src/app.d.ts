@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { TagSelect, TranslationInsertZod } from '$lib/server/domain/types';
+import type { TagSelect, TranslationInsertZod } from '$lib/server/collections/types';
 
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { SuperForm } from 'sveltekit-superforms/client';
@@ -24,8 +24,8 @@ declare global {
 /// <reference types="lucia-auth" />
 declare global {
 	namespace Lucia {
-		type Auth = import('$lib/server/domain/types').Auth;
-		type User = import('$lib/server/domain/types').User;
+		type Auth = import('$lib/server/collections/types').Auth;
+		type User = import('$lib/server/collections/types').User;
 	}
 }
 

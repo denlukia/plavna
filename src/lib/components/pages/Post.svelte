@@ -1,5 +1,5 @@
 <script lang="ts">
-	import T from '$lib/components/Translation.svelte';
+	import Translation from '$lib/components/Translation.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/$types';
 
@@ -7,11 +7,11 @@
 </script>
 
 <h1>
-	<T key={data.post.title_translation_id} />
+	<Translation key={data.post.title_translation_id} />
 </h1>
-<T key={data.post.content_translation_id} markdownMode />
-{#if data.previewComponent}
+<Translation key={data.post.content_translation_id} markdownMode />
+<!-- {#if data.previewComponent}
 	<svelte:component this={data.previewComponent} />
 {:else}
 	No preview
-{/if}
+{/if} -->
