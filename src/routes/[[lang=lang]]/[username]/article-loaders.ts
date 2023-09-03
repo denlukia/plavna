@@ -2,28 +2,28 @@ import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
 import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
 import type { PreviewTypeExtended } from '$lib/server/collections/types';
 
-import type { PageLoad as PostLoad, PageServerLoad as PostServerLoad } from './[slug]/$types';
+import type { PageLoad as ArticleLoad, PageServerLoad as ArticleServerLoad } from './[slug]/$types';
 import type {
-	PageLoad as PostEditLoad,
-	PageServerLoad as PostEditServerLoad
+	PageLoad as ArticleEditLoad,
+	PageServerLoad as ArticleEditServerLoad
 } from './[slug]/edit/$types';
 
-// Post Editor ---------------------------------------------------------------
-export const postEditServerLoad = (async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.posts.createAndOrLoadEditor(
+// Article Editor ---------------------------------------------------------------
+export const articleEditServerLoad = (async ({ params, parent, locals: { plavna } }) => {
+	const { translations: newTranslations, ...other } = await plavna.articles.createAndOrLoadEditor(
 		params.username,
 		params.slug
 	);
 	const { translations } = await parent();
 	return { ...other, translations: { ...translations, ...newTranslations } };
-}) satisfies PostEditServerLoad;
+}) satisfies ArticleEditServerLoad;
 
-export const postEditLoad = (async ({ data, url }) => {
+export const articleEditLoad = (async ({ data, url }) => {
 	data = structuredClone(data);
 	const previewIdFromParam = url.searchParams.get(PREVIEW_EDITOR_PARAM_NAME);
 	const previewIdToShow = previewIdFromParam
 		? Number(previewIdFromParam)
-		: data.postPreviewForm.data.preview_type_id;
+		: data.articlePreviewForm.data.preview_type_id;
 
 	const previewTypeIndex = data.previews.findIndex((preview) => preview.id === previewIdToShow);
 
@@ -32,21 +32,21 @@ export const postEditLoad = (async ({ data, url }) => {
 		previewType.component_editor = await getPreviewComponent(previewType.url, 'Editor');
 	}
 	return { ...data };
-}) satisfies PostEditLoad;
+}) satisfies ArticleEditLoad;
 
-// Post Viewer ---------------------------------------------------------------
-export const postServerLoad = (async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.posts.getOne(
+// Article Viewer ---------------------------------------------------------------
+export const articleServerLoad = (async ({ params, parent, locals: { plavna } }) => {
+	const { translations: newTranslations, ...other } = await plavna.articles.getOne(
 		params.username,
 		params.slug
 	);
 	const { translations } = await parent();
 	return { ...other, translations: { ...translations, ...newTranslations } };
-}) satisfies PostServerLoad;
+}) satisfies ArticleServerLoad;
 
-export const postLoad = (async ({ data }) => {
+export const articleLoad = (async ({ data }) => {
 	data = structuredClone(data);
 	const previewType = data.previewType as PreviewTypeExtended;
 	previewType.component_editor = await getPreviewComponent(previewType.url, 'Static');
 	return { ...data };
-}) satisfies PostLoad;
+}) satisfies ArticleLoad;

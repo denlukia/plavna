@@ -4,8 +4,8 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { generatePath } from '$lib/isomorphic/url';
 import { update_translation } from '$lib/server/common-actions';
 import {
-	postPreviewUpdateSchema,
-	postSlugUpdateSchema,
+	articlePreviewUpdateSchema,
+	articleSlugUpdateSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema
@@ -41,11 +41,11 @@ async function delete_tag(event: ActionRequestEvt) {
 
 async function update_slug(event: ActionRequestEvt) {
 	const { slug } = event.params;
-	const form = await superValidate(event.request, postSlugUpdateSchema);
+	const form = await superValidate(event.request, articleSlugUpdateSchema);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	const result = await plavna.posts.updateSlug(slug, form.data);
+	const result = await plavna.articles.updateSlug(slug, form.data);
 
 	let replacementsObject: Record<string, string | undefined> = {
 		'[[lang=lang]]': event.params.lang,
@@ -58,10 +58,10 @@ async function update_slug(event: ActionRequestEvt) {
 	throw redirect(302, generatePath(event.route.id, replacementsObject));
 }
 
-async function edit_post(event: ActionRequestEvt, type: 'publish' | 'hide' | 'delete') {
+async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 'delete') {
 	const { slug } = event.params;
 	const { plavna } = event.locals;
-	await plavna.posts[type](slug);
+	await plavna.articles[type](slug);
 
 	if (type === 'delete') {
 		let destinationRouteId = '/[[lang=lang]]/[username]';
@@ -79,11 +79,11 @@ async function edit_post(event: ActionRequestEvt, type: 'publish' | 'hide' | 'de
 
 async function update_preview(event: ActionRequestEvt) {
 	const { slug } = event.params;
-	const form = await superValidate(event.request, postPreviewUpdateSchema);
+	const form = await superValidate(event.request, articlePreviewUpdateSchema);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	await plavna.posts.updatePreview(slug, form.data);
+	await plavna.articles.updatePreview(slug, form.data);
 }
 
 type ActionRequestEvt =
@@ -96,8 +96,8 @@ export const actions = {
 	create_tag,
 	delete_tag,
 	update_slug,
-	publish: (event: ActionRequestEvt) => edit_post(event, 'publish'),
-	hide: (event: ActionRequestEvt) => edit_post(event, 'hide'),
-	delete: (event: ActionRequestEvt) => edit_post(event, 'delete'),
+	publish: (event: ActionRequestEvt) => edit_article(event, 'publish'),
+	hide: (event: ActionRequestEvt) => edit_article(event, 'hide'),
+	delete: (event: ActionRequestEvt) => edit_article(event, 'delete'),
 	update_preview
 };

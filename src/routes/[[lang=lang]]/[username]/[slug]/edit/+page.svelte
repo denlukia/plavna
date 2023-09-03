@@ -1,7 +1,7 @@
 <script lang="ts">
-	import PostEditor from '$lib/components/pages/PostEdit.svelte';
+	import ArticleEditor from '$lib/components/pages/ArticleEdit.svelte';
 
 	export let data;
 </script>
 
-<PostEditor {data} />
+<ArticleEditor {data} />

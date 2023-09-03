@@ -1,7 +1,7 @@
 import type { Config } from 'drizzle-kit';
 
 export default {
-	schema: './src/lib/server/collections/db.ts',
+	schema: './src/lib/server/collections/db-schema.ts',
 	out: './drizzle',
 	breakpoints: true,
 	driver: 'turso',

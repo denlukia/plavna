@@ -12,7 +12,7 @@
 
 	export let editorForms: {
 		isCheckedForm: SuperValidated<TagUpdateZod>;
-		name_translation_id: TranslationUpdate['_id'];
+		name_translation_id: TranslationUpdate['key'];
 		deletionForm: SuperValidated<TagDeleteZod>;
 	};
 

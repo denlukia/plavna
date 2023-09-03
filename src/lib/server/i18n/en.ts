@@ -18,7 +18,7 @@ const translations = {
 	edit_slug: 'Edit slug',
 	couldnt_edit_page: "Could not edit a page slug and I don't know why",
 	create_new_page: 'Create new page',
-	couldnt_save_post: "Could not save a post and I don't know why",
+	couldnt_save_article: "Could not save a article and I don't know why",
 	preview_plavna_modern: 'Plavna Modern'
 };
 

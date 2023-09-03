@@ -17,7 +17,7 @@ export const pageServerLoad = (async ({
 	if ('pagename' in params) {
 		pagename = params.pagename;
 	}
-	const result = await plavna.pages.getOneWithSectionsAndPosts(username, pagename);
+	const result = await plavna.pages.getOneWithSectionsAndArticles(username, pagename);
 
 	const { translations } = await parent();
 	return { ...result, translations: { ...translations, ...result.translations } };

@@ -14,7 +14,7 @@
 	$: currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
 </script>
 
-<input name="_id" type="hidden" bind:value={$form._id} />
+<input name="key" type="hidden" bind:value={$form.key} />
 {#each supportedLanguages as lang}
 	<input
 		style={currentLang === lang ? 'display: block;' : 'display: none;'}

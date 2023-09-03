@@ -1,1 +1,1 @@
-export { postEditLoad as load } from '../../post-loaders';
+export { articleEditLoad as load } from '../../article-loaders';

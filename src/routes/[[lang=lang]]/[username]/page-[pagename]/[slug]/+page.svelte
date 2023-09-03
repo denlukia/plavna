@@ -4,4 +4,4 @@
 	// export let data: PageData;
 </script>
 
-Post under page
+Article under page

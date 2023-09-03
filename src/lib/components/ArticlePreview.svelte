@@ -4,10 +4,10 @@
 
 	import { generatePath } from '$lib/isomorphic/url';
 
-	import type { PostSelect, TagSelect } from '$lib/server/collections/types';
+	import type { ArticleSelect, TagSelect } from '$lib/server/collections/types';
 	import type { Page } from '@sveltejs/kit';
 
-	export let post: PostSelect;
+	export let article: ArticleSelect;
 	export let tags: TagSelect[];
 
 	function getRouteId(params: Page['params']) {
@@ -20,15 +20,15 @@
 </script>
 
 <a
-	class="post"
+	class="article"
 	href={generatePath(getRouteId($page.params), {
 		'[[lang=lang]]': $page.params.lang,
 		'[username]': $page.params.username,
 		'[pagename]': $page.params.pagename,
-		'[slug]': post.slug
+		'[slug]': article.slug
 	})}
 >
-	<Translation key={post.title_translation_id} />
+	<Translation key={article.title_translation_id} />
 	{#each tags as tag (tag.id)}
 		<p>
 			<Translation key={tag.name_translation_id} />
@@ -37,7 +37,7 @@
 </a>
 
 <style>
-	.post {
+	.article {
 		display: block;
 		background-color: #eee;
 		width: 200px;

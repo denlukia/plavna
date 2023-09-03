@@ -19,7 +19,7 @@ import {
 	sql
 } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
-import { marked } from 'marked';
+import { marked, use } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import {
@@ -31,24 +31,24 @@ import {
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
 	pages,
-	posts,
+	articles,
 	previewTypes,
 	sections,
-	sectionsTags,
+	sectionsToTags,
 	tags,
-	tagsPosts,
+	tagsToArticles,
 	translations,
 	users
-} from '$lib/server/collections/db';
+} from '$lib/server/collections/db-schema';
 import { ERRORS } from '$lib/server/collections/errors';
 import {
 	pageCreateFormSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
-	postPreviewUpdateSchema,
-	postSelectWithoutPreviewValuesSchema,
-	postSlugUpdateSchema,
-	postUpdateSchema,
+	articlePreviewUpdateSchema,
+	articleSelectWithoutPreviewValuesSchema,
+	articleSlugUpdateSchema,
+	articleUpdateSchema,
 	sectionInsertSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
@@ -67,17 +67,17 @@ import type {
 	PageInsert,
 	PageSelect,
 	PageUpdateForm,
-	PostInsert,
-	PostPreviewUpdate,
-	PostSelect,
-	PostSlugUpdate,
+	ArticleInsert,
+	ArticlePreviewUpdate,
+	ArticleSelect,
+	ArticleSlugUpdate,
 	PreviewTypeSelect,
 	SectionDelete,
 	SectionSelect,
-	SectionTagInsert,
+	SectionToTagInsert,
 	SectionUpdate,
 	TagDelete,
-	TagPostSelect,
+	TagToArticleSelect,
 	TagSelect,
 	TagUpdate,
 	TranslationDelete,
@@ -92,8 +92,8 @@ import type { AuthRequest } from 'lucia';
 type TransactionContext = SQLiteTransaction<
 	'async',
 	ResultSet,
-	typeof import('$lib/server/collections/db'),
-	ExtractTablesWithRelations<typeof import('$lib/server/collections/db')>
+	typeof import('$lib/server/collections/db-schema'),
+	ExtractTablesWithRelations<typeof import('$lib/server/collections/db-schema')>
 >;
 
 class Plavna {
@@ -164,7 +164,7 @@ class Plavna {
 				createForm: superValidateSync(pageCreateFormSchema)
 			};
 		},
-		getOneWithSectionsAndPosts: async (
+		getOneWithSectionsAndArticles: async (
 			username: string,
 			pagename: string,
 			excludedTags?: ExcludedTags
@@ -190,11 +190,11 @@ class Plavna {
 					_: sectionsMeta,
 					...sectionsFields
 				} = sections;
-				const sectionQueryForPosts = db
+				const sectionQueryForArticles = db
 					.select({ ...sectionsFields })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.innerJoin(translations, eq(translations._id, sections.title_translation_id))
+					.innerJoin(translations, eq(translations.key, sections.title_translation_id))
 					.where(isNotNull(translations[this.lang]))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
@@ -202,96 +202,96 @@ class Plavna {
 					.select({ id: sections.title_translation_id })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.innerJoin(translations, eq(translations._id, sections.title_translation_id))
+					.innerJoin(translations, eq(translations.key, sections.title_translation_id))
 					.where(isNotNull(translations[this.lang]))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
-				const sectionQueryAliased = sectionQueryForPosts.as('section_sq');
+				const sectionQueryAliased = sectionQueryForArticles.as('section_sq');
 
-				// 2. Posts query
+				// 2. Articles query
 				const {
-					$inferInsert: $inferInsertPosts,
-					$inferSelect: $inferSelectPosts,
-					_: postsMeta,
-					...postsFields
-				} = posts;
+					$inferInsert: $inferInsertArticles,
+					$inferSelect: $inferSelectArticles,
+					_: articlesMeta,
+					...articlesFields
+				} = articles;
 				const translationForTag = alias(translations, 'translation_for_tag');
-				const translationForPost = alias(translations, 'translation_for_post');
-				const postsQuery = db
-					.select({ ...postsFields })
+				const translationForArticle = alias(translations, 'translation_for_article');
+				const articlesQuery = db
+					.select({ ...articlesFields })
 					.from(sectionQueryAliased)
 					.innerJoin(
-						sectionsTags,
+						sectionsToTags,
 						and(
-							eq(sectionsTags.section_id, sectionQueryAliased.id),
-							eq(sectionsTags.lang, this.lang)
+							eq(sectionsToTags.section_id, sectionQueryAliased.id),
+							eq(sectionsToTags.lang, this.lang)
 						)
 					)
-					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
-					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
-					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.innerJoin(tags, eq(tags.id, sectionsToTags.tag_id))
+					.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
+					.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
 					.innerJoin(
 						translationForTag,
 						and(
-							eq(translationForTag._id, tags.name_translation_id),
+							eq(translationForTag.key, tags.name_translation_id),
 							isNotNull(translationForTag[this.lang])
 						)
 					)
 					.innerJoin(
-						translationForPost,
+						translationForArticle,
 						and(
-							eq(translationForPost._id, posts.title_translation_id),
-							isNotNull(translationForPost[this.lang])
+							eq(translationForArticle.key, articles.title_translation_id),
+							isNotNull(translationForArticle[this.lang])
 						)
 					)
-					.where(isNotNull(posts.published_at))
-					.orderBy(desc(posts.published_at))
-					.groupBy(posts.id)
+					.where(isNotNull(articles.published_at))
+					.orderBy(desc(articles.published_at))
+					.groupBy(articles.id)
 					.limit(POSTS_PER_SECTION);
-				const postsQueryForTranslations = db
-					.select({ id: posts.title_translation_id })
+				const articlesQueryForTranslations = db
+					.select({ id: articles.title_translation_id })
 					.from(sectionQueryAliased)
 					.innerJoin(
-						sectionsTags,
+						sectionsToTags,
 						and(
-							eq(sectionsTags.section_id, sectionQueryAliased.id),
-							eq(sectionsTags.lang, this.lang)
+							eq(sectionsToTags.section_id, sectionQueryAliased.id),
+							eq(sectionsToTags.lang, this.lang)
 						)
 					)
-					.innerJoin(tags, eq(tags.id, sectionsTags.tag_id))
-					.innerJoin(tagsPosts, eq(tagsPosts.tag_id, tags.id))
-					.innerJoin(posts, eq(posts.id, tagsPosts.post_id))
+					.innerJoin(tags, eq(tags.id, sectionsToTags.tag_id))
+					.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
+					.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
 					.innerJoin(
 						translationForTag,
 						and(
-							eq(translationForTag._id, tags.name_translation_id),
+							eq(translationForTag.key, tags.name_translation_id),
 							isNotNull(translationForTag[this.lang])
 						)
 					)
 					.innerJoin(
-						translationForPost,
+						translationForArticle,
 						and(
-							eq(translationForPost._id, posts.title_translation_id),
-							isNotNull(translationForPost[this.lang])
+							eq(translationForArticle.key, articles.title_translation_id),
+							isNotNull(translationForArticle[this.lang])
 						)
 					)
-					.where(isNotNull(posts.published_at))
-					.orderBy(desc(posts.published_at))
-					.groupBy(posts.id)
+					.where(isNotNull(articles.published_at))
+					.orderBy(desc(articles.published_at))
+					.groupBy(articles.id)
 					.limit(POSTS_PER_SECTION);
-				const postsQueryAliased = postsQuery.as('posts_sq');
+				const articlesQueryAliased = articlesQuery.as('articles_sq');
 
-				// 3. Tags posts query
-				const tagsPostsQuery = db
-					.select({ tag_id: tagsPosts.tag_id, post_id: tagsPosts.post_id })
-					.from(postsQueryAliased)
-					.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
-					.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+				// 3. Tags articles query
+				const tagsArticlesQuery = db
+					.select({ tag_id: tagsToArticles.tag_id, article_id: tagsToArticles.article_id })
+					.from(articlesQueryAliased)
+					.innerJoin(tagsToArticles, eq(tagsToArticles.article_id, articlesQueryAliased.id))
+					.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 					.innerJoin(
 						translations,
-						and(eq(translations._id, tags.name_translation_id), isNotNull(translations[this.lang]))
+						and(eq(translations.key, tags.name_translation_id), isNotNull(translations[this.lang]))
 					);
-				const tagsPostsQueryAliased = tagsPostsQuery.as('tags_posts_sq');
+				const tagsArticlesQueryAliased = tagsArticlesQuery.as('tags_articles_sq');
 
 				// 4. Tags
 				const {
@@ -309,8 +309,8 @@ class Plavna {
 								.where(eq(tags.user_id, user?.id))
 						: db
 								.select({ ...tagsFields })
-								.from(tagsPostsQueryAliased)
-								.innerJoin(tags, eq(tags.id, tagsPostsQueryAliased.tag_id))
+								.from(tagsArticlesQueryAliased)
+								.innerJoin(tags, eq(tags.id, tagsArticlesQueryAliased.tag_id))
 								.groupBy(tags.id);
 				const tagsQueryForTranslations =
 					user?.username === username
@@ -320,13 +320,13 @@ class Plavna {
 								.where(eq(tags.user_id, user?.id))
 						: db
 								.select({ id: tags.name_translation_id })
-								.from(postsQueryAliased)
-								.innerJoin(tagsPosts, eq(tagsPosts.post_id, postsQueryAliased.id))
-								.innerJoin(tags, eq(tags.id, tagsPosts.tag_id))
+								.from(articlesQueryAliased)
+								.innerJoin(tagsToArticles, eq(tagsToArticles.article_id, articlesQueryAliased.id))
+								.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 								.innerJoin(
 									translations,
 									and(
-										eq(translations._id, tags.name_translation_id),
+										eq(translations.key, tags.name_translation_id),
 										isNotNull(translations[this.lang])
 									)
 								);
@@ -341,31 +341,31 @@ class Plavna {
 				const sectionsTranslationsQuery = db
 					.select({ ...translationsFields })
 					.from(translations)
-					.where(inArray(translations._id, sectionQueryForTranslatins))
-					.groupBy(translations._id);
+					.where(inArray(translations.key, sectionQueryForTranslatins))
+					.groupBy(translations.key);
 
 				// 6. Other Translations query
 				const otherTranslationsQuery = db
-					.select({ _id: translations._id, [this.lang]: translations[this.lang] })
+					.select({ key: translations.key, [this.lang]: translations[this.lang] })
 					.from(translations)
 					.where(
 						or(
-							inArray(translations._id, postsQueryForTranslations),
-							inArray(translations._id, tagsQueryForTranslations)
+							inArray(translations.key, articlesQueryForTranslations),
+							inArray(translations.key, tagsQueryForTranslations)
 						)
 					)
-					.groupBy(translations._id);
+					.groupBy(translations.key);
 
 				// 6. Preview types query
 				const allPreviewTypesQuery = db
 					.select({ id: previewTypes.id, component_reference: previewTypes.url })
-					.from(postsQueryAliased)
-					.innerJoin(previewTypes, eq(previewTypes.id, postsQueryAliased.preview_type_id))
+					.from(articlesQueryAliased)
+					.innerJoin(previewTypes, eq(previewTypes.id, articlesQueryAliased.preview_type_id))
 					.groupBy(previewTypes.id);
 
-				const sectionInfo = sectionQueryForPosts.all();
-				const postsInfo = postsQuery.all();
-				const tagsPostsInfo = tagsPostsQuery.all();
+				const sectionInfo = sectionQueryForArticles.all();
+				const articlesInfo = articlesQuery.all();
+				const tagsArticlesInfo = tagsArticlesQuery.all();
 				const tagsInfo = tagsQuery.all();
 				const sectionsTranslationsInfo = sectionsTranslationsQuery.all();
 				const otherTranslationsInfo = otherTranslationsQuery.all();
@@ -373,8 +373,8 @@ class Plavna {
 
 				return Promise.all([
 					sectionInfo,
-					postsInfo,
-					tagsPostsInfo,
+					articlesInfo,
+					tagsArticlesInfo,
 					tagsInfo,
 					sectionsTranslationsInfo,
 					otherTranslationsInfo,
@@ -385,8 +385,8 @@ class Plavna {
 			const sectionsNonEmpty = sectionsResponses.filter((res) => res[0].length);
 
 			return {
-				sections: sectionsNonEmpty.map(([sectionInfo, postsInfo, tagsPostsInfo]) => {
-					return { meta: sectionInfo[0], posts: postsInfo, tagsPosts: tagsPostsInfo };
+				sections: sectionsNonEmpty.map(([sectionInfo, articlesInfo, tagsArticlesInfo]) => {
+					return { meta: sectionInfo[0], articles: articlesInfo, tagsArticles: tagsArticlesInfo };
 				}),
 				tags: sectionsNonEmpty.reduce((acc, [a, b, c, tagsInfo]) => {
 					return {
@@ -402,13 +402,13 @@ class Plavna {
 								sectionsTranslationsInfo.map((t) => {
 									if (user?.username === username) {
 										return [
-											t._id,
+											t.key,
 											superValidateSync(t, translationUpdateSchema, {
-												id: 'section-translation-' + t._id
+												id: 'section-translation-' + t.key
 											})
 										];
 									} else {
-										return [t._id, t[this.lang]];
+										return [t.key, t[this.lang]];
 									}
 								})
 							)
@@ -419,7 +419,7 @@ class Plavna {
 							...acc,
 							...Object.fromEntries(
 								otherTranslationsInfo.map((t) => {
-									return [t._id, t[this.lang]];
+									return [t.key, t[this.lang]];
 								})
 							)
 						};
@@ -440,85 +440,91 @@ class Plavna {
 		}
 	};
 
-	public readonly posts = {
-		getIdIfExists: async (slug: PostSelect['slug']) => {
-			const post = await db.select({ id: posts.id }).from(posts).where(eq(posts.slug, slug)).get();
-			if (post) {
-				return post.id;
+	public readonly articles = {
+		getIdIfExists: async (slug: ArticleSelect['slug']) => {
+			const article = await db
+				.select({ id: articles.id })
+				.from(articles)
+				.where(eq(articles.slug, slug))
+				.get();
+			if (article) {
+				return article.id;
 			} else {
 				return null;
 			}
 		},
-		createFromSlug: async (slug: PostInsert['slug']) => {
+		createFromSlug: async (slug: ArticleInsert['slug']) => {
 			const user = await this.user.getOrThrow();
 			return db.transaction(async (trx) => {
 				const newTranslation = {
 					user_id: user.id
 				};
-				const [{ _id: title_translation_id }, { _id: content_translation_id }] =
+				const [{ key: title_translation_id }, { key: content_translation_id }] =
 					await this.translations.create(
 						[newTranslation, newTranslation],
 						'allow-empty',
 						trx,
 						user
 					);
-				const post = await trx
-					.insert(posts)
+				const article = await trx
+					.insert(articles)
 					.values({
 						user_id: user.id,
 						slug: slug,
 						title_translation_id: Number(title_translation_id),
 						content_translation_id: Number(content_translation_id)
 					})
-					.returning({ id: posts.id })
+					.returning({ id: articles.id })
 					.get();
-				return post.id;
+				return article.id;
 			});
 		},
-		createAndOrLoadEditor: async (username: User['username'], slug: PostSelect['slug']) => {
+		createAndOrLoadEditor: async (username: User['username'], slug: ArticleSelect['slug']) => {
 			const user = await this.user.checkOrThrow(null, username);
 
-			let exisingId = await this.posts.getIdIfExists(slug);
+			let exisingId = await this.articles.getIdIfExists(slug);
 			if (exisingId === null) {
-				exisingId = await this.posts.createFromSlug(slug);
+				exisingId = await this.articles.createFromSlug(slug);
 			}
 
 			const translForForms = alias(translations, 'translForForms');
 			const query = await db
 				.select({
-					posts,
-					tagsPosts,
+					articles: articles,
+					tagsArticles: tagsToArticles,
 					tags,
-					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
+					translations: { key: translations.key, [this.lang]: translations[this.lang] },
 					translForForms,
 					previewTypes
 				})
-				.from(posts)
+				.from(articles)
 				.leftJoin(previewTypes, or(eq(previewTypes.user_id, user.id), isNull(previewTypes.user_id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
-				.leftJoin(translations, eq(translations._id, previewTypes.name_translation_id))
+				.leftJoin(translations, eq(translations.key, previewTypes.name_translation_id))
 				.leftJoin(
 					translForForms,
 					or(
-						eq(translForForms._id, posts.content_translation_id),
-						eq(translForForms._id, posts.title_translation_id),
-						eq(translForForms._id, tags.name_translation_id)
+						eq(translForForms.key, articles.content_translation_id),
+						eq(translForForms.key, articles.title_translation_id),
+						eq(translForForms.key, tags.name_translation_id)
 					)
 				)
-				.leftJoin(tagsPosts, eq(tagsPosts.post_id, exisingId))
-				.where(eq(posts.id, exisingId))
+				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
+				.where(eq(articles.id, exisingId))
 				.all();
 
 			const previewsArr = query.map((rows) => rows.previewTypes).filter(getNullAndDupFilter('id'));
 			const allTags = query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
-			const postTags = query.map((rows) => rows.tagsPosts).filter(getNullAndDupFilter('tag_id'));
-			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('_id'));
+			const articleTags = query
+				.map((rows) => rows.tagsArticles)
+				.filter(getNullAndDupFilter('tag_id'));
+			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
 			const translForms = query
 				.map(({ translForForms: t }) => t)
-				.filter(getNullAndDupFilter('_id'));
+				.filter(getNullAndDupFilter('key'));
 			const tagForms = allTags.map((tag) => ({
 				isCheckedForm: superValidateSync(
-					{ ...tag, checked: !!postTags.find((t) => t.tag_id === tag.id) },
+					{ ...tag, checked: !!articleTags.find((t) => t.tag_id === tag.id) },
 					tagUpdateSchema,
 					{ id: 'is-checked-' + tag.id }
 				),
@@ -529,66 +535,66 @@ class Plavna {
 			}));
 
 			return {
-				post: postSelectWithoutPreviewValuesSchema.parse(query[0].posts),
-				postSlugForm: superValidateSync(query[0].posts, postSlugUpdateSchema),
-				postForm: superValidateSync(query[0].posts, postUpdateSchema),
-				postPreviewForm: superValidateSync(query[0].posts, postPreviewUpdateSchema),
+				article: articleSelectWithoutPreviewValuesSchema.parse(query[0].articles),
+				articleSlugForm: superValidateSync(query[0].articles, articleSlugUpdateSchema),
+				articleForm: superValidateSync(query[0].articles, articleUpdateSchema),
+				articlePreviewForm: superValidateSync(query[0].articles, articlePreviewUpdateSchema),
 				previews: previewsArr,
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema),
 				translations: Object.fromEntries([
 					...translForms.map((translation) => {
-						const { _id, ...other } = translation;
+						const { key, ...other } = translation;
 						return [
-							_id,
-							superValidateSync(other, translationUpdateSchema, { id: 'translation-' + _id })
+							key,
+							superValidateSync(translation, translationUpdateSchema, { id: 'translation-' + key })
 						];
 					}),
-					...translArr.map((translation) => [translation._id, translation[this.lang]])
+					...translArr.map((translation) => [translation.key, translation[this.lang]])
 				])
 			};
 		},
-		updateSlug: async (slug: string, post: PostSlugUpdate) => {
+		updateSlug: async (slug: string, article: ArticleSlugUpdate) => {
 			const user = await this.user.getOrThrow();
 			return db
-				.update(posts)
-				.set(post)
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
-				.returning({ slug: posts.slug })
+				.update(articles)
+				.set(article)
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+				.returning({ slug: articles.slug })
 				.get();
 		},
 		publish: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
-				.update(posts)
+				.update(articles)
 				.set({ published_at: new Date() })
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
-				.returning({ slug: posts.slug })
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+				.returning({ slug: articles.slug })
 				.get();
 		},
 		hide: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
-				.update(posts)
+				.update(articles)
 				.set({ published_at: null })
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
-				.returning({ slug: posts.slug })
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+				.returning({ slug: articles.slug })
 				.get();
 		},
 		delete: async (slug: string) => {
 			const user = await this.user.getOrThrow();
 			return db
-				.delete(posts)
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
+				.delete(articles)
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
 				.run();
 		},
-		updatePreview: async (slug: string, preview: PostPreviewUpdate) => {
+		updatePreview: async (slug: string, preview: ArticlePreviewUpdate) => {
 			const user = await this.user.getOrThrow();
 			return db
-				.update(posts)
+				.update(articles)
 				.set(preview)
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))
-				.returning({ slug: posts.slug })
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+				.returning({ slug: articles.slug })
 				.get();
 		},
 		getOne: async (username: string, slug: string) => {
@@ -596,29 +602,32 @@ class Plavna {
 			const titleTranslationAlias = alias(translations, 'title_translation');
 			const queryPromise = db
 				.select({
-					posts,
+					articles: articles,
 					titleTranslationAlias,
-					translations: { _id: translations._id, [this.lang]: translations[this.lang] },
+					translations: { key: translations.key, [this.lang]: translations[this.lang] },
 					previewTypes,
 					tags
 				})
-				.from(posts)
-				.innerJoin(users, eq(users.id, posts.user_id))
-				.leftJoin(previewTypes, eq(previewTypes.id, posts.preview_type_id))
-				.leftJoin(tagsPosts, eq(tagsPosts.post_id, posts.id))
-				.leftJoin(tags, eq(tags.id, tagsPosts.tag_id))
-				.leftJoin(titleTranslationAlias, eq(titleTranslationAlias._id, posts.title_translation_id))
+				.from(articles)
+				.innerJoin(users, eq(users.id, articles.user_id))
+				.leftJoin(previewTypes, eq(previewTypes.id, articles.preview_type_id))
+				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, articles.id))
+				.leftJoin(tags, eq(tags.id, tagsToArticles.tag_id))
+				.leftJoin(
+					titleTranslationAlias,
+					eq(titleTranslationAlias.key, articles.title_translation_id)
+				)
 				.leftJoin(
 					translations,
 					or(
-						eq(translations._id, posts.content_translation_id),
-						eq(translations._id, tags.name_translation_id)
+						eq(translations.key, articles.content_translation_id),
+						eq(translations.key, tags.name_translation_id)
 					)
 				)
 				.where(
 					and(
 						eq(users.username, username),
-						eq(posts.slug, slug),
+						eq(articles.slug, slug),
 						isNotNull(titleTranslationAlias[this.lang])
 					)
 				)
@@ -629,21 +638,21 @@ class Plavna {
 			if (!query.length) {
 				throw error(404);
 			}
-			if ((!user || user.username !== username) && query[0].posts.published_at === null) {
+			if ((!user || user.username !== username) && query[0].articles.published_at === null) {
 				throw error(404);
 			}
 			return {
-				post: query[0].posts,
+				article: query[0].articles,
 				previewType: query[0].previewTypes,
 				translations: Object.fromEntries([
 					...query
 						.map((row) => row.translations)
-						.filter(getNullAndDupFilter('_id'))
-						.map((row) => [row._id, row[this.lang]]),
+						.filter(getNullAndDupFilter('key'))
+						.map((row) => [row.key, row[this.lang]]),
 					...query
 						.map((row) => row.titleTranslationAlias)
-						.filter(getNullAndDupFilter('_id'))
-						.map((row) => [row._id, row[this.lang]])
+						.filter(getNullAndDupFilter('key'))
+						.map((row) => [row.key, row[this.lang]])
 				]),
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
@@ -682,7 +691,7 @@ class Plavna {
 				const { page_id } = page;
 				const { section_id } = await trx
 					.insert(sections)
-					.values({ user_id: user.id, page_id, title_translation_id: createdTranslation._id })
+					.values({ user_id: user.id, page_id, title_translation_id: createdTranslation.key })
 					.returning({ section_id: sections.id })
 					.get();
 
@@ -699,7 +708,7 @@ class Plavna {
 					}
 
 					await trx
-						.insert(sectionsTags)
+						.insert(sectionsToTags)
 						.values(foundTags.map((tag) => ({ ...tag, section_id })))
 						.run();
 				}
@@ -742,10 +751,10 @@ class Plavna {
 					}
 				}
 
-				await trx.delete(sectionsTags).where(eq(sectionsTags.section_id, section_id)).run();
+				await trx.delete(sectionsToTags).where(eq(sectionsToTags.section_id, section_id)).run();
 				if (foundTags.length) {
 					await trx
-						.insert(sectionsTags)
+						.insert(sectionsToTags)
 						.values(foundTags.map((tag) => ({ ...tag, section_id })))
 						.run();
 				}
@@ -765,10 +774,10 @@ class Plavna {
 					throw error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
 				}
 				const { title_translation_id } = translation;
-				await this.translations.delete({ _id: title_translation_id }, trx);
+				await this.translations.delete({ key: title_translation_id }, trx);
 				await trx
-					.delete(sectionsTags)
-					.where(and(eq(sectionsTags.section_id, sectionDelete.id)))
+					.delete(sectionsToTags)
+					.where(and(eq(sectionsToTags.section_id, sectionDelete.id)))
 					.run();
 			});
 		}
@@ -778,7 +787,7 @@ class Plavna {
 		create: async (translation: TranslationInsert) => {
 			const user = await this.user.getOrThrow();
 			return db.transaction(async (trx) => {
-				const [{ _id }] = await this.translations.create(
+				const [{ key }] = await this.translations.create(
 					[translation],
 					'disallow-empty',
 					trx,
@@ -786,7 +795,7 @@ class Plavna {
 				);
 				return trx
 					.insert(tags)
-					.values({ name_translation_id: _id, user_id: user.id })
+					.values({ name_translation_id: key, user_id: user.id })
 					.returning()
 					.get();
 			});
@@ -801,10 +810,10 @@ class Plavna {
 		switchChecked: async (tag: TagUpdate, slug: string) => {
 			const user = await this.user.getOrThrow();
 			const currentlyChecked = tag.checked;
-			const postSql = sql`${db
-				.select({ id: posts.id })
-				.from(posts)
-				.where(and(eq(posts.slug, slug), eq(posts.user_id, user.id)))}`;
+			const articleSql = sql`${db
+				.select({ id: articles.id })
+				.from(articles)
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))}`;
 			const tagSql = sql`${db
 				.select({ id: tags.id })
 				.from(tags)
@@ -812,13 +821,13 @@ class Plavna {
 
 			if (currentlyChecked) {
 				const result = await db
-					.delete(tagsPosts)
-					.where(and(eq(tagsPosts.tag_id, tagSql), eq(tagsPosts.post_id, postSql)))
+					.delete(tagsToArticles)
+					.where(and(eq(tagsToArticles.tag_id, tagSql), eq(tagsToArticles.article_id, articleSql)))
 					.run();
 			} else {
 				const result = await db
-					.insert(tagsPosts)
-					.values({ tag_id: tagSql, post_id: postSql })
+					.insert(tagsToArticles)
+					.values({ tag_id: tagSql, article_id: articleSql })
 					.run();
 			}
 		}
@@ -833,7 +842,7 @@ class Plavna {
 		) => {
 			if (mode === 'disallow-empty') {
 				newTranslations.forEach((translation) => {
-					if (!hasNonEmptyProperties(translation, ['user_id', '_id'])) {
+					if (!hasNonEmptyProperties(translation, ['user_id', 'key'])) {
 						throw error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
 					}
 				});
@@ -854,16 +863,17 @@ class Plavna {
 			return chosenDBInstance
 				.insert(translations)
 				.values(newTranslations)
-				.returning({ _id: translations._id })
+				.returning({ key: translations.key })
 				.all();
 		},
 		update: async (translation: TranslationUpdate, trx?: TransactionContext) => {
 			const user = await this.user.getOrThrow();
 			const chosenDBInstance = trx || db;
+			console.log('updating_translation to', translation, user);
 			return chosenDBInstance
 				.update(translations)
 				.set(translation)
-				.where(and(eq(translations._id, translation._id), eq(translations.user_id, user.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
 				.run();
 		},
 		delete: async (translation: TranslationDelete, trx?: TransactionContext) => {
@@ -871,7 +881,7 @@ class Plavna {
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance
 				.delete(translations)
-				.where(and(eq(translations._id, translation._id), eq(translations.user_id, user.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
 				.run();
 		}
 	};

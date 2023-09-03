@@ -7,7 +7,7 @@
 	import type { TranslationSelect } from '$lib/server/collections/types';
 	import type { TranslationKey } from '$lib/server/i18n/en';
 
-	export let key: TranslationKey | TranslationSelect['_id'] | null = null;
+	export let key: TranslationKey | TranslationSelect['key'] | null = null;
 	export let markdownMode: boolean = false;
 
 	$: currentLang = ($page.params.lang || defaultLang) as SupportedLang;

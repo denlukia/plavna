@@ -1,2 +1,2 @@
-export { postEditServerLoad as load } from '../../../post-loaders';
-export { actions } from '../../../post-actions';
+export { articleEditServerLoad as load } from '../../../article-loaders';
+export { actions } from '../../../article-actions';

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Post from '$lib/components/pages/Post.svelte';
+	import Article from '$lib/components/pages/Article.svelte';
 
 	export let data;
 </script>
 
-<Post {data} />
+<Article {data} />

@@ -1,30 +1,30 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import PostPreview from './PostPreview.svelte';
+	import ArticlePreview from './ArticlePreview.svelte';
 	import SectionEditor from './editors/SectionEditor.svelte';
 
 	import type {
-		PostSelect,
+		ArticleSelect,
 		SectionSelect,
-		TagPostSelect,
+		TagToArticleSelect,
 		TagSelect
 	} from '$lib/server/collections/types';
 	import SectionViewer from './SectionViewer.svelte';
 
 	export let section: {
 		meta: SectionSelect;
-		posts: PostSelect[];
-		tagsPosts: TagPostSelect[];
+		articles: ArticleSelect[];
+		tagsArticles: TagToArticleSelect[];
 	};
 
-	function getTagsForPost(
-		post: PostSelect,
-		tagsPosts: TagPostSelect[],
+	function getTagsForArticle(
+		article: ArticleSelect,
+		tagsArticles: TagToArticleSelect[],
 		tags: Record<string, TagSelect> | undefined
 	) {
-		const selectedTags = tagsPosts.filter((el) => el.post_id === post.id);
+		const selectedTags = tagsArticles.filter((el) => el.article_id === article.id);
 		if (tags) {
-			return selectedTags.map((tagPost) => tags[tagPost.tag_id]).filter(Boolean);
+			return selectedTags.map((tagArticle) => tags[tagArticle.tag_id]).filter(Boolean);
 		} else {
 			return [];
 		}
@@ -37,6 +37,9 @@
 	<SectionViewer section={section.meta} />
 {/if}
 
-{#each section.posts as post (post.id)}
-	<PostPreview {post} tags={getTagsForPost(post, section.tagsPosts, $page.data.tags)} />
+{#each section.articles as article (article.id)}
+	<ArticlePreview
+		{article}
+		tags={getTagsForArticle(article, section.tagsArticles, $page.data.tags)}
+	/>
 {/each}

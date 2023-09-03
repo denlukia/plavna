@@ -13,6 +13,12 @@ export const auth = lucia({
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
 	getUserAttributes: (data) => {
-		return { id: data.id, username: data.username, uploadcare_token: data.uploadcare_token };
+		return {
+			id: data.id,
+			username: data.username,
+			imagekit_public_key: data.imagekit_public_key,
+			imagekit_private_key: data.imagekit_private_key,
+			imagekit_url_endpoint: data.imagekit_url_endpoint
+		};
 	}
 });

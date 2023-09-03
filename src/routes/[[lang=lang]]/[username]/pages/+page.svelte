@@ -4,6 +4,8 @@
 	export let data;
 </script>
 
+<h1>МОЇ СТОРІНКИ</h1>
+
 {#each data.editForms as formObj}
 	<PageEditForm {formObj} />
 {/each}

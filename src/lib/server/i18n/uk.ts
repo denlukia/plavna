@@ -20,7 +20,7 @@ const translations: FullTranslation = {
 	edit_slug: 'Змінити адресу',
 	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому',
 	create_new_page: 'Створити сторінку',
-	couldnt_save_post: 'Не вдалося зберігти пост і я не знаю чому',
+	couldnt_save_article: 'Не вдалося зберігти пост і я не знаю чому',
 	preview_plavna_modern: 'Плавна Сучасне'
 };
 

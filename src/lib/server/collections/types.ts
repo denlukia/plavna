@@ -1,5 +1,5 @@
 import type { auth } from '../services/auth';
-import type { users } from './db';
+import type { users } from './db-schema';
 import type {
 	excludedTags,
 	imageSelectSchema,
@@ -7,21 +7,21 @@ import type {
 	pageInsertSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
-	postInsertSchema,
-	postPreviewUpdateSchema,
-	postSelectSchema,
-	postSelectWithoutPreviewValuesSchema,
-	postSlugUpdateSchema,
+	articleInsertSchema,
+	articlePreviewUpdateSchema,
+	articleSelectSchema,
+	articleSelectWithoutPreviewValuesSchema,
+	articleSlugUpdateSchema,
 	previewTypeSelectSchema,
 	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
-	sectionTagInsertSchema,
-	sectionTagSelectSchema,
+	sectionToTagInsertSchema,
+	sectionToTagSelectSchema,
 	sectionUpdateSchema,
 	tagDeleteSchema,
 	tagInsertSchema,
-	tagPostSelectSchema,
+	tagToArticleSelectSchema,
 	tagSelectSchema,
 	tagUpdateSchema,
 	translationDeleteSchema,
@@ -29,14 +29,14 @@ import type {
 	translationSelectSchema,
 	translationUpdateSchema
 } from './parsers';
-import type { InferModel } from 'drizzle-orm';
+
 import type { z } from 'zod';
 
 // Auth
 export type Auth = typeof auth;
 
 // Users
-export type User = InferModel<typeof users, 'select'>;
+export type User = typeof users.$inferSelect;
 
 // Pages
 export type PageSelect = z.infer<typeof pageSelectSchema>;
@@ -53,8 +53,8 @@ export type SectionUpdate = z.infer<typeof sectionUpdateSchema>;
 export type SectionDelete = z.infer<typeof sectionDeleteSchema>;
 
 // Sections to Tags
-export type SectionTagSelect = z.infer<typeof sectionTagSelectSchema>;
-export type SectionTagInsert = z.infer<typeof sectionTagInsertSchema>;
+export type SectionToTagSelect = z.infer<typeof sectionToTagSelectSchema>;
+export type SectionToTagInsert = z.infer<typeof sectionToTagInsertSchema>;
 
 // Tags
 export type TagSelect = z.infer<typeof tagSelectSchema>;
@@ -64,8 +64,8 @@ export type TagUpdateZod = typeof tagUpdateSchema;
 export type TagDelete = z.infer<typeof tagDeleteSchema>;
 export type TagDeleteZod = typeof tagDeleteSchema;
 
-// Tags to Posts
-export type TagPostSelect = z.infer<typeof tagPostSelectSchema>;
+// Tags to Articles
+export type TagToArticleSelect = z.infer<typeof tagToArticleSelectSchema>;
 
 // Translations
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;
@@ -75,13 +75,15 @@ export type TranslationUpdate = z.infer<typeof translationUpdateSchema>;
 export type TranslationUpdateZod = typeof translationUpdateSchema;
 export type TranslationDelete = z.infer<typeof translationDeleteSchema>;
 
-// Posts
-export type PostSelect = z.infer<typeof postSelectSchema>;
-export type PostInsert = z.infer<typeof postInsertSchema>;
-export type PostSlugUpdate = z.infer<typeof postSlugUpdateSchema>;
-export type PostPreviewUpdate = z.infer<typeof postPreviewUpdateSchema>;
-export type PostPreviewUpdateZod = typeof postPreviewUpdateSchema;
-export type PostSelectWithoutPreviewValues = z.infer<typeof postSelectWithoutPreviewValuesSchema>;
+// Articles
+export type ArticleSelect = z.infer<typeof articleSelectSchema>;
+export type ArticleInsert = z.infer<typeof articleInsertSchema>;
+export type ArticleSlugUpdate = z.infer<typeof articleSlugUpdateSchema>;
+export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
+export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
+export type ArticleSelectWithoutPreviewValues = z.infer<
+	typeof articleSelectWithoutPreviewValuesSchema
+>;
 
 // Previews
 export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;

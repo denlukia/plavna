@@ -7,9 +7,9 @@
 </script>
 
 <h1>
-	<Translation key={data.post.title_translation_id} />
+	<Translation key={data.article.title_translation_id} />
 </h1>
-<Translation key={data.post.content_translation_id} markdownMode />
+<Translation key={data.article.content_translation_id} markdownMode />
 <!-- {#if data.previewComponent}
 	<svelte:component this={data.previewComponent} />
 {:else}

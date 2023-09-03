@@ -2,14 +2,14 @@ import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker } from '../utils/objec
 import {
 	images,
 	pages,
-	posts,
+	articles,
 	previewTypes,
 	sections,
-	sectionsTags,
+	sectionsToTags,
 	tags,
-	tagsPosts,
+	tagsToArticles,
 	translations
-} from './db';
+} from './db-schema';
 import { ERRORS } from './errors';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -31,8 +31,8 @@ export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_
 export const sectionDeleteSchema = sectionSelectSchema.pick({ id: true });
 
 // Sections to Tags
-export const sectionTagSelectSchema = createSelectSchema(sectionsTags);
-export const sectionTagInsertSchema = createInsertSchema(sectionsTags);
+export const sectionToTagSelectSchema = createSelectSchema(sectionsToTags);
+export const sectionToTagInsertSchema = createInsertSchema(sectionsToTags);
 
 // Tags
 export const tagSelectSchema = createSelectSchema(tags);
@@ -43,37 +43,37 @@ export const tagUpdateSchema = tagInsertSchema
 	.extend({ checked: z.boolean() });
 export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
 
-// Tags to Posts
-export const tagPostSelectSchema = createSelectSchema(tagsPosts);
+// Tags to Articles
+export const tagToArticleSelectSchema = createSelectSchema(tagsToArticles);
 
 // Translations
 export const translationSelectSchema = createSelectSchema(translations);
 export const translationInsertSchema = createInsertSchema(translations).refine(
-	createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']),
+	createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', 'key']),
 	{
 		message: ERRORS.AT_LEAST_ONE_TRANSLATION
 	}
 );
 export const translationUpdateSchema = createInsertSchema(translations)
 	.omit({ user_id: true })
-	.required({ _id: true })
-	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', '_id']), {
+	.required({ key: true })
+	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', 'key']), {
 		message: ERRORS.AT_LEAST_ONE_TRANSLATION
 	});
-export const translationDeleteSchema = translationSelectSchema.pick({ _id: true });
+export const translationDeleteSchema = translationSelectSchema.pick({ key: true });
 
-// Posts
-export const postSelectSchema = createSelectSchema(posts);
-export const postInsertSchema = createInsertSchema(posts);
-export const postUpdateSchema = z.object({});
-export const postSlugUpdateSchema = postSelectSchema.pick({ slug: true });
-export const postPreviewUpdateSchema = postInsertSchema.pick({
+// Articles
+export const articleSelectSchema = createSelectSchema(articles);
+export const articleInsertSchema = createInsertSchema(articles);
+export const articleUpdateSchema = z.object({});
+export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
+export const articlePreviewUpdateSchema = articleInsertSchema.pick({
 	preview_type_id: true,
 	preview_prop_1_value: true,
 	preview_prop_2_value: true,
 	preview_prop_3_value: true
 });
-export const postSelectWithoutPreviewValuesSchema = postSelectSchema.omit({
+export const articleSelectWithoutPreviewValuesSchema = articleSelectSchema.omit({
 	preview_type_id: true,
 	preview_prop_1_value: true,
 	preview_prop_2_value: true,
