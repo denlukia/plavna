@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 import type { SupportedLang } from '$lib/isomorphic/languages';
+import { previewFamilies, type PossiblePreviewFamilies, previewFamiliesIds } from './previews';
 
 export const users = sqliteTable(
 	'auth_user',
@@ -144,7 +145,8 @@ export const articles = sqliteTable(
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		published_at: integer('published_at', { mode: 'timestamp' }),
-		preview_type_id: integer('preview_type_id').references(() => previewTypes.id, {
+		preview_family: text('preview_family', { enum: previewFamiliesIds }),
+		preview_template_id: integer('preview_template_id').references(() => previewTemplates.id, {
 			onDelete: 'set null',
 			onUpdate: 'set null'
 		}),
@@ -200,9 +202,11 @@ export const tagsToArticlesRelations = relations(tagsToArticles, ({ one }) => ({
 	})
 }));
 
-export const previewTypes = sqliteTable('preview_types', {
+export const previewTemplates = sqliteTable('preview_templates', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	user_id: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	name_translation_id: integer('name_translation_id')
 		.notNull()
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
@@ -216,7 +220,7 @@ export const previewTypes = sqliteTable('preview_types', {
 export const images = sqliteTable('images', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	source: text('source').$type<'uploadcare'>().notNull(),
+	source: text('source', { enum: ['imagekit'] }).notNull(),
 	reference: text('reference').notNull(),
 	reference_translation_id: integer('reference_translation_id').references(() => translations.key, {
 		onDelete: 'cascade',

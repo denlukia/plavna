@@ -7,7 +7,7 @@ import type { TranslationKey } from './en';
 
 export const systemTranslations = { en, uk };
 
-export function getTransByLangAndKeys(lang: string, keys: TranslationKey[]) {
+export function getTranslationsByLangAndKeys(lang: string, keys: TranslationKey[]) {
 	return Object.fromEntries(
 		keys.map((key) => {
 			const translation: string = systemTranslations[(lang as SupportedLang) || defaultLang][key];
@@ -17,14 +17,15 @@ export function getTransByLangAndKeys(lang: string, keys: TranslationKey[]) {
 }
 
 export const createGroup = (keys: TranslationKey[]) => (lang: string) =>
-	getTransByLangAndKeys(lang, keys);
+	getTranslationsByLangAndKeys(lang, keys);
 
-export const transGroups = {
+export const serviceTranslations = {
 	auth: createGroup(['login', 'signup', 'username', 'password']),
 	login: createGroup(['to_login', 'username', 'password']),
 	signup: createGroup(['to_signup', 'username', 'password']),
 	layout: createGroup(['language']),
 	main: createGroup(['landing', 'to_sign_out']),
+	articleEditor: createGroup(['preview_plavna_modern']),
 	userPages: createGroup([
 		'couldnt_create_page',
 		'invalid_slug',

@@ -17,7 +17,7 @@
 	} = superForm(data.articleSlugForm);
 	const { form, errors, enhance } = superForm(data.articleForm);
 
-	$: ({ previews, articlePreviewForm, article } = data);
+	$: ({ article } = data);
 </script>
 
 Редагування тайтла:
@@ -33,7 +33,7 @@
 	<button formaction="?/hide">Hide</button>
 	<button formaction="?/delete">Delete</button>
 </form>
-<PreviewEditorsList {previews} {articlePreviewForm} />
+<PreviewEditorsList {data} />
 <fieldset>
 	{#each data.tagForms as editorForms}
 		<TagEditor {editorForms} />

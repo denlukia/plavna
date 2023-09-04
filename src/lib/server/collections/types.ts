@@ -12,7 +12,7 @@ import type {
 	articleSelectSchema,
 	articleSelectWithoutPreviewValuesSchema,
 	articleSlugUpdateSchema,
-	previewTypeSelectSchema,
+	previewTemplateSelectSchema,
 	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionSelectSchema,
@@ -31,6 +31,7 @@ import type {
 } from './parsers';
 
 import type { z } from 'zod';
+import type { PossiblePreviewFamilies } from './previews';
 
 // Auth
 export type Auth = typeof auth;
@@ -86,12 +87,17 @@ export type ArticleSelectWithoutPreviewValues = z.infer<
 >;
 
 // Previews
-export type PreviewTypeSelect = z.infer<typeof previewTypeSelectSchema>;
-export type PreviewTypeExtended = PreviewTypeSelect & {
-	component_static?: ConstructorOfATypedSvelteComponent;
-	component_dynamic?: ConstructorOfATypedSvelteComponent;
-	component_editor?: ConstructorOfATypedSvelteComponent;
-};
+export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;
+
+// Preview Components
+export type PreviewComponents = Record<
+	PossiblePreviewFamilies,
+	{
+		editor?: ConstructorOfATypedSvelteComponent;
+		static?: ConstructorOfATypedSvelteComponent;
+		dynamic?: ConstructorOfATypedSvelteComponent;
+	}
+>;
 
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;

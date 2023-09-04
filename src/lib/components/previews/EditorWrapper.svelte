@@ -1,9 +1,12 @@
 <script lang="ts">
 	import type { SuperForm } from 'sveltekit-superforms/client';
-	import type { ArticlePreviewUpdateZod, PreviewTypeExtended } from '$lib/server/collections/types';
+	import type {
+		ArticlePreviewUpdateZod,
+		PreviewTemplateSelect
+	} from '$lib/server/collections/types';
 
 	export let superForm: SuperForm<ArticlePreviewUpdateZod>;
-	export let previewTypeId: PreviewTypeExtended['id'];
+	export let previewTypeId: PreviewTemplateSelect['id'];
 
 	$: ({ enhance } = superForm);
 </script>

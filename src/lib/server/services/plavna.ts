@@ -32,7 +32,7 @@ import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
 	pages,
 	articles,
-	previewTypes,
+	previewTemplates,
 	sections,
 	sectionsToTags,
 	tags,
@@ -71,7 +71,7 @@ import type {
 	ArticlePreviewUpdate,
 	ArticleSelect,
 	ArticleSlugUpdate,
-	PreviewTypeSelect,
+	PreviewTemplateSelect,
 	SectionDelete,
 	SectionSelect,
 	SectionToTagInsert,
@@ -88,6 +88,7 @@ import type {
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
+import { previewFamilies } from '../collections/previews';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -358,10 +359,13 @@ class Plavna {
 
 				// 6. Preview types query
 				const allPreviewTypesQuery = db
-					.select({ id: previewTypes.id, component_reference: previewTypes.url })
+					.select({ id: previewTemplates.id, component_reference: previewTemplates.url })
 					.from(articlesQueryAliased)
-					.innerJoin(previewTypes, eq(previewTypes.id, articlesQueryAliased.preview_type_id))
-					.groupBy(previewTypes.id);
+					.innerJoin(
+						previewTemplates,
+						eq(previewTemplates.id, articlesQueryAliased.preview_template_id)
+					)
+					.groupBy(previewTemplates.id);
 
 				const sectionInfo = sectionQueryForArticles.all();
 				const articlesInfo = articlesQuery.all();
@@ -495,12 +499,12 @@ class Plavna {
 					tags,
 					translations: { key: translations.key, [this.lang]: translations[this.lang] },
 					translForForms,
-					previewTypes
+					previewTemplates
 				})
 				.from(articles)
-				.leftJoin(previewTypes, or(eq(previewTypes.user_id, user.id), isNull(previewTypes.user_id)))
+				.leftJoin(previewTemplates, or(eq(previewTemplates.user_id, user.id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
-				.leftJoin(translations, eq(translations.key, previewTypes.name_translation_id))
+				.leftJoin(translations, eq(translations.key, previewTemplates.name_translation_id))
 				.leftJoin(
 					translForForms,
 					or(
@@ -513,7 +517,9 @@ class Plavna {
 				.where(eq(articles.id, exisingId))
 				.all();
 
-			const previewsArr = query.map((rows) => rows.previewTypes).filter(getNullAndDupFilter('id'));
+			const previewTemplatesResult = query
+				.map((rows) => rows.previewTemplates)
+				.filter(getNullAndDupFilter('id'));
 			const allTags = query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
 			const articleTags = query
 				.map((rows) => rows.tagsArticles)
@@ -539,12 +545,13 @@ class Plavna {
 				articleSlugForm: superValidateSync(query[0].articles, articleSlugUpdateSchema),
 				articleForm: superValidateSync(query[0].articles, articleUpdateSchema),
 				articlePreviewForm: superValidateSync(query[0].articles, articlePreviewUpdateSchema),
-				previews: previewsArr,
+				previewFamilies,
+				previewTemplates: previewTemplatesResult,
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema),
 				translations: Object.fromEntries([
 					...translForms.map((translation) => {
-						const { key, ...other } = translation;
+						const { key } = translation;
 						return [
 							key,
 							superValidateSync(translation, translationUpdateSchema, { id: 'translation-' + key })
@@ -605,12 +612,12 @@ class Plavna {
 					articles: articles,
 					titleTranslationAlias,
 					translations: { key: translations.key, [this.lang]: translations[this.lang] },
-					previewTypes,
+					previewTypes: previewTemplates,
 					tags
 				})
 				.from(articles)
 				.innerJoin(users, eq(users.id, articles.user_id))
-				.leftJoin(previewTypes, eq(previewTypes.id, articles.preview_type_id))
+				.leftJoin(previewTemplates, eq(previewTemplates.id, articles.preview_template_id))
 				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, articles.id))
 				.leftJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 				.leftJoin(

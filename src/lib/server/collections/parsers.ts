@@ -3,7 +3,7 @@ import {
 	images,
 	pages,
 	articles,
-	previewTypes,
+	previewTemplates,
 	sections,
 	sectionsToTags,
 	tags,
@@ -13,6 +13,7 @@ import {
 import { ERRORS } from './errors';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
+import { previewFamiliesIds } from './previews';
 
 // TODO Refine all slug schemas to accept only valid slugs
 
@@ -63,26 +64,30 @@ export const translationUpdateSchema = createInsertSchema(translations)
 export const translationDeleteSchema = translationSelectSchema.pick({ key: true });
 
 // Articles
-export const articleSelectSchema = createSelectSchema(articles);
-export const articleInsertSchema = createInsertSchema(articles);
-export const articleUpdateSchema = z.object({});
-export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
-export const articlePreviewUpdateSchema = articleInsertSchema.pick({
-	preview_type_id: true,
-	preview_prop_1_value: true,
-	preview_prop_2_value: true,
-	preview_prop_3_value: true
+export const articleSelectSchema = createSelectSchema(articles, {
+	preview_family: z.enum(previewFamiliesIds)
 });
-export const articleSelectWithoutPreviewValuesSchema = articleSelectSchema.omit({
-	preview_type_id: true,
-	preview_prop_1_value: true,
-	preview_prop_2_value: true,
-	preview_prop_3_value: true
+export const articleInsertSchema = createInsertSchema(articles, {
+	preview_family: z.enum(previewFamiliesIds)
 });
 
-// Preview Types
-export const previewTypeSelectSchema = createSelectSchema(previewTypes);
-export const previewTypeInsertSchema = createInsertSchema(previewTypes);
+export const articleUpdateSchema = z.object({});
+export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
+
+const previewRelatedFields = {
+	preview_family: true,
+	preview_template_id: true,
+	preview_prop_1_value: true,
+	preview_prop_2_value: true,
+	preview_prop_3_value: true
+} as const;
+export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
+export const articleSelectWithoutPreviewValuesSchema =
+	articleSelectSchema.omit(previewRelatedFields);
+
+// Preview Templates
+export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
+export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
 
 // Images
 export const imageSelectSchema = createSelectSchema(images);

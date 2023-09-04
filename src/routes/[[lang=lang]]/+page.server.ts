@@ -1,7 +1,7 @@
 // routes/+page.server.ts
 import { type Actions, fail, redirect } from '@sveltejs/kit';
 
-import { transGroups } from '$lib/server/i18n';
+import { serviceTranslations } from '$lib/server/i18n';
 import { auth } from '$lib/server/services/auth';
 
 import type { PageServerLoad } from './$types';
@@ -10,7 +10,7 @@ import { defaultLang } from '$lib/isomorphic/languages';
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { translations } = await parent();
 	return {
-		translations: { ...translations, ...transGroups.main(params.lang || defaultLang) }
+		translations: { ...translations, ...serviceTranslations.main(params.lang || defaultLang) }
 	};
 };
 

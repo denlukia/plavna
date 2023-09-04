@@ -1,52 +1,42 @@
-import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
+import { PREVIEW_FAMILY_PARAM } from '$lib/isomorphic/constants';
 import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
-import type { PreviewTypeExtended } from '$lib/server/collections/types';
+import type { PreviewComponents } from '$lib/server/collections/types';
 
-import type { PageLoad as ArticleLoad, PageServerLoad as ArticleServerLoad } from './[slug]/$types';
-import type {
-	PageLoad as ArticleEditLoad,
-	PageServerLoad as ArticleEditServerLoad
-} from './[slug]/edit/$types';
+import type { PageLoad as ArticleLoad } from './[slug]/$types';
+import type { PageLoad as ArticleEditLoad } from './[slug]/edit/$types';
 
 // Article Editor ---------------------------------------------------------------
-export const articleEditServerLoad = (async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.articles.createAndOrLoadEditor(
-		params.username,
-		params.slug
-	);
-	const { translations } = await parent();
-	return { ...other, translations: { ...translations, ...newTranslations } };
-}) satisfies ArticleEditServerLoad;
-
 export const articleEditLoad = (async ({ data, url }) => {
-	data = structuredClone(data);
-	const previewIdFromParam = url.searchParams.get(PREVIEW_EDITOR_PARAM_NAME);
-	const previewIdToShow = previewIdFromParam
-		? Number(previewIdFromParam)
-		: data.articlePreviewForm.data.preview_type_id;
+	const previewFamilyFromParam = url.searchParams.get(PREVIEW_FAMILY_PARAM);
+	const previewComponents = data.previewFamilies.reduce(
+		(acc, family) => ({ ...acc, [family.id]: {} }),
+		{} as PreviewComponents
+	);
 
-	const previewTypeIndex = data.previews.findIndex((preview) => preview.id === previewIdToShow);
+	const previewFamilyId = previewFamilyFromParam
+		? Number(previewFamilyFromParam)
+		: data.articlePreviewForm.data.preview_family;
 
-	if (previewTypeIndex !== -1) {
-		const previewType = data.previews[previewTypeIndex] as PreviewTypeExtended;
-		previewType.component_editor = await getPreviewComponent(previewType.url, 'Editor');
+	const previewFamilyIndex = data.previewFamilies.findIndex(
+		(family) => family.id === previewFamilyId
+	);
+	if (previewFamilyIndex !== -1) {
+		const previewFamily = data.previewFamilies[previewFamilyIndex];
+		previewComponents[previewFamily.id].editor = await getPreviewComponent(
+			previewFamily.id,
+			'Editor'
+		);
 	}
-	return { ...data };
+	return { ...data, previewComponents };
 }) satisfies ArticleEditLoad;
 
 // Article Viewer ---------------------------------------------------------------
-export const articleServerLoad = (async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.articles.getOne(
-		params.username,
-		params.slug
-	);
-	const { translations } = await parent();
-	return { ...other, translations: { ...translations, ...newTranslations } };
-}) satisfies ArticleServerLoad;
-
 export const articleLoad = (async ({ data }) => {
 	data = structuredClone(data);
-	const previewType = data.previewType as PreviewTypeExtended;
-	previewType.component_editor = await getPreviewComponent(previewType.url, 'Static');
+	// let previewType = data.previewType;
+	// if (previewType !== null) {
+	// 	previewType = previewType as PreviewTypeSelect;
+	// 	previewType.component_editor = await getPreviewComponent(previewType.url, 'Static');
+	// }
 	return { ...data };
 }) satisfies ArticleLoad;

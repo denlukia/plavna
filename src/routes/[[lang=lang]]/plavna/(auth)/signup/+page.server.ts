@@ -1,13 +1,13 @@
 import { fail } from '@sveltejs/kit';
 
-import { transGroups } from '$lib/server/i18n';
+import { serviceTranslations } from '$lib/server/i18n';
 import { auth } from '$lib/server/services/auth';
 import { defaultLang } from '$lib/isomorphic/languages.js';
 
 export const load = async ({ parent, params }) => {
 	const { translations } = await parent();
 	return {
-		translations: { ...translations, ...transGroups.signup(params.lang || defaultLang) }
+		translations: { ...translations, ...serviceTranslations.signup(params.lang || defaultLang) }
 	};
 };
 

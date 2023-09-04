@@ -8,6 +8,20 @@
       "when": 1693740992914,
       "tag": "0000_military_nebula",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1693762409698,
+      "tag": "0001_flat_paladin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1693826928263,
+      "tag": "0002_redundant_malice",
+      "breakpoints": true
     }
   ]
 }

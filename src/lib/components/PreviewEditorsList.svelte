@@ -1,51 +1,47 @@
 <script lang="ts">
 	import Translation from './Translation.svelte';
 
-	import type { ArticlePreviewUpdateZod, PreviewTypeExtended } from '$lib/server/collections/types';
+	import type {
+		ArticlePreviewUpdateZod,
+		PreviewTemplateSelect
+	} from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { page } from '$app/stores';
-	import { PREVIEW_EDITOR_PARAM_NAME } from '$lib/isomorphic/constants';
+	import { PREVIEW_FAMILY_PARAM } from '$lib/isomorphic/constants';
 	import EditorWrapper from './previews/EditorWrapper.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	export let previews: PreviewTypeExtended[];
-	export let articlePreviewForm: SuperValidated<ArticlePreviewUpdateZod>;
+	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
+	import type { PreviewFamily } from '$lib/server/collections/previews';
+
+	export let data: PageData;
+
+	$: ({ previewFamilies, previewTemplates, previewComponents, articlePreviewForm } = data);
 
 	let superFormObj = superForm(articlePreviewForm);
 
-	$: previewIdFromParam = $page.url.searchParams.get(PREVIEW_EDITOR_PARAM_NAME);
-	$: initialPreviewId = previewIdFromParam
-		? Number(previewIdFromParam)
-		: articlePreviewForm.data.preview_type_id;
+	$: previewFamilyFromParam = $page.url.searchParams.get(PREVIEW_FAMILY_PARAM);
+	$: initialPreviewFamily = previewFamilyFromParam
+		? Number(previewFamilyFromParam)
+		: articlePreviewForm.data.preview_family;
 
-	let overridenPreviewId: null | PreviewTypeExtended['id'] = null;
-	$: finalPreviewId = overridenPreviewId ?? initialPreviewId;
+	let overridenPreviewFamily: null | PreviewTemplateSelect['id'] = null;
+	$: finalPreviewFamily = overridenPreviewFamily ?? initialPreviewFamily;
 
-	function formPreviewsArray(
-		previews: PreviewTypeExtended[],
-		articlePreviewForm: SuperValidated<ArticlePreviewUpdateZod>
-	) {}
-
-	function getPreviewSpecificLink(preview: PreviewTypeExtended, currentURL: URL) {
+	function getPreviewSpecificLink(preview: PreviewFamily, currentURL: URL) {
 		let url = new URL(currentURL);
-		url.searchParams.set(PREVIEW_EDITOR_PARAM_NAME, String(preview.id));
+		url.searchParams.set(PREVIEW_FAMILY_PARAM, String(preview.id));
 		return url.pathname + url.search;
 	}
 </script>
 
 Всі первью:
-{#each previews as preview}
-	<a href={getPreviewSpecificLink(preview, $page.url)}>
-		<Translation key={preview.name_translation_id} />
-	</a>
+{#each previewFamilies as family}
+	<b><Translation key={family.name_translation_id} /></b>
+	{@const component = previewComponents[family.id].editor}
+	{#if component}
+		<svelte:component this={component} />
+	{:else}
+		<a href={getPreviewSpecificLink(family, $page.url)}>Load this editor</a>
+	{/if}
 {/each}
-
-Поточне превью:
-{#if finalPreviewId}
-	<EditorWrapper superForm={superFormObj} previewTypeId={finalPreviewId}>
-		<svelte:component
-			this={getPreviewComponent(previews, finalPreviewId)}
-			superForm={superFormObj}
-		/>
-	</EditorWrapper>
-{/if}
