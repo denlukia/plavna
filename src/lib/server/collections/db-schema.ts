@@ -65,7 +65,7 @@ export const sections = sqliteTable('sections', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	title_translation_id: integer('title_translation_id')
+	title_translation_key: integer('title_translation_key')
 		.notNull()
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
@@ -76,7 +76,7 @@ export const sectionsRelations = relations(sections, ({ one, many }) => ({
 		references: [pages.id]
 	}),
 	title_translation: one(translations, {
-		fields: [sections.title_translation_id],
+		fields: [sections.title_translation_key],
 		references: [translations.key]
 	}),
 	sectionsToTags: many(sectionsToTags)
@@ -87,14 +87,14 @@ export const tags = sqliteTable('tags', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	name_translation_id: integer('name_translation_id')
+	name_translation_key: integer('name_translation_key')
 		.notNull()
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
 export const tagsRelations = relations(tags, ({ one, many }) => ({
 	name_translation: one(translations, {
-		fields: [tags.name_translation_id],
+		fields: [tags.name_translation_key],
 		references: [translations.key]
 	}),
 	sectionsToTags: many(sectionsToTags),
@@ -138,22 +138,37 @@ export const articles = sqliteTable(
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull(),
-		title_translation_id: integer('title_translation_id')
+		title_translation_key: integer('title_translation_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
-		content_translation_id: integer('content_translation_id')
+		content_translation_key: integer('content_translation_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		published_at: integer('published_at', { mode: 'timestamp' }),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),
 		preview_template_id: integer('preview_template_id').references(() => previewTemplates.id, {
-			onDelete: 'set null',
-			onUpdate: 'set null'
+			onDelete: 'cascade',
+			onUpdate: 'cascade'
 		}),
 		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
-		preview_prop_1_value: text('preview_prop_1_value'),
-		preview_prop_2_value: text('preview_prop_2_value'),
-		preview_prop_3_value: text('preview_prop_3_value')
+		preview_prop_1: text('preview_prop_1'),
+		preview_prop_2: text('preview_prop_2'),
+		preview_translation_key_1: integer('preview_translation_key_1').references(
+			() => translations.key,
+			{ onDelete: 'set null', onUpdate: 'cascade' }
+		),
+		preview_translation_key_2: integer('preview_translation_key_2').references(
+			() => translations.key,
+			{ onDelete: 'set null', onUpdate: 'cascade' }
+		),
+		preview_image_id_1: integer('preview_image_id_1').references(() => images.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade'
+		}),
+		preview_image_id_2: integer('preview_image_id_2').references(() => images.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade'
+		})
 	},
 	(table) => {
 		return {
@@ -164,11 +179,11 @@ export const articles = sqliteTable(
 
 export const articlesRelations = relations(articles, ({ one, many }) => ({
 	title_translation: one(translations, {
-		fields: [articles.title_translation_id],
+		fields: [articles.title_translation_key],
 		references: [translations.key]
 	}),
 	content_translation: one(translations, {
-		fields: [articles.content_translation_id],
+		fields: [articles.content_translation_key],
 		references: [translations.key]
 	}),
 	tagsArticles: many(tagsToArticles)
@@ -207,7 +222,7 @@ export const previewTemplates = sqliteTable('preview_templates', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	name_translation_id: integer('name_translation_id')
+	name_translation_key: integer('name_translation_key')
 		.notNull()
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	image_id: integer('image_id').references(() => images.id, {
@@ -222,14 +237,17 @@ export const images = sqliteTable('images', {
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	source: text('source', { enum: ['imagekit'] }).notNull(),
 	reference: text('reference').notNull(),
-	reference_translation_id: integer('reference_translation_id').references(() => translations.key, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade'
-	})
+	reference_translation_key: integer('reference_translation_key').references(
+		() => translations.key,
+		{
+			onDelete: 'cascade',
+			onUpdate: 'cascade'
+		}
+	)
 });
 
 export const translations = sqliteTable('translations', {
-	// It's "key" because is "id" is Indonasian lang code
+	// It's "key" because "id" is Indonasian lang code
 	key: integer('key').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	en: text('en'),

@@ -27,7 +27,10 @@ import type {
 	translationDeleteSchema,
 	translationInsertSchema,
 	translationSelectSchema,
-	translationUpdateSchema
+	translationUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateEditingFormSchema,
+	previewTemplateDeletionFormSchema
 } from './parsers';
 
 import type { z } from 'zod';
@@ -88,6 +91,12 @@ export type ArticleSelectWithoutPreviewValues = z.infer<
 
 // Previews
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;
+export type PreviewTemplateCreationFormZod = typeof previewTemplateCreationFormSchema;
+export type PreviewTemplateEditingFormZod = typeof previewTemplateEditingFormSchema;
+export type PreviewTemplateDeletionFormZod = typeof previewTemplateDeletionFormSchema;
+export type PreviewTemplateCreation = z.infer<typeof previewTemplateCreationFormSchema>;
+export type PreviewTemplateEditing = z.infer<typeof previewTemplateEditingFormSchema>;
+export type PreviewTemplateDeletion = z.infer<typeof previewTemplateDeletionFormSchema>;
 
 // Preview Components
 export type PreviewComponents = Record<

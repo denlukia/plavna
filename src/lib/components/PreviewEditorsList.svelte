@@ -13,12 +13,18 @@
 
 	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 	import type { PreviewFamily } from '$lib/server/collections/previews';
+	import PreviewTemplateCreator from './editors/PreviewTemplateCreator.svelte';
+	import PreviewTemplateEditor from './editors/PreviewTemplateEditor.svelte';
 
 	export let data: PageData;
 
-	$: ({ previewFamilies, previewTemplates, previewComponents, articlePreviewForm } = data);
-
-	let superFormObj = superForm(articlePreviewForm);
+	$: ({
+		previewFamilies,
+		previewTemplates,
+		previewComponents,
+		previewTemplateCreationForm,
+		articlePreviewForm
+	} = data);
 
 	$: previewFamilyFromParam = $page.url.searchParams.get(PREVIEW_FAMILY_PARAM);
 	$: initialPreviewFamily = previewFamilyFromParam
@@ -36,12 +42,24 @@
 </script>
 
 Всі первью:
-{#each previewFamilies as family}
-	<b><Translation key={family.name_translation_id} /></b>
-	{@const component = previewComponents[family.id].editor}
-	{#if component}
-		<svelte:component this={component} />
-	{:else}
-		<a href={getPreviewSpecificLink(family, $page.url)}>Load this editor</a>
-	{/if}
-{/each}
+<ul>
+	{#each previewFamilies as family}
+		{@const component = previewComponents[family.id].editor}
+		<li>
+			<b><Translation key={family.name_translation_key} /></b>
+			{#if component}
+				<svelte:component this={component} />
+			{:else}
+				<a href={getPreviewSpecificLink(family, $page.url)}>Load this editor</a>
+			{/if}
+		</li>
+	{/each}
+	{#each previewTemplates as template}
+		<li>
+			<PreviewTemplateEditor formObj={template.form} />
+		</li>
+	{/each}
+	<li>
+		<PreviewTemplateCreator formObj={previewTemplateCreationForm} />
+	</li>
+</ul>

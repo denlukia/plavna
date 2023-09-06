@@ -5,24 +5,25 @@
 	import { defaultLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
 	import { generatePath } from '$lib/isomorphic/url';
 
-	import type { TranslationInsertZod, TranslationUpdateZod } from '$lib/server/collections/types';
+	import type {
+		PreviewTemplateCreationFormZod,
+		PreviewTemplateEditingFormZod,
+		TranslationInsertZod
+	} from '$lib/server/collections/types';
 	import type { SuperForm } from 'sveltekit-superforms/client';
 
-	export let superFormStores: SuperForm<TranslationUpdateZod> | SuperForm<TranslationInsertZod>;
+	export let superFormStores:
+		| SuperForm<TranslationInsertZod>
+		| SuperForm<PreviewTemplateCreationFormZod>
+		| SuperForm<PreviewTemplateEditingFormZod>;
 
 	$: ({ form, errors, enhance } = superFormStores);
 	$: currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
 </script>
 
-<input name="key" type="hidden" bind:value={$form.key} />
-{#each supportedLanguages as lang}
-	<input
-		style={currentLang === lang ? 'display: block;' : 'display: none;'}
-		name={lang}
-		type="text"
-		bind:value={$form[lang]}
-	/>
-{/each}
+{#if 'key' in $form}
+	<input name="key" type="hidden" bind:value={$form.key} />
+{/if}
 {#each supportedLanguages as lang}
 	<svelte:element
 		this={browser ? 'button' : 'a'}
@@ -34,4 +35,13 @@
 	>
 		{lang}
 	</svelte:element>
+{/each}
+{#each supportedLanguages as lang}
+	<input
+		style={currentLang === lang ? 'display: block;' : 'display: none;'}
+		name={lang}
+		placeholder={lang}
+		type="text"
+		bind:value={$form[lang]}
+	/>
 {/each}

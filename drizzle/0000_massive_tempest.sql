@@ -2,18 +2,19 @@ CREATE TABLE `articles` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
 	`slug` text NOT NULL,
-	`title_translation_id` integer NOT NULL,
-	`content_translation_id` integer NOT NULL,
+	`title_translation_key` integer NOT NULL,
+	`content_translation_key` integer NOT NULL,
 	`published_at` integer,
-	`preview_type_id` integer,
+	`preview_family` text,
+	`preview_template_id` integer,
 	`preview_interactions_show_on` text,
 	`preview_prop_1_value` text,
 	`preview_prop_2_value` text,
 	`preview_prop_3_value` text,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`title_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`content_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`preview_type_id`) REFERENCES `preview_types`(`id`) ON UPDATE set null ON DELETE set null
+	FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`content_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE set null ON DELETE set null
 );
 --> statement-breakpoint
 CREATE TABLE `images` (
@@ -21,9 +22,9 @@ CREATE TABLE `images` (
 	`user_id` text,
 	`source` text NOT NULL,
 	`reference` text NOT NULL,
-	`reference_translation_id` integer,
+	`reference_translation_key` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`reference_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`reference_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `auth_key` (
@@ -40,14 +41,14 @@ CREATE TABLE `pages` (
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `preview_types` (
+CREATE TABLE `preview_templates` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`user_id` text,
-	`name_translation_id` integer NOT NULL,
+	`user_id` text NOT NULL,
+	`name_translation_key` integer NOT NULL,
 	`image_id` integer,
 	`url` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`name_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`name_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`image_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
@@ -55,10 +56,10 @@ CREATE TABLE `sections` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`page_id` integer NOT NULL,
 	`user_id` text NOT NULL,
-	`title_translation_id` integer NOT NULL,
+	`title_translation_key` integer NOT NULL,
 	FOREIGN KEY (`page_id`) REFERENCES `pages`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`title_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `sections_to_tags` (
@@ -81,9 +82,9 @@ CREATE TABLE `auth_session` (
 CREATE TABLE `tags` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
-	`name_translation_id` integer NOT NULL,
+	`name_translation_key` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`name_translation_id`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`name_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `tags_to_articles` (

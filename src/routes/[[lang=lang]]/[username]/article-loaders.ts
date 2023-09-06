@@ -7,19 +7,17 @@ import type { PageLoad as ArticleEditLoad } from './[slug]/edit/$types';
 
 // Article Editor ---------------------------------------------------------------
 export const articleEditLoad = (async ({ data, url }) => {
-	const previewFamilyFromParam = url.searchParams.get(PREVIEW_FAMILY_PARAM);
 	const previewComponents = data.previewFamilies.reduce(
 		(acc, family) => ({ ...acc, [family.id]: {} }),
 		{} as PreviewComponents
 	);
 
-	const previewFamilyId = previewFamilyFromParam
-		? Number(previewFamilyFromParam)
-		: data.articlePreviewForm.data.preview_family;
-
+	const previewFamilyId =
+		url.searchParams.get(PREVIEW_FAMILY_PARAM) ?? data.articlePreviewForm.data.preview_family;
 	const previewFamilyIndex = data.previewFamilies.findIndex(
 		(family) => family.id === previewFamilyId
 	);
+
 	if (previewFamilyIndex !== -1) {
 		const previewFamily = data.previewFamilies[previewFamilyIndex];
 		previewComponents[previewFamily.id].editor = await getPreviewComponent(
@@ -27,6 +25,7 @@ export const articleEditLoad = (async ({ data, url }) => {
 			'Editor'
 		);
 	}
+	console.log(previewComponents);
 	return { ...data, previewComponents };
 }) satisfies ArticleEditLoad;
 

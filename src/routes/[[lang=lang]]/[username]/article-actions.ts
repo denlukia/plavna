@@ -6,6 +6,9 @@ import { update_translation } from '$lib/server/common-actions';
 import {
 	articlePreviewUpdateSchema,
 	articleSlugUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateDeletionFormSchema,
+	previewTemplateEditingFormSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema
@@ -86,6 +89,28 @@ async function update_preview(event: ActionRequestEvt) {
 	await plavna.articles.updatePreview(slug, form.data);
 }
 
+async function create_preview_template(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, previewTemplateCreationFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	await plavna.previewTemplates.create(form.data);
+}
+async function update_preview_template(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, previewTemplateEditingFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	await plavna.previewTemplates.update(form.data);
+}
+async function delete_preview_template(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, previewTemplateDeletionFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	await plavna.previewTemplates.delete(form.data);
+}
+
 type ActionRequestEvt =
 	| RequestEvent<RouteParams1, '/[[lang=lang]]/[username]/[slug]/edit'>
 	| RequestEvent<RouteParams2, '/[[lang=lang]]/[username]/page-[pagename]/[slug]/edit'>;
@@ -99,5 +124,8 @@ export const actions = {
 	publish: (event: ActionRequestEvt) => edit_article(event, 'publish'),
 	hide: (event: ActionRequestEvt) => edit_article(event, 'hide'),
 	delete: (event: ActionRequestEvt) => edit_article(event, 'delete'),
-	update_preview
+	update_preview,
+	create_preview_template,
+	update_preview_template,
+	delete_preview_template
 };

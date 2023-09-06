@@ -5,4 +5,4 @@
 	export let section: SectionSelect;
 </script>
 
-<Translation key={section.title_translation_id} />
+<Translation key={section.title_translation_key} />

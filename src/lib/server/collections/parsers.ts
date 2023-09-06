@@ -1,4 +1,4 @@
-import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker } from '../utils/objects';
+import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../utils/objects';
 import {
 	images,
 	pages,
@@ -48,19 +48,20 @@ export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
 export const tagToArticleSelectSchema = createSelectSchema(tagsToArticles);
 
 // Translations
+const translationRefineArgs = [
+	atLeastOnePropBeyond(['user_id', 'key']),
+	{ message: ERRORS.AT_LEAST_ONE_TRANSLATION }
+] as const;
+const translationInsertBaseSchema = createInsertSchema(translations);
+
 export const translationSelectSchema = createSelectSchema(translations);
-export const translationInsertSchema = createInsertSchema(translations).refine(
-	createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', 'key']),
-	{
-		message: ERRORS.AT_LEAST_ONE_TRANSLATION
-	}
-);
+export const translationInsertSchema = translationInsertBaseSchema
+	.omit({ user_id: true })
+	.refine(...translationRefineArgs);
 export const translationUpdateSchema = createInsertSchema(translations)
 	.omit({ user_id: true })
 	.required({ key: true })
-	.refine(createAtLeastOnePropBeyondTheseIsNonEmptyChecker(['user_id', 'key']), {
-		message: ERRORS.AT_LEAST_ONE_TRANSLATION
-	});
+	.refine(...translationRefineArgs);
 export const translationDeleteSchema = translationSelectSchema.pick({ key: true });
 
 // Articles
@@ -71,7 +72,6 @@ export const articleInsertSchema = createInsertSchema(articles, {
 	preview_family: z.enum(previewFamiliesIds)
 });
 
-export const articleUpdateSchema = z.object({});
 export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
 
 const previewRelatedFields = {
@@ -88,6 +88,20 @@ export const articleSelectWithoutPreviewValuesSchema =
 // Preview Templates
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
 export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
+
+// TODO Refine url
+export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
+	.pick({ url: true })
+	.merge(translationInsertBaseSchema)
+	.omit({ key: true, user_id: true })
+	.refine(...translationRefineArgs);
+export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
+	.pick({ url: true })
+	.extend({ template_id: previewTemplateSelectSchema.shape.id })
+	.merge(translationInsertBaseSchema)
+	.omit({ user_id: true })
+	.refine(...translationRefineArgs);
+export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pick({ id: true });
 
 // Images
 export const imageSelectSchema = createSelectSchema(images);

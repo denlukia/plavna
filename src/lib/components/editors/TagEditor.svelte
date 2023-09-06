@@ -12,8 +12,7 @@
 
 	export let editorForms: {
 		isCheckedForm: SuperValidated<TagUpdateZod>;
-		name_translation_id: TranslationUpdate['key'];
-		deletionForm: SuperValidated<TagDeleteZod>;
+		name_translation_key: TranslationUpdate['key'];
 	};
 
 	$: superFormStores = superForm(editorForms.isCheckedForm);
@@ -27,7 +26,7 @@
 	<input style="display: none" name="checked" type="checkbox" bind:checked={$form.checked} />
 	<button>{$form.checked ? 'Uncheck' : 'Check'}</button>
 </form>
-<TranslationEditor key={editorForms.name_translation_id} />
+<TranslationEditor key={editorForms.name_translation_key} />
 <form use:enhance method="POST" action="?/delete_tag">
 	<input name="id" type="hidden" bind:value={$form.id} />
 	<button>Delete</button>

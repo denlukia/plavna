@@ -53,7 +53,9 @@ import {
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema,
-	translationUpdateSchema
+	translationUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateEditingFormSchema
 } from '$lib/server/collections/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
@@ -83,7 +85,10 @@ import type {
 	TranslationDelete,
 	TranslationInsert,
 	TranslationSelect,
-	TranslationUpdate
+	TranslationUpdate,
+	PreviewTemplateCreation,
+	PreviewTemplateEditing,
+	PreviewTemplateDeletion
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
@@ -195,15 +200,15 @@ class Plavna {
 					.select({ ...sectionsFields })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.innerJoin(translations, eq(translations.key, sections.title_translation_id))
+					.innerJoin(translations, eq(translations.key, sections.title_translation_key))
 					.where(isNotNull(translations[this.lang]))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
 				const sectionQueryForTranslatins = db
-					.select({ id: sections.title_translation_id })
+					.select({ id: sections.title_translation_key })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
-					.innerJoin(translations, eq(translations.key, sections.title_translation_id))
+					.innerJoin(translations, eq(translations.key, sections.title_translation_key))
 					.where(isNotNull(translations[this.lang]))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
@@ -234,14 +239,14 @@ class Plavna {
 					.innerJoin(
 						translationForTag,
 						and(
-							eq(translationForTag.key, tags.name_translation_id),
+							eq(translationForTag.key, tags.name_translation_key),
 							isNotNull(translationForTag[this.lang])
 						)
 					)
 					.innerJoin(
 						translationForArticle,
 						and(
-							eq(translationForArticle.key, articles.title_translation_id),
+							eq(translationForArticle.key, articles.title_translation_key),
 							isNotNull(translationForArticle[this.lang])
 						)
 					)
@@ -250,7 +255,7 @@ class Plavna {
 					.groupBy(articles.id)
 					.limit(POSTS_PER_SECTION);
 				const articlesQueryForTranslations = db
-					.select({ id: articles.title_translation_id })
+					.select({ id: articles.title_translation_key })
 					.from(sectionQueryAliased)
 					.innerJoin(
 						sectionsToTags,
@@ -265,14 +270,14 @@ class Plavna {
 					.innerJoin(
 						translationForTag,
 						and(
-							eq(translationForTag.key, tags.name_translation_id),
+							eq(translationForTag.key, tags.name_translation_key),
 							isNotNull(translationForTag[this.lang])
 						)
 					)
 					.innerJoin(
 						translationForArticle,
 						and(
-							eq(translationForArticle.key, articles.title_translation_id),
+							eq(translationForArticle.key, articles.title_translation_key),
 							isNotNull(translationForArticle[this.lang])
 						)
 					)
@@ -290,7 +295,7 @@ class Plavna {
 					.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 					.innerJoin(
 						translations,
-						and(eq(translations.key, tags.name_translation_id), isNotNull(translations[this.lang]))
+						and(eq(translations.key, tags.name_translation_key), isNotNull(translations[this.lang]))
 					);
 				const tagsArticlesQueryAliased = tagsArticlesQuery.as('tags_articles_sq');
 
@@ -316,18 +321,18 @@ class Plavna {
 				const tagsQueryForTranslations =
 					user?.username === username
 						? db
-								.select({ id: tags.name_translation_id })
+								.select({ id: tags.name_translation_key })
 								.from(tags)
 								.where(eq(tags.user_id, user?.id))
 						: db
-								.select({ id: tags.name_translation_id })
+								.select({ id: tags.name_translation_key })
 								.from(articlesQueryAliased)
 								.innerJoin(tagsToArticles, eq(tagsToArticles.article_id, articlesQueryAliased.id))
 								.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 								.innerJoin(
 									translations,
 									and(
-										eq(translations.key, tags.name_translation_id),
+										eq(translations.key, tags.name_translation_key),
 										isNotNull(translations[this.lang])
 									)
 								);
@@ -444,6 +449,180 @@ class Plavna {
 		}
 	};
 
+	public readonly sections = {
+		create: async (pagename: string, translation: TranslationInsert) => {
+			const user = await this.user.getOrThrow();
+			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
+
+			supportedLanguages.forEach((lang) => {
+				const translationText = translation[lang];
+				if (nonNull(translationText)) {
+					const tokens = marked.lexer(translationText);
+					const thisLangTags = findTagIdsInLinks(tokens);
+					foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
+				}
+			});
+
+			await db.transaction(async (trx) => {
+				const translationForRecord = { ...translation, user_id: user.id };
+				const [createdTranslation] = await this.translations.createFew(
+					[translationForRecord],
+					'disallow-empty',
+					trx
+				);
+				const page = await trx
+					.select({ page_id: pages.id })
+					.from(pages)
+					.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
+					.get();
+				if (!page) {
+					throw error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
+				}
+				const { page_id } = page;
+				const { section_id } = await trx
+					.insert(sections)
+					.values({ user_id: user.id, page_id, title_translation_key: createdTranslation.key })
+					.returning({ section_id: sections.id })
+					.get();
+
+				if (foundTags.length) {
+					// Tag ownership check
+					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
+					const existingForUser = await trx
+						.select({ tag_id: tags.id })
+						.from(tags)
+						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
+						.all();
+					if (existingForUser.length !== foundUnique.length) {
+						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+					}
+
+					await trx
+						.insert(sectionsToTags)
+						.values(foundTags.map((tag) => ({ ...tag, section_id })))
+						.run();
+				}
+			});
+		},
+		update: async (sectionUpdate: SectionUpdate) => {
+			const user = await this.user.getOrThrow();
+			const { section_id, ...translation } = sectionUpdate;
+			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
+
+			supportedLanguages.forEach((lang) => {
+				const translationText = translation[lang];
+				if (nonNull(translationText)) {
+					const tokens = marked.lexer(translationText);
+					const thisLangTags = findTagIdsInLinks(tokens);
+					foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
+				}
+			});
+
+			await db.transaction(async (trx) => {
+				await this.translations.update(translation, trx);
+
+				// Will throw if section does not exist
+				await trx
+					.select({ section_id: sections.id })
+					.from(sections)
+					.where(and(eq(sections.id, section_id), eq(sections.user_id, user.id)))
+					.get();
+
+				// Tag ownership check
+				if (foundTags.length) {
+					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
+					const existingForUser = await trx
+						.select({ tag_id: tags.id })
+						.from(tags)
+						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
+						.all();
+					if (existingForUser.length !== foundUnique.length) {
+						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+					}
+				}
+
+				await trx.delete(sectionsToTags).where(eq(sectionsToTags.section_id, section_id)).run();
+				if (foundTags.length) {
+					await trx
+						.insert(sectionsToTags)
+						.values(foundTags.map((tag) => ({ ...tag, section_id })))
+						.run();
+				}
+			});
+		},
+		// TODO Remake all delete params to just id
+		delete: async (sectionDelete: SectionDelete) => {
+			const user = await this.user.getOrThrow();
+
+			await db.transaction(async (trx) => {
+				const translation = await trx
+					.select({ title_translation_key: sections.title_translation_key })
+					.from(sections)
+					.where(and(eq(sections.id, sectionDelete.id), eq(sections.user_id, user.id)))
+					.get();
+				if (!translation) {
+					throw error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
+				}
+				const { title_translation_key } = translation;
+				await this.translations.delete({ key: title_translation_key }, trx);
+				await trx
+					.delete(sectionsToTags)
+					.where(and(eq(sectionsToTags.section_id, sectionDelete.id)))
+					.run();
+			});
+		}
+	};
+
+	public readonly tags = {
+		create: async (translation: TranslationInsert) => {
+			const user = await this.user.getOrThrow();
+			return db.transaction(async (trx) => {
+				const [{ key }] = await this.translations.createFew(
+					[translation],
+					'disallow-empty',
+					trx,
+					user
+				);
+				return trx
+					.insert(tags)
+					.values({ name_translation_key: key, user_id: user.id })
+					.returning()
+					.get();
+			});
+		},
+		delete: async (tag: TagDelete) => {
+			const user = await this.user.getOrThrow();
+			return db
+				.delete(tags)
+				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))
+				.run();
+		},
+		switchChecked: async (tag: TagUpdate, slug: string) => {
+			const user = await this.user.getOrThrow();
+			const currentlyChecked = tag.checked;
+			const articleSql = sql`${db
+				.select({ id: articles.id })
+				.from(articles)
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))}`;
+			const tagSql = sql`${db
+				.select({ id: tags.id })
+				.from(tags)
+				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))}`;
+
+			if (currentlyChecked) {
+				const result = await db
+					.delete(tagsToArticles)
+					.where(and(eq(tagsToArticles.tag_id, tagSql), eq(tagsToArticles.article_id, articleSql)))
+					.run();
+			} else {
+				const result = await db
+					.insert(tagsToArticles)
+					.values({ tag_id: tagSql, article_id: articleSql })
+					.run();
+			}
+		}
+	};
+
 	public readonly articles = {
 		getIdIfExists: async (slug: ArticleSelect['slug']) => {
 			const article = await db
@@ -463,8 +642,8 @@ class Plavna {
 				const newTranslation = {
 					user_id: user.id
 				};
-				const [{ key: title_translation_id }, { key: content_translation_id }] =
-					await this.translations.create(
+				const [{ key: title_translation_key }, { key: content_translation_key }] =
+					await this.translations.createFew(
 						[newTranslation, newTranslation],
 						'allow-empty',
 						trx,
@@ -475,8 +654,8 @@ class Plavna {
 					.values({
 						user_id: user.id,
 						slug: slug,
-						title_translation_id: Number(title_translation_id),
-						content_translation_id: Number(content_translation_id)
+						title_translation_key: Number(title_translation_key),
+						content_translation_key: Number(content_translation_key)
 					})
 					.returning({ id: articles.id })
 					.get();
@@ -497,34 +676,47 @@ class Plavna {
 					articles: articles,
 					tagsArticles: tagsToArticles,
 					tags,
-					translations: { key: translations.key, [this.lang]: translations[this.lang] },
+					translations,
 					translForForms,
+
 					previewTemplates
 				})
 				.from(articles)
 				.leftJoin(previewTemplates, or(eq(previewTemplates.user_id, user.id)))
 				.leftJoin(tags, eq(tags.user_id, user.id))
-				.leftJoin(translations, eq(translations.key, previewTemplates.name_translation_id))
+				.leftJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
 				.leftJoin(
 					translForForms,
 					or(
-						eq(translForForms.key, articles.content_translation_id),
-						eq(translForForms.key, articles.title_translation_id),
-						eq(translForForms.key, tags.name_translation_id)
+						eq(translForForms.key, articles.content_translation_key),
+						eq(translForForms.key, articles.title_translation_key),
+						eq(translForForms.key, tags.name_translation_key)
 					)
 				)
 				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
 				.where(eq(articles.id, exisingId))
 				.all();
-
-			const previewTemplatesResult = query
+			const articleResult = query[0].articles;
+			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
+			const previewTemplatesResults = query
 				.map((rows) => rows.previewTemplates)
-				.filter(getNullAndDupFilter('id'));
+				.filter(getNullAndDupFilter('id'))
+				.map((template) => {
+					const foundTranslation = translArr.find(
+						(translation) => translation.key === template.name_translation_key
+					);
+					return {
+						meta: template,
+						form: superValidateSync(
+							{ ...template, template_id: template.id, ...foundTranslation },
+							previewTemplateEditingFormSchema
+						)
+					};
+				});
 			const allTags = query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
 			const articleTags = query
 				.map((rows) => rows.tagsArticles)
 				.filter(getNullAndDupFilter('tag_id'));
-			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
 			const translForms = query
 				.map(({ translForForms: t }) => t)
 				.filter(getNullAndDupFilter('key'));
@@ -534,19 +726,44 @@ class Plavna {
 					tagUpdateSchema,
 					{ id: 'is-checked-' + tag.id }
 				),
-				name_translation_id: tag.name_translation_id,
-				deletionForm: superValidateSync({ id: tag.id }, tagDeleteSchema, {
-					id: 'deletion-' + tag.id
-				})
+				name_translation_key: tag.name_translation_key
 			}));
 
+			const previewForms = [...previewFamilies, ...previewTemplatesResults].map(
+				(familyOrTemplate) => {
+					const emptyForm = superValidateSync(articlePreviewUpdateSchema);
+					const filledForm = superValidateSync(articleResult, articlePreviewUpdateSchema);
+					if ('meta' in familyOrTemplate) {
+						return {
+							family: 'custom',
+							template_id: familyOrTemplate.meta.id,
+							form:
+								articleResult.preview_family === 'custom' &&
+								articleResult.preview_template_id === familyOrTemplate.meta.id
+									? filledForm
+									: emptyForm
+						};
+					} else {
+						return {
+							family: familyOrTemplate.id,
+							template_id: null,
+							form:
+								articleResult.preview_family === familyOrTemplate.id &&
+								articleResult.preview_template_id === null
+									? filledForm
+									: emptyForm
+						};
+					}
+				}
+			);
+
 			return {
-				article: articleSelectWithoutPreviewValuesSchema.parse(query[0].articles),
-				articleSlugForm: superValidateSync(query[0].articles, articleSlugUpdateSchema),
-				articleForm: superValidateSync(query[0].articles, articleUpdateSchema),
-				articlePreviewForm: superValidateSync(query[0].articles, articlePreviewUpdateSchema),
+				meta: articleSelectWithoutPreviewValuesSchema.parse(articleResult),
+				slugForm: superValidateSync(articleResult, articleSlugUpdateSchema),
+				previewForms,
 				previewFamilies,
-				previewTemplates: previewTemplatesResult,
+				previewTemplates: previewTemplatesResults,
+				previewTemplateCreationForm: superValidateSync(previewTemplateCreationFormSchema),
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema),
 				translations: Object.fromEntries([
@@ -556,8 +773,7 @@ class Plavna {
 							key,
 							superValidateSync(translation, translationUpdateSchema, { id: 'translation-' + key })
 						];
-					}),
-					...translArr.map((translation) => [translation.key, translation[this.lang]])
+					})
 				])
 			};
 		},
@@ -622,13 +838,13 @@ class Plavna {
 				.leftJoin(tags, eq(tags.id, tagsToArticles.tag_id))
 				.leftJoin(
 					titleTranslationAlias,
-					eq(titleTranslationAlias.key, articles.title_translation_id)
+					eq(titleTranslationAlias.key, articles.title_translation_key)
 				)
 				.leftJoin(
 					translations,
 					or(
-						eq(translations.key, articles.content_translation_id),
-						eq(translations.key, tags.name_translation_id)
+						eq(translations.key, articles.content_translation_key),
+						eq(translations.key, tags.name_translation_key)
 					)
 				)
 				.where(
@@ -666,182 +882,64 @@ class Plavna {
 		}
 	};
 
-	public readonly sections = {
-		create: async (pagename: string, translation: TranslationInsert) => {
+	public readonly previewTemplates = {
+		create: async (template: PreviewTemplateCreation) => {
 			const user = await this.user.getOrThrow();
-			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
-
-			supportedLanguages.forEach((lang) => {
-				const translationText = translation[lang];
-				if (nonNull(translationText)) {
-					const tokens = marked.lexer(translationText, { mangle: false, headerIds: false });
-					const thisLangTags = findTagIdsInLinks(tokens);
-					foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
-				}
-			});
-
+			const { url, ...translation } = template;
 			await db.transaction(async (trx) => {
-				const translationForRecord = { ...translation, user_id: user.id };
-				const [createdTranslation] = await this.translations.create(
-					[translationForRecord],
-					'disallow-empty',
-					trx
-				);
-				const page = await trx
-					.select({ page_id: pages.id })
-					.from(pages)
-					.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
-					.get();
-				if (!page) {
-					throw error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
-				}
-				const { page_id } = page;
-				const { section_id } = await trx
-					.insert(sections)
-					.values({ user_id: user.id, page_id, title_translation_id: createdTranslation.key })
-					.returning({ section_id: sections.id })
-					.get();
-
-				if (foundTags.length) {
-					// Tag ownership check
-					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
-					const existingForUser = await trx
-						.select({ tag_id: tags.id })
-						.from(tags)
-						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
-						.all();
-					if (existingForUser.length !== foundUnique.length) {
-						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
-					}
-
-					await trx
-						.insert(sectionsToTags)
-						.values(foundTags.map((tag) => ({ ...tag, section_id })))
-						.run();
-				}
-			});
-		},
-		update: async (sectionUpdate: SectionUpdate) => {
-			const user = await this.user.getOrThrow();
-			const { section_id, ...translation } = sectionUpdate;
-			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
-
-			supportedLanguages.forEach((lang) => {
-				const translationText = translation[lang];
-				if (nonNull(translationText)) {
-					const tokens = marked.lexer(translationText, { mangle: false, headerIds: false });
-					const thisLangTags = findTagIdsInLinks(tokens);
-					foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
-				}
-			});
-
-			await db.transaction(async (trx) => {
-				await this.translations.update(translation, trx);
-
-				// Will throw if section does not exist
+				const [{ key }] = await this.translations.createFew([translation], 'disallow-empty', trx);
 				await trx
-					.select({ section_id: sections.id })
-					.from(sections)
-					.where(and(eq(sections.id, section_id), eq(sections.user_id, user.id)))
-					.get();
-
-				// Tag ownership check
-				if (foundTags.length) {
-					const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
-					const existingForUser = await trx
-						.select({ tag_id: tags.id })
-						.from(tags)
-						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
-						.all();
-					if (existingForUser.length !== foundUnique.length) {
-						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
-					}
-				}
-
-				await trx.delete(sectionsToTags).where(eq(sectionsToTags.section_id, section_id)).run();
-				if (foundTags.length) {
-					await trx
-						.insert(sectionsToTags)
-						.values(foundTags.map((tag) => ({ ...tag, section_id })))
-						.run();
-				}
+					.insert(previewTemplates)
+					.values({ user_id: user.id, url, name_translation_key: key });
 			});
 		},
-		// TODO Remake all delete params to just id
-		delete: async (sectionDelete: SectionDelete) => {
+		update: async (template: PreviewTemplateEditing) => {
 			const user = await this.user.getOrThrow();
-
+			const { url, template_id, ...translation } = template;
 			await db.transaction(async (trx) => {
-				const translation = await trx
-					.select({ title_translation_id: sections.title_translation_id })
-					.from(sections)
-					.where(and(eq(sections.id, sectionDelete.id), eq(sections.user_id, user.id)))
-					.get();
-				if (!translation) {
-					throw error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
-				}
-				const { title_translation_id } = translation;
-				await this.translations.delete({ key: title_translation_id }, trx);
-				await trx
-					.delete(sectionsToTags)
-					.where(and(eq(sectionsToTags.section_id, sectionDelete.id)))
-					.run();
-			});
-		}
-	};
-
-	public readonly tags = {
-		create: async (translation: TranslationInsert) => {
-			const user = await this.user.getOrThrow();
-			return db.transaction(async (trx) => {
-				const [{ key }] = await this.translations.create(
-					[translation],
-					'disallow-empty',
-					trx,
-					user
+				const whereCondition = and(
+					eq(previewTemplates.id, template_id),
+					eq(previewTemplates.user_id, user.id)
 				);
-				return trx
-					.insert(tags)
-					.values({ name_translation_id: key, user_id: user.id })
-					.returning()
+				const translationResult = await trx
+					.select({ key: translations.key })
+					.from(previewTemplates)
+					.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
+					.where(whereCondition)
 					.get();
+				if (translationResult) {
+					await this.translations.update({ ...translation, key: translationResult.key }, trx);
+					await trx.update(previewTemplates).set({ url }).where(whereCondition);
+				} else {
+					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
+				}
 			});
 		},
-		delete: async (tag: TagDelete) => {
+		delete: async (template: PreviewTemplateDeletion) => {
 			const user = await this.user.getOrThrow();
-			return db
-				.delete(tags)
-				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))
-				.run();
-		},
-		switchChecked: async (tag: TagUpdate, slug: string) => {
-			const user = await this.user.getOrThrow();
-			const currentlyChecked = tag.checked;
-			const articleSql = sql`${db
-				.select({ id: articles.id })
-				.from(articles)
-				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))}`;
-			const tagSql = sql`${db
-				.select({ id: tags.id })
-				.from(tags)
-				.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))}`;
-
-			if (currentlyChecked) {
-				const result = await db
-					.delete(tagsToArticles)
-					.where(and(eq(tagsToArticles.tag_id, tagSql), eq(tagsToArticles.article_id, articleSql)))
-					.run();
-			} else {
-				const result = await db
-					.insert(tagsToArticles)
-					.values({ tag_id: tagSql, article_id: articleSql })
-					.run();
-			}
+			await db.transaction(async (trx) => {
+				const whereCondition = and(
+					eq(previewTemplates.id, template.id),
+					eq(previewTemplates.user_id, user.id)
+				);
+				const translationResult = await trx
+					.select({ key: translations.key })
+					.from(previewTemplates)
+					.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
+					.where(whereCondition)
+					.get();
+				if (translationResult) {
+					await this.translations.delete({ key: translationResult.key }, trx);
+					await trx.delete(previewTemplates).where(whereCondition).run();
+				} else {
+					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
+				}
+			});
 		}
 	};
 
 	public readonly translations = {
-		create: async (
+		createFew: async (
 			newTranslations: TranslationInsert[],
 			mode: 'allow-empty' | 'disallow-empty',
 			trx?: TransactionContext,
@@ -876,7 +974,7 @@ class Plavna {
 		update: async (translation: TranslationUpdate, trx?: TransactionContext) => {
 			const user = await this.user.getOrThrow();
 			const chosenDBInstance = trx || db;
-			console.log('updating_translation to', translation, user);
+
 			return chosenDBInstance
 				.update(translations)
 				.set(translation)

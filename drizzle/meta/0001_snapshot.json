@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "7e4cadc4-6098-413c-9dfa-63b4d97183ec",
-  "prevId": "6c197659-25df-48d3-9716-1e5dbc2d8d16",
+  "id": "12d4d7a1-a400-4971-a85a-f906da51a069",
+  "prevId": "f4b02eed-52ab-4f2e-baf9-a95fb2c460b9",
   "tables": {
     "articles": {
       "name": "articles",
@@ -28,15 +28,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title_translation_id": {
-          "name": "title_translation_id",
+        "title_translation_key": {
+          "name": "title_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "content_translation_id": {
-          "name": "content_translation_id",
+        "content_translation_key": {
+          "name": "content_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -49,8 +49,15 @@
           "notNull": false,
           "autoincrement": false
         },
-        "preview_type_id": {
-          "name": "preview_type_id",
+        "preview_family": {
+          "name": "preview_family",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "preview_template_id": {
+          "name": "preview_template_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -63,22 +70,15 @@
           "notNull": false,
           "autoincrement": false
         },
-        "preview_prop_1_value": {
-          "name": "preview_prop_1_value",
+        "preview_prop_1": {
+          "name": "preview_prop_1",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "preview_prop_2_value": {
-          "name": "preview_prop_2_value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "preview_prop_3_value": {
-          "name": "preview_prop_3_value",
+        "preview_prop_2": {
+          "name": "preview_prop_2",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -109,12 +109,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "articles_title_translation_id_translations_key_fk": {
-          "name": "articles_title_translation_id_translations_key_fk",
+        "articles_title_translation_key_translations_key_fk": {
+          "name": "articles_title_translation_key_translations_key_fk",
           "tableFrom": "articles",
           "tableTo": "translations",
           "columnsFrom": [
-            "title_translation_id"
+            "title_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -122,12 +122,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "articles_content_translation_id_translations_key_fk": {
-          "name": "articles_content_translation_id_translations_key_fk",
+        "articles_content_translation_key_translations_key_fk": {
+          "name": "articles_content_translation_key_translations_key_fk",
           "tableFrom": "articles",
           "tableTo": "translations",
           "columnsFrom": [
-            "content_translation_id"
+            "content_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -135,12 +135,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "articles_preview_type_id_preview_types_id_fk": {
-          "name": "articles_preview_type_id_preview_types_id_fk",
+        "articles_preview_template_id_preview_templates_id_fk": {
+          "name": "articles_preview_template_id_preview_templates_id_fk",
           "tableFrom": "articles",
-          "tableTo": "preview_types",
+          "tableTo": "preview_templates",
           "columnsFrom": [
-            "preview_type_id"
+            "preview_template_id"
           ],
           "columnsTo": [
             "id"
@@ -183,8 +183,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "reference_translation_id": {
-          "name": "reference_translation_id",
+        "reference_translation_key": {
+          "name": "reference_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -206,12 +206,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "images_reference_translation_id_translations_key_fk": {
-          "name": "images_reference_translation_id_translations_key_fk",
+        "images_reference_translation_key_translations_key_fk": {
+          "name": "images_reference_translation_key_translations_key_fk",
           "tableFrom": "images",
           "tableTo": "translations",
           "columnsFrom": [
-            "reference_translation_id"
+            "reference_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -320,8 +320,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "preview_types": {
-      "name": "preview_types",
+    "preview_templates": {
+      "name": "preview_templates",
       "columns": {
         "id": {
           "name": "id",
@@ -337,8 +337,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name_translation_id": {
-          "name": "name_translation_id",
+        "name_translation_key": {
+          "name": "name_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -361,9 +361,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "preview_types_user_id_auth_user_id_fk": {
-          "name": "preview_types_user_id_auth_user_id_fk",
-          "tableFrom": "preview_types",
+        "preview_templates_user_id_auth_user_id_fk": {
+          "name": "preview_templates_user_id_auth_user_id_fk",
+          "tableFrom": "preview_templates",
           "tableTo": "auth_user",
           "columnsFrom": [
             "user_id"
@@ -374,12 +374,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "preview_types_name_translation_id_translations_key_fk": {
-          "name": "preview_types_name_translation_id_translations_key_fk",
-          "tableFrom": "preview_types",
+        "preview_templates_name_translation_key_translations_key_fk": {
+          "name": "preview_templates_name_translation_key_translations_key_fk",
+          "tableFrom": "preview_templates",
           "tableTo": "translations",
           "columnsFrom": [
-            "name_translation_id"
+            "name_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -387,9 +387,9 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "preview_types_image_id_images_id_fk": {
-          "name": "preview_types_image_id_images_id_fk",
-          "tableFrom": "preview_types",
+        "preview_templates_image_id_images_id_fk": {
+          "name": "preview_templates_image_id_images_id_fk",
+          "tableFrom": "preview_templates",
           "tableTo": "images",
           "columnsFrom": [
             "image_id"
@@ -428,8 +428,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title_translation_id": {
-          "name": "title_translation_id",
+        "title_translation_key": {
+          "name": "title_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -464,12 +464,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "sections_title_translation_id_translations_key_fk": {
-          "name": "sections_title_translation_id_translations_key_fk",
+        "sections_title_translation_key_translations_key_fk": {
+          "name": "sections_title_translation_key_translations_key_fk",
           "tableFrom": "sections",
           "tableTo": "translations",
           "columnsFrom": [
-            "title_translation_id"
+            "title_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -614,8 +614,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name_translation_id": {
-          "name": "name_translation_id",
+        "name_translation_key": {
+          "name": "name_translation_key",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -637,12 +637,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "tags_name_translation_id_translations_key_fk": {
-          "name": "tags_name_translation_id_translations_key_fk",
+        "tags_name_translation_key_translations_key_fk": {
+          "name": "tags_name_translation_key_translations_key_fk",
           "tableFrom": "tags",
           "tableTo": "translations",
           "columnsFrom": [
-            "name_translation_id"
+            "name_translation_key"
           ],
           "columnsTo": [
             "key"
@@ -819,6 +819,9 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"articles\".\"preview_prop_1_value\"": "\"articles\".\"preview_prop_1\"",
+      "\"articles\".\"preview_prop_2_value\"": "\"articles\".\"preview_prop_2\""
+    }
   }
 }

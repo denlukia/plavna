@@ -7,6 +7,7 @@
 	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 
@@ -15,13 +16,12 @@
 		errors: slugErrors,
 		enhance: slugEnhance
 	} = superForm(data.articleSlugForm);
-	const { form, errors, enhance } = superForm(data.articleForm);
 
-	$: ({ article } = data);
+	$: ({ meta: article } = data);
 </script>
 
 Редагування тайтла:
-<TranslationEditor key={article.title_translation_id} />
+<TranslationEditor key={article.title_translation_key} />
 Редагування слага:
 <form use:slugEnhance method="POST" action="?/update_slug">
 	<input name="slug" type="text" bind:value={$slugFrom.slug} />
@@ -40,4 +40,4 @@
 	{/each}
 	<TagCreator superFormObj={data.tagCreationForm} />
 </fieldset>
-<TranslationEditor key={article.content_translation_id} />
+<TranslationEditor key={article.content_translation_key} />

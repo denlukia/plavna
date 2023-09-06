@@ -9,7 +9,7 @@
 	export let section: SectionSelect;
 
 	$: superFormObj = $page.data.translations[
-		section.title_translation_id
+		section.title_translation_key
 	] as SuperValidated<TranslationUpdateZod>;
 	$: superFormStores = superForm(superFormObj);
 	$: ({ form, enhance } = superFormStores);
