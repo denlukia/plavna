@@ -8,12 +8,14 @@
 	import type {
 		PreviewTemplateCreationFormZod,
 		PreviewTemplateEditingFormZod,
-		TranslationInsertZod
+		TranslationInsertZod,
+		TranslationUpdateZod
 	} from '$lib/server/collections/types';
 	import type { SuperForm } from 'sveltekit-superforms/client';
 
 	export let superFormStores:
 		| SuperForm<TranslationInsertZod>
+		| SuperForm<TranslationUpdateZod>
 		| SuperForm<PreviewTemplateCreationFormZod>
 		| SuperForm<PreviewTemplateEditingFormZod>;
 

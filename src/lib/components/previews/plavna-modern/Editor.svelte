@@ -1,13 +1,15 @@
 <script lang="ts">
-	import type { SuperForm } from 'sveltekit-superforms/client';
+	import { superForm } from 'sveltekit-superforms/client';
 	import type { ArticlePreviewUpdateZod } from '$lib/server/collections/types';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let superForm: SuperForm<ArticlePreviewUpdateZod>;
+	export let formObj: SuperValidated<ArticlePreviewUpdateZod>;
 
-	$: ({ form } = superForm);
+	$: ({ form } = superForm(formObj));
 </script>
 
-<input name="preview_prop_1_value" type="text" bind:value={$form.preview_prop_1_value} />
-<input name="preview_prop_2_value" type="text" bind:value={$form.preview_prop_2_value} />
-<input name="preview_prop_3_value" type="text" bind:value={$form.preview_prop_3_value} />
+<h2>PLAVNA MODERN</h2>
+<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
+<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
+
 <button>Update preview</button>

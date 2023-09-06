@@ -11,11 +11,7 @@
 
 	export let data: PageData;
 
-	const {
-		form: slugFrom,
-		errors: slugErrors,
-		enhance: slugEnhance
-	} = superForm(data.articleSlugForm);
+	const { form: slugFrom, errors: slugErrors, enhance: slugEnhance } = superForm(data.slugForm);
 
 	$: ({ meta: article } = data);
 </script>

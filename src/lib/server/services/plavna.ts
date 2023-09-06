@@ -46,16 +46,15 @@ import {
 	pageSelectSchema,
 	pageUpdateFormSchema,
 	articlePreviewUpdateSchema,
-	articleSelectWithoutPreviewValuesSchema,
 	articleSlugUpdateSchema,
-	articleUpdateSchema,
 	sectionInsertSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema,
 	translationUpdateSchema,
 	previewTemplateCreationFormSchema,
-	previewTemplateEditingFormSchema
+	previewTemplateEditingFormSchema,
+	articleSelectSchema
 } from '$lib/server/collections/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
@@ -88,7 +87,8 @@ import type {
 	TranslationUpdate,
 	PreviewTemplateCreation,
 	PreviewTemplateEditing,
-	PreviewTemplateDeletion
+	PreviewTemplateDeletion,
+	TranslationInsertBase
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
@@ -735,8 +735,8 @@ class Plavna {
 					const filledForm = superValidateSync(articleResult, articlePreviewUpdateSchema);
 					if ('meta' in familyOrTemplate) {
 						return {
-							family: 'custom',
-							template_id: familyOrTemplate.meta.id,
+							familyId: 'custom',
+							templateId: familyOrTemplate.meta.id,
 							form:
 								articleResult.preview_family === 'custom' &&
 								articleResult.preview_template_id === familyOrTemplate.meta.id
@@ -745,8 +745,8 @@ class Plavna {
 						};
 					} else {
 						return {
-							family: familyOrTemplate.id,
-							template_id: null,
+							familyId: familyOrTemplate.id,
+							templateId: null,
 							form:
 								articleResult.preview_family === familyOrTemplate.id &&
 								articleResult.preview_template_id === null
@@ -758,7 +758,7 @@ class Plavna {
 			);
 
 			return {
-				meta: articleSelectWithoutPreviewValuesSchema.parse(articleResult),
+				meta: articleSelectSchema.parse(articleResult),
 				slugForm: superValidateSync(articleResult, articleSlugUpdateSchema),
 				previewForms,
 				previewFamilies,
@@ -940,7 +940,7 @@ class Plavna {
 
 	public readonly translations = {
 		createFew: async (
-			newTranslations: TranslationInsert[],
+			newTranslations: TranslationInsertBase[],
 			mode: 'allow-empty' | 'disallow-empty',
 			trx?: TransactionContext,
 			user?: User

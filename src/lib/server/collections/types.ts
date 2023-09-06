@@ -10,7 +10,6 @@ import type {
 	articleInsertSchema,
 	articlePreviewUpdateSchema,
 	articleSelectSchema,
-	articleSelectWithoutPreviewValuesSchema,
 	articleSlugUpdateSchema,
 	previewTemplateSelectSchema,
 	sectionDeleteSchema,
@@ -30,11 +29,12 @@ import type {
 	translationUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
-	previewTemplateDeletionFormSchema
+	previewTemplateDeletionFormSchema,
+	translationInsertBaseSchema
 } from './parsers';
 
 import type { z } from 'zod';
-import type { PossiblePreviewFamilies } from './previews';
+import type { PreviewFamilyId } from './previews';
 
 // Auth
 export type Auth = typeof auth;
@@ -73,6 +73,7 @@ export type TagToArticleSelect = z.infer<typeof tagToArticleSelectSchema>;
 
 // Translations
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;
+export type TranslationInsertBase = z.infer<typeof translationInsertBaseSchema>;
 export type TranslationInsert = z.infer<typeof translationInsertSchema>;
 export type TranslationInsertZod = typeof translationInsertSchema;
 export type TranslationUpdate = z.infer<typeof translationUpdateSchema>;
@@ -85,9 +86,6 @@ export type ArticleInsert = z.infer<typeof articleInsertSchema>;
 export type ArticleSlugUpdate = z.infer<typeof articleSlugUpdateSchema>;
 export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
 export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
-export type ArticleSelectWithoutPreviewValues = z.infer<
-	typeof articleSelectWithoutPreviewValuesSchema
->;
 
 // Previews
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;
@@ -100,7 +98,7 @@ export type PreviewTemplateDeletion = z.infer<typeof previewTemplateDeletionForm
 
 // Preview Components
 export type PreviewComponents = Record<
-	PossiblePreviewFamilies,
+	PreviewFamilyId,
 	{
 		editor?: ConstructorOfATypedSvelteComponent;
 		static?: ConstructorOfATypedSvelteComponent;

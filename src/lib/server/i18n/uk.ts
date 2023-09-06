@@ -21,7 +21,8 @@ const translations: FullTranslation = {
 	couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому',
 	create_new_page: 'Створити сторінку',
 	couldnt_save_article: 'Не вдалося зберігти пост і я не знаю чому',
-	preview_plavna_modern: 'Плавна Сучасне'
+	preview_plavna_modern: 'Плавна Сучасне',
+	preview_custom: 'Кастомне превью'
 };
 
 export default translations;

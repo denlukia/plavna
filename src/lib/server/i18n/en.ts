@@ -19,7 +19,8 @@ const translations = {
 	couldnt_edit_page: "Could not edit a page slug and I don't know why",
 	create_new_page: 'Create new page',
 	couldnt_save_article: "Could not save a article and I don't know why",
-	preview_plavna_modern: 'Plavna Modern'
+	preview_plavna_modern: 'Plavna Modern',
+	preview_custom: 'Custom Preview'
 };
 
 export type FullTranslation = Record<keyof typeof translations, any>;

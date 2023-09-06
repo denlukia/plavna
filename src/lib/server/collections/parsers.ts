@@ -52,7 +52,7 @@ const translationRefineArgs = [
 	atLeastOnePropBeyond(['user_id', 'key']),
 	{ message: ERRORS.AT_LEAST_ONE_TRANSLATION }
 ] as const;
-const translationInsertBaseSchema = createInsertSchema(translations);
+export const translationInsertBaseSchema = createInsertSchema(translations);
 
 export const translationSelectSchema = createSelectSchema(translations);
 export const translationInsertSchema = translationInsertBaseSchema
@@ -77,13 +77,10 @@ export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
 const previewRelatedFields = {
 	preview_family: true,
 	preview_template_id: true,
-	preview_prop_1_value: true,
-	preview_prop_2_value: true,
-	preview_prop_3_value: true
+	preview_prop_1: true,
+	preview_prop_2: true
 } as const;
 export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
-export const articleSelectWithoutPreviewValuesSchema =
-	articleSelectSchema.omit(previewRelatedFields);
 
 // Preview Templates
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);

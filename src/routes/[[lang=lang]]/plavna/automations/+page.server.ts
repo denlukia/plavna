@@ -10,17 +10,17 @@ export const actions = {
 			const tag = await plavna.tags.create({ en: `Test tag ${i + 1}` });
 			console.log('Created tag ', i + 1);
 			for (let n = 0; n < articlesPerTagQty; n++) {
-				const { article } = await plavna.articles.createAndOrLoadEditor(
+				const { meta } = await plavna.articles.createAndOrLoadEditor(
 					'den',
 					`test-article-${n + 1}`
 				);
 				console.log(`For tag ${i + 1}: created article ${n + 1}`);
 				await plavna.translations.update({
-					key: article.title_translation_key,
+					key: meta.title_translation_key,
 					en: `Test title ${i + 1}`
 				});
 				console.log(`For tag ${i + 1}: updated translation fro article ${n + 1}`);
-				await plavna.tags.switchChecked({ id: tag.id, checked: false }, article.slug);
+				await plavna.tags.switchChecked({ id: tag.id, checked: false }, meta.slug);
 				console.log(`Switched tag ${i + 1} on article ${n + 1}`);
 			}
 			console.log('\n');

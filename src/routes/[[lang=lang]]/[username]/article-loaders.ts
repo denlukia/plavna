@@ -12,8 +12,7 @@ export const articleEditLoad = (async ({ data, url }) => {
 		{} as PreviewComponents
 	);
 
-	const previewFamilyId =
-		url.searchParams.get(PREVIEW_FAMILY_PARAM) ?? data.articlePreviewForm.data.preview_family;
+	const previewFamilyId = url.searchParams.get(PREVIEW_FAMILY_PARAM) ?? data.meta.preview_family;
 	const previewFamilyIndex = data.previewFamilies.findIndex(
 		(family) => family.id === previewFamilyId
 	);
@@ -25,7 +24,7 @@ export const articleEditLoad = (async ({ data, url }) => {
 			'Editor'
 		);
 	}
-	console.log(previewComponents);
+
 	return { ...data, previewComponents };
 }) satisfies ArticleEditLoad;
 
