@@ -102,6 +102,7 @@ export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pic
 
 // Images
 export const imageSelectSchema = createSelectSchema(images);
+export const imageInsertSchema = createInsertSchema(images);
 
 // Excluded Tags Config
 export const excludedTags = z.record(

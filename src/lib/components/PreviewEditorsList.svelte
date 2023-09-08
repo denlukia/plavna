@@ -1,21 +1,15 @@
 <script lang="ts">
 	import Translation from './Translation.svelte';
 
-	import type {
-		ArticlePreviewUpdateZod,
-		ArticleSelect,
-		PreviewTemplateSelect
-	} from '$lib/server/collections/types';
-	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { ArticleSelect, PreviewTemplateSelect } from '$lib/server/collections/types';
 	import { page } from '$app/stores';
 	import { PREVIEW_FAMILY_PARAM } from '$lib/isomorphic/constants';
-	import EditorWrapper from './previews/EditorWrapper.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 	import type { PreviewFamilyId } from '$lib/server/collections/previews';
 	import PreviewTemplateCreator from './editors/PreviewTemplateCreator.svelte';
 	import PreviewTemplateEditor from './editors/PreviewTemplateEditor.svelte';
+	import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
 
 	export let data: PageData;
 
@@ -51,7 +45,11 @@
 	) {
 		return previewForms.find(
 			(formObj) => formObj.familyId === familyId && formObj.templateId === templateId
-		)?.form;
+		)?.propsForm;
+	}
+
+	function onPreviewClick(familyId: PreviewFamilyId) {
+		previewComponents[familyId].editor = getPreviewComponent(familyId, 'Editor');
 	}
 </script>
 
@@ -63,12 +61,27 @@
 			<li>
 				<b><Translation key={family.name_translation_key} /></b>
 				{#if component}
-					<svelte:component
-						this={component}
-						formObj={getFormForPreview(previewForms, family.id, null)}
-					/>
+					{#await component}
+						Loading...
+					{:then component}
+						{#if component instanceof Error}
+							Couldn't load
+						{:else}
+							<svelte:component
+								this={component}
+								formObj={getFormForPreview(previewForms, family.id, null)}
+								article={meta}
+							/>
+						{/if}
+					{/await}
 				{:else}
-					<a href={getPreviewSpecificLink(family.id, $page.url)}>Load this editor</a>
+					<a
+						href={getPreviewSpecificLink(family.id, $page.url)}
+						on:click={(e) => {
+							e.preventDefault();
+							onPreviewClick(family.id);
+						}}>Load this editor</a
+					>
 				{/if}
 			</li>
 		{/if}
@@ -78,12 +91,28 @@
 		<li>
 			<PreviewTemplateEditor formObj={template.form} />
 			{#if component}
-				<svelte:component
-					this={component}
-					formObj={getFormForPreview(previewForms, 'custom', template.meta.id)}
-				/>
+				{#await component}
+					Loading...
+				{:then component}
+					{#if component instanceof Error}
+						Couldn't load
+					{:else}
+						<svelte:component
+							this={component}
+							formObj={getFormForPreview(previewForms, 'custom', template.meta.id)}
+							templateId={template.meta.id}
+							article={meta}
+						/>
+					{/if}
+				{/await}
 			{:else}
-				<a href={getPreviewSpecificLink('custom', $page.url)}>Load this editor</a>
+				<a
+					href={getPreviewSpecificLink('custom', $page.url)}
+					on:click={(e) => {
+						e.preventDefault();
+						onPreviewClick('custom');
+					}}>Load this editor</a
+				>
 			{/if}
 		</li>
 	{/each}

@@ -19,12 +19,14 @@
 		| SuperForm<PreviewTemplateCreationFormZod>
 		| SuperForm<PreviewTemplateEditingFormZod>;
 
+	export let prefix: string = '';
+
 	$: ({ form, errors, enhance } = superFormStores);
 	$: currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
 </script>
 
 {#if 'key' in $form}
-	<input name="key" type="hidden" bind:value={$form.key} />
+	<input name="{prefix}key" type="hidden" bind:value={$form.key} />
 {/if}
 {#each supportedLanguages as lang}
 	<svelte:element
@@ -41,7 +43,7 @@
 {#each supportedLanguages as lang}
 	<input
 		style={currentLang === lang ? 'display: block;' : 'display: none;'}
-		name={lang}
+		name={prefix + lang}
 		placeholder={lang}
 		type="text"
 		bind:value={$form[lang]}

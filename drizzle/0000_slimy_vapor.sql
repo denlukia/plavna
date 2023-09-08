@@ -8,21 +8,28 @@ CREATE TABLE `articles` (
 	`preview_family` text,
 	`preview_template_id` integer,
 	`preview_interactions_show_on` text,
-	`preview_prop_1_value` text,
-	`preview_prop_2_value` text,
-	`preview_prop_3_value` text,
+	`preview_prop_1` text,
+	`preview_prop_2` text,
+	`preview_translation_key_1` integer NOT NULL,
+	`preview_translation_key_2` integer NOT NULL,
+	`preview_image_id_1` integer NOT NULL,
+	`preview_image_id_2` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`content_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE set null ON DELETE set null
+	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`preview_translation_key_1`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_translation_key_2`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_image_id_1`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_image_id_2`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null
 );
 --> statement-breakpoint
 CREATE TABLE `images` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`user_id` text,
+	`user_id` text NOT NULL,
 	`source` text NOT NULL,
-	`reference` text NOT NULL,
-	`reference_translation_key` integer,
+	`reference` text,
+	`reference_translation_key` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`reference_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
 );

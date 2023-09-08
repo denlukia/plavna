@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "f4b02eed-52ab-4f2e-baf9-a95fb2c460b9",
+  "id": "2c81a4f1-250b-4283-a715-7ca2989256b0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
@@ -70,25 +70,46 @@
           "notNull": false,
           "autoincrement": false
         },
-        "preview_prop_1_value": {
-          "name": "preview_prop_1_value",
+        "preview_prop_1": {
+          "name": "preview_prop_1",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "preview_prop_2_value": {
-          "name": "preview_prop_2_value",
+        "preview_prop_2": {
+          "name": "preview_prop_2",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "preview_prop_3_value": {
-          "name": "preview_prop_3_value",
-          "type": "text",
+        "preview_translation_key_1": {
+          "name": "preview_translation_key_1",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "preview_translation_key_2": {
+          "name": "preview_translation_key_2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "preview_image_id_1": {
+          "name": "preview_image_id_1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "preview_image_id_2": {
+          "name": "preview_image_id_2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -152,8 +173,60 @@
           "columnsTo": [
             "id"
           ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "articles_preview_translation_key_1_translations_key_fk": {
+          "name": "articles_preview_translation_key_1_translations_key_fk",
+          "tableFrom": "articles",
+          "tableTo": "translations",
+          "columnsFrom": [
+            "preview_translation_key_1"
+          ],
+          "columnsTo": [
+            "key"
+          ],
           "onDelete": "set null",
-          "onUpdate": "set null"
+          "onUpdate": "cascade"
+        },
+        "articles_preview_translation_key_2_translations_key_fk": {
+          "name": "articles_preview_translation_key_2_translations_key_fk",
+          "tableFrom": "articles",
+          "tableTo": "translations",
+          "columnsFrom": [
+            "preview_translation_key_2"
+          ],
+          "columnsTo": [
+            "key"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        },
+        "articles_preview_image_id_1_images_id_fk": {
+          "name": "articles_preview_image_id_1_images_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "images",
+          "columnsFrom": [
+            "preview_image_id_1"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        },
+        "articles_preview_image_id_2_images_id_fk": {
+          "name": "articles_preview_image_id_2_images_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "images",
+          "columnsFrom": [
+            "preview_image_id_2"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -173,7 +246,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "source": {
@@ -187,14 +260,14 @@
           "name": "reference",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "reference_translation_key": {
           "name": "reference_translation_key",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },

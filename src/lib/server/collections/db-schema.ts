@@ -153,22 +153,24 @@ export const articles = sqliteTable(
 		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
 		preview_prop_1: text('preview_prop_1'),
 		preview_prop_2: text('preview_prop_2'),
-		preview_translation_key_1: integer('preview_translation_key_1').references(
-			() => translations.key,
-			{ onDelete: 'set null', onUpdate: 'cascade' }
-		),
-		preview_translation_key_2: integer('preview_translation_key_2').references(
-			() => translations.key,
-			{ onDelete: 'set null', onUpdate: 'cascade' }
-		),
-		preview_image_id_1: integer('preview_image_id_1').references(() => images.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade'
-		}),
-		preview_image_id_2: integer('preview_image_id_2').references(() => images.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade'
-		})
+		preview_translation_key_1: integer('preview_translation_key_1')
+			.notNull()
+			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
+		preview_translation_key_2: integer('preview_translation_key_2')
+			.notNull()
+			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
+		preview_image_id_1: integer('preview_image_id_1')
+			.notNull()
+			.references(() => images.id, {
+				onDelete: 'set null',
+				onUpdate: 'cascade'
+			}),
+		preview_image_id_2: integer('preview_image_id_2')
+			.notNull()
+			.references(() => images.id, {
+				onDelete: 'set null',
+				onUpdate: 'cascade'
+			})
 	},
 	(table) => {
 		return {
@@ -234,16 +236,17 @@ export const previewTemplates = sqliteTable('preview_templates', {
 
 export const images = sqliteTable('images', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	user_id: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	source: text('source', { enum: ['imagekit'] }).notNull(),
-	reference: text('reference').notNull(),
-	reference_translation_key: integer('reference_translation_key').references(
-		() => translations.key,
-		{
+	reference: text('reference'),
+	reference_translation_key: integer('reference_translation_key')
+		.notNull()
+		.references(() => translations.key, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade'
-		}
-	)
+		})
 });
 
 export const translations = sqliteTable('translations', {

@@ -1,15 +1,25 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-	import type { ArticlePreviewUpdateZod } from '$lib/server/collections/types';
+	import type {
+		ArticlePreviewUpdateZod,
+		ArticleSelect,
+		PreviewTemplateSelect
+	} from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
 
 	export let formObj: SuperValidated<ArticlePreviewUpdateZod>;
+	export let article: ArticleSelect;
 
-	$: ({ form } = superForm(formObj));
+	$: ({ form, enhance } = superForm(formObj));
 </script>
 
 <h2>PLAVNA MODERN</h2>
-<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
-<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-
-<button>Update preview</button>
+<form use:enhance method="POST" action="?/update_preview">
+	<input name="preview_family" type="hidden" value="plavna-modern" />
+	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
+	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
+	<button>Update preview</button>
+</form>
+<TranslationEditor key={article.preview_translation_key_1} />
+<TranslationEditor key={article.preview_translation_key_2} />

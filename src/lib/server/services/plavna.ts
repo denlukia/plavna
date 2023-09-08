@@ -38,7 +38,8 @@ import {
 	tags,
 	tagsToArticles,
 	translations,
-	users
+	users,
+	images
 } from '$lib/server/collections/db-schema';
 import { ERRORS } from '$lib/server/collections/errors';
 import {
@@ -88,7 +89,8 @@ import type {
 	PreviewTemplateCreation,
 	PreviewTemplateEditing,
 	PreviewTemplateDeletion,
-	TranslationInsertBase
+	TranslationInsertBase,
+	ImageInsert
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
@@ -465,7 +467,7 @@ class Plavna {
 
 			await db.transaction(async (trx) => {
 				const translationForRecord = { ...translation, user_id: user.id };
-				const [createdTranslation] = await this.translations.createFew(
+				const [createdTranslation] = await this.translations.create(
 					[translationForRecord],
 					'disallow-empty',
 					trx
@@ -577,12 +579,7 @@ class Plavna {
 		create: async (translation: TranslationInsert) => {
 			const user = await this.user.getOrThrow();
 			return db.transaction(async (trx) => {
-				const [{ key }] = await this.translations.createFew(
-					[translation],
-					'disallow-empty',
-					trx,
-					user
-				);
+				const [{ key }] = await this.translations.create([translation], 'disallow-empty', trx);
 				return trx
 					.insert(tags)
 					.values({ name_translation_key: key, user_id: user.id })
@@ -642,20 +639,34 @@ class Plavna {
 				const newTranslation = {
 					user_id: user.id
 				};
-				const [{ key: title_translation_key }, { key: content_translation_key }] =
-					await this.translations.createFew(
-						[newTranslation, newTranslation],
-						'allow-empty',
-						trx,
-						user
-					);
+				const [
+					{ key: title_translation_key },
+					{ key: content_translation_key },
+					{ key: preview_translation_key_1 },
+					{ key: preview_translation_key_2 },
+					{ key: image_reference_translation_key_1 },
+					{ key: image_reference_translation_key_2 }
+				] = await this.translations.create(new Array(7).fill(newTranslation), 'allow-empty', trx);
+				const newImage = { user_id: user.id, source: 'imagekit' } as const;
+				const [{ id: preview_image_id_1 }, { id: preview_image_id_2 }] = await this.images.create(
+					[
+						{ ...newImage, reference_translation_key: image_reference_translation_key_1 },
+						{ ...newImage, reference_translation_key: image_reference_translation_key_2 }
+					],
+					trx
+				);
 				const article = await trx
 					.insert(articles)
 					.values({
 						user_id: user.id,
 						slug: slug,
 						title_translation_key: Number(title_translation_key),
-						content_translation_key: Number(content_translation_key)
+						content_translation_key: Number(content_translation_key),
+						preview_family: 'plavna-modern',
+						preview_translation_key_1,
+						preview_translation_key_2,
+						preview_image_id_1,
+						preview_image_id_2
 					})
 					.returning({ id: articles.id })
 					.get();
@@ -678,7 +689,6 @@ class Plavna {
 					tags,
 					translations,
 					translForForms,
-
 					previewTemplates
 				})
 				.from(articles)
@@ -690,12 +700,15 @@ class Plavna {
 					or(
 						eq(translForForms.key, articles.content_translation_key),
 						eq(translForForms.key, articles.title_translation_key),
-						eq(translForForms.key, tags.name_translation_key)
+						eq(translForForms.key, tags.name_translation_key),
+						eq(translForForms.key, articles.preview_translation_key_1),
+						eq(translForForms.key, articles.preview_translation_key_2)
 					)
 				)
 				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
 				.where(eq(articles.id, exisingId))
 				.all();
+			// TODO No forms in global translations store or no store
 			const articleResult = query[0].articles;
 			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
 			const previewTemplatesResults = query
@@ -737,7 +750,7 @@ class Plavna {
 						return {
 							familyId: 'custom',
 							templateId: familyOrTemplate.meta.id,
-							form:
+							propsForm:
 								articleResult.preview_family === 'custom' &&
 								articleResult.preview_template_id === familyOrTemplate.meta.id
 									? filledForm
@@ -747,7 +760,7 @@ class Plavna {
 						return {
 							familyId: familyOrTemplate.id,
 							templateId: null,
-							form:
+							propsForm:
 								articleResult.preview_family === familyOrTemplate.id &&
 								articleResult.preview_template_id === null
 									? filledForm
@@ -813,6 +826,9 @@ class Plavna {
 		},
 		updatePreview: async (slug: string, preview: ArticlePreviewUpdate) => {
 			const user = await this.user.getOrThrow();
+			if (preview.preview_family && preview.preview_family !== 'custom')
+				preview.preview_template_id = null;
+			if (preview.preview_template_id) preview.preview_family = 'custom';
 			return db
 				.update(articles)
 				.set(preview)
@@ -887,7 +903,7 @@ class Plavna {
 			const user = await this.user.getOrThrow();
 			const { url, ...translation } = template;
 			await db.transaction(async (trx) => {
-				const [{ key }] = await this.translations.createFew([translation], 'disallow-empty', trx);
+				const [{ key }] = await this.translations.create([translation], 'disallow-empty', trx);
 				await trx
 					.insert(previewTemplates)
 					.values({ user_id: user.id, url, name_translation_key: key });
@@ -938,12 +954,18 @@ class Plavna {
 		}
 	};
 
+	public readonly images = {
+		create: async (newImages: ImageInsert[], trx?: TransactionContext) => {
+			const chosenDBInstance = trx || db;
+			return chosenDBInstance.insert(images).values(newImages).returning({ id: images.id }).all();
+		}
+	};
+
 	public readonly translations = {
-		createFew: async (
+		create: async (
 			newTranslations: TranslationInsertBase[],
 			mode: 'allow-empty' | 'disallow-empty',
-			trx?: TransactionContext,
-			user?: User
+			trx?: TransactionContext
 		) => {
 			if (mode === 'disallow-empty') {
 				newTranslations.forEach((translation) => {
@@ -952,18 +974,13 @@ class Plavna {
 					}
 				});
 			}
-			if (user === undefined) {
-				user = await this.user.getOrThrow();
-			}
-			if (user) {
-				const userCopy = user;
-				newTranslations = newTranslations.map((translation) => ({
-					...translation,
-					// It only sees that user is not empty via copy and
-					// I'm not in the mood for such a plain type guard
-					user_id: userCopy.id
-				}));
-			}
+
+			const user = await this.user.getOrThrow();
+			newTranslations = newTranslations.map((translation) => ({
+				...translation,
+				user_id: user.id
+			}));
+
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance
 				.insert(translations)

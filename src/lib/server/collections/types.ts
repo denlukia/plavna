@@ -30,11 +30,13 @@ import type {
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
 	previewTemplateDeletionFormSchema,
-	translationInsertBaseSchema
+	translationInsertBaseSchema,
+	imageInsertSchema
 } from './parsers';
 
 import type { z } from 'zod';
 import type { PreviewFamilyId } from './previews';
+import type { MaybePromise } from 'Instance';
 
 // Auth
 export type Auth = typeof auth;
@@ -100,7 +102,10 @@ export type PreviewTemplateDeletion = z.infer<typeof previewTemplateDeletionForm
 export type PreviewComponents = Record<
 	PreviewFamilyId,
 	{
-		editor?: ConstructorOfATypedSvelteComponent;
+		editor?:
+			| ConstructorOfATypedSvelteComponent
+			| Promise<ConstructorOfATypedSvelteComponent | Error>
+			| Error;
 		static?: ConstructorOfATypedSvelteComponent;
 		dynamic?: ConstructorOfATypedSvelteComponent;
 	}
@@ -108,6 +113,7 @@ export type PreviewComponents = Record<
 
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
+export type ImageInsert = z.infer<typeof imageInsertSchema>;
 
 // Excluded Tags Config
 export type ExcludedTags = z.infer<typeof excludedTags>;
