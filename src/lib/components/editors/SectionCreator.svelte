@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TranslationInput from '../TranslationInput.svelte';
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { TranslationInsertZod } from '$lib/server/collections/types';

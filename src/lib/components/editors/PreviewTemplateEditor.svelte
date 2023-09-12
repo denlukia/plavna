@@ -2,7 +2,7 @@
 	import type { PreviewTemplateEditingFormZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
-	import TranslationInput from '../TranslationInput.svelte';
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateEditingFormZod>;
 

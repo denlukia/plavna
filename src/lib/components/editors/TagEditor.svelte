@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TranslationInput from '../TranslationInput.svelte';
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 	import TranslationEditor from './TranslationEditor.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
