@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "2c81a4f1-250b-4283-a715-7ca2989256b0",
+  "id": "dcbe7437-79bb-4060-9f97-d2df0dfefb30",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
@@ -173,7 +173,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "cascade"
         },
         "articles_preview_translation_key_1_translations_key_fk": {
@@ -256,18 +256,18 @@
           "notNull": true,
           "autoincrement": false
         },
-        "reference": {
-          "name": "reference",
+        "path": {
+          "name": "path",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "reference_translation_key": {
-          "name": "reference_translation_key",
+        "path_translation_key": {
+          "name": "path_translation_key",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -286,12 +286,12 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "images_reference_translation_key_translations_key_fk": {
-          "name": "images_reference_translation_key_translations_key_fk",
+        "images_path_translation_key_translations_key_fk": {
+          "name": "images_path_translation_key_translations_key_fk",
           "tableFrom": "images",
           "tableTo": "translations",
           "columnsFrom": [
-            "reference_translation_key"
+            "path_translation_key"
           ],
           "columnsTo": [
             "key"

@@ -1,4 +1,3 @@
-import { page } from '$app/stores';
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { db } from './db';
 import { error } from '@sveltejs/kit';
@@ -21,6 +20,7 @@ import {
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { marked, use } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
+import ImageKit from 'imagekit';
 
 import {
 	type SupportedLang,
@@ -55,7 +55,8 @@ import {
 	translationUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
-	articleSelectSchema
+	articleSelectSchema,
+	imageProviderUpdateFormSchema
 } from '$lib/server/collections/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
@@ -90,12 +91,17 @@ import type {
 	PreviewTemplateEditing,
 	PreviewTemplateDeletion,
 	TranslationInsertBase,
-	ImageInsert
+	ImageInsert,
+	ImageProdiverUpdate,
+	ImageUpdate,
+	ImageSelect
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import { previewFamilies } from '../collections/previews';
+import { createImagePathAndFilename, folderFromPath } from '../utils/images';
+import imageSize from 'image-size';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -103,6 +109,8 @@ type TransactionContext = SQLiteTransaction<
 	typeof import('$lib/server/collections/db-schema'),
 	ExtractTablesWithRelations<typeof import('$lib/server/collections/db-schema')>
 >;
+
+// TODO Probably replace all error() with fail() ?
 
 class Plavna {
 	private readonly authRequest: AuthRequest;
@@ -119,7 +127,7 @@ class Plavna {
 		}
 	}
 
-	private readonly user = {
+	public readonly user = {
 		get: async () => {
 			const session = await this.authRequest.validate();
 			return session && session.user;
@@ -135,6 +143,23 @@ class Plavna {
 			if (id && user?.id !== id) throw error(403);
 			if (username && user?.username !== username) throw error(403);
 			return user;
+		},
+		updateImageProvider: async (providerData: ImageProdiverUpdate) => {
+			const user = await this.user.getOrThrow();
+			const {
+				imagekit_public_key: publicKey,
+				imagekit_private_key: privateKey,
+				imagekit_url_endpoint: urlEndpoint
+			} = providerData;
+			if (publicKey && privateKey && urlEndpoint) {
+				const imagekit = new ImageKit({
+					publicKey,
+					privateKey,
+					urlEndpoint
+				});
+				const listFilesResult = await imagekit.listFiles({ limit: 1 });
+			}
+			return db.update(users).set(providerData).where(eq(users.id, user.id));
 		}
 	};
 
@@ -644,17 +669,18 @@ class Plavna {
 					{ key: content_translation_key },
 					{ key: preview_translation_key_1 },
 					{ key: preview_translation_key_2 },
-					{ key: image_reference_translation_key_1 },
-					{ key: image_reference_translation_key_2 }
+					{ key: image_path_translation_key_1 },
+					{ key: image_path_translation_key_2 }
 				] = await this.translations.create(new Array(7).fill(newTranslation), 'allow-empty', trx);
 				const newImage = { user_id: user.id, source: 'imagekit' } as const;
 				const [{ id: preview_image_id_1 }, { id: preview_image_id_2 }] = await this.images.create(
 					[
-						{ ...newImage, reference_translation_key: image_reference_translation_key_1 },
-						{ ...newImage, reference_translation_key: image_reference_translation_key_2 }
+						{ ...newImage, path_translation_key: image_path_translation_key_1 },
+						{ ...newImage, path_translation_key: image_path_translation_key_2 }
 					],
 					trx
 				);
+
 				const article = await trx
 					.insert(articles)
 					.values({
@@ -670,6 +696,7 @@ class Plavna {
 					})
 					.returning({ id: articles.id })
 					.get();
+
 				return article.id;
 			});
 		},
@@ -682,17 +709,19 @@ class Plavna {
 			}
 
 			const translForForms = alias(translations, 'translForForms');
-			const query = await db
+			const results = await db
 				.select({
 					articles: articles,
 					tagsArticles: tagsToArticles,
 					tags,
 					translations,
 					translForForms,
-					previewTemplates
+					previewTemplates,
+					images
 				})
 				.from(articles)
-				.leftJoin(previewTemplates, or(eq(previewTemplates.user_id, user.id)))
+				.leftJoin(previewTemplates, eq(previewTemplates.user_id, user.id))
+				.leftJoin(images, eq(images.id, previewTemplates.image_id))
 				.leftJoin(tags, eq(tags.user_id, user.id))
 				.leftJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
 				.leftJoin(
@@ -709,9 +738,10 @@ class Plavna {
 				.where(eq(articles.id, exisingId))
 				.all();
 			// TODO No forms in global translations store or no store
-			const articleResult = query[0].articles;
-			const translArr = query.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
-			const previewTemplatesResults = query
+			const articleResult = results[0].articles;
+			const translArr = results.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
+			const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('key'));
+			const previewTemplatesResults = results
 				.map((rows) => rows.previewTemplates)
 				.filter(getNullAndDupFilter('id'))
 				.map((template) => {
@@ -720,17 +750,18 @@ class Plavna {
 					);
 					return {
 						meta: template,
+						image: imagesArr.find((img) => img.id === template.image_id),
 						form: superValidateSync(
 							{ ...template, template_id: template.id, ...foundTranslation },
 							previewTemplateEditingFormSchema
 						)
 					};
 				});
-			const allTags = query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
-			const articleTags = query
+			const allTags = results.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
+			const articleTags = results
 				.map((rows) => rows.tagsArticles)
 				.filter(getNullAndDupFilter('tag_id'));
-			const translForms = query
+			const translForms = results
 				.map(({ translForForms: t }) => t)
 				.filter(getNullAndDupFilter('key'));
 			const tagForms = allTags.map((tag) => ({
@@ -779,6 +810,7 @@ class Plavna {
 				previewTemplateCreationForm: superValidateSync(previewTemplateCreationFormSchema),
 				tagForms,
 				tagCreationForm: superValidateSync(translationInsertSchema),
+				imageProviderForm: superValidateSync(user, imageProviderUpdateFormSchema),
 				translations: Object.fromEntries([
 					...translForms.map((translation) => {
 						const { key } = translation;
@@ -899,17 +931,23 @@ class Plavna {
 	};
 
 	public readonly previewTemplates = {
-		create: async (template: PreviewTemplateCreation) => {
+		// TODO Show image input only if account has imagekit keys
+		create: async (template: PreviewTemplateCreation, image?: Buffer | null) => {
 			const user = await this.user.getOrThrow();
 			const { url, ...translation } = template;
 			await db.transaction(async (trx) => {
 				const [{ key }] = await this.translations.create([translation], 'disallow-empty', trx);
+				let imageId: ImageSelect['id'] | null = null;
+				if (image) {
+					imageId = await this.images.uploadAndCreateRecord(image, trx);
+				}
 				await trx
 					.insert(previewTemplates)
-					.values({ user_id: user.id, url, name_translation_key: key });
+					.values({ user_id: user.id, url, name_translation_key: key, image_id: imageId })
+					.run();
 			});
 		},
-		update: async (template: PreviewTemplateEditing) => {
+		update: async (template: PreviewTemplateEditing, image?: Buffer | null) => {
 			const user = await this.user.getOrThrow();
 			const { url, template_id, ...translation } = template;
 			await db.transaction(async (trx) => {
@@ -929,6 +967,21 @@ class Plavna {
 				} else {
 					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
+
+				if (image) {
+					const imageResult = await trx
+						.select({ images })
+						.from(previewTemplates)
+						.innerJoin(images, eq(images.id, previewTemplates.image_id))
+						.where(whereCondition)
+						.get();
+					if (imageResult) {
+						await this.images.uploadAndUpdateRecord(imageResult.images, image, trx);
+					} else {
+						const imageId = await this.images.uploadAndCreateRecord(image, trx);
+						await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
+					}
+				}
 			});
 		},
 		delete: async (template: PreviewTemplateDeletion) => {
@@ -938,26 +991,109 @@ class Plavna {
 					eq(previewTemplates.id, template.id),
 					eq(previewTemplates.user_id, user.id)
 				);
-				const translationResult = await trx
-					.select({ key: translations.key })
+				const recordResult = await trx
+					.select({ translation_key: translations.key, images })
 					.from(previewTemplates)
 					.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
+					.innerJoin(images, eq(images.id, previewTemplates.image_id))
 					.where(whereCondition)
 					.get();
-				if (translationResult) {
-					await this.translations.delete({ key: translationResult.key }, trx);
-					await trx.delete(previewTemplates).where(whereCondition).run();
+				if (recordResult?.translation_key) {
+					await this.translations.delete({ key: recordResult.translation_key }, trx);
+					await trx
+						.update(articles)
+						.set({ preview_family: null })
+						.where(eq(articles.preview_template_id, template.id));
 				} else {
 					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
+				if (recordResult) {
+					if (recordResult.images.path) {
+						const folder = folderFromPath(recordResult.images.path);
+						await this.images.deleteFolderFromProvider(folder);
+					}
+					await this.images.delete(recordResult.images.id, trx);
+				}
+				await trx.delete(previewTemplates).where(whereCondition).run();
 			});
 		}
 	};
 
 	public readonly images = {
+		uploadAndCreateRecord: async (image: Buffer, trx?: TransactionContext) => {
+			const user = await this.user.getOrThrow();
+			const imageRecord = {
+				user_id: user.id,
+				source: 'imagekit'
+			} as const;
+			const [{ id: imageId }] = await this.images.create([imageRecord], trx);
+			const { type: format } = imageSize(image);
+			const [path, fileName] = createImagePathAndFilename({
+				userId: user.id,
+				isForPreviewTemplate: true,
+				imageId,
+				format
+			});
+			const uploadResult = await this.images.uplodToProvider(image, path, fileName);
+			await this.images.update({ id: imageId, path: uploadResult.filePath }, trx);
+			return imageId;
+		},
+		uploadAndUpdateRecord: async (
+			imageRecord: ImageSelect,
+			image: Buffer,
+			trx?: TransactionContext
+		) => {
+			const user = await this.user.getOrThrow();
+			const { type: format } = imageSize(image);
+			const [path, fileName] = createImagePathAndFilename({
+				userId: user.id,
+				isForPreviewTemplate: true,
+				imageId: imageRecord.id,
+				format
+			});
+			if (imageRecord.path) {
+				const folder = folderFromPath(imageRecord.path);
+				await this.images.deleteFolderFromProvider(folder);
+			}
+			const uploadResult = await this.images.uplodToProvider(image, path, fileName);
+
+			await this.images.update({ id: imageRecord.id, path: uploadResult.filePath }, trx);
+		},
+		uplodToProvider: async (image: Buffer, path: string, fileName: string) => {
+			const user = await this.user.getOrThrow();
+			const imageKit = new ImageKit({
+				publicKey: user.imagekit_public_key,
+				privateKey: user.imagekit_private_key,
+				urlEndpoint: user.imagekit_url_endpoint
+			});
+			return await imageKit.upload({
+				file: image,
+				folder: path,
+				fileName,
+				useUniqueFileName: false
+			});
+		},
+		deleteFolderFromProvider: async (folder: string) => {
+			const user = await this.user.getOrThrow();
+			const imageKit = new ImageKit({
+				publicKey: user.imagekit_public_key,
+				privateKey: user.imagekit_private_key,
+				urlEndpoint: user.imagekit_url_endpoint
+			});
+			return imageKit.deleteFolder(folder);
+		},
+		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
+			// TODO User checks
+			const chosenDBInstance = trx || db;
+			return chosenDBInstance.update(images).set(newImage).where(eq(images.id, newImage.id));
+		},
 		create: async (newImages: ImageInsert[], trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance.insert(images).values(newImages).returning({ id: images.id }).all();
+		},
+		delete: async (imageId: ImageSelect['id'], trx?: TransactionContext) => {
+			const chosenDBInstance = trx || db;
+			return chosenDBInstance.delete(images).where(eq(images.id, imageId)).run();
 		}
 	};
 

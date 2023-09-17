@@ -8,6 +8,7 @@
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 	import { enhance } from '$app/forms';
+	import ArticleImageUploader from '../editors/ArticleImageUploader.svelte';
 
 	export let data: PageData;
 
@@ -29,11 +30,16 @@
 	<button formaction="?/hide">Hide</button>
 	<button formaction="?/delete">Delete</button>
 </form>
+Прев'ю редактори:
 <PreviewEditorsList {data} />
+Теги:
 <fieldset>
 	{#each data.tagForms as editorForms}
 		<TagEditor {editorForms} />
 	{/each}
 	<TagCreator superFormObj={data.tagCreationForm} />
 </fieldset>
+Додавання фото:
+<ArticleImageUploader providerForm={data.imageProviderForm} />
+Контент статті:
 <TranslationEditor key={article.content_translation_key} />

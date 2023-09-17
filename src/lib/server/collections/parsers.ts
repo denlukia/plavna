@@ -8,7 +8,8 @@ import {
 	sectionsToTags,
 	tags,
 	tagsToArticles,
-	translations
+	translations,
+	users
 } from './db-schema';
 import { ERRORS } from './errors';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -16,6 +17,13 @@ import { z } from 'zod';
 import { previewFamiliesIds } from './previews';
 
 // TODO Refine all slug schemas to accept only valid slugs
+
+export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({
+	imagekit_private_key: true,
+	imagekit_public_key: true,
+	imagekit_url_endpoint: true
+});
+// TODO Refine url
 
 // Pages
 export const pageSelectSchema = createSelectSchema(pages);
@@ -87,14 +95,16 @@ export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
 export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
 
 // TODO Refine url
+const fakeImageFieldExtender = { image: z.optional(z.string()) };
 export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
 	.pick({ url: true })
+	.extend(fakeImageFieldExtender)
 	.merge(translationInsertBaseSchema)
 	.omit({ key: true, user_id: true })
 	.refine(...translationRefineArgs);
 export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
 	.pick({ url: true })
-	.extend({ template_id: previewTemplateSelectSchema.shape.id })
+	.extend({ template_id: previewTemplateSelectSchema.shape.id, ...fakeImageFieldExtender })
 	.merge(translationInsertBaseSchema)
 	.omit({ user_id: true })
 	.refine(...translationRefineArgs);
@@ -103,6 +113,9 @@ export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pic
 // Images
 export const imageSelectSchema = createSelectSchema(images);
 export const imageInsertSchema = createInsertSchema(images);
+export const imageUpdateSchema = imageInsertSchema.partial().required({
+	id: true
+});
 
 // Excluded Tags Config
 export const excludedTags = z.record(

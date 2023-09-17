@@ -31,7 +31,9 @@ import type {
 	previewTemplateEditingFormSchema,
 	previewTemplateDeletionFormSchema,
 	translationInsertBaseSchema,
-	imageInsertSchema
+	imageInsertSchema,
+	imageProviderUpdateFormSchema,
+	imageUpdateSchema
 } from './parsers';
 
 import type { z } from 'zod';
@@ -43,6 +45,8 @@ export type Auth = typeof auth;
 
 // Users
 export type User = typeof users.$inferSelect;
+export type ImageProviderUpdateZod = typeof imageProviderUpdateFormSchema;
+export type ImageProdiverUpdate = z.infer<typeof imageProviderUpdateFormSchema>;
 
 // Pages
 export type PageSelect = z.infer<typeof pageSelectSchema>;
@@ -114,6 +118,7 @@ export type PreviewComponents = Record<
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
 export type ImageInsert = z.infer<typeof imageInsertSchema>;
+export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
 
 // Excluded Tags Config
 export type ExcludedTags = z.infer<typeof excludedTags>;

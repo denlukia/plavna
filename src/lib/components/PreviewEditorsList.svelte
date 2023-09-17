@@ -19,7 +19,8 @@
 		previewComponents,
 		previewTemplateCreationForm,
 		previewForms,
-		meta
+		meta,
+		user
 	} = data);
 
 	type PreviewForms = typeof previewForms;
@@ -53,7 +54,6 @@
 	}
 </script>
 
-Всі первью:
 <ul>
 	{#each previewFamilies as family}
 		{#if family.id !== 'custom'}
@@ -89,7 +89,7 @@
 	{#each previewTemplates as template}
 		{@const component = previewComponents.custom.editor}
 		<li>
-			<PreviewTemplateEditor formObj={template.form} />
+			<PreviewTemplateEditor formObj={template.form} image={template.image} />
 			{#if component}
 				{#await component}
 					Loading...

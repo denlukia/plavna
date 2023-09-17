@@ -1,22 +1,32 @@
 <script lang="ts">
-	import type { PreviewTemplateEditingFormZod } from '$lib/server/collections/types';
+	import type { ImageSelect, PreviewTemplateEditingFormZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TranslationInput from '../inputs/TranslationInput.svelte';
+	import ImageInput from '../inputs/ImageInput.svelte';
+	import Image from '../Image.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateEditingFormZod>;
+	export let image: ImageSelect | undefined;
 
 	$: superFormStores = superForm(formObj);
 	$: ({ enhance, form, errors } = superFormStores);
 </script>
 
-<form use:enhance method="POST" action="?/update_preview_template">
-	<TranslationInput {superFormStores} />
-	<input name="template_id" type="hidden" bind:value={$form.template_id} />
-	<input name="url" bind:value={$form.url} />
-	<button>Update template</button>
-</form>
-<form use:enhance method="POST" action="?/delete_preview_template">
-	<input name="id" type="hidden" bind:value={$form.template_id} />
-	<button>Delete template</button>
-</form>
+<fieldset>
+	{#if image}
+		<Image {image} />
+	{/if}
+	<form use:enhance method="POST" action="?/update_preview_template" enctype="multipart/form-data">
+		<TranslationInput {superFormStores} />
+		<input name="template_id" type="hidden" bind:value={$form.template_id} />
+		<input name="url" bind:value={$form.url} />
+
+		<ImageInput name="image" errors={$errors.image} />
+		<button>Update template</button>
+	</form>
+	<form use:enhance method="POST" action="?/delete_preview_template">
+		<input name="id" type="hidden" bind:value={$form.template_id} />
+		<button>Delete template</button>
+	</form>
+</fieldset>

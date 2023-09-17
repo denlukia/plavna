@@ -147,7 +147,7 @@ export const articles = sqliteTable(
 		published_at: integer('published_at', { mode: 'timestamp' }),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),
 		preview_template_id: integer('preview_template_id').references(() => previewTemplates.id, {
-			onDelete: 'cascade',
+			onDelete: 'set null',
 			onUpdate: 'cascade'
 		}),
 		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
@@ -240,13 +240,11 @@ export const images = sqliteTable('images', {
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	source: text('source', { enum: ['imagekit'] }).notNull(),
-	reference: text('reference'),
-	reference_translation_key: integer('reference_translation_key')
-		.notNull()
-		.references(() => translations.key, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade'
-		})
+	path: text('path'),
+	path_translation_key: integer('path_translation_key').references(() => translations.key, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	})
 });
 
 export const translations = sqliteTable('translations', {

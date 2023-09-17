@@ -1,11 +1,12 @@
 import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 
 import { generatePath } from '$lib/isomorphic/url';
 import { update_translation } from '$lib/server/common-actions';
 import {
 	articlePreviewUpdateSchema,
 	articleSlugUpdateSchema,
+	imageProviderUpdateFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema,
@@ -16,6 +17,8 @@ import {
 
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
+import { checkFileSupport, isFilePresent } from '$lib/server/utils/images';
+import { ERRORS } from '$lib/isomorphic/errors';
 
 async function switch_tag(event: ActionRequestEvt) {
 	const form = await superValidate(event.request, tagUpdateSchema);
@@ -90,18 +93,37 @@ async function update_preview(event: ActionRequestEvt) {
 }
 
 async function create_preview_template(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, previewTemplateCreationFormSchema);
+	const formData = await event.request.formData();
+	const form = await superValidate(formData, previewTemplateCreationFormSchema);
 	if (!form.valid) return fail(400, { form });
 
+	const imageEntry = formData.get('image');
+	let image: Buffer | null = null;
+	if (isFilePresent(imageEntry)) {
+		const checkResult = await checkFileSupport(imageEntry);
+		if (checkResult.errors) return setError(form, 'image', checkResult.errors);
+		image = checkResult.image;
+	}
+
 	const { plavna } = event.locals;
-	await plavna.previewTemplates.create(form.data);
+	await plavna.previewTemplates.create(form.data, image);
 }
+
 async function update_preview_template(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, previewTemplateEditingFormSchema);
+	const formData = await event.request.formData();
+	const form = await superValidate(formData, previewTemplateEditingFormSchema);
 	if (!form.valid) return fail(400, { form });
 
+	const imageEntry = formData.get('image');
+	let image: Buffer | null = null;
+	if (isFilePresent(imageEntry)) {
+		const checkResult = await checkFileSupport(imageEntry);
+		if (checkResult.errors) return setError(form, 'image', checkResult.errors);
+		image = checkResult.image;
+	}
+
 	const { plavna } = event.locals;
-	await plavna.previewTemplates.update(form.data);
+	await plavna.previewTemplates.update(form.data, image);
 }
 async function delete_preview_template(event: ActionRequestEvt) {
 	const form = await superValidate(event.request, previewTemplateDeletionFormSchema);
@@ -109,6 +131,27 @@ async function delete_preview_template(event: ActionRequestEvt) {
 
 	const { plavna } = event.locals;
 	await plavna.previewTemplates.delete(form.data);
+}
+
+async function update_image_provider(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, imageProviderUpdateFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	try {
+		await plavna.user.updateImageProvider(form.data);
+	} catch {
+		return setError(form, '', ERRORS.CANNOT_ACCESS_IMAGEKIT);
+	}
+}
+async function delete_image_provider(event: ActionRequestEvt) {
+	const { plavna } = event.locals;
+
+	await plavna.user.updateImageProvider({
+		imagekit_private_key: '',
+		imagekit_public_key: '',
+		imagekit_url_endpoint: ''
+	});
 }
 
 type ActionRequestEvt =
@@ -127,5 +170,7 @@ export const actions = {
 	update_preview,
 	create_preview_template,
 	update_preview_template,
-	delete_preview_template
+	delete_preview_template,
+	update_image_provider,
+	delete_image_provider
 };

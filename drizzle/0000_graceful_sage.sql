@@ -17,7 +17,7 @@ CREATE TABLE `articles` (
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`content_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE cascade ON DELETE cascade,
+	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE cascade ON DELETE set null,
 	FOREIGN KEY (`preview_translation_key_1`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
 	FOREIGN KEY (`preview_translation_key_2`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
 	FOREIGN KEY (`preview_image_id_1`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null,
@@ -28,10 +28,10 @@ CREATE TABLE `images` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
 	`source` text NOT NULL,
-	`reference` text,
-	`reference_translation_key` integer NOT NULL,
+	`path` text,
+	`path_translation_key` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`reference_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`path_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `auth_key` (
