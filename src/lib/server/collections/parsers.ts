@@ -1,8 +1,13 @@
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from 'zod';
+
+import { supportedLanguages } from '$lib/isomorphic/languages';
+
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../utils/objects';
 import {
+	articles,
 	images,
 	pages,
-	articles,
 	previewTemplates,
 	sections,
 	sectionsToTags,
@@ -12,8 +17,6 @@ import {
 	users
 } from './db-schema';
 import { ERRORS } from './errors';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import { z } from 'zod';
 import { previewFamiliesIds } from './previews';
 
 // TODO Refine all slug schemas to accept only valid slugs
@@ -89,6 +92,12 @@ const previewRelatedFields = {
 	preview_prop_2: true
 } as const;
 export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
+
+// Article Preview Screenshotting
+export const articlePreviewScreenshotMeta = z.object({
+	article_id: articleSelectSchema.shape.id,
+	lang: z.enum(supportedLanguages).optional()
+});
 
 // Preview Templates
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);

@@ -1,5 +1,4 @@
-import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
-import { db } from './db';
+import { SCREENSHOTTER_ACCESS_TOKEN, SCREENSHOTTER_API_URL } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 import {
 	type ExtractTablesWithRelations,
@@ -18,9 +17,10 @@ import {
 	sql
 } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
+import imageSize from 'image-size';
+import ImageKit from 'imagekit';
 import { marked, use } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
-import ImageKit from 'imagekit';
 
 import {
 	type SupportedLang,
@@ -30,33 +30,33 @@ import {
 } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
-	pages,
 	articles,
+	images,
+	pages,
 	previewTemplates,
 	sections,
 	sectionsToTags,
 	tags,
 	tagsToArticles,
 	translations,
-	users,
-	images
+	users
 } from '$lib/server/collections/db-schema';
 import { ERRORS } from '$lib/server/collections/errors';
 import {
+	articlePreviewUpdateSchema,
+	articleSelectSchema,
+	articleSlugUpdateSchema,
+	imageProviderUpdateFormSchema,
 	pageCreateFormSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
-	articlePreviewUpdateSchema,
-	articleSlugUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateEditingFormSchema,
 	sectionInsertSchema,
 	tagDeleteSchema,
 	tagUpdateSchema,
 	translationInsertSchema,
-	translationUpdateSchema,
-	previewTemplateCreationFormSchema,
-	previewTemplateEditingFormSchema,
-	articleSelectSchema,
-	imageProviderUpdateFormSchema
+	translationUpdateSchema
 } from '$lib/server/collections/parsers';
 import {
 	removeNullAndDup as getNullAndDupFilter,
@@ -64,44 +64,47 @@ import {
 	nonNull
 } from '$lib/server/utils/objects';
 
+import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
+import { previewFamilies } from '../collections/previews';
+import { createImagePathAndFilename, folderFromPath } from '../utils/images';
+import { db } from './db';
+
 import type {
+	ArticleInsert,
+	ArticlePreviewScreenshotMeta,
+	ArticlePreviewUpdate,
+	ArticleSelect,
+	ArticleSlugUpdate,
 	ExcludedTags,
+	ImageInsert,
+	ImageProdiverUpdate,
+	ImageSelect,
+	ImageUpdate,
 	PageCreateForm,
 	PageInsert,
 	PageSelect,
 	PageUpdateForm,
-	ArticleInsert,
-	ArticlePreviewUpdate,
-	ArticleSelect,
-	ArticleSlugUpdate,
+	PreviewTemplateCreation,
+	PreviewTemplateDeletion,
+	PreviewTemplateEditing,
 	PreviewTemplateSelect,
 	SectionDelete,
 	SectionSelect,
 	SectionToTagInsert,
 	SectionUpdate,
 	TagDelete,
-	TagToArticleSelect,
 	TagSelect,
+	TagToArticleSelect,
 	TagUpdate,
 	TranslationDelete,
 	TranslationInsert,
-	TranslationSelect,
-	TranslationUpdate,
-	PreviewTemplateCreation,
-	PreviewTemplateEditing,
-	PreviewTemplateDeletion,
 	TranslationInsertBase,
-	ImageInsert,
-	ImageProdiverUpdate,
-	ImageUpdate,
-	ImageSelect
+	TranslationSelect,
+	TranslationUpdate
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
-import { previewFamilies } from '../collections/previews';
-import { createImagePathAndFilename, folderFromPath } from '../utils/images';
-import imageSize from 'image-size';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -861,12 +864,51 @@ class Plavna {
 			if (preview.preview_family && preview.preview_family !== 'custom')
 				preview.preview_template_id = null;
 			if (preview.preview_template_id) preview.preview_family = 'custom';
-			return db
+			const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
+			const articleUpdatePromise = db
 				.update(articles)
 				.set(preview)
-				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+				.where(whereCondition)
 				.returning({ slug: articles.slug })
 				.get();
+			let awaitForArray: Array<typeof articleUpdatePromise | Promise<Response>> = [
+				articleUpdatePromise
+			];
+			if (preview.preview_family === 'custom' && preview.preview_template_id) {
+				const articleResult = await db
+					.select({ articleId: articles.id, previewTemplateUrl: previewTemplates.url })
+					.from(articles)
+					.innerJoin(previewTemplates, eq(previewTemplates.id, preview.preview_template_id))
+					.where(whereCondition)
+					.get();
+
+				if (articleResult) {
+					// TODO 1. Construct a proper URL for screenshotting;
+					const urlForScreenshotting = articleResult.previewTemplateUrl;
+					const meta: ArticlePreviewScreenshotMeta = { article_id: articleResult.articleId };
+					const screenshotRequestPromise = fetch(SCREENSHOTTER_API_URL, {
+						method: 'POST',
+						cache: 'no-cache',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							meta,
+							url: urlForScreenshotting,
+							// TODO 2. Take params from article preview dimensions + px multipliers
+							width: 500,
+							height: 200,
+							accessToken: SCREENSHOTTER_ACCESS_TOKEN,
+							// TODO 3. Dynamize this url
+							callbackUrl: 'localhost:5173/api/update-preview-screenshot'
+						})
+					});
+					awaitForArray = [...awaitForArray, screenshotRequestPromise];
+				} else {
+					// TODO Handle not finding template id ?
+				}
+				return Promise.all(awaitForArray);
+			}
 		},
 		getOne: async (username: string, slug: string) => {
 			const userPromise = this.user.get();
@@ -927,7 +969,8 @@ class Plavna {
 				]),
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
-		}
+		},
+		updatePreviewScreenshot: async (image: Buffer, metadata: ArticlePreviewScreenshotMeta) => {}
 	};
 
 	public readonly previewTemplates = {

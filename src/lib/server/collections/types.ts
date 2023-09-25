@@ -1,16 +1,23 @@
 import type { auth } from '../services/auth';
 import type { users } from './db-schema';
 import type {
+	articleInsertSchema,
+	articlePreviewScreenshotMeta,
+	articlePreviewUpdateSchema,
+	articleSelectSchema,
+	articleSlugUpdateSchema,
 	excludedTags,
+	imageInsertSchema,
+	imageProviderUpdateFormSchema,
 	imageSelectSchema,
+	imageUpdateSchema,
 	pageCreateFormSchema,
 	pageInsertSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
-	articleInsertSchema,
-	articlePreviewUpdateSchema,
-	articleSelectSchema,
-	articleSlugUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateDeletionFormSchema,
+	previewTemplateEditingFormSchema,
 	previewTemplateSelectSchema,
 	sectionDeleteSchema,
 	sectionInsertSchema,
@@ -20,25 +27,18 @@ import type {
 	sectionUpdateSchema,
 	tagDeleteSchema,
 	tagInsertSchema,
-	tagToArticleSelectSchema,
 	tagSelectSchema,
+	tagToArticleSelectSchema,
 	tagUpdateSchema,
 	translationDeleteSchema,
+	translationInsertBaseSchema,
 	translationInsertSchema,
 	translationSelectSchema,
-	translationUpdateSchema,
-	previewTemplateCreationFormSchema,
-	previewTemplateEditingFormSchema,
-	previewTemplateDeletionFormSchema,
-	translationInsertBaseSchema,
-	imageInsertSchema,
-	imageProviderUpdateFormSchema,
-	imageUpdateSchema
+	translationUpdateSchema
 } from './parsers';
-
-import type { z } from 'zod';
 import type { PreviewFamilyId } from './previews';
 import type { MaybePromise } from 'Instance';
+import type { z } from 'zod';
 
 // Auth
 export type Auth = typeof auth;
@@ -93,7 +93,10 @@ export type ArticleSlugUpdate = z.infer<typeof articleSlugUpdateSchema>;
 export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
 export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
 
-// Previews
+// Article Preview Screenshotting
+export type ArticlePreviewScreenshotMeta = z.infer<typeof articlePreviewScreenshotMeta>;
+
+// Preview Templates
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;
 export type PreviewTemplateCreationFormZod = typeof previewTemplateCreationFormSchema;
 export type PreviewTemplateEditingFormZod = typeof previewTemplateEditingFormSchema;

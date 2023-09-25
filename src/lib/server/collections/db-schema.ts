@@ -170,7 +170,11 @@ export const articles = sqliteTable(
 			.references(() => images.id, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
-			})
+			}),
+		url_preview_image_id: integer('url_preview_image_id').references(() => images.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade'
+		})
 	},
 	(table) => {
 		return {
