@@ -1,5 +1,4 @@
 import type { RemoveNullValues } from './typing';
-import type { SvelteComponent } from 'svelte';
 
 export function nestify<T extends object>(obj: T): any {
 	const nestedObj = {} as any;
@@ -78,7 +77,7 @@ export function addPrefixDotToKeys<T extends object, P extends string>(
 	return prefixedObj;
 }
 
-export function removeNullAndDup(fieldName: string) {
+export function getNullAndDupFilter(fieldName: string) {
 	return <T extends null | Record<string, any>>(
 		obj: T,
 		index: number,

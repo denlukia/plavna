@@ -98,6 +98,23 @@ export const articlePreviewScreenshotMeta = z.object({
 	article_id: articleSelectSchema.shape.id,
 	lang: z.enum(supportedLanguages).optional()
 });
+export const articlePreviewScreenshotParams = z
+	.object({
+		width: z.number(),
+		height: z.number(),
+		lang: z.enum(supportedLanguages)
+	})
+	.merge(articleSelectSchema.pick({ preview_prop_1: true, preview_prop_2: true }))
+	.extend({
+		preview_translation_1: z.string(),
+		preview_translation_2: z.string(),
+		preview_image_1: z.string(),
+		preview_image_2: z.string()
+	});
+export const articlePreviewCellsTaken = articleSelectSchema.pick({
+	preview_columns: true,
+	preview_rows: true
+});
 
 // Preview Templates
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);

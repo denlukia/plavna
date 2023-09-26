@@ -58,15 +58,16 @@ import {
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/collections/parsers';
-import {
-	removeNullAndDup as getNullAndDupFilter,
-	hasNonEmptyProperties,
-	nonNull
-} from '$lib/server/utils/objects';
+import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/utils/objects';
 
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
 import { createImagePathAndFilename, folderFromPath } from '../utils/images';
+import {
+	calculateDimensionsFromCellsTaken,
+	composeURLForScreenshot,
+	getMaybeTranslatedImagePath
+} from '../utils/screenshotting';
 import { db } from './db';
 
 import type {
@@ -876,31 +877,104 @@ class Plavna {
 			];
 			if (preview.preview_family === 'custom' && preview.preview_template_id) {
 				const articleResult = await db
-					.select({ articleId: articles.id, previewTemplateUrl: previewTemplates.url })
+					.select({
+						articles,
+						images,
+						translations,
+						previewTemplateUrl: previewTemplates.url
+					})
 					.from(articles)
 					.innerJoin(previewTemplates, eq(previewTemplates.id, preview.preview_template_id))
+					.leftJoin(
+						images,
+						or(
+							eq(images.id, articles.preview_image_1_id),
+							eq(images.id, articles.preview_image_2_id)
+						)
+					)
+					.leftJoin(
+						translations,
+						or(
+							eq(translations.key, articles.preview_translation_1_key),
+							eq(translations.key, articles.preview_translation_2_key),
+							eq(translations.key, images.path_translation_key)
+						)
+					)
 					.where(whereCondition)
-					.get();
+					.all();
 
 				if (articleResult) {
-					// TODO 1. Construct a proper URL for screenshotting;
-					const urlForScreenshotting = articleResult.previewTemplateUrl;
-					const meta: ArticlePreviewScreenshotMeta = { article_id: articleResult.articleId };
+					const { previewTemplateUrl } = articleResult[0];
+					const {
+						preview_columns,
+						preview_rows,
+						preview_prop_1,
+						preview_prop_2,
+						preview_translation_1_key,
+						preview_translation_2_key,
+						preview_image_1_id,
+						preview_image_2_id,
+						id: article_id
+					} = articleResult[0].articles;
+					const imagesArr = articleResult
+						.map(({ images }) => images)
+						.filter(getNullAndDupFilter('id'));
+					const translationsArr = articleResult
+						.map(({ translations }) => translations)
+						.filter(getNullAndDupFilter('key'));
+
+					const preview_translation_1 =
+						translationsArr.find((t) => t.key === preview_translation_1_key)?.[this.lang] || '';
+					const preview_translation_2 =
+						translationsArr.find((t) => t.key === preview_translation_2_key)?.[this.lang] || '';
+
+					const { width, height } = calculateDimensionsFromCellsTaken({
+						preview_columns,
+						preview_rows
+					});
+					const preview_image_1 = getMaybeTranslatedImagePath(
+						imagesArr,
+						translationsArr,
+						preview_image_1_id,
+						this.lang
+					);
+					const preview_image_2 = getMaybeTranslatedImagePath(
+						imagesArr,
+						translationsArr,
+						preview_image_2_id,
+						this.lang
+					);
+					const urlForScreenshotting = composeURLForScreenshot(previewTemplateUrl, {
+						width,
+						height,
+						lang: this.lang,
+						preview_prop_1,
+						preview_prop_2,
+						preview_translation_1,
+						preview_translation_2,
+						preview_image_1,
+						preview_image_2
+					});
+					const callbackMeta: ArticlePreviewScreenshotMeta = {
+						article_id,
+						lang: this.lang
+					};
 					const screenshotRequestPromise = fetch(SCREENSHOTTER_API_URL, {
 						method: 'POST',
 						cache: 'no-cache',
 						headers: {
+							Accept: 'application/json',
 							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify({
-							meta,
 							url: urlForScreenshotting,
 							// TODO 2. Take params from article preview dimensions + px multipliers
 							width: 500,
 							height: 200,
 							accessToken: SCREENSHOTTER_ACCESS_TOKEN,
 							// TODO 3. Dynamize this url
-							callbackUrl: 'localhost:5173/api/update-preview-screenshot'
+							callbackUrl: 'localhost:5173/api/update-preview-screenshot',
+							callbackMeta
 						})
 					});
 					awaitForArray = [...awaitForArray, screenshotRequestPromise];

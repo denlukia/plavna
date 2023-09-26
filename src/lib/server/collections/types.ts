@@ -1,8 +1,11 @@
+import type { SupportedLang } from '$lib/isomorphic/languages';
 import type { auth } from '../services/auth';
 import type { users } from './db-schema';
 import type {
 	articleInsertSchema,
+	articlePreviewCellsTaken,
 	articlePreviewScreenshotMeta,
+	articlePreviewScreenshotParams,
 	articlePreviewUpdateSchema,
 	articleSelectSchema,
 	articleSlugUpdateSchema,
@@ -95,6 +98,8 @@ export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
 
 // Article Preview Screenshotting
 export type ArticlePreviewScreenshotMeta = z.infer<typeof articlePreviewScreenshotMeta>;
+export type ArticlePreviewScreenshotQuery = z.infer<typeof articlePreviewScreenshotParams>;
+export type ArticlePreviewCellsTaken = z.infer<typeof articlePreviewCellsTaken>;
 
 // Preview Templates
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;

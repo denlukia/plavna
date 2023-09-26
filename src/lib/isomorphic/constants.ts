@@ -10,3 +10,5 @@ export const SUPPORTED_FORMATS = {
 	'image/webp': 'webp',
 	'image/svg+xml': 'svg'
 } as const;
+
+export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };

@@ -15,6 +15,20 @@
       "when": 1695563004555,
       "tag": "0001_massive_luckman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1695734911172,
+      "tag": "0002_young_cargill",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1695738824106,
+      "tag": "0003_chilly_mongu",
+      "breakpoints": true
     }
   ]
 }

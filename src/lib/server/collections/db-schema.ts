@@ -1,8 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
+import { type PreviewFamilyId, previewFamilies, previewFamiliesIds } from './previews';
+
 import type { SupportedLang } from '$lib/isomorphic/languages';
-import { previewFamilies, type PreviewFamilyId, previewFamiliesIds } from './previews';
 
 export const users = sqliteTable(
 	'auth_user',
@@ -145,6 +146,8 @@ export const articles = sqliteTable(
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		published_at: integer('published_at', { mode: 'timestamp' }),
+		preview_columns: integer('preview_columns').notNull().default(1),
+		preview_rows: integer('preview_rows').notNull().default(1),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),
 		preview_template_id: integer('preview_template_id').references(() => previewTemplates.id, {
 			onDelete: 'set null',
@@ -153,19 +156,19 @@ export const articles = sqliteTable(
 		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
 		preview_prop_1: text('preview_prop_1'),
 		preview_prop_2: text('preview_prop_2'),
-		preview_translation_key_1: integer('preview_translation_key_1')
+		preview_translation_1_key: integer('preview_translation_1_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
-		preview_translation_key_2: integer('preview_translation_key_2')
+		preview_translation_2_key: integer('preview_translation_2_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
-		preview_image_id_1: integer('preview_image_id_1')
+		preview_image_1_id: integer('preview_image_1_id')
 			.notNull()
 			.references(() => images.id, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}),
-		preview_image_id_2: integer('preview_image_id_2')
+		preview_image_2_id: integer('preview_image_2_id')
 			.notNull()
 			.references(() => images.id, {
 				onDelete: 'set null',
