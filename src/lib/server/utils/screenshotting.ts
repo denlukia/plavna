@@ -9,7 +9,13 @@ import type {
 	TranslationSelect
 } from '../collections/types';
 
-export function composeURLForScreenshot(url: string, params: ArticlePreviewScreenshotQuery) {}
+export function composeURLForScreenshot(url: string, params: ArticlePreviewScreenshotQuery) {
+	let urlObj = new URL(url);
+	Object.entries(params).map(([key, value]) => {
+		urlObj.searchParams.set(key, String(value ?? ''));
+	});
+	return urlObj.href;
+}
 
 export function calculateDimensionsFromCellsTaken({
 	preview_columns,

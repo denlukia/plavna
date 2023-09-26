@@ -60,7 +60,11 @@ import {
 } from '$lib/server/collections/parsers';
 import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/utils/objects';
 
-import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
+import {
+	POSTS_PER_SECTION,
+	SCREENSHOTTING_CALLBACK_URL,
+	SECTIONS_PER_LOAD
+} from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
 import { createImagePathAndFilename, folderFromPath } from '../utils/images';
 import {
@@ -861,10 +865,11 @@ class Plavna {
 				.run();
 		},
 		updatePreview: async (slug: string, preview: ArticlePreviewUpdate) => {
-			const user = await this.user.getOrThrow();
 			if (preview.preview_family && preview.preview_family !== 'custom')
 				preview.preview_template_id = null;
 			if (preview.preview_template_id) preview.preview_family = 'custom';
+
+			const user = await this.user.getOrThrow();
 			const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
 			const articleUpdatePromise = db
 				.update(articles)
@@ -872,9 +877,7 @@ class Plavna {
 				.where(whereCondition)
 				.returning({ slug: articles.slug })
 				.get();
-			let awaitForArray: Array<typeof articleUpdatePromise | Promise<Response>> = [
-				articleUpdatePromise
-			];
+
 			if (preview.preview_family === 'custom' && preview.preview_template_id) {
 				const articleResult = await db
 					.select({
@@ -916,6 +919,7 @@ class Plavna {
 						preview_image_2_id,
 						id: article_id
 					} = articleResult[0].articles;
+
 					const imagesArr = articleResult
 						.map(({ images }) => images)
 						.filter(getNullAndDupFilter('id'));
@@ -959,7 +963,8 @@ class Plavna {
 						article_id,
 						lang: this.lang
 					};
-					const screenshotRequestPromise = fetch(SCREENSHOTTER_API_URL, {
+
+					fetch(SCREENSHOTTER_API_URL, {
 						method: 'POST',
 						cache: 'no-cache',
 						headers: {
@@ -968,20 +973,15 @@ class Plavna {
 						},
 						body: JSON.stringify({
 							url: urlForScreenshotting,
-							// TODO 2. Take params from article preview dimensions + px multipliers
-							width: 500,
-							height: 200,
+							width,
+							height,
 							accessToken: SCREENSHOTTER_ACCESS_TOKEN,
-							// TODO 3. Dynamize this url
-							callbackUrl: 'localhost:5173/api/update-preview-screenshot',
+							callbackUrl: SCREENSHOTTING_CALLBACK_URL,
 							callbackMeta
 						})
 					});
-					awaitForArray = [...awaitForArray, screenshotRequestPromise];
-				} else {
-					// TODO Handle not finding template id ?
 				}
-				return Promise.all(awaitForArray);
+				await articleUpdatePromise;
 			}
 		},
 		getOne: async (username: string, slug: string) => {
