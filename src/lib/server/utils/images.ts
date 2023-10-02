@@ -1,8 +1,8 @@
-import { SUPPORTED_FORMATS } from '$lib/isomorphic/constants';
-import type { SupportedLang } from '$lib/isomorphic/languages';
-import type { ArticleSelect, ImageSelect, User } from '../collections/types';
-import type { DeepPartial } from './typing';
 import sizeOf from 'image-size';
+
+import { SUPPORTED_FORMATS } from '$lib/isomorphic/constants';
+
+import type { DeepPartial } from './types';
 
 type SupportedConfig = {
 	formats: string[];
@@ -81,37 +81,6 @@ export async function checkFileSupport(
 	if (errors.length === 0 && imageBuffer) {
 		return { image: imageBuffer };
 	} else return { errors };
-}
-
-export function createImagePathAndFilename({
-	userId,
-	isForPreviewTemplate,
-	articleId,
-	imageId,
-	lang,
-	name,
-	format
-}: {
-	userId: User['id'];
-	isForPreviewTemplate: boolean;
-	articleId?: ArticleSelect['id'];
-	imageId: ImageSelect['id'];
-	lang?: SupportedLang;
-	name?: string;
-	format?: string;
-}) {
-	const userPart = `user-${userId}`;
-	const articlePart = isForPreviewTemplate
-		? 'preview-templates'
-		: articleId
-		? `article-${articleId}`
-		: 'common';
-	const imagePart = `image-${imageId}`;
-	const langPart = lang ?? 'universal';
-	const namePart = name ?? 'original';
-	const formatPart = format ? '.' + format : '';
-
-	return [`plavna/${userPart}/${articlePart}/${imagePart}/${langPart}`, `${namePart}${formatPart}`];
 }
 
 export function folderFromPath(path: string) {

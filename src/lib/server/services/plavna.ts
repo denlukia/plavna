@@ -1,5 +1,4 @@
-import { SCREENSHOTTER_ACCESS_TOKEN, SCREENSHOTTER_API_URL } from '$env/static/private';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import {
 	type ExtractTablesWithRelations,
 	and,
@@ -18,15 +17,16 @@ import {
 } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import imageSize from 'image-size';
-import ImageKit from 'imagekit';
 import { marked, use } from 'marked';
+import { ImageProvider, type ImageProviderData, createImagePathAndFilename } from 'plavna-common';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
+import { ERRORS } from '$lib/isomorphic/errors';
 import {
 	type SupportedLang,
 	defaultLang,
 	isSupportedLang,
-	supportedLanguages
+	supportedLangs
 } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
@@ -34,6 +34,7 @@ import {
 	images,
 	pages,
 	previewTemplates,
+	screenshotsQueue,
 	sections,
 	sectionsToTags,
 	tags,
@@ -41,7 +42,6 @@ import {
 	translations,
 	users
 } from '$lib/server/collections/db-schema';
-import { ERRORS } from '$lib/server/collections/errors';
 import {
 	articlePreviewUpdateSchema,
 	articleSelectSchema,
@@ -60,13 +60,9 @@ import {
 } from '$lib/server/collections/parsers';
 import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/utils/objects';
 
-import {
-	POSTS_PER_SECTION,
-	SCREENSHOTTING_CALLBACK_URL,
-	SECTIONS_PER_LOAD
-} from '../../isomorphic/constants';
+import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
-import { createImagePathAndFilename, folderFromPath } from '../utils/images';
+import { folderFromPath } from '../utils/images';
 import {
 	calculateDimensionsFromCellsTaken,
 	composeURLForScreenshot,
@@ -93,6 +89,7 @@ import type {
 	PreviewTemplateDeletion,
 	PreviewTemplateEditing,
 	PreviewTemplateSelect,
+	ScreenshotsQueueInsertLocal,
 	SectionDelete,
 	SectionSelect,
 	SectionToTagInsert,
@@ -105,7 +102,8 @@ import type {
 	TranslationInsert,
 	TranslationInsertBase,
 	TranslationSelect,
-	TranslationUpdate
+	TranslationUpdate,
+	UserWithImagekit
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
@@ -160,12 +158,7 @@ class Plavna {
 				imagekit_url_endpoint: urlEndpoint
 			} = providerData;
 			if (publicKey && privateKey && urlEndpoint) {
-				const imagekit = new ImageKit({
-					publicKey,
-					privateKey,
-					urlEndpoint
-				});
-				const listFilesResult = await imagekit.listFiles({ limit: 1 });
+				await new ImageProvider(user).checkAccess();
 			}
 			return db.update(users).set(providerData).where(eq(users.id, user.id));
 		}
@@ -489,7 +482,7 @@ class Plavna {
 			const user = await this.user.getOrThrow();
 			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
 
-			supportedLanguages.forEach((lang) => {
+			supportedLangs.forEach((lang) => {
 				const translationText = translation[lang];
 				if (nonNull(translationText)) {
 					const tokens = marked.lexer(translationText);
@@ -544,7 +537,7 @@ class Plavna {
 			const { section_id, ...translation } = sectionUpdate;
 			const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
 
-			supportedLanguages.forEach((lang) => {
+			supportedLangs.forEach((lang) => {
 				const translationText = translation[lang];
 				if (nonNull(translationText)) {
 					const tokens = marked.lexer(translationText);
@@ -675,13 +668,13 @@ class Plavna {
 				const [
 					{ key: title_translation_key },
 					{ key: content_translation_key },
-					{ key: preview_translation_key_1 },
-					{ key: preview_translation_key_2 },
+					{ key: preview_translation_1_key },
+					{ key: preview_translation_2_key },
 					{ key: image_path_translation_key_1 },
 					{ key: image_path_translation_key_2 }
 				] = await this.translations.create(new Array(7).fill(newTranslation), 'allow-empty', trx);
 				const newImage = { user_id: user.id, source: 'imagekit' } as const;
-				const [{ id: preview_image_id_1 }, { id: preview_image_id_2 }] = await this.images.create(
+				const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await this.images.create(
 					[
 						{ ...newImage, path_translation_key: image_path_translation_key_1 },
 						{ ...newImage, path_translation_key: image_path_translation_key_2 }
@@ -697,10 +690,10 @@ class Plavna {
 						title_translation_key: Number(title_translation_key),
 						content_translation_key: Number(content_translation_key),
 						preview_family: 'plavna-modern',
-						preview_translation_key_1,
-						preview_translation_key_2,
-						preview_image_id_1,
-						preview_image_id_2
+						preview_translation_1_key,
+						preview_translation_2_key,
+						preview_image_1_id,
+						preview_image_2_id
 					})
 					.returning({ id: articles.id })
 					.get();
@@ -738,8 +731,8 @@ class Plavna {
 						eq(translForForms.key, articles.content_translation_key),
 						eq(translForForms.key, articles.title_translation_key),
 						eq(translForForms.key, tags.name_translation_key),
-						eq(translForForms.key, articles.preview_translation_key_1),
-						eq(translForForms.key, articles.preview_translation_key_2)
+						eq(translForForms.key, articles.preview_translation_1_key),
+						eq(translForForms.key, articles.preview_translation_2_key)
 					)
 				)
 				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
@@ -871,12 +864,14 @@ class Plavna {
 
 			const user = await this.user.getOrThrow();
 			const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
+
 			const articleUpdatePromise = db
 				.update(articles)
 				.set(preview)
 				.where(whereCondition)
 				.returning({ slug: articles.slug })
 				.get();
+			const promisesToWaitFor: Promise<any>[] = [articleUpdatePromise];
 
 			if (preview.preview_family === 'custom' && preview.preview_template_id) {
 				const articleResult = await db
@@ -900,7 +895,8 @@ class Plavna {
 						or(
 							eq(translations.key, articles.preview_translation_1_key),
 							eq(translations.key, articles.preview_translation_2_key),
-							eq(translations.key, images.path_translation_key)
+							eq(translations.key, images.path_translation_key),
+							eq(translations.key, articles.title_translation_key)
 						)
 					)
 					.where(whereCondition)
@@ -911,13 +907,12 @@ class Plavna {
 					const {
 						preview_columns,
 						preview_rows,
-						preview_prop_1,
-						preview_prop_2,
 						preview_translation_1_key,
 						preview_translation_2_key,
 						preview_image_1_id,
 						preview_image_2_id,
-						id: article_id
+						id: article_id,
+						title_translation_key
 					} = articleResult[0].articles;
 
 					const imagesArr = articleResult
@@ -931,6 +926,7 @@ class Plavna {
 						translationsArr.find((t) => t.key === preview_translation_1_key)?.[this.lang] || '';
 					const preview_translation_2 =
 						translationsArr.find((t) => t.key === preview_translation_2_key)?.[this.lang] || '';
+					const titleTranslationObj = translationsArr.find((t) => t.key === title_translation_key);
 
 					const { width, height } = calculateDimensionsFromCellsTaken({
 						preview_columns,
@@ -952,37 +948,75 @@ class Plavna {
 						width,
 						height,
 						lang: this.lang,
-						preview_prop_1,
-						preview_prop_2,
+						preview_prop_1: preview.preview_prop_1 || null,
+						preview_prop_2: preview.preview_prop_2 || null,
 						preview_translation_1,
 						preview_translation_2,
 						preview_image_1,
 						preview_image_2
 					});
-					const callbackMeta: ArticlePreviewScreenshotMeta = {
-						article_id,
-						lang: this.lang
-					};
 
-					fetch(SCREENSHOTTER_API_URL, {
-						method: 'POST',
-						cache: 'no-cache',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({
-							url: urlForScreenshotting,
+					function createQueueRecord(
+						imageProviderData: ImageProviderData,
+						lang?: SupportedLang
+					): ScreenshotsQueueInsertLocal {
+						// TODO Pass article title and description too
+						return {
+							user_id: user.id,
+							article_id,
 							width,
 							height,
-							accessToken: SCREENSHOTTER_ACCESS_TOKEN,
-							callbackUrl: SCREENSHOTTING_CALLBACK_URL,
-							callbackMeta
-						})
-					});
+							lang,
+							url: urlForScreenshotting,
+							imageProviderData
+						};
+					}
+
+					function getImageProvider(user: UserWithImagekit): ImageProviderData {
+						return {
+							imagekit_private_key: user.imagekit_private_key,
+							imagekit_public_key: user.imagekit_public_key,
+							imagekit_url_endpoint: user.imagekit_url_endpoint
+						};
+					}
+					function validateImageProvider(user: User): user is UserWithImagekit {
+						return !!(
+							user.imagekit_private_key &&
+							user.imagekit_public_key &&
+							user.imagekit_url_endpoint
+						);
+					}
+
+					if (validateImageProvider(user)) {
+						const imageProviderData = getImageProvider(user);
+						let queueRecordsForInsert: ReturnType<typeof createQueueRecord>[] = [];
+						if (preview.preview_create_localized_screenshots) {
+							queueRecordsForInsert = supportedLangs
+								.map((lang) => {
+									if (titleTranslationObj?.[lang]) {
+										return createQueueRecord(imageProviderData, lang);
+									} else {
+										return null;
+									}
+								})
+								.filter(nonNull);
+						} else {
+							queueRecordsForInsert = [createQueueRecord(imageProviderData)];
+						}
+
+						const queueRecordsInserPromise = db
+							.insert(screenshotsQueue)
+							.values(queueRecordsForInsert)
+							.run();
+						promisesToWaitFor.push(queueRecordsInserPromise);
+					} else {
+						throw fail(403, { message: ERRORS.IMAGEKIT_NOT_CONFIGURED });
+					}
 				}
-				await articleUpdatePromise;
+			} else {
+				// Delete any queues and images
 			}
+			return Promise.all(promisesToWaitFor);
 		},
 		getOne: async (username: string, slug: string) => {
 			const userPromise = this.user.get();
@@ -1145,13 +1179,13 @@ class Plavna {
 			} as const;
 			const [{ id: imageId }] = await this.images.create([imageRecord], trx);
 			const { type: format } = imageSize(image);
-			const [path, fileName] = createImagePathAndFilename({
+			const { path, fileName } = createImagePathAndFilename({
 				userId: user.id,
 				isForPreviewTemplate: true,
 				imageId,
 				format
 			});
-			const uploadResult = await this.images.uplodToProvider(image, path, fileName);
+			const uploadResult = await this.images.uploadToProvider(image, path, fileName);
 			await this.images.update({ id: imageId, path: uploadResult.filePath }, trx);
 			return imageId;
 		},
@@ -1162,7 +1196,7 @@ class Plavna {
 		) => {
 			const user = await this.user.getOrThrow();
 			const { type: format } = imageSize(image);
-			const [path, fileName] = createImagePathAndFilename({
+			const { path, fileName } = createImagePathAndFilename({
 				userId: user.id,
 				isForPreviewTemplate: true,
 				imageId: imageRecord.id,
@@ -1172,32 +1206,17 @@ class Plavna {
 				const folder = folderFromPath(imageRecord.path);
 				await this.images.deleteFolderFromProvider(folder);
 			}
-			const uploadResult = await this.images.uplodToProvider(image, path, fileName);
+			const uploadResult = await this.images.uploadToProvider(image, path, fileName);
 
 			await this.images.update({ id: imageRecord.id, path: uploadResult.filePath }, trx);
 		},
-		uplodToProvider: async (image: Buffer, path: string, fileName: string) => {
+		uploadToProvider: async (file: Buffer, folder: string, fileName: string) => {
 			const user = await this.user.getOrThrow();
-			const imageKit = new ImageKit({
-				publicKey: user.imagekit_public_key,
-				privateKey: user.imagekit_private_key,
-				urlEndpoint: user.imagekit_url_endpoint
-			});
-			return await imageKit.upload({
-				file: image,
-				folder: path,
-				fileName,
-				useUniqueFileName: false
-			});
+			return new ImageProvider(user).upload({ file, folder, fileName });
 		},
 		deleteFolderFromProvider: async (folder: string) => {
 			const user = await this.user.getOrThrow();
-			const imageKit = new ImageKit({
-				publicKey: user.imagekit_public_key,
-				privateKey: user.imagekit_private_key,
-				urlEndpoint: user.imagekit_url_endpoint
-			});
-			return imageKit.deleteFolder(folder);
+			return new ImageProvider(user).deleteFolder(folder);
 		},
 		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
 			// TODO User checks

@@ -29,6 +29,34 @@
       "when": 1695738824106,
       "tag": "0003_chilly_mongu",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1695823866923,
+      "tag": "0004_bouncy_silk_fever",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1695826393652,
+      "tag": "0005_fresh_texas_twister",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1696194631125,
+      "tag": "0006_powerful_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1696281288549,
+      "tag": "0007_useful_psynapse",
+      "breakpoints": true
     }
   ]
 }

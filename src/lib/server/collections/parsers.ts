@@ -1,8 +1,9 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { supportedLanguages } from '$lib/isomorphic/languages';
+import { supportedLangs } from '$lib/isomorphic/languages';
 
+import { ERRORS } from '../../isomorphic/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../utils/objects';
 import {
 	articles,
@@ -16,7 +17,6 @@ import {
 	translations,
 	users
 } from './db-schema';
-import { ERRORS } from './errors';
 import { previewFamiliesIds } from './previews';
 
 // TODO Refine all slug schemas to accept only valid slugs
@@ -89,20 +89,21 @@ const previewRelatedFields = {
 	preview_family: true,
 	preview_template_id: true,
 	preview_prop_1: true,
-	preview_prop_2: true
+	preview_prop_2: true,
+	preview_create_localized_screenshots: true
 } as const;
 export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({
 	article_id: articleSelectSchema.shape.id,
-	lang: z.enum(supportedLanguages).optional()
+	lang: z.enum(supportedLangs).optional()
 });
 export const articlePreviewScreenshotParams = z
 	.object({
 		width: z.number(),
 		height: z.number(),
-		lang: z.enum(supportedLanguages)
+		lang: z.enum(supportedLangs)
 	})
 	.merge(articleSelectSchema.pick({ preview_prop_1: true, preview_prop_2: true }))
 	.extend({

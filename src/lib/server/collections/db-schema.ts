@@ -1,9 +1,10 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import { createScreenshotsQueueSchema } from 'plavna-common';
 
-import { type PreviewFamilyId, previewFamilies, previewFamiliesIds } from './previews';
-
-import type { SupportedLang } from '$lib/isomorphic/languages';
+// Has to be relative for drizzle to resolve it
+import { supportedLangs } from '../../isomorphic/languages';
+import { previewFamiliesIds } from './previews';
 
 export const users = sqliteTable(
 	'auth_user',
@@ -111,7 +112,7 @@ export const sectionsToTags = sqliteTable(
 		tag_id: integer('tag_id')
 			.notNull()
 			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-		lang: text('lang').$type<SupportedLang>().notNull()
+		lang: text('lang', { enum: supportedLangs }).notNull()
 	},
 	(table) => {
 		return {
@@ -174,6 +175,11 @@ export const articles = sqliteTable(
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}),
+		preview_create_localized_screenshots: integer('preview_create_localized_screenshots', {
+			mode: 'boolean'
+		})
+			.notNull()
+			.default(false),
 		url_preview_image_id: integer('url_preview_image_id').references(() => images.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade'
@@ -261,3 +267,5 @@ export const translations = sqliteTable('translations', {
 	en: text('en'),
 	uk: text('uk')
 });
+
+export const screenshotsQueue = createScreenshotsQueueSchema(supportedLangs, articles, users);

@@ -9,3 +9,9 @@ export type DeepPartial<T> = T extends object
 			[P in keyof T]?: DeepPartial<T[P]>;
 	  }
 	: T;
+
+type RequiredNotNull<T> = {
+	[P in keyof T]: NonNullable<T[P]>;
+};
+
+export type PartialNonNull<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;

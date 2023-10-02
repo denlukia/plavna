@@ -1,4 +1,4 @@
-import type { RemoveNullValues } from './typing';
+import type { RemoveNullValues } from './types';
 
 export function nestify<T extends object>(obj: T): any {
 	const nestedObj = {} as any;

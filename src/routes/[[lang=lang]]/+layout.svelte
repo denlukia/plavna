@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	import Translation from '$lib/components/Translation.svelte';
-	import { defaultLang, supportedLanguages } from '$lib/isomorphic/languages.js';
+	import { defaultLang, supportedLangs } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
@@ -29,7 +29,7 @@
 </script>
 
 <header>
-	{#each supportedLanguages as language}
+	{#each supportedLangs as language}
 		<a href={generateLangURL($page.url.pathname, language)}>
 			{language.toUpperCase()}
 		</a>{' '}

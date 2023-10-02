@@ -1,7 +1,7 @@
+import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
+
 import en from './en';
 import uk from './uk';
-
-import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
 import type { TranslationKey } from './en';
 

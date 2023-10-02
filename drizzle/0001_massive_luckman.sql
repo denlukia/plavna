@@ -16,7 +16,7 @@ CREATE TABLE `articles_new` (
   `preview_translation_key_1` integer NOT NULL,
   `preview_translation_key_2` integer NOT NULL,
   `preview_image_id_1` integer NOT NULL,
-  `preview_image_id_2` integer NOT NULL,
+  `preview_image_2_id` integer NOT NULL,
   `url_preview_image_id` integer,
   FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
   FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
@@ -33,7 +33,7 @@ CREATE TABLE `articles_new` (
     FOREIGN KEY (`preview_image_id_1`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE
   set
     null,
-    FOREIGN KEY (`preview_image_id_2`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE
+    FOREIGN KEY (`preview_image_2_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE
   set
     null,
     FOREIGN KEY (`url_preview_image_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE

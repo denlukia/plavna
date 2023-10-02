@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 
-	import { defaultLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
+	import { defaultLang, isSupportedLang, supportedLangs } from '$lib/isomorphic/languages';
 	import { generatePath } from '$lib/isomorphic/url';
 
 	import type {
@@ -28,7 +28,7 @@
 {#if 'key' in $form}
 	<input name="{prefix}key" type="hidden" bind:value={$form.key} />
 {/if}
-{#each supportedLanguages as lang}
+{#each supportedLangs as lang}
 	<svelte:element
 		this={browser ? 'button' : 'a'}
 		style={currentLang === lang ? 'font-weight: bold;' : 'font-weight: normal;'}
@@ -40,7 +40,7 @@
 		{lang}
 	</svelte:element>
 {/each}
-{#each supportedLanguages as lang}
+{#each supportedLangs as lang}
 	<input
 		style={currentLang === lang ? 'display: block;' : 'display: none;'}
 		name={prefix + lang}

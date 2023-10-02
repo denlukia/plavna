@@ -21,5 +21,5 @@
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
 	<button>Update preview</button>
 </form>
-<TranslationEditor key={article.preview_translation_key_1} />
-<TranslationEditor key={article.preview_translation_key_2} />
+<TranslationEditor key={article.preview_translation_1_key} />
+<TranslationEditor key={article.preview_translation_2_key} />

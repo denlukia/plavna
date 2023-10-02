@@ -1,6 +1,6 @@
-import type { SupportedLang } from '$lib/isomorphic/languages';
 import type { auth } from '../services/auth';
-import type { users } from './db-schema';
+import type { PartialNonNull, PartiallyRequired } from '../utils/types';
+import type { screenshotsQueue, users } from './db-schema';
 import type {
 	articleInsertSchema,
 	articlePreviewCellsTaken,
@@ -40,7 +40,7 @@ import type {
 	translationUpdateSchema
 } from './parsers';
 import type { PreviewFamilyId } from './previews';
-import type { MaybePromise } from 'Instance';
+import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect, TypesAreEqual } from 'plavna-common';
 import type { z } from 'zod';
 
 // Auth
@@ -48,6 +48,10 @@ export type Auth = typeof auth;
 
 // Users
 export type User = typeof users.$inferSelect;
+export type UserWithImagekit = PartialNonNull<
+	User,
+	'imagekit_private_key' | 'imagekit_public_key' | 'imagekit_url_endpoint'
+>;
 export type ImageProviderUpdateZod = typeof imageProviderUpdateFormSchema;
 export type ImageProdiverUpdate = z.infer<typeof imageProviderUpdateFormSchema>;
 
@@ -130,3 +134,20 @@ export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
 
 // Excluded Tags Config
 export type ExcludedTags = z.infer<typeof excludedTags>;
+
+// Screenshots Queue
+export type ScreenshotsQueueSelectLocal = typeof screenshotsQueue.$inferSelect;
+export type ScreenshotsQueueInsertLocal = typeof screenshotsQueue.$inferInsert;
+
+// These will error if screenshots table schema
+// (it's is common for this and screenshotter projects)
+// is different from defined in plavna-common package.
+// Update types in package and update screenshotter if needed
+const queueSelectSchemasAreEqual: TypesAreEqual<
+	ScreenshotsQueueSelectLocal,
+	ScreenshotsQueueSelect
+> = true;
+const queueInsertSchemasAreEqual: TypesAreEqual<
+	ScreenshotsQueueInsertLocal,
+	ScreenshotsQueueInsert
+> = true;

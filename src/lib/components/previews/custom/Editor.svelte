@@ -20,7 +20,13 @@
 	<input name="preview_template_id" type="hidden" bind:value={templateId} />
 	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
+	<input
+		name="preview_create_localized_screenshots"
+		type="checkbox"
+		bind:checked={$form.preview_create_localized_screenshots}
+	/>
+	Create Localizaed Screenshots
 	<button>Update preview</button>
 </form>
-<TranslationEditor key={article.preview_translation_key_1} />
-<TranslationEditor key={article.preview_translation_key_2} />
+<TranslationEditor key={article.preview_translation_1_key} />
+<TranslationEditor key={article.preview_translation_2_key} />

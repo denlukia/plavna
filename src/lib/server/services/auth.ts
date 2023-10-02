@@ -1,8 +1,11 @@
 import { dev } from '$app/environment';
-import { libsqlClient } from './db';
 import { libsql } from '@lucia-auth/adapter-sqlite';
 import { lucia } from 'lucia';
 import { sveltekit } from 'lucia/middleware';
+
+import { libsqlClient } from './db';
+
+import type { User } from '../collections/types';
 
 export const auth = lucia({
 	adapter: libsql(libsqlClient, {
@@ -12,7 +15,7 @@ export const auth = lucia({
 	}),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
-	getUserAttributes: (data) => {
+	getUserAttributes: (data: User) => {
 		return {
 			id: data.id,
 			username: data.username,

@@ -1,4 +1,4 @@
-import { type SupportedLang, isSupportedLang, supportedLanguages } from '$lib/isomorphic/languages';
+import { type SupportedLang, isSupportedLang, supportedLangs } from '$lib/isomorphic/languages';
 
 import type { ParamMatcher } from '@sveltejs/kit';
 
