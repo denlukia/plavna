@@ -7,5 +7,6 @@ export const ERRORS = {
 
 	COULDNT_LOAD_PREVIEW_COMPONENT: "Couldn't load preview component",
 	CANNOT_ACCESS_IMAGEKIT: 'Cannot access ImageKit with this data',
-	IMAGEKIT_NOT_CONFIGURED: 'ImageKit is not configured'
+	IMAGEKIT_NOT_CONFIGURED: 'ImageKit is not configured',
+	AT_LEAST_ONE_TITLE: 'At least one title is required'
 };

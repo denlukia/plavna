@@ -180,10 +180,13 @@ export const articles = sqliteTable(
 		})
 			.notNull()
 			.default(false),
-		url_preview_image_id: integer('url_preview_image_id').references(() => images.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade'
-		})
+		preview_screenshot_image_id: integer('preview_screenshot_image_id').references(
+			() => images.id,
+			{
+				onDelete: 'set null',
+				onUpdate: 'cascade'
+			}
+		)
 	},
 	(table) => {
 		return {
@@ -255,7 +258,7 @@ export const images = sqliteTable('images', {
 	source: text('source', { enum: ['imagekit'] }).notNull(),
 	path: text('path'),
 	path_translation_key: integer('path_translation_key').references(() => translations.key, {
-		onDelete: 'cascade',
+		onDelete: 'set null',
 		onUpdate: 'cascade'
 	})
 });

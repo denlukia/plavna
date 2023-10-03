@@ -18,7 +18,12 @@ import {
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import imageSize from 'image-size';
 import { marked, use } from 'marked';
-import { ImageProvider, type ImageProviderData, createImagePathAndFilename } from 'plavna-common';
+import {
+	ImageProvider,
+	type ImageProviderData,
+	type ScreenshotReport,
+	createImagePathAndFilename
+} from 'plavna-common';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import { ERRORS } from '$lib/isomorphic/errors';
@@ -1000,6 +1005,9 @@ class Plavna {
 									}
 								})
 								.filter(nonNull);
+							if (queueRecordsForInsert.length === 0) {
+								return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+							}
 						} else {
 							queueRecordsForInsert = [createQueueRecord(imageProviderData)];
 						}
@@ -1010,7 +1018,7 @@ class Plavna {
 							.run();
 						promisesToWaitFor.push(queueRecordsInserPromise);
 					} else {
-						throw fail(403, { message: ERRORS.IMAGEKIT_NOT_CONFIGURED });
+						return fail(403, { message: ERRORS.IMAGEKIT_NOT_CONFIGURED });
 					}
 				}
 			} else {
@@ -1078,7 +1086,75 @@ class Plavna {
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
 		},
-		updatePreviewScreenshot: async (image: Buffer, metadata: ArticlePreviewScreenshotMeta) => {}
+		processPreviewScreenshotReport: async (report: ScreenshotReport) => {
+			// Should only be triggered by trusted activity like screenshotter request checked for his access token
+			// No access to user and lang, but acting is trusted by default
+
+			const { articleId, lang, path, source } = report;
+			const articleResult = await db
+				.select()
+				.from(articles)
+				.innerJoin(users, eq(users.id, articles.user_id))
+				.leftJoin(images, eq(images.id, articles.preview_screenshot_image_id))
+				.leftJoin(translations, eq(translations.key, images.path_translation_key))
+				.where(eq(articles.id, articleId))
+				.get();
+
+			if (articleResult) {
+				const {
+					translations: translation,
+					articles: article,
+					images: image,
+					auth_user: user
+				} = articleResult;
+
+				let newTranslation: { key: TranslationSelect['key'] } | null = null;
+				let newImage: { id: ImageSelect['id'] } | null = null;
+
+				if (translation) {
+					if (lang) {
+						await this.translations.update({ [lang]: path, key: translation.key }, undefined, user);
+					} else {
+						await this.translations.delete({ key: translation.key }, undefined, user);
+					}
+				} else {
+					if (lang) {
+						[newTranslation] = await this.translations.create(
+							[{ [lang]: path }],
+							undefined,
+							undefined,
+							user
+						);
+					}
+				}
+
+				if (image) {
+					if (newTranslation) {
+						await this.images.update({ id: image.id, path_translation_key: newTranslation.key });
+					} else {
+						await this.images.update({ id: image.id, path });
+					}
+				} else {
+					if (newTranslation) {
+						[newImage] = await this.images.create([
+							{ path_translation_key: newTranslation.key, source, user_id: user.id }
+						]);
+					} else {
+						[newImage] = await this.images.create([{ path, source, user_id: user.id }]);
+					}
+				}
+
+				if (newImage) {
+					await db
+						.update(articles)
+						.set({ preview_screenshot_image_id: newImage.id })
+						.where(eq(articles.id, articleId));
+				}
+			} else {
+				// Article doesnt exist anymore
+				throw error(404);
+			}
+		}
 	};
 
 	public readonly previewTemplates = {
@@ -1220,6 +1296,7 @@ class Plavna {
 		},
 		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
 			// TODO User checks
+			// Don't forget that it may be used inside article.processPreviewScreenshotReport without user cookie
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance.update(images).set(newImage).where(eq(images.id, newImage.id));
 		},
@@ -1236,8 +1313,9 @@ class Plavna {
 	public readonly translations = {
 		create: async (
 			newTranslations: TranslationInsertBase[],
-			mode: 'allow-empty' | 'disallow-empty',
-			trx?: TransactionContext
+			mode: 'allow-empty' | 'disallow-empty' = 'allow-empty',
+			trx?: TransactionContext,
+			user?: User
 		) => {
 			if (mode === 'disallow-empty') {
 				newTranslations.forEach((translation) => {
@@ -1247,10 +1325,10 @@ class Plavna {
 				});
 			}
 
-			const user = await this.user.getOrThrow();
+			const finalUser = user || (await this.user.getOrThrow());
 			newTranslations = newTranslations.map((translation) => ({
 				...translation,
-				user_id: user.id
+				user_id: finalUser.id
 			}));
 
 			const chosenDBInstance = trx || db;
@@ -1260,22 +1338,22 @@ class Plavna {
 				.returning({ key: translations.key })
 				.all();
 		},
-		update: async (translation: TranslationUpdate, trx?: TransactionContext) => {
-			const user = await this.user.getOrThrow();
+		update: async (translation: TranslationUpdate, trx?: TransactionContext, user?: User) => {
+			const finalUser = user || (await this.user.getOrThrow());
 			const chosenDBInstance = trx || db;
 
 			return chosenDBInstance
 				.update(translations)
 				.set(translation)
-				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, finalUser.id)))
 				.run();
 		},
-		delete: async (translation: TranslationDelete, trx?: TransactionContext) => {
-			const user = await this.user.getOrThrow();
+		delete: async (translation: TranslationDelete, trx?: TransactionContext, user?: User) => {
+			const finalUser = user || (await this.user.getOrThrow());
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance
 				.delete(translations)
-				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, finalUser.id)))
 				.run();
 		}
 	};
