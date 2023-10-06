@@ -1090,7 +1090,7 @@ class Plavna {
 			// Should only be triggered by trusted activity like screenshotter request checked for his access token
 			// No access to user and lang, but acting is trusted by default
 
-			const { articleId, lang, path, source } = report;
+			const { articleId, lang, path, source, backgroundColor } = report;
 			const articleResult = await db
 				.select()
 				.from(articles)
@@ -1130,17 +1130,28 @@ class Plavna {
 
 				if (image) {
 					if (newTranslation) {
-						await this.images.update({ id: image.id, path_translation_key: newTranslation.key });
+						await this.images.update({
+							id: image.id,
+							path_translation_key: newTranslation.key,
+							backgroundColor
+						});
 					} else {
-						await this.images.update({ id: image.id, path });
+						await this.images.update({ id: image.id, path, backgroundColor });
 					}
 				} else {
 					if (newTranslation) {
 						[newImage] = await this.images.create([
-							{ path_translation_key: newTranslation.key, source, user_id: user.id }
+							{
+								path_translation_key: newTranslation.key,
+								source,
+								user_id: user.id,
+								backgroundColor
+							}
 						]);
 					} else {
-						[newImage] = await this.images.create([{ path, source, user_id: user.id }]);
+						[newImage] = await this.images.create([
+							{ path, source, user_id: user.id, backgroundColor }
+						]);
 					}
 				}
 

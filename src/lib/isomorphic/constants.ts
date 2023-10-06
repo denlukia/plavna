@@ -12,3 +12,4 @@ export const SUPPORTED_FORMATS = {
 } as const;
 
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
+export const ARTISTIC_OVERFLOW_PADDING = 20;

@@ -1,4 +1,4 @@
-import { CELL } from '$lib/isomorphic/constants';
+import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/isomorphic/constants';
 
 import type { SupportedLang } from '$lib/isomorphic/languages';
 import type {
@@ -23,8 +23,8 @@ export function calculateDimensionsFromCellsTaken({
 }: ArticlePreviewCellsTaken) {
 	const { WIDTH, HEIGHT, GAP } = CELL;
 	return {
-		width: preview_columns * WIDTH + (preview_columns - 1) * GAP,
-		height: preview_rows * HEIGHT + (preview_rows - 1) * GAP
+		width: preview_columns * WIDTH + (preview_columns - 1) * GAP + ARTISTIC_OVERFLOW_PADDING * 2,
+		height: preview_rows * HEIGHT + (preview_rows - 1) * GAP + ARTISTIC_OVERFLOW_PADDING * 2
 	};
 }
 

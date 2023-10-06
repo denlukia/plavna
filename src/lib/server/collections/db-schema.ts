@@ -260,7 +260,8 @@ export const images = sqliteTable('images', {
 	path_translation_key: integer('path_translation_key').references(() => translations.key, {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
-	})
+	}),
+	backgroundColor: text('backgroundColor')
 });
 
 export const translations = sqliteTable('translations', {

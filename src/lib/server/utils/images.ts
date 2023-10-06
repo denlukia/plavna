@@ -1,4 +1,4 @@
-import sizeOf from 'image-size';
+import getImageSize from 'image-size';
 
 import { SUPPORTED_FORMATS } from '$lib/isomorphic/constants';
 
@@ -61,7 +61,7 @@ export async function checkFileSupport(
 			errors.push(finalErrorMessages.formats);
 		}
 
-		const imageDimensions = await sizeOf(imageBuffer);
+		const imageDimensions = await getImageSize(imageBuffer);
 		if (
 			imageDimensions.width &&
 			imageDimensions.height &&
