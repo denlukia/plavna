@@ -1,10 +1,10 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { supportedLangs } from '$lib/isomorphic/languages';
+import { type SupportedLang, supportedLangs } from '$lib/isomorphic/languages';
 
 import { ERRORS } from '../../isomorphic/errors';
-import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../utils/objects';
+import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../helpers/objects';
 import {
 	articles,
 	images,
@@ -20,13 +20,31 @@ import {
 import { previewFamiliesIds } from './previews';
 
 // TODO Refine all slug schemas to accept only valid slugs
+// TODO Refine url schemas to accept only valid urls
 
+// __UTILITY SCHEMAS__
 export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({
 	imagekit_private_key: true,
 	imagekit_public_key: true,
 	imagekit_url_endpoint: true
 });
-// TODO Refine url
+
+const imageFileField = z.optional(z.string());
+
+function createSuffixedField<N extends string, S extends string, V>(
+	name: N,
+	suffix: S,
+	validator: V
+) {
+	const key = `${name}.${suffix}` as `${N}.${S}`;
+	return { [key]: validator } as Record<typeof key, typeof validator>;
+}
+function generateLanguagedFields<N extends string, V>(name: N, validator: V) {
+	return supportedLangs.reduce(
+		(acc, lang) => ({ ...acc, ...createSuffixedField(name, lang, validator) }),
+		{} as ReturnType<typeof createSuffixedField<typeof name, SupportedLang, V>>
+	);
+}
 
 // Pages
 export const pageSelectSchema = createSelectSchema(pages);
@@ -85,14 +103,29 @@ export const articleInsertSchema = createInsertSchema(articles, {
 
 export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
 
-const previewRelatedFields = {
+const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSchema>, true>> = {
 	preview_family: true,
 	preview_template_id: true,
 	preview_prop_1: true,
 	preview_prop_2: true,
 	preview_create_localized_screenshots: true
-} as const;
-export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
+};
+export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
+	preview_image_1_id: true,
+	preview_image_2_id: true
+});
+export const articlePreviewImageFileFieldsObj = {
+	preview_image_1: imageFileField,
+	preview_image_2: imageFileField,
+	...generateLanguagedFields('preview_image_1', imageFileField),
+	...generateLanguagedFields('preview_image_2', imageFileField)
+};
+export const articlePreviewImageFieldsSchema = articlePreviewImageIdsFieldsSchema.extend(
+	articlePreviewImageFileFieldsObj
+);
+export const articlePreviewUpdateSchema = articleInsertSchema
+	.pick(previewRelatedFields)
+	.merge(articlePreviewImageFieldsSchema);
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({
@@ -118,20 +151,21 @@ export const articlePreviewCellsTaken = articleSelectSchema.pick({
 });
 
 // Preview Templates
+export const previewTemplateImageFieldsSchema = z.object({
+	image: imageFileField
+});
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
 export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
-
-// TODO Refine url
-const fakeImageFieldExtender = { image: z.optional(z.string()) };
 export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
 	.pick({ url: true })
-	.extend(fakeImageFieldExtender)
+	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ key: true, user_id: true })
 	.refine(...translationRefineArgs);
 export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
 	.pick({ url: true })
-	.extend({ template_id: previewTemplateSelectSchema.shape.id, ...fakeImageFieldExtender })
+	.extend({ template_id: previewTemplateSelectSchema.shape.id })
+	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ user_id: true })
 	.refine(...translationRefineArgs);

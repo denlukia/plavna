@@ -25,27 +25,35 @@
 	$: currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
 </script>
 
-{#if 'key' in $form}
-	<input name="{prefix}key" type="hidden" bind:value={$form.key} />
-{/if}
-{#each supportedLangs as lang}
-	<svelte:element
-		this={browser ? 'button' : 'a'}
-		style={currentLang === lang ? 'font-weight: bold;' : 'font-weight: normal;'}
-		type={browser ? 'button' : null}
-		role={browser ? 'button' : 'link'}
-		on:click={() => (currentLang = lang)}
-		href={browser ? undefined : generatePath($page.route.id || '', { '[lang]': lang })}
-	>
-		{lang}
-	</svelte:element>
-{/each}
-{#each supportedLangs as lang}
-	<input
-		style={currentLang === lang ? 'display: block;' : 'display: none;'}
-		name={prefix + lang}
-		placeholder={lang}
-		type="text"
-		bind:value={$form[lang]}
-	/>
-{/each}
+<div class="translation-input">
+	{#if 'key' in $form}
+		<input name="{prefix}key" type="hidden" bind:value={$form.key} />
+	{/if}
+	{#each supportedLangs as lang}
+		<svelte:element
+			this={browser ? 'button' : 'a'}
+			style={currentLang === lang ? 'font-weight: bold;' : 'font-weight: normal;'}
+			type={browser ? 'button' : null}
+			role={browser ? 'button' : 'link'}
+			on:click={() => (currentLang = lang)}
+			href={browser ? undefined : generatePath($page.route.id || '', { '[lang]': lang })}
+		>
+			{lang}
+		</svelte:element>
+	{/each}
+	{#each supportedLangs as lang}
+		<input
+			style={currentLang === lang ? 'display: block;' : 'display: none;'}
+			name={prefix + lang}
+			placeholder={lang}
+			type="text"
+			bind:value={$form[lang]}
+		/>
+	{/each}
+</div>
+
+<style>
+	.translation-input {
+		display: flex;
+	}
+</style>

@@ -6,7 +6,10 @@ export const ERRORS = {
 	PREVIEW_TEMPLATE_NOT_FOUND: 'Such preview template not found',
 
 	COULDNT_LOAD_PREVIEW_COMPONENT: "Couldn't load preview component",
-	CANNOT_ACCESS_IMAGEKIT: 'Cannot access ImageKit with this data',
-	IMAGEKIT_NOT_CONFIGURED: 'ImageKit is not configured',
-	AT_LEAST_ONE_TITLE: 'At least one title is required'
+	AT_LEAST_ONE_TITLE: 'At least one title is required',
+
+	IMAGES: {
+		INVALID_PROVIDER_CREDS: 'Invalid image provider credentials',
+		INVALID_TYPE: 'Invalid image type'
+	}
 };

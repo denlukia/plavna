@@ -13,7 +13,13 @@
 	$: ({ enhance } = superFormStores);
 </script>
 
-<form use:enhance action="?/update_translation" method="POST">
+<form use:enhance action="?/update_translation" class="translation-input" method="POST">
 	<TranslationInput {superFormStores} />
 	<button type="submit">Save</button>
 </form>
+
+<style>
+	.translation-input {
+		display: flex;
+	}
+</style>

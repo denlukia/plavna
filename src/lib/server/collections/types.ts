@@ -1,46 +1,57 @@
-import type { auth } from '../services/auth';
-import type { PartialNonNull, PartiallyRequired } from '../utils/types';
-import type { screenshotsQueue, users } from './db-schema';
-import type {
-	articleInsertSchema,
-	articlePreviewCellsTaken,
-	articlePreviewScreenshotMeta,
-	articlePreviewScreenshotParams,
-	articlePreviewUpdateSchema,
-	articleSelectSchema,
-	articleSlugUpdateSchema,
-	excludedTags,
-	imageInsertSchema,
-	imageProviderUpdateFormSchema,
-	imageSelectSchema,
-	imageUpdateSchema,
-	pageCreateFormSchema,
-	pageInsertSchema,
-	pageSelectSchema,
-	pageUpdateFormSchema,
-	previewTemplateCreationFormSchema,
-	previewTemplateDeletionFormSchema,
-	previewTemplateEditingFormSchema,
-	previewTemplateSelectSchema,
-	sectionDeleteSchema,
-	sectionInsertSchema,
-	sectionSelectSchema,
-	sectionToTagInsertSchema,
-	sectionToTagSelectSchema,
-	sectionUpdateSchema,
-	tagDeleteSchema,
-	tagInsertSchema,
-	tagSelectSchema,
-	tagToArticleSelectSchema,
-	tagUpdateSchema,
-	translationDeleteSchema,
-	translationInsertBaseSchema,
-	translationInsertSchema,
-	translationSelectSchema,
-	translationUpdateSchema
+import {
+	type ScreenshotsQueueInsert,
+	type ScreenshotsQueueSelect,
+	type TypeEqualityGuard,
+	assert
+} from 'plavna-common';
+
+import {
+	type articleInsertSchema,
+	type articlePreviewCellsTaken,
+	type articlePreviewImageFieldsSchema,
+	articlePreviewImageFileFieldsObj,
+	type articlePreviewImageIdsFieldsSchema,
+	type articlePreviewScreenshotMeta,
+	type articlePreviewScreenshotParams,
+	type articlePreviewUpdateSchema,
+	type articleSelectSchema,
+	type articleSlugUpdateSchema,
+	type excludedTags,
+	type imageInsertSchema,
+	type imageProviderUpdateFormSchema,
+	type imageSelectSchema,
+	type imageUpdateSchema,
+	type pageCreateFormSchema,
+	type pageInsertSchema,
+	type pageSelectSchema,
+	type pageUpdateFormSchema,
+	type previewTemplateCreationFormSchema,
+	type previewTemplateDeletionFormSchema,
+	type previewTemplateEditingFormSchema,
+	type previewTemplateImageFieldsSchema,
+	type previewTemplateSelectSchema,
+	type sectionDeleteSchema,
+	type sectionInsertSchema,
+	type sectionSelectSchema,
+	type sectionToTagInsertSchema,
+	type sectionToTagSelectSchema,
+	type sectionUpdateSchema,
+	type tagDeleteSchema,
+	type tagInsertSchema,
+	type tagSelectSchema,
+	type tagToArticleSelectSchema,
+	type tagUpdateSchema,
+	type translationDeleteSchema,
+	type translationInsertBaseSchema,
+	type translationInsertSchema,
+	type translationSelectSchema,
+	type translationUpdateSchema
 } from './parsers';
+
+import type { PartialNonNull } from '../helpers/types';
+import type { auth } from '../services/auth';
+import type { screenshotsQueue, users } from './db-schema';
 import type { PreviewFamilyId } from './previews';
-import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect, TypesAreEqual } from 'plavna-common';
 import type { z } from 'zod';
 
 // Auth
@@ -100,6 +111,11 @@ export type ArticleSlugUpdate = z.infer<typeof articleSlugUpdateSchema>;
 export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
 export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
 
+export type ArticlePreviewImageIdsFields = z.infer<typeof articlePreviewImageIdsFieldsSchema>;
+export type ArticlePreviewImageFileFields = typeof articlePreviewImageFileFieldsObj;
+export type ArticlePreviewImageAllFields = z.infer<typeof articlePreviewImageFieldsSchema>;
+export type ArticlePreviewImageAllFieldsZod = typeof articlePreviewImageFieldsSchema;
+
 // Article Preview Screenshotting
 export type ArticlePreviewScreenshotMeta = z.infer<typeof articlePreviewScreenshotMeta>;
 export type ArticlePreviewScreenshotQuery = z.infer<typeof articlePreviewScreenshotParams>;
@@ -113,6 +129,8 @@ export type PreviewTemplateDeletionFormZod = typeof previewTemplateDeletionFormS
 export type PreviewTemplateCreation = z.infer<typeof previewTemplateCreationFormSchema>;
 export type PreviewTemplateEditing = z.infer<typeof previewTemplateEditingFormSchema>;
 export type PreviewTemplateDeletion = z.infer<typeof previewTemplateDeletionFormSchema>;
+export type PreviewTemplateImageFields = z.infer<typeof previewTemplateImageFieldsSchema>;
+export type PreviewTemplateImageFieldsZod = typeof previewTemplateImageFieldsSchema;
 
 // Preview Components
 export type PreviewComponents = Record<
@@ -143,11 +161,5 @@ export type ScreenshotsQueueInsertLocal = typeof screenshotsQueue.$inferInsert;
 // (it's is common for this and screenshotter projects)
 // is different from defined in plavna-common package.
 // Update types in package and update screenshotter if needed
-const queueSelectSchemasAreEqual: TypesAreEqual<
-	ScreenshotsQueueSelectLocal,
-	ScreenshotsQueueSelect
-> = true;
-const queueInsertSchemasAreEqual: TypesAreEqual<
-	ScreenshotsQueueInsertLocal,
-	ScreenshotsQueueInsert
-> = true;
+assert<TypeEqualityGuard<ScreenshotsQueueSelectLocal, ScreenshotsQueueSelect>>();
+assert<TypeEqualityGuard<ScreenshotsQueueInsertLocal, ScreenshotsQueueInsert>>();

@@ -154,7 +154,9 @@ export const articles = sqliteTable(
 			onDelete: 'set null',
 			onUpdate: 'cascade'
 		}),
-		preview_interactions_show_on: text('preview_interactions_show_on').$type<'hover' | 'click'>(),
+		preview_interactions_show_on: text('preview_interactions_show_on', {
+			enum: ['hover', 'click']
+		}),
 		preview_prop_1: text('preview_prop_1'),
 		preview_prop_2: text('preview_prop_2'),
 		preview_translation_1_key: integer('preview_translation_1_key')

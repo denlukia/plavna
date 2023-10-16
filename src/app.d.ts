@@ -1,9 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
-
 import type { TagSelect, TranslationInsertZod } from '$lib/server/collections/types';
-
 import type { SuperValidated } from 'sveltekit-superforms';
-import type { SuperForm } from 'sveltekit-superforms/client';
 
 declare global {
 	namespace App {
@@ -11,6 +8,7 @@ declare global {
 		interface Locals {
 			authRequest: import('lucia').AuthRequest;
 			plavna: import('$lib/server/services/plavna').default;
+			imageHandler: import('plavna-common').ServerImageHandler;
 		}
 		interface PageData {
 			user: Lucia.User | null;

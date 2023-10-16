@@ -11,5 +11,22 @@ export const SUPPORTED_FORMATS = {
 	'image/svg+xml': 'svg'
 } as const;
 
+export const SUPPORTED_IMAGE_MIMES = [
+	'image/svg+xml',
+	'image/avif',
+	'image/heic',
+	'image/webp',
+	'image/png',
+	'image/jpeg',
+	'image/gif'
+];
+
+export const MAX_IMAGE_SIZE_MB = 25; // 25MB
+
+export const IMG_VALIDATION_CONFIG = {
+	formats: SUPPORTED_IMAGE_MIMES,
+	maxSizeMb: MAX_IMAGE_SIZE_MB
+};
+
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const ARTISTIC_OVERFLOW_PADDING = 20;
