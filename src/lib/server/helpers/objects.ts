@@ -115,6 +115,10 @@ export function nonNull<T>(value: T): value is NonNullable<T> {
 	return value !== null;
 }
 
+export function nonNullValueInEntry<T>(entry: [string, T]): entry is [string, NonNullable<T>] {
+	return entry[1] !== null;
+}
+
 export function hasNonEmptyProperties<T extends Record<string, any>>(
 	obj: T,
 	properties: (keyof T)[]

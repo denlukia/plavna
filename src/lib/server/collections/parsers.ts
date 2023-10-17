@@ -114,18 +114,23 @@ export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
 	preview_image_1_id: true,
 	preview_image_2_id: true
 });
-export const articlePreviewImageFileFieldsObj = {
+export const articlePreviewImageFileFieldsBaseObj = {
 	preview_image_1: imageFileField,
-	preview_image_2: imageFileField,
+	preview_image_2: imageFileField
+};
+export const articlePreviewImageFileFieldsLangsObj = {
 	...generateLanguagedFields('preview_image_1', imageFileField),
 	...generateLanguagedFields('preview_image_2', imageFileField)
 };
+export const articlePreviewImageFileFieldsAllObj = {
+	...articlePreviewImageFileFieldsBaseObj,
+	...articlePreviewImageFileFieldsLangsObj
+};
 export const articlePreviewImageFieldsSchema = articlePreviewImageIdsFieldsSchema.extend(
-	articlePreviewImageFileFieldsObj
+	articlePreviewImageFileFieldsAllObj
 );
-export const articlePreviewUpdateSchema = articleInsertSchema
-	.pick(previewRelatedFields)
-	.merge(articlePreviewImageFieldsSchema);
+
+export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({

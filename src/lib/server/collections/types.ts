@@ -5,52 +5,54 @@ import {
 	assert
 } from 'plavna-common';
 
-import {
-	type articleInsertSchema,
-	type articlePreviewCellsTaken,
-	type articlePreviewImageFieldsSchema,
-	articlePreviewImageFileFieldsObj,
-	type articlePreviewImageIdsFieldsSchema,
-	type articlePreviewScreenshotMeta,
-	type articlePreviewScreenshotParams,
-	type articlePreviewUpdateSchema,
-	type articleSelectSchema,
-	type articleSlugUpdateSchema,
-	type excludedTags,
-	type imageInsertSchema,
-	type imageProviderUpdateFormSchema,
-	type imageSelectSchema,
-	type imageUpdateSchema,
-	type pageCreateFormSchema,
-	type pageInsertSchema,
-	type pageSelectSchema,
-	type pageUpdateFormSchema,
-	type previewTemplateCreationFormSchema,
-	type previewTemplateDeletionFormSchema,
-	type previewTemplateEditingFormSchema,
-	type previewTemplateImageFieldsSchema,
-	type previewTemplateSelectSchema,
-	type sectionDeleteSchema,
-	type sectionInsertSchema,
-	type sectionSelectSchema,
-	type sectionToTagInsertSchema,
-	type sectionToTagSelectSchema,
-	type sectionUpdateSchema,
-	type tagDeleteSchema,
-	type tagInsertSchema,
-	type tagSelectSchema,
-	type tagToArticleSelectSchema,
-	type tagUpdateSchema,
-	type translationDeleteSchema,
-	type translationInsertBaseSchema,
-	type translationInsertSchema,
-	type translationSelectSchema,
-	type translationUpdateSchema
-} from './parsers';
-
+import type { SupportedLang } from '$lib/isomorphic/languages';
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
 import type { screenshotsQueue, users } from './db-schema';
+import type {
+	articleInsertSchema,
+	articlePreviewCellsTaken,
+	articlePreviewImageFieldsSchema,
+	articlePreviewImageFileFieldsAllObj,
+	articlePreviewImageFileFieldsBaseObj,
+	articlePreviewImageFileFieldsLangsObj,
+	articlePreviewImageIdsFieldsSchema,
+	articlePreviewScreenshotMeta,
+	articlePreviewScreenshotParams,
+	articlePreviewUpdateSchema,
+	articleSelectSchema,
+	articleSlugUpdateSchema,
+	excludedTags,
+	imageInsertSchema,
+	imageProviderUpdateFormSchema,
+	imageSelectSchema,
+	imageUpdateSchema,
+	pageCreateFormSchema,
+	pageInsertSchema,
+	pageSelectSchema,
+	pageUpdateFormSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateDeletionFormSchema,
+	previewTemplateEditingFormSchema,
+	previewTemplateImageFieldsSchema,
+	previewTemplateSelectSchema,
+	sectionDeleteSchema,
+	sectionInsertSchema,
+	sectionSelectSchema,
+	sectionToTagInsertSchema,
+	sectionToTagSelectSchema,
+	sectionUpdateSchema,
+	tagDeleteSchema,
+	tagInsertSchema,
+	tagSelectSchema,
+	tagToArticleSelectSchema,
+	tagUpdateSchema,
+	translationDeleteSchema,
+	translationInsertBaseSchema,
+	translationInsertSchema,
+	translationSelectSchema,
+	translationUpdateSchema
+} from './parsers';
 import type { PreviewFamilyId } from './previews';
 import type { z } from 'zod';
 
@@ -112,9 +114,19 @@ export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
 export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
 
 export type ArticlePreviewImageIdsFields = z.infer<typeof articlePreviewImageIdsFieldsSchema>;
-export type ArticlePreviewImageFileFields = typeof articlePreviewImageFileFieldsObj;
+export type ArticlePreviewImageFileFieldsBase = typeof articlePreviewImageFileFieldsBaseObj;
+export type ArticlePreviewImageFileFieldsLangs = typeof articlePreviewImageFileFieldsLangsObj;
+export type ArticlePreviewImageFileFieldsAll = typeof articlePreviewImageFileFieldsAllObj;
 export type ArticlePreviewImageAllFields = z.infer<typeof articlePreviewImageFieldsSchema>;
 export type ArticlePreviewImageAllFieldsZod = typeof articlePreviewImageFieldsSchema;
+export type ArticlePreviewTransformedImageFilesArray = Array<{
+	file: Buffer;
+	fieldNameWithIdPrefix: keyof ArticlePreviewImageIdsFields;
+	ext: string;
+	lang: SupportedLang | null;
+	width: number;
+	height: number;
+}>;
 
 // Article Preview Screenshotting
 export type ArticlePreviewScreenshotMeta = z.infer<typeof articlePreviewScreenshotMeta>;

@@ -6,7 +6,7 @@ import { ERRORS } from '$lib/isomorphic/errors';
 import { generatePath } from '$lib/isomorphic/url';
 import { update_translation } from '$lib/server/actions';
 import {
-	articlePreviewImageFileFieldsObj,
+	articlePreviewImageFileFieldsAllObj,
 	articlePreviewUpdateSchema,
 	articleSlugUpdateSchema,
 	imageProviderUpdateFormSchema,
@@ -17,8 +17,12 @@ import {
 	tagUpdateSchema,
 	translationInsertSchema
 } from '$lib/server/collections/parsers';
+import { decomposeImageField } from '$lib/server/helpers/images';
 
-import type { ArticlePreviewImageFileFields } from '$lib/server/collections/types';
+import type {
+	ArticlePreviewImageFileFieldsAll,
+	ArticlePreviewTransformedImageFilesArray
+} from '$lib/server/collections/types';
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
 
@@ -92,17 +96,23 @@ async function update_preview(event: ActionRequestEvt) {
 	const form = await superValidate(formData, articlePreviewUpdateSchema);
 	if (!form.valid) return fail(400, { form });
 
-	const imagesKeys = Object.keys(articlePreviewImageFileFieldsObj) as Array<
-		keyof ArticlePreviewImageFileFields
+	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
+		keyof ArticlePreviewImageFileFieldsAll
 	>;
-	const images = {} as Record<keyof ArticlePreviewImageFileFields, Buffer | null>;
+	const images = [] as ArticlePreviewTransformedImageFilesArray;
 	for (const key of imagesKeys) {
 		const { buffer, errors } = await imageHandler.validateFormEntryAndGetBuffer(
 			formData.get(key),
 			IMG_VALIDATION_CONFIG
 		);
-		if (errors) return setError(form, key, errors);
-		images[key] = buffer;
+		const { fieldNameWithIdPrefix, lang } = decomposeImageField(key);
+		if (errors) return setError(form, fieldNameWithIdPrefix, errors);
+		if (buffer) {
+			const probe = imageHandler.detectImageTypeAndSize(buffer);
+			if (!probe) return setError(form, fieldNameWithIdPrefix, ERRORS.IMAGES.INVALID_TYPE);
+			const { width, height, ext } = probe;
+			images.push({ file: buffer, fieldNameWithIdPrefix, lang, width, height, ext });
+		}
 	}
 
 	await plavna.articles.updatePreview(slug, form.data, images);

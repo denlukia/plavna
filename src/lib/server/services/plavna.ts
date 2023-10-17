@@ -47,7 +47,12 @@ import {
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/collections/parsers';
-import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/helpers/objects';
+import {
+	getNullAndDupFilter,
+	hasNonEmptyProperties,
+	nonNull,
+	nonNullValueInEntry
+} from '$lib/server/helpers/objects';
 
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
@@ -61,6 +66,7 @@ import { db } from './db';
 import type {
 	ArticleInsert,
 	ArticlePreviewImageFileFields,
+	ArticlePreviewTransformedImageFilesArray,
 	ArticlePreviewUpdate,
 	ArticleSelect,
 	ArticleSlugUpdate,
@@ -822,25 +828,60 @@ class Plavna {
 		updatePreview: async (
 			slug: string,
 			preview: ArticlePreviewUpdate,
-			imagesBuffers: Record<keyof ArticlePreviewImageFileFields, Buffer | null>
+			imagesForUpload: ArticlePreviewTransformedImageFilesArray
 		) => {
+			// 1. Article fields update
 			if (preview.preview_family && preview.preview_family !== 'custom')
 				preview.preview_template_id = null;
 			if (preview.preview_template_id) preview.preview_family = 'custom';
-
 			const user = await this.user.getOrThrow();
 			const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
+			const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
+			const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
-			const articleUpdatePromise = db
-				.update(articles)
-				.set(preview)
-				.where(whereCondition)
-				.returning({ slug: articles.slug })
-				.get();
-			const promisesToWaitFor: Array<typeof articleUpdatePromise | Promise<ResultSet>> = [
-				articleUpdatePromise
-			];
+			// 2. Upload images if present and update records
+			const imageProvider = this.imageHandler.setupProvider({
+				...user
+			});
+			const imageProviderData = imageProvider.getProviderData();
 
+			if (imagesForUpload.length) {
+				const imageIds = await db
+					.select({
+						preview_image_1_id: articles.preview_image_1_id,
+						preview_image_2_id: articles.preview_image_2_id
+					})
+					.from(articles)
+					.where(whereCondition)
+					.get();
+				if (!imageIds) throw error(500);
+				imagesForUpload.forEach(({ file, fieldNameWithIdPrefix, ext, lang, width, height }) => {
+					const getImageProcessedPromise = async () => {
+						const imageId = imageIds[fieldNameWithIdPrefix];
+						const { folder, fileName, filePath } = this.imageHandler.composeFolderAndFilename({
+							imageId,
+							ext,
+							lang
+						});
+						const uploadResult = await imageProvider.upload({
+							...imageProviderData,
+							file,
+							fileName,
+							folder
+						});
+						// extract into this.images.SOMETHING
+						// get bg color in action
+						// create/update/set path translations if needed
+						// update path if needed
+						// get ProviderType form ImageProvider
+						await db.update(images).set({}).where(eq(images.id, imageId)).run();
+					};
+					const imageProcessedPromise = getImageProcessedPromise();
+					promisesToWaitFor.push(imageProcessedPromise);
+				});
+			}
+
+			// 3. Enqueue preview screenshots if needed
 			if (preview.preview_family === 'custom' && preview.preview_template_id) {
 				const articleResult = await db
 					.select({
@@ -923,11 +964,6 @@ class Plavna {
 						preview_image_1,
 						preview_image_2
 					});
-
-					const imageProvider = this.imageHandler.setupProvider({
-						...user
-					});
-					const imageProviderData = imageProvider.getProviderData();
 
 					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
 					if (preview.preview_create_localized_screenshots) {
