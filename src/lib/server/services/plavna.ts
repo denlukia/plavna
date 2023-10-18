@@ -1123,18 +1123,23 @@ class Plavna {
 			// Should only be triggered by trusted activity like screenshotter request checked for his access token
 			// No access to user and lang, but acting is trusted by default
 
-			const { articleId, lang, path, source, backgroundColor } = report;
+			const { image_id, lang, path, source, backgroundColor, width, height } = report;
 			const articleResult = await db
 				.select()
-				.from(articles)
+				.from(images)
+				.innerJoin(articles, eq(articles.preview_screenshot_image_id, image_id))
 				.innerJoin(users, eq(users.id, articles.user_id))
-				.leftJoin(images, eq(images.id, articles.preview_screenshot_image_id))
 				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(eq(articles.id, articleId))
+				.where(eq(images.id, image_id))
 				.get();
 
 			if (articleResult) {
-				const { translations: translation, images: image, auth_user: user } = articleResult;
+				const {
+					articles: article,
+					translations: translation,
+					images: image,
+					auth_user: user
+				} = articleResult;
 
 				let newTranslation: { key: TranslationSelect['key'] } | null = null;
 				let newImage: { id: ImageSelect['id'] } | null = null;
@@ -1161,7 +1166,9 @@ class Plavna {
 						await this.images.update({
 							id: image.id,
 							path_translation_key: newTranslation.key,
-							background: backgroundColor
+							background: backgroundColor,
+							width,
+							height
 						});
 					} else {
 						await this.images.update({ id: image.id, path, background: backgroundColor });
@@ -1173,12 +1180,14 @@ class Plavna {
 								path_translation_key: newTranslation.key,
 								source,
 								user_id: user.id,
-								background: backgroundColor
+								background: backgroundColor,
+								width,
+								height
 							}
 						]);
 					} else {
 						[newImage] = await this.images.create([
-							{ path, source, user_id: user.id, background: backgroundColor }
+							{ path, source, user_id: user.id, background: backgroundColor, width, height }
 						]);
 					}
 				}
@@ -1187,7 +1196,7 @@ class Plavna {
 					await db
 						.update(articles)
 						.set({ preview_screenshot_image_id: newImage.id })
-						.where(eq(articles.id, articleId));
+						.where(eq(articles.id, article.id));
 				}
 			} else {
 				// Article doesnt exist anymore
