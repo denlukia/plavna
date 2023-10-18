@@ -1,4 +1,5 @@
 import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
+import { HSLToString } from 'plavna-common';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 
 import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
@@ -109,9 +110,18 @@ async function update_preview(event: ActionRequestEvt) {
 		if (errors) return setError(form, fieldNameWithIdPrefix, errors);
 		if (buffer) {
 			const probe = imageHandler.detectImageTypeAndSize(buffer);
+			const mainColorString = HSLToString(await imageHandler.extractOptimalColor(buffer));
 			if (!probe) return setError(form, fieldNameWithIdPrefix, ERRORS.IMAGES.INVALID_TYPE);
 			const { width, height, ext } = probe;
-			images.push({ file: buffer, fieldNameWithIdPrefix, lang, width, height, ext });
+			images.push({
+				file: buffer,
+				fieldNameWithIdPrefix,
+				lang,
+				width,
+				height,
+				ext,
+				background: mainColorString
+			});
 		}
 	}
 

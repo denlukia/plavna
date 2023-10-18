@@ -1,0 +1,1 @@
+ALTER TABLE `images` RENAME COLUMN `backgroundColor` TO `background`;

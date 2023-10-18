@@ -7,6 +7,7 @@ export const ERRORS = {
 
 	COULDNT_LOAD_PREVIEW_COMPONENT: "Couldn't load preview component",
 	AT_LEAST_ONE_TITLE: 'At least one title is required',
+	UNKNOWN: 'Unknown error occurred',
 
 	IMAGES: {
 		INVALID_PROVIDER_CREDS: 'Invalid image provider credentials',

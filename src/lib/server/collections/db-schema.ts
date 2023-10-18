@@ -263,7 +263,9 @@ export const images = sqliteTable('images', {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
 	}),
-	backgroundColor: text('backgroundColor')
+	background: text('background'),
+	width: integer('width'),
+	height: integer('height')
 });
 
 export const translations = sqliteTable('translations', {
@@ -274,4 +276,4 @@ export const translations = sqliteTable('translations', {
 	uk: text('uk')
 });
 
-export const screenshotsQueue = createScreenshotsQueueSchema(supportedLangs, articles, users);
+export const screenshotsQueue = createScreenshotsQueueSchema(supportedLangs, images);

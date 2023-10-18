@@ -126,6 +126,7 @@ export type ArticlePreviewTransformedImageFilesArray = Array<{
 	lang: SupportedLang | null;
 	width: number;
 	height: number;
+	background: string;
 }>;
 
 // Article Preview Screenshotting

@@ -85,6 +85,27 @@
       "when": 1696521057170,
       "tag": "0011_glossy_anita_blake",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1697655773180,
+      "tag": "0012_simple_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1697655924527,
+      "tag": "0013_orange_agent_zero",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "5",
+      "when": 1697666470433,
+      "tag": "0014_thick_darkstar",
+      "breakpoints": true
     }
   ]
 }

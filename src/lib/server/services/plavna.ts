@@ -47,12 +47,7 @@ import {
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/collections/parsers';
-import {
-	getNullAndDupFilter,
-	hasNonEmptyProperties,
-	nonNull,
-	nonNullValueInEntry
-} from '$lib/server/helpers/objects';
+import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/helpers/objects';
 
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
@@ -65,7 +60,6 @@ import { db } from './db';
 
 import type {
 	ArticleInsert,
-	ArticlePreviewImageFileFields,
 	ArticlePreviewTransformedImageFilesArray,
 	ArticlePreviewUpdate,
 	ArticleSelect,
@@ -830,55 +824,96 @@ class Plavna {
 			preview: ArticlePreviewUpdate,
 			imagesForUpload: ArticlePreviewTransformedImageFilesArray
 		) => {
+			// Common for 1. and 3.
+			const user = await this.user.getOrThrow();
+			const imageProvider = this.imageHandler.setupProvider({
+				...user
+			});
+			const imageProviderData = imageProvider.getProviderData();
+			const imageProviderType = imageProvider.getProviderType();
+
 			// 1. Article fields update
 			if (preview.preview_family && preview.preview_family !== 'custom')
 				preview.preview_template_id = null;
 			if (preview.preview_template_id) preview.preview_family = 'custom';
-			const user = await this.user.getOrThrow();
+
 			const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
 			const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
 			const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
 			// 2. Upload images if present and update records
-			const imageProvider = this.imageHandler.setupProvider({
-				...user
-			});
-			const imageProviderData = imageProvider.getProviderData();
-
 			if (imagesForUpload.length) {
-				const imageIds = await db
+				const queryResult = await db
 					.select({
-						preview_image_1_id: articles.preview_image_1_id,
-						preview_image_2_id: articles.preview_image_2_id
+						article: {
+							preview_image_1_id: articles.preview_image_1_id,
+							preview_image_2_id: articles.preview_image_2_id
+						},
+						image: {
+							id: images.id,
+							path_translation_key: images.path_translation_key
+						}
 					})
 					.from(articles)
+					.innerJoin(
+						images,
+						or(
+							eq(images.id, articles.preview_image_1_id),
+							eq(images.id, articles.preview_image_2_id)
+						)
+					)
 					.where(whereCondition)
-					.get();
-				if (!imageIds) throw error(500);
-				imagesForUpload.forEach(({ file, fieldNameWithIdPrefix, ext, lang, width, height }) => {
-					const getImageProcessedPromise = async () => {
-						const imageId = imageIds[fieldNameWithIdPrefix];
-						const { folder, fileName, filePath } = this.imageHandler.composeFolderAndFilename({
-							imageId,
-							ext,
-							lang
-						});
-						const uploadResult = await imageProvider.upload({
-							...imageProviderData,
-							file,
-							fileName,
-							folder
-						});
-						// extract into this.images.SOMETHING
-						// get bg color in action
-						// create/update/set path translations if needed
-						// update path if needed
-						// get ProviderType form ImageProvider
-						await db.update(images).set({}).where(eq(images.id, imageId)).run();
-					};
-					const imageProcessedPromise = getImageProcessedPromise();
-					promisesToWaitFor.push(imageProcessedPromise);
-				});
+					.all();
+				const articleRecord = queryResult[0].article;
+				const articleImagesRecords = queryResult.map((result) => result.image);
+				if (!queryResult) throw error(500);
+				imagesForUpload.forEach(
+					({ file, fieldNameWithIdPrefix, ext, lang, background, width, height }) => {
+						const getImageProcessedPromise = async () => {
+							const imageId = articleRecord[fieldNameWithIdPrefix];
+							const { folder, fileName, fullPath } = this.imageHandler.composeFolderAndFilename({
+								imageId,
+								ext,
+								lang
+							});
+							await imageProvider.upload({
+								...imageProviderData,
+								file,
+								fileName,
+								folder
+							});
+							// TODO Maybe extract this into this.images.SOMETHING ?
+							let newTranslationKey: TranslationSelect['key'] | undefined = undefined;
+							if (lang) {
+								const foundImgRecord = articleImagesRecords.find((i) => i.id === imageId);
+								if (!foundImgRecord) {
+									throw error(500);
+								}
+								const translationKey = foundImgRecord.path_translation_key;
+								if (translationKey) {
+									await this.translations.update({ key: translationKey, [lang]: fullPath });
+								} else {
+									const newTranslation = await this.translations.create([{ [lang]: fullPath }]);
+									newTranslationKey = newTranslation[0].key;
+								}
+							}
+							await db
+								.update(images)
+								.set({
+									background,
+									width,
+									height,
+									path: !lang ? fullPath : undefined,
+									path_translation_key: newTranslationKey,
+									source: imageProviderType
+								})
+								.where(eq(images.id, imageId))
+								.run();
+						};
+						const imageProcessedPromise = getImageProcessedPromise();
+						promisesToWaitFor.push(imageProcessedPromise);
+					}
+				);
 			}
 
 			// 3. Enqueue preview screenshots if needed
@@ -920,9 +955,9 @@ class Plavna {
 						preview_translation_2_key,
 						preview_image_1_id,
 						preview_image_2_id,
-						id: article_id,
 						title_translation_key
 					} = articleResult[0].articles;
+					let { preview_screenshot_image_id } = articleResult[0].articles;
 
 					const imagesArr = articleResult
 						.map(({ images }) => images)
@@ -965,46 +1000,59 @@ class Plavna {
 						preview_image_2
 					});
 
-					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
-					if (preview.preview_create_localized_screenshots) {
-						queueRecordsForInsert = supportedLangs
-							.map((lang) => {
-								if (titleTranslationObj?.[lang]) {
-									return {
-										user_id: user.id,
-										article_id,
-										width,
-										height,
-										lang,
-										url,
-										imageProviderData
-									};
-								} else {
-									return null;
-								}
-							})
-							.filter(nonNull);
-						if (queueRecordsForInsert.length === 0) {
-							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
-						}
-					} else {
-						queueRecordsForInsert = [
-							{
-								user_id: user.id,
-								article_id,
-								width,
-								height,
-								url,
-								imageProviderData
-							}
-						];
+					// Creating screenshot image record if needed
+					if (!preview_screenshot_image_id) {
+						const [newImageRecord] = await this.images.create([
+							{ user_id: user.id, source: imageProviderType }
+						]);
+						preview_screenshot_image_id = newImageRecord.id;
+						await db
+							.update(articles)
+							.set({ preview_screenshot_image_id: newImageRecord.id })
+							.where(whereCondition);
 					}
 
-					const queueRecordsInserPromise = db
-						.insert(screenshotsQueue)
-						.values(queueRecordsForInsert)
-						.run();
-					promisesToWaitFor.push(queueRecordsInserPromise);
+					if (preview_screenshot_image_id) {
+						const image_id = preview_screenshot_image_id;
+						let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
+						if (preview.preview_create_localized_screenshots) {
+							queueRecordsForInsert = supportedLangs
+								.map((lang) => {
+									if (titleTranslationObj?.[lang]) {
+										return {
+											image_id,
+											width,
+											height,
+											lang,
+											url,
+											imageProviderData
+										};
+									} else {
+										return null;
+									}
+								})
+								.filter(nonNull);
+							if (queueRecordsForInsert.length === 0) {
+								return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+							}
+						} else {
+							queueRecordsForInsert = [
+								{
+									image_id,
+									width,
+									height,
+									url,
+									imageProviderData
+								}
+							];
+						}
+
+						const queueRecordsInserPromise = db
+							.insert(screenshotsQueue)
+							.values(queueRecordsForInsert)
+							.run();
+						promisesToWaitFor.push(queueRecordsInserPromise);
+					}
 				}
 			} else {
 				// Delete any queues and images
@@ -1113,10 +1161,10 @@ class Plavna {
 						await this.images.update({
 							id: image.id,
 							path_translation_key: newTranslation.key,
-							backgroundColor
+							background: backgroundColor
 						});
 					} else {
-						await this.images.update({ id: image.id, path, backgroundColor });
+						await this.images.update({ id: image.id, path, background: backgroundColor });
 					}
 				} else {
 					if (newTranslation) {
@@ -1125,12 +1173,12 @@ class Plavna {
 								path_translation_key: newTranslation.key,
 								source,
 								user_id: user.id,
-								backgroundColor
+								background: backgroundColor
 							}
 						]);
 					} else {
 						[newImage] = await this.images.create([
-							{ path, source, user_id: user.id, backgroundColor }
+							{ path, source, user_id: user.id, background: backgroundColor }
 						]);
 					}
 				}
