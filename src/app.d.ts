@@ -1,6 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
-import type { TagSelect, TranslationInsertZod } from '$lib/server/collections/types';
-import type { SuperValidated } from 'sveltekit-superforms';
+import type { TagSelect } from '$lib/server/collections/types';
 
 declare global {
 	namespace App {
@@ -12,7 +11,7 @@ declare global {
 		}
 		interface PageData {
 			user: Lucia.User | null;
-			translations: Record<string, string | SuperValidated<TranslationInsertZod>>;
+			translations: Record<string, string>;
 			tags?: Record<string, TagSelect>;
 		}
 		// interface Platform {}

@@ -1,5 +1,3 @@
-import { articles } from '$lib/server/collections/db-schema.js';
-
 export const actions = {
 	create_articles: async (event) => {
 		const { plavna } = event.locals;
@@ -10,10 +8,7 @@ export const actions = {
 			const tag = await plavna.tags.create({ en: `Test tag ${i + 1}` });
 			console.log('Created tag ', i + 1);
 			for (let n = 0; n < articlesPerTagQty; n++) {
-				const { meta } = await plavna.articles.createAndOrLoadEditor(
-					'den',
-					`test-article-${n + 1}`
-				);
+				const { meta } = await plavna.articles.loadEditor('den', `test-article-${n + 1}`);
 				console.log(`For tag ${i + 1}: created article ${n + 1}`);
 				await plavna.translations.update({
 					key: meta.title_translation_key,

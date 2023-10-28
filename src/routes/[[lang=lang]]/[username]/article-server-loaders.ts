@@ -5,12 +5,13 @@ import type { PageServerLoad as ArticleServerLoad } from './[slug]/$types';
 import type { PageServerLoad as ArticleEditServerLoad } from './[slug]/edit/$types';
 
 // Article Editor ---------------------------------------------------------------
-export const articleEditServerLoad = (async ({ params, parent, url, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.articles.createAndOrLoadEditor(
+export const articleEditServerLoad = (async ({ params, parent, locals: { plavna } }) => {
+	const { translations: newTranslations, ...other } = await plavna.articles.loadEditor(
 		params.username,
 		params.slug
 	);
 	const { translations } = await parent();
+
 	return {
 		...other,
 		translations: {

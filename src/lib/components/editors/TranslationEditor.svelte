@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import TranslationInput from '../inputs/TranslationInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	import type { TranslationUpdateZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let key: string | number;
+	export let formObj: SuperValidated<TranslationUpdateZod>;
 
-	$: superFormObj = $page.data.translations[key] as SuperValidated<TranslationUpdateZod>;
-	$: superFormStores = superForm(superFormObj);
+	$: superFormStores = superForm(formObj);
 	$: ({ enhance } = superFormStores);
 </script>
 

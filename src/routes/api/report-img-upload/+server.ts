@@ -1,11 +1,13 @@
 import { SCREENSHOTTER_ACCESS_TOKEN } from '$env/static/private';
-import { HttpError_1, error, json, text } from '@sveltejs/kit';
+import { error, text } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
-import type { ScreenshotReport, ScreenshotReportRequest } from 'plavna-common';
+import type { ScreenshotReportRequest } from 'plavna-common';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	const body: ScreenshotReportRequest = await request.json();
+
+	console.log(body);
 
 	if (body.accessToken !== SCREENSHOTTER_ACCESS_TOKEN) {
 		throw error(403, 'Invalid access token');

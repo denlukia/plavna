@@ -7,11 +7,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let section: SectionSelect;
+	export let formObj: SuperValidated<TranslationUpdateZod>;
 
-	$: superFormObj = $page.data.translations[
-		section.title_translation_key
-	] as SuperValidated<TranslationUpdateZod>;
-	$: superFormStores = superForm(superFormObj);
+	$: superFormStores = superForm(formObj);
 	$: ({ form, enhance } = superFormStores);
 </script>
 

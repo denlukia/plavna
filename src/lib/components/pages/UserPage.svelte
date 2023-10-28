@@ -10,8 +10,8 @@
 
 <!-- <pre>{JSON.stringify(data, null, '  ')}</pre> -->
 {#each data.sections as section}
-	<Section {section} />
+	<Section {section} formObj={data.translationForms[section.meta.title_translation_key]} />
 {/each}
 {#if $page.data.user && $page.data.user.username === $page.params.username}
-	<SectionCreator superFormObj={data.sectionCreationForm} />
+	<SectionCreator formObj={data.sectionCreationForm} />
 {/if}

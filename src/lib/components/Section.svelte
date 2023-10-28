@@ -7,15 +7,18 @@
 		ArticleSelect,
 		SectionSelect,
 		TagToArticleSelect,
-		TagSelect
+		TagSelect,
+		TranslationUpdateZod
 	} from '$lib/server/collections/types';
 	import SectionViewer from './SectionViewer.svelte';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let section: {
 		meta: SectionSelect;
 		articles: ArticleSelect[];
 		tagsArticles: TagToArticleSelect[];
 	};
+	export let formObj: SuperValidated<TranslationUpdateZod>;
 
 	function getTagsForArticle(
 		article: ArticleSelect,
@@ -32,7 +35,7 @@
 </script>
 
 {#if $page.data.user && $page.data.user.username === $page.params.username}
-	<SectionEditor section={section.meta} />
+	<SectionEditor section={section.meta} {formObj} />
 {:else}
 	<SectionViewer section={section.meta} />
 {/if}

@@ -99,6 +99,7 @@ export type TagToArticleSelect = z.infer<typeof tagToArticleSelectSchema>;
 
 // Translations
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;
+export type TranslationSelectZod = typeof translationSelectSchema;
 export type TranslationInsertBase = z.infer<typeof translationInsertBaseSchema>;
 export type TranslationInsert = z.infer<typeof translationInsertSchema>;
 export type TranslationInsertZod = typeof translationInsertSchema;

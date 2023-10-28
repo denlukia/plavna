@@ -6,16 +6,15 @@
 	import type {
 		TagDeleteZod,
 		TagUpdateZod,
-		TranslationUpdate
+		TranslationUpdate,
+		TranslationUpdateZod
 	} from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let editorForms: {
-		isCheckedForm: SuperValidated<TagUpdateZod>;
-		name_translation_key: TranslationUpdate['key'];
-	};
+	export let checkedForm: SuperValidated<TagUpdateZod>;
+	export let translationForm: SuperValidated<TranslationUpdateZod>;
 
-	$: superFormStores = superForm(editorForms.isCheckedForm);
+	$: superFormStores = superForm(checkedForm);
 	$: ({ enhance, errors, form } = superFormStores);
 </script>
 
@@ -26,7 +25,7 @@
 	<input style="display: none" name="checked" type="checkbox" bind:checked={$form.checked} />
 	<button>{$form.checked ? 'Uncheck' : 'Check'}</button>
 </form>
-<TranslationEditor key={editorForms.name_translation_key} />
+<TranslationEditor formObj={translationForm} />
 <form use:enhance method="POST" action="?/delete_tag">
 	<input name="id" type="hidden" bind:value={$form.id} />
 	<button>Delete</button>

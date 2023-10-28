@@ -19,7 +19,9 @@
 		previewComponents,
 		previewTemplateCreationForm,
 		previewForms,
+		translationForms,
 		meta,
+		images,
 		user
 	} = data);
 
@@ -69,8 +71,15 @@
 						{:else}
 							<svelte:component
 								this={component}
-								formObj={getFormForPreview(previewForms, family.id, null)}
-								article={meta}
+								updateForm={getFormForPreview(previewForms, family.id, null)}
+								images={{
+									preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
+									preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
+								}}
+								translationForms={{
+									preview_translation_1: translationForms[meta.preview_translation_1_key],
+									preview_translation_2: translationForms[meta.preview_translation_2_key]
+								}}
 							/>
 						{/if}
 					{/await}
@@ -89,7 +98,10 @@
 	{#each previewTemplates as template}
 		{@const component = previewComponents.custom.editor}
 		<li>
-			<PreviewTemplateEditor formObj={template.form} image={template.image} />
+			<PreviewTemplateEditor
+				formObj={template.form}
+				image={images.find((image) => image.id === template.meta.image_id)}
+			/>
 			{#if component}
 				{#await component}
 					Loading...
@@ -99,9 +111,16 @@
 					{:else}
 						<svelte:component
 							this={component}
-							formObj={getFormForPreview(previewForms, 'custom', template.meta.id)}
+							updateForm={getFormForPreview(previewForms, 'custom', template.meta.id)}
+							images={{
+								preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
+								preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
+							}}
+							translationForms={{
+								preview_translation_1: translationForms[meta.preview_translation_1_key],
+								preview_translation_2: translationForms[meta.preview_translation_2_key]
+							}}
 							templateId={template.meta.id}
-							article={meta}
 						/>
 					{/if}
 				{/await}

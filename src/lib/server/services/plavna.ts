@@ -83,13 +83,15 @@ import type {
 	TranslationInsert,
 	TranslationInsertBase,
 	TranslationSelect,
-	TranslationUpdate
+	TranslationUpdate,
+	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import type { ScreenshotReport, ServerImageHandler } from 'plavna-common';
 import type { ImageProvider } from 'plavna-common/dist/images/provider';
+import type { SuperValidated } from 'sveltekit-superforms';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -396,8 +398,8 @@ class Plavna {
 						...Object.fromEntries(tagsInfo.map((t) => [t.id, t]))
 					};
 				}, {}),
-				translations: {
-					...sectionsNonEmpty.reduce((acc, [, , , , sectionsTranslationsInfo]) => {
+				translationForms: {
+					...(sectionsNonEmpty.reduce((acc, [, , , , sectionsTranslationsInfo]) => {
 						return {
 							...acc,
 							...Object.fromEntries(
@@ -415,7 +417,9 @@ class Plavna {
 								})
 							)
 						};
-					}, {}),
+					}, {}) as Record<string, SuperValidated<TranslationUpdateZod>>)
+				},
+				translations: {
 					...sectionsNonEmpty.reduce((acc, [, , , , , otherTranslationsInfo]) => {
 						return {
 							...acc,
@@ -663,7 +667,7 @@ class Plavna {
 				return article.id;
 			});
 		},
-		createAndOrLoadEditor: async (username: User['username'], slug: ArticleSelect['slug']) => {
+		loadEditor: async (username: User['username'], slug: ArticleSelect['slug']) => {
 			const user = await this.user.checkOrThrow(null, username);
 
 			let exisingId = await this.articles.getIdIfExists(slug);
@@ -672,6 +676,7 @@ class Plavna {
 			}
 
 			const translForForms = alias(translations, 'translForForms');
+			const translForPreviewTemplates = alias(translations, 'translForPreviewTemplates');
 			const results = await db
 				.select({
 					articles: articles,
@@ -679,14 +684,26 @@ class Plavna {
 					tags,
 					translations,
 					translForForms,
+					translForPreviewTemplates,
 					previewTemplates,
 					images
 				})
 				.from(articles)
 				.leftJoin(previewTemplates, eq(previewTemplates.user_id, user.id))
-				.leftJoin(images, eq(images.id, previewTemplates.image_id))
+				.leftJoin(
+					images,
+					or(
+						eq(images.id, previewTemplates.image_id),
+						eq(images.id, articles.preview_image_1_id),
+						eq(images.id, articles.preview_image_2_id)
+					)
+				)
 				.leftJoin(tags, eq(tags.user_id, user.id))
-				.leftJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
+				.leftJoin(translations, eq(translations.key, images.path_translation_key))
+				.leftJoin(
+					translForPreviewTemplates,
+					eq(translations.key, previewTemplates.name_translation_key)
+				)
 				.leftJoin(
 					translForForms,
 					or(
@@ -702,18 +719,22 @@ class Plavna {
 				.all();
 			// TODO No forms in global translations store or no store
 			const articleResult = results[0].articles;
-			const translArr = results.map((rows) => rows.translations).filter(getNullAndDupFilter('key'));
-			const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('key'));
+			const translationsArr = results
+				.map((rows) => rows.translations)
+				.filter(getNullAndDupFilter('key'));
+			const translationsForPreviewTemplates = results
+				.map((rows) => rows.translForPreviewTemplates)
+				.filter(getNullAndDupFilter('key'));
+			const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('id'));
 			const previewTemplatesResults = results
 				.map((rows) => rows.previewTemplates)
 				.filter(getNullAndDupFilter('id'))
 				.map((template) => {
-					const foundTranslation = translArr.find(
+					const foundTranslation = translationsForPreviewTemplates.find(
 						(translation) => translation.key === template.name_translation_key
 					);
 					return {
 						meta: template,
-						image: imagesArr.find((img) => img.id === template.image_id),
 						form: superValidateSync(
 							{ ...template, template_id: template.id, ...foundTranslation },
 							previewTemplateEditingFormSchema
@@ -724,11 +745,11 @@ class Plavna {
 			const articleTags = results
 				.map((rows) => rows.tagsArticles)
 				.filter(getNullAndDupFilter('tag_id'));
-			const translForms = results
-				.map(({ translForForms: t }) => t)
+			const translationsForForms = results
+				.map((rows) => rows.translForForms)
 				.filter(getNullAndDupFilter('key'));
-			const tagForms = allTags.map((tag) => ({
-				isCheckedForm: superValidateSync(
+			const tagInfos = allTags.map((tag) => ({
+				checkedForm: superValidateSync(
 					{ ...tag, checked: !!articleTags.find((t) => t.tag_id === tag.id) },
 					tagUpdateSchema,
 					{ id: 'is-checked-' + tag.id }
@@ -764,6 +785,8 @@ class Plavna {
 				}
 			);
 
+			console.log(translationsArr);
+
 			return {
 				meta: articleSelectSchema.parse(articleResult),
 				slugForm: superValidateSync(articleResult, articleSlugUpdateSchema),
@@ -771,18 +794,26 @@ class Plavna {
 				previewFamilies,
 				previewTemplates: previewTemplatesResults,
 				previewTemplateCreationForm: superValidateSync(previewTemplateCreationFormSchema),
-				tagForms,
+				tagInfos,
 				tagCreationForm: superValidateSync(translationInsertSchema),
 				imageProviderForm: superValidateSync(user, imageProviderUpdateFormSchema),
-				translations: Object.fromEntries([
-					...translForms.map((translation) => {
+				images: imagesArr,
+				translations: Object.fromEntries(
+					translationsArr.map((translation) => {
+						return [translation.key, translation[this.lang]];
+					})
+				),
+				translationForms: Object.fromEntries(
+					translationsForForms.map((translation) => {
 						const { key } = translation;
 						return [
 							key,
-							superValidateSync(translation, translationUpdateSchema, { id: 'translation-' + key })
+							superValidateSync(translation, translationUpdateSchema, {
+								id: 'translation-' + key
+							})
 						];
 					})
-				])
+				)
 			};
 		},
 		updateSlug: async (slug: string, article: ArticleSlugUpdate) => {
@@ -1122,6 +1153,10 @@ class Plavna {
 		processPreviewScreenshotReport: async (report: ScreenshotReport) => {
 			// Should only be triggered by trusted activity like screenshotter request checked for his access token
 			// No access to user and lang, but acting is trusted by default
+
+			// TODO For some reason it records languaged screenshot path into just "path"
+
+			console.log(report);
 
 			const { image_id, lang, path, source, backgroundColor, width, height } = report;
 			const articleResult = await db

@@ -4,9 +4,11 @@
 
 	import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
 
-	import type { TranslationSelect } from '$lib/server/collections/types';
+	import type { TranslationSelect, TranslationUpdateZod } from '$lib/server/collections/types';
 	import type { TranslationKey } from '$lib/server/i18n/en';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
+	export let formObj: SuperValidated<TranslationUpdateZod> | null = null;
 	export let key: TranslationKey | TranslationSelect['key'] | null = null;
 	export let markdownMode: boolean = false;
 
@@ -14,16 +16,13 @@
 	$: translation = key !== null ? $page.data.translations[key] : null;
 </script>
 
-{#if key}
-	{#if typeof translation === 'string'}
-		{#if markdownMode}
-			<SvelteMarkdown source={translation} />
-		{:else}
-			{translation ?? 'No translation'}
-		{/if}
+{#if formObj}
+	{formObj.data[currentLang]}
+{:else if key}
+	{#if markdownMode && translation}
+		<SvelteMarkdown source={translation} />
 	{:else}
-		<!-- If we're displaying translation that is form object right now -->
-		{translation?.data[currentLang] ?? 'No translation'}
+		No translation
 	{/if}
 {:else}
 	Translation error

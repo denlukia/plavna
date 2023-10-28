@@ -5,9 +5,9 @@
 	import type { TranslationInsertZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let superFormObj: SuperValidated<TranslationInsertZod>;
+	export let formObj: SuperValidated<TranslationInsertZod>;
 
-	$: superFormStores = superForm(superFormObj);
+	$: superFormStores = superForm(formObj);
 	$: ({ enhance } = superFormStores);
 </script>
 
