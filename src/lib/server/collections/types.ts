@@ -1,11 +1,5 @@
-import {
-	type ScreenshotsQueueInsert,
-	type ScreenshotsQueueSelect,
-	type TypeEqualityGuard,
-	assert
-} from '@denlukia/plavna-common';
+import { assert } from '@denlukia/plavna-common/types';
 
-import type { SupportedLang } from '$lib/isomorphic/languages';
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
 import type { screenshotsQueue, users } from './db-schema';
@@ -54,6 +48,9 @@ import type {
 	translationUpdateSchema
 } from './parsers';
 import type { PreviewFamilyId } from './previews';
+import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/plavna-common/queue';
+import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import type { z } from 'zod';
 
 // Auth
@@ -120,15 +117,11 @@ export type ArticlePreviewImageFileFieldsLangs = typeof articlePreviewImageFileF
 export type ArticlePreviewImageFileFieldsAll = typeof articlePreviewImageFileFieldsAllObj;
 export type ArticlePreviewImageAllFields = z.infer<typeof articlePreviewImageFieldsSchema>;
 export type ArticlePreviewImageAllFieldsZod = typeof articlePreviewImageFieldsSchema;
-export type ArticlePreviewTransformedImageFilesArray = Array<{
-	file: Buffer;
-	fieldNameWithIdPrefix: keyof ArticlePreviewImageIdsFields;
-	ext: string;
-	lang: SupportedLang | null;
-	width: number;
-	height: number;
-	background: string;
-}>;
+export type ArticlePreviewImageFileFieldNamesAll = keyof ArticlePreviewImageFileFieldsAll;
+export type ArticlePreviewImageHandlers = Record<
+	ArticlePreviewImageFileFieldNamesAll,
+	ServerImageHandler
+>;
 
 // Article Preview Screenshotting
 export type ArticlePreviewScreenshotMeta = z.infer<typeof articlePreviewScreenshotMeta>;

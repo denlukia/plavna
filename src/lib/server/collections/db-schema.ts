@@ -1,8 +1,7 @@
-import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/schema';
+import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/queue';
 import { relations } from 'drizzle-orm';
 import {
 	type AnySQLiteColumn,
-	SQLiteInteger,
 	integer,
 	primaryKey,
 	sqliteTable,

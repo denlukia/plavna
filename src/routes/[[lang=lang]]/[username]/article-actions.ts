@@ -1,6 +1,6 @@
+import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { ServerImageHandler } from "@denlukia/plavna-common/server";
 
 import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
 import { ERRORS } from '$lib/isomorphic/errors';
@@ -18,11 +18,10 @@ import {
 	tagUpdateSchema,
 	translationInsertSchema
 } from '$lib/server/collections/parsers';
-import { decomposeImageField } from '$lib/server/helpers/images';
 
 import type {
 	ArticlePreviewImageFileFieldsAll,
-	ArticlePreviewTransformedImageFilesArray
+	ArticlePreviewImageHandlers
 } from '$lib/server/collections/types';
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
@@ -92,7 +91,7 @@ async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 
 
 async function update_preview(event: ActionRequestEvt) {
 	const { slug } = event.params;
-	const { plavna, imageHandler } = event.locals;
+	const { plavna } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, articlePreviewUpdateSchema);
 	if (!form.valid) return fail(400, { form });
@@ -100,32 +99,16 @@ async function update_preview(event: ActionRequestEvt) {
 	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
 		keyof ArticlePreviewImageFileFieldsAll
 	>;
-	const images = [] as ArticlePreviewTransformedImageFilesArray;
+	const imagesHandlers = {} as ArticlePreviewImageHandlers;
 	for (const key of imagesKeys) {
-		const { buffer, errors } = await imageHandler.validateFormEntryAndGetBuffer(
-			formData.get(key),
-			IMG_VALIDATION_CONFIG
-		);
-		const { fieldNameWithIdPrefix, lang } = decomposeImageField(key);
-		if (errors) return setError(form, fieldNameWithIdPrefix, errors);
-		if (buffer) {
-			const probe = imageHandler.detectImageTypeAndSize(buffer);
-			const mainColorString = await imageHandler.extractOptimalColor(buffer));
-			if (!probe) return setError(form, fieldNameWithIdPrefix, ERRORS.IMAGES.INVALID_TYPE);
-			const { width, height, ext } = probe;
-			images.push({
-				file: buffer,
-				fieldNameWithIdPrefix,
-				lang,
-				width,
-				height,
-				ext,
-				background: mainColorString
-			});
+		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
+		const filePresent = imagesHandlers[key].checkPresence();
+		if (filePresent) {
+			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
 		}
 	}
 
-	await plavna.articles.updatePreview(slug, form.data, images);
+	await plavna.articles.updatePreview(slug, form.data, imagesHandlers);
 }
 
 async function create_preview_template(event: ActionRequestEvt) {
@@ -144,18 +127,18 @@ async function create_preview_template(event: ActionRequestEvt) {
 }
 
 async function update_preview_template(event: ActionRequestEvt) {
-	const { plavna, imageHandler } = event.locals;
+	const { plavna } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, previewTemplateEditingFormSchema);
 	if (!form.valid) return fail(400, { form });
 
-	const { buffer, errors } = await imageHandler.validateFormEntryAndGetBuffer(
-		formData.get('image'),
-		IMG_VALIDATION_CONFIG
-	);
-	if (errors) return setError(form, 'image', errors);
+	const imageHandler = new ServerImageHandler(formData.get('image'));
+	const filePresent = imageHandler.checkPresence();
+	if (filePresent) {
+		await imageHandler.validate(IMG_VALIDATION_CONFIG);
+	}
 
-	await plavna.previewTemplates.update(form.data, buffer);
+	await plavna.previewTemplates.update(form.data, imageHandler);
 }
 async function delete_preview_template(event: ActionRequestEvt) {
 	const form = await superValidate(event.request, previewTemplateDeletionFormSchema);

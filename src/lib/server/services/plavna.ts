@@ -1,3 +1,4 @@
+import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { error, fail } from '@sveltejs/kit';
 import {
 	type ExtractTablesWithRelations,
@@ -51,6 +52,7 @@ import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server
 
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
+import { decomposeImageField } from '../helpers/images';
 import {
 	calculateDimensionsFromCellsTaken,
 	composeURLForScreenshot,
@@ -60,7 +62,8 @@ import { db } from './db';
 
 import type {
 	ArticleInsert,
-	ArticlePreviewTransformedImageFilesArray,
+	ArticlePreviewImageFileFieldNamesAll,
+	ArticlePreviewImageHandlers,
 	ArticlePreviewUpdate,
 	ArticleSelect,
 	ArticleSlugUpdate,
@@ -87,7 +90,7 @@ import type {
 	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
-import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { ImageProcessedRecord } from '@denlukia/plavna-common/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import type { SuperValidated } from 'sveltekit-superforms';
@@ -136,17 +139,8 @@ class Plavna {
 		},
 		updateImageProvider: async (providerData: ImageProdiverUpdate) => {
 			const user = await this.user.getOrThrow();
-			const { imagekit_public_key, imagekit_private_key, imagekit_url_endpoint } = providerData;
-			if (imagekit_public_key && imagekit_private_key && imagekit_url_endpoint) {
-				await this.imageHandler.setupProvider({
-					imagekit_public_key,
-					imagekit_private_key,
-					imagekit_url_endpoint
-				});
-				return db.update(users).set(providerData).where(eq(users.id, user.id));
-			} else {
-				throw error(400);
-			}
+			await new ServerImageHandler(null).setUploaderFromUser(providerData);
+			return db.update(users).set(providerData).where(eq(users.id, user.id));
 		}
 	};
 
@@ -252,8 +246,8 @@ class Plavna {
 							isNotNull(translationForArticle[this.lang])
 						)
 					)
-					.where(isNotNull(articles.published_at))
-					.orderBy(desc(articles.published_at))
+					.where(isNotNull(articles.publish_time))
+					.orderBy(desc(articles.publish_time))
 					.groupBy(articles.id)
 					.limit(POSTS_PER_SECTION);
 				const articlesQueryForTranslations = db
@@ -283,8 +277,8 @@ class Plavna {
 							isNotNull(translationForArticle[this.lang])
 						)
 					)
-					.where(isNotNull(articles.published_at))
-					.orderBy(desc(articles.published_at))
+					.where(isNotNull(articles.publish_time))
+					.orderBy(desc(articles.publish_time))
 					.groupBy(articles.id)
 					.limit(POSTS_PER_SECTION);
 				const articlesQueryAliased = articlesQuery.as('articles_sq');
@@ -634,13 +628,16 @@ class Plavna {
 					{ key: image_path_translation_key_2 }
 				] = await this.translations.create(new Array(7).fill(newTranslation), 'allow-empty', trx);
 				const newImage = { user_id: user.id, source: 'imagekit' } as const;
-				const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await this.images.create(
-					[
+				const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
+					this.images.create(
 						{ ...newImage, path_translation_key: image_path_translation_key_1 },
-						{ ...newImage, path_translation_key: image_path_translation_key_2 }
-					],
-					trx
-				);
+						trx
+					),
+					this.images.create(
+						{ ...newImage, path_translation_key: image_path_translation_key_2 },
+						trx
+					)
+				]);
 
 				const article = await trx
 					.insert(articles)
@@ -821,7 +818,7 @@ class Plavna {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(articles)
-				.set({ published_at: new Date() })
+				.set({ publish_time: new Date() })
 				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
 				.returning({ slug: articles.slug })
 				.get();
@@ -830,7 +827,7 @@ class Plavna {
 			const user = await this.user.getOrThrow();
 			return db
 				.update(articles)
-				.set({ published_at: null })
+				.set({ publish_time: null })
 				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
 				.returning({ slug: articles.slug })
 				.get();
@@ -845,15 +842,13 @@ class Plavna {
 		updatePreview: async (
 			slug: string,
 			preview: ArticlePreviewUpdate,
-			imagesForUpload: ArticlePreviewTransformedImageFilesArray
+			imageHandlers: ArticlePreviewImageHandlers
 		) => {
 			// Common for 1. and 3.
 			const user = await this.user.getOrThrow();
-			const imageProvider = this.imageHandler.setupProvider({
-				...user
-			});
-			const imageProviderData = imageProvider.getProviderData();
-			const imageProviderType = imageProvider.getProviderType();
+			const { source, providerData: imageProviderData } = await new ServerImageHandler(
+				null
+			).setUploaderFromUser(user);
 
 			// 1. Article fields update
 			if (preview.preview_family && preview.preview_family !== 'custom')
@@ -865,77 +860,33 @@ class Plavna {
 			const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
 			// 2. Upload images if present and update records
-			if (imagesForUpload.length) {
+			const validImagesPresent = Object.values(imageHandlers).some(
+				({ hasValidImage }) => hasValidImage
+			);
+			if (validImagesPresent) {
 				const queryResult = await db
 					.select({
-						article: {
-							preview_image_1_id: articles.preview_image_1_id,
-							preview_image_2_id: articles.preview_image_2_id
-						},
-						image: {
-							id: images.id,
-							path_translation_key: images.path_translation_key
-						}
+						preview_image_1_id: articles.preview_image_1_id,
+						preview_image_2_id: articles.preview_image_2_id
 					})
 					.from(articles)
-					.innerJoin(
-						images,
-						or(
-							eq(images.id, articles.preview_image_1_id),
-							eq(images.id, articles.preview_image_2_id)
-						)
-					)
 					.where(whereCondition)
 					.all();
-				const articleRecord = queryResult[0].article;
-				const articleImagesRecords = queryResult.map((result) => result.image);
+				const articleRecord = queryResult[0];
+
 				if (!queryResult) throw error(500);
-				imagesForUpload.forEach(
-					({ file, fieldNameWithIdPrefix, ext, lang, background, width, height }) => {
-						const getImageProcessedPromise = async () => {
-							const imageId = articleRecord[fieldNameWithIdPrefix];
-							const { folder, fileName, fullPath } = this.imageHandler.composeFolderAndFilename({
-								imageId,
-								ext,
-								lang
-							});
-							await imageProvider.upload({
-								file,
-								fileName,
-								folder
-							});
-							// TODO Maybe extract this into this.images.SOMETHING ?
-							let newTranslationKey: TranslationSelect['key'] | undefined = undefined;
-							if (lang) {
-								const foundImgRecord = articleImagesRecords.find((i) => i.id === imageId);
-								if (!foundImgRecord) {
-									throw error(500);
-								}
-								const translationKey = foundImgRecord.path_translation_key;
-								if (translationKey) {
-									await this.translations.update({ key: translationKey, [lang]: fullPath });
-								} else {
-									const newTranslation = await this.translations.create([{ [lang]: fullPath }]);
-									newTranslationKey = newTranslation[0].key;
-								}
-							}
-							await db
-								.update(images)
-								.set({
-									background,
-									width,
-									height,
-									path: !lang ? fullPath : undefined,
-									path_translation_key: newTranslationKey,
-									source: imageProviderType
-								})
-								.where(eq(images.id, imageId))
-								.run();
-						};
-						const imageProcessedPromise = getImageProcessedPromise();
-						promisesToWaitFor.push(imageProcessedPromise);
+				Object.entries(imageHandlers).forEach(async ([fieldName, imageHandler]) => {
+					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
+					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
+					if (imageHandler.hasValidImage) {
+						await imageHandler.setUploaderFromUser(user);
+						const record = await imageHandler.processAndUpload({
+							imageId: articleRecord[fieldNameWithIdPrefix],
+							lang
+						});
+						await this.images.processUploadReport(record);
 					}
-				);
+				});
 			}
 
 			// 3. Enqueue preview screenshots if needed
@@ -1024,9 +975,10 @@ class Plavna {
 
 					// Creating screenshot image record if needed
 					if (!preview_screenshot_image_id) {
-						const [newImageRecord] = await this.images.create([
-							{ user_id: user.id, source: imageProviderType }
-						]);
+						const newImageRecord = await this.images.create({
+							user_id: user.id,
+							source
+						});
 						preview_screenshot_image_id = newImageRecord.id;
 						await db
 							.update(articles)
@@ -1122,7 +1074,7 @@ class Plavna {
 			if (!query.length) {
 				throw error(404);
 			}
-			if ((!user || user.username !== username) && query[0].articles.published_at === null) {
+			if ((!user || user.username !== username) && query[0].articles.publish_time === null) {
 				throw error(404);
 			}
 			return {
@@ -1151,10 +1103,10 @@ class Plavna {
 			await db.transaction(async (trx) => {
 				const [{ key }] = await this.translations.create([translation], 'disallow-empty', trx);
 				let imageId: ImageSelect['id'] | null = null;
-				if (imageHandler.file) {
-					const source = await imageHandler.setSourceFromUser(user);
+				if (imageHandler.hasValidImage) {
+					const { source } = await imageHandler.setUploaderFromUser(user);
 					({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
-					const record = await imageHandler.processAndUpload({ imageId });
+					const record = await imageHandler.processAndUpload({ imageId, lang: null });
 					await this.images.update({ ...record, id: imageId }, trx);
 				}
 				await trx
@@ -1171,33 +1123,39 @@ class Plavna {
 					eq(previewTemplates.id, template_id),
 					eq(previewTemplates.user_id, user.id)
 				);
+
+				// 1. Update name translation and URL
 				const translationResult = await trx
 					.select({ key: translations.key })
 					.from(previewTemplates)
 					.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
 					.where(whereCondition)
 					.get();
-				if (translationResult) {
-					await this.translations.update({ ...translation, key: translationResult.key }, trx);
-					await trx.update(previewTemplates).set({ url }).where(whereCondition);
-				} else {
+				if (!translationResult) {
 					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
 
-				// TODO Update for new handler
-				if (imageHandler.file) {
+				await this.translations.update({ ...translation, key: translationResult.key }, trx);
+				await trx.update(previewTemplates).set({ url }).where(whereCondition);
+
+				// 2. Create/Upload/Update image
+				if (imageHandler.hasValidImage) {
 					const imageResult = await trx
-						.select({ images })
+						.select({ id: images.id })
 						.from(previewTemplates)
 						.innerJoin(images, eq(images.id, previewTemplates.image_id))
 						.where(whereCondition)
 						.get();
-					if (imageResult) {
-						await this.images.uploadAndUpdateRecord(imageResult.images, image, trx);
-					} else {
-						const imageId = await this.images.uploadAndCreateRecord(image, trx);
+					const { source } = await imageHandler.setUploaderFromUser(user);
+
+					let imageId: ImageSelect['id'] | undefined = imageResult?.id;
+					if (!imageId) {
+						({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
 						await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 					}
+
+					const report = await imageHandler.processAndUpload({ imageId, lang: null });
+					await this.images.update({ ...report, id: imageId }, trx);
 				}
 			});
 		},
@@ -1226,10 +1184,7 @@ class Plavna {
 				}
 				if (recordResult) {
 					if (recordResult.images.path) {
-						await this.images.deleteFolderFromProvider({
-							path: recordResult.images.path,
-							pathType: 'image'
-						});
+						// TODO Folder deletion
 					}
 					await this.images.delete(recordResult.images.id, trx);
 				}
@@ -1239,71 +1194,24 @@ class Plavna {
 	};
 
 	public readonly images = {
-		uploadAndCreateRecord: async (file: Buffer, trx?: TransactionContext) => {
-			const user = await this.user.getOrThrow();
-			const imageRecord = {
-				user_id: user.id,
-				source: 'imagekit'
-			} as const;
-			const [{ id: imageId }] = await this.images.create(imageRecord, trx);
-			const probeResult = this.imageHandler.detectImageTypeAndSize(file);
-			if (!probeResult) {
-				throw error(400, ERRORS.IMAGES.INVALID_TYPE);
-			}
-			const { folder, fileName } = this.imageHandler.composeFolderAndFilename({
-				ext: probeResult.ext,
-				imageId
-			});
-			const uploadResult = await this.images.uploadToProvider({ file, folder, fileName });
-			await this.images.update({ id: imageId, path: uploadResult.filePath }, trx);
-			return imageId;
-		},
-		uploadAndUpdateRecord: async (
-			imageRecord: ImageSelect,
-			file: Buffer,
-			trx?: TransactionContext
-		) => {
-			const probeResult = this.imageHandler.detectImageTypeAndSize(file);
-			if (!probeResult) {
-				throw error(400, ERRORS.IMAGES.INVALID_TYPE);
-			}
-			const { folder, fileName } = this.imageHandler.composeFolderAndFilename({
-				imageId: imageRecord.id,
-				ext: probeResult.ext
-			});
-			if (imageRecord.path) {
-				await this.images.deleteFolderFromProvider({ pathType: 'image', path: imageRecord.path });
-			}
-			const uploadResult = await this.images.uploadToProvider({ file, folder, fileName });
-			await this.images.update({ id: imageRecord.id, path: uploadResult.filePath }, trx);
-		},
-		uploadToProvider: async (args: Parameters<ServerImageProvider['upload']>[0]) => {
-			const user = await this.user.getOrThrow();
-			return this.imageHandler.setupProvider(user).upload(args);
-		},
-		deleteFolderFromProvider: async (args: Parameters<ServerImageProvider['deleteFolder']>[0]) => {
-			const user = await this.user.getOrThrow();
-			return this.imageHandler.setupProvider(user).deleteFolder(args);
-		},
-		processUploadReport: async (report: ImageUploadReport) => {
+		processUploadReport: async (report: ImageProcessedRecord) => {
 			// Should only be triggered by trusted activity like screenshotter request checked for his access token
 			// No access to user and lang, but acting is trusted by default
+			const { id, lang, path } = report;
 
-			const { image_id, lang, path, source, backgroundColor, width, height } = report;
+			// 1. Get image and respective translation and user
 			const imageQueryResult = await db
 				.select()
 				.from(images)
 				.innerJoin(users, eq(users.id, images.user_id))
 				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(eq(images.id, image_id))
+				.where(eq(images.id, id))
 				.get();
+			if (!imageQueryResult) throw error(403);
+			const { translations: translation, auth_user: user } = imageQueryResult;
 
-			if (!imageQueryResult) throw error(404);
-
-			const { translations: translation, images: image, auth_user: user } = imageQueryResult;
-
+			// 2. Create translation if image didn't have one
 			let newTranslation: { key: TranslationSelect['key'] } | null = null;
-
 			if (translation) {
 				if (lang) {
 					await this.translations.update({ [lang]: path, key: translation.key }, undefined, user);
@@ -1321,13 +1229,8 @@ class Plavna {
 				}
 			}
 
-			const updateObject: ImageUpdate = {
-				id: image.id,
-				background: backgroundColor,
-				width,
-				height,
-				source
-			};
+			// 3. Update image record with respecive changes
+			const updateObject: ImageUpdate = report;
 			if (newTranslation) {
 				updateObject.path_translation_key = newTranslation.key;
 			}
@@ -1336,7 +1239,6 @@ class Plavna {
 			} else {
 				updateObject.path = path;
 			}
-
 			await this.images.update(updateObject);
 		},
 		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
