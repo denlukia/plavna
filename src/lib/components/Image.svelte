@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { SupportedLang } from '$lib/isomorphic/languages';
 	import type { ImageSelect, TranslationSelect } from '$lib/server/collections/types';
 
 	export let image: ImageSelect;
+	export let lang: SupportedLang | null = null;
 
 	$: ({ translations, user } = $page.data);
 
@@ -12,10 +14,16 @@
 		path: string | null
 	) {
 		if (!endpoint) return null;
-		if (path_translation_key && translations[path_translation_key]) {
-			const translation = translations[path_translation_key];
-			return `${endpoint}/${translation}`;
-		} else if (path) {
+		if (lang && path_translation_key && translations[path_translation_key]) {
+			let translationRecord = translations[path_translation_key];
+			let pathTranslation;
+			if (typeof translationRecord === 'object' && lang in translationRecord) {
+				pathTranslation = translationRecord[lang];
+			} else {
+				return null;
+			}
+			return `${endpoint}/${pathTranslation}`;
+		} else if (!lang && path) {
 			return `${endpoint}/${path}`;
 		} else {
 			return null;
@@ -27,6 +35,7 @@
 
 <style>
 	img {
-		display: block;
+		/* display: block; */
+		width: 20px;
 	}
 </style>

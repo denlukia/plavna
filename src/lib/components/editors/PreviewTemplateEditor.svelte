@@ -4,7 +4,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TranslationInput from '../inputs/TranslationInput.svelte';
 	import Image from '../Image.svelte';
-	import ImageInput from '../inputs/image/ImageInput.svelte';
+	import ImagesCollectionInput from '../inputs/image/ImagesCollectionInput.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateEditingFormZod>;
 	export let image: ImageSelect | undefined;
@@ -22,7 +22,7 @@
 		<input name="template_id" type="hidden" bind:value={$form.template_id} />
 		<input name="url" bind:value={$form.url} />
 
-		<ImageInput name="image" errors={$errors['image']} />
+		<ImagesCollectionInput name="image" errors={$errors['image']} />
 		<button>Update template</button>
 	</form>
 	<form use:enhance method="POST" action="?/delete_preview_template">

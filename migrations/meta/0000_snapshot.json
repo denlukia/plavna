@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "e74b590c-f0d1-4c77-8241-5fbb55f424f8",
-  "prevId": "35ea10f0-c76e-4dc3-8bb6-345c9cd4b619",
+  "id": "d3d18d03-d35b-4be2-81ad-c4392d017f06",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
       "name": "articles",
@@ -42,8 +42,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "published_at": {
-          "name": "published_at",
+        "publish_time": {
+          "name": "publish_time",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -128,8 +128,16 @@
           "notNull": true,
           "autoincrement": false
         },
-        "url_preview_image_id": {
-          "name": "url_preview_image_id",
+        "preview_create_localized_screenshots": {
+          "name": "preview_create_localized_screenshots",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "preview_screenshot_image_id": {
+          "name": "preview_screenshot_image_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -251,12 +259,12 @@
           "onDelete": "set null",
           "onUpdate": "cascade"
         },
-        "articles_url_preview_image_id_images_id_fk": {
-          "name": "articles_url_preview_image_id_images_id_fk",
+        "articles_preview_screenshot_image_id_images_id_fk": {
+          "name": "articles_preview_screenshot_image_id_images_id_fk",
           "tableFrom": "articles",
           "tableTo": "images",
           "columnsFrom": [
-            "url_preview_image_id"
+            "preview_screenshot_image_id"
           ],
           "columnsTo": [
             "id"
@@ -285,6 +293,21 @@
           "notNull": true,
           "autoincrement": false
         },
+        "user_wide_visible": {
+          "name": "user_wide_visible",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "owning_article_id": {
+          "name": "owning_article_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "source": {
           "name": "source",
           "type": "text",
@@ -301,6 +324,27 @@
         },
         "path_translation_key": {
           "name": "path_translation_key",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "background": {
+          "name": "background",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "height": {
+          "name": "height",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -322,6 +366,19 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
+        "images_owning_article_id_articles_id_fk": {
+          "name": "images_owning_article_id_articles_id_fk",
+          "tableFrom": "images",
+          "tableTo": "articles",
+          "columnsFrom": [
+            "owning_article_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        },
         "images_path_translation_key_translations_key_fk": {
           "name": "images_path_translation_key_translations_key_fk",
           "tableFrom": "images",
@@ -332,7 +389,7 @@
           "columnsTo": [
             "key"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "cascade"
         }
       },
@@ -515,6 +572,102 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "screenshots_queue": {
+      "name": "screenshots_queue",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lang": {
+          "name": "lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "queued_at": {
+          "name": "queued_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%s', 'now'))"
+        },
+        "processing_attempts": {
+          "name": "processing_attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "processing_running": {
+          "name": "processing_running",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "image_provider_data": {
+          "name": "image_provider_data",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "screenshots_queue_image_id_images_id_fk": {
+          "name": "screenshots_queue_image_id_images_id_fk",
+          "tableFrom": "screenshots_queue",
+          "tableTo": "images",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},

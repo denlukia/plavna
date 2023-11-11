@@ -1,21 +1,21 @@
 import { SCREENSHOTTER_ACCESS_TOKEN } from '$env/static/private';
+import { type ImageUploadReport, SCREENSHOTTER_ACCESS_COOKIE } from '@denlukia/plavna-common';
 import { error, text } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
-import type { ScreenshotReportRequest } from 'plavna-common';
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const body: ScreenshotReportRequest = await request.json();
+export const POST: RequestHandler = async ({ request, locals, cookies }) => {
+	const body: ImageUploadReport = await request.json();
+	const { plavna } = locals;
 
-	console.log(body);
-
-	if (body.accessToken !== SCREENSHOTTER_ACCESS_TOKEN) {
-		throw error(403, 'Invalid access token');
+	const user = await plavna.user.get();
+	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE);
+	if (accessCookie !== SCREENSHOTTER_ACCESS_TOKEN && !user) {
+		throw error(403);
 	}
 
-	const { plavna } = locals;
 	try {
-		await plavna.articles.processPreviewScreenshotReport(body.report);
+		await plavna.images.processUploadReport(body);
 		return text('OK');
 	} catch (e) {
 		console.error(e);

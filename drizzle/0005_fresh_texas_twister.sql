@@ -1,1 +1,0 @@
-ALTER TABLE articles ADD `preview_create_localized_screenshots` integer DEFAULT false NOT NULL;

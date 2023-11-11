@@ -8,7 +8,7 @@
 	} from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
-	import ImageInput from '$lib/components/inputs/image/ImageInput.svelte';
+	import ImagesCollectionInput from '$lib/components/inputs/image/ImagesCollectionInput.svelte';
 
 	export let updateForm: SuperValidated<ArticlePreviewUpdateZod>;
 	export let images: { preview_image_1: ImageSelect; preview_image_2: ImageSelect };
@@ -24,18 +24,18 @@
 
 <h2>CUSTOM PREVIEW</h2>
 <TranslationEditor formObj={translationForms.preview_translation_1} />
-<TranslationEditor formObj={translationForms.preview_translation_1} />
+<TranslationEditor formObj={translationForms.preview_translation_2} />
 <form use:enhance method="POST" action="?/update_preview">
 	<input name="preview_template_id" type="hidden" bind:value={templateId} />
 	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<ImageInput
+	<ImagesCollectionInput
 		name="preview_image_1"
 		image={images.preview_image_1}
 		errors={$errors['preview_image_1_id']}
 		withLanguages
 	/>
-	<ImageInput
+	<ImagesCollectionInput
 		name="preview_image_2"
 		image={images.preview_image_2}
 		errors={$errors['preview_image_2_id']}

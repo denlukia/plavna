@@ -81,9 +81,9 @@ export function getNullAndDupFilter(fieldName: string) {
 	return <T extends null | Record<string, any>>(
 		obj: T,
 		index: number,
-		arr: any[]
+		arr: T[]
 	): obj is NonNullable<T> =>
-		obj !== null && index === arr.findIndex((innerTag) => innerTag[fieldName] === obj[fieldName]);
+		obj !== null && index === arr.findIndex((el) => el && el[fieldName] === obj[fieldName]);
 }
 
 const emptyStringToken = '__plavna_empty_string__';

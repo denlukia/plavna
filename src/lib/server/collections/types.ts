@@ -3,7 +3,7 @@ import {
 	type ScreenshotsQueueSelect,
 	type TypeEqualityGuard,
 	assert
-} from 'plavna-common';
+} from '@denlukia/plavna-common';
 
 import type { SupportedLang } from '$lib/isomorphic/languages';
 import type { PartialNonNull } from '../helpers/types';

@@ -9,7 +9,7 @@ export const libsqlClient = createClient({
 export const db = drizzle(libsqlClient);
 
 try {
-	await migrate(db, { migrationsFolder: './drizzle' });
+	await migrate(db, { migrationsFolder: './migrations' });
 	console.log('Succesfully migrated');
 } catch (e) {
 	console.log('Failed to migrate: ', e);

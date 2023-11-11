@@ -4,34 +4,45 @@ CREATE TABLE `articles` (
 	`slug` text NOT NULL,
 	`title_translation_key` integer NOT NULL,
 	`content_translation_key` integer NOT NULL,
-	`published_at` integer,
+	`publish_time` integer,
+	`preview_columns` integer DEFAULT 1 NOT NULL,
+	`preview_rows` integer DEFAULT 1 NOT NULL,
 	`preview_family` text,
 	`preview_template_id` integer,
 	`preview_interactions_show_on` text,
 	`preview_prop_1` text,
 	`preview_prop_2` text,
-	`preview_translation_key_1` integer NOT NULL,
-	`preview_translation_key_2` integer NOT NULL,
-	`preview_image_id_1` integer NOT NULL,
+	`preview_translation_1_key` integer NOT NULL,
+	`preview_translation_2_key` integer NOT NULL,
+	`preview_image_1_id` integer NOT NULL,
 	`preview_image_2_id` integer NOT NULL,
+	`preview_create_localized_screenshots` integer DEFAULT false NOT NULL,
+	`preview_screenshot_image_id` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`title_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`content_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`preview_template_id`) REFERENCES `preview_templates`(`id`) ON UPDATE cascade ON DELETE set null,
-	FOREIGN KEY (`preview_translation_key_1`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
-	FOREIGN KEY (`preview_translation_key_2`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
-	FOREIGN KEY (`preview_image_id_1`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null,
-	FOREIGN KEY (`preview_image_2_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null
+	FOREIGN KEY (`preview_translation_1_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_translation_2_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_image_1_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_image_2_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`preview_screenshot_image_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE set null
 );
 --> statement-breakpoint
 CREATE TABLE `images` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
+	`user_wide_visible` integer DEFAULT false NOT NULL,
+	`owning_article_id` integer,
 	`source` text NOT NULL,
 	`path` text,
 	`path_translation_key` integer,
+	`background` text,
+	`width` integer,
+	`height` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`path_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade
+	FOREIGN KEY (`owning_article_id`) REFERENCES `articles`(`id`) ON UPDATE cascade ON DELETE set null,
+	FOREIGN KEY (`path_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null
 );
 --> statement-breakpoint
 CREATE TABLE `auth_key` (
@@ -57,6 +68,20 @@ CREATE TABLE `preview_templates` (
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`name_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE cascade,
 	FOREIGN KEY (`image_id`) REFERENCES `images`(`id`) ON UPDATE cascade ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `screenshots_queue` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`image_id` integer NOT NULL,
+	`width` integer NOT NULL,
+	`height` integer NOT NULL,
+	`url` text NOT NULL,
+	`lang` text,
+	`queued_at` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`processing_attempts` integer DEFAULT 0 NOT NULL,
+	`processing_running` integer DEFAULT false NOT NULL,
+	`image_provider_data` blob NOT NULL,
+	FOREIGN KEY (`image_id`) REFERENCES `images`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `sections` (

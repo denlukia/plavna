@@ -1,5 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
-import type { TagSelect } from '$lib/server/collections/types';
+import type { TagSelect, TranslationSelect } from '$lib/server/collections/types';
 
 declare global {
 	namespace App {
@@ -7,11 +7,10 @@ declare global {
 		interface Locals {
 			authRequest: import('lucia').AuthRequest;
 			plavna: import('$lib/server/services/plavna').default;
-			imageHandler: import('plavna-common').ServerImageHandler;
 		}
 		interface PageData {
 			user: Lucia.User | null;
-			translations: Record<string, string>;
+			translations: Record<string, string | TranslationSelect>;
 			tags?: Record<string, TagSelect>;
 		}
 		// interface Platform {}

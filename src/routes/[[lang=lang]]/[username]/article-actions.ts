@@ -1,6 +1,6 @@
 import { type RequestEvent, fail, redirect } from '@sveltejs/kit';
-import { HSLToString } from 'plavna-common';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import { ServerImageHandler } from "@denlukia/plavna-common/server";
 
 import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
 import { ERRORS } from '$lib/isomorphic/errors';
@@ -110,7 +110,7 @@ async function update_preview(event: ActionRequestEvt) {
 		if (errors) return setError(form, fieldNameWithIdPrefix, errors);
 		if (buffer) {
 			const probe = imageHandler.detectImageTypeAndSize(buffer);
-			const mainColorString = HSLToString(await imageHandler.extractOptimalColor(buffer));
+			const mainColorString = await imageHandler.extractOptimalColor(buffer));
 			if (!probe) return setError(form, fieldNameWithIdPrefix, ERRORS.IMAGES.INVALID_TYPE);
 			const { width, height, ext } = probe;
 			images.push({
@@ -129,18 +129,18 @@ async function update_preview(event: ActionRequestEvt) {
 }
 
 async function create_preview_template(event: ActionRequestEvt) {
-	const { plavna, imageHandler } = event.locals;
+	const { plavna } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, previewTemplateCreationFormSchema);
 	if (!form.valid) return fail(400, { form });
 
-	const { buffer, errors } = await imageHandler.validateFormEntryAndGetBuffer(
-		formData.get('image'),
-		IMG_VALIDATION_CONFIG
-	);
-	if (errors) return setError(form, 'image', errors);
+	const imageHandler = new ServerImageHandler(formData.get('image'));
+	const filePresent = imageHandler.checkPresence();
+	if (filePresent) {
+		await imageHandler.validate(IMG_VALIDATION_CONFIG);
+	}
 
-	await plavna.previewTemplates.create(form.data, buffer);
+	await plavna.previewTemplates.create(form.data, imageHandler);
 }
 
 async function update_preview_template(event: ActionRequestEvt) {

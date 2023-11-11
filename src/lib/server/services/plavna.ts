@@ -87,10 +87,9 @@ import type {
 	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
+import type { ServerImageHandler } from '@denlukia/plavna-common/server';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
-import type { ScreenshotReport, ServerImageHandler } from 'plavna-common';
-import type { ImageProvider } from 'plavna-common/dist/images/provider';
 import type { SuperValidated } from 'sveltekit-superforms';
 
 type TransactionContext = SQLiteTransaction<
@@ -105,15 +104,10 @@ type TransactionContext = SQLiteTransaction<
 class Plavna {
 	private readonly authRequest: AuthRequest;
 	private readonly lang: SupportedLang;
-	private readonly imageHandler: ServerImageHandler;
 
-	constructor(
-		authRequest: AuthRequest,
-		langParam: string | undefined,
-		imageHandler: ServerImageHandler
-	) {
+	constructor(authRequest: AuthRequest, langParam: string | undefined) {
 		this.authRequest = authRequest;
-		this.imageHandler = imageHandler;
+
 		if (!langParam) {
 			this.lang = defaultLang;
 		} else if (isSupportedLang(langParam)) {
@@ -717,7 +711,7 @@ class Plavna {
 				.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
 				.where(eq(articles.id, exisingId))
 				.all();
-			// TODO No forms in global translations store or no store
+
 			const articleResult = results[0].articles;
 			const translationsArr = results
 				.map((rows) => rows.translations)
@@ -784,8 +778,6 @@ class Plavna {
 					}
 				}
 			);
-
-			console.log(translationsArr);
 
 			return {
 				meta: articleSelectSchema.parse(articleResult),
@@ -908,7 +900,6 @@ class Plavna {
 								lang
 							});
 							await imageProvider.upload({
-								...imageProviderData,
 								file,
 								fileName,
 								folder
@@ -1149,107 +1140,22 @@ class Plavna {
 				]),
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
-		},
-		processPreviewScreenshotReport: async (report: ScreenshotReport) => {
-			// Should only be triggered by trusted activity like screenshotter request checked for his access token
-			// No access to user and lang, but acting is trusted by default
-
-			// TODO For some reason it records languaged screenshot path into just "path"
-
-			console.log(report);
-
-			const { image_id, lang, path, source, backgroundColor, width, height } = report;
-			const articleResult = await db
-				.select()
-				.from(images)
-				.innerJoin(articles, eq(articles.preview_screenshot_image_id, image_id))
-				.innerJoin(users, eq(users.id, articles.user_id))
-				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(eq(images.id, image_id))
-				.get();
-
-			if (articleResult) {
-				const {
-					articles: article,
-					translations: translation,
-					images: image,
-					auth_user: user
-				} = articleResult;
-
-				let newTranslation: { key: TranslationSelect['key'] } | null = null;
-				let newImage: { id: ImageSelect['id'] } | null = null;
-
-				if (translation) {
-					if (lang) {
-						await this.translations.update({ [lang]: path, key: translation.key }, undefined, user);
-					} else {
-						await this.translations.delete({ key: translation.key }, undefined, user);
-					}
-				} else {
-					if (lang) {
-						[newTranslation] = await this.translations.create(
-							[{ [lang]: path }],
-							undefined,
-							undefined,
-							user
-						);
-					}
-				}
-
-				if (image) {
-					if (newTranslation) {
-						await this.images.update({
-							id: image.id,
-							path_translation_key: newTranslation.key,
-							background: backgroundColor,
-							width,
-							height
-						});
-					} else {
-						await this.images.update({ id: image.id, path, background: backgroundColor });
-					}
-				} else {
-					if (newTranslation) {
-						[newImage] = await this.images.create([
-							{
-								path_translation_key: newTranslation.key,
-								source,
-								user_id: user.id,
-								background: backgroundColor,
-								width,
-								height
-							}
-						]);
-					} else {
-						[newImage] = await this.images.create([
-							{ path, source, user_id: user.id, background: backgroundColor, width, height }
-						]);
-					}
-				}
-
-				if (newImage) {
-					await db
-						.update(articles)
-						.set({ preview_screenshot_image_id: newImage.id })
-						.where(eq(articles.id, article.id));
-				}
-			} else {
-				// Article doesnt exist anymore
-				throw error(404);
-			}
 		}
 	};
 
 	public readonly previewTemplates = {
 		// TODO Show image input only if account has imagekit keys
-		create: async (template: PreviewTemplateCreation, image?: Buffer | null) => {
+		create: async (template: PreviewTemplateCreation, imageHandler: ServerImageHandler) => {
 			const user = await this.user.getOrThrow();
 			const { url, ...translation } = template;
 			await db.transaction(async (trx) => {
 				const [{ key }] = await this.translations.create([translation], 'disallow-empty', trx);
 				let imageId: ImageSelect['id'] | null = null;
-				if (image) {
-					imageId = await this.images.uploadAndCreateRecord(image, trx);
+				if (imageHandler.file) {
+					const source = await imageHandler.setSourceFromUser(user);
+					({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
+					const record = await imageHandler.processAndUpload({ imageId });
+					await this.images.update({ ...record, id: imageId }, trx);
 				}
 				await trx
 					.insert(previewTemplates)
@@ -1257,7 +1163,7 @@ class Plavna {
 					.run();
 			});
 		},
-		update: async (template: PreviewTemplateEditing, image?: Buffer | null) => {
+		update: async (template: PreviewTemplateEditing, imageHandler: ServerImageHandler) => {
 			const user = await this.user.getOrThrow();
 			const { url, template_id, ...translation } = template;
 			await db.transaction(async (trx) => {
@@ -1278,7 +1184,8 @@ class Plavna {
 					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
 
-				if (image) {
+				// TODO Update for new handler
+				if (imageHandler.file) {
 					const imageResult = await trx
 						.select({ images })
 						.from(previewTemplates)
@@ -1338,7 +1245,7 @@ class Plavna {
 				user_id: user.id,
 				source: 'imagekit'
 			} as const;
-			const [{ id: imageId }] = await this.images.create([imageRecord], trx);
+			const [{ id: imageId }] = await this.images.create(imageRecord, trx);
 			const probeResult = this.imageHandler.detectImageTypeAndSize(file);
 			if (!probeResult) {
 				throw error(400, ERRORS.IMAGES.INVALID_TYPE);
@@ -1370,23 +1277,77 @@ class Plavna {
 			const uploadResult = await this.images.uploadToProvider({ file, folder, fileName });
 			await this.images.update({ id: imageRecord.id, path: uploadResult.filePath }, trx);
 		},
-		uploadToProvider: async (args: Parameters<ImageProvider['upload']>[0]) => {
+		uploadToProvider: async (args: Parameters<ServerImageProvider['upload']>[0]) => {
 			const user = await this.user.getOrThrow();
 			return this.imageHandler.setupProvider(user).upload(args);
 		},
-		deleteFolderFromProvider: async (args: Parameters<ImageProvider['deleteFolder']>[0]) => {
+		deleteFolderFromProvider: async (args: Parameters<ServerImageProvider['deleteFolder']>[0]) => {
 			const user = await this.user.getOrThrow();
 			return this.imageHandler.setupProvider(user).deleteFolder(args);
 		},
+		processUploadReport: async (report: ImageUploadReport) => {
+			// Should only be triggered by trusted activity like screenshotter request checked for his access token
+			// No access to user and lang, but acting is trusted by default
+
+			const { image_id, lang, path, source, backgroundColor, width, height } = report;
+			const imageQueryResult = await db
+				.select()
+				.from(images)
+				.innerJoin(users, eq(users.id, images.user_id))
+				.leftJoin(translations, eq(translations.key, images.path_translation_key))
+				.where(eq(images.id, image_id))
+				.get();
+
+			if (!imageQueryResult) throw error(404);
+
+			const { translations: translation, images: image, auth_user: user } = imageQueryResult;
+
+			let newTranslation: { key: TranslationSelect['key'] } | null = null;
+
+			if (translation) {
+				if (lang) {
+					await this.translations.update({ [lang]: path, key: translation.key }, undefined, user);
+				} else {
+					await this.translations.delete({ key: translation.key }, undefined, user);
+				}
+			} else {
+				if (lang) {
+					[newTranslation] = await this.translations.create(
+						[{ [lang]: path }],
+						undefined,
+						undefined,
+						user
+					);
+				}
+			}
+
+			const updateObject: ImageUpdate = {
+				id: image.id,
+				background: backgroundColor,
+				width,
+				height,
+				source
+			};
+			if (newTranslation) {
+				updateObject.path_translation_key = newTranslation.key;
+			}
+			if (lang) {
+				updateObject.path = null;
+			} else {
+				updateObject.path = path;
+			}
+
+			await this.images.update(updateObject);
+		},
 		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
 			// TODO User checks
-			// Don't forget that it may be used inside article.processPreviewScreenshotReport without user cookie
+			// Don't forget that it may be used inside article.processPreviewImageUploadReport without user cookie
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance.update(images).set(newImage).where(eq(images.id, newImage.id));
 		},
-		create: async (newImages: ImageInsert[], trx?: TransactionContext) => {
+		create: async (newImage: ImageInsert, trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
-			return chosenDBInstance.insert(images).values(newImages).returning({ id: images.id }).all();
+			return chosenDBInstance.insert(images).values(newImage).returning({ id: images.id }).get();
 		},
 		delete: async (imageId: ImageSelect['id'], trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;

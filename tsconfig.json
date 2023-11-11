@@ -10,7 +10,13 @@
 		"sourceMap": true,
 		"strict": true,
 		"preserveValueImports": true,
-		"isolatedModules": true
+		"isolatedModules": true,
+		"baseUrl": ".",
+		"paths": {
+			"$lib": ["./src/lib"],
+			"$lib/*": ["./src/lib/*"],
+			"@denlukia/plavna-common/*": ["../plavna-common/dist/*"]
+		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

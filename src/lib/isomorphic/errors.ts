@@ -11,6 +11,7 @@ export const ERRORS = {
 
 	IMAGES: {
 		INVALID_PROVIDER_CREDS: 'Invalid image provider credentials',
-		INVALID_TYPE: 'Invalid image type'
+		INVALID_TYPE: 'Invalid image type',
+		CANT_DETECT_SIZE: "Can't detect image size"
 	}
 };

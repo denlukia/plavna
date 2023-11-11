@@ -1,6 +1,14 @@
-import { relations, sql } from 'drizzle-orm';
-import { integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import { createScreenshotsQueueSchema } from 'plavna-common';
+import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/schema';
+import { relations } from 'drizzle-orm';
+import {
+	type AnySQLiteColumn,
+	SQLiteInteger,
+	integer,
+	primaryKey,
+	sqliteTable,
+	text,
+	uniqueIndex
+} from 'drizzle-orm/sqlite-core';
 
 // Has to be relative for drizzle to resolve it
 import { supportedLangs } from '../../isomorphic/languages';
@@ -146,7 +154,7 @@ export const articles = sqliteTable(
 		content_translation_key: integer('content_translation_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
-		published_at: integer('published_at', { mode: 'timestamp' }),
+		publish_time: integer('publish_time', { mode: 'timestamp' }),
 		preview_columns: integer('preview_columns').notNull().default(1),
 		preview_rows: integer('preview_rows').notNull().default(1),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),
@@ -257,6 +265,11 @@ export const images = sqliteTable('images', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	user_wide_visible: integer('user_wide_visible', { mode: 'boolean' }).notNull().default(false),
+	owning_article_id: integer('owning_article_id').references((): AnySQLiteColumn => articles.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade'
+	}),
 	source: text('source', { enum: ['imagekit'] }).notNull(),
 	path: text('path'),
 	path_translation_key: integer('path_translation_key').references(() => translations.key, {
