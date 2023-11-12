@@ -90,7 +90,7 @@ import type {
 	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
-import type { ImageProcessedRecord } from '@denlukia/plavna-common/types';
+import type { ImageProcessed } from '@denlukia/plavna-common/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import type { SuperValidated } from 'sveltekit-superforms';
@@ -1106,8 +1106,8 @@ class Plavna {
 				if (imageHandler.hasValidImage) {
 					const { source } = await imageHandler.setUploaderFromUser(user);
 					({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
-					const record = await imageHandler.processAndUpload({ imageId, lang: null });
-					await this.images.update({ ...record, id: imageId }, trx);
+					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
+					await this.images.update(record, trx);
 				}
 				await trx
 					.insert(previewTemplates)
@@ -1154,8 +1154,8 @@ class Plavna {
 						await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 					}
 
-					const report = await imageHandler.processAndUpload({ imageId, lang: null });
-					await this.images.update({ ...report, id: imageId }, trx);
+					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
+					await this.images.update(record, trx);
 				}
 			});
 		},
@@ -1194,10 +1194,13 @@ class Plavna {
 	};
 
 	public readonly images = {
-		processUploadReport: async (report: ImageProcessedRecord) => {
+		processUploadReport: async (report: ImageProcessed) => {
 			// Should only be triggered by trusted activity like screenshotter request checked for his access token
 			// No access to user and lang, but acting is trusted by default
-			const { id, lang, path } = report;
+			const {
+				record: { id, path },
+				lang
+			} = report;
 
 			// 1. Get image and respective translation and user
 			const imageQueryResult = await db
@@ -1242,8 +1245,6 @@ class Plavna {
 			await this.images.update(updateObject);
 		},
 		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
-			// TODO User checks
-			// Don't forget that it may be used inside article.processPreviewImageUploadReport without user cookie
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance.update(images).set(newImage).where(eq(images.id, newImage.id));
 		},

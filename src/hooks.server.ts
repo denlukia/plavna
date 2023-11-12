@@ -7,7 +7,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const authRequest = auth.handleRequest(event);
 	event.locals.authRequest = authRequest;
 
-	const plavnaService = new Plavna(authRequest, event.params.lang, imageHandler);
+	const plavnaService = new Plavna(authRequest, event.params.lang);
 	event.locals.plavna = plavnaService;
 
 	return await resolve(event);
