@@ -26,7 +26,7 @@
 
 	<div>
 		Common images:
-		<ImageCollection collection={collections.common} />
+		<ImageCollection collection={collections.common} isAccountCommon/>
 	</div>
 
 	<div>

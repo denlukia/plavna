@@ -23,6 +23,7 @@ import {
 	translationInsertSchema
 } from '$lib/server/collections/parsers';
 
+import type { SupportedLang } from '$lib/isomorphic/languages';
 import type {
 	ArticlePreviewImageFileFieldsAll,
 	ArticlePreviewImageHandlers,
@@ -179,15 +180,19 @@ async function create_image(event: ActionRequestEvt) {
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
+	console.log(form.data);
 	await plavna.images.create({
-		owning_article_id: form.data.articleId
+		owning_article_id: form.data.article_id,
+		is_account_common: form.data.is_account_common
 	});
 }
+
 async function update_image(event: ActionRequestEvt) {
 	const form = await superValidate(event.request, imageUpdateFormSchema);
 	const formData = await event.request.formData();
 	if (!form.valid) return fail(400, { form });
 
+	const { plavna } = event.locals;
 	const imagesKeys = Object.keys(imageUpdateFileFields) as Array<
 		keyof typeof imageUpdateFileFields
 	>;
@@ -195,11 +200,17 @@ async function update_image(event: ActionRequestEvt) {
 	for (const key of imagesKeys) {
 		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
 		const filePresent = imagesHandlers[key].checkPresence();
+		const lang = (key.split('.')[1] || null) as SupportedLang | null;
+		// Flag for image deletion
 		if (filePresent) {
 			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
+			const report = await imagesHandlers[key].processAndUpload({
+				imageId: form.data.id,
+				lang: lang
+			});
+			await plavna.images.update(report.record, lang);
 		}
 	}
-	// TODO Method for updating one image lang
 }
 
 async function delete_image(event: ActionRequestEvt) {

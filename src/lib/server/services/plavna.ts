@@ -39,6 +39,7 @@ import {
 	articlePreviewUpdateSchema,
 	articleSelectSchema,
 	articleSlugUpdateSchema,
+	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFormSchema,
 	pageCreateFormSchema,
@@ -91,7 +92,6 @@ import type {
 	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
-import type { ImageProcessed } from '@denlukia/plavna-common/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import type { SuperValidated } from 'sveltekit-superforms';
@@ -640,10 +640,10 @@ class Plavna {
 					{ key: preview_translation_1_key },
 					{ key: preview_translation_2_key }
 				] = await this.translations.create(new Array(4).fill(newTranslation), 'allow-empty', trx);
-				const newImage = { user_id: user.id, source: 'imagekit' } as const;
+				const { source } = await new ServerImageHandler(null).setUploaderFromUser(user);
 				const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
-					this.images.create({ ...newImage }, null, trx),
-					this.images.create({ ...newImage }, null, trx)
+					this.images.create({ source }, trx),
+					this.images.create({ source }, trx)
 				]);
 
 				const article = await trx
@@ -797,20 +797,26 @@ class Plavna {
 					}
 				}
 			);
-			const commonImages = results
-				.map((rows) => rows.commonImagesTable)
-				.filter(getNullAndDupFilter('id'))
-				.map((image) => ({
-					meta: image,
-					form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
-				}));
-			const articleImages = results
-				.map((rows) => rows.articleImagesTable)
-				.filter(getNullAndDupFilter('id'))
-				.map((image) => ({
-					meta: image,
-					form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
-				}));
+			const commonImages = {
+				creation: superValidateSync(imageCreationFormSchema, { id: 'common-image-creation' }),
+				items: results
+					.map((rows) => rows.commonImagesTable)
+					.filter(getNullAndDupFilter('id'))
+					.map((image) => ({
+						meta: image,
+						form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+					}))
+			};
+			const articleImages = {
+				creation: superValidateSync(imageCreationFormSchema, { id: 'article-image-creation' }),
+				items: results
+					.map((rows) => rows.articleImagesTable)
+					.filter(getNullAndDupFilter('id'))
+					.map((image) => ({
+						meta: image,
+						form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+					}))
+			};
 
 			return {
 				meta: articleSelectSchema.parse(articleResult),
@@ -1013,12 +1019,7 @@ class Plavna {
 
 					// Creating screenshot image record if needed
 					if (!preview_screenshot_image_id) {
-						const newImageRecord = await this.images.create(
-							{
-								source
-							},
-							null
-						);
+						const newImageRecord = await this.images.create({ source });
 						preview_screenshot_image_id = newImageRecord.id;
 						await db
 							.update(articles)
@@ -1145,7 +1146,7 @@ class Plavna {
 				let imageId: ImageSelect['id'] | null = null;
 				if (imageHandler.hasValidImage) {
 					const { source } = await imageHandler.setUploaderFromUser(user);
-					({ id: imageId } = await this.images.create({ source }, null, trx));
+					({ id: imageId } = await this.images.create({ source }, trx));
 					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
 					await this.images.update(record, null, trx);
 				}
@@ -1190,7 +1191,7 @@ class Plavna {
 
 					let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 					if (!imageId) {
-						({ id: imageId } = await this.images.create({ source }, null, trx));
+						({ id: imageId } = await this.images.create({ source }, trx));
 						await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 					}
 					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
@@ -1233,8 +1234,8 @@ class Plavna {
 	};
 
 	private readonly imagesCommon = async ({
-		mode,
 		initialImage,
+		mode,
 		lang,
 		user,
 		trx
@@ -1249,7 +1250,7 @@ class Plavna {
 		if (mode === 'create') {
 			finalImage = await chosenDBInstance
 				.insert(images)
-				.values({ user_id: user.id })
+				.values({ ...initialImage, user_id: user.id })
 				.returning()
 				.get();
 		}
@@ -1302,21 +1303,21 @@ class Plavna {
 	};
 
 	public readonly images = {
-		create: async (newImage: ImageInsert, lang: SupportedLang | null, trx?: TransactionContext) => {
+		create: async (newImage: ImageInsert, trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
 			const user = await this.user.getOrThrow();
 
 			const processedImage = await this.imagesCommon({
 				mode: 'create',
 				initialImage: newImage,
-				lang,
+				lang: null,
 				user,
 				trx
 			});
 
 			return chosenDBInstance
 				.update(images)
-				.set(newImage)
+				.set(processedImage)
 				.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
 				.returning()
 				.get();
@@ -1335,7 +1336,7 @@ class Plavna {
 
 			return chosenDBInstance
 				.update(images)
-				.set(newImage)
+				.set(processedImage)
 				.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
 				.returning()
 				.get();

@@ -186,7 +186,8 @@ export const imageUpdateSchema = imageInsertSchema.partial().required({
 	id: true
 });
 export const imageCreationFormSchema = z.object({
-	articleId: articleSelectSchema.shape.id.optional()
+	is_account_common: z.boolean().optional(),
+	article_id: articleSelectSchema.shape.id.optional()
 });
 export const imageUpdateFileFields = {
 	image: imageFileField,

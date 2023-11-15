@@ -6,10 +6,10 @@
 	export let image: ImageCollectionItem;
 
 	$: ({ form, meta } = image);
-	$: ({ errors } = superForm(form));
+	$: ({ errors, enhance } = superForm(form));
 </script>
 
-<form method="post" action="?/update_image">
+<form method="post" action="?/update_image" use:enhance>
 	<LanguagedImagesInput name="image" image={meta} {errors} clientUpload />
 	<button>Update image</button>
 </form>

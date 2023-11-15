@@ -5,9 +5,10 @@
 
 	export let collection: ImagesCollection;
 	export let articleId: ArticleSelect['id'] | null = null;
+	export let isAccountCommon = false;
 </script>
 
-<ImageCreationForm {articleId} />
-{#each collection as image}
+<ImageCreationForm {articleId} {isAccountCommon} form={collection.creation} />
+{#each collection.items as image}
 	<ImageUpdateForm {image} />
 {/each}

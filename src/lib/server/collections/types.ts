@@ -1,5 +1,6 @@
 import { assert } from '@denlukia/plavna-common/types';
 
+import type ImageCreationForm from '$lib/components/editors/ImagesCollections/ImageCreationForm.svelte';
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
 import type { screenshotsQueue, users } from './db-schema';
@@ -17,6 +18,7 @@ import type {
 	articleSelectSchema,
 	articleSlugUpdateSchema,
 	excludedTags,
+	imageCreationFormSchema,
 	imageInsertSchema,
 	imageProviderUpdateFormSchema,
 	imageSelectSchema,
@@ -166,7 +168,11 @@ export type ImageCollectionItem = {
 	meta: ImageSelect;
 };
 export type ImageUpdateFileFields = typeof imageUpdateFileFields;
-export type ImagesCollection = ImageCollectionItem[];
+export type ImageCreationFormZod = typeof imageCreationFormSchema;
+export type ImagesCollection = {
+	creation: SuperValidated<ImageCreationFormZod>;
+	items: ImageCollectionItem[];
+};
 export type ImageUpdateImageHandlers = Record<keyof ImageUpdateFileFields, ServerImageHandler>;
 
 // Excluded Tags Config
