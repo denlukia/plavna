@@ -1,15 +1,12 @@
-import { ServerImageHandler } from '@denlukia/plavna-common';
+import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { json } from '@sveltejs/kit';
 
-import type { ServerImageProvider } from '@denlukia/plavna-common/images/provider/server.js';
-
-export type ImagekitAuthParams = ReturnType<ServerImageProvider['getAuthenticationParameters']>;
+export type ImagekitAuthParams = ReturnType<ServerImageHandler['getImageKitCredentials']>;
 
 export const GET = async ({ locals }) => {
 	const user = await locals.plavna.user.getOrThrow();
-	const imageHandler = new ServerImageHandler();
-	const provider = imageHandler.setupProvider(user);
-	const authParams = provider.getAuthenticationParameters();
+	const imageHandler = new ServerImageHandler(null);
+	const authParams = imageHandler.getImageKitCredentials(user);
 
 	return json(authParams);
 };

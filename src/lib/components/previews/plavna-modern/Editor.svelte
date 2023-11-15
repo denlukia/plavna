@@ -7,7 +7,7 @@
 	} from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
-	import ImagesCollectionInput from '$lib/components/inputs/image/ImagesCollectionInput.svelte';
+	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
 	export let updateForm: SuperValidated<ArticlePreviewUpdateZod>;
 	export let images: { preview_image_1: ImageSelect; preview_image_2: ImageSelect };
@@ -28,17 +28,19 @@
 	<input name="preview_family" type="hidden" value="plavna-modern" />
 	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<ImagesCollectionInput
+	<LanguagedImagesInput
 		name="preview_image_1"
 		image={images.preview_image_1}
-		errors={$errors['preview_image_1_id']}
+		{errors}
 		withLanguages
+		clientUpload
 	/>
-	<ImagesCollectionInput
+	<LanguagedImagesInput
 		name="preview_image_2"
 		image={images.preview_image_2}
-		errors={$errors['preview_image_2_id']}
+		{errors}
 		withLanguages
+		clientUpload
 	/>
 	<button>Update preview</button>
 </form>

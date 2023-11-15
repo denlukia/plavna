@@ -264,12 +264,12 @@ export const images = sqliteTable('images', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	user_wide_visible: integer('user_wide_visible', { mode: 'boolean' }).notNull().default(false),
+	is_account_common: integer('is_account_common', { mode: 'boolean' }).notNull().default(false),
 	owning_article_id: integer('owning_article_id').references((): AnySQLiteColumn => articles.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade'
 	}),
-	source: text('source', { enum: ['imagekit'] }).notNull(),
+	source: text('source', { enum: ['imagekit'] }),
 	path: text('path'),
 	path_translation_key: integer('path_translation_key').references(() => translations.key, {
 		onDelete: 'set null',

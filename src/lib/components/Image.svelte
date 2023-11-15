@@ -22,9 +22,9 @@
 			} else {
 				return null;
 			}
-			return `${endpoint}/${pathTranslation}`;
+			return `${endpoint}${pathTranslation}`;
 		} else if (!lang && path) {
-			return `${endpoint}/${path}`;
+			return `${endpoint}${path}`;
 		} else {
 			return null;
 		}

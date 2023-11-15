@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "d3d18d03-d35b-4be2-81ad-c4392d017f06",
+  "id": "ba403437-13ae-4e00-a726-18eb4448d686",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
@@ -293,8 +293,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "user_wide_visible": {
-          "name": "user_wide_visible",
+        "is_account_common": {
+          "name": "is_account_common",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -312,7 +312,7 @@
           "name": "source",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "path": {
@@ -810,7 +810,8 @@
             "lang",
             "section_id",
             "tag_id"
-          ]
+          ],
+          "name": "sections_to_tags_section_id_tag_id_lang_pk"
         }
       },
       "uniqueConstraints": {}
@@ -975,7 +976,8 @@
           "columns": [
             "article_id",
             "tag_id"
-          ]
+          ],
+          "name": "tags_to_articles_tag_id_article_id_pk"
         }
       },
       "uniqueConstraints": {}

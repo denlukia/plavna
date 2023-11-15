@@ -3,7 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TranslationInput from '../inputs/TranslationInput.svelte';
-	import ImagesCollectionInput from '../inputs/image/ImagesCollectionInput.svelte';
+	import LanguagedImagesInput from '../inputs/image/LanguagedImagesInput.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateCreationFormZod>;
 
@@ -15,7 +15,7 @@
 	<form use:enhance method="POST" action="?/create_preview_template" enctype="multipart/form-data">
 		<TranslationInput {superFormStores} />
 		<input name="url" bind:value={$form.url} placeholder="URL" />
-		<ImagesCollectionInput name="image" errors={$errors['image']} />
+		<LanguagedImagesInput name="image" {errors} />
 		<button>Create template</button>
 	</form>
 </fieldset>

@@ -20,6 +20,8 @@ import type {
 	imageInsertSchema,
 	imageProviderUpdateFormSchema,
 	imageSelectSchema,
+	imageUpdateFileFields,
+	imageUpdateFormSchema,
 	imageUpdateSchema,
 	pageCreateFormSchema,
 	pageInsertSchema,
@@ -51,6 +53,7 @@ import type { PreviewFamilyId } from './previews';
 import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/plavna-common/queue';
 import type { ServerImageHandler } from '@denlukia/plavna-common/server';
 import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import type { SuperValidated } from 'sveltekit-superforms';
 import type { z } from 'zod';
 
 // Auth
@@ -156,6 +159,15 @@ export type PreviewComponents = Record<
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
 export type ImageInsert = z.infer<typeof imageInsertSchema>;
 export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
+export type ImageUpdateForm = z.infer<typeof imageUpdateFormSchema>;
+export type ImageUpdateFormZod = typeof imageUpdateFormSchema;
+export type ImageCollectionItem = {
+	form: SuperValidated<ImageUpdateFormZod>;
+	meta: ImageSelect;
+};
+export type ImageUpdateFileFields = typeof imageUpdateFileFields;
+export type ImagesCollection = ImageCollectionItem[];
+export type ImageUpdateImageHandlers = Record<keyof ImageUpdateFileFields, ServerImageHandler>;
 
 // Excluded Tags Config
 export type ExcludedTags = z.infer<typeof excludedTags>;

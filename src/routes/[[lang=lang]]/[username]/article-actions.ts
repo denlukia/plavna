@@ -10,7 +10,11 @@ import {
 	articlePreviewImageFileFieldsAllObj,
 	articlePreviewUpdateSchema,
 	articleSlugUpdateSchema,
+	imageCreationFormSchema,
+	imageDeletionFormSchema,
 	imageProviderUpdateFormSchema,
+	imageUpdateFileFields,
+	imageUpdateFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema,
@@ -21,7 +25,8 @@ import {
 
 import type {
 	ArticlePreviewImageFileFieldsAll,
-	ArticlePreviewImageHandlers
+	ArticlePreviewImageHandlers,
+	ImageUpdateImageHandlers
 } from '$lib/server/collections/types';
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
@@ -169,6 +174,42 @@ async function delete_image_provider(event: ActionRequestEvt) {
 	});
 }
 
+async function create_image(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, imageCreationFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	await plavna.images.create({
+		owning_article_id: form.data.articleId
+	});
+}
+async function update_image(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, imageUpdateFormSchema);
+	const formData = await event.request.formData();
+	if (!form.valid) return fail(400, { form });
+
+	const imagesKeys = Object.keys(imageUpdateFileFields) as Array<
+		keyof typeof imageUpdateFileFields
+	>;
+	const imagesHandlers = {} as ImageUpdateImageHandlers;
+	for (const key of imagesKeys) {
+		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
+		const filePresent = imagesHandlers[key].checkPresence();
+		if (filePresent) {
+			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
+		}
+	}
+	// TODO Method for updating one image lang
+}
+
+async function delete_image(event: ActionRequestEvt) {
+	const form = await superValidate(event.request, imageDeletionFormSchema);
+	if (!form.valid) return fail(400, { form });
+
+	const { plavna } = event.locals;
+	await plavna.images.delete(form.data.id);
+}
+
 type ActionRequestEvt =
 	| RequestEvent<RouteParams1, '/[[lang=lang]]/[username]/[slug]/edit'>
 	| RequestEvent<RouteParams2, '/[[lang=lang]]/[username]/page-[pagename]/[slug]/edit'>;
@@ -187,5 +228,8 @@ export const actions = {
 	update_preview_template,
 	delete_preview_template,
 	update_image_provider,
-	delete_image_provider
+	delete_image_provider,
+	create_image,
+	update_image,
+	delete_image
 };

@@ -3,84 +3,62 @@
 
 	import { page } from '$app/stores';
 	import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
-	import { ERRORS } from '$lib/isomorphic/errors';
 
-	import type { ClientImageHandler } from '@denlukia/plavna-common/client';
+	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/client';
 	import type { SupportedLang } from '$lib/isomorphic/languages';
 	import type { ImageSelect } from '$lib/server/collections/types';
-	import type { ImagekitAuthParams } from 'src/routes/api/imagekit-auth-params/+server';
-	import type { ImageProcessedRecord } from '@denlukia/plavna-common/types';
 	import { createEventDispatcher } from 'svelte';
 
 	export let name: string;
 	export let image: ImageSelect | null = null;
 	export let lang: SupportedLang | null = null;
+	export let clientUpload: boolean = false;
+	export let errors: string | string[] | undefined | null = null;
 
 	const dispatch = createEventDispatcher();
-	let handler: ClientImageHandler | null = null;
 	let processing = false;
-	let errors: string | string[] | null = null;
+	let clientUploadErrors: string | string[] | null = null;
+	let ClientImageHandler: typeof ClientImageHandlerType | null = null;
 
 	$: languagedName = lang ? `${name}.${lang}` : name;
 
 	async function onImageChange(e: Event) {
-		// dispatch('processing-started');
-		// // 1. Load image uploader module
-		// const module = await import('@denlukia/plavna-common/client');
-		// handler = new module.ClientImageHandler();
-		// // 2. Validate image
-		// const target = e.target as HTMLInputElement;
-		// const file = target.files?.[0];
-		// if (!file) return;
-		// const { buffer, errors: validationErrors } = await handler.validateFormEntryAndGetBuffer(
-		// 	file,
-		// 	IMG_VALIDATION_CONFIG
-		// );
-		// console.log({ buffer, validationErrors });
-		// if (validationErrors) {
-		// 	errors = validationErrors;
-		// 	return;
-		// }
-		// if (!buffer) return;
-		// // Perform 3, 4... only if there's an image to write to
-		// if (image) {
-		// 	// 4. Detect img size, extenstion, maincolor and compose upload path
-		// 	const probe = handler.detectImageTypeAndSize(buffer);
-		// 	if (!probe) {
-		// 		errors = ERRORS.IMAGES.CANT_DETECT_SIZE;
-		// 		return;
-		// 	}
-		// 	const { width, height } = probe;
-		// 	const imageEl = handler.convertToImgEl(file);
-		// 	const backgroundColor = HSLToString(await handler.extractOptimalColor(imageEl));
-		// 	const { folder, fileName, fullPath } = handler.composeFolderAndFilename({
-		// 		imageId: image.id,
-		// 		lang
-		// 	});
-		// 	// 5. Check that we have a user and upload image
-		// 	const user = $page.data.user;
-		// 	if (!user) throw new Error('User is empty');
-		// 	const provider = handler.setupProvider(user);
-		// 	const source = provider.getProviderType();
-		// 	const authParamsResp = await fetch('/api/imagekit-auth-params');
-		// 	const authParams: ImagekitAuthParams = await authParamsResp.json();
-		// 	await provider.upload({ file, folder, fileName, ...authParams });
-		// 	// 6. Report upload result
-		// 	const report: ImageUploadReport = {
-		// 		image_id: image.id,
-		// 		path: fullPath,
-		// 		backgroundColor,
-		// 		source,
-		// 		width,
-		// 		height,
-		// 		lang
-		// 	};
-		// 	await fetch('/api/report-img-upload', {
-		// 		method: 'POST',
-		// 		body: JSON.stringify(report)
-		// 	});
-		// }
-		// dispatch('processing-finished');
+		if (!clientUpload) return;
+		// 1. Load image uploader module and prepare info
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0];
+		if (!file) return;
+		dispatch('processing-started');
+		if (!ClientImageHandler) {
+			({ ClientImageHandler } = await import('@denlukia/plavna-common/client'));
+		}
+		const user = $page.data.user;
+		if (!user) throw Error('User not found');
+		const imageId = image?.id;
+		if (!imageId) throw Error('Image not found');
+
+		// 2. Validate image
+		const imageHandler = new ClientImageHandler(file);
+		if (imageHandler.checkPresence()) {
+			try {
+				await imageHandler.validate(IMG_VALIDATION_CONFIG);
+			} catch (err: any) {
+				errors = err;
+				dispatch('processing-finished');
+				return;
+			}
+
+			// 3. Process and upload image
+			await imageHandler.setUploaderFromUser(user, '/api/imagekit-auth-params');
+			const report = await imageHandler.processAndUpload({ imageId, lang });
+
+			// 4. Report image upload
+			await fetch('/api/report-img-upload', {
+				method: 'POST',
+				body: JSON.stringify(report)
+			});
+		}
+		dispatch('processing-finished');
 	}
 </script>
 
@@ -99,6 +77,12 @@
 	/>
 	{#if processing}
 		Processing...
+	{/if}
+	{#if errors}
+		Errors: {errors}
+	{/if}
+	{#if clientUploadErrors}
+		{clientUploadErrors}
 	{/if}
 </div>
 

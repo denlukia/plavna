@@ -178,10 +178,24 @@ export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pic
 
 // Images
 export const imageSelectSchema = createSelectSchema(images);
-export const imageInsertSchema = createInsertSchema(images);
+export const imageInsertSchema = createInsertSchema(images).omit({
+	user_id: true,
+	path_translation_key: true
+});
 export const imageUpdateSchema = imageInsertSchema.partial().required({
 	id: true
 });
+export const imageCreationFormSchema = z.object({
+	articleId: articleSelectSchema.shape.id.optional()
+});
+export const imageUpdateFileFields = {
+	image: imageFileField,
+	...generateLanguagedFields('image', imageFileField)
+};
+export const imageUpdateFormSchema = imageSelectSchema
+	.pick({ id: true })
+	.extend(imageUpdateFileFields);
+export const imageDeletionFormSchema = imageSelectSchema.pick({ id: true });
 
 // Excluded Tags Config
 export const excludedTags = z.record(

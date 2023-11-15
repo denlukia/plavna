@@ -40,6 +40,7 @@ import {
 	articleSelectSchema,
 	articleSlugUpdateSchema,
 	imageProviderUpdateFormSchema,
+	imageUpdateFormSchema,
 	pageCreateFormSchema,
 	pageUpdateFormSchema,
 	previewTemplateCreationFormSchema,
@@ -101,6 +102,20 @@ type TransactionContext = SQLiteTransaction<
 	typeof import('$lib/server/collections/db-schema'),
 	ExtractTablesWithRelations<typeof import('$lib/server/collections/db-schema')>
 >;
+
+type ImageAnyParams = {
+	lang: SupportedLang | null;
+	user: User;
+	trx?: TransactionContext;
+};
+type ImageCreationParams = {
+	mode: 'create';
+	initialImage: ImageInsert;
+};
+type ImagesUpdateParams = {
+	mode: 'update';
+	initialImage: ImageUpdate;
+};
 
 // TODO Probably replace all error() with fail() ?
 
@@ -623,20 +638,12 @@ class Plavna {
 					{ key: title_translation_key },
 					{ key: content_translation_key },
 					{ key: preview_translation_1_key },
-					{ key: preview_translation_2_key },
-					{ key: image_path_translation_key_1 },
-					{ key: image_path_translation_key_2 }
-				] = await this.translations.create(new Array(7).fill(newTranslation), 'allow-empty', trx);
+					{ key: preview_translation_2_key }
+				] = await this.translations.create(new Array(4).fill(newTranslation), 'allow-empty', trx);
 				const newImage = { user_id: user.id, source: 'imagekit' } as const;
 				const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
-					this.images.create(
-						{ ...newImage, path_translation_key: image_path_translation_key_1 },
-						trx
-					),
-					this.images.create(
-						{ ...newImage, path_translation_key: image_path_translation_key_2 },
-						trx
-					)
+					this.images.create({ ...newImage }, null, trx),
+					this.images.create({ ...newImage }, null, trx)
 				]);
 
 				const article = await trx
@@ -668,6 +675,8 @@ class Plavna {
 
 			const translForForms = alias(translations, 'translForForms');
 			const translForPreviewTemplates = alias(translations, 'translForPreviewTemplates');
+			const commonImagesTable = alias(images, 'commonImages');
+			const articleImagesTable = alias(images, 'articleImages');
 			const results = await db
 				.select({
 					articles: articles,
@@ -677,7 +686,9 @@ class Plavna {
 					translForForms,
 					translForPreviewTemplates,
 					previewTemplates,
-					images
+					images,
+					commonImagesTable,
+					articleImagesTable
 				})
 				.from(articles)
 				.leftJoin(previewTemplates, eq(previewTemplates.user_id, user.id))
@@ -689,11 +700,22 @@ class Plavna {
 						eq(images.id, articles.preview_image_2_id)
 					)
 				)
+				.leftJoin(
+					commonImagesTable,
+					and(eq(commonImagesTable.user_id, user.id), eq(commonImagesTable.is_account_common, true))
+				)
+				.leftJoin(
+					articleImagesTable,
+					and(
+						eq(articleImagesTable.user_id, user.id),
+						eq(articleImagesTable.owning_article_id, exisingId)
+					)
+				)
 				.leftJoin(tags, eq(tags.user_id, user.id))
 				.leftJoin(translations, eq(translations.key, images.path_translation_key))
 				.leftJoin(
 					translForPreviewTemplates,
-					eq(translations.key, previewTemplates.name_translation_key)
+					eq(translForPreviewTemplates.key, previewTemplates.name_translation_key)
 				)
 				.leftJoin(
 					translForForms,
@@ -724,6 +746,7 @@ class Plavna {
 					const foundTranslation = translationsForPreviewTemplates.find(
 						(translation) => translation.key === template.name_translation_key
 					);
+
 					return {
 						meta: template,
 						form: superValidateSync(
@@ -747,7 +770,6 @@ class Plavna {
 				),
 				name_translation_key: tag.name_translation_key
 			}));
-
 			const previewForms = [...previewFamilies, ...previewTemplatesResults].map(
 				(familyOrTemplate) => {
 					const emptyForm = superValidateSync(articlePreviewUpdateSchema);
@@ -775,6 +797,20 @@ class Plavna {
 					}
 				}
 			);
+			const commonImages = results
+				.map((rows) => rows.commonImagesTable)
+				.filter(getNullAndDupFilter('id'))
+				.map((image) => ({
+					meta: image,
+					form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+				}));
+			const articleImages = results
+				.map((rows) => rows.articleImagesTable)
+				.filter(getNullAndDupFilter('id'))
+				.map((image) => ({
+					meta: image,
+					form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+				}));
 
 			return {
 				meta: articleSelectSchema.parse(articleResult),
@@ -787,6 +823,8 @@ class Plavna {
 				tagCreationForm: superValidateSync(translationInsertSchema),
 				imageProviderForm: superValidateSync(user, imageProviderUpdateFormSchema),
 				images: imagesArr,
+				commonImages,
+				articleImages,
 				translations: Object.fromEntries(
 					translationsArr.map((translation) => {
 						return [translation.key, translation[this.lang]];
@@ -884,7 +922,7 @@ class Plavna {
 							imageId: articleRecord[fieldNameWithIdPrefix],
 							lang
 						});
-						await this.images.processUploadReport(record);
+						await this.images.update(record.record, lang);
 					}
 				});
 			}
@@ -975,10 +1013,12 @@ class Plavna {
 
 					// Creating screenshot image record if needed
 					if (!preview_screenshot_image_id) {
-						const newImageRecord = await this.images.create({
-							user_id: user.id,
-							source
-						});
+						const newImageRecord = await this.images.create(
+							{
+								source
+							},
+							null
+						);
 						preview_screenshot_image_id = newImageRecord.id;
 						await db
 							.update(articles)
@@ -1105,9 +1145,9 @@ class Plavna {
 				let imageId: ImageSelect['id'] | null = null;
 				if (imageHandler.hasValidImage) {
 					const { source } = await imageHandler.setUploaderFromUser(user);
-					({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
+					({ id: imageId } = await this.images.create({ source }, null, trx));
 					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
-					await this.images.update(record, trx);
+					await this.images.update(record, null, trx);
 				}
 				await trx
 					.insert(previewTemplates)
@@ -1150,12 +1190,11 @@ class Plavna {
 
 					let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 					if (!imageId) {
-						({ id: imageId } = await this.images.create({ source, user_id: user.id }, trx));
+						({ id: imageId } = await this.images.create({ source }, null, trx));
 						await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 					}
-
 					const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
-					await this.images.update(record, trx);
+					await this.images.update(record, null, trx);
 				}
 			});
 		},
@@ -1193,68 +1232,136 @@ class Plavna {
 		}
 	};
 
-	public readonly images = {
-		processUploadReport: async (report: ImageProcessed) => {
-			// Should only be triggered by trusted activity like screenshotter request checked for his access token
-			// No access to user and lang, but acting is trusted by default
-			const {
-				record: { id, path },
-				lang
-			} = report;
+	private readonly imagesCommon = async ({
+		mode,
+		initialImage,
+		lang,
+		user,
+		trx
+	}: ImageAnyParams & (ImageCreationParams | ImagesUpdateParams)) => {
+		const chosenDBInstance = trx || db;
+		const initialImageId = initialImage?.id;
+		let finalImage: ImageUpdate | null = initialImageId
+			? { ...initialImage, id: initialImageId }
+			: null;
 
-			// 1. Get image and respective translation and user
-			const imageQueryResult = await db
-				.select()
-				.from(images)
-				.innerJoin(users, eq(users.id, images.user_id))
-				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(eq(images.id, id))
+		// 0. Create image if needed
+		if (mode === 'create') {
+			finalImage = await chosenDBInstance
+				.insert(images)
+				.values({ user_id: user.id })
+				.returning()
 				.get();
-			if (!imageQueryResult) throw error(403);
-			const { translations: translation, auth_user: user } = imageQueryResult;
+		}
+		if (!finalImage) throw error(403);
+		const { path, id } = finalImage;
 
-			// 2. Create translation if image didn't have one
-			let newTranslation: { key: TranslationSelect['key'] } | null = null;
-			if (translation) {
-				if (lang) {
-					await this.translations.update({ [lang]: path, key: translation.key }, undefined, user);
-				} else {
-					await this.translations.delete({ key: translation.key }, undefined, user);
-				}
-			} else {
-				if (lang) {
-					[newTranslation] = await this.translations.create(
-						[{ [lang]: path }],
-						undefined,
-						undefined,
-						user
-					);
-				}
+		// 1. Get respective translation if updating
+		let translation: { key: TranslationSelect['key'] } | null = null;
+		if (mode === 'update') {
+			if (!id) throw error(403);
+			const imageQuery = await db
+				.select({ key: translations.key })
+				.from(images)
+				.leftJoin(translations, eq(translations.key, images.path_translation_key))
+				.where(and(eq(images.id, id), eq(images.user_id, user.id)))
+				.get();
+			if (!imageQuery) throw error(403);
+			if (imageQuery.key) {
+				translation = { key: imageQuery.key };
 			}
+		}
 
-			// 3. Update image record with respecive changes
-			const updateObject: ImageUpdate = report;
-			if (newTranslation) {
-				updateObject.path_translation_key = newTranslation.key;
-			}
+		// 2. Create translation if image didn't have one or we're creating an image
+		if (translation) {
 			if (lang) {
-				updateObject.path = null;
+				await this.translations.update({ [lang]: path, key: translation.key }, trx, user);
 			} else {
-				updateObject.path = path;
+				await this.translations.delete({ key: translation.key }, trx, user);
 			}
-			await this.images.update(updateObject);
-		},
-		update: async (newImage: ImageUpdate, trx?: TransactionContext) => {
+		} else {
+			if (lang) {
+				[translation] = await this.translations.create([{ [lang]: path }], undefined, trx, user);
+			}
+		}
+
+		// 3. Update image record with respecive changes
+		type ImageUpdateWithTranslation = ImageUpdate & {
+			path_translation_key?: TranslationSelect['key'];
+		};
+		const updateObject: ImageUpdateWithTranslation = finalImage;
+		if (translation) {
+			updateObject.path_translation_key = translation.key;
+		}
+		if (lang) {
+			updateObject.path = null;
+		} else {
+			updateObject.path = path;
+		}
+		return updateObject;
+	};
+
+	public readonly images = {
+		create: async (newImage: ImageInsert, lang: SupportedLang | null, trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
-			return chosenDBInstance.update(images).set(newImage).where(eq(images.id, newImage.id));
+			const user = await this.user.getOrThrow();
+
+			const processedImage = await this.imagesCommon({
+				mode: 'create',
+				initialImage: newImage,
+				lang,
+				user,
+				trx
+			});
+
+			return chosenDBInstance
+				.update(images)
+				.set(newImage)
+				.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
+				.returning()
+				.get();
 		},
-		create: async (newImage: ImageInsert, trx?: TransactionContext) => {
+		update: async (newImage: ImageUpdate, lang: SupportedLang | null, trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
-			return chosenDBInstance.insert(images).values(newImage).returning({ id: images.id }).get();
+			const user = await this.user.getOrThrow();
+
+			const processedImage = await this.imagesCommon({
+				mode: 'update',
+				initialImage: newImage,
+				lang,
+				user,
+				trx
+			});
+
+			return chosenDBInstance
+				.update(images)
+				.set(newImage)
+				.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
+				.returning()
+				.get();
 		},
+
 		delete: async (imageId: ImageSelect['id'], trx?: TransactionContext) => {
 			const chosenDBInstance = trx || db;
-			return chosenDBInstance.delete(images).where(eq(images.id, imageId)).run();
+			const user = await this.user.getOrThrow();
+
+			const translation = await chosenDBInstance
+				.select({ translations })
+				.from(images)
+				.innerJoin(translations, eq(translations.key, images.path_translation_key))
+				.where(and(eq(images.user_id, user.id), eq(images.id, imageId)))
+				.get();
+
+			if (translation) {
+				await this.translations.delete({ key: translation.translations.key }, trx, user);
+			}
+
+			// TODO Delete image from provider?
+
+			return chosenDBInstance
+				.delete(images)
+				.where(and(eq(images.user_id, user.id), eq(images.id, imageId)))
+				.run();
 		}
 	};
 

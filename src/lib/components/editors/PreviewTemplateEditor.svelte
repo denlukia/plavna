@@ -3,8 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TranslationInput from '../inputs/TranslationInput.svelte';
-	import Image from '../Image.svelte';
-	import ImagesCollectionInput from '../inputs/image/ImagesCollectionInput.svelte';
+	import LanguagedImagesInput from '../inputs/image/LanguagedImagesInput.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateEditingFormZod>;
 	export let image: ImageSelect | undefined;
@@ -14,15 +13,12 @@
 </script>
 
 <fieldset>
-	{#if image}
-		<Image {image} />
-	{/if}
 	<form use:enhance method="POST" action="?/update_preview_template" enctype="multipart/form-data">
 		<TranslationInput {superFormStores} />
 		<input name="template_id" type="hidden" bind:value={$form.template_id} />
 		<input name="url" bind:value={$form.url} />
 
-		<ImagesCollectionInput name="image" errors={$errors['image']} />
+		<LanguagedImagesInput name="image" {errors} {image} clientUpload />
 		<button>Update template</button>
 	</form>
 	<form use:enhance method="POST" action="?/delete_preview_template">

@@ -1,15 +1,16 @@
 import { SCREENSHOTTER_ACCESS_TOKEN } from '$env/static/private';
-import { type ImageUploadReport, SCREENSHOTTER_ACCESS_COOKIE } from '@denlukia/plavna-common';
+import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
 import { error, text } from '@sveltejs/kit';
 
 import type { RequestHandler } from './$types';
+import type { ImageProcessed } from '@denlukia/plavna-common/types';
 
 export const POST: RequestHandler = async ({ request, locals, cookies }) => {
-	const body: ImageUploadReport = await request.json();
+	const body: ImageProcessed = await request.json();
 	const { plavna } = locals;
 
 	const user = await plavna.user.get();
-	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE);
+	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE_NAME);
 	if (accessCookie !== SCREENSHOTTER_ACCESS_TOKEN && !user) {
 		throw error(403);
 	}

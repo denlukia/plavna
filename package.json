@@ -4,8 +4,8 @@
 	"private": true,
 	"scripts": {
 		"gen-migrations": "pnpm drizzle-kit generate:sqlite",
-		"run-migrations": " dotenv -- node ./migrate.js",
-		"studio": "dotenv -- pnpm drizzle-kit studio",
+		"run-migrations": "node --env-file=.env ./migrate.js",
+		"studio": "pnpm drizzle-kit studio",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -15,7 +15,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@denlukia/plavna-common": "file:../plavna-common",
 		"@libsql/client": "0.3.6",
 		"@lucia-auth/adapter-sqlite": "^2.0.1",
 		"@sveltejs/adapter-auto": "^2.1.1",
@@ -25,8 +24,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.10.0",
 		"@typescript-eslint/parser": "^6.10.0",
 		"better-sqlite3": "^9.1.1",
-		"dotenv-cli": "^7.3.0",
-		"drizzle-kit": "^0.20.1",
+		"drizzle-kit": "^0.20.2",
 		"drizzle-orm": "^0.29.0",
 		"drizzle-zod": "^0.5.1",
 		"eslint": "^8.53.0",

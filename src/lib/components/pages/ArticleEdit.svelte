@@ -8,7 +8,7 @@
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
 	import { enhance } from '$app/forms';
-	import ArticleImageUploader from '../editors/ArticleImageUploader.svelte';
+	import ImagesCollections from '../editors/ImagesCollections/index.svelte';
 
 	export let data: PageData;
 
@@ -40,6 +40,10 @@
 	<TagCreator superFormObj={data.tagCreationForm} />
 </fieldset>
 Додавання фото:
-<ArticleImageUploader providerForm={data.imageProviderForm} />
+<ImagesCollections
+	providerForm={data.imageProviderForm}
+	articleId={article.id}
+	collections={{ common: data.commonImages, article: data.articleImages }}
+/>
 Контент статті:
 <TranslationEditor formObj={translationForms[article.content_translation_key]} />

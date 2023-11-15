@@ -32,9 +32,9 @@ CREATE TABLE `articles` (
 CREATE TABLE `images` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
-	`user_wide_visible` integer DEFAULT false NOT NULL,
+	`is_account_common` integer DEFAULT false NOT NULL,
 	`owning_article_id` integer,
-	`source` text NOT NULL,
+	`source` text,
 	`path` text,
 	`path_translation_key` integer,
 	`background` text,
