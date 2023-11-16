@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	}
 
 	try {
-		await plavna.images.processUploadReport(body);
+		await plavna.images.update(body.record, body.lang);
 		return text('OK');
 	} catch (e) {
 		console.error(e);

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import Translation from '$lib/components/Translation.svelte';
-	import { defaultLang, supportedLangs } from '$lib/isomorphic/languages.js';
+	import { defaultLang } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang || defaultLang;

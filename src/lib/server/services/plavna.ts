@@ -1,3 +1,4 @@
+import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { error, fail } from '@sveltejs/kit';
 import {
@@ -15,12 +16,7 @@ import { marked } from 'marked';
 import { superValidateSync } from 'sveltekit-superforms/server';
 
 import { ERRORS } from '$lib/isomorphic/errors';
-import {
-	type SupportedLang,
-	defaultLang,
-	isSupportedLang,
-	supportedLangs
-} from '$lib/isomorphic/languages';
+import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
 	articles,
@@ -92,6 +88,7 @@ import type {
 	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { ResultSet } from '@libsql/client';
 import type { AuthRequest } from 'lucia';
 import type { SuperValidated } from 'sveltekit-superforms';
@@ -886,7 +883,8 @@ class Plavna {
 		updatePreview: async (
 			slug: string,
 			preview: ArticlePreviewUpdate,
-			imageHandlers: ArticlePreviewImageHandlers
+			imageHandlers: ArticlePreviewImageHandlers,
+			keysForDeletion: string[]
 		) => {
 			// Common for 1. and 3.
 			const user = await this.user.getOrThrow();
@@ -904,9 +902,9 @@ class Plavna {
 			const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
 			// 2. Upload images if present and update records
-			const validImagesPresent = Object.values(imageHandlers).some(
-				({ hasValidImage }) => hasValidImage
-			);
+			const validImagesPresent = Object.entries(imageHandlers).some(([key, { hasValidImage }]) => {
+				hasValidImage && !keysForDeletion.find((k) => k === `delete_${key}`);
+			});
 			if (validImagesPresent) {
 				const queryResult = await db
 					.select({
@@ -919,18 +917,30 @@ class Plavna {
 				const articleRecord = queryResult[0];
 
 				if (!queryResult) throw error(500);
-				Object.entries(imageHandlers).forEach(async ([fieldName, imageHandler]) => {
-					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
-					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
-					if (imageHandler.hasValidImage) {
-						await imageHandler.setUploaderFromUser(user);
-						const record = await imageHandler.processAndUpload({
-							imageId: articleRecord[fieldNameWithIdPrefix],
-							lang
-						});
-						await this.images.update(record.record, lang);
+				const uploadPromises = Object.entries(imageHandlers).map(
+					async ([fieldName, imageHandler]) => {
+						const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
+						const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
+						if (
+							imageHandler.hasValidImage &&
+							!keysForDeletion.find((k) => k === `delete_${fieldName}`)
+						) {
+							await imageHandler.setUploaderFromUser(user);
+							const record = await imageHandler.processAndUpload({
+								imageId: articleRecord[fieldNameWithIdPrefix],
+								lang
+							});
+							await this.images.update(record.record, lang);
+						}
 					}
+				);
+				const deletionPromises = keysForDeletion.map((key) => {
+					const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
+					const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
+
+					return this.images.delete(articleRecord[fieldNameWithIdPrefix], lang);
 				});
+				await Promise.all([...deletionPromises, ...uploadPromises]);
 			}
 
 			// 3. Enqueue preview screenshots if needed
@@ -1226,7 +1236,7 @@ class Plavna {
 					if (recordResult.images.path) {
 						// TODO Folder deletion
 					}
-					await this.images.delete(recordResult.images.id, trx);
+					await this.images.delete(recordResult.images.id, undefined, trx);
 				}
 				await trx.delete(previewTemplates).where(whereCondition).run();
 			});
@@ -1276,13 +1286,13 @@ class Plavna {
 		// 2. Create translation if image didn't have one or we're creating an image
 		if (translation) {
 			if (lang) {
-				await this.translations.update({ [lang]: path, key: translation.key }, trx, user);
+				await this.translations.update({ [lang]: path, key: translation.key }, trx);
 			} else {
-				await this.translations.delete({ key: translation.key }, trx, user);
+				await this.translations.delete({ key: translation.key }, trx);
 			}
 		} else {
 			if (lang) {
-				[translation] = await this.translations.create([{ [lang]: path }], undefined, trx, user);
+				[translation] = await this.translations.create([{ [lang]: path }], undefined, trx);
 			}
 		}
 
@@ -1326,6 +1336,8 @@ class Plavna {
 			const chosenDBInstance = trx || db;
 			const user = await this.user.getOrThrow();
 
+			// TODO Delete old image from provider
+
 			const processedImage = await this.imagesCommon({
 				mode: 'update',
 				initialImage: newImage,
@@ -1342,27 +1354,43 @@ class Plavna {
 				.get();
 		},
 
-		delete: async (imageId: ImageSelect['id'], trx?: TransactionContext) => {
+		delete: async (
+			imageId: ImageSelect['id'],
+			lang?: SupportedLang | null,
+			trx?: TransactionContext
+		) => {
 			const chosenDBInstance = trx || db;
 			const user = await this.user.getOrThrow();
+			const mode =
+				typeof lang === 'string'
+					? 'translation-deletion'
+					: lang === null
+					? 'default-deletion'
+					: 'whole-deletion';
+			const whereCondition = and(eq(images.user_id, user.id), eq(images.id, imageId));
 
 			const translation = await chosenDBInstance
 				.select({ translations })
 				.from(images)
 				.innerJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(and(eq(images.user_id, user.id), eq(images.id, imageId)))
+				.where(whereCondition)
 				.get();
 
-			if (translation) {
-				await this.translations.delete({ key: translation.translations.key }, trx, user);
+			// TODO Delete image from provider
+
+			if (mode === 'translation-deletion') {
+				if (translation) {
+					if (typeof lang !== 'string') throw error(403);
+					await this.translations.update({ [lang]: null, key: translation.translations.key }, trx);
+				}
+			} else if (mode === 'default-deletion') {
+				await chosenDBInstance.update(images).set({ path: null }).where(whereCondition).run();
+			} else {
+				if (translation) {
+					await this.translations.delete({ key: translation.translations.key }, trx);
+				}
+				await chosenDBInstance.delete(images).where(whereCondition).run();
 			}
-
-			// TODO Delete image from provider?
-
-			return chosenDBInstance
-				.delete(images)
-				.where(and(eq(images.user_id, user.id), eq(images.id, imageId)))
-				.run();
 		}
 	};
 
@@ -1370,8 +1398,7 @@ class Plavna {
 		create: async (
 			newTranslations: TranslationInsertBase[],
 			mode: 'allow-empty' | 'disallow-empty' = 'allow-empty',
-			trx?: TransactionContext,
-			user?: User
+			trx?: TransactionContext
 		) => {
 			if (mode === 'disallow-empty') {
 				newTranslations.forEach((translation) => {
@@ -1381,10 +1408,10 @@ class Plavna {
 				});
 			}
 
-			const finalUser = user || (await this.user.getOrThrow());
+			const user = await this.user.getOrThrow();
 			newTranslations = newTranslations.map((translation) => ({
 				...translation,
-				user_id: finalUser.id
+				user_id: user.id
 			}));
 
 			const chosenDBInstance = trx || db;
@@ -1394,22 +1421,22 @@ class Plavna {
 				.returning({ key: translations.key })
 				.all();
 		},
-		update: async (translation: TranslationUpdate, trx?: TransactionContext, user?: User) => {
-			const finalUser = user || (await this.user.getOrThrow());
+		update: async (translation: TranslationUpdate, trx?: TransactionContext) => {
+			const user = await this.user.getOrThrow();
 			const chosenDBInstance = trx || db;
 
 			return chosenDBInstance
 				.update(translations)
 				.set(translation)
-				.where(and(eq(translations.key, translation.key), eq(translations.user_id, finalUser.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
 				.run();
 		},
-		delete: async (translation: TranslationDelete, trx?: TransactionContext, user?: User) => {
-			const finalUser = user || (await this.user.getOrThrow());
+		delete: async (translation: TranslationDelete, trx?: TransactionContext) => {
+			const user = await this.user.getOrThrow();
 			const chosenDBInstance = trx || db;
 			return chosenDBInstance
 				.delete(translations)
-				.where(and(eq(translations.key, translation.key), eq(translations.user_id, finalUser.id)))
+				.where(and(eq(translations.key, translation.key), eq(translations.user_id, user.id)))
 				.run();
 		}
 	};

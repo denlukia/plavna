@@ -6,6 +6,7 @@ import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
 import { ERRORS } from '$lib/isomorphic/errors';
 import { generatePath } from '$lib/isomorphic/url';
 import { update_translation } from '$lib/server/actions';
+import { updateImages } from '$lib/server/actions/helpers';
 import {
 	articlePreviewImageFileFieldsAllObj,
 	articlePreviewUpdateSchema,
@@ -23,11 +24,9 @@ import {
 	translationInsertSchema
 } from '$lib/server/collections/parsers';
 
-import type { SupportedLang } from '$lib/isomorphic/languages';
 import type {
 	ArticlePreviewImageFileFieldsAll,
-	ArticlePreviewImageHandlers,
-	ImageUpdateImageHandlers
+	ArticlePreviewImageHandlers
 } from '$lib/server/collections/types';
 import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
 import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
@@ -106,6 +105,10 @@ async function update_preview(event: ActionRequestEvt) {
 		keyof ArticlePreviewImageFileFieldsAll
 	>;
 	const imagesHandlers = {} as ArticlePreviewImageHandlers;
+	const keysForDeletion = imagesKeys.filter(
+		(key) => key.startsWith('delete') && form.data[key] === true
+	);
+
 	for (const key of imagesKeys) {
 		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
 		const filePresent = imagesHandlers[key].checkPresence();
@@ -114,7 +117,7 @@ async function update_preview(event: ActionRequestEvt) {
 		}
 	}
 
-	await plavna.articles.updatePreview(slug, form.data, imagesHandlers);
+	await plavna.articles.updatePreview(slug, form.data, imagesHandlers, keysForDeletion);
 }
 
 async function create_preview_template(event: ActionRequestEvt) {
@@ -180,7 +183,7 @@ async function create_image(event: ActionRequestEvt) {
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	console.log(form.data);
+
 	await plavna.images.create({
 		owning_article_id: form.data.article_id,
 		is_account_common: form.data.is_account_common
@@ -188,29 +191,13 @@ async function create_image(event: ActionRequestEvt) {
 }
 
 async function update_image(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, imageUpdateFormSchema);
 	const formData = await event.request.formData();
+	const form = await superValidate(formData, imageUpdateFormSchema);
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	const imagesKeys = Object.keys(imageUpdateFileFields) as Array<
-		keyof typeof imageUpdateFileFields
-	>;
-	const imagesHandlers = {} as ImageUpdateImageHandlers;
-	for (const key of imagesKeys) {
-		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
-		const filePresent = imagesHandlers[key].checkPresence();
-		const lang = (key.split('.')[1] || null) as SupportedLang | null;
-		// Flag for image deletion
-		if (filePresent) {
-			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
-			const report = await imagesHandlers[key].processAndUpload({
-				imageId: form.data.id,
-				lang: lang
-			});
-			await plavna.images.update(report.record, lang);
-		}
-	}
+	const imagesKeys = Object.keys(imageUpdateFileFields);
+	await updateImages({ imagesKeys, plavna, rawData: formData, data: form.data });
 }
 
 async function delete_image(event: ActionRequestEvt) {

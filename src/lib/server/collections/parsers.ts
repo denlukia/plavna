@@ -1,7 +1,6 @@
+import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
-
-import { type SupportedLang, supportedLangs } from '$lib/isomorphic/languages';
 
 import { ERRORS } from '../../isomorphic/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../helpers/objects';
@@ -18,6 +17,8 @@ import {
 	users
 } from './db-schema';
 import { previewFamiliesIds } from './previews';
+
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 // TODO Refine all slug schemas to accept only valid slugs
 // TODO Refine url schemas to accept only valid urls
@@ -114,23 +115,21 @@ export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
 	preview_image_1_id: true,
 	preview_image_2_id: true
 });
-export const articlePreviewImageFileFieldsBaseObj = {
-	preview_image_1: imageFileField,
-	preview_image_2: imageFileField
-};
-export const articlePreviewImageFileFieldsLangsObj = {
-	...generateLanguagedFields('preview_image_1', imageFileField),
-	...generateLanguagedFields('preview_image_2', imageFileField)
-};
 export const articlePreviewImageFileFieldsAllObj = {
-	...articlePreviewImageFileFieldsBaseObj,
-	...articlePreviewImageFileFieldsLangsObj
+	preview_image_1: imageFileField,
+	preview_image_2: imageFileField,
+	delete_preview_image_1: z.boolean().optional(),
+	delete_preview_image_2: z.boolean().optional(),
+	...generateLanguagedFields('preview_image_1', imageFileField),
+	...generateLanguagedFields('preview_image_2', imageFileField),
+	...generateLanguagedFields('delete_preview_image_1', z.boolean().optional()),
+	...generateLanguagedFields('delete_preview_image_2', z.boolean().optional())
 };
-export const articlePreviewImageFieldsSchema = articlePreviewImageIdsFieldsSchema.extend(
-	articlePreviewImageFileFieldsAllObj
-);
 
-export const articlePreviewUpdateSchema = articleInsertSchema.pick(previewRelatedFields);
+export const articlePreviewUpdateSchema = articleInsertSchema
+	.pick(previewRelatedFields)
+	.merge(articlePreviewImageIdsFieldsSchema)
+	.extend(articlePreviewImageFileFieldsAllObj);
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({
@@ -157,7 +156,8 @@ export const articlePreviewCellsTaken = articleSelectSchema.pick({
 
 // Preview Templates
 export const previewTemplateImageFieldsSchema = z.object({
-	image: imageFileField
+	image: imageFileField,
+	delete_image: z.boolean().optional()
 });
 export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
 export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
@@ -191,7 +191,9 @@ export const imageCreationFormSchema = z.object({
 });
 export const imageUpdateFileFields = {
 	image: imageFileField,
-	...generateLanguagedFields('image', imageFileField)
+	delete_image: z.boolean().optional(),
+	...generateLanguagedFields('image', imageFileField),
+	...generateLanguagedFields('delete_image', z.boolean().optional())
 };
 export const imageUpdateFormSchema = imageSelectSchema
 	.pick({ id: true })

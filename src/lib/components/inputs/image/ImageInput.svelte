@@ -5,7 +5,7 @@
 	import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
 
 	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/client';
-	import type { SupportedLang } from '$lib/isomorphic/languages';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import type { ImageSelect } from '$lib/server/collections/types';
 	import { createEventDispatcher } from 'svelte';
 
@@ -75,6 +75,11 @@
 		name={languagedName}
 		on:change={onImageChange}
 	/>
+	<label>
+		Delete {languagedName}
+		<input type="checkbox" name={`delete_${languagedName}`} />
+	</label>
+
 	{#if processing}
 		Processing...
 	{/if}

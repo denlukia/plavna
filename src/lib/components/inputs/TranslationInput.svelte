@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 
-	import { defaultLang, isSupportedLang, supportedLangs } from '$lib/isomorphic/languages';
+	import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 	import { generatePath } from '$lib/isomorphic/url';
 
 	import type {
@@ -12,6 +12,7 @@
 		TranslationUpdateZod
 	} from '$lib/server/collections/types';
 	import type { SuperForm } from 'sveltekit-superforms/client';
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
 	export let superFormStores:
 		| SuperForm<TranslationInsertZod>

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { supportedLangs } from '$lib/isomorphic/languages';
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
+
 	import type { ImageSelect } from '$lib/server/collections/types';
 	import type { Writable } from 'svelte/store';
 

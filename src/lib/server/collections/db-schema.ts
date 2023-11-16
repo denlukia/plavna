@@ -1,3 +1,5 @@
+// Has to be relative for drizzle to resolve it
+import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/queue';
 import { relations } from 'drizzle-orm';
 import {
@@ -9,8 +11,6 @@ import {
 	uniqueIndex
 } from 'drizzle-orm/sqlite-core';
 
-// Has to be relative for drizzle to resolve it
-import { supportedLangs } from '../../isomorphic/languages';
 import { previewFamiliesIds } from './previews';
 
 export const users = sqliteTable(

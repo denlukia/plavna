@@ -1,16 +1,12 @@
 import { assert } from '@denlukia/plavna-common/types';
 
-import type ImageCreationForm from '$lib/components/editors/ImagesCollections/ImageCreationForm.svelte';
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
 import type { screenshotsQueue, users } from './db-schema';
 import type {
 	articleInsertSchema,
 	articlePreviewCellsTaken,
-	articlePreviewImageFieldsSchema,
 	articlePreviewImageFileFieldsAllObj,
-	articlePreviewImageFileFieldsBaseObj,
-	articlePreviewImageFileFieldsLangsObj,
 	articlePreviewImageIdsFieldsSchema,
 	articlePreviewScreenshotMeta,
 	articlePreviewScreenshotParams,
@@ -117,11 +113,7 @@ export type ArticlePreviewUpdate = z.infer<typeof articlePreviewUpdateSchema>;
 export type ArticlePreviewUpdateZod = typeof articlePreviewUpdateSchema;
 
 export type ArticlePreviewImageIdsFields = z.infer<typeof articlePreviewImageIdsFieldsSchema>;
-export type ArticlePreviewImageFileFieldsBase = typeof articlePreviewImageFileFieldsBaseObj;
-export type ArticlePreviewImageFileFieldsLangs = typeof articlePreviewImageFileFieldsLangsObj;
 export type ArticlePreviewImageFileFieldsAll = typeof articlePreviewImageFileFieldsAllObj;
-export type ArticlePreviewImageAllFields = z.infer<typeof articlePreviewImageFieldsSchema>;
-export type ArticlePreviewImageAllFieldsZod = typeof articlePreviewImageFieldsSchema;
 export type ArticlePreviewImageFileFieldNamesAll = keyof ArticlePreviewImageFileFieldsAll;
 export type ArticlePreviewImageHandlers = Record<
 	ArticlePreviewImageFileFieldNamesAll,

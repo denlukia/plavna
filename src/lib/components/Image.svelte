@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { SupportedLang } from '$lib/isomorphic/languages';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import type { ImageSelect, TranslationSelect } from '$lib/server/collections/types';
 
 	export let image: ImageSelect;

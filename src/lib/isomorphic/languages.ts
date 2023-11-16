@@ -1,6 +1,6 @@
-// By ISO 639-1
-export const supportedLangs = ['en', 'uk'] as const;
-export type SupportedLang = (typeof supportedLangs)[number];
+import { supportedLangs } from '@denlukia/plavna-common/constants';
+
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 export const defaultLang: SupportedLang = 'en';
 export function isSupportedLang(lang: string): lang is SupportedLang {
