@@ -211,7 +211,7 @@ class Plavna {
 					.as('page_sq');
 
 				const sectionQueryForArticles = db
-					.select(sections._.columns)
+					.select({ id: sections.id })
 					.from(pageIdSq)
 					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
 					.innerJoin(translations, eq(translations.key, sections.title_translation_key))
@@ -232,7 +232,7 @@ class Plavna {
 				const translationForTag = alias(translations, 'translation_for_tag');
 				const translationForArticle = alias(translations, 'translation_for_article');
 				const articlesQuery = db
-					.select(articles._.columns)
+					.select({ id: articles.id, preview_template_id: articles.preview_template_id })
 					.from(sectionQueryAliased)
 					.innerJoin(
 						sectionsToTags,
@@ -311,11 +311,11 @@ class Plavna {
 				const tagsQuery =
 					user?.username === username
 						? db
-								.select(tags._.columns)
+								.select({ tags })
 								.from(tags)
 								.where(eq(tags.user_id, user?.id))
 						: db
-								.select(tags._.columns)
+								.select({ tags })
 								.from(tagsArticlesQueryAliased)
 								.innerJoin(tags, eq(tags.id, tagsArticlesQueryAliased.tag_id))
 								.groupBy(tags.id);
@@ -340,7 +340,7 @@ class Plavna {
 
 				// 5. Sections Translations query
 				const sectionsTranslationsQuery = db
-					.select(translations._.columns)
+					.select({ translations })
 					.from(translations)
 					.where(inArray(translations.key, sectionQueryForTranslatins))
 					.groupBy(translations.key);
@@ -395,7 +395,7 @@ class Plavna {
 				tags: sectionsNonEmpty.reduce((acc, [, , , tagsInfo]) => {
 					return {
 						...acc,
-						...Object.fromEntries(tagsInfo.map((t) => [t.id, t]))
+						...Object.fromEntries(tagsInfo.map((t) => [t.tags.id, t]))
 					};
 				}, {}),
 				translationForms: {
@@ -406,13 +406,13 @@ class Plavna {
 								sectionsTranslationsInfo.map((t) => {
 									if (user?.username === username) {
 										return [
-											t.key,
-											superValidateSync(t, translationUpdateSchema, {
-												id: 'section-translation-' + t.key
+											t.translations.key,
+											superValidateSync(t.translations, translationUpdateSchema, {
+												id: 'section-translation-' + t.translations.key
 											})
 										];
 									} else {
-										return [t.key, t[this.lang]];
+										return [t.translations.key, t.translations[this.lang]];
 									}
 								})
 							)
@@ -875,10 +875,13 @@ class Plavna {
 		},
 		delete: async (slug: string) => {
 			const user = await this.user.getOrThrow();
-			return db
+			const articleDeleted = await db
 				.delete(articles)
 				.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
-				.run();
+				.returning({ id: articles.id })
+				.get();
+			if (!articleDeleted) throw new Error('Article not found');
+			await this.images.delete(articleDeleted.id);
 		},
 		updatePreview: async (
 			slug: string,
