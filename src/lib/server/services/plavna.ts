@@ -1088,7 +1088,7 @@ class Plavna {
 			return Promise.all(promisesToWaitFor);
 		},
 		getOne: async (username: string, slug: string) => {
-			const userPromise = this.user.get();
+			const userPromise = await this.user.get();
 			const titleTranslationAlias = alias(translations, 'title_translation');
 			const queryPromise = db
 				.select({
@@ -1096,7 +1096,8 @@ class Plavna {
 					titleTranslationAlias,
 					translations: { key: translations.key, [this.lang]: translations[this.lang] },
 					previewTypes: previewTemplates,
-					tags
+					tags,
+					images
 				})
 				.from(articles)
 				.innerJoin(users, eq(users.id, articles.user_id))
@@ -1108,12 +1109,21 @@ class Plavna {
 					eq(titleTranslationAlias.key, articles.title_translation_key)
 				)
 				.leftJoin(
+					images,
+					and(
+						eq(images.user_id, articles.user_id),
+						or(eq(images.owning_article_id, articles.id), eq(images.is_account_common, true))
+					)
+				)
+				.leftJoin(
 					translations,
 					or(
 						eq(translations.key, articles.content_translation_key),
-						eq(translations.key, tags.name_translation_key)
+						eq(translations.key, tags.name_translation_key),
+						eq(translations.key, images.path_translation_key)
 					)
 				)
+
 				.where(
 					and(
 						eq(users.username, username),
@@ -1144,6 +1154,7 @@ class Plavna {
 						.filter(getNullAndDupFilter('key'))
 						.map((row) => [row.key, row[this.lang]])
 				]),
+				images: query.map((rows) => rows.images).filter(getNullAndDupFilter('id')),
 				tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 			};
 		}

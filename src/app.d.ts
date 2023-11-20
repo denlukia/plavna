@@ -1,5 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
-import type { TagSelect, TranslationSelect } from '$lib/server/collections/types';
+import type { ImageSelect, TagSelect, TranslationSelect } from '$lib/server/collections/types';
 
 declare global {
 	namespace App {
@@ -11,7 +11,8 @@ declare global {
 		interface PageData {
 			user: Lucia.User | null;
 			translations: Record<string, string | TranslationSelect>;
-			tags?: Record<string, TagSelect>;
+			tags?: Record<string, TagSelect>; // TODO Refactor into just array
+			images?: ImageSelect[];
 		}
 		// interface Platform {}
 	}
