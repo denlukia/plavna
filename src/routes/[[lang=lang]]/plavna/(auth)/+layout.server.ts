@@ -7,7 +7,7 @@ import { defaultLang } from '$lib/isomorphic/languages';
 
 export const load = (async ({ locals, params, parent }) => {
 	const session = await locals.authRequest.validate();
-	if (session) throw redirect(302, `/${session.user.username}/pages`);
+	if (session) redirect(302, `/${session.user.username}/pages`);
 
 	const { translations } = await parent();
 	return {

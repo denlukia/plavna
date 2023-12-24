@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	const user = await plavna.user.get();
 	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE_NAME);
 	if (accessCookie !== SCREENSHOTTER_ACCESS_TOKEN && !user) {
-		throw error(403);
+		error(403);
 	}
 
 	try {
@@ -23,7 +23,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 		if (e !== null && typeof e === 'object' && 'status' in e) {
 			throw e;
 		} else {
-			throw error(500, 'Internal server error');
+			error(500, 'Internal server error');
 		}
 	}
 };

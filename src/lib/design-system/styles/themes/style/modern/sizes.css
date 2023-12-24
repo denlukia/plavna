@@ -1,0 +1,57 @@
+:root {
+	/* ------ Palette ------ */
+	--size-none: 0px;
+	--size-xs: 2.5px;
+	--size-s: 5px;
+	--size-s-to-m: 7.5px;
+	--size-m: 10px;
+	--size-m-to-l: 15px;
+	--size-l: 20px;
+	--size-l-to-xl: 25px;
+	--size-xl: 30px;
+	--size-2xl: 40px;
+	--size-3xl: 50px;
+	--size-full: 999px;
+
+	/* ------ Semantic ------ */
+	/* --- General --- */
+	--size-body-padding-inline: var(--size-m-to-l);
+	--size-body-padding-top: var(--size-s);
+	--size-body-padding-bottom: var(--size-m);
+
+	--size-column-width: 200px;
+	--size-column-gap: var(--size-m);
+
+	/* --- Button --- */
+	--size-button-body-padding-inline: var(--size-m-to-l);
+	--size-button-body-padding-top: var(--size-s);
+	--size-button-body-padding-bottom: var(--size-m);
+	--size-button-body-border-radius: var(--size-full);
+
+	--size-button-small-padding-inline: var(--size-m);
+	--size-button-small-padding-top: var(--size-s);
+	--size-button-small-padding-bottom: var(--size-s);
+	--size-button-small-border-radius: var(--size-full);
+
+	--size-button-layer-fx-hover: 70px;
+
+	/* --- Input --- */
+	--size-input-width: var(--size-column-width);
+	--size-input-padding-inline: var(--size-m);
+	--size-input-padding-top: var(--size-s);
+	--size-input-padding-bottom: var(--size-s);
+	--size-input-border-radius: var(--size-m);
+
+	--size-input-layer-fx-hover: 120px;
+
+	/* --- Button in Input */
+	--size-input-to-button-padding: var(--size-s);
+	--size-button-in-input-border-radius: var(--size-s);
+	--size-button-in-input-height: var(--size-xl);
+
+	/* --- Icon --- */
+	--size-icon-body-size: var(--size-l);
+	--size-icon-body-thickness: 1.5px;
+	--size-icon-small-size: var(--size-s);
+	--size-icon-small-thickness: 1px;
+}

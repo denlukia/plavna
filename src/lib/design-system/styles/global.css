@@ -1,0 +1,78 @@
+.global-text-heading-1 {
+	font-family: var(--text-heading-1-font-family);
+	padding-top: var(--text-heading-1-padding-top);
+	padding-bottom: var(--text-heading-1-padding-bottom);
+	font-size: var(--text-heading-1-size);
+	font-weight: var(--text-heading-1-weight);
+	line-height: var(--text-heading-1-line-height);
+}
+.global-text-heading-2 {
+	font-family: var(--text-heading-2-font-family);
+	padding-top: var(--text-heading-2-padding-top);
+	padding-bottom: var(--text-heading-2-padding-bottom);
+	font-size: var(--text-heading-2-size);
+	font-weight: var(--text-heading-2-weight);
+	line-height: var(--text-heading-2-line-height);
+}
+.global-text-headline {
+	font-family: var(--text-headline-font-family);
+	padding-top: var(--text-headline-padding-top);
+	padding-bottom: var(--text-headline-padding-bottom);
+	font-size: var(--text-headline-size);
+	font-weight: var(--text-headline-weight);
+	line-height: var(--text-headline-line-height);
+}
+.global-text-headline-short {
+	font-family: var(--text-headline-short-font-family);
+	padding-top: var(--text-headline-short-padding-top);
+	padding-bottom: var(--text-headline-short-padding-bottom);
+	font-size: var(--text-headline-short-size);
+	font-weight: var(--text-headline-short-weight);
+	line-height: var(--text-headline-short-line-height);
+}
+.global-text-body {
+	font-family: var(--text-body-font-family);
+	padding-top: var(--text-body-padding-top);
+	padding-bottom: var(--text-body-padding-bottom);
+	font-size: var(--text-body-size);
+	font-weight: var(--text-body-weight);
+	line-height: var(--text-body-line-height);
+}
+.global-text-body-short {
+	font-family: var(--text-body-short-font-family);
+	padding-top: var(--text-body-short-padding-top);
+	padding-bottom: var(--text-body-short-padding-bottom);
+	font-size: var(--text-body-short-size);
+	font-weight: var(--text-body-short-weight);
+	line-height: var(--text-body-short-line-height);
+}
+.global-text-small {
+	font-family: var(--text-small-font-family);
+	padding-top: var(--text-small-padding-top);
+	padding-bottom: var(--text-small-padding-bottom);
+	font-size: var(--text-small-size);
+	font-weight: var(--text-small-weight);
+	line-height: var(--text-small-line-height);
+}
+.global-text-small-short {
+	font-family: var(--text-small-short-font-family);
+	padding-top: var(--text-small-short-padding-top);
+	padding-bottom: var(--text-small-short-padding-bottom);
+	font-size: var(--text-small-short-size);
+	font-weight: var(--text-small-short-weight);
+	line-height: var(--text-small-short-line-height);
+}
+
+.global-text-bold {
+	font-weight: 700;
+}
+
+.global-button-reset {
+	border: none;
+	background: none;
+	line-height: 0;
+}
+
+.global-link-reset {
+	text-decoration: none;
+}

@@ -1,0 +1,8 @@
+@import './reset.css';
+@import './utility.css';
+
+body {
+	padding-inline: var(--size-body-padding-inline);
+	padding-top: var(--size-body-padding-top);
+	padding-bottom: var(--size-body-padding-bottom);
+}

@@ -72,7 +72,7 @@ async function update_slug(event: ActionRequestEvt) {
 	if ('pagename' in event.params) {
 		replacementsObject['[pagename]'] = event.params.pagename;
 	}
-	throw redirect(302, generatePath(event.route.id, replacementsObject));
+	redirect(302, generatePath(event.route.id, replacementsObject));
 }
 
 async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 'delete') {
@@ -90,7 +90,7 @@ async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 
 			destinationRouteId = '/[[lang=lang]]/[username]/page-[pagename]';
 			replacementsObject['[pagename]'] = event.params.pagename;
 		}
-		throw redirect(302, generatePath(destinationRouteId, replacementsObject));
+		redirect(302, generatePath(destinationRouteId, replacementsObject));
 	}
 }
 

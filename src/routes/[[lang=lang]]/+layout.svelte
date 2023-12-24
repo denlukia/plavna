@@ -5,6 +5,12 @@
 	import { generatePath } from '$lib/isomorphic/url.js';
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
+	import '$lib/design-system/styles/global.css';
+
+	// TODO: Dynamize based on server data
+	import '$lib/design-system/styles/themes/color/milk.css';
+	import '$lib/design-system/styles/themes/style/modern/index.css';
+
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang || defaultLang;
 		let destinationURL = currentURL.replace(`/${currentLanguage}`, '');
@@ -44,3 +50,13 @@
 		</a>{/if}
 </header>
 <slot />
+
+<style>
+	:global(body) {
+		--system-font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+			Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		font-family: var(--main-font-family, var(--system-font-stack));
+		background-color: var(--color-body);
+		color: var(--color-text);
+	}
+</style>

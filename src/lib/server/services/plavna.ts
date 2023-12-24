@@ -128,7 +128,7 @@ class Plavna {
 		} else if (isSupportedLang(langParam)) {
 			this.lang = langParam;
 		} else {
-			throw error(404);
+			error(404);
 		}
 	}
 
@@ -139,14 +139,14 @@ class Plavna {
 		},
 		getOrThrow: async () => {
 			const user = await this.user.get();
-			if (user === null) throw error(403);
+			if (user === null) error(403);
 			return user;
 		},
 		checkOrThrow: async (id: User['id'] | null, username?: User['username']) => {
 			const user = await this.user.get();
-			if (user === null) throw error(403);
-			if (id && user?.id !== id) throw error(403);
-			if (username && user?.username !== username) throw error(403);
+			if (user === null) error(403);
+			if (id && user?.id !== id) error(403);
+			if (username && user?.username !== username) error(403);
 			return user;
 		},
 		updateImageProvider: async (providerData: ImageProdiverUpdate) => {
@@ -473,7 +473,7 @@ class Plavna {
 					.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
 					.get();
 				if (!page) {
-					throw error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
+					error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
 				}
 				const { page_id } = page;
 				const { section_id } = await trx
@@ -491,7 +491,7 @@ class Plavna {
 						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
 						.all();
 					if (existingForUser.length !== foundUnique.length) {
-						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+						error(403, ERRORS.SOME_TAGS_DONT_EXIST);
 					}
 
 					await trx
@@ -534,7 +534,7 @@ class Plavna {
 						.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
 						.all();
 					if (existingForUser.length !== foundUnique.length) {
-						throw error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+						error(403, ERRORS.SOME_TAGS_DONT_EXIST);
 					}
 				}
 
@@ -558,7 +558,7 @@ class Plavna {
 					.where(and(eq(sections.id, sectionDelete.id), eq(sections.user_id, user.id)))
 					.get();
 				if (!translation) {
-					throw error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
+					error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
 				}
 				const { title_translation_key } = translation;
 				await this.translations.delete({ key: title_translation_key }, trx);
@@ -919,7 +919,7 @@ class Plavna {
 					.all();
 				const articleRecord = queryResult[0];
 
-				if (!queryResult) throw error(500);
+				if (!queryResult) error(500);
 				const uploadPromises = Object.entries(imageHandlers).map(
 					async ([fieldName, imageHandler]) => {
 						const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
@@ -1136,10 +1136,10 @@ class Plavna {
 			const [query, user] = await Promise.all([queryPromise, userPromise]);
 
 			if (!query.length) {
-				throw error(404);
+				error(404);
 			}
 			if ((!user || user.username !== username) && query[0].articles.publish_time === null) {
-				throw error(404);
+				error(404);
 			}
 			return {
 				article: query[0].articles,
@@ -1197,7 +1197,7 @@ class Plavna {
 					.where(whereCondition)
 					.get();
 				if (!translationResult) {
-					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
+					error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
 
 				await this.translations.update({ ...translation, key: translationResult.key }, trx);
@@ -1244,7 +1244,7 @@ class Plavna {
 						.set({ preview_family: null })
 						.where(eq(articles.preview_template_id, template.id));
 				} else {
-					throw error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
+					error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 				}
 				if (recordResult) {
 					if (recordResult.images.path) {
@@ -1278,20 +1278,20 @@ class Plavna {
 				.returning()
 				.get();
 		}
-		if (!finalImage) throw error(403);
+		if (!finalImage) error(403);
 		const { path, id } = finalImage;
 
 		// 1. Get respective translation if updating
 		let translation: { key: TranslationSelect['key'] } | null = null;
 		if (mode === 'update') {
-			if (!id) throw error(403);
+			if (!id) error(403);
 			const imageQuery = await db
 				.select({ key: translations.key })
 				.from(images)
 				.leftJoin(translations, eq(translations.key, images.path_translation_key))
 				.where(and(eq(images.id, id), eq(images.user_id, user.id)))
 				.get();
-			if (!imageQuery) throw error(403);
+			if (!imageQuery) error(403);
 			if (imageQuery.key) {
 				translation = { key: imageQuery.key };
 			}
@@ -1394,7 +1394,7 @@ class Plavna {
 
 			if (mode === 'translation-deletion') {
 				if (translation) {
-					if (typeof lang !== 'string') throw error(403);
+					if (typeof lang !== 'string') error(403);
 					await this.translations.update({ [lang]: null, key: translation.translations.key }, trx);
 				}
 			} else if (mode === 'default-deletion') {
@@ -1417,7 +1417,7 @@ class Plavna {
 			if (mode === 'disallow-empty') {
 				newTranslations.forEach((translation) => {
 					if (!hasNonEmptyProperties(translation, ['user_id', 'key'])) {
-						throw error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
+						error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
 					}
 				});
 			}

@@ -1,0 +1,60 @@
+:root {
+	/* ------ Palette ----- */
+	--warm-950: hsl(30, 30%, 95%);
+	--warm-100: hsl(30, 50%, 10%);
+	--warm-300-transparent-10: hsla(30, 100%, 30%, 10%);
+	--warm-300-transparent-12: hsla(30, 100%, 30%, 12%);
+	--warm-300-transparent-15: hsla(30, 100%, 30%, 15%);
+	--warm-300-transparent-20: hsla(30, 100%, 30%, 20%);
+	--warm-200-transparent-50: hsla(30, 100%, 20%, 50%);
+
+	--neutral-0: hsl(0, 0%, 0%);
+	--neutral-0-trapsparent-10: hsla(0, 0%, 0%, 10%);
+	--neutral-1000: hsl(0, 0%, 100%);
+	--neutral-1000-transparent-25: hsla(0, 0%, 100%, 25%);
+
+	--red-200: hsl(0, 100%, 20%);
+	--red-500: hsl(0, 100%, 50%);
+	--red-500-transparent-10: hsla(0, 100%, 50%, 10%);
+	--red-300-transparent-15: hsla(0, 100%, 30%, 15%);
+	--red-300-transparent-20: hsla(0, 100%, 30%, 20%);
+	--red-300-transparent-50: hsla(0, 100%, 30%, 50%);
+
+	/* ------ Semantic ----- */
+	/* --- General --- */
+	--color-body: var(--warm-950);
+	--color-text: var(--neutral-0);
+
+	/* --- Buttons --- */
+	--color-button-primary-bg: var(--neutral-1000);
+	--color-button-secondary-bg: var(--warm-300-transparent-12);
+	--color-button-prominent-bg: var(--neutral-0);
+	--color-button-destructive-bg: var(--red-500-transparent-10);
+
+	--color-button-primary-text: var(--neutral-0);
+	--color-button-secondary-text: var(--neutral-0);
+	--color-button-prominent-text: var(--neutral-1000);
+	--color-button-destructive-text: var(--red-200);
+
+	--color-button-primary-shadow-1: var(--warm-300-transparent-10);
+	--color-button-primary-shadow-2: var(--warm-300-transparent-10);
+	--color-button-prominent-shadow-1: var(--neutral-0-trapsparent-10);
+	--color-button-prominent-shadow-2: var(--neutral-0-trapsparent-10);
+	--color-button-destructive-shadow-1: var(--red-300-transparent-20);
+	--color-button-destructive-shadow-2: var(--red-300-transparent-15);
+
+	--color-button-primary-layer-fx-hover: var(--warm-300-transparent-12);
+	--color-button-secondary-layer-fx-hover: var(--warm-300-transparent-12);
+	--color-button-prominent-layer-fx-hover: var(--neutral-1000-transparent-25);
+	--color-button-destructive-layer-fx-hover: var(--red-300-transparent-15);
+
+	/* --- Input --- */
+	--color-input-bg: var(--warm-300-transparent-10);
+	--color-input-shadow-1: var(--warm-300-transparent-20);
+	--color-input-shadow-2: var(--neutral-1000);
+	--color-input-layer-fx-hover: var(--warm-300-transparent-12);
+
+	/* --- Button in Input */
+	--color-button-in-input-bg: var(--warm-950);
+	--color-button-in-input-shadow: var(--warm-300-transparent-20);
+}
