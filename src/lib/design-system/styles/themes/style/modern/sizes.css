@@ -49,9 +49,11 @@
 	--size-button-in-input-border-radius: var(--size-s);
 	--size-button-in-input-height: var(--size-xl);
 
+	--size-button-in-input-layer-fx-hover: 50px;
+
 	/* --- Icon --- */
-	--size-icon-body-size: var(--size-l);
+	--size-icon-body-size: var(--size-xl);
 	--size-icon-body-thickness: 1.5px;
-	--size-icon-small-size: var(--size-s);
-	--size-icon-small-thickness: 1px;
+	--size-icon-small-size: var(--size-l);
+	--size-icon-small-stroke-width: 1.5px;
 }

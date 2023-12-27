@@ -26,5 +26,13 @@
 	--transition-input-layer-fx-hover: opacity 300ms;
 
 	/* --- Button in Input */
-	--shadow-button-in-input: 0 2px 4px var(--color-button-in-input-shadow);
+	--shadow-button-in-input: 0 1px 1px var(--color-button-in-input-shadow);
+	--transition-button-in-input: all 0.2s ease-out;
+
+	--transform-button-in-input-hover: translateY(-1px);
+	--shadow-button-in-input-hover: 0 2px 4px var(--color-button-in-input-shadow);
+
+	--transform-button-in-input-active: translateY(0px);
+
+	--transition-button-in-input-layer-fx-hover: opacity 300ms;
 }

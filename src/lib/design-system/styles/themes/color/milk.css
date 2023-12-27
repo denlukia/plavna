@@ -57,4 +57,5 @@
 	/* --- Button in Input */
 	--color-button-in-input-bg: var(--warm-950);
 	--color-button-in-input-shadow: var(--warm-300-transparent-20);
+	--color-button-in-input-layer-fx-hover: var(--warm-300-transparent-12);
 }
