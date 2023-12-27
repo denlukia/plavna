@@ -4,10 +4,11 @@
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
 
 	type Props = {
-		pswdVisible?: boolean;
+		autocomplete: AutoFill;
+		pswdVisible: boolean;
 		value?: string;
 	};
-	let { pswdVisible, value } = $props<Props>();
+	let { pswdVisible, value, autocomplete } = $props<Props>();
 	let selectionStart: number | null = null;
 	let selectionEnd: number | null = null;
 
@@ -26,6 +27,7 @@
 		let targetRef = pswdVisible ? textInputRef : pswdInputRef;
 		if (!targetRef) return;
 
+		targetRef.focus();
 		if (selectionStart !== null) {
 			targetRef.selectionStart = selectionStart;
 		}
@@ -50,6 +52,8 @@
 			bind:value
 			bind:this={textInputRef}
 			type="text"
+			spellcheck="false"
+			{autocomplete}
 			class="global-input-reset global-text-body"
 		/>
 	{:else}
@@ -59,6 +63,8 @@
 			bind:value
 			bind:this={pswdInputRef}
 			type="password"
+			spellcheck="false"
+			{autocomplete}
 			class="global-input-reset global-text-body"
 		/>
 	{/if}

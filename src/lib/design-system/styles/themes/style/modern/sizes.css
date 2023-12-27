@@ -36,7 +36,7 @@
 	--size-button-layer-fx-hover: 70px;
 
 	/* --- Input --- */
-	--size-input-width: var(--size-column-width);
+	--size-input-width: 300px;
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-s);
 	--size-input-padding-bottom: var(--size-s);

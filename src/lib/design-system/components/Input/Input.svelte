@@ -10,8 +10,9 @@
 	type Props = {
 		languaged?: boolean;
 		type?: 'text' | 'image' | 'password' | 'email';
+		autocomplete?: AutoFill;
 	};
-	let { type = 'text', languaged = false } = $props<Props>();
+	let { type = 'text', languaged = false, autocomplete } = $props<Props>();
 	let { mousePos, onmousemove } = new MouseWatcher();
 
 	let pswdVisible = $state(false);
@@ -31,7 +32,7 @@
 		<span class="layer-content">
 			<span class="input-wrapper" class:no-right-padding={hasButtons}>
 				{#if type === 'password'}
-					<AnimatedPswdInput {pswdVisible} />
+					<AnimatedPswdInput {pswdVisible} {autocomplete} />
 				{:else if type === 'text'}
 					<input bind:value type="text" class="global-input-reset global-text-body" />
 				{/if}
