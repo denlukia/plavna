@@ -6,13 +6,9 @@
 	import IconWrapper from '../icons/IconWrapper.svelte';
 	import AnimatedPswdInput from './AnimatedPswdInput.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
+	import type { LanguagedInputProps } from './types';
 
-	type Props = {
-		languaged?: boolean;
-		type?: 'text' | 'image' | 'password' | 'email';
-		autocomplete?: AutoFill;
-	};
-	let { type = 'text', languaged = false, autocomplete } = $props<Props>();
+	let { type = 'text', languaged = false, ...attributes } = $props<LanguagedInputProps>();
 	let { mousePos, onmousemove } = new MouseWatcher();
 
 	let pswdVisible = $state(false);
@@ -32,7 +28,7 @@
 		<span class="layer-content">
 			<span class="input-wrapper" class:no-right-padding={hasButtons}>
 				{#if type === 'password'}
-					<AnimatedPswdInput {pswdVisible} {autocomplete} />
+					<AnimatedPswdInput {pswdVisible} {...attributes} />
 				{:else if type === 'text'}
 					<input bind:value type="text" class="global-input-reset global-text-body" />
 				{/if}

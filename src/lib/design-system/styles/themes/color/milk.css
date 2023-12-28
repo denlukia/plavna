@@ -10,6 +10,7 @@
 
 	--neutral-0: hsl(0, 0%, 0%);
 	--neutral-0-trapsparent-10: hsla(0, 0%, 0%, 10%);
+	--neutral-0-trapsparent-40: hsla(0, 0%, 0%, 40%);
 	--neutral-1000: hsl(0, 0%, 100%);
 	--neutral-1000-transparent-25: hsla(0, 0%, 100%, 25%);
 
@@ -24,6 +25,8 @@
 	/* --- General --- */
 	--color-body: var(--warm-950);
 	--color-text: var(--neutral-0);
+	--color-text-danger: var(--red-200);
+	--color-text-additional: var(--neutral-0-trapsparent-40);
 
 	/* --- Buttons --- */
 	--color-button-primary-bg: var(--neutral-1000);

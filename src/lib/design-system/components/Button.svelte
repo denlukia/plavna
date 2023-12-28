@@ -38,7 +38,7 @@
 >
 	<Layers>
 		<LayerFX {mousePos} />
-		<span class="layer-content">
+		<span class="layer-content global-line-height-reset">
 			<Text size={`${size}-short`} {bold}>{@render children()}</Text>
 		</span>
 	</Layers>

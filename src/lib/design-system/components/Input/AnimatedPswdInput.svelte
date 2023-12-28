@@ -2,11 +2,10 @@
 	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
 	import Layers from '../Layers.svelte';
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
-	type Props = {
-		autocomplete: AutoFill;
+	type Props = HTMLInputAttributes & {
 		pswdVisible: boolean;
-		value?: string;
 	};
 	let { pswdVisible, value, autocomplete } = $props<Props>();
 	let selectionStart: number | null = null;

@@ -47,14 +47,14 @@
 	--text-small-font-family: var(--main-font-family);
 	--text-small-padding-top: 4px;
 	--text-small-padding-bottom: 1px;
-	--text-small-size: 10px;
+	--text-small-size: 12px;
 	--text-small-weight: var(--main-font-weight);
 	--text-small-line-height: 15px;
 
 	--text-small-short-font-family: var(--main-font-family);
 	--text-small-short-padding-top: 2px;
 	--text-small-short-padding-bottom: 3px;
-	--text-small-short-size: 10px;
+	--text-small-short-size: 12px;
 	--text-small-short-weight: var(--main-font-weight);
 	--text-small-short-line-height: 10px;
 }

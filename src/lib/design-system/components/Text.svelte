@@ -14,9 +14,16 @@
 		children: Snippet;
 		block?: boolean;
 		bold?: boolean;
+		additionalClass?: string;
 	};
 
-	let { size = 'body', children, block = false, bold = false } = $props<Props>();
+	let {
+		size = 'body',
+		children,
+		block = false,
+		bold = false,
+		additionalClass = ''
+	} = $props<Props>();
 
 	let outline = $state(false);
 
@@ -30,7 +37,7 @@
 <svelte:window {onkeypress} />
 <svelte:element
 	this={block ? 'p' : 'span'}
-	class={`text global-text-${size}`}
+	class={`text global-text-${size} ${additionalClass}`}
 	class:outline
 	class:global-text-bold={bold}
 >

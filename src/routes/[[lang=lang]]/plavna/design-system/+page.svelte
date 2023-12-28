@@ -2,6 +2,7 @@
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
+	import LabeledInput from '$lib/design-system/components/LabeledInput.svelte';
 	import Layers from '$lib/design-system/components/Layers.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 </script>
@@ -18,7 +19,7 @@
 			<Text block size="small">Тестовий <br /> текст</Text>
 			<Text block size="small-short">Тестовий <br /> текст</Text>
 		</div>
-		<div class="components">
+		<div class="components global-line-height-reset">
 			<div class="buttons">
 				<Button bold>Testy</Button>
 				<Button type="secondary" bold>Testy</Button>
@@ -32,8 +33,13 @@
 				<Button size="small" type="destructive" bold>Testy</Button>
 			</div>
 			<div class="inputs">
-				<Input />
-				<Input type="password" />
+				<LabeledInput
+					label="Текст"
+					infoBefore="Додаткова інформація до інпуту"
+					infoAfter="Додаткова інформація після інпуту"
+					error="Текст помилки"
+				/>
+				<LabeledInput label="Пароль" type="password" infoBefore="Не меньше 8 символів" />
 			</div>
 		</div>
 	</div>
@@ -51,7 +57,9 @@
 		flex-direction: column;
 		gap: 10px;
 	}
-	.buttons {
-		line-height: 0;
+	.inputs {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
 	}
 </style>

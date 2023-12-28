@@ -56,4 +56,9 @@
 	--size-icon-body-thickness: 1.5px;
 	--size-icon-small-size: var(--size-l);
 	--size-icon-small-stroke-width: 1.5px;
+
+	/* --- Labeled Input --- */
+	--size-labeled-input-info-padding-inline: var(--size-m);
+	--size-labeled-input-info-padding-top: var(--size-s);
+	--size-labeled-input-info-padding-bottom: var(--size-s);
 }

@@ -90,3 +90,15 @@
 .global-input-reset:focus {
 	outline: none;
 }
+
+.global-text-danger {
+	color: var(--color-text-danger);
+}
+
+.global-text-additional {
+	color: var(--color-text-additional);
+}
+
+.global-line-height-reset {
+	line-height: 0;
+}
