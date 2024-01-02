@@ -102,3 +102,39 @@
 .global-line-height-reset {
 	line-height: 0;
 }
+
+.global-select-reset {
+	appearance: none;
+	border: none;
+	background: none;
+}
+
+/* Button in Input */
+
+.global-button-in-input {
+	border-radius: var(--size-button-in-input-border-radius);
+	background-color: var(--color-button-in-input-bg);
+	box-shadow: var(--shadow-button-in-input);
+	height: var(--size-button-in-input-height);
+	transition: var(--transition-button-in-input);
+
+	--color-layer-fx-hover: var(--color-button-in-input-layer-fx-hover);
+	--size-layer-fx-hover: var(--size-button-in-input-layer-fx-hover);
+	--transition-layer-fx-hover: var(--transition-button-in-input-layer-fx-hover);
+}
+
+.global-button-in-input:hover {
+	transform: var(--transform-button-in-input-hover);
+	box-shadow: var(--shadow-button-in-input-hover);
+}
+.global-button-in-input:hover > .layers > .layer-fx {
+	opacity: 1;
+}
+.global-button-in-input:active {
+	transform: var(--transform-button-in-input-active);
+	box-shadow: var(--shadow-button-in-input-active);
+}
+
+.global-disable-default-outline:focus {
+	outline: none;
+}

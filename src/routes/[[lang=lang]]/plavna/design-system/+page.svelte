@@ -5,6 +5,14 @@
 	import LabeledInput from '$lib/design-system/components/LabeledInput.svelte';
 	import Layers from '$lib/design-system/components/Layers.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
+	import { setContext } from 'svelte';
+
+	const mockedSelectorLanguages = [
+		{ name: 'English', code: 'en' },
+		{ name: 'Українська', code: 'uk' }
+	];
+
+	setContext('selector-languages', mockedSelectorLanguages);
 </script>
 
 <Layers>
@@ -33,6 +41,7 @@
 				<Button size="small" type="destructive" bold>Testy</Button>
 			</div>
 			<div class="inputs">
+				<LabeledInput languaged label="Текст" infoBefore="Додаткова інформація до інпуту" />
 				<LabeledInput
 					label="Текст"
 					infoBefore="Додаткова інформація до інпуту"

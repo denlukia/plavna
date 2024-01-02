@@ -5,8 +5,8 @@
 	import { derived } from 'svelte/store';
 
 	type AnimationTypes =
-		| { animated: true; playhead: number; steps: number; frameSize: number }
-		| { animated?: false | undefined; playhead?: never; steps?: never; frameSize?: never };
+		| { animated: true; playhead: number; frames: number; frameSize: number }
+		| { animated?: false | undefined; playhead?: never; frames?: never; frameSize?: never };
 
 	type Props = {
 		children: Snippet;
@@ -18,17 +18,17 @@
 		size = 'body',
 		animated = false,
 		playhead = 0,
-		steps = 0,
+		frames = 0,
 		frameSize = 0
 	} = $props<Props>();
 
 	let tweenedPlayhead = tweened(playhead, { duration: 200 });
 	let currentFrame = derived(tweenedPlayhead, (tweenedPlayhead: number) =>
-		Math.floor(tweenedPlayhead * steps)
+		Math.floor(tweenedPlayhead * frames)
 	);
 	let currentShift = derived(currentFrame, (currentFrame: number) => {
 		let shift = currentFrame * frameSize;
-		let maxShift = (steps - 1) * frameSize;
+		let maxShift = (frames - 1) * frameSize;
 		let bounded = Math.min(shift, maxShift);
 
 		// Negative cause exactly transform -20px
@@ -49,7 +49,7 @@
 	<span
 		class="icon-frame"
 		style={`
-		--svg-width: ${steps ? steps * frameSize + 'px' : '100%'};
+		--svg-width: ${frames ? frames * frameSize + 'px' : '100%'};
 		--svg-height: ${frameSize ? frameSize + 'px' : '100%'};
 		--frame-width: ${frameSize ? frameSize + 'px' : '100%'};
 		--frame-height: ${frameSize ? frameSize + 'px' : '100%'};
@@ -63,8 +63,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--size-icon-body-size);
-		height: var(--size-icon-body-size);
 	}
 	.icon-frame {
 		overflow: hidden;
@@ -72,10 +70,24 @@
 		height: var(--frame-height);
 	}
 	.icon-frame > :global(svg) {
+		width: var(--svg-width);
+		height: var(--svg-height);
 		transform: translateX(var(--shift));
 	}
 
+	.size-body {
+		width: var(--size-icon-body-size);
+		height: var(--size-icon-body-size);
+	}
+	.size-small {
+		width: var(--size-icon-small-size);
+		height: var(--size-icon-small-size);
+	}
+
 	.thickness-body {
+		--svg-stroke-width: var(--size-icon-body-stroke-width);
+	}
+	.thickness-small {
 		--svg-stroke-width: var(--size-icon-small-stroke-width);
 	}
 </style>

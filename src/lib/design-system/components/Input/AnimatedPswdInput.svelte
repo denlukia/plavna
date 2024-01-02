@@ -27,12 +27,9 @@
 		if (!targetRef) return;
 
 		targetRef.focus();
-		if (selectionStart !== null) {
-			targetRef.selectionStart = selectionStart;
-		}
-		if (selectionEnd !== null) {
-			targetRef.selectionEnd = selectionEnd;
-		}
+
+		targetRef.selectionStart = selectionStart;
+		targetRef.selectionEnd = selectionEnd;
 	});
 
 	const flyConf: (easing: EasingFunction, y: number) => FlyParams = (easing, y) => ({

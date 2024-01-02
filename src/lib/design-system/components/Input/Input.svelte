@@ -2,13 +2,15 @@
 	import LayerFX from '../LayerFX/LayerFX.svelte';
 	import { MouseWatcher } from '../LayerFX/watcher.svelte';
 	import Layers from '../Layers.svelte';
+	import Select from '../Select/Select.svelte';
 	import Eye from '../icons/Eye.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
 	import AnimatedPswdInput from './AnimatedPswdInput.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
+	import LangSelector from './LangSelector.svelte';
 	import type { LanguagedInputProps } from './types';
 
-	let { type = 'text', languaged = false, ...attributes } = $props<LanguagedInputProps>();
+	let { type = 'text', languaged = false, name, ...attributes } = $props<LanguagedInputProps>();
 	let { mousePos, onmousemove } = new MouseWatcher();
 
 	let pswdVisible = $state(false);
@@ -30,17 +32,20 @@
 				{#if type === 'password'}
 					<AnimatedPswdInput {pswdVisible} {...attributes} />
 				{:else if type === 'text'}
-					<input bind:value type="text" class="global-input-reset global-text-body" />
+					<input bind:value {name} type="text" class="global-input-reset global-text-body" />
 				{/if}
 			</span>
 			{#if hasButtons}
 				<span class="buttons-wrapper">
 					{#if type === 'password'}
 						<ButtonInInput onclick={togglePswdVisibility}>
-							<IconWrapper animated playhead={pswdIconPlayhead} steps={8} frameSize={20}>
+							<IconWrapper animated playhead={pswdIconPlayhead} frames={8} frameSize={20}>
 								<Eye />
 							</IconWrapper>
 						</ButtonInInput>
+					{/if}
+					{#if languaged}
+						<LangSelector />
 					{/if}
 				</span>
 			{/if}
