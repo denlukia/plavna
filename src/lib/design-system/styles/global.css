@@ -109,6 +109,10 @@
 	background: none;
 }
 
+.global-layer-fx-hover-trigger:hover > .layers > .layer-fx {
+	opacity: 1;
+}
+
 /* Button in Input */
 
 .global-button-in-input {
@@ -119,17 +123,13 @@
 	transition: var(--transition-button-in-input);
 
 	--color-layer-fx-hover: var(--color-button-in-input-layer-fx-hover);
-	--size-layer-fx-hover: var(--size-button-in-input-layer-fx-hover);
-	--transition-layer-fx-hover: var(--transition-button-in-input-layer-fx-hover);
 }
 
 .global-button-in-input:hover {
 	transform: var(--transform-button-in-input-hover);
 	box-shadow: var(--shadow-button-in-input-hover);
 }
-.global-button-in-input:hover > .layers > .layer-fx {
-	opacity: 1;
-}
+
 .global-button-in-input:active {
 	transform: var(--transform-button-in-input-active);
 	box-shadow: var(--shadow-button-in-input-active);

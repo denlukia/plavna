@@ -11,7 +11,7 @@
 	const supportedLangs = getContext<Array<SelectorLang>>('selector-languages');
 </script>
 
-<Select insideInput>
+<Select type="in-input">
 	{#each supportedLangs as lang}
 		<SelectItem value={lang.code}>{lang.code.toUpperCase()}</SelectItem>
 	{/each}

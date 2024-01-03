@@ -14,7 +14,11 @@
 	let { mousePos, onmousemove } = new MouseWatcher();
 </script>
 
-<button class="global-button-reset global-button-in-input" {onmousemove} {onclick}>
+<button
+	class="global-button-reset global-button-in-input global-layer-fx-hover-trigger"
+	{onmousemove}
+	{onclick}
+>
 	<Layers>
 		<LayerFx {mousePos} />
 		<span class="layer-content">
@@ -24,6 +28,11 @@
 </button>
 
 <style>
-	/* See styles/global.css  */
+	button {
+		padding-inline: var(--size-button-in-input-padding-inline);
+		padding-top: var(--size-button-in-input-padding-top);
+		padding-bottom: var(--size-button-in-input-padding-bottom);
+	}
+	/* See other styles in styles/global.css  */
 	/* .global-button-in-input and other */
 </style>

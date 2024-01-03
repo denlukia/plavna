@@ -61,4 +61,11 @@
 	--color-button-in-input-bg: var(--warm-950);
 	--color-button-in-input-shadow: var(--warm-300-transparent-20);
 	--color-button-in-input-layer-fx-hover: var(--warm-300-transparent-12);
+
+	/* --- Select --- */
+	--color-select-bg: var(--neutral-1000);
+	--color-select-text: var(--neutral-0);
+	--color-select-shadow-1: var(--warm-300-transparent-10);
+	--color-select-shadow-2: var(--warm-300-transparent-10);
+	--color-select-layer-fx-hover: var(--warm-300-transparent-12);
 }

@@ -1,4 +1,7 @@
 :root {
+	/* --- Layer FX --- */
+	--transition-layer-fx-hover: opacity 300ms;
+
 	/* --- Button --- */
 	--shadow-button-primary: 0 0px 2px var(--color-button-primary-shadow-1),
 		0 5px 10px var(--color-button-primary-shadow-2);
@@ -17,13 +20,10 @@
 	--shadow-button-hover-destructive: 0 2px 4px var(--color-button-destructive-shadow-1),
 		0 8px 10px var(--color-button-destructive-shadow-2);
 
-	--transition-button-layer-fx-hover: opacity 300ms;
-
 	--transform-button-active: translateY(0px);
 
 	/* --- Input --- */
 	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
-	--transition-input-layer-fx-hover: opacity 300ms;
 
 	/* --- Button in Input */
 	--shadow-button-in-input: 0 1px 1px var(--color-button-in-input-shadow);
@@ -34,5 +34,11 @@
 
 	--transform-button-in-input-active: translateY(0.5px);
 
-	--transition-button-in-input-layer-fx-hover: opacity 300ms;
+	/* --- Select --- */
+	--shadow-select: 0 1px 1px var(--color-select-shadow-1), 0 5px 10px var(--color-select-shadow-2);
+	--shadow-select-hover: 0 2px 4px var(--color-select-shadow-1),
+		0 8px 10px var(--color-select-shadow-2);
+	--transition-select: all 0.2s ease-out;
+	--transform-select-hover: translateY(-2px);
+	--transform-select-active: translateY(0px);
 }

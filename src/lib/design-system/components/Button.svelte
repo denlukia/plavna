@@ -29,9 +29,9 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
-	class={`reset button type-${type} size-${size} ${
-		href ? 'global-link-rest' : 'global-button-rest'
-	}`}
+	class={`reset button type-${type} size-${size} 
+	global-layer-fx-hover-trigger
+	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	{onmousemove}
 	{onclick}
 	{href}
@@ -50,18 +50,12 @@
 		padding: 0;
 		transition: var(--transition-button);
 		overflow: hidden;
-
-		/* For LayerFX */
-		--transition-layer-fx-hover: var(--transition-button-layer-fx-hover);
-		--size-layer-fx-hover: var(--size-button-layer-fx-hover);
 	}
 
 	.button:hover {
 		transform: var(--transform-button-hover);
 	}
-	.button:hover :global(.layers > .layer-fx) {
-		opacity: 1;
-	}
+
 	.button:active {
 		transform: var(--transform-button-active);
 	}

@@ -22,6 +22,9 @@
 	--size-column-width: 200px;
 	--size-column-gap: var(--size-m);
 
+	/* --- Layer FX */
+	--size-layer-fx-hover: 120px;
+
 	/* --- Button --- */
 	--size-button-body-padding-inline: var(--size-m-to-l);
 	--size-button-body-padding-top: var(--size-s);
@@ -33,8 +36,6 @@
 	--size-button-small-padding-bottom: var(--size-s);
 	--size-button-small-border-radius: var(--size-full);
 
-	--size-button-layer-fx-hover: 70px;
-
 	/* --- Input --- */
 	--size-input-width: 300px;
 	--size-input-padding-inline: var(--size-m);
@@ -42,29 +43,37 @@
 	--size-input-padding-bottom: var(--size-s);
 	--size-input-border-radius: var(--size-m);
 
-	--size-input-layer-fx-hover: 120px;
-
 	/* --- Button in Input */
 	--size-input-to-button-padding: var(--size-s);
 	--size-button-in-input-border-radius: var(--size-s);
 	--size-button-in-input-height: var(--size-xl);
-
-	--size-button-in-input-layer-fx-hover: 50px;
+	--size-button-in-input-padding-inline: var(--size-s);
+	--size-button-in-input-padding-top: var(--size-s);
+	--size-button-in-input-padding-bottom: var(--size-s);
 
 	/* --- Icon --- */
-	--size-icon-body-size: var(--size-xl);
-	--size-icon-body-thickness: 1.5px;
-	--size-icon-small-size: var(--size-m-to-l);
-	--size-icon-small-stroke-width: 1.5px;
+	--size-icon-body-size-unitless: 20;
+	--size-icon-body-size: calc(var(--size-icon-body-size-unitless) * 1px);
+	--size-icon-body-stroke-width: 1.6px;
+	--size-icon-small-size-unitless: 15;
+	--size-icon-small-size: calc(var(--size-icon-small-size-unitless) * 1px);
+	--size-icon-small-stroke-width: 1.25px;
 
 	/* --- Labeled Input --- */
 	--size-labeled-input-info-padding-inline: var(--size-m);
 	--size-labeled-input-info-padding-top: var(--size-s);
 	--size-labeled-input-info-padding-bottom: var(--size-s);
 
+	/* --- Select --- */
+	--size-select-padding-inline: var(--size-m);
+	--size-select-padding-top: var(--size-s-to-m);
+	--size-select-padding-bottom: var(--size-s-to-m);
+	--size-select-border-radius: var(--size-m);
+	--size-select-icon-width: var(--size-icon-body-size);
+
 	/* --- Select in Input */
-	--select-in-input-padding-inline: var(--size-m);
-	--select-in-input-padding-top: var(--size-s-to-m);
-	--select-in-input-padding-bottom: var(--size-s-to-m);
-	--select-in-input-icon-width: var(--size-icon-small-size);
+	--size-select-in-input-padding-inline: var(--size-m);
+	--size-select-in-input-padding-top: var(--size-s-to-m);
+	--size-select-in-input-padding-bottom: var(--size-s-to-m);
+	--size-select-in-input-icon-width: var(--size-icon-small-size);
 }

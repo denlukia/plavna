@@ -7,25 +7,31 @@
 	import ArrowDown from '../icons/ArrowDown.svelte';
 
 	type Props = {
-		insideInput?: boolean;
+		type?: 'default' | 'in-input';
 		children: Snippet;
 	};
-	let { insideInput = false, children } = $props<Props>();
+	let { type = 'default', children } = $props<Props>();
 
 	let { mousePos, onmousemove } = new MouseWatcher();
 </script>
 
-<label class:global-button-in-input={insideInput} {onmousemove}>
+<label
+	class={`main-wrapper global-layer-fx-hover-trigger type-${type}`}
+	class:global-button-in-input={type === 'in-input'}
+	{onmousemove}
+>
 	<Layers>
 		<LayerFx {mousePos} />
 		<select
-			class="global-select-reset global-text-small global-disable-default-outline"
-			class:select-in-input={insideInput}
+			class={`
+			global-select-reset 
+			global-disable-default-outline 
+			global-text-${type === 'in-input' ? 'small' : 'body'}`}
 		>
 			{@render children()}
 		</select>
 		<span class="arrow-positioner">
-			<IconWrapper size="small">
+			<IconWrapper size={type === 'in-input' ? 'small' : 'body'}>
 				<ArrowDown />
 			</IconWrapper>
 		</span>
@@ -33,8 +39,9 @@
 </label>
 
 <style>
-	label {
+	.main-wrapper {
 		position: relative;
+		overflow: hidden;
 	}
 
 	.arrow-positioner {
@@ -44,19 +51,53 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		width: var(--select-in-input-icon-width);
-		right: var(--select-in-input-padding-inline);
 	}
 
-	select {
-		display: inline-block;
+	.type-default {
+		background: var(--color-select-bg);
+		color: var(--color-select-text);
+		box-shadow: var(--shadow-select);
+		border-radius: var(--size-select-border-radius);
+		transition: var(--transition-select);
+
+		--color-layer-fx-hover: var(--color-select-layer-fx-hover);
 	}
-	.select-in-input {
-		padding-inline-start: var(--select-in-input-padding-inline);
+
+	.type-default:hover {
+		box-shadow: var(--shadow-select-hover);
+		transform: var(--transform-select-hover);
+	}
+
+	.type-default:active {
+		transform: var(--transform-select-active);
+	}
+
+	.type-default select {
+		padding-inline-start: var(--size-select-padding-inline);
 		padding-inline-end: calc(
-			var(--select-in-input-padding-inline) + var(--select-in-input-icon-width)
+			var(--size-select-padding-inline) * 1.5 + var(--size-select-icon-width)
 		);
-		padding-top: var(--select-in-input-padding-top);
-		padding-bottom: var(--select-in-input-padding-bottom);
+		padding-top: var(--size-select-padding-top);
+		padding-bottom: var(--size-select-padding-bottom);
+	}
+
+	.type-default .arrow-positioner {
+		width: var(--size-select-icon-width);
+		right: var(--size-select-padding-inline);
+		top: 1px;
+	}
+
+	.type-in-input select {
+		padding-inline-start: var(--size-select-in-input-padding-inline);
+		padding-inline-end: calc(
+			var(--size-select-in-input-padding-inline) * 1.2 + var(--size-select-in-input-icon-width)
+		);
+		padding-top: var(--size-select-in-input-padding-top);
+		padding-bottom: var(--size-select-in-input-padding-bottom);
+	}
+
+	.type-in-input .arrow-positioner {
+		width: var(--size-select-in-input-icon-width);
+		right: var(--size-select-in-input-padding-inline);
 	}
 </style>

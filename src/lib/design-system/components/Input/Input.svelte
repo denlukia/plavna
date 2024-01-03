@@ -24,7 +24,7 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input-whole" {onmousemove} role="presentation">
+<span class="input-whole global-layer-fx-hover-trigger" {onmousemove} role="presentation">
 	<Layers>
 		<LayerFX {mousePos} />
 		<span class="layer-content">
@@ -67,13 +67,7 @@
 		transform: translate(0, 0);
 
 		/* For LayerFX Hover */
-		--size-layer-fx-hover: var(--size-input-layer-fx-hover);
 		--color-layer-fx-hover: var(--color-input-layer-fx-hover);
-		--transition-layer-fx-hover: var(--transition-input-layer-fx-hover);
-	}
-
-	.input-whole:hover > :global(.layers > .layer-fx) {
-		opacity: 1;
 	}
 
 	.input-wrapper {

@@ -4,6 +4,8 @@
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import LabeledInput from '$lib/design-system/components/LabeledInput.svelte';
 	import Layers from '$lib/design-system/components/Layers.svelte';
+	import Select from '$lib/design-system/components/Select/Select.svelte';
+	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 	import { setContext } from 'svelte';
 
@@ -17,7 +19,7 @@
 
 <Layers>
 	<div class="blocks">
-		<div class="texts">
+		<div class="group">
 			<Text block size="heading-1"><i>denis lukianenko</i></Text>
 			<Text block size="heading-2"><i>Фрустрація<br />текст</i></Text>
 			<Text block size="headline">Тестовий <br /> текст</Text>
@@ -27,48 +29,41 @@
 			<Text block size="small">Тестовий <br /> текст</Text>
 			<Text block size="small-short">Тестовий <br /> текст</Text>
 		</div>
-		<div class="components global-line-height-reset">
-			<div class="buttons">
-				<Button bold>Testy</Button>
-				<Button type="secondary" bold>Testy</Button>
-				<Button type="prominent" bold>Testy</Button>
-				<Button type="destructive" bold>Testy</Button>
-			</div>
-			<div class="buttons">
-				<Button size="small" bold>Testy</Button>
-				<Button size="small" type="secondary" bold>Testy</Button>
-				<Button size="small" type="prominent" bold>Testy</Button>
-				<Button size="small" type="destructive" bold>Testy</Button>
-			</div>
-			<div class="inputs">
-				<LabeledInput languaged label="Текст" infoBefore="Додаткова інформація до інпуту" />
-				<LabeledInput
-					label="Текст"
-					infoBefore="Додаткова інформація до інпуту"
-					infoAfter="Додаткова інформація після інпуту"
-					error="Текст помилки"
-				/>
-				<LabeledInput label="Пароль" type="password" infoBefore="Не меньше 8 символів" />
-			</div>
+		<div class="group">
+			<Button bold>Testy</Button>
+			<Button type="secondary" bold>Testy</Button>
+			<Button type="prominent" bold>Testy</Button>
+			<Button type="destructive" bold>Testy</Button>
+		</div>
+		<div class="group">
+			<Button size="small" bold>Testy</Button>
+			<Button size="small" type="secondary" bold>Testy</Button>
+			<Button size="small" type="prominent" bold>Testy</Button>
+			<Button size="small" type="destructive" bold>Testy</Button>
+		</div>
+		<div class="group">
+			<LabeledInput languaged label="Текст" infoBefore="Додаткова інформація до інпуту" />
+			<LabeledInput
+				label="Текст"
+				infoBefore="Додаткова інформація до інпуту"
+				infoAfter="Додаткова інформація після інпуту"
+				error="Текст помилки"
+			/>
+			<LabeledInput label="Пароль" type="password" infoBefore="Не меньше 8 символів" />
+		</div>
+		<div class="group">
+			<Select>
+				<SelectItem>Test</SelectItem>
+			</Select>
 		</div>
 	</div>
 	<Grid />
 </Layers>
 
 <style>
-	.texts {
-		gap: 10px;
+	.group {
 		display: flex;
-		align-items: flex-start;
-	}
-	.components {
-		display: flex;
-		flex-direction: column;
 		gap: 10px;
-	}
-	.inputs {
-		display: flex;
-		align-items: flex-start;
-		gap: 10px;
+		margin-bottom: 10px;
 	}
 </style>

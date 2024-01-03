@@ -18,8 +18,8 @@
 		size = 'body',
 		animated = false,
 		playhead = 0,
-		frames = 0,
-		frameSize = 0
+		frames = 1,
+		frameSize = 20
 	} = $props<Props>();
 
 	let tweenedPlayhead = tweened(playhead, { duration: 200 });
@@ -45,49 +45,28 @@
 	});
 </script>
 
-<span class={`icon size-${size} thickness-${size}`}>
-	<span
-		class="icon-frame"
-		style={`
-		--svg-width: ${frames ? frames * frameSize + 'px' : '100%'};
-		--svg-height: ${frameSize ? frameSize + 'px' : '100%'};
-		--frame-width: ${frameSize ? frameSize + 'px' : '100%'};
-		--frame-height: ${frameSize ? frameSize + 'px' : '100%'};
+<span
+	class={`icon-frame`}
+	style={`
+		width: var(--size-icon-${size}-size);
+		height: var(--size-icon-${size}-size);
+		--svg-width: calc(var(--size-icon-${size}-size) * ${frames});
+		--svg-height: var(--size-icon-${size}-size);
+		--svg-stroke-width: calc(${frameSize} / var(--size-icon-${size}-size-unitless) * var(--size-icon-${size}-stroke-width));
 		--shift: ${$currentShift}px;
-		`}>{@render children()}</span
-	>
+		`}
+>
+	{@render children()}
 </span>
 
 <style>
-	.icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
 	.icon-frame {
+		display: inline-block;
 		overflow: hidden;
-		width: var(--frame-width);
-		height: var(--frame-height);
 	}
 	.icon-frame > :global(svg) {
 		width: var(--svg-width);
 		height: var(--svg-height);
 		transform: translateX(var(--shift));
-	}
-
-	.size-body {
-		width: var(--size-icon-body-size);
-		height: var(--size-icon-body-size);
-	}
-	.size-small {
-		width: var(--size-icon-small-size);
-		height: var(--size-icon-small-size);
-	}
-
-	.thickness-body {
-		--svg-stroke-width: var(--size-icon-body-stroke-width);
-	}
-	.thickness-small {
-		--svg-stroke-width: var(--size-icon-small-stroke-width);
 	}
 </style>
