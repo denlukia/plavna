@@ -23,7 +23,7 @@
 	--size-column-gap: var(--size-m);
 
 	/* --- Layer FX */
-	--size-layer-fx-hover: 120px;
+	--size-layer-fx-hover: 80px;
 
 	/* --- Button --- */
 	--size-button-body-padding-inline: var(--size-m-to-l);

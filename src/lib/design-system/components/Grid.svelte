@@ -34,6 +34,7 @@
 <style>
 	.grid {
 		pointer-events: none;
+		z-index: 999;
 	}
 	.visible {
 		background: var(--bg-url);
