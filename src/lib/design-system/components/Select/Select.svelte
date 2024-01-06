@@ -69,6 +69,7 @@
 	}
 
 	.type-default:active {
+		box-shadow: var(--shadow-select-active);
 		transform: var(--transform-select-active);
 	}
 
