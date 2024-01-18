@@ -5,11 +5,12 @@
 	import { generatePath } from '$lib/isomorphic/url.js';
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
-	import '$lib/design-system/styles/global.css';
+	import '$lib/styles/index.css';
 
 	// TODO: Dynamize based on server data
-	import '$lib/design-system/styles/themes/color/milk.css';
-	import '$lib/design-system/styles/themes/style/modern/index.css';
+	import '$lib/design-system/themes/color/milk.css';
+	import '$lib/design-system/themes/style/modern/index.css';
+	import '$lib/design-system/themes/typography/plavna/index.css';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang || defaultLang;

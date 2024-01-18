@@ -1,5 +1,5 @@
 @import './reset.css';
-@import './utility.css';
+@import './global.css';
 
 body {
 	padding-inline: var(--size-body-padding-inline);

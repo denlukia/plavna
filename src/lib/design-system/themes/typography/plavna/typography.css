@@ -1,0 +1,69 @@
+:root {
+	--text-main-font-family: 'Manrope', -system-ui, sans-serif;
+	--text-main-font-weight: 500;
+	--text-bold-font-weight: 800;
+
+	--text-heading-1-font-family: 'Manrope Rounded';
+	--text-heading-1-padding-top: 3px;
+	--text-heading-1-padding-bottom: 2px;
+	--text-heading-1-size: 69px;
+	--text-heading-1-weight: 800;
+	--text-heading-1-line-height: 70px;
+	--text-heading-1-letter-spacing: -0.04em;
+
+	--text-heading-2-font-family: 'Manrope Rounded';
+	--text-heading-2-padding-top: 2px;
+	--text-heading-2-padding-bottom: 3px;
+	--text-heading-2-size: 28px;
+	--text-heading-2-weight: 800;
+	--text-heading-2-line-height: 35px;
+	--text-heading-2-letter-spacing: -0.04em;
+
+	--text-headline-font-family: var(--text-main-font-family);
+	--text-headline-padding-top: 1px;
+	--text-headline-padding-bottom: 4px;
+	--text-headline-size: 18px;
+	--text-headline-weight: 800;
+	--text-headline-line-height: 25px;
+	--text-headline-letter-spacing: 0;
+
+	--text-headline-short-font-family: var(--text-main-font-family);
+	--text-headline-short-padding-top: 3px;
+	--text-headline-short-padding-bottom: 2px;
+	--text-headline-short-size: 18px;
+	--text-headline-short-weight: 800;
+	--text-headline-short-line-height: 20px;
+	--text-headline-short-letter-spacing: 0;
+
+	--text-body-font-family: var(--text-main-font-family);
+	--text-body-padding-top: 1px;
+	--text-body-padding-bottom: 4px;
+	--text-body-size: 18px;
+	--text-body-weight: var(--text-main-font-weight);
+	--text-body-line-height: 25px;
+	--text-body-letter-spacing: 0;
+
+	--text-body-short-font-family: var(--text-main-font-family);
+	--text-body-short-padding-top: 3px;
+	--text-body-short-padding-bottom: 2px;
+	--text-body-short-size: 18px;
+	--text-body-short-weight: var(--text-main-font-weight);
+	--text-body-short-line-height: 20px;
+	--text-body-short-letter-spacing: 0;
+
+	--text-small-font-family: var(--text-main-font-family);
+	--text-small-padding-top: 4px;
+	--text-small-padding-bottom: 1px;
+	--text-small-size: 12px;
+	--text-small-weight: 600;
+	--text-small-line-height: 15px;
+	--text-small-letter-spacing: 0;
+
+	--text-small-short-font-family: var(--text-main-font-family);
+	--text-small-short-padding-top: 2px;
+	--text-small-short-padding-bottom: 3px;
+	--text-small-short-size: 12px;
+	--text-small-short-weight: 600;
+	--text-small-short-line-height: 10px;
+	--text-small-short-letter-spacing: 0;
+}

@@ -48,6 +48,7 @@
 	.text {
 		margin: 0;
 		display: inline-block;
+		-webkit-font-smoothing: antialiased;
 	}
 	.outline {
 		outline: 0.5px solid rgba(0, 128, 0, 0.5);

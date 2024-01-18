@@ -5,6 +5,7 @@
 	font-size: var(--text-heading-1-size);
 	font-weight: var(--text-heading-1-weight);
 	line-height: var(--text-heading-1-line-height);
+	letter-spacing: var(--text-heading-1-letter-spacing);
 }
 .global-text-heading-2 {
 	font-family: var(--text-heading-2-font-family);
@@ -13,6 +14,7 @@
 	font-size: var(--text-heading-2-size);
 	font-weight: var(--text-heading-2-weight);
 	line-height: var(--text-heading-2-line-height);
+	letter-spacing: var(--text-heading-2-letter-spacing);
 }
 .global-text-headline {
 	font-family: var(--text-headline-font-family);
@@ -21,6 +23,7 @@
 	font-size: var(--text-headline-size);
 	font-weight: var(--text-headline-weight);
 	line-height: var(--text-headline-line-height);
+	letter-spacing: var(--text-headline-letter-spacing);
 }
 .global-text-headline-short {
 	font-family: var(--text-headline-short-font-family);
@@ -29,6 +32,7 @@
 	font-size: var(--text-headline-short-size);
 	font-weight: var(--text-headline-short-weight);
 	line-height: var(--text-headline-short-line-height);
+	letter-spacing: var(--text-headline-short-letter-spacing);
 }
 .global-text-body {
 	font-family: var(--text-body-font-family);
@@ -37,6 +41,7 @@
 	font-size: var(--text-body-size);
 	font-weight: var(--text-body-weight);
 	line-height: var(--text-body-line-height);
+	letter-spacing: var(--text-body-letter-spacing);
 }
 .global-text-body-short {
 	font-family: var(--text-body-short-font-family);
@@ -45,6 +50,7 @@
 	font-size: var(--text-body-short-size);
 	font-weight: var(--text-body-short-weight);
 	line-height: var(--text-body-short-line-height);
+	letter-spacing: var(--text-body-short-letter-spacing);
 }
 .global-text-small {
 	font-family: var(--text-small-font-family);
@@ -53,6 +59,7 @@
 	font-size: var(--text-small-size);
 	font-weight: var(--text-small-weight);
 	line-height: var(--text-small-line-height);
+	letter-spacing: var(--text-small-letter-spacing);
 }
 .global-text-small-short {
 	font-family: var(--text-small-short-font-family);
@@ -61,10 +68,11 @@
 	font-size: var(--text-small-short-size);
 	font-weight: var(--text-small-short-weight);
 	line-height: var(--text-small-short-line-height);
+	letter-spacing: var(--text-small-short-letter-spacing);
 }
 
 .global-text-bold {
-	font-weight: 700;
+	font-weight: var(--text-bold-font-weight);
 }
 
 .global-button-reset {

@@ -19,9 +19,9 @@
 
 <Layers>
 	<div class="blocks">
-		<div class="group">
-			<Text block size="heading-1"><i>denis lukianenko</i></Text>
-			<Text block size="heading-2"><i>Фрустрація<br />текст</i></Text>
+		<div class="group texts">
+			<Text block size="heading-1">denis lukianenko</Text>
+			<Text block size="heading-2">денис лук'яненко<br />це фронтенд розробник</Text>
 			<Text block size="headline">Тестовий <br /> текст</Text>
 			<Text block size="headline-short">Тестовий <br /> текст</Text>
 			<Text block size="body">Тестовий <br /> текст</Text>
@@ -65,5 +65,8 @@
 		display: flex;
 		gap: 10px;
 		margin-bottom: 10px;
+	}
+	.texts {
+		align-items: flex-start;
 	}
 </style>
