@@ -1,6 +1,7 @@
 :root {
-	/* --- Layer FX --- */
-	--transition-layer-fx-hover: opacity 300ms;
+	/* --- Layers --- */
+	--transition-layer-flashlight-hover: opacity 300ms;
+	--transition-layer-shift: transform 300ms;
 
 	/* --- Button --- */
 	--shadow-button-primary: 0 0px 2px var(--color-button-primary-shadow-1),
@@ -39,6 +40,6 @@
 	--shadow-select-hover: 0 2px 4px var(--color-select-shadow-1),
 		0 8px 10px var(--color-select-shadow-2);
 	--transition-select: all 0.2s ease-out;
-	--transform-select-hover: translateY(-2px);
-	--transform-select-active: translateY(0px);
+	--transform-select-hover: translateY(-1px);
+	--transform-select-active: translateY(1px);
 }

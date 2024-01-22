@@ -1,12 +1,14 @@
 <script lang="ts">
+	import type { MouseState } from './watcher.svelte';
+
 	type Props = {
-		mousePos: { x: number; y: number };
+		mouse: MouseState;
 	};
-	let { mousePos } = $props<Props>();
+	let { mouse } = $props<Props>();
 </script>
 
-<span class="layer-fx">
-	<span class="poiner-shade" style="--pointer-x: {mousePos.x}; --pointer-y: {mousePos.y}" />
+<span class="layer-flashlight">
+	<span class="poiner-shade" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}" />
 </span>
 
 <style>
@@ -26,19 +28,19 @@
 		position: absolute;
 		top: var(--pointer-y);
 		left: var(--pointer-x);
-		width: var(--size-layer-fx-hover);
-		height: var(--size-layer-fx-hover);
+		width: var(--size-layer-flashlight-hover);
+		height: var(--size-layer-flashlight-hover);
 		border-radius: var(--size-full);
-		background: var(--color-layer-fx-hover);
+		background: var(--color-layer-flashlight-hover);
 		transform: translate(
 			calc(calc(var(--pointer-x) * 1px) - 50%),
 			calc(calc(var(--pointer-y) * 1px) - 50%)
 		);
 	}
-	.layer-fx {
+	.layer-flashlight {
 		pointer-events: none;
 		opacity: 0;
 		z-index: -1;
-		transition: var(--transition-layer-fx-hover);
+		transition: var(--transition-layer-flashlight-hover);
 	}
 </style>

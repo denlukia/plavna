@@ -3,7 +3,7 @@
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import LabeledInput from '$lib/design-system/components/LabeledInput.svelte';
-	import Layers from '$lib/design-system/components/Layers.svelte';
+	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
@@ -21,7 +21,7 @@
 	<div class="blocks">
 		<div class="group texts">
 			<Text block size="heading-1">denis lukianenko</Text>
-			<Text block size="heading-2">денис лук'яненко<br />це фронтенд розробник</Text>
+			<Text block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Text>
 			<Text block size="headline">Тестовий <br /> текст</Text>
 			<Text block size="headline-short">Тестовий <br /> текст</Text>
 			<Text block size="body">Тестовий <br /> текст</Text>

@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Layers from '../Layers.svelte';
-	import LayerFx from '../LayerFX/LayerFX.svelte';
-	import { MouseWatcher } from '../LayerFX/watcher.svelte';
+	import Layers from '../Layers/Layers.svelte';
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
 	import ArrowDown from '../icons/ArrowDown.svelte';
+	import LayerShift from '../Layers/LayerShift.svelte';
 
 	type Props = {
 		type?: 'default' | 'in-input';
@@ -12,29 +13,31 @@
 	};
 	let { type = 'default', children } = $props<Props>();
 
-	let { mousePos, onmousemove } = new MouseWatcher();
+	let { mouse, ...events } = new MouseWatcher();
 </script>
 
 <label
-	class={`main-wrapper global-layer-fx-hover-trigger type-${type}`}
+	class={`main-wrapper global-layer-flashlight-hover-trigger type-${type}`}
 	class:global-button-in-input={type === 'in-input'}
-	{onmousemove}
+	{...events}
 >
 	<Layers>
-		<LayerFx {mousePos} />
-		<select
-			class={`
+		<LayerFlashlight {mouse} />
+		<LayerShift {mouse}>
+			<select
+				class={`
 			global-select-reset 
 			global-disable-default-outline 
 			global-text-${type === 'in-input' ? 'small' : 'body'}`}
-		>
-			{@render children()}
-		</select>
-		<span class="arrow-positioner">
-			<IconWrapper size={type === 'in-input' ? 'small' : 'body'}>
-				<ArrowDown />
-			</IconWrapper>
-		</span>
+			>
+				{@render children()}
+			</select>
+			<span class="arrow-positioner">
+				<IconWrapper size={type === 'in-input' ? 'small' : 'body'}>
+					<ArrowDown />
+				</IconWrapper>
+			</span>
+		</LayerShift>
 	</Layers>
 </label>
 
@@ -47,6 +50,7 @@
 	.arrow-positioner {
 		pointer-events: none;
 		position: absolute;
+		top: 1px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -60,7 +64,7 @@
 		border-radius: var(--size-select-border-radius);
 		transition: var(--transition-select);
 
-		--color-layer-fx-hover: var(--color-select-layer-fx-hover);
+		--color-layer-flashlight-hover: var(--color-select-layer-flashlight-hover);
 	}
 
 	.type-default:hover {
@@ -85,7 +89,6 @@
 	.type-default .arrow-positioner {
 		width: var(--size-select-icon-width);
 		right: var(--size-select-padding-inline);
-		top: 1px;
 	}
 
 	.type-in-input select {

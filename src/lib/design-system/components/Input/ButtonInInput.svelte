@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Layers from '../Layers.svelte';
-	import LayerFx from '../LayerFX/LayerFX.svelte';
-	import { MouseWatcher } from '../LayerFX/watcher.svelte';
+	import Layers from '../Layers/Layers.svelte';
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import LayerShift from '../Layers/LayerShift.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -11,19 +12,19 @@
 
 	let { children, onclick = () => {} } = $props<Props>();
 
-	let { mousePos, onmousemove } = new MouseWatcher();
+	let { mouse, ...events } = new MouseWatcher();
 </script>
 
 <button
-	class="global-button-reset global-button-in-input global-layer-fx-hover-trigger"
-	{onmousemove}
+	class="global-button-reset global-button-in-input global-layer-flashlight-hover-trigger"
+	{...events}
 	{onclick}
 >
 	<Layers>
-		<LayerFx {mousePos} />
-		<span class="layer-content">
+		<LayerFlashlight {mouse} />
+		<LayerShift {mouse}>
 			{@render children()}
-		</span>
+		</LayerShift>
 	</Layers>
 </button>
 

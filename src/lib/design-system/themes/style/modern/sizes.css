@@ -22,8 +22,9 @@
 	--size-column-width: 200px;
 	--size-column-gap: var(--size-m);
 
-	/* --- Layer FX */
-	--size-layer-fx-hover: 80px;
+	/* --- Layers */
+	--size-layer-flashlight-hover: 80px;
+	--size-layer-shift-hover-translate: 3px;
 
 	/* --- Button --- */
 	--size-button-body-padding-inline: var(--size-m-to-l);

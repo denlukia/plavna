@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
-	import Layers from './Layers.svelte';
-	import LayerFX from './LayerFX/LayerFX.svelte';
+	import Layers from './Layers/Layers.svelte';
+	import LayerFlashlight from './Layers/LayerFlashlight.svelte';
 	import Text from './Text.svelte';
-	import { MouseWatcher } from './LayerFX/watcher.svelte';
+	import { MouseWatcher } from './Layers/watcher.svelte';
+	import LayerShift from './Layers/LayerShift.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -23,24 +24,26 @@
 		onclick = () => {}
 	} = $props<Props>();
 
-	let { mousePos, onmousemove } = new MouseWatcher();
+	let { mouse, ...events } = new MouseWatcher();
 </script>
 
 <svelte:element
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
 	class={`reset button type-${type} size-${size} 
-	global-layer-fx-hover-trigger
+	global-layer-flashlight-hover-trigger
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
-	{onmousemove}
+	{...events}
 	{onclick}
 	{href}
 >
 	<Layers>
-		<LayerFX {mousePos} />
-		<span class="layer-content global-line-height-reset">
-			<Text size={`${size}-short`} {bold}>{@render children()}</Text>
-		</span>
+		<LayerFlashlight {mouse} />
+		<LayerShift {mouse}>
+			<span class="content global-line-height-reset">
+				<Text size={`${size}-short`} {bold}>{@render children()}</Text>
+			</span>
+		</LayerShift>
 	</Layers>
 </svelte:element>
 
@@ -50,6 +53,10 @@
 		padding: 0;
 		transition: var(--transition-button);
 		overflow: hidden;
+	}
+
+	.content {
+		display: inline-block;
 	}
 
 	.button:hover {
@@ -66,28 +73,28 @@
 		color: var(--color-button-primary-text);
 		box-shadow: var(--shadow-button-primary);
 		border: var(--border-button-primary);
-		--color-layer-fx-hover: var(--color-button-primary-layer-fx-hover);
+		--color-layer-flashlight-hover: var(--color-button-primary-layer-flashlight-hover);
 	}
 	.type-secondary {
 		background: var(--color-button-secondary-bg);
 		color: var(--color-button-secondary-text);
 		box-shadow: var(--shadow-button-secondary);
 		border: var(--border-button-secondary);
-		--color-layer-fx-hover: var(--color-button-secondary-layer-fx-hover);
+		--color-layer-flashlight-hover: var(--color-button-secondary-layer-flashlight-hover);
 	}
 	.type-prominent {
 		background: var(--color-button-prominent-bg);
 		color: var(--color-button-prominent-text);
 		box-shadow: var(--shadow-button-prominent);
 		border: var(--border-button-prominent);
-		--color-layer-fx-hover: var(--color-button-prominent-layer-fx-hover);
+		--color-layer-flashlight-hover: var(--color-button-prominent-layer-flashlight-hover);
 	}
 	.type-destructive {
 		background: var(--color-button-destructive-bg);
 		color: var(--color-button-destructive-text);
 		box-shadow: var(--shadow-button-destructive);
 		border: var(--border-button-destructive);
-		--color-layer-fx-hover: var(--color-button-destructive-layer-fx-hover);
+		--color-layer-flashlight-hover: var(--color-button-destructive-layer-flashlight-hover);
 	}
 	.type-primary:hover {
 		box-shadow: var(--shadow-button-hover-primary);
@@ -118,7 +125,7 @@
 	.size-body {
 		border-radius: var(--size-button-body-border-radius);
 	}
-	.size-body .layer-content {
+	.size-body .content {
 		padding-inline: var(--size-button-body-padding-inline);
 		padding-top: var(--size-button-body-padding-top);
 		padding-bottom: var(--size-button-body-padding-bottom);
@@ -126,7 +133,7 @@
 	.size-small {
 		border-radius: var(--size-button-small-border-radius);
 	}
-	.size-small .layer-content {
+	.size-small .content {
 		padding-inline: var(--size-button-small-padding-inline);
 		padding-top: var(--size-button-small-padding-top);
 		padding-bottom: var(--size-button-small-padding-bottom);

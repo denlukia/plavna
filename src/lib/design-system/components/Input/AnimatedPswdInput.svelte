@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
-	import Layers from '../Layers.svelte';
+	import Layers from '../Layers/Layers.svelte';
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 

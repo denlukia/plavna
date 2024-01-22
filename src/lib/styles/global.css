@@ -117,7 +117,7 @@
 	background: none;
 }
 
-.global-layer-fx-hover-trigger:hover > .layers > .layer-fx {
+.global-layer-flashlight-hover-trigger:hover > .layers > .layer-flashlight {
 	opacity: 1;
 }
 
@@ -130,7 +130,7 @@
 	height: var(--size-button-in-input-height);
 	transition: var(--transition-button-in-input);
 
-	--color-layer-fx-hover: var(--color-button-in-input-layer-fx-hover);
+	--color-layer-flashlight-hover: var(--color-button-in-input-layer-flashlight-hover);
 }
 
 .global-button-in-input:hover {

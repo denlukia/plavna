@@ -1,7 +1,7 @@
 <script lang="ts">
-	import LayerFX from '../LayerFX/LayerFX.svelte';
-	import { MouseWatcher } from '../LayerFX/watcher.svelte';
-	import Layers from '../Layers.svelte';
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import Layers from '../Layers/Layers.svelte';
 	import Select from '../Select/Select.svelte';
 	import Eye from '../icons/Eye.svelte';
 	import IconWrapper from '../icons/IconWrapper.svelte';
@@ -11,7 +11,7 @@
 	import type { LanguagedInputProps } from './types';
 
 	let { type = 'text', languaged = false, name, ...attributes } = $props<LanguagedInputProps>();
-	let { mousePos, onmousemove } = new MouseWatcher();
+	let { mouse, ...events } = new MouseWatcher();
 
 	let pswdVisible = $state(false);
 	let pswdIconPlayhead = $derived(pswdVisible ? 0 : 1);
@@ -24,9 +24,9 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input-whole global-layer-fx-hover-trigger" {onmousemove} role="presentation">
+<span class="input-whole global-layer-flashlight-hover-trigger" {...events} role="presentation">
 	<Layers>
-		<LayerFX {mousePos} />
+		<LayerFlashlight {mouse} />
 		<span class="layer-content">
 			<span class="input-wrapper" class:no-right-padding={hasButtons}>
 				{#if type === 'password'}
@@ -66,8 +66,8 @@
 		/* To fix not working overflow hidden */
 		transform: translate(0, 0);
 
-		/* For LayerFX Hover */
-		--color-layer-fx-hover: var(--color-input-layer-fx-hover);
+		/* For Layer Flashlight Hover */
+		--color-layer-flashlight-hover: var(--color-input-layer-flashlight-hover);
 	}
 
 	.input-wrapper {
