@@ -2,10 +2,11 @@
 	/* ------ Palette ----- */
 	--warm-950: hsl(30, 30%, 95%);
 	--warm-100: hsl(30, 50%, 10%);
-	--warm-300-transparent-10: hsla(30, 100%, 30%, 10%);
-	--warm-300-transparent-12: hsla(30, 100%, 30%, 12%);
-	--warm-300-transparent-15: hsla(30, 100%, 30%, 15%);
-	--warm-300-transparent-20: hsla(30, 100%, 30%, 20%);
+
+	--warm-300-transparent-100: hsla(30, 100%, 20%, 7%);
+	--warm-300-transparent-200: hsla(30, 100%, 20%, 12%);
+	--warm-300-transparent-300: hsla(30, 100%, 20%, 15%);
+	--warm-300-transparent-400: hsla(30, 100%, 20%, 20%);
 	--warm-200-transparent-50: hsla(30, 100%, 20%, 50%);
 
 	--neutral-0: hsl(0, 0%, 0%);
@@ -31,7 +32,7 @@
 
 	/* --- Buttons --- */
 	--color-button-primary-bg: var(--neutral-1000);
-	--color-button-secondary-bg: var(--warm-300-transparent-12);
+	--color-button-secondary-bg: var(--warm-300-transparent-200);
 	--color-button-prominent-bg: var(--neutral-0);
 	--color-button-destructive-bg: var(--red-500-transparent-10);
 
@@ -40,33 +41,36 @@
 	--color-button-prominent-text: var(--neutral-1000);
 	--color-button-destructive-text: var(--red-200);
 
-	--color-button-primary-shadow-1: var(--warm-300-transparent-10);
-	--color-button-primary-shadow-2: var(--warm-300-transparent-10);
+	--color-button-primary-shadow-1: var(--warm-300-transparent-100);
+	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
 	--color-button-prominent-shadow-1: var(--neutral-0-trapsparent-10);
 	--color-button-prominent-shadow-2: var(--neutral-0-trapsparent-10);
 	--color-button-destructive-shadow-1: var(--red-300-transparent-20);
 	--color-button-destructive-shadow-2: var(--red-300-transparent-15);
 
-	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-20);
+	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-400);
 	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-50);
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-25);
 	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-15);
 
 	/* --- Input --- */
-	--color-input-bg: var(--warm-300-transparent-10);
-	--color-input-shadow-1: var(--warm-300-transparent-20);
+	--color-input-bg: var(--warm-300-transparent-100);
+	--color-input-shadow-1: var(--warm-300-transparent-200);
 	--color-input-shadow-2: var(--neutral-1000);
-	--color-input-layer-flashlight-hover: var(--warm-300-transparent-10);
+	--color-input-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-input-color-picker-border: var(--neutral-1000);
+	--color-input-color-picker-shadow: var(--neutral-0-trapsparent-10);
 
 	/* --- Button in Input */
 	--color-button-in-input-bg: var(--warm-950);
-	--color-button-in-input-shadow: var(--warm-300-transparent-20);
-	--color-button-in-input-layer-flashlight-hover: var(--warm-300-transparent-15);
+	--color-button-in-input-shadow-1: var(--neutral-1000-transparent-50);
+	--color-button-in-input-shadow-2: var(--warm-300-transparent-400);
+	--color-button-in-input-layer-flashlight-hover: var(--warm-300-transparent-200);
 
 	/* --- Select --- */
 	--color-select-bg: var(--neutral-1000);
 	--color-select-text: var(--neutral-0);
-	--color-select-shadow-1: var(--warm-300-transparent-10);
-	--color-select-shadow-2: var(--warm-300-transparent-10);
-	--color-select-layer-flashlight-hover: var(--warm-300-transparent-20);
+	--color-select-shadow-1: var(--warm-300-transparent-100);
+	--color-select-shadow-2: var(--warm-300-transparent-100);
+	--color-select-layer-flashlight-hover: var(--warm-300-transparent-200);
 }

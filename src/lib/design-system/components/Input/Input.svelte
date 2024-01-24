@@ -15,7 +15,8 @@
 
 	let pswdVisible = $state(false);
 	let pswdIconPlayhead = $derived(pswdVisible ? 0 : 1);
-	let hasButtons = $derived(type === 'password' || languaged);
+	let hasLeading = $derived(type === 'color');
+	let hasTrailing = $derived(type === 'password' || languaged);
 	let value = $state('');
 
 	function togglePswdVisibility() {
@@ -28,14 +29,26 @@
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
-			<span class="input-wrapper" class:no-right-padding={hasButtons}>
+			{#if type === 'color'}
+				<span class="picker-wrapper">
+					<input bind:value type="color" class="global-input-reset color-picker" />
+				</span>
+			{/if}
+			<span
+				class="input-wrapper"
+				class:no-right-padding={hasTrailing}
+				class:no-left-padding={hasLeading}
+				class:textarea-wrapper={type === 'textarea'}
+			>
 				{#if type === 'password'}
 					<AnimatedPswdInput {pswdVisible} {...attributes} />
-				{:else if type === 'text'}
+				{:else if type === 'text' || type === 'color'}
 					<input bind:value {name} type="text" class="global-input-reset global-text-body" />
+				{:else if type === 'textarea'}
+					<textarea bind:value {name} class="global-input-reset global-text-body" />
 				{/if}
 			</span>
-			{#if hasButtons}
+			{#if hasTrailing}
 				<span class="buttons-wrapper">
 					{#if type === 'password'}
 						<ButtonInInput onclick={togglePswdVisibility}>
@@ -80,15 +93,48 @@
 	.no-right-padding {
 		padding-right: 0;
 	}
+	.no-left-padding {
+		padding-left: 0;
+	}
 
 	.layer-content {
 		display: flex;
+	}
+
+	.picker-wrapper {
+		display: flex;
+		flex-shrink: 0;
+		padding: var(--size-input-color-picker-wrapper-padding);
 	}
 	.buttons-wrapper {
 		display: flex;
 		align-items: flex-start;
 		flex-shrink: 0;
 		padding: var(--size-input-to-button-padding);
+	}
+
+	.textarea-wrapper {
+		padding-inline-end: var(--size-input-textarea-wrapper-padding-inline-end);
+	}
+
+	textarea {
+		min-height: calc(
+			var(--text-body-padding-top) + var(--text-body-line-height) + var(--text-body-padding-bottom)
+		);
+		resize: vertical;
+		padding-inline-end: var(--size-input-textarea-padding-inline-end);
+	}
+
+	.color-picker {
+		width: var(--size-input-color-picker);
+		height: var(--size-input-color-picker);
+		border: var(--border-input-color-picker);
+		border-radius: var(--size-input-color-picker-radius);
+		padding: 0;
+		box-shadow: var(--shadow-input-color-picker);
+	}
+	.color-picker::-webkit-color-swatch-wrapper {
+		padding: 0;
 	}
 
 	@keyframes fade {

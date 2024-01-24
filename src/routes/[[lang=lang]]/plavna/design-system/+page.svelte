@@ -45,11 +45,12 @@
 			<LabeledInput languaged label="Текст" infoBefore="Додаткова інформація до інпуту" />
 			<LabeledInput
 				label="Текст"
-				infoBefore="Додаткова інформація до інпуту"
 				infoAfter="Додаткова інформація після інпуту"
 				error="Текст помилки"
 			/>
-			<LabeledInput label="Пароль" type="password" infoBefore="Не меньше 8 символів" />
+			<LabeledInput label="Пароль" type="password" />
+			<LabeledInput label="Пароль" type="textarea" />
+			<LabeledInput label="Колір" type="color" />
 		</div>
 		<div class="group">
 			<Select>
@@ -63,6 +64,7 @@
 <style>
 	.group {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 10px;
 		margin-bottom: 10px;
 	}

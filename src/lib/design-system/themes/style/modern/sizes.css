@@ -42,11 +42,18 @@
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-s);
 	--size-input-padding-bottom: var(--size-s);
-	--size-input-border-radius: var(--size-m);
+	--size-input-border-radius: 12px;
+	--size-input-textarea-wrapper-padding-inline-end: var(--size-s);
+	--size-input-textarea-padding-inline-end: var(--size-s);
+	--size-input-color-picker-wrapper-padding: var(--size-s-to-m);
+	--size-input-color-picker: var(--size-l-to-xl);
+	--size-input-color-picker-radius: var(--size-full);
 
 	/* --- Button in Input */
 	--size-input-to-button-padding: var(--size-s);
-	--size-button-in-input-border-radius: var(--size-s);
+	--size-button-in-input-border-radius: calc(
+		var(--size-input-border-radius) - var(--size-input-to-button-padding)
+	);
 	--size-button-in-input-height: var(--size-xl);
 	--size-button-in-input-padding-inline: var(--size-s);
 	--size-button-in-input-padding-top: var(--size-s);

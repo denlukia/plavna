@@ -25,13 +25,17 @@
 
 	/* --- Input --- */
 	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
+	--border-input-color-picker: 3px solid var(--color-input-color-picker-border);
+	--shadow-input-color-picker: 0 2px 2px var(--color-input-color-picker-shadow);
 
 	/* --- Button in Input */
-	--shadow-button-in-input: 0 1px 1px var(--color-button-in-input-shadow);
+	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
+		0 1px 1px var(--color-button-in-input-shadow-2);
 	--transition-button-in-input: all 0.2s ease-out;
 
 	--transform-button-in-input-hover: translateY(-0.5px);
-	--shadow-button-in-input-hover: 0 2px 4px var(--color-button-in-input-shadow);
+	--shadow-button-in-input-hover: inset 0 1px 1px var(--color-button-in-input-shadow-1),
+		0 2px 4px var(--color-button-in-input-shadow-2);
 
 	--transform-button-in-input-active: translateY(0.5px);
 
