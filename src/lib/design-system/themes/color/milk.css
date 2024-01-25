@@ -19,7 +19,7 @@
 	--red-200: hsl(0, 100%, 20%);
 	--red-500: hsl(0, 100%, 50%);
 	--red-500-transparent-10: hsla(0, 100%, 50%, 10%);
-	--red-300-transparent-15: hsla(0, 100%, 30%, 15%);
+	--red-300-transparent-100: hsla(0, 100%, 30%, 12%);
 	--red-300-transparent-20: hsla(0, 100%, 30%, 20%);
 	--red-300-transparent-50: hsla(0, 100%, 30%, 50%);
 
@@ -45,13 +45,13 @@
 	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
 	--color-button-prominent-shadow-1: var(--neutral-0-trapsparent-10);
 	--color-button-prominent-shadow-2: var(--neutral-0-trapsparent-10);
-	--color-button-destructive-shadow-1: var(--red-300-transparent-20);
-	--color-button-destructive-shadow-2: var(--red-300-transparent-15);
+	--color-button-destructive-shadow-1: var(--red-300-transparent-100);
+	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
 
 	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-400);
 	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-50);
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-25);
-	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-15);
+	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
 
 	/* --- Input --- */
 	--color-input-bg: var(--warm-300-transparent-100);
@@ -65,7 +65,7 @@
 	--color-button-in-input-bg: var(--warm-950);
 	--color-button-in-input-shadow-1: var(--neutral-1000-transparent-50);
 	--color-button-in-input-shadow-2: var(--warm-300-transparent-400);
-	--color-button-in-input-layer-flashlight-hover: var(--warm-300-transparent-200);
+	--color-button-in-input-layer-flashlight-hover: var(--neutral-1000);
 
 	/* --- Select --- */
 	--color-select-bg: var(--neutral-1000);

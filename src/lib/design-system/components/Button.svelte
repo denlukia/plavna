@@ -133,6 +133,7 @@
 	.size-small {
 		border-radius: var(--size-button-small-border-radius);
 	}
+
 	.size-small .content {
 		padding-inline: var(--size-button-small-padding-inline);
 		padding-top: var(--size-button-small-padding-top);

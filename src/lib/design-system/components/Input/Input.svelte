@@ -79,7 +79,8 @@
 		/* To fix not working overflow hidden */
 		transform: translate(0, 0);
 
-		/* For Layer Flashlight Hover */
+		/* For Layer Flashlight */
+		--size-layer-flashlight-border-radius: var(--size-input-border-radius);
 		--color-layer-flashlight-hover: var(--color-input-layer-flashlight-hover);
 	}
 

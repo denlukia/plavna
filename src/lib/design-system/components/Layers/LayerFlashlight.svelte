@@ -40,7 +40,6 @@
 	.layer-flashlight {
 		pointer-events: none;
 		opacity: 0;
-		z-index: -1;
 		transition: var(--transition-layer-flashlight-hover);
 	}
 </style>

@@ -121,6 +121,10 @@
 	opacity: 1;
 }
 
+.global-fix-overflow {
+	transform: translate3d(0, 0, 0);
+}
+
 /* Button in Input */
 
 .global-button-in-input {

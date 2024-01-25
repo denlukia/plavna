@@ -14,18 +14,20 @@
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="global-line-height-reset">
-	<span class="group">
-		<span class="row">
-			<Text size="small-short">{label}</Text>
-		</span>
-		{#if infoBefore}
-			<span class="row global-text-additional">
-				<Text size="small-short">{infoBefore}</Text>
+<span class="labeled-input global-line-height-reset">
+	<label>
+		<span class="group">
+			<span class="row">
+				<Text size="small-short">{label}</Text>
 			</span>
-		{/if}
-	</span>
-	<Input {...inputProps} />
+			{#if infoBefore}
+				<span class="row global-text-additional">
+					<Text size="small-short">{infoBefore}</Text>
+				</span>
+			{/if}
+		</span>
+		<Input {...inputProps} />
+	</label>
 	{#if infoAfter || error}
 		<span class="group">
 			{#if infoAfter}
@@ -40,9 +42,12 @@
 			{/if}
 		</span>
 	{/if}
-</label>
+</span>
 
 <style>
+	.labeled-input {
+		display: block;
+	}
 	.group {
 		display: block;
 		padding-inline: var(--size-labeled-input-info-padding-inline);

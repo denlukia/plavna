@@ -7,7 +7,7 @@
 	let { children } = $props<Props>();
 </script>
 
-<span class="layers">{@render children()}</span>
+<span class="layers global-fix-overflow">{@render children()}</span>
 
 <style>
 	.layers {
