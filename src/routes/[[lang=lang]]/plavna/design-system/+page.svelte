@@ -1,11 +1,11 @@
 <script>
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
-	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import LabeledInput from '$lib/design-system/components/LabeledInput.svelte';
+	import LabeledInput from '$lib/design-system/components/Input/LabeledInput.svelte';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
+	import LabeledSwitch from '$lib/design-system/components/Switch/LabeledSwitch.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 	import { setContext } from 'svelte';
 
@@ -19,7 +19,7 @@
 
 <Layers>
 	<div class="blocks">
-		<div class="group texts">
+		<div class="group">
 			<Text block size="heading-1">denis lukianenko</Text>
 			<Text block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Text>
 			<Text block size="headline">Тестовий <br /> текст</Text>
@@ -56,6 +56,7 @@
 			<Select>
 				<SelectItem>Test</SelectItem>
 			</Select>
+			<LabeledSwitch labelAfter="Текст" textSize="heading-2" />
 		</div>
 	</div>
 	<Grid />
@@ -67,8 +68,6 @@
 		flex-wrap: wrap;
 		gap: 10px;
 		margin-bottom: 10px;
-	}
-	.texts {
 		align-items: flex-start;
 	}
 </style>

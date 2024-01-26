@@ -1,16 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { TextSizes } from './types';
 
 	type Props = {
-		size?:
-			| 'heading-1'
-			| 'heading-2'
-			| 'headline'
-			| 'headline-short'
-			| 'body'
-			| 'body-short'
-			| 'small'
-			| 'small-short';
+		size?: TextSizes;
 		children: Snippet;
 		block?: boolean;
 		bold?: boolean;

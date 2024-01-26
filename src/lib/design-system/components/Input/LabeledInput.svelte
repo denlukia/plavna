@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Input from './Input/Input.svelte';
-	import Text from './Text.svelte';
-	import type { LanguagedInputProps } from './Input/types';
+	import Input from './Input.svelte';
+	import Text from '../Text.svelte';
+	import type { LanguagedInputProps } from './types';
 
 	type Props = LanguagedInputProps & {
 		infoBefore?: string;

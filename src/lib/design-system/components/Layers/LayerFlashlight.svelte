@@ -7,7 +7,7 @@
 	let { mouse } = $props<Props>();
 </script>
 
-<span class="layer-flashlight">
+<span class="layer-flashlight" class:hovered={mouse.hovered}>
 	<span class="poiner-shade" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}" />
 </span>
 
@@ -41,5 +41,8 @@
 		pointer-events: none;
 		opacity: 0;
 		transition: var(--transition-layer-flashlight-hover);
+	}
+	.layer-flashlight.hovered {
+		opacity: 1;
 	}
 </style>

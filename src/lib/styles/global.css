@@ -117,10 +117,6 @@
 	background: none;
 }
 
-.global-layer-flashlight-hover-trigger:hover > .layers > .layer-flashlight {
-	opacity: 1;
-}
-
 .global-fix-overflow {
 	transform: translate3d(0, 0, 0);
 }

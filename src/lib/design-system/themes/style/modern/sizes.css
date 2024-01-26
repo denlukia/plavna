@@ -22,7 +22,7 @@
 	--size-column-width: 200px;
 	--size-column-gap: var(--size-m);
 
-	/* --- Layers */
+	/* --- Layers --- */
 	--size-layer-flashlight-hover: 130px;
 	--size-layer-shift-hover-translate: 2px;
 
@@ -49,7 +49,7 @@
 	--size-input-color-picker: var(--size-l-to-xl);
 	--size-input-color-picker-radius: var(--size-full);
 
-	/* --- Button in Input */
+	/* --- Button in Input --- */
 	--size-input-to-button-padding: var(--size-s);
 	--size-button-in-input-border-radius: calc(
 		var(--size-input-border-radius) - var(--size-input-to-button-padding)
@@ -79,9 +79,21 @@
 	--size-select-border-radius: var(--size-m);
 	--size-select-icon-width: var(--size-icon-body-size);
 
-	/* --- Select in Input */
+	/* --- Select in Input --- */
 	--size-select-in-input-padding-inline: var(--size-m);
 	--size-select-in-input-padding-top: var(--size-s-to-m);
 	--size-select-in-input-padding-bottom: var(--size-s-to-m);
 	--size-select-in-input-icon-width: var(--size-icon-small-size);
+
+	/* --- Switch --- */
+	--size-switch-width: var(--size-3xl);
+	--size-switch-height: var(--size-xl);
+	--size-switch-border-radius: var(--size-full);
+	--size-switch-padding-to-handle: var(--size-s);
+	--size-switch-layer-flashlight-hover: 40px;
+
+	/* --- Switch Handle */
+	--size-switch-handle-width: var(--size-l);
+	--size-switch-handle-border-radius: var(--size-full);
+	--size-switch-handle-border-width: var(--size-xs);
 }

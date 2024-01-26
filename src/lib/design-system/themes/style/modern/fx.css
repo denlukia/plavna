@@ -46,4 +46,25 @@
 	--transition-select: all 0.2s ease-out;
 	--transform-select-hover: translateY(-1px);
 	--transform-select-active: translateY(1px);
+
+	/* --- Switch --- */
+	--shadow-switch: inset 0 2px 4px var(--color-switch-shadow-1),
+		0 1px 1px var(--color-switch-shadow-2);
+	--shadow-switch-checked: 0 0px 2px var(--color-switch-checked-shadow-1);
+	--shadow-switch-checked-hover: 0 2px 4px var(--color-switch-shadow-1);
+	--transition-switch-duration: 0.2s;
+	--transition-switch-easing: ease-out;
+	--transform-switch-checked-hover: translateY(-1px);
+	--transform-switch-checked-active: translateY(1px);
+
+	/* --- Switch Handle --- */
+	--border-switch-handle: var(--size-switch-handle-border-width) solid
+		var(--color-switch-handle-border);
+	--shadow-switch-handle: 0 2px 2px var(--color-switch-handle-shadow-1);
+	--transform-switch-handle-active: translateX(
+		calc(
+			var(--size-switch-width) - var(--size-switch-padding-to-handle) * 2 -
+				var(--size-switch-handle-width)
+		)
+	);
 }
