@@ -14,7 +14,7 @@
 	<span class="switch-visualizer global-line-height-reset global-" {...events}>
 		<Layers>
 			<LayerFlashlight {mouse} />
-			<span class="layer-handle">
+			<span class="layer-handle global-fix-overflow">
 				<span class="handle" />
 			</span>
 		</Layers>
@@ -27,7 +27,6 @@
 	}
 
 	.switch-visualizer {
-		user-select: none;
 		display: inline-flex;
 		background: var(--color-switch-bg);
 		box-shadow: var(--shadow-switch);
