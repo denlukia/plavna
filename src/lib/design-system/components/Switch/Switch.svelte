@@ -1,5 +1,6 @@
 <script lang="ts">
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import LayerShift from '../Layers/LayerShift.svelte';
 	import Layers from '../Layers/Layers.svelte';
 	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import type { SwitchProps } from './types';
@@ -14,9 +15,11 @@
 	<span class="switch-visualizer global-line-height-reset global-" {...events}>
 		<Layers>
 			<LayerFlashlight {mouse} />
-			<span class="layer-handle global-fix-overflow">
-				<span class="handle" />
-			</span>
+			<LayerShift {mouse}>
+				<span class="layer-handle global-fix-overflow">
+					<span class="handle" />
+				</span>
+			</LayerShift>
 		</Layers>
 	</span>
 </label>
@@ -27,12 +30,10 @@
 	}
 
 	.switch-visualizer {
-		display: inline-flex;
+		display: inline-block;
 		background: var(--color-switch-bg);
 		box-shadow: var(--shadow-switch);
 		border-radius: var(--size-switch-border-radius);
-		width: var(--size-switch-width);
-		height: var(--size-switch-height);
 		transition: all var(--transition-switch-duration) var(--transition-switch-easing);
 		overflow: hidden;
 	}
@@ -44,15 +45,20 @@
 	.switch-visualizer :global(.layer-flashlight .poiner-shade) {
 		transition: background var(--transition-switch-duration) var(--transition-switch-easing);
 	}
+	.switch-visualizer:active .handle {
+		width: var(--size-switch-handle-active-width);
+	}
 
 	.layer-handle {
+		display: inline-block;
+		width: var(--size-switch-width);
 		padding: var(--size-switch-padding-to-handle);
 	}
 
 	.handle {
 		display: inline-block;
 		width: var(--size-switch-handle-width);
-		height: 100%;
+		height: var(--size-switch-handle-height);
 		background: var(--color-switch-handle-bg);
 		border-radius: var(--size-switch-handle-border-radius);
 		transition: all var(--transition-switch-duration) var(--transition-switch-easing);
@@ -74,6 +80,9 @@
 	}
 	input:checked + .switch-visualizer .handle {
 		transform: var(--transform-switch-handle-active);
+	}
+	input:checked + .switch-visualizer:active .handle {
+		transform: var(--transform-switch-checked-handle-active);
 	}
 
 	input:checked + .switch-visualizer :global(.layer-flashlight) {

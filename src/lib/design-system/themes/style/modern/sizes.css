@@ -87,13 +87,14 @@
 
 	/* --- Switch --- */
 	--size-switch-width: var(--size-3xl);
-	--size-switch-height: var(--size-xl);
 	--size-switch-border-radius: var(--size-full);
 	--size-switch-padding-to-handle: var(--size-s);
-	--size-switch-layer-flashlight-hover: 40px;
+	--size-switch-layer-flashlight-hover: 50px;
 
 	/* --- Switch Handle */
 	--size-switch-handle-width: var(--size-l);
+	--size-switch-handle-height: var(--size-l);
 	--size-switch-handle-border-radius: var(--size-full);
 	--size-switch-handle-border-width: var(--size-xs);
+	--size-switch-handle-active-width: var(--size-xl);
 }

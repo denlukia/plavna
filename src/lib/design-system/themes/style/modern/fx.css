@@ -67,4 +67,10 @@
 				var(--size-switch-handle-width)
 		)
 	);
+	--transform-switch-checked-handle-active: translateX(
+		calc(
+			var(--size-switch-width) - var(--size-switch-padding-to-handle) * 2 -
+				var(--size-switch-handle-active-width)
+		)
+	);
 }
