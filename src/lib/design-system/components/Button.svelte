@@ -31,7 +31,7 @@
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
 	class={`reset button type-${type} size-${size} 
-	global-layer-flashlight-hover-trigger
+	global-layer-flashlight-hover-trigger global-line-height-reset
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	{...events}
 	{onclick}
@@ -40,7 +40,7 @@
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<LayerShift {mouse}>
-			<span class="content global-line-height-reset">
+			<span class="content">
 				<Text size={`${size}-short`} {bold}>{@render children()}</Text>
 			</span>
 		</LayerShift>

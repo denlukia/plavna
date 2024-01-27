@@ -10,9 +10,9 @@
 	let { mouse, ...events } = new MouseWatcher();
 </script>
 
-<label>
+<label class="global-line-height-reset">
 	<input {...props} type="checkbox" />
-	<span class="switch-visualizer global-line-height-reset global-" {...events}>
+	<span class="switch-visualizer global-" {...events}>
 		<Layers>
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
@@ -25,8 +25,15 @@
 </label>
 
 <style>
+	label {
+		display: inline-block;
+		-webkit-user-select: none;
+		user-select: none;
+		position: relative;
+	}
 	input {
 		appearance: none;
+		position: absolute;
 	}
 
 	.switch-visualizer {

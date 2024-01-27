@@ -74,6 +74,9 @@
 	--color-select-shadow-2: var(--warm-300-transparent-100);
 	--color-select-layer-flashlight-hover: var(--warm-300-transparent-200);
 
+	/* --- Labeled Switch --- */
+	--color-labeled-switch-bg: var(--warm-300-transparent-100);
+
 	/* --- Switch --- */
 	--color-switch-bg: var(--warm-300-transparent-100);
 	--color-switch-shadow-1: var(--warm-300-transparent-200);

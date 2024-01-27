@@ -85,6 +85,12 @@
 	--size-select-in-input-padding-bottom: var(--size-s-to-m);
 	--size-select-in-input-icon-width: var(--size-icon-small-size);
 
+	/* --- Labeled Switch */
+	--size-labeled-switch-border-radius: var(--size-full);
+	--size-labeled-switch-padding-inline: var(--size-s);
+	--size-labeled-switch-aligner-padding-top: var(--size-s);
+	--size-labeled-switch-text-aligner-padding-inline: var(--size-s);
+
 	/* --- Switch --- */
 	--size-switch-width: var(--size-3xl);
 	--size-switch-border-radius: var(--size-full);
@@ -95,6 +101,6 @@
 	--size-switch-handle-width: var(--size-l);
 	--size-switch-handle-height: var(--size-l);
 	--size-switch-handle-border-radius: var(--size-full);
-	--size-switch-handle-border-width: var(--size-xs);
-	--size-switch-handle-active-width: var(--size-xl);
+	--size-switch-handle-border-width: 4px;
+	--size-switch-handle-active-width: var(--size-l-to-xl);
 }

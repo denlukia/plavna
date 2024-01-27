@@ -56,7 +56,8 @@
 			<Select>
 				<SelectItem>Test</SelectItem>
 			</Select>
-			<LabeledSwitch labelAfter="Текст" textSize="heading-2" />
+			<LabeledSwitch labelAfter="Текст" textSize="body" />
+			<LabeledSwitch labelBefore="Текст" textSize="heading-2" withBg />
 		</div>
 	</div>
 	<Grid />

@@ -50,7 +50,7 @@
 	/* --- Switch --- */
 	--shadow-switch: inset 0 2px 4px var(--color-switch-shadow-1),
 		0 1px 1px var(--color-switch-shadow-2), 0 0 0 transparent;
-	--shadow-switch-checked: inset 0 0 0 transparent, 0px 2px var(--color-switch-checked-shadow-1),
+	--shadow-switch-checked: inset 0 0 0 transparent, 0 0px 2px var(--color-switch-checked-shadow-1),
 		0 5px 10px var(--color-switch-checked-shadow-1);
 	--shadow-switch-checked-hover: inset 0 0 0 transparent, 0 2px 4px var(--color-switch-shadow-1),
 		0 8px 10px var(--color-switch-shadow-1);
