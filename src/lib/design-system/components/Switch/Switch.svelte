@@ -10,7 +10,7 @@
 	let { mouse, ...events } = new MouseWatcher();
 </script>
 
-<label class="global-line-height-reset">
+<label class="switch global-line-height-reset">
 	<input {...props} type="checkbox" />
 	<span class="switch-visualizer global-" {...events}>
 		<Layers>

@@ -7,16 +7,10 @@
 		children: Snippet;
 		block?: boolean;
 		bold?: boolean;
-		additionalClass?: string;
+		tone?: 'default' | 'additional' | 'danger';
 	};
 
-	let {
-		size = 'body',
-		children,
-		block = false,
-		bold = false,
-		additionalClass = ''
-	} = $props<Props>();
+	let { size = 'body', tone = 'default', children, block = false, bold = false } = $props<Props>();
 
 	let outline = $state(false);
 
@@ -30,7 +24,7 @@
 <svelte:window {onkeypress} />
 <svelte:element
 	this={block ? 'p' : 'span'}
-	class={`text global-text-${size} ${additionalClass}`}
+	class="text global-text-{size} tone-{tone}"
 	class:outline
 	class:global-text-bold={bold}
 >
@@ -45,5 +39,12 @@
 	.outline {
 		outline: 0.5px solid rgba(0, 128, 0, 0.5);
 		outline-offset: -0.5px;
+	}
+
+	.tone-additional {
+		color: var(--color-text-additional);
+	}
+	.tone-danger {
+		color: var(--color-text-danger);
 	}
 </style>

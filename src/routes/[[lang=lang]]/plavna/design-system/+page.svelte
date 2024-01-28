@@ -1,11 +1,12 @@
 <script>
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
-	import LabeledInput from '$lib/design-system/components/Input/LabeledInput.svelte';
+	import Input from '$lib/design-system/components/Input/Input.svelte';
+	import Label from '$lib/design-system/components/Labeled/Labeled.svelte';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
-	import LabeledSwitch from '$lib/design-system/components/Switch/LabeledSwitch.svelte';
+	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 	import { setContext } from 'svelte';
 
@@ -42,22 +43,24 @@
 			<Button size="small" type="destructive" bold>Testy</Button>
 		</div>
 		<div class="group">
-			<LabeledInput languaged label="Текст" infoBefore="Додаткова інформація до інпуту" />
-			<LabeledInput
-				label="Текст"
-				infoAfter="Додаткова інформація після інпуту"
-				error="Текст помилки"
-			/>
-			<LabeledInput label="Пароль" type="password" />
-			<LabeledInput label="Пароль" type="textarea" />
-			<LabeledInput label="Колір" type="color" />
+			<Label type="vertical">
+				<Text size="small-short">Тест</Text>
+				<Text size="small-short" tone="additional">Тест</Text>
+				<Input />
+			</Label>
 		</div>
 		<div class="group">
 			<Select>
 				<SelectItem>Test</SelectItem>
 			</Select>
-			<LabeledSwitch labelAfter="Текст" textSize="body" />
-			<LabeledSwitch labelBefore="Текст" textSize="heading-2" withBg />
+			<Label>
+				<Switch />
+				<Text size="body-short">Тест</Text>
+			</Label>
+			<Label type="switch-with-bg">
+				<Text size="heading-2">Тест</Text>
+				<Switch />
+			</Label>
 		</div>
 	</div>
 	<Grid />

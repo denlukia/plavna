@@ -53,6 +53,9 @@
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-25);
 	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
 
+	/* --- Labeled --- */
+	--color-labeled-switch-with-bg-bg: var(--warm-300-transparent-300);
+
 	/* --- Input --- */
 	--color-input-bg: var(--warm-300-transparent-100);
 	--color-input-shadow-1: var(--warm-300-transparent-200);

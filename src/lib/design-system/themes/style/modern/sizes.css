@@ -37,6 +37,15 @@
 	--size-button-small-padding-bottom: var(--size-s);
 	--size-button-small-border-radius: var(--size-full);
 
+	/* --- Labeled --- */
+	--size-labeled-text-padding-inline: var(--size-m);
+	--size-labeled-input-margin-top: var(--size-s);
+	--size-labeled-input-margin-bottom: var(--size-s);
+	--size-labeled-switch-with-bg-border-radius: var(--size-full);
+	--size-labeled-switch-with-bg-margin-top: var(--size-s);
+	--size-labeled-switch-with-bg-padding-inline: var(--size-s);
+	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
+
 	/* --- Input --- */
 	--size-input-width: 300px;
 	--size-input-padding-inline: var(--size-m);
@@ -66,11 +75,6 @@
 	--size-icon-small-size-unitless: 15;
 	--size-icon-small-size: calc(var(--size-icon-small-size-unitless) * 1px);
 	--size-icon-small-stroke-width: 1.25px;
-
-	/* --- Labeled Input --- */
-	--size-labeled-input-info-padding-inline: var(--size-m);
-	--size-labeled-input-info-padding-top: var(--size-s);
-	--size-labeled-input-info-padding-bottom: var(--size-s);
 
 	/* --- Select --- */
 	--size-select-padding-inline: var(--size-m);

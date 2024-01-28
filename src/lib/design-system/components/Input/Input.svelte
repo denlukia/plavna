@@ -25,7 +25,11 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input-whole global-layer-flashlight-hover-trigger" {...events} role="presentation">
+<span
+	class="input-with-actions global-layer-flashlight-hover-trigger"
+	{...events}
+	role="presentation"
+>
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
@@ -68,7 +72,7 @@
 
 <style>
 	/* General */
-	.input-whole {
+	.input-with-actions {
 		display: inline-block;
 		width: var(--size-input-width);
 		background-color: var(--color-input-bg);

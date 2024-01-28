@@ -23,6 +23,9 @@
 
 	--transform-button-active: translateY(1px);
 
+	/* --- Labeled --- */
+	--transition-labeled-input: all 0.2s ease-out;
+
 	/* --- Input --- */
 	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
 	--border-input-color-picker: 3px solid var(--color-input-color-picker-border);
