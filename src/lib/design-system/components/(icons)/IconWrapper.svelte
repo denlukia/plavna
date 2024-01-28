@@ -5,36 +5,20 @@
 	import { derived } from 'svelte/store';
 
 	type AnimationTypes =
-		| { animated: true; playhead: number; frames: number; frameSize: number }
-		| { animated?: false | undefined; playhead?: never; frames?: never; frameSize?: never };
+		| { playhead: number; frames: number; frameSize: number }
+		| { playhead?: never; frames?: never; frameSize?: never };
 
 	type Props = {
 		children: Snippet;
-		size?: 'body' | 'small';
+		size?: 'body' | 'small' | 'body-big';
 	} & AnimationTypes;
 
-	let {
-		children,
-		size = 'body',
-		animated = false,
-		playhead = 0,
-		frames = 1,
-		frameSize = 20
-	} = $props<Props>();
+	let { children, size = 'body', playhead = 0, frames = 1, frameSize = 20 } = $props<Props>();
 
 	let tweenedPlayhead = tweened(playhead, { duration: 200 });
 	let currentFrame = derived(tweenedPlayhead, (tweenedPlayhead: number) =>
-		Math.floor(tweenedPlayhead * frames)
+		Math.min(Math.floor(tweenedPlayhead * frames), frames - 1)
 	);
-	let currentShift = derived(currentFrame, (currentFrame: number) => {
-		let shift = currentFrame * frameSize;
-		let maxShift = (frames - 1) * frameSize;
-		let bounded = Math.min(shift, maxShift);
-
-		// Negative cause exactly transform -20px
-		// should show a frame placed 20px from the left;
-		return -bounded;
-	});
 
 	$effect(() => {
 		if (playhead !== undefined) {
@@ -53,7 +37,7 @@
 		--svg-width: calc(var(--size-icon-${size}-size) * ${frames});
 		--svg-height: var(--size-icon-${size}-size);
 		--svg-stroke-width: calc(${frameSize} / var(--size-icon-${size}-size-unitless) * var(--size-icon-${size}-stroke-width));
-		--shift: ${$currentShift}px;
+		--shift: calc(${$currentFrame} * var(--size-icon-${size}-size-unitless) * -1px);
 		`}
 >
 	{@render children()}
@@ -68,5 +52,6 @@
 		width: var(--svg-width);
 		height: var(--svg-height);
 		transform: translateX(var(--shift));
+		--svg-main-color: currentcolor;
 	}
 </style>

@@ -3,8 +3,8 @@
 	import Layers from '../Layers/Layers.svelte';
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
 	import { MouseWatcher } from '../Layers/watcher.svelte';
-	import IconWrapper from '../icons/IconWrapper.svelte';
-	import ArrowDown from '../icons/ArrowDown.svelte';
+	import IconWrapper from '../(icons)/IconWrapper.svelte';
+	import ArrowDown from '../(icons)/ArrowDown.svelte';
 	import LayerShift from '../Layers/LayerShift.svelte';
 
 	type Props = {

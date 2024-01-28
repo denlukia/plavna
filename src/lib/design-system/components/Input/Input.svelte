@@ -3,8 +3,8 @@
 	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import Layers from '../Layers/Layers.svelte';
 	import Select from '../Select/Select.svelte';
-	import Eye from '../icons/Eye.svelte';
-	import IconWrapper from '../icons/IconWrapper.svelte';
+	import Eye from '../(icons)/Eye.svelte';
+	import IconWrapper from '../(icons)/IconWrapper.svelte';
 	import AnimatedPswdInput from './AnimatedPswdInput.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';

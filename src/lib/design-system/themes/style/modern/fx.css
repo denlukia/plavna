@@ -78,4 +78,15 @@
 				var(--size-switch-handle-active-width)
 		)
 	);
+
+	/* --- Checkbox --- */
+	--shadow-checkbox: inset 0 2px 4px var(--color-checkbox-shadow-1),
+		0 1px 1px var(--color-checkbox-shadow-2), 0 0 0 transparent;
+	--shadow-checkbox-checked: inset 0 0 0 transparent, 0 0px 2px var(--color-checkbox-shadow-1),
+		0 5px 10px var(--color-checkbox-shadow-1);
+	--shadow-checkbox-checked-hover: inset 0 0 0 transparent, 0 2px 4px var(--color-checkbox-shadow-1),
+		0 8px 10px var(--color-checkbox-shadow-1);
+	--tranform-checkbox-hover: translateY(-1px);
+	--tranform-checkbox-active: translateY(1px);
+	--transition-checkbox: all 0.2s ease-out;
 }

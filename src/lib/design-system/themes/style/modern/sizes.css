@@ -45,6 +45,8 @@
 	--size-labeled-switch-with-bg-margin-top: var(--size-s);
 	--size-labeled-switch-with-bg-padding-inline: var(--size-s);
 	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
+	--size-labeled-checkbox-margin-top: var(--size-s);
+	--size-labeled-checkbox-margin-bottom: var(--size-s);
 
 	/* --- Input --- */
 	--size-input-width: 300px;
@@ -69,6 +71,9 @@
 	--size-button-in-input-padding-bottom: var(--size-s);
 
 	/* --- Icon --- */
+	--size-icon-body-big-size-unitless: 30;
+	--size-icon-body-big-size: calc(var(--size-icon-body-big-size-unitless) * 1px);
+	--size-icon-body-big-stroke-width: 1.5px;
 	--size-icon-body-size-unitless: 20;
 	--size-icon-body-size: calc(var(--size-icon-body-size-unitless) * 1px);
 	--size-icon-body-stroke-width: 1.6px;
@@ -89,12 +94,6 @@
 	--size-select-in-input-padding-bottom: var(--size-s-to-m);
 	--size-select-in-input-icon-width: var(--size-icon-small-size);
 
-	/* --- Labeled Switch */
-	--size-labeled-switch-border-radius: var(--size-full);
-	--size-labeled-switch-padding-inline: var(--size-s);
-	--size-labeled-switch-aligner-padding-top: var(--size-s);
-	--size-labeled-switch-text-aligner-padding-inline: var(--size-s);
-
 	/* --- Switch --- */
 	--size-switch-width: var(--size-3xl);
 	--size-switch-border-radius: var(--size-full);
@@ -107,4 +106,8 @@
 	--size-switch-handle-border-radius: var(--size-full);
 	--size-switch-handle-border-width: 4px;
 	--size-switch-handle-active-width: var(--size-l-to-xl);
+
+	/* --- Checkbox --- */
+	--size-checkbox: var(--size-l);
+	--size-checkbox-border-radius: var(--size-s);
 }

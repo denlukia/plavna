@@ -1,8 +1,9 @@
 <script>
 	import Button from '$lib/design-system/components/Button.svelte';
+	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import Label from '$lib/design-system/components/Labeled/Labeled.svelte';
+	import Label from '$lib/design-system/components/Labeled.svelte';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
@@ -60,6 +61,10 @@
 			<Label type="switch-with-bg">
 				<Text size="heading-2">Тест</Text>
 				<Switch />
+			</Label>
+			<Label>
+				<Checkbox />
+				<Text>Тест</Text>
 			</Label>
 		</div>
 	</div>

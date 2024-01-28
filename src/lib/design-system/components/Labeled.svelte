@@ -45,4 +45,9 @@
 	label > :global(.input-with-actions:last-child) {
 		margin-bottom: 0;
 	}
+
+	label > :global(.checkbox) {
+		margin-top: var(--size-labeled-checkbox-margin-top);
+		margin-bottom: var(--size-labeled-checkbox-margin-bottom);
+	}
 </style>
