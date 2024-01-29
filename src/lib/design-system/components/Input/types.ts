@@ -1,6 +1,8 @@
-import type { HTMLInputAttributes } from 'svelte/elements';
+import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
 
-export type LanguagedInputProps = HTMLInputAttributes & {
-	languaged?: boolean;
-	type?: 'textarea' | 'password' | 'text' | 'color';
-};
+type Common = { languaged?: boolean };
+
+type Input = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' };
+type Textarea = HTMLTextareaAttributes & { type: 'textarea' };
+
+export type LanguagedInputProps = Common & (Input | Textarea);

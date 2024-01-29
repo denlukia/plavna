@@ -2,26 +2,39 @@
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
 	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import Layers from '../Layers/Layers.svelte';
-	import Select from '../Select/Select.svelte';
 	import Eye from '../(icons)/Eye.svelte';
 	import IconWrapper from '../(icons)/IconWrapper.svelte';
-	import AnimatedPswdInput from './AnimatedPswdInput.svelte';
+	import AnimatedPswdInput from './PasswordInput.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';
 	import type { LanguagedInputProps } from './types';
+	import { tweened } from 'svelte/motion';
 
-	let { type = 'text', languaged = false, name, ...attributes } = $props<LanguagedInputProps>();
+	let { value, ...attributes } = $props<LanguagedInputProps>();
+
+	const eyeClosedFrame = 0;
+	const eyeOpenedFrame = 7;
+	const pswdIconCurrentFrame = tweened(eyeOpenedFrame, {
+		duration: 150
+	});
+
 	let { mouse, ...events } = new MouseWatcher();
-
 	let pswdVisible = $state(false);
-	let pswdIconPlayhead = $derived(pswdVisible ? 0 : 1);
-	let hasLeading = $derived(type === 'color');
-	let hasTrailing = $derived(type === 'password' || languaged);
-	let value = $state('');
+
+	let hasLeading = $derived(attributes.type === 'color');
+	let hasTrailing = $derived(attributes.type === 'password' || attributes.languaged);
 
 	function togglePswdVisibility() {
 		pswdVisible = !pswdVisible;
 	}
+
+	$effect(() => {
+		if (pswdVisible) {
+			pswdIconCurrentFrame.set(eyeClosedFrame);
+		} else {
+			pswdIconCurrentFrame.set(eyeOpenedFrame);
+		}
+	});
 </script>
 
 <!-- TODO: What would the correct role be? -->
@@ -33,7 +46,7 @@
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
-			{#if type === 'color'}
+			{#if attributes.type === 'color'}
 				<span class="picker-wrapper">
 					<input bind:value type="color" class="global-input-reset color-picker" />
 				</span>
@@ -42,26 +55,31 @@
 				class="input-wrapper"
 				class:no-right-padding={hasTrailing}
 				class:no-left-padding={hasLeading}
-				class:textarea-wrapper={type === 'textarea'}
+				class:textarea-wrapper={attributes.type === 'textarea'}
 			>
-				{#if type === 'password'}
+				{#if attributes.type === 'password'}
 					<AnimatedPswdInput {pswdVisible} {...attributes} />
-				{:else if type === 'text' || type === 'color'}
-					<input bind:value {name} type="text" class="global-input-reset global-text-body" />
-				{:else if type === 'textarea'}
-					<textarea bind:value {name} class="global-input-reset global-text-body" />
+				{:else if attributes.type === 'text' || attributes.type === 'color'}
+					<input
+						bind:value
+						{...attributes}
+						type="text"
+						class="global-input-reset global-text-body"
+					/>
+				{:else if attributes.type === 'textarea'}
+					<textarea bind:value {...attributes} class="global-input-reset global-text-body" />
 				{/if}
 			</span>
 			{#if hasTrailing}
 				<span class="buttons-wrapper">
-					{#if type === 'password'}
+					{#if attributes.type === 'password'}
 						<ButtonInInput onclick={togglePswdVisibility}>
-							<IconWrapper animated playhead={pswdIconPlayhead} frames={8} frameSize={20}>
+							<IconWrapper currentFrame={$pswdIconCurrentFrame} frames={8} frameSize={20}>
 								<Eye />
 							</IconWrapper>
 						</ButtonInInput>
 					{/if}
-					{#if languaged}
+					{#if attributes.languaged}
 						<LangSelector />
 					{/if}
 				</span>

@@ -47,7 +47,7 @@
 			<Label type="vertical">
 				<Text size="small-short">Тест</Text>
 				<Text size="small-short" tone="additional">Тест</Text>
-				<Input />
+				<Input type="password" placeholder="Тест" />
 			</Label>
 		</div>
 		<div class="group">

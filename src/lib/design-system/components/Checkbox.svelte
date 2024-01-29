@@ -3,18 +3,39 @@
 	import IconWrapper from './(icons)/IconWrapper.svelte';
 	import CheckMark from './(icons)/CheckMark.svelte';
 	import { tweened } from 'svelte/motion';
+	import { untrack } from 'svelte';
 
-	let { type, ...attributes } = $props<HTMLInputAttributes>();
+	let { type, checked, ...attributes } = $props<HTMLInputAttributes>();
 
-	let checkMarkPlayhead = tweened(0.5);
+	const uncheckedStartingFrame = 0;
+	const checkedFrame = 12;
+	const uncheckedEndingFrame = 23;
+
+	const checkMarkCurrentFrame = tweened(checked ? checkedFrame : uncheckedStartingFrame, {
+		duration: 200
+	});
+
+	$effect(() => {
+		if (checked) {
+			checkMarkCurrentFrame.set(checkedFrame);
+		} else {
+			if (untrack(() => $checkMarkCurrentFrame) !== uncheckedStartingFrame) {
+				checkMarkCurrentFrame.set(uncheckedEndingFrame).then(() => {
+					checkMarkCurrentFrame.set(uncheckedStartingFrame, {
+						duration: 0
+					});
+				});
+			}
+		}
+	});
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label class="checkbox">
-	<input type="checkbox" {...attributes} />
+	<input type="checkbox" bind:checked {...attributes} />
 	<span class="checkbox-visualizer">
 		<div class="checkmark-positioner">
-			<IconWrapper size="body-big" frameSize={20} frames={23} playhead={0.5}>
+			<IconWrapper size="body-big" frameSize={20} frames={23} currentFrame={$checkMarkCurrentFrame}>
 				<CheckMark />
 			</IconWrapper>
 		</div>
@@ -57,8 +78,8 @@
 
 	.checkmark-positioner {
 		position: absolute;
-		top: 50%;
-		left: 50%;
+		top: 40%;
+		left: 65%;
 		transform: translate(-50%, -50%);
 	}
 </style>

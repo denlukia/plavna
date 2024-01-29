@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
 	import Layers from '../Layers/Layers.svelte';
-	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	type Props = HTMLInputAttributes & {
 		pswdVisible: boolean;
 	};
-	let { pswdVisible, value, autocomplete } = $props<Props>();
+	let { pswdVisible, type, value, ...attributes } = $props<Props>();
 	let selectionStart: number | null = null;
 	let selectionEnd: number | null = null;
 
@@ -49,7 +49,7 @@
 			bind:this={textInputRef}
 			type="text"
 			spellcheck="false"
-			{autocomplete}
+			{...attributes}
 			class="global-input-reset global-text-body"
 		/>
 	{:else}
@@ -60,7 +60,7 @@
 			bind:this={pswdInputRef}
 			type="password"
 			spellcheck="false"
-			{autocomplete}
+			{...attributes}
 			class="global-input-reset global-text-body"
 		/>
 	{/if}
