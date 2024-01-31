@@ -15,7 +15,7 @@
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
 	const pswdIconCurrentFrame = tweened(eyeOpenedFrame, {
-		duration: 150
+		duration: 250
 	});
 
 	let { mouse, ...events } = new MouseWatcher();
@@ -158,6 +158,11 @@
 	}
 	.color-picker::-webkit-color-swatch-wrapper {
 		padding: 0;
+	}
+
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--color-input-placeholder-text);
 	}
 
 	@keyframes fade {

@@ -4,6 +4,8 @@
 	import CheckMark from './(icons)/CheckMark.svelte';
 	import { tweened } from 'svelte/motion';
 	import { untrack } from 'svelte';
+	import LayerShift from './Layers/LayerShift.svelte';
+	import { MouseWatcher } from './Layers/watcher.svelte';
 
 	let { type, checked, ...attributes } = $props<HTMLInputAttributes>();
 
@@ -12,8 +14,10 @@
 	const uncheckedEndingFrame = 23;
 
 	const checkMarkCurrentFrame = tweened(checked ? checkedFrame : uncheckedStartingFrame, {
-		duration: 200
+		duration: 250
 	});
+
+	let { mouse, ...events } = new MouseWatcher();
 
 	$effect(() => {
 		if (checked) {
@@ -31,13 +35,20 @@
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="checkbox">
+<label class="checkbox" {...events}>
 	<input type="checkbox" bind:checked {...attributes} />
 	<span class="checkbox-visualizer">
 		<div class="checkmark-positioner">
-			<IconWrapper size="body-big" frameSize={20} frames={23} currentFrame={$checkMarkCurrentFrame}>
-				<CheckMark />
-			</IconWrapper>
+			<LayerShift {mouse}>
+				<IconWrapper
+					size="body-big"
+					frameSize={20}
+					frames={23}
+					currentFrame={$checkMarkCurrentFrame}
+				>
+					<CheckMark />
+				</IconWrapper>
+			</LayerShift>
 		</div>
 	</span>
 </label>

@@ -8,6 +8,8 @@
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
+	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
+	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 	import { setContext } from 'svelte';
 
@@ -64,8 +66,12 @@
 			</Label>
 			<Label>
 				<Checkbox />
-				<Text>Тест</Text>
+				<Text>Выздороветь Жорика</Text>
 			</Label>
+			<Tabs>
+				<TabItem active>Тест</TabItem>
+				<TabItem>Тест</TabItem>
+			</Tabs>
 		</div>
 	</div>
 	<Grid />

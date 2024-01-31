@@ -89,4 +89,11 @@
 	--tranform-checkbox-hover: translateY(-1px);
 	--tranform-checkbox-active: translateY(1px);
 	--transition-checkbox: all 0.2s ease-out;
+
+	/* --- Tabs --- */
+	--shadow-tabs: inset 0 2px 4px var(--color-tabs-shadow-1), 0 1px 1px var(--color-tabs-shadow-2);
+
+	/* --- Tab Item --- */
+	--shadow-tab-item-active: 0 1px 1px var(--color-tab-item-active-shadow-1),
+		0 5px 10px var(--color-tab-item-active-shadow-2);
 }

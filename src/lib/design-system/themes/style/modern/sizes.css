@@ -110,4 +110,20 @@
 	/* --- Checkbox --- */
 	--size-checkbox: var(--size-l);
 	--size-checkbox-border-radius: var(--size-s);
+
+	/* --- Tabs --- */
+	--size-tabs-body-border-radius: var(--size-full);
+	--size-tabs-small-border-radius: var(--size-full);
+	--size-tabs-body-padding: var(--size-s);
+	--size-tabs-small-padding: var(--size-s);
+
+	/* --- Tab Item --- */
+	--size-tab-item-body-border-radius: var(--size-full);
+	--size-tab-item-body-padding-inline: var(--size-m);
+	--size-tab-item-body-padding-top: var(--size-none);
+	--size-tab-item-body-padding-bottom: var(--size-s);
+	--size-tab-item-small-border-radius: var(--size-full);
+	--size-tab-item-small-padding-inline: var(--size-m);
+	--size-tab-item-small-padding-top: var(--size-none);
+	--size-tab-item-small-padding-bottom: var(--size-s);
 }

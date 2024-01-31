@@ -65,3 +65,9 @@
 		/>
 	{/if}
 </Layers>
+
+<style>
+	input::placeholder {
+		color: var(--color-input-placeholder-text);
+	}
+</style>
