@@ -6,4 +6,5 @@ export type TextSizes =
 	| 'body'
 	| 'body-short'
 	| 'small'
-	| 'small-short';
+	| 'small-short'
+	| 'set-with-variables';

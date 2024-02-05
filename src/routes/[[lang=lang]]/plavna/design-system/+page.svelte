@@ -19,6 +19,10 @@
 	];
 
 	setContext('selector-languages', mockedSelectorLanguages);
+
+	const tabs = ['Test 1', 'Test 2'];
+
+	let activeTabIndex = $state(0);
 </script>
 
 <Layers>
@@ -66,11 +70,14 @@
 			</Label>
 			<Label>
 				<Checkbox />
-				<Text>Выздороветь Жорика</Text>
+				<Text>Тест</Text>
 			</Label>
 			<Tabs>
-				<TabItem active>Тест</TabItem>
-				<TabItem>Тест</TabItem>
+				{#each tabs as tab, index}
+					<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>
+						{tab}
+					</TabItem>
+				{/each}
 			</Tabs>
 		</div>
 	</div>

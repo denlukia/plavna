@@ -71,6 +71,16 @@
 	letter-spacing: var(--text-small-short-letter-spacing);
 }
 
+.global-text-set-with-variables {
+	font-family: var(--text-font-family);
+	padding-top: var(--text-padding-top);
+	padding-bottom: var(--text-padding-bottom);
+	font-size: var(--text-font-size);
+	font-weight: var(--text-font-weight);
+	line-height: var(--text-line-height);
+	letter-spacing: var(--text-letter-spacing);
+}
+
 .global-text-bold {
 	font-weight: var(--text-bold-font-weight);
 }
