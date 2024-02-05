@@ -61,7 +61,7 @@
 	--color-input-bg: var(--warm-300-transparent-100);
 	--color-input-shadow-1: var(--warm-300-transparent-200);
 	--color-input-shadow-2: var(--neutral-1000);
-	--color-input-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-input-layer-flashlight-hover: var(--neutral-1000-transparent-50);
 	--color-input-color-picker-border: var(--neutral-1000);
 	--color-input-color-picker-shadow: var(--neutral-0-transparent-10);
 	--color-input-placeholder-text: var(--warm-300-transparent-500);
@@ -107,7 +107,7 @@
 	--color-tabs-bg: var(--warm-300-transparent-100);
 	--color-tabs-shadow-1: var(--warm-300-transparent-200);
 	--color-tabs-shadow-2: var(--neutral-1000);
-	--color-tabs-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-tabs-layer-flashlight-hover: var(--neutral-1000-transparent-50);
 
 	/* --- Tab Item --- */
 	--color-tab-item-active-bg: var(--neutral-1000);

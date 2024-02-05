@@ -117,7 +117,7 @@
 		position: absolute;
 		background: var(--color-tab-item-active-bg);
 		box-shadow: var(--shadow-tab-item-active);
-		transition: all 200ms ease-out;
+		transition: var(--transition-tabs-pill);
 		top: 0;
 		left: 0;
 		transform: translate(var(--left), var(--top));

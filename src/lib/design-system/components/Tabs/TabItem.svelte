@@ -30,7 +30,11 @@
 >
 	<Layers>
 		{#if active}
-			<div class="layer-flashlight-wrapper" in:fade out:fade={{ duration: 100 }}>
+			<div
+				class="layer-flashlight-wrapper"
+				in:fade={{ duration: 150, delay: 100 }}
+				out:fade={{ duration: 100 }}
+			>
 				<LayerFlashlight {mouse} />
 			</div>
 		{/if}

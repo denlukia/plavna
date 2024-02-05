@@ -118,7 +118,6 @@
 	--size-tabs-small-padding: var(--size-s);
 
 	/* --- Tab Item --- */
-
 	--size-tab-item-body-padding-inline: var(--size-m);
 	--size-tab-item-body-padding-top: var(--size-none);
 	--size-tab-item-body-padding-bottom: var(--size-none);
