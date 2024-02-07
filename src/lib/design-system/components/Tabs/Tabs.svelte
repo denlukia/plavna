@@ -63,8 +63,6 @@
 			mutationObserver?.disconnect();
 		};
 	});
-
-	$inspect(pillActive);
 </script>
 
 <!-- svelte-ignore a11y-interactive-supports-focus a11y-click-events-have-key-events -->
