@@ -20,7 +20,7 @@
 
 	setContext('selector-languages', mockedSelectorLanguages);
 
-	const tabs = ['Test 1', 'Test 2'];
+	const tabs = ['Test 1', 'Кек пук тест тест'];
 
 	let activeTabIndex = $state(0);
 </script>

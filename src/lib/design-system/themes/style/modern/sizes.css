@@ -128,4 +128,5 @@
 	/* -- Tab Item Active */
 	--size-tab-item-active-body-border-radius: var(--size-full);
 	--size-tab-item-active-small-border-radius: var(--size-full);
+	--size-tab-item-active-body-layer-flashlight-hover: 60px;
 }

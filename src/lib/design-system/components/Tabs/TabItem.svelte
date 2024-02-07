@@ -51,6 +51,7 @@
 		overflow: hidden;
 	}
 	.tab-item.active {
+		--size-layer-flashlight-hover: var(--size-tab-item-active-body-layer-flashlight-hover);
 		--color-layer-flashlight-hover: var(--color-tab-item-active-layer-flashlight-hover);
 	}
 </style>
