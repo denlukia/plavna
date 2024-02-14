@@ -100,4 +100,7 @@
 	/* --- Tab Item --- */
 	--shadow-tab-item-active: 0 1px 1px var(--color-tab-item-active-shadow-1),
 		0 5px 10px var(--color-tab-item-active-shadow-2);
+
+	/* --- Box --- */
+	--shadow-box: 0 4px 20px var(--color-box-shadow-1), 0 4px 120px var(--color-box-shadow-2);
 }

@@ -129,4 +129,10 @@
 	--size-tab-item-active-body-border-radius: var(--size-full);
 	--size-tab-item-active-small-border-radius: var(--size-full);
 	--size-tab-item-active-body-layer-flashlight-hover: 60px;
+
+	/* --- Box --- */
+	--size-box-border-radius: var(--size-xl);
+	--size-box-padding-top: var(--size-m);
+	--size-box-padding-bottom: var(--size-l);
+	--size-box-padding-inline: var(--size-l);
 }

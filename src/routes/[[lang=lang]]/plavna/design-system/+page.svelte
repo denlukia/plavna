@@ -11,7 +11,9 @@
 	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
+	import Box from '$lib/design-system/components/Box/Box.svelte';
 	import { setContext } from 'svelte';
+	import Spacer from '$lib/design-system/components/Spacer.svelte';
 
 	const mockedSelectorLanguages = [
 		{ name: 'English', code: 'en' },
@@ -79,6 +81,14 @@
 					</TabItem>
 				{/each}
 			</Tabs>
+		</div>
+		<div class="group">
+			<Box>
+				<Text size="heading-2">Тест</Text>
+				<Input placeholder="Тест" />
+				<Spacer size="l" />
+				<Button>Let's Go!</Button>
+			</Box>
 		</div>
 	</div>
 	<Grid />

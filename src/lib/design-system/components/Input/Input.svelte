@@ -59,7 +59,7 @@
 			>
 				{#if attributes.type === 'password'}
 					<AnimatedPswdInput {pswdVisible} {...attributes} />
-				{:else if attributes.type === 'text' || attributes.type === 'color'}
+				{:else if attributes.type === 'text' || !attributes.type}
 					<input
 						bind:value
 						{...attributes}

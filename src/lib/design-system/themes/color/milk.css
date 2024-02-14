@@ -114,4 +114,9 @@
 	--color-tab-item-active-shadow-1: var(--warm-300-transparent-100);
 	--color-tab-item-active-shadow-2: var(--warm-300-transparent-100);
 	--color-tab-item-active-layer-flashlight-hover: var(--warm-300-transparent-200);
+
+	/* --- Box --- */
+	--color-box-bg: var(--color-body);
+	--color-box-shadow-1: var(--warm-300-transparent-100);
+	--color-box-shadow-2: var(--warm-300-transparent-400);
 }
