@@ -49,7 +49,7 @@
 	--color-button-destructive-shadow-1: var(--red-300-transparent-100);
 	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
 
-	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-400);
+	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-100);
 	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-50);
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-25);
 	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
@@ -77,7 +77,7 @@
 	--color-select-text: var(--neutral-0);
 	--color-select-shadow-1: var(--warm-300-transparent-100);
 	--color-select-shadow-2: var(--warm-300-transparent-100);
-	--color-select-layer-flashlight-hover: var(--warm-300-transparent-200);
+	--color-select-layer-flashlight-hover: var(--warm-300-transparent-100);
 
 	/* --- Labeled Switch --- */
 	--color-labeled-switch-bg: var(--warm-300-transparent-100);
@@ -113,7 +113,7 @@
 	--color-tab-item-active-bg: var(--neutral-1000);
 	--color-tab-item-active-shadow-1: var(--warm-300-transparent-100);
 	--color-tab-item-active-shadow-2: var(--warm-300-transparent-100);
-	--color-tab-item-active-layer-flashlight-hover: var(--warm-300-transparent-200);
+	--color-tab-item-active-layer-flashlight-hover: var(--warm-300-transparent-100);
 
 	/* --- Box --- */
 	--color-box-bg: var(--color-body);
