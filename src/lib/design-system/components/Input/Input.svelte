@@ -52,7 +52,7 @@
 				</span>
 			{/if}
 			<span
-				class="input-wrapper"
+				class="input-wrapper global-fix-overflow"
 				class:no-right-padding={hasTrailing}
 				class:no-left-padding={hasLeading}
 				class:textarea-wrapper={attributes.type === 'textarea'}
@@ -98,9 +98,6 @@
 		border-radius: var(--size-input-border-radius);
 		overflow: hidden;
 
-		/* To fix not working overflow hidden */
-		transform: translate(0, 0);
-
 		/* For Layer Flashlight */
 		--size-layer-flashlight-border-radius: var(--size-input-border-radius);
 		--color-layer-flashlight-hover: var(--color-input-layer-flashlight-hover);
@@ -112,6 +109,7 @@
 		padding-bottom: var(--size-input-padding-bottom);
 		flex: 1;
 		line-height: 0;
+		transform: translate(0, 0);
 	}
 	.no-right-padding {
 		padding-right: 0;
