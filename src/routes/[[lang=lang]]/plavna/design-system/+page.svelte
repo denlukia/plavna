@@ -3,7 +3,7 @@
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import Label from '$lib/design-system/components/Labeled.svelte';
+	import Labeled from '$lib/design-system/components/Labeled.svelte';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
@@ -52,28 +52,28 @@
 			<Button size="small" type="destructive" bold>Testy</Button>
 		</div>
 		<div class="group">
-			<Label type="vertical">
+			<Labeled>
 				<Text size="small-short">Тест</Text>
 				<Text size="small-short" tone="additional">Тест</Text>
 				<Input type="password" placeholder="Тест" />
-			</Label>
+			</Labeled>
 		</div>
 		<div class="group">
 			<Select>
 				<SelectItem>Test</SelectItem>
 			</Select>
-			<Label>
+			<Labeled type="horizontal">
 				<Switch />
 				<Text size="body-short">Тест</Text>
-			</Label>
-			<Label type="switch-with-bg">
+			</Labeled>
+			<Labeled type="switch-with-bg">
 				<Text size="heading-2">Тест</Text>
 				<Switch />
-			</Label>
-			<Label>
+			</Labeled>
+			<Labeled type="horizontal">
 				<Checkbox />
 				<Text>Тест</Text>
-			</Label>
+			</Labeled>
 			<Tabs>
 				{#each tabs as tab, index}
 					<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>
@@ -86,6 +86,7 @@
 			<Box>
 				<Text size="heading-2">Тест</Text>
 				<Input placeholder="Тест" />
+
 				<Spacer size="l" />
 				<Button>Let's Go!</Button>
 			</Box>
