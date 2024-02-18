@@ -51,13 +51,3 @@
 		</a>{/if}
 </header>
 <slot />
-
-<style>
-	:global(body) {
-		--system-font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-			Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-		font-family: var(--main-font-family, var(--system-font-stack));
-		background-color: var(--color-body);
-		color: var(--color-text);
-	}
-</style>
