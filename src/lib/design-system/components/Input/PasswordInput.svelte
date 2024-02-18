@@ -26,10 +26,12 @@
 		let targetRef = pswdVisible ? textInputRef : pswdInputRef;
 		if (!targetRef) return;
 
-		targetRef.focus();
+		if (selectionStart !== null || selectionEnd !== null) {
+			targetRef.focus();
 
-		targetRef.selectionStart = selectionStart;
-		targetRef.selectionEnd = selectionEnd;
+			targetRef.selectionStart = selectionStart;
+			targetRef.selectionEnd = selectionEnd;
+		}
 	});
 
 	const flyConf: (easing: EasingFunction, y: number) => FlyParams = (easing, y) => ({
