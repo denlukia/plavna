@@ -35,7 +35,7 @@
 		"marked": "^9.1.6",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.1",
-		"svelte": "5.0.0-next.55",
+		"svelte": "5.0.0-next.58",
 		"svelte-check": "^3.6.4",
 		"svelte-markdown": "^0.4.1",
 		"sveltekit-superforms": "^1.13.4",
