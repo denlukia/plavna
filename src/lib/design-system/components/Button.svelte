@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 	import Layers from './Layers/Layers.svelte';
 	import LayerFlashlight from './Layers/LayerFlashlight.svelte';
@@ -7,13 +7,15 @@
 	import { MouseWatcher } from './Layers/watcher.svelte';
 	import LayerShift from './Layers/LayerShift.svelte';
 
+	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+
 	type Props = {
 		children: Snippet;
 		type?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
 		bold?: boolean;
 		href?: string;
-		onclick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+		onclick?: UniversalMouseEventHandler;
 	};
 	let {
 		children,
@@ -21,8 +23,25 @@
 		size = 'body',
 		bold = false,
 		href,
-		onclick = () => {}
+		onclick: onClickProp = () => {}
 	} = $props<Props>();
+
+	let pressed = $state(false);
+	let pressedResetTimeout: ReturnType<typeof setTimeout> | null = $state(null);
+
+	$effect(() => {
+		untrack(() => pressedResetTimeout && clearTimeout(pressedResetTimeout));
+		if (pressed) {
+			pressedResetTimeout = setTimeout(() => {
+				pressed = false;
+			}, 200);
+		}
+	});
+
+	const onclick: UniversalMouseEventHandler = (e) => {
+		pressed = true;
+		onClickProp(e);
+	};
 
 	let { mouse, ...events } = new MouseWatcher();
 </script>
@@ -33,6 +52,7 @@
 	class={`reset button type-${type} size-${size} 
 	global-layer-flashlight-hover-trigger global-line-height-reset
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
+	class:pressed
 	{...events}
 	{onclick}
 	{href}
@@ -59,11 +79,12 @@
 		display: inline-block;
 	}
 
-	.button:hover {
+	.button:not(.pressed):hover {
 		transform: var(--transform-button-hover);
 	}
 
-	.button:active {
+	.button:active,
+	.button.pressed {
 		transform: var(--transform-button-active);
 	}
 
@@ -96,28 +117,32 @@
 		border: var(--border-button-destructive);
 		--color-layer-flashlight-pointer: var(--color-button-destructive-layer-flashlight-hover);
 	}
-	.type-primary:hover {
+	.type-primary:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-primary);
 	}
-	.type-secondary:hover {
+	.type-secondary:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-secondary);
 	}
-	.type-prominent:hover {
+	.type-prominent:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-prominent);
 	}
-	.type-destructive:hover {
+	.type-destructive:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-destructive);
 	}
-	.type-primary:active {
+	.type-primary:active,
+	.type-primary.pressed {
 		box-shadow: var(--shadow-button-active-primary);
 	}
-	.type-secondary:active {
+	.type-secondary:active,
+	.type-secondary.pressed {
 		box-shadow: var(--shadow-button-active-secondary);
 	}
-	.type-prominent:active {
+	.type-prominent:active,
+	.type-prominent.pressed {
 		box-shadow: var(--shadow-button-active-prominent);
 	}
-	.type-destructive:active {
+	.type-destructive:active,
+	.type-destructive.pressed {
 		box-shadow: var(--shadow-button-active-destructive);
 	}
 
