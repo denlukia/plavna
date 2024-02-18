@@ -25,11 +25,13 @@
 </label>
 
 <style>
-	label {
+	.switch {
 		display: inline-block;
 		-webkit-user-select: none;
 		user-select: none;
 		position: relative;
+
+		margin-top: var(--switch-margin-top);
 	}
 	input {
 		appearance: none;
@@ -43,15 +45,16 @@
 		border-radius: var(--size-switch-border-radius);
 		transition: all var(--transition-switch-duration) var(--transition-switch-easing);
 		overflow: hidden;
+
+		/* For LayerFlashlight */
+		--transition-layer-flashlight: opacity var(--transition-switch-duration)
+			var(--transition-switch-easing);
+		--size-layer-flashlight-pointer: var(--size-switch-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-switch-layer-flashlight-hover);
+		--transition-layer-flashlight-pointer: background var(--transition-switch-duration)
+			var(--transition-switch-easing);
 	}
-	.switch-visualizer :global(.layer-flashlight) {
-		transition: opacity var(--transition-switch-duration) var(--transition-switch-easing);
-		--size-layer-flashlight-hover: var(--size-switch-layer-flashlight-hover);
-		--color-layer-flashlight-hover: var(--color-switch-layer-flashlight-hover);
-	}
-	.switch-visualizer :global(.layer-flashlight .poiner-shade) {
-		transition: background var(--transition-switch-duration) var(--transition-switch-easing);
-	}
+
 	.switch-visualizer:active .handle {
 		width: var(--size-switch-handle-active-width);
 	}
@@ -76,6 +79,9 @@
 	input:checked + .switch-visualizer {
 		background: var(--color-switch-checked-bg);
 		box-shadow: var(--shadow-switch-checked);
+
+		/* For LayerFlashlight */
+		--color-layer-flashlight-pointer: var(--color-switch-checked-layer-flashlight-hover);
 	}
 	input:checked + .switch-visualizer:hover {
 		transform: var(--transform-switch-checked-hover);
@@ -90,9 +96,5 @@
 	}
 	input:checked + .switch-visualizer:active .handle {
 		transform: var(--transform-switch-checked-handle-active);
-	}
-
-	input:checked + .switch-visualizer :global(.layer-flashlight) {
-		--color-layer-flashlight-hover: var(--color-switch-checked-layer-flashlight-hover);
 	}
 </style>

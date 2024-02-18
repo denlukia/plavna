@@ -64,7 +64,7 @@
 		border-radius: var(--size-select-border-radius);
 		transition: var(--transition-select);
 
-		--color-layer-flashlight-hover: var(--color-select-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-select-layer-flashlight-hover);
 	}
 
 	.type-default:hover {

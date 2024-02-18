@@ -13,18 +13,21 @@
 		children: Snippet;
 		active?: boolean;
 		size?: 'body' | 'small';
+		href?: string;
 	};
 
-	let { children, active = false, size = 'body', ...attributes } = $props<Props>();
+	let { children, href, active = false, size = 'body', ...attributes } = $props<Props>();
 
 	let { mouse, ...events } = new MouseWatcher();
 </script>
 
-<button
-	class="tab-item global-fix-overflow global-button-reset"
+<svelte:element
+	this={href ? 'a' : 'button'}
+	class="tab-item global-fix-overflow global-reset-button global-reset-link"
 	data-active-tab={active}
 	class:active
 	role="tab"
+	{href}
 	{...attributes}
 	{...events}
 >
@@ -44,14 +47,22 @@
 			</Text>
 		</LayerShift>
 	</Layers>
-</button>
+</svelte:element>
 
 <style>
 	.tab-item {
 		overflow: hidden;
+
+		padding-top: var(--tab-item-padding-top);
+		padding-bottom: var(--tab-item-padding-bottom);
+		padding-inline: var(--tab-item-padding-inline);
 	}
 	.tab-item.active {
-		--size-layer-flashlight-hover: var(--size-tab-item-active-body-layer-flashlight-hover);
-		--color-layer-flashlight-hover: var(--color-tab-item-active-layer-flashlight-hover);
+		background: var(--active-tab-item-background);
+		box-shadow: var(--active-tab-item-box-shadow);
+		border-radius: var(--active-tab-item-border-radius);
+
+		--size-layer-flashlight-pointer: var(--size-tab-item-active-body-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-tab-item-active-layer-flashlight-hover);
 	}
 </style>

@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Manrope Rounded';
-
+	font-display: swap;
 	font-style: normal;
 	src:
 		local('Manrope Rounded'),
@@ -10,8 +10,8 @@
 
 @font-face {
 	font-family: 'Manrope';
+	font-display: swap;
 	font-style: normal;
-
 	src:
 		local('Manrope'),
 		url('/fonts/Manrope/ManropeVF.woff2') format('woff2');

@@ -14,6 +14,7 @@
 		display: grid;
 		grid-template-areas: 'a';
 	}
+	/* We choose :global here to let any components be a layer */
 	.layers > :global(*) {
 		grid-area: a;
 	}

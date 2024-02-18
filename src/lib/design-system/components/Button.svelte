@@ -73,28 +73,28 @@
 		color: var(--color-button-primary-text);
 		box-shadow: var(--shadow-button-primary);
 		border: var(--border-button-primary);
-		--color-layer-flashlight-hover: var(--color-button-primary-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-button-primary-layer-flashlight-hover);
 	}
 	.type-secondary {
 		background: var(--color-button-secondary-bg);
 		color: var(--color-button-secondary-text);
 		box-shadow: var(--shadow-button-secondary);
 		border: var(--border-button-secondary);
-		--color-layer-flashlight-hover: var(--color-button-secondary-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-button-secondary-layer-flashlight-hover);
 	}
 	.type-prominent {
 		background: var(--color-button-prominent-bg);
 		color: var(--color-button-prominent-text);
 		box-shadow: var(--shadow-button-prominent);
 		border: var(--border-button-prominent);
-		--color-layer-flashlight-hover: var(--color-button-prominent-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-button-prominent-layer-flashlight-hover);
 	}
 	.type-destructive {
 		background: var(--color-button-destructive-bg);
 		color: var(--color-button-destructive-text);
 		box-shadow: var(--shadow-button-destructive);
 		border: var(--border-button-destructive);
-		--color-layer-flashlight-hover: var(--color-button-destructive-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-button-destructive-layer-flashlight-hover);
 	}
 	.type-primary:hover {
 		box-shadow: var(--shadow-button-hover-primary);

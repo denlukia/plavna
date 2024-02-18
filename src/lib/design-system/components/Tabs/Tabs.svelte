@@ -7,7 +7,7 @@
 
 	type Props = {
 		children: Snippet;
-		size?: 'body' | 'small';
+		size?: 'body' | 'small' | 'heading-2';
 	};
 
 	let { children, size = 'body' } = $props<Props>();
@@ -94,21 +94,20 @@
 		overflow: hidden;
 
 		/* For LayerFlashlight */
-		--color-layer-flashlight-hover: var(--color-tabs-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-tabs-layer-flashlight-hover);
+
+		/* For TabItem */
+		--active-tab-item-background: var(--color-tab-item-active-bg);
+		--active-tab-item-box-shadow: var(--shadow-tab-item-active);
 	}
 
 	.tab-items-wrapper {
 		display: flex;
 	}
 
-	.tabs :global(.tab-item.active) {
-		background: var(--color-tab-item-active-bg);
-		box-shadow: var(--shadow-tab-item-active);
-	}
-
-	.tabs.pill-active :global(.tab-item.active) {
-		background: unset;
-		box-shadow: unset;
+	.tabs.pill-active {
+		--active-tab-item-background: unset;
+		--active-tab-item-box-shadow: unset;
 	}
 
 	.active-tab-pill {
@@ -121,10 +120,46 @@
 		transform: translate(var(--left), var(--top));
 	}
 
-	/* Size-dependent */
+	/* --- Size-dependent --- */
+	/* Size Heading-2 */
+	.tabs.global-text-heading-2 {
+		border-radius: var(--size-tabs-heading-2-border-radius);
+		padding: var(--size-tabs-heading-2-padding);
+
+		/* For TabItems */
+		--tab-item-padding-top: var(--size-tab-item-heading-2-padding-top);
+		--tab-item-padding-bottom: var(--size-tab-item-heading-2-padding-bottom);
+		--tab-item-padding-inline: var(--size-tab-item-heading-2-padding-inline);
+
+		/* For Active TabItem */
+		--active-tab-item-border-radius: var(--size-tab-item-active-heading-2-border-radius);
+
+		/* For Text component inside TabItems */
+		--text-font-family: var(--text-heading-2-font-family);
+		--text-padding-top: var(--text-heading-2-padding-top);
+		--text-padding-bottom: var(--text-heading-2-padding-bottom);
+		--text-font-size: var(--text-heading-2-font-size);
+		--text-font-weight: var(--text-heading-2-font-weight);
+		--text-line-height: var(--text-heading-2-line-height);
+		--text-letter-spacing: var(--text-heading-2-letter-spacing);
+	}
+
+	.tabs.global-text-heading-2 .active-tab-pill {
+		border-radius: var(--size-tab-item-active-heading-2-border-radius);
+	}
+
+	/* Size Body */
 	.tabs.global-text-body {
 		border-radius: var(--size-tabs-body-border-radius);
 		padding: var(--size-tabs-body-padding);
+
+		/* For TabItems */
+		--tab-item-padding-top: var(--size-tab-item-body-padding-top);
+		--tab-item-padding-bottom: var(--size-tab-item-body-padding-bottom);
+		--tab-item-padding-inline: var(--size-tab-item-body-padding-inline);
+
+		/* For Active TabItem */
+		--active-tab-item-border-radius: var(--size-tab-item-active-body-border-radius);
 
 		/* For Text component inside TabItems */
 		--text-font-family: var(--text-body-font-family);
@@ -135,9 +170,23 @@
 		--text-line-height: var(--text-body-line-height);
 		--text-letter-spacing: var(--text-body-letter-spacing);
 	}
+
+	.tabs.global-text-body .active-tab-pill {
+		border-radius: var(--size-tab-item-active-body-border-radius);
+	}
+
+	/* Size Small */
 	.tabs.global-text-small {
 		border-radius: var(--size-tabs-small-border-radius);
 		padding: var(--size-tabs-small-padding);
+
+		/* For TabItems */
+		--tab-item-padding-top: var(--size-tab-item-small-padding-top);
+		--tab-item-padding-bottom: var(--size-tab-item-small-padding-bottom);
+		--tab-item-padding-inline: var(--size-tab-item-small-padding-inline);
+
+		/* For Active TabItem */
+		--active-tab-item-border-radius: var(--size-tab-item-active-small-border-radius);
 
 		/* For Text component inside TabItems */
 		--text-font-family: var(--text-small-font-family);
@@ -148,26 +197,7 @@
 		--text-line-height: var(--text-small-line-height);
 		--text-letter-spacing: var(--text-small-letter-spacing);
 	}
-	.tabs.global-text-body :global(.tab-item) {
-		padding-top: var(--size-tab-item-body-padding-top);
-		padding-bottom: var(--size-tab-item-body-padding-bottom);
-		padding-inline: var(--size-tab-item-body-padding-inline);
-	}
-	.tabs.global-text-body :global(.tab-item.active) {
-		border-radius: var(--size-tab-item-active-body-border-radius);
-	}
-	.tabs.global-text-small :global(.tab-item) {
-		padding-top: var(--size-tab-item-small-padding-top);
-		padding-bottom: var(--size-tab-item-small-padding-bottom);
-		padding-inline: var(--size-tab-item-small-padding-inline);
-	}
-	.tabs.global-text-small :global(.tab-item.active) {
-		border-radius: var(--size-tab-item-active-small-border-radius);
-	}
 
-	.tabs.global-text-body .active-tab-pill {
-		border-radius: var(--size-tab-item-active-body-border-radius);
-	}
 	.tabs.global-text-small .active-tab-pill {
 		border-radius: var(--size-tab-item-active-small-border-radius);
 	}

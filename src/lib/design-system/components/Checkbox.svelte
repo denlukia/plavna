@@ -54,8 +54,11 @@
 </label>
 
 <style>
-	label {
+	.checkbox {
 		position: relative;
+
+		margin-top: var(--checkbox-margin-top);
+		margin-bottom: var(--checkbox-margin-bottom);
 	}
 	input {
 		appearance: none;

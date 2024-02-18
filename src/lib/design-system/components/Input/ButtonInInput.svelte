@@ -16,7 +16,7 @@
 </script>
 
 <button
-	class="global-button-reset global-button-in-input global-layer-flashlight-hover-trigger global-fix-overflow"
+	class="global-reset-button global-button-in-input global-layer-flashlight-hover-trigger global-fix-overflow"
 	{...events}
 	{onclick}
 >
