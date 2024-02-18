@@ -38,17 +38,13 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span
-	class="input-with-actions global-layer-flashlight-hover-trigger"
-	{...events}
-	role="presentation"
->
+<span class="input global-layer-flashlight-hover-trigger" {...events} role="presentation">
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
 			{#if attributes.type === 'color'}
 				<span class="picker-wrapper">
-					<input bind:value type="color" class="global-input-reset color-picker" />
+					<input bind:value type="color" class="global-reset-input color-picker" />
 				</span>
 			{/if}
 			<span
@@ -64,10 +60,10 @@
 						bind:value
 						{...attributes}
 						type="text"
-						class="global-input-reset global-text-body"
+						class="global-reset-input global-text-body"
 					/>
 				{:else if attributes.type === 'textarea'}
-					<textarea bind:value {...attributes} class="global-input-reset global-text-body" />
+					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
 				{/if}
 			</span>
 			{#if hasTrailing}
@@ -90,7 +86,7 @@
 
 <style>
 	/* General */
-	.input-with-actions {
+	.input {
 		display: inline-block;
 		width: var(--size-input-width);
 		background-color: var(--color-input-bg);
@@ -98,9 +94,15 @@
 		border-radius: var(--size-input-border-radius);
 		overflow: hidden;
 
+		margin-top: var(--input-margin-top);
+		margin-bottom: var(--input-margin-bottom);
+
 		/* For Layer Flashlight */
 		--size-layer-flashlight-border-radius: var(--size-input-border-radius);
-		--color-layer-flashlight-hover: var(--color-input-layer-flashlight-hover);
+		--color-layer-flashlight-pointer: var(--color-input-layer-flashlight-hover);
+	}
+	.input:last-child {
+		margin-bottom: var(--input-last-child-margin-bottom);
 	}
 
 	.input-wrapper {

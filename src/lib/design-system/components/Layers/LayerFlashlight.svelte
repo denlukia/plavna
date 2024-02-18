@@ -8,11 +8,19 @@
 </script>
 
 <span class="layer-flashlight" class:hovered={mouse.hovered}>
-	<span class="poiner-shade" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}" />
+	<span class="poiner" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}" />
 </span>
 
 <style>
-	.poiner-shade {
+	.layer-flashlight {
+		pointer-events: none;
+		opacity: 0;
+		transition: var(--transition-layer-flashlight);
+	}
+	.layer-flashlight.hovered {
+		opacity: 1;
+	}
+	.poiner {
 		display: block;
 		--mask-image: radial-gradient(
 			circle,
@@ -28,21 +36,16 @@
 		position: absolute;
 		top: var(--pointer-y);
 		left: var(--pointer-x);
-		width: var(--size-layer-flashlight-hover);
-		height: var(--size-layer-flashlight-hover);
+		width: var(--size-layer-flashlight-pointer);
+		height: var(--size-layer-flashlight-pointer);
 		border-radius: var(--size-full);
-		background: var(--color-layer-flashlight-hover);
+		background: var(--color-layer-flashlight-pointer);
 		transform: translate(
 			calc(calc(var(--pointer-x) * 1px) - 50%),
 			calc(calc(var(--pointer-y) * 1px) - 50%)
 		);
-	}
-	.layer-flashlight {
-		pointer-events: none;
-		opacity: 0;
-		transition: var(--transition-layer-flashlight-hover);
-	}
-	.layer-flashlight.hovered {
-		opacity: 1;
+
+		/* In Switch component we need background to transition in color  */
+		transition: var(--transition-layer-flashlight-pointer);
 	}
 </style>

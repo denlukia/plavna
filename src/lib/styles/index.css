@@ -5,4 +5,8 @@ body {
 	padding-inline: var(--size-body-padding-inline);
 	padding-top: var(--size-body-padding-top);
 	padding-bottom: var(--size-body-padding-bottom);
+
+	font-family: var(--main-font-family);
+	background-color: var(--color-body);
+	color: var(--color-text);
 }

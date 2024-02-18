@@ -32,6 +32,8 @@
 		display: inline-block;
 		overflow: hidden;
 	}
+
+	/* We choose :global here to let icon components be zero-styled */
 	.icon-frame > :global(svg) {
 		width: var(--svg-width);
 		height: var(--svg-height);

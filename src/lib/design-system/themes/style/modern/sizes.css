@@ -23,7 +23,7 @@
 	--size-column-gap: var(--size-m);
 
 	/* --- Layers --- */
-	--size-layer-flashlight-hover: 130px;
+	--size-layer-flashlight-pointer: 130px;
 	--size-layer-shift-hover-translate: 2px;
 
 	/* --- Button --- */
@@ -112,12 +112,17 @@
 	--size-checkbox-border-radius: var(--size-s);
 
 	/* --- Tabs --- */
+	--size-tabs-heading-2-border-radius: var(--size-full);
+	--size-tabs-heading-2-padding: var(--size-m);
 	--size-tabs-body-border-radius: var(--size-full);
-	--size-tabs-small-border-radius: var(--size-full);
 	--size-tabs-body-padding: var(--size-s);
+	--size-tabs-small-border-radius: var(--size-full);
 	--size-tabs-small-padding: var(--size-s);
 
 	/* --- Tab Item --- */
+	--size-tab-item-heading-2-padding-inline: var(--size-m-to-l);
+	--size-tab-item-heading-2-padding-top: var(--size-none);
+	--size-tab-item-heading-2-padding-bottom: var(--size-s);
 	--size-tab-item-body-padding-inline: var(--size-m);
 	--size-tab-item-body-padding-top: var(--size-none);
 	--size-tab-item-body-padding-bottom: var(--size-none);
@@ -126,13 +131,13 @@
 	--size-tab-item-small-padding-bottom: var(--size-none);
 
 	/* -- Tab Item Active */
+	--size-tab-item-active-heading-2-border-radius: var(--size-full);
 	--size-tab-item-active-body-border-radius: var(--size-full);
 	--size-tab-item-active-small-border-radius: var(--size-full);
-	--size-tab-item-active-body-layer-flashlight-hover: 60px;
 
 	/* --- Box --- */
-	--size-box-border-radius: var(--size-xl);
-	--size-box-padding-top: var(--size-m);
+	--size-box-border-radius: var(--size-2xl);
+	--size-box-padding-top: var(--size-m-to-l);
 	--size-box-padding-bottom: var(--size-l);
 	--size-box-padding-inline: var(--size-l);
 }

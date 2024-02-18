@@ -10,7 +10,7 @@
 	};
 	let { mouse, children } = $props<Props>();
 
-	let boxSize = $state({ width: 0, height: 0 });
+	let boxSize = $state({ width: Number.POSITIVE_INFINITY, height: Number.POSITIVE_INFINITY });
 	let shiftMultiplier = tweened(0, { duration: 300 });
 	$effect(() => {
 		if (mouse.hovered) {

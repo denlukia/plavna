@@ -85,18 +85,19 @@
 	font-weight: var(--text-bold-font-weight);
 }
 
-.global-button-reset {
+.global-reset-button {
 	border: none;
 	background: none;
 	line-height: 0;
 	padding: 0;
 }
 
-.global-link-reset {
+.global-reset-link {
+	color: inherit;
 	text-decoration: none;
 }
 
-.global-input-reset {
+.global-reset-input {
 	border: none;
 	background: none;
 	margin: 0;
@@ -105,7 +106,7 @@
 	border-radius: 5px;
 	overflow: hidden;
 }
-.global-input-reset:focus {
+.global-reset-input:focus {
 	outline: none;
 }
 
@@ -140,7 +141,7 @@
 	height: var(--size-button-in-input-height);
 	transition: var(--transition-button-in-input);
 
-	--color-layer-flashlight-hover: var(--color-button-in-input-layer-flashlight-hover);
+	--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
 }
 
 .global-button-in-input:hover {

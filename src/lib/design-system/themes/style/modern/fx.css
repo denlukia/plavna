@@ -3,7 +3,7 @@
 	--smooth-ease-out: cubic-bezier(0.3, 1, 0.4, 1);
 
 	/* --- Layers --- */
-	--transition-layer-flashlight-hover: opacity 300ms;
+	--transition-layer-flashlight: opacity 300ms;
 	--transition-layer-shift: transform 300ms;
 
 	/* --- Button --- */

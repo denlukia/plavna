@@ -50,7 +50,7 @@
 			type="text"
 			spellcheck="false"
 			{...attributes}
-			class="global-input-reset global-text-body"
+			class="global-reset-input global-text-body"
 		/>
 	{:else}
 		<input
@@ -61,7 +61,7 @@
 			type="password"
 			spellcheck="false"
 			{...attributes}
-			class="global-input-reset global-text-body"
+			class="global-reset-input global-text-body"
 		/>
 	{/if}
 </Layers>
