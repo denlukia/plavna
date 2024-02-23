@@ -9,30 +9,33 @@
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Spacer from '$lib/design-system/components/Spacer.svelte';
 	import { spin } from '$lib/design-system/transitions/rotate';
+	import PerspectiveWrapper from '../PerspectiveWrapper.svelte';
 </script>
 
 <!-- TODO Why ()=>{} ? -->
-<form
-	class="box-wrapper"
-	method="POST"
-	use:enhance={() => {}}
-	in:spin={{ duration: 300, delay: 150 }}
-	out:spin={{ duration: 300 }}
->
-	<Box>
-		<Labeled>
-			<Text size="small-short"><T key="username" /></Text>
-			<Input id="username" name="username" />
-		</Labeled>
-		<Spacer />
-		<Labeled>
-			<Text size="small-short"><T key="password" /></Text>
-			<Input id="password" name="password" type="password" />
-		</Labeled>
-		<Spacer size="l" />
-		<Button><T key="to_signup" /></Button>
-	</Box>
-</form>
+<PerspectiveWrapper>
+	<form
+		class="box-wrapper"
+		method="POST"
+		use:enhance={() => {}}
+		in:spin={{ duration: 300, delay: 150, angle: -90, opacity: 0.25 }}
+		out:spin={{ duration: 300, angle: -90, opacity: 0.25 }}
+	>
+		<Box>
+			<Labeled>
+				<Text size="small-short"><T key="username" /></Text>
+				<Input id="username" name="username" />
+			</Labeled>
+			<Spacer />
+			<Labeled>
+				<Text size="small-short"><T key="password" /></Text>
+				<Input id="password" name="password" type="password" />
+			</Labeled>
+			<Spacer size="l" />
+			<Button><T key="to_signup" /></Button>
+		</Box>
+	</form>
+</PerspectiveWrapper>
 
 <style>
 	.box-wrapper {
