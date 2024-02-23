@@ -25,10 +25,9 @@
 	}
 
 	function generateCreateArticleURL(lang: string, username: string) {
-		return generatePath('/[lang]/[username]/[draftId]/edit', {
+		return generatePath('/[lang]/[username]/create-article', {
 			'[lang]': lang,
-			'[username]': username,
-			'[draftId]': (Math.random() + 1).toString(36).substring(7)
+			'[username]': username
 		});
 	}
 
@@ -48,6 +47,7 @@
 			data-sveltekit-preload-code="hover"
 		>
 			Створити статтю
-		</a>{/if}
+		</a>
+	{/if}
 </header>
 <slot />
