@@ -49,7 +49,8 @@
 	--size-labeled-checkbox-margin-bottom: var(--size-s);
 
 	/* --- Input --- */
-	--size-input-width: 300px;
+	--size-input-min-width: 100px;
+	--size-input-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-s);
 	--size-input-padding-bottom: var(--size-s);

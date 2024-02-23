@@ -88,7 +88,8 @@
 	/* General */
 	.input {
 		display: inline-block;
-		width: var(--size-input-width);
+		min-width: var(--size-input-min-width);
+		max-width: var(--size-input-max-width);
 		background-color: var(--color-input-bg);
 		box-shadow: var(--shadow-input);
 		border-radius: var(--size-input-border-radius);
