@@ -14,7 +14,6 @@ declare global {
 			tags?: Record<string, TagSelect>; // TODO Refactor into just array
 			images?: ImageSelect[];
 		}
-		// interface Platform {}
 	}
 }
 

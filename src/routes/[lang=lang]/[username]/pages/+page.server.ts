@@ -5,7 +5,6 @@ import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/collecti
 import { serviceTranslations } from '$lib/server/i18n';
 
 import type { PageServerLoad } from './$types';
-import { defaultLang } from '$lib/isomorphic/languages';
 
 export const load: PageServerLoad = async ({ locals: { plavna }, params, parent }) => {
 	const forms = await plavna.pages.getMyAsForms(params.username);
@@ -13,7 +12,7 @@ export const load: PageServerLoad = async ({ locals: { plavna }, params, parent 
 
 	return {
 		...forms,
-		translations: { ...translations, ...serviceTranslations.userPages(params.lang || defaultLang) }
+		translations: { ...translations, ...serviceTranslations.userPages(params.lang) }
 	};
 };
 

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { defaultLang } from '$lib/isomorphic/languages';
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Image from './markdown/Image.svelte';
@@ -14,7 +13,7 @@
 	export let key: TranslationKey | TranslationSelect['key'] | null = null;
 	export let markdownMode: boolean = false;
 
-	$: currentLang = ($page.params.lang || defaultLang) as SupportedLang;
+	$: currentLang = $page.params.lang as SupportedLang;
 	$: translation = key !== null ? $page.data.translations[key] : null;
 </script>
 

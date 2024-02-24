@@ -1,4 +1,3 @@
-import { defaultLang } from '$lib/isomorphic/languages';
 import { serviceTranslations } from '$lib/server/i18n';
 
 import type { PageServerLoad as ArticleServerLoad } from './[slug]/$types';
@@ -16,7 +15,7 @@ export const articleEditServerLoad = (async ({ params, parent, locals: { plavna 
 		...other,
 		translations: {
 			...translations,
-			...serviceTranslations.articleEditor(params.lang ?? defaultLang),
+			...serviceTranslations.articleEditor(params.lang),
 			...newTranslations
 		}
 	};
