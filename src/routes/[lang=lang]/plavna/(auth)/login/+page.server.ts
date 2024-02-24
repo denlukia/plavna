@@ -4,12 +4,11 @@ import { serviceTranslations } from '$lib/server/i18n';
 import { auth } from '$lib/server/services/auth';
 
 import type { Actions, PageServerLoad } from './$types';
-import { defaultLang } from '$lib/isomorphic/languages';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
 	const { translations } = await parent();
 	return {
-		translations: { ...translations, ...serviceTranslations.login(params.lang || defaultLang) }
+		translations: { ...translations, ...serviceTranslations.login(params.lang) }
 	};
 };
 

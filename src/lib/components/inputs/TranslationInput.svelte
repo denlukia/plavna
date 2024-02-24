@@ -13,6 +13,7 @@
 	} from '$lib/server/collections/types';
 	import type { SuperForm } from 'sveltekit-superforms/client';
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 	export let superFormStores:
 		| SuperForm<TranslationInsertZod>
@@ -23,7 +24,7 @@
 	export let prefix: string = '';
 
 	$: ({ form, errors, enhance } = superFormStores);
-	$: currentLang = isSupportedLang($page.params.lang) ? $page.params.lang : defaultLang;
+	$: currentLang = $page.params.lang as SupportedLang;
 </script>
 
 <div class="translation-input">

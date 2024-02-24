@@ -1,16 +1,15 @@
-import { type SupportedLang, defaultLang } from '$lib/isomorphic/languages';
-
 import en from './en';
 import uk from './uk';
 
 import type { TranslationKey } from './en';
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 export const systemTranslations = { en, uk };
 
 export function getTranslationsByLangAndKeys(lang: string, keys: TranslationKey[]) {
 	return Object.fromEntries(
 		keys.map((key) => {
-			const translation: string = systemTranslations[(lang as SupportedLang) || defaultLang][key];
+			const translation: string = systemTranslations[lang as SupportedLang][key];
 			return [key, translation];
 		})
 	);

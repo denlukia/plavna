@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { defaultLang } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
@@ -11,9 +10,10 @@
 	import '$lib/design-system/themes/color/milk.css';
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
+	import { defaultLang } from '$lib/isomorphic/languages.js';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
-		const currentLanguage = $page.params.lang || defaultLang;
+		const currentLanguage = $page.params.lang;
 		let destinationURL = currentURL.replace(`/${currentLanguage}`, '');
 
 		if (newLanguage !== defaultLang) {
