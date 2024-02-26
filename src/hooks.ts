@@ -10,7 +10,6 @@ export function reroute({ url }) {
 	const firstPart = pathParts[1];
 	if (!supportedLangs.includes(firstPart as SupportedLang)) {
 		const newPathname = `/${defaultLang}${url.pathname}`;
-		console.log(newPathname);
 
 		return newPathname;
 	}
