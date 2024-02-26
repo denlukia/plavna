@@ -13,7 +13,7 @@
 		children: Snippet;
 		type?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
-		bold?: boolean;
+
 		href?: string;
 		onclick?: UniversalMouseEventHandler;
 	};
@@ -21,7 +21,6 @@
 		children,
 		type = 'primary',
 		size = 'body',
-		bold = false,
 		href,
 		onclick: onClickProp = () => {}
 	} = $props<Props>();
@@ -61,7 +60,7 @@
 		<LayerFlashlight {mouse} />
 		<LayerShift {mouse}>
 			<span class="content">
-				<Text size={`${size}-short`} {bold}>{@render children()}</Text>
+				<Text size={`${size}-short`} bold={true}>{@render children()}</Text>
 			</span>
 		</LayerShift>
 	</Layers>
