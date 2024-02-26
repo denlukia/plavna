@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onMount, type Snippet } from 'svelte';
+	import { flushSync, onMount, type Snippet } from 'svelte';
 	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import Layers from '../Layers/Layers.svelte';
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
@@ -16,9 +16,11 @@
 
 	let ref: HTMLSpanElement | null = $state(null);
 	let mutationObserver: MutationObserver | null = $state(null);
+	let resizeObserver: ResizeObserver | null = $state(null);
 
 	let pillActive = $state(false);
 	let pillPos = $state({ left: 0, top: 0, width: 0, height: 0 });
+	let pillSkipTransition = $state(false);
 
 	function mutationCallback(mutation: MutationRecord[]) {
 		const activeTabMutations = mutation.filter(
@@ -47,20 +49,34 @@
 		return relativePos;
 	}
 
-	onMount(() => {
-		if (!ref) return;
-
+	function findActiveTabAndSetPillPos(ref: HTMLSpanElement) {
 		const activeTab = findActiveTab(Array.from(ref.children));
 		if (!activeTab) return;
 		pillPos = getPillRelativePositionFromNode(activeTab);
+	}
+
+	onMount(() => {
+		if (!ref) return;
+
+		findActiveTabAndSetPillPos(ref);
 
 		if (!('MutationObserver' in window)) return;
 
 		mutationObserver = new MutationObserver(mutationCallback);
 		mutationObserver.observe(ref, { attributes: true, subtree: true });
 		pillActive = true;
+
+		resizeObserver = new ResizeObserver(() => {
+			if (!ref) return;
+			pillSkipTransition = true;
+			findActiveTabAndSetPillPos(ref);
+			setTimeout(() => (pillSkipTransition = false), 0);
+		});
+		resizeObserver.observe(ref);
+
 		return () => {
 			mutationObserver?.disconnect();
+			resizeObserver?.disconnect();
 		};
 	});
 </script>
@@ -77,6 +93,7 @@
 		{#if pillActive}
 			<div
 				class="active-tab-pill"
+				class:skip-transition={pillSkipTransition}
 				style="--left: {pillPos.left}px; --top: {pillPos.top}px; width: {pillPos.width}px; height: {pillPos.height}px"
 			/>
 		{/if}
@@ -118,6 +135,9 @@
 		top: 0;
 		left: 0;
 		transform: translate(var(--left), var(--top));
+	}
+	.active-tab-pill.skip-transition {
+		transition: none;
 	}
 
 	/* --- Size-dependent --- */
