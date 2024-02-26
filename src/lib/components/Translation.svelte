@@ -9,26 +9,35 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 
-	export let formObj: SuperValidated<TranslationUpdateZod> | null = null;
-	export let key: TranslationKey | TranslationSelect['key'] | null = null;
-	export let markdownMode: boolean = false;
+	type Props = {
+		formObj?: SuperValidated<TranslationUpdateZod> | null;
+		key?: TranslationKey | TranslationSelect['key'] | null;
+		markdownMode?: boolean;
+	};
 
-	$: currentLang = $page.params.lang as SupportedLang;
-	$: translation = key !== null ? $page.data.translations[key] : null;
+	let { formObj = null, key = null, markdownMode = false } = $props<Props>();
+
+	// At new page loads translations for outroing page are erased
+	// but are still needed while outroing transitons are played, so:
+	// 1. We get the translation, wether present or null
+	let translation = $derived(key !== null ? $page.data.translations?.[key] : null);
+	// 2. We create a state that is updated only when translation is not null
+	let nonNullTranslation: typeof translation = $state(translation);
+	$effect(() => {
+		if (translation) nonNullTranslation = translation;
+	});
 </script>
 
 {#if formObj}
-	{formObj.data[currentLang]}
+	{formObj.data[$page.params.lang as SupportedLang]}
 {:else if key}
-	{#if translation}
+	{#if nonNullTranslation}
 		{#if markdownMode}
-			<SvelteMarkdown source={translation} renderers={{ image: Image }} />
+			<SvelteMarkdown source={nonNullTranslation} renderers={{ image: Image }} />
 		{:else}
-			{translation}
+			{nonNullTranslation}
 		{/if}
 	{:else}
-		No translation
+		...
 	{/if}
-{:else}
-	Translation error
 {/if}
