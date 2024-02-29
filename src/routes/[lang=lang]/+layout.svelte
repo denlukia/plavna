@@ -11,6 +11,7 @@
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
 	import { defaultLang } from '$lib/isomorphic/languages.js';
+	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang;
@@ -34,20 +35,40 @@
 	export let data;
 </script>
 
-<header>
-	{#each supportedLangs as language}
-		<a href={generateLangURL($page.url.pathname, language)}>
-			{language.toUpperCase()}
-		</a>{' '}
-	{/each}
-	{#if data.user}
-		<a
-			href={generateCreateArticleURL($page.params.lang, data.user.username)}
-			data-sveltekit-preload-data="off"
-			data-sveltekit-preload-code="hover"
-		>
-			Створити статтю
-		</a>
-	{/if}
-</header>
-<slot />
+<Layers tag="div" --layers-flex-grow="1">
+	<div class="bg" />
+	<div class="fg">
+		<div class="main-layout">
+			<header>
+				{#each supportedLangs as language}
+					<a href={generateLangURL($page.url.pathname, language)}>
+						{language.toUpperCase()}
+					</a>{' '}
+				{/each}
+				{#if data.user}
+					<a
+						href={generateCreateArticleURL($page.params.lang, data.user.username)}
+						data-sveltekit-preload-data="off"
+						data-sveltekit-preload-code="hover"
+					>
+						Створити статтю
+					</a>
+				{/if}
+			</header>
+			<slot />
+		</div>
+	</div>
+</Layers>
+
+<style>
+	.fg {
+		display: flex;
+		justify-content: center;
+	}
+	.main-layout {
+		flex-grow: 1;
+		max-width: var(--size-main-layout-max-width);
+		background-color: var(--color-main-layout-bg);
+		padding-inline: var(--size-main-layout-padding-inline);
+	}
+</style>

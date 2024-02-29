@@ -15,12 +15,13 @@
 
 	/* ------ Semantic ------ */
 	/* --- General --- */
-	--size-body-padding-inline: var(--size-m-to-l);
-	--size-body-padding-top: var(--size-s);
-	--size-body-padding-bottom: var(--size-m);
 
-	--size-column-width: 200px;
+	--size-column-width: 220px;
 	--size-column-gap: var(--size-m);
+
+	/* --- Main Layout --- */
+	--size-main-layout-padding-inline: var(--size-m-to-l);
+	--size-main-layout-max-width: calc(var(--size-column-width) * 5 + var(--size-column-gap) * 4);
 
 	/* --- Layers --- */
 	--size-layer-flashlight-pointer: 130px;

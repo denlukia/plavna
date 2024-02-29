@@ -1,7 +1,8 @@
 :root {
 	/* ------ Palette ----- */
-	--warm-950: hsl(30, 30%, 95%);
 	--warm-100: hsl(30, 50%, 10%);
+	--warm-900: hsl(30, 35%, 90%);
+	--warm-950: hsl(30, 30%, 95%);
 
 	--warm-300-transparent-100: hsla(30, 100%, 20%, 7%);
 	--warm-300-transparent-200: hsla(30, 100%, 20%, 12%);
@@ -26,10 +27,13 @@
 
 	/* ------ Semantic ----- */
 	/* --- General --- */
-	--color-body: var(--warm-950);
+	--color-body-bg: var(--warm-900);
 	--color-text: var(--neutral-0);
 	--color-text-danger: var(--red-200);
 	--color-text-additional: var(--neutral-0-transparent-40);
+
+	/* --- Main Layout */
+	--color-main-layout-bg: var(--warm-950);
 
 	/* --- Buttons --- */
 	--color-button-primary-bg: var(--neutral-1000);
