@@ -3,16 +3,18 @@
 
 	type Props = {
 		children: Snippet;
+		tag?: 'span' | 'div';
 	};
-	let { children } = $props<Props>();
+	let { children, tag = 'span' } = $props<Props>();
 </script>
 
-<span class="layers global-fix-overflow">{@render children()}</span>
+<svelte:element this={tag} class="layers global-fix-overflow">{@render children()}</svelte:element>
 
 <style>
 	.layers {
 		display: grid;
 		grid-template-areas: 'a';
+		flex-grow: var(--layers-flex-grow);
 	}
 	/* We choose :global here to let any components be a layer */
 	.layers > :global(*) {

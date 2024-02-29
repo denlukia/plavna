@@ -55,7 +55,7 @@
 	--text-small-padding-top: 4px;
 	--text-small-padding-bottom: 1px;
 	--text-small-size: 12px;
-	--text-small-weight: 600;
+	--text-small-weight: 500;
 	--text-small-line-height: 15px;
 	--text-small-letter-spacing: 0;
 
@@ -63,7 +63,7 @@
 	--text-small-short-padding-top: 2px;
 	--text-small-short-padding-bottom: 3px;
 	--text-small-short-size: 12px;
-	--text-small-short-weight: 600;
+	--text-small-short-weight: 500;
 	--text-small-short-line-height: 10px;
 	--text-small-short-letter-spacing: 0;
 }
