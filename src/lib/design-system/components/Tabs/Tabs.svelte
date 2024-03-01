@@ -19,7 +19,7 @@
 	let resizeObserver: ResizeObserver | null = $state(null);
 
 	let pillActive = $state(false);
-	let pillPos = $state({ left: 0, top: 0, width: 0, height: 0 });
+	let pillPos = $state({ left: 0, top: 0, right: 0, bottom: 0 });
 	let pillSkipTransition = $state(false);
 
 	function mutationCallback(mutation: MutationRecord[]) {
@@ -37,14 +37,14 @@
 	}
 
 	function getPillRelativePositionFromNode(node: Element) {
-		if (!ref) return { left: 0, top: 0, width: 0, height: 0 };
+		if (!ref) return { left: 0, top: 0, right: 0, bottom: 0 };
 		const refRect = ref.getBoundingClientRect();
 		const rect = node.getBoundingClientRect();
 		const relativePos = {
 			left: rect.left - refRect.left,
 			top: rect.top - refRect.top,
-			width: rect.width,
-			height: rect.height
+			right: refRect.right - rect.right,
+			bottom: refRect.bottom - rect.bottom
 		};
 		return relativePos;
 	}
@@ -94,7 +94,7 @@
 			<div
 				class="active-tab-pill"
 				class:skip-transition={pillSkipTransition}
-				style="--left: {pillPos.left}px; --top: {pillPos.top}px; width: {pillPos.width}px; height: {pillPos.height}px"
+				style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
 			/>
 		{/if}
 		<span class="tab-items-wrapper" bind:this={ref}>
@@ -132,9 +132,6 @@
 		background: var(--color-tab-item-active-bg);
 		box-shadow: var(--shadow-tab-item-active);
 		transition: var(--transition-tabs-pill);
-		top: 0;
-		left: 0;
-		transform: translate(var(--left), var(--top));
 	}
 	.active-tab-pill.skip-transition {
 		transition: none;
