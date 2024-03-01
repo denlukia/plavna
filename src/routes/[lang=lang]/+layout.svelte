@@ -12,6 +12,7 @@
 	import '$lib/design-system/themes/typography/plavna/index.css';
 	import { defaultLang } from '$lib/isomorphic/languages.js';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
+	import Lights from '$lib/design-system/components/Lights.svelte';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang;
@@ -38,6 +39,9 @@
 <Layers tag="div" --layers-flex-grow="1">
 	<div class="bg" />
 	<div class="fg">
+		<div class="lights-wrapper">
+			<Lights />
+		</div>
 		<div class="main-layout">
 			<header>
 				{#each supportedLangs as language}
@@ -61,6 +65,12 @@
 </Layers>
 
 <style>
+	.lights-wrapper {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
 	.fg {
 		display: flex;
 		justify-content: center;
