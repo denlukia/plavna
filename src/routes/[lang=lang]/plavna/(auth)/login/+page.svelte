@@ -23,13 +23,13 @@
 	>
 		<Box>
 			<Labeled>
-				<Text size="small-short"><T key="username" /></Text>
-				<Input id="username" name="username" />
+				<Text size="small-short"><T key="email" /></Text>
+				<Input type="email" name="email" />
 			</Labeled>
 			<Spacer />
 			<Labeled>
 				<Text size="small-short"><T key="password" /></Text>
-				<Input id="password" name="password" type="password" />
+				<Input name="password" type="password" />
 			</Labeled>
 			<Spacer size="l" />
 			<Button><T key="to_login" /></Button>
