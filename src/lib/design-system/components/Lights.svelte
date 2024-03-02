@@ -22,12 +22,13 @@
 		display: flex;
 		width: 500px;
 		margin-inline: -125px;
-		mask-image: radial-gradient(
+		/* mask-image: radial-gradient(
 			farthest-side at 50% 0%,
 			black 25%,
 			hsla(0deg, 0%, 0%, 0.1) 80%,
 			transparent
-		);
+		); */
+		mask-image: linear-gradient(black, hsla(0deg, 0%, 0%, 0.1) 80%, transparent);
 	}
 	.left,
 	.right {
@@ -35,8 +36,10 @@
 	}
 	.left {
 		background: conic-gradient(from 90deg at 50% 0%, var(--color) 0%, transparent 50%);
+		mask-image: linear-gradient(to left, black 50%, transparent);
 	}
 	.right {
 		background: conic-gradient(from 90deg at 50% 0%, transparent 0%, var(--color) 50%);
+		mask-image: linear-gradient(to right, black 50%, transparent);
 	}
 </style>
