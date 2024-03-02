@@ -79,6 +79,9 @@
 		flex-grow: 1;
 		max-width: var(--size-main-layout-max-width);
 		background-color: var(--color-main-layout-bg);
+		box-shadow:
+			0 -100px 0 var(--color-main-layout-bg),
+			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-layout-padding-inline);
 	}
 </style>
