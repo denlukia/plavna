@@ -9,6 +9,7 @@
 	import LangSelector from './LangSelector.svelte';
 	import type { LanguagedInputProps } from './types';
 	import { tweened } from 'svelte/motion';
+	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
 	let { value, ...attributes } = $props<LanguagedInputProps>();
 
@@ -35,6 +36,8 @@
 			pswdIconCurrentFrame.set(eyeOpenedFrame);
 		}
 	});
+
+	type DefaultInputTypes = 'text' | 'email';
 </script>
 
 <!-- TODO: What would the correct role be? -->
@@ -60,6 +63,13 @@
 						bind:value
 						{...attributes}
 						type="text"
+						class="global-reset-input global-text-body"
+					/>
+				{:else if attributes.type === 'email'}
+					<input
+						bind:value
+						{...attributes}
+						type="email"
 						class="global-reset-input global-text-body"
 					/>
 				{:else if attributes.type === 'textarea'}

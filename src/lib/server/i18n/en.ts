@@ -5,6 +5,7 @@ const translations = {
 	to_login: 'Login',
 	language: 'Language',
 	username: 'Username',
+	email: 'Email',
 	password: 'Password',
 	landing: 'Landing',
 	user_id: 'User ID',

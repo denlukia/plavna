@@ -19,8 +19,8 @@ export const createGroup = (keys: TranslationKey[]) => (lang: string) =>
 	getTranslationsByLangAndKeys(lang, keys);
 
 export const serviceTranslations = {
-	auth: createGroup(['login', 'signup', 'username', 'password']),
-	login: createGroup(['to_login', 'username', 'password']),
+	auth: createGroup(['login', 'signup']),
+	login: createGroup(['to_login', 'email', 'password']),
 	signup: createGroup(['to_signup', 'username', 'password']),
 	layout: createGroup(['language']),
 	main: createGroup(['landing', 'to_sign_out']),

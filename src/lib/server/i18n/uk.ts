@@ -7,6 +7,7 @@ const translations: FullTranslation = {
 	to_login: 'Увійти',
 	language: 'Мова',
 	username: "Ім'я користувача",
+	email: 'Електронна пошта',
 	password: 'Пароль',
 	landing: 'Лендинг',
 	user_id: 'ID Користувача',
