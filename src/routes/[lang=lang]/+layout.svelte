@@ -74,6 +74,8 @@
 	.fg {
 		display: flex;
 		justify-content: center;
+		position: relative;
+		overflow: hidden;
 	}
 	.main-layout {
 		flex-grow: 1;
