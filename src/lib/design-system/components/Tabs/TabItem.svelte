@@ -32,16 +32,7 @@
 	{...events}
 >
 	<Layers>
-		{#if active}
-			<div
-				class="layer-flashlight-wrapper"
-				in:fade={{ duration: 300, delay: 200 }}
-				out:fade={{ duration: 200 }}
-			>
-				<LayerFlashlight {mouse} />
-			</div>
-		{/if}
-		<LayerShift {mouse}>
+		<LayerShift mouse={{ ...mouse, hovered: !active && mouse.hovered }}>
 			<Text size="set-with-variables">
 				{@render children()}
 			</Text>
