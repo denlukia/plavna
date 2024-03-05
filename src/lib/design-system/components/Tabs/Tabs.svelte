@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { flushSync, onMount, type Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import Layers from '../Layers/Layers.svelte';
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import { crossfade } from './crossfade';
+	import { cubicOut } from 'svelte/easing';
 
 	type Props = {
 		children: Snippet;
@@ -21,6 +22,9 @@
 	let pillActive = $state(false);
 	let pillPos = $state({ left: 0, top: 0, right: 0, bottom: 0 });
 	let pillSkipTransition = $state(false);
+
+	const pillAnimDuration = 500;
+	let [send, receive] = crossfade({ easing: cubicOut });
 
 	function mutationCallback(mutation: MutationRecord[]) {
 		const activeTabMutations = mutation.filter(
@@ -91,11 +95,15 @@
 	<Layers>
 		<LayerFlashlight {mouse} />
 		{#if pillActive}
-			<div
-				class="active-tab-pill"
-				class:skip-transition={pillSkipTransition}
-				style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
-			/>
+			{#key pillPos.left}
+				<div
+					out:send={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
+					in:receive={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
+					class="active-tab-pill"
+					class:skip-transition={pillSkipTransition}
+					style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
+				/>
+			{/key}
 		{/if}
 		<span class="tab-items-wrapper" bind:this={ref}>
 			{@render children()}
@@ -131,10 +139,6 @@
 		position: absolute;
 		background: var(--color-tab-item-active-bg);
 		box-shadow: var(--shadow-tab-item-active);
-		transition: var(--transition-tabs-pill);
-	}
-	.active-tab-pill.skip-transition {
-		transition: none;
 	}
 
 	/* --- Size-dependent --- */
