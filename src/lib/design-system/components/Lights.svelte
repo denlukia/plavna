@@ -22,12 +22,6 @@
 		display: flex;
 		width: 500px;
 		margin-inline: -125px;
-		/* mask-image: radial-gradient(
-			farthest-side at 50% 0%,
-			black 25%,
-			hsla(0deg, 0%, 0%, 0.1) 80%,
-			transparent
-		); */
 		mask-image: linear-gradient(black, hsla(0deg, 0%, 0%, 0.1) 80%, transparent);
 	}
 	.left,
