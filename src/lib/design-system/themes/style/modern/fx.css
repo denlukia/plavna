@@ -95,7 +95,6 @@
 
 	/* --- Tabs --- */
 	--shadow-tabs: inset 0 2px 4px var(--color-tabs-shadow-1), 0 1px 1px var(--color-tabs-shadow-2);
-	--transition-tabs-pill: all 400ms var(--smooth-ease-out);
 
 	/* --- Tab Item --- */
 	--shadow-tab-item-active: 0 1px 1px var(--color-tab-item-active-shadow-1),
