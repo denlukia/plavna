@@ -1,5 +1,5 @@
 <script lang="ts">
-	let lights = ['hsl(32deg, 100%, 61%)', 'hsl(162deg, 100%, 61%)', 'hsl(338deg, 100%, 61%)'];
+	let lights = ['hsl(32deg, 100%, 71%)', 'hsl(162deg, 100%, 71%)', 'hsl(338deg, 100%, 71%)'];
 </script>
 
 <div class="lights">
@@ -15,14 +15,20 @@
 	.lights {
 		display: flex;
 		flex-shrink: 1;
-		height: 150px;
-		opacity: 0.8;
+		height: 250px;
 	}
 	.light {
 		display: flex;
 		width: 500px;
 		margin-inline: -125px;
-		mask-image: linear-gradient(black, hsla(0deg, 0%, 0%, 0.1) 80%, transparent);
+		mask-image: linear-gradient(
+			hsla(0deg, 0%, 0%, 1) 0%,
+			hsla(0deg, 0%, 0%, 0.5) 20%,
+			hsla(0deg, 0%, 0%, 0.3) 40%,
+			hsla(0deg, 0%, 0%, 0.15) 60%,
+			hsla(0deg, 0%, 0%, 0.1) 80%,
+			hsla(0deg, 0%, 0%, 0) 100%
+		);
 	}
 	.left,
 	.right {
