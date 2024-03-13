@@ -3,9 +3,10 @@ import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
 
 import { users } from '$lib/server/collections/db-schema';
-import { github, lucia } from '$lib/server/services/auth';
+import { getGitHubProvider, lucia } from '$lib/server/services/auth';
 import { db } from '$lib/server/services/db';
 
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export async function GET(event: RequestEvent): Promise<Response> {
@@ -20,7 +21,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	}
 
 	try {
-		const tokens = await github.validateAuthorizationCode(code);
+		const tokens = await getGitHubProvider(
+			event.params.lang as SupportedLang
+		).validateAuthorizationCode(code);
 		const githubUserResponse = await fetch('https://api.github.com/user', {
 			headers: {
 				Authorization: `Bearer ${tokens.accessToken}`
@@ -60,7 +63,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: '/'
+				Location: `/${event.params.lang}/`
 			}
 		});
 	} catch (e) {
