@@ -5,8 +5,8 @@ import { serviceTranslations } from '$lib/server/i18n';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ locals, params, parent }) => {
-	const session = await locals.authRequest.validate();
-	if (session) redirect(302, `/${session.user.username}/pages`);
+	const { user } = await locals;
+	if (user) redirect(302, `/${user.username}/pages`);
 
 	const { translations } = await parent();
 	return {

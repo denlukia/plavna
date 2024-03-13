@@ -90,7 +90,7 @@ import type {
 import type { User } from '../collections/types';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { ResultSet } from '@libsql/client';
-import type { AuthRequest } from 'lucia';
+import type { Session as LuciaSession, User as LuciaUser } from 'lucia';
 import type { SuperValidated } from 'sveltekit-superforms';
 
 type TransactionContext = SQLiteTransaction<
@@ -117,11 +117,13 @@ type ImagesUpdateParams = {
 // TODO Probably replace all error() with fail() ?
 
 class Plavna {
-	private readonly authRequest: AuthRequest;
+	private readonly userObj: LuciaUser | null;
+	private readonly sessionObj: LuciaSession | null;
 	private readonly lang: SupportedLang;
 
-	constructor(authRequest: AuthRequest, langParam: string | undefined) {
-		this.authRequest = authRequest;
+	constructor(user: LuciaUser | null, session: LuciaSession | null, langParam: string | undefined) {
+		this.userObj = user;
+		this.sessionObj = session;
 
 		if (!langParam) {
 			this.lang = defaultLang;
@@ -134,8 +136,7 @@ class Plavna {
 
 	public readonly user = {
 		get: async () => {
-			const session = await this.authRequest.validate();
-			return session && session.user;
+			return this.userObj;
 		},
 		getOrThrow: async () => {
 			const user = await this.user.get();
@@ -310,10 +311,7 @@ class Plavna {
 				// 4. Tags
 				const tagsQuery =
 					user?.username === username
-						? db
-								.select({ tags })
-								.from(tags)
-								.where(eq(tags.user_id, user?.id))
+						? db.select({ tags }).from(tags).where(eq(tags.user_id, user?.id))
 						: db
 								.select({ tags })
 								.from(tagsArticlesQueryAliased)
@@ -1379,8 +1377,8 @@ class Plavna {
 				typeof lang === 'string'
 					? 'translation-deletion'
 					: lang === null
-					? 'default-deletion'
-					: 'whole-deletion';
+						? 'default-deletion'
+						: 'whole-deletion';
 			const whereCondition = and(eq(images.user_id, user.id), eq(images.id, imageId));
 
 			const translation = await chosenDBInstance

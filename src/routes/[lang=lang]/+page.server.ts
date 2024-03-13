@@ -1,10 +1,10 @@
 // routes/+page.server.ts
-import { type Actions, fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 import { serviceTranslations } from '$lib/server/i18n';
-import { auth } from '$lib/server/services/auth';
+import { lucia } from '$lib/server/services/auth';
 
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
 	const { translations } = await parent();
@@ -14,10 +14,16 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ locals }) => {
-		const session = await locals.authRequest.validate();
-		if (!session) return fail(401);
-		await auth.invalidateSession(session.sessionId); // invalidate session
-		locals.authRequest.setSession(null);
+	default: async (event) => {
+		if (!event.locals.session) {
+			return fail(401);
+		}
+		await lucia.invalidateSession(event.locals.session.id);
+		const sessionCookie = lucia.createBlankSessionCookie();
+		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
+		redirect(302, '/login');
 	}
 };

@@ -1,9 +1,9 @@
 import { serviceTranslations } from '$lib/server/i18n';
 
 export const load = async ({ params, locals }) => {
-	const session = await locals.authRequest.validate();
+	const { user } = locals;
 	return {
-		user: session?.user ?? null,
+		user,
 		translations: serviceTranslations.layout(params.lang)
 	};
 };

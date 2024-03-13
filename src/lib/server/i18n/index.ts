@@ -20,7 +20,7 @@ export const createGroup = (keys: TranslationKey[]) => (lang: string) =>
 
 export const serviceTranslations = {
 	auth: createGroup(['login', 'signup']),
-	login: createGroup(['to_login', 'email', 'password']),
+	login: createGroup(['to_login', 'email', 'password', 'sign_in_with_github']),
 	signup: createGroup(['to_signup', 'username', 'password']),
 	layout: createGroup(['language']),
 	main: createGroup(['landing', 'to_sign_out']),
