@@ -36,48 +36,32 @@
 	export let data;
 </script>
 
-<Layers tag="div" --layers-flex-grow="1">
-	<div class="bg" />
-	<div class="fg">
-		<div class="main-layout">
-			<header>
-				{#each supportedLangs as language}
-					<a href={generateLangURL($page.url.pathname, language)}>
-						{language.toUpperCase()}
-					</a>{' '}
-				{/each}
-				{#if data.user}
-					<a
-						href={generateCreateArticleURL($page.params.lang, data.user.username)}
-						data-sveltekit-preload-data="off"
-						data-sveltekit-preload-code="hover"
-					>
-						Створити статтю
-					</a>
-				{/if}
-			</header>
-			<slot />
-		</div>
-		<div class="lights-wrapper">
-			<Lights />
-		</div>
+<div class="main-layout">
+	<div class="lights-wrapper">
+		<Lights />
 	</div>
-</Layers>
+	<div class="content-wrapper">
+		<header>
+			{#each supportedLangs as language}
+				<a href={generateLangURL($page.url.pathname, language)}>
+					{language.toUpperCase()}
+				</a>{' '}
+			{/each}
+			{#if data.user}
+				<a
+					href={generateCreateArticleURL($page.params.lang, data.user.username)}
+					data-sveltekit-preload-data="off"
+					data-sveltekit-preload-code="hover"
+				>
+					Створити статтю
+				</a>
+			{/if}
+		</header>
+		<slot />
+	</div>
+</div>
 
 <style>
-	.lights-wrapper {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translate(-50%, 0);
-		pointer-events: none;
-	}
-	.fg {
-		display: flex;
-		justify-content: center;
-		position: relative;
-		overflow: hidden;
-	}
 	.main-layout {
 		flex-grow: 1;
 		max-width: var(--size-main-layout-max-width);
@@ -86,5 +70,19 @@
 			0 -100px 0 var(--color-main-layout-bg),
 			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-layout-padding-inline);
+		position: relative;
+	}
+
+	.lights-wrapper {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		left: 0;
+		overflow: hidden;
+	}
+
+	.content-wrapper {
+		isolation: isolate;
 	}
 </style>
