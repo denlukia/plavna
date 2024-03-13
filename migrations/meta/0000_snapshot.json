@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "ba403437-13ae-4e00-a726-18eb4448d686",
+  "id": "4d7adbc9-a15a-4e1d-b775-126915a9cfd3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
@@ -391,50 +391,6 @@
           ],
           "onDelete": "set null",
           "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "auth_key": {
-      "name": "auth_key",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "hashed_password": {
-          "name": "hashed_password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "auth_key_user_id_auth_user_id_fk": {
-          "name": "auth_key_user_id_auth_user_id_fk",
-          "tableFrom": "auth_key",
-          "tableTo": "auth_user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -833,15 +789,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "active_expires": {
-          "name": "active_expires",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "idle_expires": {
-          "name": "idle_expires",
+        "expires_at": {
+          "name": "expires_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -1043,6 +992,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "github_id": {
+          "name": "github_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "username": {
           "name": "username",
           "type": "text",
@@ -1073,6 +1029,20 @@
         }
       },
       "indexes": {
+        "auth_user_github_id_unique": {
+          "name": "auth_user_github_id_unique",
+          "columns": [
+            "github_id"
+          ],
+          "isUnique": true
+        },
+        "auth_user_username_unique": {
+          "name": "auth_user_username_unique",
+          "columns": [
+            "username"
+          ],
+          "isUnique": true
+        },
         "idx_user_unique_username": {
           "name": "idx_user_unique_username",
           "columns": [

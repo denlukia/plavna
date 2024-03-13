@@ -1,4 +1,3 @@
-// Has to be relative for drizzle to resolve it
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/queue';
 import { relations } from 'drizzle-orm';
@@ -17,7 +16,8 @@ export const users = sqliteTable(
 	'auth_user',
 	{
 		id: text('id').primaryKey(),
-		username: text('username').notNull(),
+		github_id: integer('github_id').unique().notNull(),
+		username: text('username').unique().notNull(),
 		imagekit_public_key: text('imagekit_public_key'),
 		imagekit_private_key: text('imagekit_private_key'),
 		imagekit_url_endpoint: text('imagekit_url_endpoint')
@@ -31,19 +31,10 @@ export const users = sqliteTable(
 
 export const sessions = sqliteTable('auth_session', {
 	id: text('id').primaryKey(),
-	user_id: text('user_id')
+	userId: text('user_id')
 		.notNull()
 		.references(() => users.id),
-	active_expires: integer('active_expires').notNull(),
-	idle_expires: integer('idle_expires').notNull()
-});
-
-export const keys = sqliteTable('auth_key', {
-	id: text('id').primaryKey(),
-	user_id: text('user_id')
-		.notNull()
-		.references(() => users.id),
-	hashed_password: text('hashed_password')
+	expiresAt: integer('expires_at').notNull()
 });
 
 export const pages = sqliteTable(

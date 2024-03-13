@@ -39,9 +39,6 @@
 <Layers tag="div" --layers-flex-grow="1">
 	<div class="bg" />
 	<div class="fg">
-		<div class="lights-wrapper">
-			<Lights />
-		</div>
 		<div class="main-layout">
 			<header>
 				{#each supportedLangs as language}
@@ -61,6 +58,9 @@
 			</header>
 			<slot />
 		</div>
+		<div class="lights-wrapper">
+			<Lights />
+		</div>
 	</div>
 </Layers>
 
@@ -70,6 +70,7 @@
 		top: 0;
 		left: 50%;
 		transform: translate(-50%, 0);
+		pointer-events: none;
 	}
 	.fg {
 		display: flex;

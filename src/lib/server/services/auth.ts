@@ -1,27 +1,34 @@
 import { dev } from '$app/environment';
-import { libsql } from '@lucia-auth/adapter-sqlite';
-import { lucia } from 'lucia';
-import { sveltekit } from 'lucia/middleware';
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
+import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
+import { GitHub } from 'arctic';
+import { Lucia } from 'lucia';
 
-import { libsqlClient } from './db';
+import { sessions, users } from '../collections/db-schema';
+import { db } from './db';
 
 import type { User } from '../collections/types';
 
-export const auth = lucia({
-	adapter: libsql(libsqlClient, {
-		user: 'auth_user',
-		key: 'auth_key',
-		session: 'auth_session'
-	}),
-	env: dev ? 'DEV' : 'PROD',
-	middleware: sveltekit(),
-	getUserAttributes: (data: User) => {
+const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+
+export const lucia = new Lucia(adapter, {
+	sessionCookie: {
+		attributes: {
+			secure: !dev
+		}
+	},
+	getUserAttributes: (attributes) => {
 		return {
-			id: data.id,
-			username: data.username,
-			imagekit_public_key: data.imagekit_public_key,
-			imagekit_private_key: data.imagekit_private_key,
-			imagekit_url_endpoint: data.imagekit_url_endpoint
+			...attributes
 		};
 	}
 });
+
+export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET);
+
+declare module 'lucia' {
+	interface Register {
+		Lucia: typeof lucia;
+		DatabaseUserAttributes: User;
+	}
+}

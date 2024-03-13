@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
-	import type { MouseEventHandler } from 'svelte/elements';
+	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
 	import Layers from './Layers/Layers.svelte';
 	import LayerFlashlight from './Layers/LayerFlashlight.svelte';
 	import Text from './Text.svelte';
@@ -13,7 +13,7 @@
 		children: Snippet;
 		type?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
-
+		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 		href?: string;
 		onclick?: UniversalMouseEventHandler;
 	};
@@ -22,6 +22,7 @@
 		type = 'primary',
 		size = 'body',
 		href,
+		dataSvelteKitReload,
 		onclick: onClickProp = () => {}
 	} = $props<Props>();
 
@@ -48,6 +49,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
+	data-sveltekit-reload={dataSvelteKitReload}
 	class={`reset button type-${type} size-${size} 
 	global-layer-flashlight-hover-trigger global-line-height-reset
 	${href ? 'global-link-rest' : 'global-button-rest'}`}

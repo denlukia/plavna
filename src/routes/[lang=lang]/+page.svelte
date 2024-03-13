@@ -2,11 +2,13 @@
 	import { enhance } from '$app/forms';
 
 	import Translation from '$lib/components/Translation.svelte';
+	import Button from '$lib/design-system/components/Button.svelte';
+	import Text from '$lib/design-system/components/Text.svelte';
 
 	// export let data;
 </script>
 
-<h1><Translation key="landing" /></h1>
+<Text size="heading-1"><Translation key="landing" /></Text>
 <form use:enhance method="POST">
-	<button type="submit"><Translation key="to_sign_out" /></button>
+	<Button><Translation key="to_sign_out" /></Button>
 </form>

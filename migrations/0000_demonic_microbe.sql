@@ -45,13 +45,6 @@ CREATE TABLE `images` (
 	FOREIGN KEY (`path_translation_key`) REFERENCES `translations`(`key`) ON UPDATE cascade ON DELETE set null
 );
 --> statement-breakpoint
-CREATE TABLE `auth_key` (
-	`id` text PRIMARY KEY NOT NULL,
-	`user_id` text NOT NULL,
-	`hashed_password` text,
-	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE no action ON DELETE no action
-);
---> statement-breakpoint
 CREATE TABLE `pages` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`user_id` text NOT NULL,
@@ -106,8 +99,7 @@ CREATE TABLE `sections_to_tags` (
 CREATE TABLE `auth_session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
-	`active_expires` integer NOT NULL,
-	`idle_expires` integer NOT NULL,
+	`expires_at` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `auth_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -137,6 +129,7 @@ CREATE TABLE `translations` (
 --> statement-breakpoint
 CREATE TABLE `auth_user` (
 	`id` text PRIMARY KEY NOT NULL,
+	`github_id` integer NOT NULL,
 	`username` text NOT NULL,
 	`imagekit_public_key` text,
 	`imagekit_private_key` text,
@@ -145,4 +138,6 @@ CREATE TABLE `auth_user` (
 --> statement-breakpoint
 CREATE UNIQUE INDEX `idx_articles_unique_user_slug` ON `articles` (`slug`,`user_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `idx_pages_unique_user_slug` ON `pages` (`user_id`,`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `auth_user_github_id_unique` ON `auth_user` (`github_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `auth_user_username_unique` ON `auth_user` (`username`);--> statement-breakpoint
 CREATE UNIQUE INDEX `idx_user_unique_username` ON `auth_user` (`username`);

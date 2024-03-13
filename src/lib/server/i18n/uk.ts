@@ -23,7 +23,8 @@ const translations: FullTranslation = {
 	create_new_page: 'Створити сторінку',
 	couldnt_save_article: 'Не вдалося зберігти пост і я не знаю чому',
 	preview_plavna_modern: 'Плавна Сучасне',
-	preview_custom: 'Кастомне превью'
+	preview_custom: 'Кастомне превью',
+	sign_in_with_github: 'Увійти з GitHub'
 };
 
 export default translations;
