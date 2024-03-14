@@ -26,6 +26,7 @@ export const serviceTranslations = {
 	main: createGroup(['landing', 'to_sign_out']),
 	articleEditor: createGroup(['preview_plavna_modern']),
 	userPages: createGroup([
+		'my_pages',
 		'couldnt_create_page',
 		'invalid_slug',
 		'slug_in_use',

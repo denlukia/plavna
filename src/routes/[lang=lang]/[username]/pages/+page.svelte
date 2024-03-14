@@ -1,10 +1,12 @@
 <script lang="ts">
+	import Translation from '$lib/components/Translation.svelte';
 	import PageEditForm from '$lib/components/editors/PageEditor.svelte';
+	import Text from '$lib/design-system/components/Text.svelte';
 
 	export let data;
 </script>
 
-<h1>МОЇ СТОРІНКИ</h1>
+<Text><Translation key="my_pages" /></Text>
 
 {#each data.editForms as formObj}
 	<PageEditForm {formObj} />

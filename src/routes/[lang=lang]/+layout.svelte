@@ -59,6 +59,8 @@
 		</header>
 		<slot />
 	</div>
+	<div class="greeting-layer bg" />
+	<video class="greeting-layer video" src="/videos/Colorfull Clouds.mp4" loop autoplay muted />
 </div>
 
 <style>
@@ -70,7 +72,6 @@
 			0 -100px 0 var(--color-main-layout-bg),
 			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-layout-padding-inline);
-		position: relative;
 	}
 
 	.lights-wrapper {
@@ -84,5 +85,21 @@
 
 	.content-wrapper {
 		isolation: isolate;
+	}
+
+	.greeting-layer {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.greeting-layer.bg {
+		background-color: hsla(0, 0%, 0%, 0.85);
+	}
+	.greeting-layer.video {
+		mix-blend-mode: screen;
+		filter: saturate(1.25);
+		object-fit: cover;
 	}
 </style>
