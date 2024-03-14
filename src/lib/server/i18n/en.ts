@@ -22,7 +22,8 @@ const translations = {
 	couldnt_save_article: "Could not save a article and I don't know why",
 	preview_plavna_modern: 'Plavna Modern',
 	preview_custom: 'Custom Preview',
-	sign_in_with_github: 'Sign in with GitHub'
+	sign_in_with_github: 'Sign in with GitHub',
+	my_pages: 'My Pages'
 };
 
 export type FullTranslation = Record<keyof typeof translations, any>;

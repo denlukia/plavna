@@ -24,7 +24,8 @@ const translations: FullTranslation = {
 	couldnt_save_article: 'Не вдалося зберігти пост і я не знаю чому',
 	preview_plavna_modern: 'Плавна Сучасне',
 	preview_custom: 'Кастомне превью',
-	sign_in_with_github: 'Увійти з GitHub'
+	sign_in_with_github: 'Увійти з GitHub',
+	my_pages: 'Мої сторінки'
 };
 
 export default translations;
