@@ -1,8 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
-	import { generatePath } from '$lib/isomorphic/url.js';
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
+
+	import { page } from '$app/stores';
+	import { generatePath } from '$lib/isomorphic/url.js';
+	import { defaultLang } from '$lib/isomorphic/languages.js';
+
+	import Lights from '$lib/design-system/components/Lights.svelte';
+	import GreetingsScene from '$lib/(features)/auth/GreetingsScene.svelte';
 
 	import '$lib/styles/index.css';
 
@@ -10,9 +14,6 @@
 	import '$lib/design-system/themes/color/milk.css';
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
-	import { defaultLang } from '$lib/isomorphic/languages.js';
-	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
-	import Lights from '$lib/design-system/components/Lights.svelte';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		const currentLanguage = $page.params.lang;
@@ -59,8 +60,13 @@
 		</header>
 		<slot />
 	</div>
-	<div class="greeting-layer bg" />
-	<video class="greeting-layer video" src="/videos/Colorfull Clouds.mp4" loop autoplay muted />
+
+	<div class="greetings-layer shade" />
+	<video class="greetings-layer video" src="/videos/Colorfull Clouds.mp4" loop autoplay muted />
+	<div class="greetings-layer noise" />
+	<div class="greetings-layer scene">
+		<GreetingsScene />
+	</div>
 </div>
 
 <style>
@@ -87,19 +93,33 @@
 		isolation: isolate;
 	}
 
-	.greeting-layer {
+	.greetings-layer {
 		position: fixed;
 		left: 0;
 		top: 0;
 		width: 100%;
 		height: 100%;
 	}
-	.greeting-layer.bg {
-		background-color: hsla(0, 0%, 0%, 0.85);
+
+	.shade {
+		background-color: hsla(0, 0%, 0%, 0.8);
 	}
-	.greeting-layer.video {
+	.video {
 		mix-blend-mode: screen;
-		filter: saturate(1.25);
+		filter: saturate(1.5) brightness(1.1) contrast(1.1);
 		object-fit: cover;
+	}
+	.noise {
+		background: url('/images/noise.jpg');
+		background-size: 128px;
+		opacity: 0.15;
+		mix-blend-mode: screen;
+	}
+	.scene {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 400px;
+		height: 200px;
 	}
 </style>

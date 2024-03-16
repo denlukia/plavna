@@ -21,6 +21,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@trivago/prettier-plugin-sort-imports": "4.1.0",
 		"@types/marked": "^5.0.2",
+		"@types/three": "^0.162.0",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"better-sqlite3": "^9.4.1",
@@ -47,6 +48,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "^1.0.3",
-		"arctic": "^1.2.1"
+		"arctic": "^1.2.1",
+		"three": "^0.162.0"
 	}
 }
