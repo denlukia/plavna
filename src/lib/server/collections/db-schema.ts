@@ -12,6 +12,9 @@ import {
 
 import { previewFamiliesIds } from './previews';
 
+// TODO Capital names of tables in singular
+// to deal with variable names for quaries problem
+
 export const users = sqliteTable(
 	'auth_user',
 	{

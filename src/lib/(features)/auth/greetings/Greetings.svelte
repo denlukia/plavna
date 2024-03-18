@@ -23,7 +23,6 @@
 	}
 	.video {
 		mix-blend-mode: screen;
-		/* filter: saturate(1.5) brightness(1.1) contrast(1.1); */
 		object-fit: cover;
 	}
 	.noise {
