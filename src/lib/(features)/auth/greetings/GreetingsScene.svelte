@@ -2,27 +2,36 @@
 	import { untrack } from 'svelte';
 	import * as THREE from 'three';
 	import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-	import svg from './translations/uk.svg?raw';
+	import svg from './translations/test.svg?raw';
+	import { convertPathToCurve } from './paths';
 
 	let canvas: HTMLCanvasElement | null = $state(null);
 	let canvasRect = $state({ width: 0, height: 0 });
 	let initialized = $state(false);
 
-	let camera: THREE.PerspectiveCamera;
+	let camera: THREE.OrthographicCamera;
 	let scene: THREE.Scene;
 	let renderer: THREE.WebGLRenderer;
 
 	const init = (canvas: HTMLCanvasElement, width: number, height: number) => {
 		// 1. Scene setup
 		scene = new THREE.Scene();
-		camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+		// camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+		camera = new THREE.OrthographicCamera(
+			-width / 2,
+			width / 2,
+			height / 2,
+			-height / 2,
+			0.1,
+			1000
+		);
 
 		renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(width, height);
 
-		camera.position.set(0, 0, -500);
-		camera.lookAt(0, 0, 0);
+		camera.position.set(100, 50, -200);
+		camera.lookAt(100, 50, 0);
 		// rotate 180 degrees
 		camera.rotation.z = 0;
 
@@ -30,45 +39,51 @@
 		const loader = new SVGLoader();
 		const svgData = loader.parse(svg);
 
-		console.log(svgData);
-
 		// Group that will contain all of our paths
 		const svgGroup = new THREE.Group();
 
 		const material = new THREE.MeshNormalMaterial();
 
-		function isCubicBezierCurve(
-			curve: THREE.Curve<THREE.Vector2>
-		): curve is THREE.CubicBezierCurve {
-			return curve.type === 'CubicBezierCurve';
-		}
-
 		// Loop through all of the parsed paths
 		svgData.paths.forEach((path, i) => {
-			path.currentPath?.curves.filter(isCubicBezierCurve).forEach((curve) => {
-				const keys = ['v0', 'v1', 'v2', 'v3'] as const;
-				const vector3Curve = new THREE.CubicBezierCurve3(
-					...keys.map((key) => {
-						const point = curve[key];
-						return new THREE.Vector3(point.x, point.y, 0);
-					})
-				);
-				const geometry = new THREE.TubeGeometry(vector3Curve, 20, 5, 8, false);
-				const mesh = new THREE.Mesh(geometry, material);
-				svgGroup.add(mesh);
-			});
+			path.subPaths.forEach((subPath) => {
+				const tubeRadius = 5;
+				const tubeRadialSegments = 8;
 
-			// const shapes = path.toShapes(true);
-			// // Each path has array of shapes
-			// shapes.forEach((shape, j) => {
-			// 	const points = shape.getPoints();
-			// 	const vector3Points = points.map((point) => new THREE.Vector3(point.x, point.y, 0));
-			// 	// Create a CatmullRomCurve3 from the points
-			// 	const curve = new THREE.CatmullRomCurve3(vector3Points, false, 'centripetal');
-			// 	const geometry = new THREE.TubeGeometry(curve, 20, 2, 8, false);
-			// 	const mesh = new THREE.Mesh(geometry, material);
-			// 	svgGroup.add(mesh);
-			// });
+				// 1. Create Tube
+				const curve = convertPathToCurve(subPath);
+				const tubeGeometry = new THREE.TubeGeometry(
+					curve,
+					subPath.arcLengthDivisions * 5,
+					tubeRadius,
+					tubeRadialSegments
+				);
+				const tubeMesh = new THREE.Mesh(tubeGeometry, material);
+				svgGroup.add(tubeMesh);
+
+				const caps = [
+					{ pointOnPath: 0, rotateY: -Math.PI / 2 },
+					{ pointOnPath: 1, rotateY: Math.PI / 2 }
+				];
+
+				caps.forEach(({ pointOnPath, rotateY }) => {
+					const tangentStart = curve.getTangent(pointOnPath);
+					const pointStart = curve.getPoint(pointOnPath);
+					const halfSphereStart = new THREE.SphereGeometry(
+						tubeRadius,
+						tubeRadialSegments,
+						tubeRadialSegments,
+						0,
+						Math.PI
+					)
+						.rotateY(rotateY)
+						.rotateZ(Math.atan2(tangentStart.y, tangentStart.x))
+						.translate(pointStart.x, pointStart.y, pointStart.z);
+
+					const sphereStartMesh = new THREE.Mesh(halfSphereStart, material);
+					svgGroup.add(sphereStartMesh);
+				});
+			});
 		});
 
 		scene.add(svgGroup);
