@@ -35,7 +35,9 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: 400px;
-		height: 200px;
+		max-width: 800px;
+		max-height: 400px;
+		width: 100%;
+		height: 100%;
 	}
 </style>
