@@ -1,14 +1,16 @@
 import * as THREE from 'three';
 
 export function convertPathToCurve(path: THREE.Path): THREE.Curve<THREE.Vector3> {
-	const pathLength = path.getLength();
+	const length = path.getLength();
+	const pointsQuantity = Math.ceil(length);
+	const divisionsQuantity = 1;
 	const curve = new THREE.CatmullRomCurve3(
-		path.getPoints(pathLength / 5).map((point) => new THREE.Vector3(point.x, point.y, 0)),
+		path.getPoints(pointsQuantity).map((point) => new THREE.Vector3(point.x, point.y, 0)),
 		false,
 		'centripetal',
 		0.5
 	);
-	curve.arcLengthDivisions = pathLength / 5;
+	curve.arcLengthDivisions = divisionsQuantity;
 	return curve;
 }
 

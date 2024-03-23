@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import * as THREE from 'three';
 	import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-	import svg from './translations/test.svg?raw';
+	import svg from './translations/uk.svg?raw';
 	import { convertPathToCurve } from './paths';
 
 	let canvas: HTMLCanvasElement | null = $state(null);
@@ -16,12 +16,13 @@
 	const init = (canvas: HTMLCanvasElement, width: number, height: number) => {
 		// 1. Scene setup
 		scene = new THREE.Scene();
-		// camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+
+		const frustumDivider = 2.5;
 		camera = new THREE.OrthographicCamera(
-			-width / 2,
-			width / 2,
-			height / 2,
-			-height / 2,
+			-width / frustumDivider,
+			width / frustumDivider,
+			height / frustumDivider,
+			-height / frustumDivider,
 			0.1,
 			1000
 		);
@@ -30,8 +31,10 @@
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(width, height);
 
-		camera.position.set(100, 50, -200);
-		camera.lookAt(100, 50, 0);
+		const centerXY = [265, 70] as const;
+
+		camera.position.set(...centerXY, -10);
+		camera.lookAt(...centerXY, 0);
 		// rotate 180 degrees
 		camera.rotation.z = 0;
 
