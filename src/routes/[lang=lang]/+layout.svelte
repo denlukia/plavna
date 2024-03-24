@@ -60,7 +60,7 @@
 		</header>
 		<slot />
 	</div>
-	<Greetings />
+	<!-- <Greetings /> -->
 </div>
 
 <style>

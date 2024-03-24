@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Translation from '$lib/components/Translation.svelte';
-	import PageEditForm from '$lib/components/editors/PageEditor.svelte';
+	import PageEditForm from '$lib/(features)/user_pages_list/PageEditor.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
 
 	export let data;
