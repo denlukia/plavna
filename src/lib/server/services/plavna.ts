@@ -13,7 +13,8 @@ import {
 } from 'drizzle-orm';
 import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
 import { marked } from 'marked';
-import { superValidateSync } from 'sveltekit-superforms/server';
+import {  superValidate } from 'sveltekit-superforms/server';
+import { zod } from 'sveltekit-superforms/adapters';
 
 import { ERRORS } from '$lib/isomorphic/errors';
 import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
@@ -85,7 +86,6 @@ import type {
 	TranslationInsertBase,
 	TranslationSelect,
 	TranslationUpdate,
-	TranslationUpdateZod
 } from '$lib/server/collections/types';
 import type { User } from '../collections/types';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
@@ -185,10 +185,10 @@ class Plavna {
 			const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
 
 			return {
-				editForms: query.map((page) =>
-					superValidateSync(page, pageUpdateFormSchema, { id: 'pages-' + page.id })
-				),
-				createForm: superValidateSync(pageCreateFormSchema)
+				editForms: await Promise.all(query.map(async (page) =>
+					await superValidate(page, zod(pageUpdateFormSchema), { id: 'pages-' + page.id })
+				)),
+				createForm: await superValidate(zod(pageCreateFormSchema))
 			};
 		},
 		getOneWithSectionsAndArticles: async (
@@ -401,11 +401,11 @@ class Plavna {
 						return {
 							...acc,
 							...Object.fromEntries(
-								sectionsTranslationsInfo.map((t) => {
+								sectionsTranslationsInfo.map(async (t) => {
 									if (user?.username === username) {
 										return [
 											t.translations.key,
-											superValidateSync(t.translations, translationUpdateSchema, {
+											superValidate(t.translations, zod(translationUpdateSchema), {
 												id: 'section-translation-' + t.translations.key
 											})
 										];
@@ -415,7 +415,7 @@ class Plavna {
 								})
 							)
 						};
-					}, {}) as Record<string, SuperValidated<TranslationUpdateZod>>)
+					}, {}) as Record<string, SuperValidated<TranslationUpdate>>)
 				},
 				translations: {
 					...sectionsNonEmpty.reduce((acc, [, , , , , otherTranslationsInfo]) => {
@@ -439,7 +439,7 @@ class Plavna {
 						)
 					};
 				}, {}),
-				sectionCreationForm: superValidateSync(translationInsertSchema)
+				sectionCreationForm: await superValidate(zod(translationInsertSchema))
 			};
 		}
 	};
@@ -737,16 +737,16 @@ class Plavna {
 			const previewTemplatesResults = results
 				.map((rows) => rows.previewTemplates)
 				.filter(getNullAndDupFilter('id'))
-				.map((template) => {
+				.map(async (template) => {
 					const foundTranslation = translationsForPreviewTemplates.find(
 						(translation) => translation.key === template.name_translation_key
 					);
 
 					return {
 						meta: template,
-						form: superValidateSync(
+						form: await superValidate(
 							{ ...template, template_id: template.id, ...foundTranslation },
-							previewTemplateEditingFormSchema
+							zod(previewTemplateEditingFormSchema)
 						)
 					};
 				});
@@ -757,18 +757,18 @@ class Plavna {
 			const translationsForForms = results
 				.map((rows) => rows.translForForms)
 				.filter(getNullAndDupFilter('key'));
-			const tagInfos = allTags.map((tag) => ({
-				checkedForm: superValidateSync(
+			const tagInfos = allTags.map(async (tag) => ({
+				checkedForm: await superValidate(
 					{ ...tag, checked: !!articleTags.find((t) => t.tag_id === tag.id) },
-					tagUpdateSchema,
+					zod(tagUpdateSchema),
 					{ id: 'is-checked-' + tag.id }
 				),
 				name_translation_key: tag.name_translation_key
 			}));
 			const previewForms = [...previewFamilies, ...previewTemplatesResults].map(
-				(familyOrTemplate) => {
-					const emptyForm = superValidateSync(articlePreviewUpdateSchema);
-					const filledForm = superValidateSync(articleResult, articlePreviewUpdateSchema);
+				async (familyOrTemplate) => {
+					const emptyForm = await superValidate(zod(articlePreviewUpdateSchema));
+					const filledForm = await superValidate(articleResult, zod(articlePreviewUpdateSchema));
 					if ('meta' in familyOrTemplate) {
 						return {
 							familyId: 'custom',
@@ -793,36 +793,36 @@ class Plavna {
 				}
 			);
 			const commonImages = {
-				creation: superValidateSync(imageCreationFormSchema, { id: 'common-image-creation' }),
+				creation: await superValidate(zod(imageCreationFormSchema), { id: 'common-image-creation' }),
 				items: results
 					.map((rows) => rows.commonImagesTable)
 					.filter(getNullAndDupFilter('id'))
-					.map((image) => ({
+					.map(async (image) => ({
 						meta: image,
-						form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+						form: await superValidate(image, zod(imageUpdateFormSchema), { id: 'image-' + image.id })
 					}))
 			};
 			const articleImages = {
-				creation: superValidateSync(imageCreationFormSchema, { id: 'article-image-creation' }),
+				creation: await superValidate(zod(imageCreationFormSchema), { id: 'article-image-creation' }),
 				items: results
 					.map((rows) => rows.articleImagesTable)
 					.filter(getNullAndDupFilter('id'))
-					.map((image) => ({
+					.map(async (image) => ({
 						meta: image,
-						form: superValidateSync(image, imageUpdateFormSchema, { id: 'image-' + image.id })
+						form: await superValidate(image, zod(imageUpdateFormSchema), { id: 'image-' + image.id })
 					}))
 			};
 
 			return {
 				meta: articleSelectSchema.parse(articleResult),
-				slugForm: superValidateSync(articleResult, articleSlugUpdateSchema),
+				slugForm: await superValidate(articleResult, zod(articleSlugUpdateSchema)),
 				previewForms,
 				previewFamilies,
 				previewTemplates: previewTemplatesResults,
-				previewTemplateCreationForm: superValidateSync(previewTemplateCreationFormSchema),
+				previewTemplateCreationForm: await superValidate(zod(previewTemplateCreationFormSchema)),
 				tagInfos,
-				tagCreationForm: superValidateSync(translationInsertSchema),
-				imageProviderForm: superValidateSync(user, imageProviderUpdateFormSchema),
+				tagCreationForm: await superValidate(zod(translationInsertSchema)),
+				imageProviderForm: await superValidate(user, zod(imageProviderUpdateFormSchema)),
 				images: imagesArr,
 				commonImages,
 				articleImages,
@@ -832,11 +832,11 @@ class Plavna {
 					})
 				),
 				translationForms: Object.fromEntries(
-					translationsForForms.map((translation) => {
+					translationsForForms.map(async (translation) => {
 						const { key } = translation;
 						return [
 							key,
-							superValidateSync(translation, translationUpdateSchema, {
+							await superValidate(translation, zod(translationUpdateSchema), {
 								id: 'translation-' + key
 							})
 						];

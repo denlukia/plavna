@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
-	import Layers from './Layers/Layers.svelte';
+
 	import LayerFlashlight from './Layers/LayerFlashlight.svelte';
-	import Text from './Text.svelte';
-	import { MouseWatcher } from './Layers/watcher.svelte';
+	import Layers from './Layers/Layers.svelte';
 	import LayerShift from './Layers/LayerShift.svelte';
+	import { MouseWatcher } from './Layers/watcher.svelte';
+	import Text from './Text.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
 
@@ -13,6 +14,7 @@
 		children: Snippet;
 		type?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
+		dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];
 		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 		href?: string;
 		onclick?: UniversalMouseEventHandler;
@@ -50,7 +52,7 @@
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
 	data-sveltekit-reload={dataSvelteKitReload}
-	class={`reset button type-${type} size-${size} 
+	class={`button type-${type} size-${size} 
 	global-layer-flashlight-hover-trigger global-line-height-reset
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed
@@ -74,6 +76,7 @@
 		padding: 0;
 		transition: var(--transition-button);
 		overflow: hidden;
+		display: inline-block;
 	}
 
 	.content {

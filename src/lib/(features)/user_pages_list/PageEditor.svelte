@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms/client';
-
-	import type { PageCreateFormZod, PageUpdateFormZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms/client';
+	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
 
-	export let formObj: SuperValidated<PageCreateFormZod> | SuperValidated<PageUpdateFormZod>;
+	export let formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;
 
 	const { form, errors, enhance } = superForm(formObj);
 </script>
