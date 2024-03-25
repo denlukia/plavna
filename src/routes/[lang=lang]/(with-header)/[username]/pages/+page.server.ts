@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
+import { zod } from 'sveltekit-superforms/adapters';
 
 import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/collections/parsers';
 import { serviceTranslations } from '$lib/server/i18n';
@@ -18,19 +19,19 @@ export const load: PageServerLoad = async ({ locals: { plavna }, params, parent 
 
 export const actions = {
 	create: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, pageCreateFormSchema);
+		const form = await superValidate(request, zod(pageCreateFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.create(form.data);
 	},
 	update: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, pageUpdateFormSchema);
+		const form = await superValidate(request, zod(pageUpdateFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.update(form.data);
 	},
 	delete: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, pageUpdateFormSchema);
+		const form = await superValidate(request, zod(pageUpdateFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.delete(form.data.id);

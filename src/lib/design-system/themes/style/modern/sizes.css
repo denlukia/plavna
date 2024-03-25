@@ -15,11 +15,11 @@
 
 	/* ------ Semantic ------ */
 	/* --- General --- */
-
 	--size-column-width: 220px;
 	--size-column-gap: var(--size-m);
 
 	/* --- Main Layout --- */
+	--size-main-layout-margin-top: var(--size-xl);
 	--size-main-layout-padding-inline: var(--size-m-to-l);
 	--size-main-layout-max-width: calc(var(--size-column-width) * 5 + var(--size-column-gap) * 4);
 

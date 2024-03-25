@@ -1,4 +1,6 @@
 <script>
+	import { setContext } from 'svelte';
+	import Box from '$lib/design-system/components/Box/Box.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
@@ -7,13 +9,11 @@
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
 	import Select from '$lib/design-system/components/Select/Select.svelte';
 	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
+	import Spacer from '$lib/design-system/components/Spacer.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
 	import Text from '$lib/design-system/components/Text.svelte';
-	import Box from '$lib/design-system/components/Box/Box.svelte';
-	import { setContext } from 'svelte';
-	import Spacer from '$lib/design-system/components/Spacer.svelte';
 
 	const mockedSelectorLanguages = [
 		{ name: 'English', code: 'en' },
@@ -40,16 +40,17 @@
 			<Text block size="small-short">Тестовий <br /> текст</Text>
 		</div>
 		<div class="group">
-			<Button bold>Testy</Button>
-			<Button type="secondary" bold>Testy</Button>
-			<Button type="prominent" bold>Testy</Button>
-			<Button type="destructive" bold>Testy</Button>
+			<Button>Testy</Button>
+			<Button type="secondary">Testy</Button>
+			<Button type="prominent">Testy</Button>
+			<Button type="destructive">Testy</Button>
+			<Button href="/">Link</Button>
 		</div>
 		<div class="group">
-			<Button size="small" bold>Testy</Button>
-			<Button size="small" type="secondary" bold>Testy</Button>
-			<Button size="small" type="prominent" bold>Testy</Button>
-			<Button size="small" type="destructive" bold>Testy</Button>
+			<Button size="small">Testy</Button>
+			<Button size="small" type="secondary">Testy</Button>
+			<Button size="small" type="prominent">Testy</Button>
+			<Button size="small" type="destructive">Testy</Button>
 		</div>
 		<div class="group">
 			<Labeled>
