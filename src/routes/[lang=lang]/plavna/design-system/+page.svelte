@@ -12,7 +12,7 @@
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
-	import Text from '$lib/design-system/components/Text.svelte';
+	import Typography from '$lib/design-system/components/Typography.svelte';
 
 	const mockedSelectorLanguages = [
 		{ name: 'English', code: 'en' },
@@ -29,14 +29,14 @@
 <Layers>
 	<div class="blocks">
 		<div class="group">
-			<Text block size="heading-1">denis lukianenko</Text>
-			<Text block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Text>
-			<Text block size="headline">Тестовий <br /> текст</Text>
-			<Text block size="headline-short">Тестовий <br /> текст</Text>
-			<Text block size="body">Тестовий <br /> текст</Text>
-			<Text block size="body-short">Тестовий <br /> текст</Text>
-			<Text block size="small">Тестовий <br /> текст</Text>
-			<Text block size="small-short">Тестовий <br /> текст</Text>
+			<Typography block size="heading-1">denis lukianenko</Typography>
+			<Typography block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
+			<Typography block size="headline">Тестовий <br /> текст</Typography>
+			<Typography block size="headline-short">Тестовий <br /> текст</Typography>
+			<Typography block size="body">Тестовий <br /> текст</Typography>
+			<Typography block size="body-short">Тестовий <br /> текст</Typography>
+			<Typography block size="small">Тестовий <br /> текст</Typography>
+			<Typography block size="small-short">Тестовий <br /> текст</Typography>
 		</div>
 		<div class="group">
 			<Button>Testy</Button>
@@ -53,8 +53,8 @@
 		</div>
 		<div class="group">
 			<Labeled>
-				<Text size="small-short">Тест</Text>
-				<Text size="small-short" tone="additional">Тест</Text>
+				<Typography size="small-short">Тест</Typography>
+				<Typography size="small-short" tone="additional">Тест</Typography>
 				<Input type="password" placeholder="Тест" />
 			</Labeled>
 		</div>
@@ -64,15 +64,15 @@
 			</Dropdown>
 			<Labeled type="horizontal">
 				<Switch />
-				<Text size="body-short">Тест</Text>
+				<Typography size="body-short">Тест</Typography>
 			</Labeled>
 			<Labeled type="switch-with-bg">
-				<Text size="heading-2">Тест</Text>
+				<Typography size="heading-2">Тест</Typography>
 				<Switch />
 			</Labeled>
 			<Labeled type="horizontal">
 				<Checkbox />
-				<Text>Тест</Text>
+				<Typography>Тест</Typography>
 			</Labeled>
 			<Tabs>
 				{#each tabs as tab, index}
@@ -84,7 +84,7 @@
 		</div>
 		<div class="group">
 			<Box>
-				<Text size="heading-2">Тест</Text>
+				<Typography size="heading-2">Тест</Typography>
 				<Input placeholder="Тест" />
 
 				<Spacer size="l" />

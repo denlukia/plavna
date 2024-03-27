@@ -90,6 +90,10 @@
 	--size-select-border-radius: var(--size-m);
 	--size-select-icon-width: var(--size-icon-body-size);
 
+	/* --- Select as Disclosure */
+	--size-select-disclosure-padding-top: var(--size-s);
+	--size-select-disclosure-padding-bottom: var(--size-s);
+
 	/* --- Select in Input --- */
 	--size-select-in-input-padding-inline: var(--size-m);
 	--size-select-in-input-padding-top: var(--size-s-to-m);
