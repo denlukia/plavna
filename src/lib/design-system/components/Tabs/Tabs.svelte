@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import { crossfade } from './crossfade';
 	import { cubicOut } from 'svelte/easing';
+
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import Layers from '../Layers/Layers.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import { crossfade } from './crossfade';
 
 	type Props = {
 		children: Snippet;
@@ -116,7 +117,6 @@
 	.tabs {
 		background: var(--color-tabs-bg);
 		box-shadow: var(--shadow-tabs);
-		overflow: hidden;
 
 		/* For LayerFlashlight */
 		--color-layer-flashlight-pointer: var(--color-tabs-layer-flashlight-hover);

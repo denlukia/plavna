@@ -18,6 +18,8 @@
 		display: grid;
 		grid-template-areas: 'a';
 		flex-grow: var(--layers-flex-grow);
+		overflow: hidden;
+		border-radius: var(--layers-border-radius);
 	}
 	/* We choose :global here to let any components be a layer */
 	.layers > :global(*) {

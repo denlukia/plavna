@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-
+	import { fade } from 'svelte/transition';
 	import Text from '$lib/design-system/components/Text.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
+
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
 	import Layers from '../Layers/Layers.svelte';
 	import LayerShift from '../Layers/LayerShift.svelte';
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import { fade } from 'svelte/transition';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
 
 	type Props = HTMLButtonAttributes & {
 		children: Snippet;
@@ -42,8 +42,6 @@
 
 <style>
 	.tab-item {
-		overflow: hidden;
-
 		padding-top: var(--tab-item-padding-top);
 		padding-bottom: var(--tab-item-padding-bottom);
 		padding-inline: var(--tab-item-padding-inline);

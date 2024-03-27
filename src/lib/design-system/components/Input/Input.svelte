@@ -1,15 +1,16 @@
 <script lang="ts">
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import Eye from '../(icons)/Eye.svelte';
-	import IconWrapper from '../(icons)/IconWrapper.svelte';
-	import AnimatedPswdInput from './PasswordInput.svelte';
-	import ButtonInInput from './ButtonInInput.svelte';
-	import LangSelector from './LangSelector.svelte';
-	import type { LanguagedInputProps } from './types';
 	import { tweened } from 'svelte/motion';
 	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
+
+	import Eye from '../(icons)/Eye.svelte';
+	import IconWrapper from '../(icons)/IconWrapper.svelte';
+	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
+	import Layers from '../Layers/Layers.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import ButtonInInput from './ButtonInInput.svelte';
+	import LangSelector from './LangSelector.svelte';
+	import PasswordInput from './PasswordInput.svelte';
+	import type { LanguagedInputProps } from './types';
 
 	let { value, ...attributes } = $props<LanguagedInputProps>();
 
@@ -57,7 +58,7 @@
 				class:textarea-wrapper={attributes.type === 'textarea'}
 			>
 				{#if attributes.type === 'password'}
-					<AnimatedPswdInput {pswdVisible} {...attributes} />
+					<PasswordInput {pswdVisible} {...attributes} />
 				{:else if attributes.type === 'text' || !attributes.type}
 					<input
 						bind:value
@@ -103,7 +104,6 @@
 		background-color: var(--color-input-bg);
 		box-shadow: var(--shadow-input);
 		border-radius: var(--size-input-border-radius);
-		overflow: hidden;
 
 		margin-top: var(--input-margin-top);
 		margin-bottom: var(--input-margin-bottom);

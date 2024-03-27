@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import Select from '../Select/Select.svelte';
-	import SelectItem from '../Select/SelectItem.svelte';
+
+	import Dropdown from '../Dropdown.svelte';
 
 	type SelectorLang = {
 		name: string;
@@ -11,8 +11,8 @@
 	const supportedLangs = getContext<Array<SelectorLang>>('selector-languages');
 </script>
 
-<Select type="in-input">
+<Dropdown type="in-input">
 	{#each supportedLangs as lang}
-		<SelectItem value={lang.code}>{lang.code.toUpperCase()}</SelectItem>
+		<option value={lang.code}>{lang.code.toUpperCase()}</option>
 	{/each}
-</Select>
+</Dropdown>
