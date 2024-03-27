@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Layers from '../Layers/Layers.svelte';
+
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import Layers from '../Layers/Layers.svelte';
 	import LayerShift from '../Layers/LayerShift.svelte';
+	import { MouseWatcher } from '../Layers/watcher.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -33,7 +34,6 @@
 		padding-inline: var(--size-button-in-input-padding-inline);
 		padding-top: var(--size-button-in-input-padding-top);
 		padding-bottom: var(--size-button-in-input-padding-bottom);
-		overflow: hidden;
 	}
 	/* See other styles in styles/global.css  */
 	/* .global-button-in-input and other */

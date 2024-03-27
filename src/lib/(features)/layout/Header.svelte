@@ -2,13 +2,14 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
+	import Box from '$lib/design-system/components/Box.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
+	import Dropdown from '$lib/design-system/components/Dropdown.svelte';
 	import { defaultLang } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
-		const currentLanguage = $page.params.lang;
-		let destinationURL = currentURL.replace(`/${currentLanguage}`, '');
+		let destinationURL = currentURL.replace(`/${$page.params.lang}`, '');
 
 		if (newLanguage !== defaultLang) {
 			destinationURL = `/${newLanguage}${destinationURL}`;
@@ -29,17 +30,26 @@
 </script>
 
 <header>
-	{#each supportedLangs as language}
-		<a href={generateLangURL($page.url.pathname, language)}>
-			{language.toUpperCase()}
-		</a>{' '}
-	{/each}
+	<Dropdown disclosure>
+		{#snippet label()}
+			{$page.params.lang.toUpperCase()}
+		{/snippet}
+		<Box>
+			{#each supportedLangs as language}
+				<Button href={generateLangURL($page.url.pathname, language)}>
+					{language.toUpperCase()}
+				</Button>
+			{/each}
+		</Box>
+	</Dropdown>
+
 	{#if user}
 		<Button
+			type="prominent"
 			href={generateCreateArticleURL($page.params.lang, user.username)}
 			dataSvelteKitPreloadData="off"
 		>
-			Create article
+			New article
 		</Button>
 	{/if}
 </header>
@@ -48,5 +58,7 @@
 	header {
 		position: absolute;
 		right: 0;
+		display: flex;
+		gap: var(--size-m);
 	}
 </style>

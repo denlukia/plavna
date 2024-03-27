@@ -10,7 +10,7 @@
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="global-line-height-reset {type}">
+<label class="global-reset-line-height {type}">
 	{@render children()}
 </label>
 

@@ -118,11 +118,11 @@
 	color: var(--color-text-additional);
 }
 
-.global-line-height-reset {
+.global-reset-line-height {
 	line-height: 0;
 }
 
-.global-select-reset {
+.global-reset-select {
 	appearance: none;
 	border: none;
 	background: none;

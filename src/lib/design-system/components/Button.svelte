@@ -53,7 +53,7 @@
 	role={href ? 'link' : 'button'}
 	data-sveltekit-reload={dataSvelteKitReload}
 	class={`button type-${type} size-${size} 
-	global-layer-flashlight-hover-trigger global-line-height-reset
+	global-layer-flashlight-hover-trigger global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed
 	{...events}
@@ -75,7 +75,6 @@
 	.button {
 		padding: 0;
 		transition: var(--transition-button);
-		overflow: hidden;
 		display: inline-block;
 	}
 
@@ -153,6 +152,7 @@
 	/* Size Dependent */
 	.size-body {
 		border-radius: var(--size-button-body-border-radius);
+		--layers-border-radius: var(--size-button-body-border-radius);
 	}
 	.size-body .content {
 		padding-inline: var(--size-button-body-padding-inline);
@@ -161,6 +161,7 @@
 	}
 	.size-small {
 		border-radius: var(--size-button-small-border-radius);
+		--layers-border-radius: var(--size-button-small-border-radius);
 	}
 
 	.size-small .content {

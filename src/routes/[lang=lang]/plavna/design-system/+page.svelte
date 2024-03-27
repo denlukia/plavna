@@ -1,14 +1,13 @@
 <script>
 	import { setContext } from 'svelte';
-	import Box from '$lib/design-system/components/Box/Box.svelte';
+	import Box from '$lib/design-system/components/Box.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
+	import Dropdown from '$lib/design-system/components/Dropdown.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import Labeled from '$lib/design-system/components/Labeled.svelte';
 	import Layers from '$lib/design-system/components/Layers/Layers.svelte';
-	import Select from '$lib/design-system/components/Select/Select.svelte';
-	import SelectItem from '$lib/design-system/components/Select/SelectItem.svelte';
 	import Spacer from '$lib/design-system/components/Spacer.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
@@ -60,9 +59,9 @@
 			</Labeled>
 		</div>
 		<div class="group">
-			<Select>
-				<SelectItem>Test</SelectItem>
-			</Select>
+			<Dropdown>
+				<option>Test</option>
+			</Dropdown>
 			<Labeled type="horizontal">
 				<Switch />
 				<Text size="body-short">Тест</Text>
