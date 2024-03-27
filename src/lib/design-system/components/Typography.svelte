@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+
 	import type { TextSizes } from './types';
 
 	type Props = {

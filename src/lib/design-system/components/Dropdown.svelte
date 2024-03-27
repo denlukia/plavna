@@ -7,6 +7,7 @@
 	import Layers from './Layers/Layers.svelte';
 	import LayerShift from './Layers/LayerShift.svelte';
 	import { MouseWatcher } from './Layers/watcher.svelte';
+	import Typography from './Typography.svelte';
 
 	type Props = {
 		type?: 'default' | 'in-input';
@@ -22,6 +23,14 @@
 	function onclick(e: MouseEvent) {
 		if (disclosure) {
 			opened = !opened;
+		}
+	}
+
+	function getTextClass(type: Props['type']) {
+		if (type === 'in-input') {
+			return 'global-text-small';
+		} else {
+			return 'global-text-body';
 		}
 	}
 </script>
@@ -47,14 +56,18 @@
 				class={`
 					dropdown
 					global-disable-default-outline 
+					${disclosure ? 'as-disclosure' : ''}
 					${disclosure ? '' : 'global-reset-select'}
-					global-text-${type === 'in-input' ? 'small' : 'body'}`}
+					${disclosure ? '' : getTextClass(type)}
+					${disclosure ? 'global-reset-button' : ''}`}
 			>
-				{#if label}
-					{@render label()}
-				{/if}
-
-				{#if !disclosure}
+				{#if disclosure}
+					{#if label}
+						<Typography>
+							{@render label()}
+						</Typography>
+					{/if}
+				{:else}
 					{@render children()}
 				{/if}
 			</svelte:element>
@@ -143,5 +156,11 @@
 	.type-in-input .arrow-positioner {
 		width: var(--size-select-in-input-icon-width);
 		right: var(--size-select-in-input-padding-inline);
+	}
+
+	/* Disclosure Specific */
+	.dropdown.as-disclosure {
+		padding-top: var(--size-select-disclosure-padding-top);
+		padding-bottom: var(--size-select-disclosure-padding-bottom);
 	}
 </style>

@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
-	import Text from '$lib/design-system/components/Text.svelte';
+	import Typography from '$lib/design-system/components/Typography.svelte';
 
 	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
 	import Layers from '../Layers/Layers.svelte';
@@ -33,9 +33,9 @@
 >
 	<Layers>
 		<LayerShift mouse={{ ...mouse, hovered: !active && mouse.hovered }}>
-			<Text size="set-with-variables">
+			<Typography size="set-with-variables">
 				{@render children()}
-			</Text>
+			</Typography>
 		</LayerShift>
 	</Layers>
 </svelte:element>

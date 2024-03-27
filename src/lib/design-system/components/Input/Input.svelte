@@ -74,7 +74,7 @@
 						class="global-reset-input global-text-body"
 					/>
 				{:else if attributes.type === 'textarea'}
-					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
+					<Typographyarea bind:value {...attributes} class="global-reset-input global-text-body" />
 				{/if}
 			</span>
 			{#if hasTrailing}

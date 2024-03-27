@@ -6,7 +6,7 @@
 	import Layers from './Layers/Layers.svelte';
 	import LayerShift from './Layers/LayerShift.svelte';
 	import { MouseWatcher } from './Layers/watcher.svelte';
-	import Text from './Text.svelte';
+	import Typography from './Typography.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
 
@@ -64,7 +64,7 @@
 		<LayerFlashlight {mouse} />
 		<LayerShift {mouse}>
 			<span class="content">
-				<Text size={`${size}-short`} bold={true}>{@render children()}</Text>
+				<Typography size={`${size}-short`} bold={true}>{@render children()}</Typography>
 			</span>
 		</LayerShift>
 	</Layers>
