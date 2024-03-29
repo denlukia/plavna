@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
+	import Button from '$lib/design-system/components/Button.svelte';
+	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
 
 	export let formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;
@@ -8,16 +10,23 @@
 	const { form, errors, enhance } = superForm(formObj);
 </script>
 
-<form use:enhance method="POST">
+<form class="page-editor" use:enhance method="POST">
 	{#if $form.id}
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
-	<input type="text" name="slug" bind:value={$form.slug} />
+
+	<Input type="text" name="slug" bind:value={$form.slug} />
 
 	{#if $form.id}
-		<button formaction="?/update">Update</button>
-		<button formaction="?/delete">Delete</button>
+		<Button formaction="?/update">Update</Button>
+		<Button formaction="?/delete">Delete</Button>
 	{:else}
-		<button formaction="?/create">Create</button>
+		<Button formaction="?/create">Create</Button>
 	{/if}
 </form>
+
+<style>
+	.page-editor {
+		display: flex;
+	}
+</style>

@@ -11,7 +11,7 @@
 		tone?: 'default' | 'additional' | 'danger';
 	};
 
-	let { size = 'body', tone = 'default', children, block = false, bold = false } = $props<Props>();
+	let { size = 'body', tone = 'default', children, block = false, bold = false }: Props = $props();
 
 	let outline = $state(false);
 

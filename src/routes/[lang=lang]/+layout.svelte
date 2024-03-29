@@ -10,6 +10,11 @@
 	export let data;
 </script>
 
+<svelte:head>
+	<title>Plavna App</title>
+	<meta name="theme-color" content="black" />
+</svelte:head>
+
 <div class="main-layout">
 	<div class="lights-wrapper">
 		<Lights />

@@ -4,10 +4,10 @@
 	import { fade } from 'svelte/transition';
 	import Typography from '$lib/design-system/components/Typography.svelte';
 
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import LayerShift from '../Layers/LayerShift.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
+	import Layers from '../(helpers)/Layers.svelte';
+	import LayerShift from '../(helpers)/LayerShift.svelte';
+	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 
 	type Props = HTMLButtonAttributes & {
 		children: Snippet;
@@ -16,7 +16,7 @@
 		href?: string;
 	};
 
-	let { children, href, active = false, size = 'body', ...attributes } = $props<Props>();
+	let { children, href, active = false, size = 'body', ...attributes }: Props = $props();
 
 	let { mouse, ...events } = new MouseWatcher();
 </script>
@@ -31,7 +31,7 @@
 	{...attributes}
 	{...events}
 >
-	<Layers>
+	<Layers --overflow="hidden">
 		<LayerShift mouse={{ ...mouse, hovered: !active && mouse.hovered }}>
 			<Typography size="set-with-variables">
 				{@render children()}
@@ -45,6 +45,9 @@
 		padding-top: var(--tab-item-padding-top);
 		padding-bottom: var(--tab-item-padding-bottom);
 		padding-inline: var(--tab-item-padding-inline);
+
+		/* For Layers */
+		--layers-border-radius: 0;
 	}
 	.tab-item.active {
 		background: var(--active-tab-item-background);

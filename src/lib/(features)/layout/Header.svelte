@@ -2,11 +2,28 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
-	import Box from '$lib/design-system/components/Box.svelte';
+	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
-	import Dropdown from '$lib/design-system/components/Dropdown.svelte';
+	import Box from '$lib/design-system/components/Dropdownable/Box.svelte';
+	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
 	import { defaultLang } from '$lib/isomorphic/languages.js';
 	import { generatePath } from '$lib/isomorphic/url.js';
+
+	type Props = {
+		user: User;
+	};
+
+	let { user }: Props = $props();
+
+	const pages = $derived([
+		{
+			routeId: '/[lang=lang]/(with-header)/[username]/pages',
+			href: `/${$page.params.lang}/${$page.params.username}/pages`,
+			translation: 'my_pages'
+		} as const
+	]);
+
+	const currentPage = $derived(pages.find((page) => $page.route.id === page.routeId));
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		let destinationURL = currentURL.replace(`/${$page.params.lang}`, '');
@@ -25,23 +42,37 @@
 			'[username]': username
 		});
 	}
-
-	export let user: User | null;
 </script>
 
 <header>
-	<Dropdown disclosure>
+	<Popup>
 		{#snippet label()}
 			{$page.params.lang.toUpperCase()}
 		{/snippet}
-		<Box>
+		{#snippet content()}
 			{#each supportedLangs as language}
-				<Button href={generateLangURL($page.url.pathname, language)}>
+				<Button
+					href={generateLangURL($page.url.pathname, language)}
+					type={language === $page.params.lang ? 'primary' : 'secondary'}
+				>
 					{language.toUpperCase()}
 				</Button>
 			{/each}
-		</Box>
-	</Dropdown>
+		{/snippet}
+	</Popup>
+
+	<Popup>
+		{#snippet label()}
+			<Translation key={currentPage?.translation} />
+		{/snippet}
+		{#snippet content()}
+			{#each pages as { href, translation, routeId }}
+				<Button {href} type={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
+					<Translation key={translation} />
+				</Button>
+			{/each}
+		{/snippet}
+	</Popup>
 
 	{#if user}
 		<Button
@@ -59,6 +90,7 @@
 		position: absolute;
 		right: 0;
 		display: flex;
+		align-items: flex-start;
 		gap: var(--size-m);
 	}
 </style>

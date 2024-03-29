@@ -3,12 +3,13 @@
 
 	type Props = {
 		children: Snippet;
+		withGaps?: boolean;
 	};
 
-	let { children } = $props<Props>();
+	let { children, withGaps = false }: Props = $props();
 </script>
 
-<span class="box">
+<span class="box" class:with-gaps={withGaps}>
 	{@render children()}
 </span>
 
@@ -22,5 +23,8 @@
 		padding-top: var(--size-box-padding-top);
 		padding-bottom: var(--size-box-padding-bottom);
 		padding-inline: var(--size-box-padding-inline);
+	}
+	.with-gaps {
+		gap: var(--size-box-gap);
 	}
 </style>

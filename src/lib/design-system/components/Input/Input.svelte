@@ -2,17 +2,17 @@
 	import { tweened } from 'svelte/motion';
 	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
+	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
+	import Layers from '../(helpers)/Layers.svelte';
+	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import Eye from '../(icons)/Eye.svelte';
 	import IconWrapper from '../(icons)/IconWrapper.svelte';
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';
 	import PasswordInput from './PasswordInput.svelte';
 	import type { LanguagedInputProps } from './types';
 
-	let { value, ...attributes } = $props<LanguagedInputProps>();
+	let { value, ...attributes }: LanguagedInputProps = $props();
 
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
@@ -43,7 +43,7 @@
 
 <!-- TODO: What would the correct role be? -->
 <span class="input global-layer-flashlight-hover-trigger" {...events} role="presentation">
-	<Layers>
+	<Layers --overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
 			{#if attributes.type === 'color'}
@@ -74,7 +74,7 @@
 						class="global-reset-input global-text-body"
 					/>
 				{:else if attributes.type === 'textarea'}
-					<Typographyarea bind:value {...attributes} class="global-reset-input global-text-body" />
+					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
 				{/if}
 			</span>
 			{#if hasTrailing}

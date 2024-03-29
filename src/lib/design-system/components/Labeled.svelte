@@ -6,7 +6,7 @@
 		type?: 'horizontal' | 'vertical' | 'switch-with-bg';
 	};
 
-	let { children, type = 'vertical' } = $props<Props>();
+	let { children, type = 'vertical' }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->

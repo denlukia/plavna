@@ -5,7 +5,7 @@
 		children: Snippet;
 	};
 
-	let { children } = $props<Props>();
+	let { children }: Props = $props();
 </script>
 
 <div class="perspective-wrapper">

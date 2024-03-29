@@ -2,9 +2,9 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
+	import Layers from '../(helpers)/Layers.svelte';
+	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import { crossfade } from './crossfade';
 
 	type Props = {
@@ -12,7 +12,7 @@
 		size?: 'body' | 'small' | 'heading-2';
 	};
 
-	let { children, size = 'body' } = $props<Props>();
+	let { children, size = 'body' }: Props = $props();
 
 	let { mouse, ...events } = new MouseWatcher();
 
@@ -93,7 +93,7 @@
 	class:pill-active={pillActive}
 	{...events}
 >
-	<Layers>
+	<Layers --overflow="hidden">
 		<LayerFlashlight {mouse} />
 		{#if pillActive}
 			{#key pillPos.left}
@@ -147,6 +147,9 @@
 		border-radius: var(--size-tabs-heading-2-border-radius);
 		padding: var(--size-tabs-heading-2-padding);
 
+		/* For Layers */
+		--layers-border-radius: var(--size-tabs-heading-2-border-radius);
+
 		/* For TabItems */
 		--tab-item-padding-top: var(--size-tab-item-heading-2-padding-top);
 		--tab-item-padding-bottom: var(--size-tab-item-heading-2-padding-bottom);
@@ -174,6 +177,9 @@
 		border-radius: var(--size-tabs-body-border-radius);
 		padding: var(--size-tabs-body-padding);
 
+		/* For Layers */
+		--layers-border-radius: var(--size-tabs-body-border-radius);
+
 		/* For TabItems */
 		--tab-item-padding-top: var(--size-tab-item-body-padding-top);
 		--tab-item-padding-bottom: var(--size-tab-item-body-padding-bottom);
@@ -200,6 +206,9 @@
 	.tabs.global-text-small {
 		border-radius: var(--size-tabs-small-border-radius);
 		padding: var(--size-tabs-small-padding);
+
+		/* For Layers */
+		--layers-border-radius: var(--size-tabs-small-border-radius);
 
 		/* For TabItems */
 		--tab-item-padding-top: var(--size-tab-item-small-padding-top);
