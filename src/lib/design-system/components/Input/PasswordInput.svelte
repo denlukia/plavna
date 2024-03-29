@@ -46,8 +46,8 @@
 <Layers>
 	{#if pswdVisible}
 		<input
-			in:fly={flyConf(cubicOut, -7)}
-			out:fly={flyConf(cubicIn, -7)}
+			in:fly={flyConf(cubicOut, -4)}
+			out:fly={flyConf(cubicIn, -4)}
 			bind:value
 			bind:this={textInputRef}
 			type="text"
@@ -57,8 +57,8 @@
 		/>
 	{:else}
 		<input
-			in:fly={flyConf(cubicOut, 7)}
-			out:fly={flyConf(cubicIn, 7)}
+			in:fly={flyConf(cubicOut, 4)}
+			out:fly={flyConf(cubicIn, 4)}
 			bind:value
 			bind:this={pswdInputRef}
 			type="password"

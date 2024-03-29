@@ -108,6 +108,9 @@
 		margin-top: var(--input-margin-top);
 		margin-bottom: var(--input-margin-bottom);
 
+		/* For Layers */
+		--layers-border-radius: var(--size-input-border-radius);
+
 		/* For Layer Flashlight */
 		--size-layer-flashlight-border-radius: var(--size-input-border-radius);
 		--color-layer-flashlight-pointer: var(--color-input-layer-flashlight-hover);
