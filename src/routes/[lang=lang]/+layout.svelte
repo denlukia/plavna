@@ -12,7 +12,7 @@
 
 <svelte:head>
 	<title>Plavna App</title>
-	<meta name="theme-color" content="black" />
+	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
 <div class="main-layout">
