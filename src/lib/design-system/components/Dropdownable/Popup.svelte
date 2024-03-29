@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="popup-group">
+<span class="popup-group global-reset-line-height">
 	<TriggerStyler>
 		<button class="trigger global-reset-button global-dropdown-paddings" {onclick}>
 			{@render label()}
@@ -31,7 +31,7 @@
 			</Box>
 		</div>
 	{/if}
-</div>
+</span>
 
 <style>
 	.trigger {
