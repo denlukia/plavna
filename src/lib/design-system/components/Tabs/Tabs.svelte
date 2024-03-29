@@ -24,7 +24,7 @@
 	let pillPos = $state({ left: 0, top: 0, right: 0, bottom: 0 });
 	let pillSkipTransition = $state(false);
 
-	const pillAnimDuration = 500;
+	const pillAnimDuration = 450;
 	let [send, receive] = crossfade({ easing: cubicOut });
 
 	function mutationCallback(mutation: MutationRecord[]) {
@@ -93,7 +93,7 @@
 	class:pill-active={pillActive}
 	{...events}
 >
-	<Layers --overflow="hidden">
+	<Layers>
 		<LayerFlashlight {mouse} />
 		{#if pillActive}
 			{#key pillPos.left}
@@ -117,6 +117,7 @@
 	.tabs {
 		background: var(--color-tabs-bg);
 		box-shadow: var(--shadow-tabs);
+		overflow: hidden;
 
 		/* For LayerFlashlight */
 		--color-layer-flashlight-pointer: var(--color-tabs-layer-flashlight-hover);

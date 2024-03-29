@@ -64,7 +64,7 @@
 			</Select>
 			<Labeled type="horizontal">
 				<Switch />
-				<Typography size="body-short">Тест</Typography>
+				<Typography>Тест</Typography>
 			</Labeled>
 			<Labeled type="switch-with-bg">
 				<Typography size="heading-2">Тест</Typography>
@@ -86,8 +86,7 @@
 			<Box>
 				<Typography size="heading-2">Тест</Typography>
 				<Input placeholder="Тест" />
-
-				<Spacer size="l" />
+				<Spacer size="m" />
 				<Button>Let's Go!</Button>
 			</Box>
 		</div>
@@ -99,8 +98,8 @@
 	.group {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
-		margin-bottom: 10px;
+		gap: var(--size-m);
+		margin-bottom: var(--size-m);
 		align-items: flex-start;
 	}
 </style>

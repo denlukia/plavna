@@ -5,7 +5,7 @@
 		color?: string;
 		opacity?: number;
 	};
-	let { size = 5, thickness = 0.5, color = 'red', opacity = 0.5 }: Props = $props();
+	let { size = 4, thickness = 0.5, color = 'red', opacity = 0.5 }: Props = $props();
 
 	let visible = $state(false);
 

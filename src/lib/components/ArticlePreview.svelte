@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Translation from './Translation.svelte';
-
-	import { generatePath } from '$lib/isomorphic/url';
-
-	import type { ArticleSelect, TagSelect } from '$lib/server/collections/types';
 	import type { Page } from '@sveltejs/kit';
+	import { page } from '$app/stores';
+	import { generatePath } from '$lib/isomorphic/url';
+	import type { ArticleSelect, TagSelect } from '$lib/server/collections/types';
+
+	import Translation from './Translation.svelte';
 
 	export let article: ArticleSelect;
 	export let tags: TagSelect[];
@@ -42,7 +41,7 @@
 		background-color: #eee;
 		width: 200px;
 		padding: 20px;
-		margin: 10px;
-		border-radius: 10px;
+		margin: var(--size-m);
+		border-radius: var(--size-m);
 	}
 </style>

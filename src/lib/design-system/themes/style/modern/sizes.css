@@ -1,16 +1,18 @@
 :root {
 	/* ------ Palette ------ */
 	--size-none: 0px;
-	--size-xs: 2.5px;
-	--size-s: 5px;
-	--size-s-to-m: 7.5px;
-	--size-m: 10px;
-	--size-m-to-l: 15px;
-	--size-l: 20px;
-	--size-l-to-xl: 25px;
-	--size-xl: 30px;
-	--size-2xl: 40px;
-	--size-3xl: 50px;
+	--size-xs: 2px;
+	--size-s: 4px;
+	--size-s-to-m: 6px;
+	--size-m: 8px;
+	--size-m-to-l: 12px;
+	--size-l: 16px;
+	--size-l-to-xl: 20px;
+	--size-xl: 24px;
+	--size-2xl: 32px;
+	--size-3xl: 40px;
+	--size-3xl-to-4xl: 44px;
+	--size-4xl: 48px;
 	--size-full: 999px;
 
 	/* ------ Semantic ------ */
@@ -33,7 +35,7 @@
 	/* --- Button --- */
 	--size-button-body-padding-inline: var(--size-m-to-l);
 	--size-button-body-padding-top: var(--size-s);
-	--size-button-body-padding-bottom: var(--size-m);
+	--size-button-body-padding-bottom: var(--size-s);
 	--size-button-body-border-radius: var(--size-full);
 
 	--size-button-small-padding-inline: var(--size-m);
@@ -48,7 +50,7 @@
 	--size-labeled-switch-with-bg-border-radius: var(--size-full);
 	--size-labeled-switch-with-bg-margin-top: var(--size-s);
 	--size-labeled-switch-with-bg-padding-inline: var(--size-s);
-	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
+	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s-to-m);
 	--size-labeled-checkbox-margin-top: var(--size-s);
 	--size-labeled-checkbox-margin-bottom: var(--size-s);
 
@@ -56,9 +58,9 @@
 	--size-input-min-width: 100px;
 	--size-input-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
 	--size-input-padding-inline: var(--size-m);
-	--size-input-padding-top: var(--size-s);
+	--size-input-padding-top: var(--size-none);
 	--size-input-padding-bottom: var(--size-s);
-	--size-input-border-radius: 12px;
+	--size-input-border-radius: 10px;
 	--size-input-textarea-wrapper-padding-inline-end: var(--size-s);
 	--size-input-textarea-padding-inline-end: var(--size-s);
 	--size-input-color-picker-wrapper-padding: var(--size-s-to-m);
@@ -66,23 +68,23 @@
 	--size-input-color-picker-radius: var(--size-full);
 
 	/* --- Button in Input --- */
-	--size-input-to-button-padding: var(--size-s);
+	--size-input-to-button-padding: var(--size-xs);
 	--size-button-in-input-border-radius: calc(
 		var(--size-input-border-radius) - var(--size-input-to-button-padding)
 	);
-	--size-button-in-input-height: var(--size-xl);
-	--size-button-in-input-padding-inline: var(--size-s);
+	--size-button-in-input-height: 100%;
+	--size-button-in-input-padding-inline: var(--size-s-to-m);
 	--size-button-in-input-padding-top: var(--size-s);
 	--size-button-in-input-padding-bottom: var(--size-s);
 
 	/* --- Icon --- */
-	--size-icon-body-big-size-unitless: 30;
+	--size-icon-body-big-size-unitless: 24;
 	--size-icon-body-big-size: calc(var(--size-icon-body-big-size-unitless) * 1px);
 	--size-icon-body-big-stroke-width: 1.5px;
 	--size-icon-body-size-unitless: 20;
 	--size-icon-body-size: calc(var(--size-icon-body-size-unitless) * 1px);
 	--size-icon-body-stroke-width: 1.6px;
-	--size-icon-small-size-unitless: 15;
+	--size-icon-small-size-unitless: 12;
 	--size-icon-small-size: calc(var(--size-icon-small-size-unitless) * 1px);
 	--size-icon-small-stroke-width: 1.25px;
 
@@ -91,7 +93,7 @@
 	--size-dropdown-padding-left: var(--size-m);
 	--size-dropdown-padding-right: calc(var(--size-m-to-l) + var(--size-dropdown-icon-width));
 	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-body-short-padding-top));
-	--size-dropdown-padding-bottom: calc(var(--size-m) + var(--text-body-short-padding-bottom));
+	--size-dropdown-padding-bottom: calc(var(--size-s) + var(--text-body-short-padding-bottom));
 	--size-dropdown-border-radius: var(--size-m);
 
 	/* --- Dropdown as Disclosure */
@@ -108,21 +110,21 @@
 	--size-dropdown-in-input-padding-bottom: var(--size-s-to-m);
 
 	/* --- Switch --- */
-	--size-switch-width: var(--size-3xl);
+	--size-switch-width: var(--size-3xl-to-4xl);
 	--size-switch-border-radius: var(--size-full);
 	--size-switch-padding-to-handle: var(--size-s);
 	--size-switch-layer-flashlight-hover: 50px;
 
 	/* --- Switch Handle */
-	--size-switch-handle-width: var(--size-l);
-	--size-switch-handle-height: var(--size-l);
+	--size-switch-handle-width: var(--size-l-to-xl);
+	--size-switch-handle-height: var(--size-l-to-xl);
 	--size-switch-handle-border-radius: var(--size-full);
 	--size-switch-handle-border-width: 4px;
 	--size-switch-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */
-	--size-checkbox: var(--size-l);
-	--size-checkbox-border-radius: var(--size-s);
+	--size-checkbox: var(--size-l-to-xl);
+	--size-checkbox-border-radius: 6px;
 
 	/* --- Tabs --- */
 	--size-tabs-heading-2-border-radius: var(--size-full);
@@ -150,8 +152,8 @@
 
 	/* --- Box --- */
 	--size-box-border-radius: var(--size-xl);
-	--size-box-padding-top: var(--size-m);
-	--size-box-padding-bottom: var(--size-m);
-	--size-box-padding-inline: var(--size-m);
+	--size-box-padding-top: var(--size-m-to-l);
+	--size-box-padding-bottom: var(--size-m-to-l);
+	--size-box-padding-inline: var(--size-m-to-l);
 	--size-box-gap: var(--size-s);
 }

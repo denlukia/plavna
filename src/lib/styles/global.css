@@ -103,7 +103,7 @@
 	margin: 0;
 	min-width: 0;
 	width: 100%;
-	border-radius: 5px;
+	border-radius: 0;
 	overflow: hidden;
 }
 .global-reset-input:focus {

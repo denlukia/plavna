@@ -64,7 +64,7 @@
 	.arrow-wrapper {
 		pointer-events: none;
 		position: absolute;
-		top: 0;
+		top: -1px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
