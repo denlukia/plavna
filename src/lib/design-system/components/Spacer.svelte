@@ -3,7 +3,7 @@
 		size?: 's' | 'm' | 'l';
 	};
 
-	let { size = 'm' } = $props<Props>();
+	let { size = 'm' }: Props = $props();
 </script>
 
 <span class="spacer {size}" />

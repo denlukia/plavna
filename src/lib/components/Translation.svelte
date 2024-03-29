@@ -1,21 +1,20 @@
 <script lang="ts">
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
-
 	import SvelteMarkdown from 'svelte-markdown';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { TranslationSelect, TranslationUpdate } from '$lib/server/collections/types';
+	import type { TranslationKey } from '$lib/server/i18n/en';
+
 	import Image from './markdown/Image.svelte';
 
-	import type { TranslationSelect, TranslationUpdateZod } from '$lib/server/collections/types';
-	import type { TranslationKey } from '$lib/server/i18n/en';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
-
 	type Props = {
-		formObj?: SuperValidated<TranslationUpdateZod> | null;
+		formObj?: SuperValidated<TranslationUpdate> | null;
 		key?: TranslationKey | TranslationSelect['key'] | null;
 		markdownMode?: boolean;
 	};
 
-	let { formObj = null, key = null, markdownMode = false } = $props<Props>();
+	let { formObj = null, key = null, markdownMode = false }: Props = $props();
 
 	// At new page loads translations for outroing page are erased
 	// but are still needed while outroing transitons are played, so:

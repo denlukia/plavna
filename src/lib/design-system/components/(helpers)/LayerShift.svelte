@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { tweened } from 'svelte/motion';
-	import type { MouseState } from './watcher.svelte';
+
+	import type { MouseState } from './MouseWatcher.svelte';
 
 	type Props = {
 		mouse: MouseState;
 
 		children: Snippet;
 	};
-	let { mouse, children } = $props<Props>();
+	let { mouse, children }: Props = $props();
 
 	let boxSize = $state({ width: Number.POSITIVE_INFINITY, height: Number.POSITIVE_INFINITY });
 	let shiftMultiplier = tweened(0, { duration: 300 });

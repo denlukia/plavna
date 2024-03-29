@@ -10,7 +10,7 @@
 		size?: 'body' | 'small' | 'body-big';
 	} & AnimationTypes;
 
-	let { children, size = 'body', currentFrame = 0, frames = 1, frameSize = 20 } = $props<Props>();
+	let { children, size = 'body', currentFrame = 0, frames = 1, frameSize = 20 }: Props = $props();
 </script>
 
 <span

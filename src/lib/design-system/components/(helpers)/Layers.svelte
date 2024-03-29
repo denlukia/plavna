@@ -1,24 +1,24 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	type Props = {
+	type Props = HTMLAttributes<HTMLSpanElement> & {
 		children: Snippet;
-		tag?: 'span' | 'div';
 		stretch?: boolean;
 	};
-	let { children, stretch = false, tag = 'span' } = $props<Props>();
+	let { children, stretch = false, ...other }: Props = $props();
 </script>
 
-<svelte:element this={tag} class="layers global-fix-overflow" class:stretch>
+<span class="layers global-fix-overflow" class:stretch {...other}>
 	{@render children()}
-</svelte:element>
+</span>
 
 <style>
 	.layers {
 		display: grid;
 		grid-template-areas: 'a';
 		flex-grow: var(--layers-flex-grow);
-		overflow: hidden;
+		overflow: var(--overflow);
 		border-radius: var(--layers-border-radius);
 	}
 	/* We choose :global here to let any components be a layer */

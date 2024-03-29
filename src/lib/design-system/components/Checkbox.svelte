@@ -1,13 +1,14 @@
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
-	import IconWrapper from './(icons)/IconWrapper.svelte';
-	import CheckMark from './(icons)/CheckMark.svelte';
-	import { tweened } from 'svelte/motion';
 	import { untrack } from 'svelte';
-	import LayerShift from './Layers/LayerShift.svelte';
-	import { MouseWatcher } from './Layers/watcher.svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { tweened } from 'svelte/motion';
 
-	let { type, checked, ...attributes } = $props<HTMLInputAttributes>();
+	import LayerShift from './(helpers)/LayerShift.svelte';
+	import { MouseWatcher } from './(helpers)/MouseWatcher.svelte';
+	import CheckMark from './(icons)/CheckMark.svelte';
+	import IconWrapper from './(icons)/IconWrapper.svelte';
+
+	let { type, checked, ...attributes }: HTMLInputAttributes = $props();
 
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;

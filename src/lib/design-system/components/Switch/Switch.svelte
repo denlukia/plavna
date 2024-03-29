@@ -1,11 +1,11 @@
 <script lang="ts">
-	import LayerFlashlight from '../Layers/LayerFlashlight.svelte';
-	import Layers from '../Layers/Layers.svelte';
-	import LayerShift from '../Layers/LayerShift.svelte';
-	import { MouseWatcher } from '../Layers/watcher.svelte';
+	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
+	import Layers from '../(helpers)/Layers.svelte';
+	import LayerShift from '../(helpers)/LayerShift.svelte';
+	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import type { SwitchProps } from './types';
 
-	let { ...props } = $props<SwitchProps>();
+	let { ...props }: SwitchProps = $props();
 
 	let { mouse, ...events } = new MouseWatcher();
 </script>
@@ -13,7 +13,7 @@
 <label class="switch global-reset-line-height">
 	<input {...props} type="checkbox" />
 	<span class="switch-visualizer global-" {...events}>
-		<Layers>
+		<Layers --overflow="hidden">
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
 				<span class="layer-handle global-fix-overflow">
@@ -32,6 +32,9 @@
 		position: relative;
 
 		margin-top: var(--switch-margin-top);
+
+		/* For Layers */
+		--layers-border-radius: var(--size-switch-border-radius);
 	}
 	input {
 		appearance: none;

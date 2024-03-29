@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
-	import Layers from '../Layers/Layers.svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
+
+	import Layers from '../(helpers)/Layers.svelte';
 
 	type Props = HTMLInputAttributes & {
 		pswdVisible: boolean;
 	};
-	let { pswdVisible, type, value, ...attributes } = $props<Props>();
+	let { pswdVisible, type, value, ...attributes }: Props = $props();
 	let selectionStart: number | null = null;
 	let selectionEnd: number | null = null;
 

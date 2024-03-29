@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
+	import type {
+		HTMLAnchorAttributes,
+		HTMLButtonAttributes,
+		MouseEventHandler
+	} from 'svelte/elements';
 
-	import LayerFlashlight from './Layers/LayerFlashlight.svelte';
-	import Layers from './Layers/Layers.svelte';
-	import LayerShift from './Layers/LayerShift.svelte';
-	import { MouseWatcher } from './Layers/watcher.svelte';
+	import Effects from './(helpers)/Effects.svelte';
 	import Typography from './Typography.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
@@ -26,7 +27,7 @@
 		href,
 		dataSvelteKitReload,
 		onclick: onClickProp = () => {}
-	} = $props<Props>();
+	}: Props = $props();
 
 	let pressed = $state(false);
 	let pressedResetTimeout: ReturnType<typeof setTimeout> | null = $state(null);
@@ -44,8 +45,6 @@
 		pressed = true;
 		onClickProp(e);
 	};
-
-	let { mouse, ...events } = new MouseWatcher();
 </script>
 
 <svelte:element
@@ -56,18 +55,14 @@
 	global-layer-flashlight-hover-trigger global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed
-	{...events}
 	{onclick}
 	{href}
 >
-	<Layers>
-		<LayerFlashlight {mouse} />
-		<LayerShift {mouse}>
-			<span class="content">
-				<Typography size={`${size}-short`} bold={true}>{@render children()}</Typography>
-			</span>
-		</LayerShift>
-	</Layers>
+	<Effects>
+		<span class="content">
+			<Typography size={`${size}-short`} bold={true}>{@render children()}</Typography>
+		</span>
+	</Effects>
 </svelte:element>
 
 <style>

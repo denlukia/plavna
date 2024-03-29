@@ -77,11 +77,11 @@
 	--color-button-in-input-layer-flashlight-hover: var(--neutral-1000);
 
 	/* --- Select --- */
-	--color-select-bg: var(--neutral-1000);
-	--color-select-text: var(--neutral-0);
-	--color-select-shadow-1: var(--warm-300-transparent-100);
-	--color-select-shadow-2: var(--warm-300-transparent-100);
-	--color-select-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-dropdown-bg: var(--neutral-1000);
+	--color-dropdown-text: var(--neutral-0);
+	--color-dropdown-shadow-1: var(--warm-300-transparent-100);
+	--color-dropdown-shadow-2: var(--warm-300-transparent-100);
+	--color-dropdown-layer-flashlight-hover: var(--warm-300-transparent-100);
 
 	/* --- Labeled Switch --- */
 	--color-labeled-switch-bg: var(--warm-300-transparent-100);
@@ -120,7 +120,7 @@
 	--color-tab-item-active-layer-flashlight-hover: var(--warm-300-transparent-100);
 
 	/* --- Box --- */
-	--color-box-bg: var(--color-body);
-	--color-box-shadow-1: var(--warm-300-transparent-100);
-	--color-box-shadow-2: var(--warm-300-transparent-400);
+	--color-box-bg: var(--color-main-layout-bg);
+	--color-box-shadow-1: var(--warm-300-transparent-300);
+	--color-box-shadow-2: var(--warm-300-transparent-500);
 }

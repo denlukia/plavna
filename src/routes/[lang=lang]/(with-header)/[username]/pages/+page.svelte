@@ -6,9 +6,17 @@
 	export let data;
 </script>
 
-<Typography><Translation key="my_pages" /></Typography>
+<Typography size="heading-1"><Translation key="my_pages" /></Typography>
 
-{#each data.editForms as formObj}
-	<PageEditForm {formObj} />
-{/each}
-<PageEditForm formObj={data.createForm} />
+<div class="pages">
+	{#each data.editForms as formObj}
+		<PageEditForm {formObj} />
+	{/each}
+	<PageEditForm formObj={data.createForm} />
+</div>
+
+<style>
+	.pages {
+		margin-top: var(--size-xl);
+	}
+</style>

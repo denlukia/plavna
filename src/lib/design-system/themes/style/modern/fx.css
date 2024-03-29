@@ -46,12 +46,13 @@
 	--transform-button-in-input-active: translateY(0.5px);
 
 	/* --- Select --- */
-	--shadow-select: 0 1px 1px var(--color-select-shadow-1), 0 5px 10px var(--color-select-shadow-2);
-	--shadow-select-hover: 0 2px 4px var(--color-select-shadow-1),
-		0 8px 10px var(--color-select-shadow-2);
+	--shadow-select: 0 1px 1px var(--color-dropdown-shadow-1),
+		0 5px 10px var(--color-dropdown-shadow-2);
+	--shadow-dropdown-hover: 0 2px 4px var(--color-dropdown-shadow-1),
+		0 8px 10px var(--color-dropdown-shadow-2);
 	--transition-select: all 400ms var(--smooth-ease-out);
-	--transform-select-hover: translateY(-1px);
-	--transform-select-active: translateY(1px);
+	--transform-dropdown-hover: translateY(-1px);
+	--transform-dropdown-active: translateY(1px);
 
 	/* --- Switch --- */
 	--shadow-switch: inset 0 2px 4px var(--color-switch-shadow-1),

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { MouseState } from './watcher.svelte';
+	import type { MouseState } from './MouseWatcher.svelte';
 
 	type Props = {
 		mouse: MouseState;
 	};
-	let { mouse } = $props<Props>();
+	let { mouse }: Props = $props();
 </script>
 
 <span class="layer-flashlight" class:hovered={mouse.hovered}>
