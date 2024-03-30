@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import Button from '../Button.svelte';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
 
@@ -11,7 +12,7 @@
 		opened?: boolean;
 	};
 
-	let { triggerType = 'button', opened, label, content }: Props = $props();
+	let { triggerType = 'dropdown', opened, label, content }: Props = $props();
 
 	function onclick() {
 		opened = !opened;
@@ -19,11 +20,16 @@
 </script>
 
 <span class="popup-group global-reset-line-height">
-	<TriggerStyler>
-		<button class="trigger global-reset-button global-dropdown-paddings" {onclick}>
-			{@render label()}
-		</button>
-	</TriggerStyler>
+	{#if triggerType === 'button'}
+		<Button {onclick}>{@render label()}</Button>
+	{:else}
+		<TriggerStyler>
+			<button class="trigger global-reset-button global-dropdown-paddings" {onclick}>
+				{@render label()}
+			</button>
+		</TriggerStyler>
+	{/if}
+
 	{#if opened}
 		<div class="popup-positioner">
 			<Box withGaps>
@@ -51,5 +57,6 @@
 		width: max-content;
 		max-width: 200px;
 		transform: translate(-50%, 100%);
+		z-index: 1;
 	}
 </style>

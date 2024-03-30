@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms/client';
+	import { superForm } from 'sveltekit-superforms';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
+	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 	import type {
 		ArticlePreviewUpdateZod,
 		ImageSelect,
 		TranslationUpdateZod
 	} from '$lib/server/collections/types';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
-	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
 	export let updateForm: SuperValidated<ArticlePreviewUpdateZod>;
 	export let images: { preview_image_1: ImageSelect; preview_image_2: ImageSelect };

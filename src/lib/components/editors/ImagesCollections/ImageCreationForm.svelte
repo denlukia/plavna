@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { ArticleSelect, ImageCreationFormZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
+	import { superForm } from 'sveltekit-superforms';
+	import type { ArticleSelect, ImageCreationFormZod } from '$lib/server/collections/types';
 
 	export let articleId: ArticleSelect['id'] | null = null;
 	export let isAccountCommon = false;

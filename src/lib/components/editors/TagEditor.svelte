@@ -1,15 +1,15 @@
 <script lang="ts">
-	import TranslationInput from '../inputs/TranslationInput.svelte';
-	import TranslationEditor from './TranslationEditor.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
-
+	import { superForm } from 'sveltekit-superforms';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import type {
 		TagDeleteZod,
 		TagUpdateZod,
 		TranslationUpdate,
 		TranslationUpdateZod
 	} from '$lib/server/collections/types';
-	import type { SuperValidated } from 'sveltekit-superforms';
+
+	import TranslationInput from '../inputs/TranslationInput.svelte';
+	import TranslationEditor from './TranslationEditor.svelte';
 
 	export let checkedForm: SuperValidated<TagUpdateZod>;
 	export let translationForm: SuperValidated<TranslationUpdateZod>;

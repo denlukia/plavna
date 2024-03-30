@@ -1,9 +1,9 @@
 <script lang="ts">
-	import TranslationInput from '../inputs/TranslationInput.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
-
-	import type { TranslationUpdateZod } from '$lib/server/collections/types';
+	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { TranslationUpdateZod } from '$lib/server/collections/types';
+
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 
 	export let formObj: SuperValidated<TranslationUpdateZod>;
 

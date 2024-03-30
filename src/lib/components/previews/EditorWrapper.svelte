@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SuperForm } from 'sveltekit-superforms/client';
+	import type { SuperForm } from 'sveltekit-superforms';
 	import type {
 		ArticlePreviewUpdateZod,
 		PreviewTemplateSelect

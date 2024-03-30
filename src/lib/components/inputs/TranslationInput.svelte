@@ -1,19 +1,17 @@
 <script lang="ts">
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-
+	import type { SuperForm } from 'sveltekit-superforms';
+	import { generatePath } from '$lib/(features)/common/links';
 	import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
-	import { generatePath } from '$lib/isomorphic/url';
-
 	import type {
 		PreviewTemplateCreationFormZod,
 		PreviewTemplateEditingFormZod,
 		TranslationInsertZod,
 		TranslationUpdateZod
 	} from '$lib/server/collections/types';
-	import type { SuperForm } from 'sveltekit-superforms/client';
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 	export let superFormStores:
 		| SuperForm<TranslationInsertZod>

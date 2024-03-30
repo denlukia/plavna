@@ -12,6 +12,7 @@ const translations: FullTranslation = {
 	landing: 'Лендинг',
 	user_id: 'ID Користувача',
 	to_sign_out: 'Вийти',
+	main_page: 'Основна',
 	couldnt_create_page: 'Не вдалося створти сторінку і я не знаю чому',
 	invalid_slug: 'Не підходяща адреса сторінки',
 	slug_in_use: 'Така адреса сторінки у вас вже є',

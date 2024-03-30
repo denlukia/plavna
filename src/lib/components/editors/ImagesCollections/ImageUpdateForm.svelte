@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { superForm } from 'sveltekit-superforms';
 	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 	import type { ImageCollectionItem } from '$lib/server/collections/types';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	export let image: ImageCollectionItem;
 

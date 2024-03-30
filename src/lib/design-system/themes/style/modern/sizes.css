@@ -155,5 +155,5 @@
 	--size-box-padding-top: var(--size-m-to-l);
 	--size-box-padding-bottom: var(--size-m-to-l);
 	--size-box-padding-inline: var(--size-m-to-l);
-	--size-box-gap: var(--size-s);
+	--size-box-gap: var(--size-m);
 }
