@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
+	import PerspectiveWrapper from '../(helpers)/PerspectiveWrapper.svelte';
+	import { rotateAndScale } from './rotateAndScale';
 	import Tail from './Tail.svelte';
 
 	type Props = {
@@ -10,15 +12,32 @@
 		withGaps?: boolean;
 	};
 
+	const animationDuration = 300;
+
 	let { children, withGaps = false }: Props = $props();
 </script>
 
 <div
 	class="box-wrapper"
-	transition:scale={{ duration: 250, opacity: 0, start: 0.75, easing: cubicOut }}
+	transition:fade={{
+		duration: animationDuration,
+		easing: cubicOut
+	}}
 >
-	<div class="tail-wrapper"><Tail /></div>
-	<div class="box" class:with-gaps={withGaps}>
+	<div class="tail-wrapper">
+		<Tail />
+	</div>
+	<div
+		class="box"
+		class:with-gaps={withGaps}
+		transition:rotateAndScale={{
+			duration: animationDuration,
+			easing: cubicOut,
+			scaleX: 0.1,
+			scaleY: 0.1,
+			opacity: 1
+		}}
+	>
 		{@render children()}
 	</div>
 </div>
@@ -32,7 +51,7 @@
 		transform-origin: top center;
 	}
 	.box {
-		min-width: 100px;
+		min-width: 150px;
 		display: flex;
 		flex-direction: column;
 		background: var(--color-box-bg);
@@ -41,16 +60,20 @@
 		padding-top: var(--size-box-padding-top);
 		padding-bottom: var(--size-box-padding-bottom);
 		padding-inline: var(--size-box-padding-inline);
+		transform-origin: top center;
 	}
 	.tail-wrapper {
 		color: var(--color-box-bg);
-		width: 50px;
-		height: 15px;
+		width: 60px;
 		z-index: 1;
+		margin-bottom: -0.5px;
+		transform-origin: bottom center;
 	}
+	/* We use global cause we'd like Tail component to be raw SVG code from Figma */
 	.tail-wrapper > :global(svg) {
 		width: 100%;
 		height: 100%;
+		display: block;
 	}
 	.with-gaps {
 		gap: var(--size-box-gap);

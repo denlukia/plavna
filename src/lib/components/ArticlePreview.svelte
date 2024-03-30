@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Page } from '@sveltejs/kit';
 	import { page } from '$app/stores';
-	import { generatePath } from '$lib/isomorphic/url';
+	import { generatePath } from '$lib/(features)/common/links';
 	import type { ArticleSelect, TagSelect } from '$lib/server/collections/types';
 
 	import Translation from './Translation.svelte';

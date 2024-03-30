@@ -1,21 +1,24 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { ResultSet } from '@libsql/client';
 import { error, fail } from '@sveltejs/kit';
 import {
-	type ExtractTablesWithRelations,
 	and,
 	desc,
 	eq,
 	inArray,
 	isNotNull,
 	or,
-	sql
+	sql,
+	type ExtractTablesWithRelations
 } from 'drizzle-orm';
-import { type SQLiteTransaction, alias } from 'drizzle-orm/sqlite-core';
+import { alias, type SQLiteTransaction } from 'drizzle-orm/sqlite-core';
+import type { Session as LuciaSession, User as LuciaUser } from 'lucia';
 import { marked } from 'marked';
-import {  superValidate } from 'sveltekit-superforms/server';
+import type { SuperValidated } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-
 import { ERRORS } from '$lib/isomorphic/errors';
 import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
@@ -47,18 +50,6 @@ import {
 	translationInsertSchema,
 	translationUpdateSchema
 } from '$lib/server/collections/parsers';
-import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/helpers/objects';
-
-import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
-import { previewFamilies } from '../collections/previews';
-import { decomposeImageField } from '../helpers/images';
-import {
-	calculateDimensionsFromCellsTaken,
-	composeURLForScreenshot,
-	getMaybeTranslatedImagePath
-} from '../helpers/screenshotting';
-import { db } from './db';
-
 import type {
 	ArticleInsert,
 	ArticlePreviewImageFileFieldNamesAll,
@@ -85,13 +76,20 @@ import type {
 	TranslationInsert,
 	TranslationInsertBase,
 	TranslationSelect,
-	TranslationUpdate,
+	TranslationUpdate
 } from '$lib/server/collections/types';
+import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server/helpers/objects';
+
+import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
+import { previewFamilies } from '../collections/previews';
 import type { User } from '../collections/types';
-import type { SupportedLang } from '@denlukia/plavna-common/types';
-import type { ResultSet } from '@libsql/client';
-import type { Session as LuciaSession, User as LuciaUser } from 'lucia';
-import type { SuperValidated } from 'sveltekit-superforms';
+import { decomposeImageField } from '../helpers/images';
+import {
+	calculateDimensionsFromCellsTaken,
+	composeURLForScreenshot,
+	getMaybeTranslatedImagePath
+} from '../helpers/screenshotting';
+import { db } from './db';
 
 type TransactionContext = SQLiteTransaction<
 	'async',
@@ -185,9 +183,12 @@ class Plavna {
 			const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
 
 			return {
-				editForms: await Promise.all(query.map(async (page) =>
-					await superValidate(page, zod(pageUpdateFormSchema), { id: 'pages-' + page.id })
-				)),
+				editForms: await Promise.all(
+					query.map(
+						async (page) =>
+							await superValidate(page, zod(pageUpdateFormSchema), { id: 'page-edit-' + page.id })
+					)
+				),
 				createForm: await superValidate(zod(pageCreateFormSchema))
 			};
 		},
@@ -793,23 +794,31 @@ class Plavna {
 				}
 			);
 			const commonImages = {
-				creation: await superValidate(zod(imageCreationFormSchema), { id: 'common-image-creation' }),
+				creation: await superValidate(zod(imageCreationFormSchema), {
+					id: 'common-image-creation'
+				}),
 				items: results
 					.map((rows) => rows.commonImagesTable)
 					.filter(getNullAndDupFilter('id'))
 					.map(async (image) => ({
 						meta: image,
-						form: await superValidate(image, zod(imageUpdateFormSchema), { id: 'image-' + image.id })
+						form: await superValidate(image, zod(imageUpdateFormSchema), {
+							id: 'image-' + image.id
+						})
 					}))
 			};
 			const articleImages = {
-				creation: await superValidate(zod(imageCreationFormSchema), { id: 'article-image-creation' }),
+				creation: await superValidate(zod(imageCreationFormSchema), {
+					id: 'article-image-creation'
+				}),
 				items: results
 					.map((rows) => rows.articleImagesTable)
 					.filter(getNullAndDupFilter('id'))
 					.map(async (image) => ({
 						meta: image,
-						form: await superValidate(image, zod(imageUpdateFormSchema), { id: 'image-' + image.id })
+						form: await superValidate(image, zod(imageUpdateFormSchema), {
+							id: 'image-' + image.id
+						})
 					}))
 			};
 

@@ -2,12 +2,12 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
+	import { generatePath } from '$lib/(features)/common/links.js';
 	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Box from '$lib/design-system/components/Dropdownable/Box.svelte';
 	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
 	import { defaultLang } from '$lib/isomorphic/languages.js';
-	import { generatePath } from '$lib/isomorphic/url.js';
 
 	type Props = {
 		user: User;
@@ -47,6 +47,19 @@
 <header>
 	<Popup>
 		{#snippet label()}
+			<Translation key={currentPage?.translation} />
+		{/snippet}
+		{#snippet content()}
+			{#each pages as { href, translation, routeId }}
+				<Button {href} type={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
+					<Translation key={translation} />
+				</Button>
+			{/each}
+		{/snippet}
+	</Popup>
+
+	<Popup>
+		{#snippet label()}
 			{$page.params.lang.toUpperCase()}
 		{/snippet}
 		{#snippet content()}
@@ -56,19 +69,6 @@
 					type={language === $page.params.lang ? 'primary' : 'secondary'}
 				>
 					{language.toUpperCase()}
-				</Button>
-			{/each}
-		{/snippet}
-	</Popup>
-
-	<Popup>
-		{#snippet label()}
-			<Translation key={currentPage?.translation} />
-		{/snippet}
-		{#snippet content()}
-			{#each pages as { href, translation, routeId }}
-				<Button {href} type={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
-					<Translation key={translation} />
 				</Button>
 			{/each}
 		{/snippet}

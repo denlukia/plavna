@@ -1,9 +1,10 @@
 <script lang="ts">
-	import type { ImageSelect, PreviewTemplateEditingFormZod } from '$lib/server/collections/types';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
-	import TranslationInput from '../inputs/TranslationInput.svelte';
+	import { superForm } from 'sveltekit-superforms';
+	import type { ImageSelect, PreviewTemplateEditingFormZod } from '$lib/server/collections/types';
+
 	import LanguagedImagesInput from '../inputs/image/LanguagedImagesInput.svelte';
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 
 	export let formObj: SuperValidated<PreviewTemplateEditingFormZod>;
 	export let image: ImageSelect | undefined;

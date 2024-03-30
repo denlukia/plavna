@@ -1,8 +1,8 @@
-import en from './en';
-import uk from './uk';
-
-import type { TranslationKey } from './en';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
+
+import en from './en';
+import type { TranslationKey } from './en';
+import uk from './uk';
 
 export const systemTranslations = { en, uk };
 
@@ -35,6 +35,7 @@ export const serviceTranslations = {
 		'edit_slug',
 		'create_new_page',
 		'couldnt_delete_page',
-		'couldnt_edit_page'
+		'couldnt_edit_page',
+		'main_page'
 	])
 };

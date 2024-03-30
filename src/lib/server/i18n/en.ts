@@ -10,6 +10,7 @@ const translations = {
 	landing: 'Landing',
 	user_id: 'User ID',
 	to_sign_out: 'Sign out',
+	main_page: 'Main',
 	couldnt_create_page: "Could not create a page and I don't know why",
 	invalid_slug: 'Invalid slug',
 	slug_in_use: 'Slug in use',

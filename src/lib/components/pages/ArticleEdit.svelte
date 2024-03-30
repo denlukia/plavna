@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms/client';
-
-	import PreviewEditorsList from '$lib/components/PreviewEditorsList.svelte';
+	import { enhance } from '$app/forms';
+	import { superForm } from 'sveltekit-superforms';
 	import TagCreator from '$lib/components/editors/TagCreator.svelte';
 	import TagEditor from '$lib/components/editors/TagEditor.svelte';
 	import TranslationEditor from '$lib/components/editors/TranslationEditor.svelte';
+	import PreviewEditorsList from '$lib/components/PreviewEditorsList.svelte';
 
 	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
-	import { enhance } from '$app/forms';
 	import ImagesCollections from '../editors/ImagesCollections/index.svelte';
 
 	export let data: PageData;

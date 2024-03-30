@@ -1,5 +1,5 @@
-import { type RequestEvent, fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { fail, type RequestEvent } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
 
 import { translationUpdateSchema } from '../collections/parsers';
 import { detokenizeEmptyStrings, removeNullValues, tokenizeEmptyStrings } from '../helpers/objects';

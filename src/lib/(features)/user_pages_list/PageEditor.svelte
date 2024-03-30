@@ -1,13 +1,16 @@
 <script lang="ts">
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
+	import type { SuperForm } from 'sveltekit-superforms';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
 
-	export let formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;
+	type Props = {
+		superFormObj: SuperForm<PageCreateForm> | SuperForm<PageUpdateForm>;
+	};
 
-	const { form, errors, enhance } = superForm(formObj);
+	let { superFormObj }: Props = $props();
+
+	const { form, errors, enhance } = $derived(superFormObj);
 </script>
 
 <form class="page-editor" use:enhance method="POST">

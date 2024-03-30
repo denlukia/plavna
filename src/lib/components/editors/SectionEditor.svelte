@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import TranslationInput from '../inputs/TranslationInput.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
-
-	import type { SectionSelect, TranslationUpdateZod } from '$lib/server/collections/types';
+	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import type { SectionSelect, TranslationUpdateZod } from '$lib/server/collections/types';
+
+	import TranslationInput from '../inputs/TranslationInput.svelte';
 
 	export let section: SectionSelect;
 	export let formObj: SuperValidated<TranslationUpdateZod>;

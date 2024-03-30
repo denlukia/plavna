@@ -14,7 +14,7 @@
 
 <style>
 	.perspective-wrapper {
-		perspective: 1000px;
-		perspective-origin: 50% 50%;
+		perspective: 400px;
+		perspective-origin: top center;
 	}
 </style>
