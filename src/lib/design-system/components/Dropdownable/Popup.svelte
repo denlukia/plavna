@@ -21,9 +21,9 @@
 
 <span class="popup-group global-reset-line-height">
 	{#if triggerType === 'button'}
-		<Button {onclick}>{@render label()}</Button>
+		<Button {onclick} isActive={opened} imitatePressingOnClick={false}>{@render label()}</Button>
 	{:else}
-		<TriggerStyler>
+		<TriggerStyler isActive={opened}>
 			<button class="trigger global-reset-button global-dropdown-paddings" {onclick}>
 				{@render label()}
 			</button>

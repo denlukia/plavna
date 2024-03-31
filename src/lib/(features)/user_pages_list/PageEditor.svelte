@@ -15,10 +15,10 @@
 
 <form class="page-editor" use:enhance method="POST">
 	{#if $form.id}
-		<input type="hidden" name="id" bind:value={$form.id} />
+		<input type="hidden" name="id" value={$form.id} />
 	{/if}
 
-	<Input type="text" name="slug" bind:value={$form.slug} />
+	<Input type="text" name="slug" value={$form.slug} />
 
 	{#if $form.id}
 		<Button formaction="?/update">Update</Button>

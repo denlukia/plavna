@@ -15,7 +15,6 @@
 <TriggerStyler isLabel {isInInput}>
 	<select
 		class={`
-			select 
 			global-reset-select 
 			global-disable-default-outline 
 			global-text-${isInInput ? 'small-short' : 'body-short'}
