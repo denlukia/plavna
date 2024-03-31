@@ -15,7 +15,7 @@
 		0 5px 10px var(--color-button-destructive-shadow-2);
 
 	--transform-button-hover: translateY(-1px);
-	--transition-button: all 400ms var(--smooth-ease-out);
+	--transition-button: all 250ms var(--smooth-ease-out);
 
 	--shadow-button-hover-primary: 0 2px 4px var(--color-button-primary-shadow-1),
 		0 8px 10px var(--color-button-primary-shadow-2);
@@ -37,7 +37,7 @@
 	/* --- Button in Input */
 	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
 		0 1px 1px var(--color-button-in-input-shadow-2);
-	--transition-button-in-input: all 400ms var(--smooth-ease-out);
+	--transition-button-in-input: all 250ms var(--smooth-ease-out);
 
 	--transform-button-in-input-hover: translateY(-0.5px);
 	--shadow-button-in-input-hover: inset 0 1px 1px var(--color-button-in-input-shadow-1),
@@ -45,12 +45,12 @@
 
 	--transform-button-in-input-active: translateY(0.5px);
 
-	/* --- Select --- */
-	--shadow-select: 0 1px 1px var(--color-dropdown-shadow-1),
+	/* --- Dropdown --- */
+	--shadow-dropdown: 0 1px 1px var(--color-dropdown-shadow-1),
 		0 5px 10px var(--color-dropdown-shadow-2);
 	--shadow-dropdown-hover: 0 2px 4px var(--color-dropdown-shadow-1),
 		0 8px 10px var(--color-dropdown-shadow-2);
-	--transition-select: all 400ms var(--smooth-ease-out);
+	--transition-select: all 250ms var(--smooth-ease-out);
 	--transform-dropdown-hover: translateY(-1px);
 	--transform-dropdown-active: translateY(1px);
 

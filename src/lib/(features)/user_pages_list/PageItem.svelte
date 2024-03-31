@@ -53,6 +53,7 @@
 <style>
 	.page-item {
 		display: flex;
+		align-items: flex-start;
 	}
 	.leading {
 		display: flex;

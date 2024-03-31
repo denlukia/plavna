@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { untrack, type Snippet } from 'svelte';
-	import type {
-		HTMLAnchorAttributes,
-		HTMLButtonAttributes,
-		MouseEventHandler
-	} from 'svelte/elements';
+	import { type Snippet } from 'svelte';
+	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
 
 	import Effects from './(helpers)/Effects.svelte';
+	import { createPressWatcher } from './(helpers)/PressWatcher.svelte';
 	import Typography from './Typography.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
@@ -19,6 +16,8 @@
 		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 		href?: string;
 		onclick?: UniversalMouseEventHandler;
+		isActive?: boolean;
+		imitatePressingOnClick?: boolean;
 	};
 	let {
 		children,
@@ -26,25 +25,17 @@
 		size = 'body',
 		href,
 		dataSvelteKitReload,
-		onclick: onClickProp = () => {}
+		onclick: onclickProp,
+		isActive = false,
+		imitatePressingOnClick = true
 	}: Props = $props();
 
-	let pressed = $state(false);
-	let pressedResetTimeout: ReturnType<typeof setTimeout> | null = $state(null);
+	const watcher = createPressWatcher();
 
-	$effect(() => {
-		untrack(() => pressedResetTimeout && clearTimeout(pressedResetTimeout));
-		if (pressed) {
-			pressedResetTimeout = setTimeout(() => {
-				pressed = false;
-			}, 200);
-		}
-	});
-
-	const onclick: UniversalMouseEventHandler = (e) => {
-		pressed = true;
-		onClickProp(e);
-	};
+	function onclick(event: UniversalMouseEventHandler['arguments'][0]) {
+		imitatePressingOnClick && watcher.onclick();
+		if (onclickProp) onclickProp(event);
+	}
 </script>
 
 <svelte:element
@@ -54,7 +45,9 @@
 	class={`button type-${type} size-${size} 
 	global-layer-flashlight-hover-trigger global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
-	class:pressed
+	class:pressed={isActive || watcher.pressed}
+	onpointerdown={watcher.onpointerdown}
+	onpointerup={watcher.onpointerup}
 	{onclick}
 	{href}
 >
