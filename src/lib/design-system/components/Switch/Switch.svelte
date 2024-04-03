@@ -1,13 +1,13 @@
 <script lang="ts">
+	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
 	import Layers from '../(helpers)/Layers.svelte';
 	import LayerShift from '../(helpers)/LayerShift.svelte';
-	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import type { SwitchProps } from './types';
 
 	let { ...props }: SwitchProps = $props();
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <label class="switch global-reset-line-height">

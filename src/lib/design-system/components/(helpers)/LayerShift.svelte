@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { tweened } from 'svelte/motion';
 
-	import type { MouseState } from './MouseWatcher.svelte';
+	import type { MouseState } from './createMouseWatcher.svelte';
 
 	type Props = {
 		mouse: MouseState;

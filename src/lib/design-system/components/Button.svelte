@@ -2,8 +2,8 @@
 	import { type Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
 
+	import { createPressWatcher } from './(helpers)/createPressWatcher.svelte';
 	import Effects from './(helpers)/Effects.svelte';
-	import { createPressWatcher } from './(helpers)/PressWatcher.svelte';
 	import Typography from './Typography.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
@@ -43,7 +43,7 @@
 	role={href ? 'link' : 'button'}
 	data-sveltekit-reload={dataSvelteKitReload}
 	class={`button type-${type} size-${size} 
-	global-layer-flashlight-hover-trigger global-reset-line-height
+	 global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed={isActive || watcher.pressed}
 	onpointerdown={watcher.onpointerdown}

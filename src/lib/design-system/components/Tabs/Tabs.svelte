@@ -2,9 +2,9 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 
+	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
 	import Layers from '../(helpers)/Layers.svelte';
-	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import { crossfade } from './crossfade';
 
 	type Props = {
@@ -14,7 +14,7 @@
 
 	let { children, size = 'body' }: Props = $props();
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 
 	let ref: HTMLSpanElement | null = $state(null);
 	let mutationObserver: MutationObserver | null = $state(null);

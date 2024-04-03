@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { clickoutside } from '../(helpers)/clickOutside';
 	import Button from '../Button.svelte';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
@@ -10,6 +11,7 @@
 		label: Snippet;
 		content: Snippet;
 		opened?: boolean;
+		closeOnClickInside?: boolean;
 	};
 
 	let { triggerType = 'dropdown', opened, label, content }: Props = $props();
@@ -17,14 +19,17 @@
 	function onclick() {
 		opened = !opened;
 	}
+	function onclickoutside() {
+		opened = false;
+	}
 </script>
 
-<span class="popup-group global-reset-line-height">
+<span class="popup-group global-reset-line-height" use:clickoutside={onclickoutside}>
 	{#if triggerType === 'button'}
 		<Button {onclick} isActive={opened} imitatePressingOnClick={false}>{@render label()}</Button>
 	{:else}
 		<TriggerStyler isActive={opened}>
-			<button class="trigger global-reset-button global-dropdown-paddings" {onclick}>
+			<button class="global-reset-button global-dropdown-paddings" {onclick}>
 				{@render label()}
 			</button>
 		</TriggerStyler>
@@ -40,13 +45,6 @@
 </span>
 
 <style>
-	.trigger {
-		font-family: var(--text-body-short-font-family);
-		font-size: var(--text-body-short-size);
-		font-weight: var(--text-body-short-weight);
-		line-height: var(--text-body-short-line-height);
-		letter-spacing: var(--text-body-short-letter-spacing);
-	}
 	.popup-group {
 		position: relative;
 	}

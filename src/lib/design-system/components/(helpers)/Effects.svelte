@@ -1,17 +1,17 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { createMouseWatcher } from './createMouseWatcher.svelte';
 	import LayerFlashlight from './LayerFlashlight.svelte';
 	import Layers from './Layers.svelte';
 	import LayerShift from './LayerShift.svelte';
-	import { MouseWatcher } from './MouseWatcher.svelte';
 
 	type Props = {
 		children: Snippet;
 	};
 	let { children }: Props = $props();
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <Layers {...events} --overflow="hidden">

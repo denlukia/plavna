@@ -2,9 +2,9 @@
 	import { tweened } from 'svelte/motion';
 	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
+	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
 	import Layers from '../(helpers)/Layers.svelte';
-	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 	import Eye from '../(icons)/Eye.svelte';
 	import IconWrapper from '../(icons)/IconWrapper.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
@@ -20,7 +20,7 @@
 		duration: 250
 	});
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 	let pswdVisible = $state(false);
 
 	let hasLeading = $derived(attributes.type === 'color');
@@ -42,7 +42,7 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input global-layer-flashlight-hover-trigger" {...events} role="presentation">
+<span class="input" {...events} role="presentation">
 	<Layers --overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">

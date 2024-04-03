@@ -88,7 +88,6 @@
 .global-reset-button {
 	border: none;
 	background: none;
-	line-height: 0;
 	padding: 0;
 }
 

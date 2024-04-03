@@ -15,5 +15,12 @@
 
 <style>
 	.link {
+		color: var(--color-link);
+		box-shadow: var(--shadow-link);
+		transition: var(--transition-link);
+	}
+	.link:hover {
+		box-shadow: var(--shadow-link-hovered);
+		transition: var(--transition-link-hovered);
 	}
 </style>

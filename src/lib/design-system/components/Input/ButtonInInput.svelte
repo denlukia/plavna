@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
 	import Layers from '../(helpers)/Layers.svelte';
 	import LayerShift from '../(helpers)/LayerShift.svelte';
-	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -13,11 +13,11 @@
 
 	let { children, onclick = () => {} }: Props = $props();
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <button
-	class="button global-reset-button global-button-in-input global-layer-flashlight-hover-trigger global-fix-overflow"
+	class="button global-reset-button global-button-in-input global-fix-overflow"
 	{...events}
 	{onclick}
 >

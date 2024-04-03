@@ -3,8 +3,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { tweened } from 'svelte/motion';
 
+	import { createMouseWatcher } from './(helpers)/createMouseWatcher.svelte';
 	import LayerShift from './(helpers)/LayerShift.svelte';
-	import { MouseWatcher } from './(helpers)/MouseWatcher.svelte';
 	import CheckMark from './(icons)/CheckMark.svelte';
 	import IconWrapper from './(icons)/IconWrapper.svelte';
 
@@ -18,7 +18,7 @@
 		duration: 250
 	});
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 
 	$effect(() => {
 		if (checked) {

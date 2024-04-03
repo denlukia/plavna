@@ -25,6 +25,9 @@
 	--red-300-transparent-20: hsla(0, 100%, 30%, 20%);
 	--red-300-transparent-50: hsla(0, 100%, 30%, 50%);
 
+	--cold-200: hsl(200, 60%, 30%);
+	--cold-200-transparent-200: hsla(200, 60%, 30%, 25%);
+
 	/* ------ Semantic ----- */
 	/* --- General --- */
 	--color-body-bg: var(--warm-900);
@@ -123,4 +126,9 @@
 	--color-box-bg: var(--color-main-layout-bg);
 	--color-box-shadow-1: var(--warm-300-transparent-300);
 	--color-box-shadow-2: var(--warm-300-transparent-500);
+
+	/* --- Link --- */
+	--color-link: var(--cold-200);
+	--color-link-shadow: var(--cold-200-transparent-200);
+	--color-link-hovered-shadow: var(--cold-200);
 }

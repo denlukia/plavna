@@ -7,17 +7,18 @@
 	type Props = HTMLAttributes<HTMLSelectElement> & {
 		children: Snippet;
 		isInInput?: boolean;
+		value: string;
 	};
 
-	let { children, isInInput = false, ...other }: Props = $props();
+	let { children, isInInput = false, value, ...other }: Props = $props();
 </script>
 
 <TriggerStyler isLabel {isInInput}>
 	<select
+		bind:value
 		class={`
 			global-reset-select 
 			global-disable-default-outline 
-			global-text-${isInInput ? 'small-short' : 'body-short'}
 			${isInInput ? 'global-dropdown-in-input-paddings' : 'global-dropdown-paddings'}`}
 		{...other}
 	>

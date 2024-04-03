@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { createPressWatcher } from '../(helpers)/createPressWatcher.svelte';
 	import Effects from '../(helpers)/Effects.svelte';
-	import { createPressWatcher } from '../(helpers)/PressWatcher.svelte';
 	import ArrowDown from '../(icons)/ArrowDown.svelte';
 	import IconWrapper from '../(icons)/IconWrapper.svelte';
 
@@ -20,7 +20,6 @@
 <span
 	class={`
 		main-wrapper 
-		global-layer-flashlight-hover-trigger 
 		${isInInput ? 'type-in-input' : 'type-default'}`}
 	class:global-button-in-input={isInInput}
 	class:pressed={isActive || watcher.pressed}
@@ -32,8 +31,9 @@
 			class={`
 					dropdown
 					global-disable-default-outline 	
-					global-reset-select
-					global-reset-line-height`}
+					global-text-bold
+					global-text-${isInInput ? 'small-short' : 'body-short'}
+					global-reset-select`}
 		>
 			{@render children()}
 		</span>
@@ -81,16 +81,17 @@
 
 	.dropdown {
 		display: inline-block;
+		padding: 0;
 	}
 
 	/* Type Specific */
 	.type-default .arrow-wrapper {
-		width: var(--size-dropdown-icon-width);
-		right: var(--size-dropdown-padding-left);
+		width: var(--size-dropdown-arrow-width);
+		right: var(--size-dropdown-arrow-padding-right);
 	}
 
 	.type-in-input .arrow-wrapper {
-		width: var(--size-dropdown-in-input-icon-width);
-		right: var(--size-dropdown-in-input-padding-left);
+		width: var(--size-dropdown-in-input-arrow-width);
+		right: var(--size-dropdown-in-input-padding-right);
 	}
 </style>
