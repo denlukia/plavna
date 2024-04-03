@@ -34,7 +34,9 @@
 			<Typography block size="headline">Тестовий <br /> текст</Typography>
 			<Typography block size="headline-short">Тестовий <br /> текст</Typography>
 			<Typography block size="body">Тестовий <br /> текст</Typography>
-			<Typography block size="body-short">Тестовий <br /> текст</Typography>
+			<Typography block size="body-short"
+				>Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту</Typography
+			>
 			<Typography block size="small">Тестовий <br /> текст</Typography>
 			<Typography block size="small-short">Тестовий <br /> текст</Typography>
 		</div>

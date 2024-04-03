@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MouseState } from './MouseWatcher.svelte';
+	import type { MouseState } from './createMouseWatcher.svelte';
 
 	type Props = {
 		mouse: MouseState;

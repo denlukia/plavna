@@ -4,10 +4,10 @@
 	import { fade } from 'svelte/transition';
 	import Typography from '$lib/design-system/components/Typography.svelte';
 
+	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
 	import Layers from '../(helpers)/Layers.svelte';
 	import LayerShift from '../(helpers)/LayerShift.svelte';
-	import { MouseWatcher } from '../(helpers)/MouseWatcher.svelte';
 
 	type Props = HTMLButtonAttributes & {
 		children: Snippet;
@@ -18,7 +18,7 @@
 
 	let { children, href, active = false, size = 'body', ...attributes }: Props = $props();
 
-	let { mouse, ...events } = new MouseWatcher();
+	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <svelte:element

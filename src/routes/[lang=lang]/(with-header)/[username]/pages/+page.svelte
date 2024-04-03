@@ -17,18 +17,29 @@
 	{#each data.editForms as formObj}
 		<PageItem {formObj} />
 	{/each}
-	<Popup triggerType="button">
-		{#snippet label()}
-			<Translation key="create_new_page" />
-		{/snippet}
-		{#snippet content()}
-			<PageEditForm {superFormObj} />
-		{/snippet}
-	</Popup>
+	<div class="new-page-wrapper">
+		<Popup triggerType="button">
+			{#snippet label()}
+				<Translation key="create_new_page" />
+			{/snippet}
+			{#snippet content()}
+				<PageEditForm {superFormObj} />
+			{/snippet}
+		</Popup>
+	</div>
 </div>
 
 <style>
 	.pages {
-		margin-top: var(--size-xl);
+		margin-top: var(--size-3xl);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--size-column-gap);
+	}
+	.new-page-wrapper {
+		margin-left: var(--size-m);
+		display: flex;
+		align-items: center;
 	}
 </style>

@@ -22,7 +22,7 @@
 
 	/* --- Main Layout --- */
 	--size-main-layout-margin-top: var(--size-xl);
-	--size-main-layout-padding-inline: var(--size-m-to-l);
+	--size-main-layout-padding-inline: var(--size-l);
 	--size-main-layout-max-width: calc(
 		var(--size-column-width) * 5 + var(--size-column-gap) * 4 +
 			var(--size-main-layout-padding-inline) * 2
@@ -33,7 +33,7 @@
 	--size-layer-shift-hover-translate: 2px;
 
 	/* --- Button --- */
-	--size-button-body-padding-inline: var(--size-m-to-l);
+	--size-button-body-padding-inline: var(--size-l);
 	--size-button-body-padding-top: var(--size-s);
 	--size-button-body-padding-bottom: var(--size-s);
 	--size-button-body-border-radius: var(--size-full);
@@ -89,9 +89,15 @@
 	--size-icon-small-stroke-width: 1.25px;
 
 	/* --- Dropdown --- */
-	--size-dropdown-icon-width: var(--size-icon-body-size);
-	--size-dropdown-padding-left: var(--size-m);
-	--size-dropdown-padding-right: calc(var(--size-m-to-l) + var(--size-dropdown-icon-width));
+	--size-dropdown-padding-left: var(--size-m-to-l);
+
+	--size-dropdown-arrow-text-gap: var(--size-xs);
+	--size-dropdown-arrow-padding-right: var(--size-m-to-l);
+	--size-dropdown-padding-right: calc(
+		var(--size-dropdown-arrow-text-gap) + var(--size-icon-body-size) +
+			var(--size-dropdown-arrow-padding-right)
+	);
+
 	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-body-short-padding-top));
 	--size-dropdown-padding-bottom: calc(var(--size-s) + var(--text-body-short-padding-bottom));
 	--size-dropdown-border-radius: var(--size-m);
@@ -101,10 +107,13 @@
 	--size-dropdown-disclosure-padding-bottom: var(--size-s-to-m);
 
 	/* --- Dropdown in Input --- */
-	--size-dropdown-in-input-icon-width: var(--size-icon-small-size);
 	--size-dropdown-in-input-padding-left: var(--size-m);
+
+	--size-dropdown-in-input-arrow-text-gap: var(--size-s);
+	--size-dropdown-in-input-arrow-padding-right: var(--size-s);
 	--size-dropdown-in-input-padding-right: calc(
-		var(--size-m) + var(--size-dropdown-in-input-icon-width)
+		var(--size-dropdown-in-input-arrow-text-gap) + var(--size-icon-small-size) +
+			var(--size-dropdown-in-input-arrow-padding-right)
 	);
 	--size-dropdown-in-input-padding-top: var(--size-s-to-m);
 	--size-dropdown-in-input-padding-bottom: var(--size-s-to-m);
@@ -155,5 +164,5 @@
 	--size-box-padding-top: var(--size-m-to-l);
 	--size-box-padding-bottom: var(--size-m-to-l);
 	--size-box-padding-inline: var(--size-m-to-l);
-	--size-box-gap: var(--size-m);
+	--size-box-gap: var(--size-s);
 }
