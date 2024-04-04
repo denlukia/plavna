@@ -32,7 +32,7 @@ export const serviceTranslations = {
 		'slug_in_use',
 		'only_one_default_slug',
 		'delete_page',
-		'edit_slug',
+		'edit_page',
 		'create_new_page',
 		'couldnt_delete_page',
 		'couldnt_edit_page',

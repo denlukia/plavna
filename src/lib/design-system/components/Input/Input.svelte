@@ -12,7 +12,7 @@
 	import PasswordInput from './PasswordInput.svelte';
 	import type { LanguagedInputProps } from './types';
 
-	let { value, ...attributes }: LanguagedInputProps = $props();
+	let { value = $bindable(), ...attributes }: LanguagedInputProps = $props();
 
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
@@ -58,7 +58,7 @@
 				class:textarea-wrapper={attributes.type === 'textarea'}
 			>
 				{#if attributes.type === 'password'}
-					<PasswordInput {pswdVisible} {...attributes} />
+					<PasswordInput {pswdVisible} {...attributes} bind:value />
 				{:else if attributes.type === 'text' || !attributes.type}
 					<input
 						bind:value

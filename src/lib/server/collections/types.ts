@@ -1,4 +1,9 @@
+import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/plavna-common/queue';
+import type { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { assert } from '@denlukia/plavna-common/types';
+import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import type { SuperValidated } from 'sveltekit-superforms';
+import type { z } from 'zod';
 
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
@@ -22,6 +27,7 @@ import type {
 	imageUpdateFormSchema,
 	imageUpdateSchema,
 	pageCreateFormSchema,
+	pageDeletionFormSchema,
 	pageInsertSchema,
 	pageSelectSchema,
 	pageUpdateFormSchema,
@@ -48,11 +54,6 @@ import type {
 	translationUpdateSchema
 } from './parsers';
 import type { PreviewFamilyId } from './previews';
-import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/plavna-common/queue';
-import type { ServerImageHandler } from '@denlukia/plavna-common/server';
-import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
-import type { SuperValidated } from 'sveltekit-superforms';
-import type { z } from 'zod';
 
 // Auth
 export type Auth = typeof auth;
@@ -73,6 +74,8 @@ export type PageCreateForm = z.infer<typeof pageCreateFormSchema>;
 export type PageCreateFormZod = typeof pageCreateFormSchema;
 export type PageUpdateForm = z.infer<typeof pageUpdateFormSchema>;
 export type PageUpdateFormZod = typeof pageUpdateFormSchema;
+export type PageDeletionForm = z.infer<typeof pageDeletionFormSchema>;
+export type PageDeletionFormZod = typeof pageDeletionFormSchema;
 
 // Sections
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;

@@ -25,6 +25,7 @@ export const actions = {
 	},
 	update: async ({ locals: { plavna }, request }) => {
 		const form = await superValidate(request, zod(pageUpdateFormSchema));
+		console.log(form);
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.update(form.data);

@@ -8,7 +8,7 @@
 	type Props = HTMLInputAttributes & {
 		pswdVisible: boolean;
 	};
-	let { pswdVisible, type, value, ...attributes }: Props = $props();
+	let { pswdVisible, type, value = $bindable(), ...attributes }: Props = $props();
 	let selectionStart: number | null = null;
 	let selectionEnd: number | null = null;
 

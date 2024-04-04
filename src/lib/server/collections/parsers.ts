@@ -1,4 +1,5 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -17,8 +18,6 @@ import {
 	users
 } from './db-schema';
 import { previewFamiliesIds } from './previews';
-
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 // TODO Refine all slug schemas to accept only valid slugs
 // TODO Refine url schemas to accept only valid urls
@@ -52,6 +51,7 @@ export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
 export const pageCreateFormSchema = pageInsertSchema.omit({ user_id: true });
 export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });
+export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true });
 
 // Sections
 export const sectionSelectSchema = createSelectSchema(sections);
