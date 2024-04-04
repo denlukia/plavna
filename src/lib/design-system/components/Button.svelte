@@ -18,6 +18,7 @@
 		onclick?: UniversalMouseEventHandler;
 		isActive?: boolean;
 		imitatePressingOnClick?: boolean;
+		formaction?: string;
 	};
 	let {
 		children,
@@ -27,7 +28,8 @@
 		dataSvelteKitReload,
 		onclick: onclickProp,
 		isActive = false,
-		imitatePressingOnClick = true
+		imitatePressingOnClick = true,
+		formaction
 	}: Props = $props();
 
 	const watcher = createPressWatcher();
@@ -48,6 +50,7 @@
 	class:pressed={isActive || watcher.pressed}
 	onpointerdown={watcher.onpointerdown}
 	onpointerup={watcher.onpointerup}
+	{formaction}
 	{onclick}
 	{href}
 >

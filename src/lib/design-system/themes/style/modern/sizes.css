@@ -92,7 +92,7 @@
 	--size-dropdown-padding-left: var(--size-m-to-l);
 
 	--size-dropdown-arrow-text-gap: var(--size-xs);
-	--size-dropdown-arrow-padding-right: var(--size-m-to-l);
+	--size-dropdown-arrow-padding-right: var(--size-m);
 	--size-dropdown-padding-right: calc(
 		var(--size-dropdown-arrow-text-gap) + var(--size-icon-body-size) +
 			var(--size-dropdown-arrow-padding-right)

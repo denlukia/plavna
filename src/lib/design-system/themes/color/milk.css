@@ -19,14 +19,13 @@
 	--neutral-1000-transparent-50: hsla(0, 0%, 100%, 50%);
 
 	--red-200: hsl(0, 100%, 20%);
-	--red-500: hsl(0, 100%, 50%);
-	--red-500-transparent-10: hsla(0, 100%, 50%, 10%);
+	--red-900: hsl(0, 100%, 94%);
 	--red-300-transparent-100: hsla(0, 100%, 30%, 12%);
 	--red-300-transparent-20: hsla(0, 100%, 30%, 20%);
 	--red-300-transparent-50: hsla(0, 100%, 30%, 50%);
 
-	--cold-200: hsl(200, 60%, 30%);
-	--cold-200-transparent-200: hsla(200, 60%, 30%, 25%);
+	--cold-200: hsl(200, 70%, 30%);
+	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
 
 	/* ------ Semantic ----- */
 	/* --- General --- */
@@ -42,7 +41,7 @@
 	--color-button-primary-bg: var(--neutral-1000);
 	--color-button-secondary-bg: var(--warm-300-transparent-200);
 	--color-button-prominent-bg: var(--neutral-0);
-	--color-button-destructive-bg: var(--red-500-transparent-10);
+	--color-button-destructive-bg: var(--red-900);
 
 	--color-button-primary-text: var(--neutral-0);
 	--color-button-secondary-text: var(--neutral-0);

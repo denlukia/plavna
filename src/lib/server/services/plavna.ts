@@ -43,6 +43,7 @@ import {
 	imageProviderUpdateFormSchema,
 	imageUpdateFormSchema,
 	pageCreateFormSchema,
+	pageDeletionFormSchema,
 	pageUpdateFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
@@ -181,16 +182,24 @@ class Plavna {
 		getMyAsForms: async (username: string) => {
 			const user = await this.user.checkOrThrow(null, username);
 			const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
-
-			return {
-				editForms: await Promise.all(
-					query.map(
-						async (page) =>
-							await superValidate(page, zod(pageUpdateFormSchema), { id: 'page-edit-' + page.id })
-					)
-				),
-				createForm: await superValidate(zod(pageCreateFormSchema))
-			};
+			const pageItems = await Promise.all(
+				query.map(async (page) => {
+					return {
+						id: page.id,
+						slug: page.slug,
+						editingForm: await superValidate(page, zod(pageUpdateFormSchema), {
+							id: 'page-edit-' + page.id
+						}),
+						deletionForm: await superValidate(page, zod(pageDeletionFormSchema), {
+							id: 'page-delete-' + page.id
+						})
+					};
+				})
+			);
+			const creationForm = await superValidate(null, zod(pageCreateFormSchema), {
+				id: 'page-create'
+			});
+			return { pageItems, creationForm };
 		},
 		getOneWithSectionsAndArticles: async (
 			username: string,
