@@ -1,4 +1,4 @@
-import { serviceTranslations } from '$lib/server/i18n';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
 
 import type { PageServerLoad as ArticleServerLoad } from './[slug]/$types';
 import type { PageServerLoad as ArticleEditServerLoad } from './[slug]/edit/$types';
@@ -9,24 +9,21 @@ export const articleEditServerLoad = (async ({ params, parent, locals: { plavna 
 		params.username,
 		params.slug
 	);
-	const { translations } = await parent();
+	const { systemTranslations } = await parent();
 
 	return {
 		...other,
-		translations: {
-			...translations,
-			...serviceTranslations.articleEditor(params.lang),
-			...newTranslations
-		}
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('article_editor', params.lang)
+		},
+		recordsTranslations: newTranslations
 	};
 }) satisfies ArticleEditServerLoad;
 
 // Article Viewer ---------------------------------------------------------------
-export const articleServerLoad = (async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.articles.getOne(
-		params.username,
-		params.slug
-	);
-	const { translations } = await parent();
-	return { ...other, translations: { ...translations, ...newTranslations } };
+export const articleServerLoad = (async ({ params, locals: { plavna } }) => {
+	const { translations, ...other } = await plavna.articles.getOne(params.username, params.slug);
+
+	return { ...other, recordsTranslations: translations };
 }) satisfies ArticleServerLoad;

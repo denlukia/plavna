@@ -3,23 +3,46 @@
 	import { page } from '$app/stores';
 	import SvelteMarkdown from 'svelte-markdown';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import { getSystemTranslation } from '$lib/(features)/common/translations/_index';
+	import type { SystemTranslationKey } from '$lib/(features)/common/translations/_types';
 	import type { TranslationSelect, TranslationUpdate } from '$lib/server/collections/types';
-	import type { TranslationKey } from '$lib/server/i18n/en';
 
 	import Image from './markdown/Image.svelte';
 
-	type Props = {
-		formObj?: SuperValidated<TranslationUpdate> | null;
-		key?: TranslationKey | TranslationSelect['key'] | null;
-		markdownMode?: boolean;
+	type FormTranslation = {
+		formObj: SuperValidated<TranslationUpdate>;
+		recordKey?: null;
+		key?: null;
 	};
+	type RecordTranslation = {
+		recordKey: TranslationSelect['key'];
+		key?: null;
+		formObj?: null;
+	};
+	type SystemTranslation = {
+		key: SystemTranslationKey | undefined;
+		formObj?: null;
+		recordKey?: null;
+	};
+	type Props = {
+		markdownMode?: boolean;
+	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let { formObj = null, key = null, markdownMode = false }: Props = $props();
+	let { formObj, key, recordKey, markdownMode = false }: Props = $props();
+
+	function getTranslation() {
+		console.log($page.data.systemTranslations);
+
+		if (formObj) return formObj.data[$page.params.lang as SupportedLang];
+		if (key) return getSystemTranslation(key, $page.data.systemTranslations);
+		if (recordKey) return $page.data.recordsTranslations?.[recordKey];
+	}
 
 	// At new page loads translations for outroing page are erased
 	// but are still needed while outroing transitons are played, so:
 	// 1. We get the translation, wether present or null
-	let translation = $derived(key !== null ? $page.data.translations?.[key] : null);
+	let translation = $derived.by(getTranslation);
+
 	// 2. We create a state that is updated only when translation is not null
 	let nonNullTranslation: typeof translation = $state(translation);
 	$effect(() => {

@@ -4,6 +4,12 @@ import { assert } from '@denlukia/plavna-common/types';
 import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { z } from 'zod';
+import type {
+	pageCreateFormSchema,
+	pageInsertSchema,
+	pageSelectSchema,
+	pageUpdateFormSchema
+} from '$lib/(features)/user_pages_list/parsers';
 
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
@@ -26,11 +32,7 @@ import type {
 	imageUpdateFileFields,
 	imageUpdateFormSchema,
 	imageUpdateSchema,
-	pageCreateFormSchema,
 	pageDeletionFormSchema,
-	pageInsertSchema,
-	pageSelectSchema,
-	pageUpdateFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema,

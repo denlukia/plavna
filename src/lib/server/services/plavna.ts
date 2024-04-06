@@ -19,13 +19,17 @@ import { marked } from 'marked';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import {
+	pageCreateFormSchema,
+	pageUpdateFormSchema
+} from '$lib/(features)/user_pages_list/parsers';
+import { pages } from '$lib/(features)/user_pages_list/schema';
 import { ERRORS } from '$lib/isomorphic/errors';
 import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
 import {
 	articles,
 	images,
-	pages,
 	previewTemplates,
 	screenshotsQueue,
 	sections,
@@ -42,9 +46,7 @@ import {
 	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFormSchema,
-	pageCreateFormSchema,
 	pageDeletionFormSchema,
-	pageUpdateFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
 	tagUpdateSchema,

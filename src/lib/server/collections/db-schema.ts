@@ -2,13 +2,14 @@ import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/queue';
 import { relations } from 'drizzle-orm';
 import {
-	type AnySQLiteColumn,
 	integer,
 	primaryKey,
 	sqliteTable,
 	text,
-	uniqueIndex
+	uniqueIndex,
+	type AnySQLiteColumn
 } from 'drizzle-orm/sqlite-core';
+import { pages } from '$lib/(features)/user_pages_list/schema';
 
 import { previewFamiliesIds } from './previews';
 
@@ -40,25 +41,7 @@ export const sessions = sqliteTable('auth_session', {
 	expiresAt: integer('expires_at').notNull()
 });
 
-export const pages = sqliteTable(
-	'pages',
-	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
-		user_id: text('user_id')
-			.notNull()
-			.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-		slug: text('slug').notNull()
-	},
-	(table) => {
-		return {
-			slugIndex: uniqueIndex('idx_pages_unique_user_slug').on(table.user_id, table.slug)
-		};
-	}
-);
-
-export const pagesRelations = relations(pages, ({ many }) => ({
-	sections: many(sections)
-}));
+export { pages, pagesRelations } from '$lib/(features)/user_pages_list/schema';
 
 export const sections = sqliteTable('sections', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

@@ -9,7 +9,7 @@
 	let { data } = $props();
 </script>
 
-<Typography size="heading-1"><Translation key="my_pages" /></Typography>
+<Typography size="heading-1"><Translation key="layout.my_pages" /></Typography>
 
 <div class="pages">
 	{#each data.pageItems as pageItem (pageItem.id)}
@@ -18,7 +18,7 @@
 	<div class="new-page-wrapper">
 		<Popup triggerType="button">
 			{#snippet label()}
-				<Translation key="create_new_page" />
+				<Translation key="user_pages.create_new_page" />
 			{/snippet}
 			{#snippet content()}
 				<PageEditor formObj={data.creationForm} />

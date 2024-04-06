@@ -1,15 +1,17 @@
 // routes/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
-
-import { serviceTranslations } from '$lib/server/i18n';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
 import { lucia } from '$lib/server/services/auth';
 
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
-	const { translations } = await parent();
+	const { systemTranslations } = await parent();
 	return {
-		translations: { ...translations, ...serviceTranslations.main(params.lang) }
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('main', params.lang)
+		}
 	};
 };
 
