@@ -28,6 +28,8 @@ export const actions = {
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.create(form.data);
+
+		return { form };
 	},
 	update: async ({ locals: { plavna }, request }) => {
 		const form = await superValidate(request, zod(pageUpdateFormSchema));
@@ -35,11 +37,15 @@ export const actions = {
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.update(form.data);
+
+		return { form };
 	},
 	delete: async ({ locals: { plavna }, request }) => {
 		const form = await superValidate(request, zod(pageUpdateFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await plavna.pages.delete(form.data.id);
+
+		return { form };
 	}
 };

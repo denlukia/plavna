@@ -86,10 +86,12 @@
 		</div>
 		<div class="group">
 			<Box>
-				<Typography size="heading-2">Тест</Typography>
-				<Input placeholder="Тест" />
-				<Spacer size="m" />
-				<Button>Let's Go!</Button>
+				<form>
+					<Typography size="heading-2">Тест</Typography>
+					<Input placeholder="Тест" />
+					<Spacer size="m" />
+					<Button>Let's Go!</Button>
+				</form>
 			</Box>
 		</div>
 	</div>

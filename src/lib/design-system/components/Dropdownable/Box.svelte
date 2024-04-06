@@ -9,12 +9,11 @@
 
 	type Props = {
 		children: Snippet;
-		withGaps?: boolean;
 	};
 
 	const animationDuration = 300;
 
-	let { children, withGaps = false }: Props = $props();
+	let { children }: Props = $props();
 </script>
 
 <div
@@ -29,7 +28,6 @@
 	</div>
 	<div
 		class="box"
-		class:with-gaps={withGaps}
 		transition:rotateAndScale={{
 			duration: animationDuration,
 			easing: cubicOut,
@@ -74,8 +72,5 @@
 		width: 100%;
 		height: 100%;
 		display: block;
-	}
-	.with-gaps {
-		gap: var(--size-box-gap);
 	}
 </style>

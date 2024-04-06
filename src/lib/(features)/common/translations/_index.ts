@@ -29,7 +29,7 @@ export function getSystemTranslationsSlice(
 		const slice = getSlice(keyset, LANGUAGE);
 		return { ...acc, [head]: slice };
 	}, {});
-	console.log(result);
+
 	return result;
 }
 
