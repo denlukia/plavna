@@ -1,6 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-
-import { serviceTranslations } from '$lib/server/i18n';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
 
 import type { PageServerLoad } from './$types';
 
@@ -9,8 +8,11 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 		redirect(302, `./`);
 	}
 
-	const { translations } = await parent();
+	const { systemTranslations } = await parent();
 	return {
-		translations: { ...translations, ...serviceTranslations.login(params.lang) }
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('login', params.lang)
+		}
 	};
 };

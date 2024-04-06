@@ -47,7 +47,7 @@
 			{#if slug}
 				{slug}
 			{:else}
-				<Translation key="main_page" />
+				<Translation key="user_pages.main_page" />
 			{/if}
 		</Typography>
 		<div class="link-wrapper">
@@ -60,7 +60,7 @@
 	<div class="actions">
 		<Popup triggerType="button">
 			{#snippet label()}
-				<Translation key="edit_page" />
+				<Translation key="user_pages.edit_page" />
 			{/snippet}
 			{#snippet content()}
 				<PageEditor formObj={editingForm} />
@@ -68,7 +68,7 @@
 		</Popup>
 		<form class="deletion-form" method="POST" action="?/delete" use:enhance>
 			<input type="hidden" name="id" value={$form.id} />
-			<Button type="destructive"><Translation key="delete_page" /></Button>
+			<Button type="destructive"><Translation key="user_pages.delete_page" /></Button>
 		</form>
 	</div>
 </div>

@@ -1,15 +1,14 @@
 <script lang="ts">
-	import Translation from './Translation.svelte';
-
-	import type { ArticleSelect, PreviewTemplateSelect } from '$lib/server/collections/types';
 	import { page } from '$app/stores';
 	import { PREVIEW_FAMILY_PARAM } from '$lib/isomorphic/constants';
+	import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
+	import type { PreviewFamilyId } from '$lib/server/collections/previews';
+	import type { ArticleSelect, PreviewTemplateSelect } from '$lib/server/collections/types';
 
 	import type { PageData } from '../../routes/[[lang=lang]]/[username]/[slug]/edit/$types';
-	import type { PreviewFamilyId } from '$lib/server/collections/previews';
 	import PreviewTemplateCreator from './editors/PreviewTemplateCreator.svelte';
 	import PreviewTemplateEditor from './editors/PreviewTemplateEditor.svelte';
-	import { getPreviewComponent } from '$lib/isomorphic/preview-loader';
+	import Translation from './Translation.svelte';
 
 	export let data: PageData;
 

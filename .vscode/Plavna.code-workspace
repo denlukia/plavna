@@ -8,6 +8,6 @@
 		}
 	],
 	"settings": {
-		"typescript.tsdk": "Denis 2023 (2)/node_modules/typescript/lib"
+		"typescript.tsdk": "plavna-app/node_modules/typescript/lib"
 	}
 }

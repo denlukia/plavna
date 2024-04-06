@@ -1,18 +1,24 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { pageCreateFormSchema, pageUpdateFormSchema } from '$lib/server/collections/parsers';
-import { serviceTranslations } from '$lib/server/i18n';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
+import {
+	pageCreateFormSchema,
+	pageUpdateFormSchema
+} from '$lib/(features)/user_pages_list/parsers';
 
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { plavna }, params, parent }) => {
 	const forms = await plavna.pages.getMyAsForms(params.username);
-	const { translations } = await parent();
+	const { systemTranslations } = await parent();
 
 	return {
 		...forms,
-		translations: { ...translations, ...serviceTranslations.userPages(params.lang) }
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('user_pages', params.lang)
+		}
 	};
 };
 

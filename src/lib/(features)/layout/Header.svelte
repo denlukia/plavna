@@ -19,7 +19,7 @@
 		{
 			routeId: '/[lang=lang]/(with-header)/[username]/pages',
 			href: `/${$page.params.lang}/${$page.params.username}/pages`,
-			translation: 'my_pages'
+			translation: 'layout.my_pages'
 		} as const
 	]);
 

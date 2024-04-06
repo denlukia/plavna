@@ -1,9 +1,9 @@
-import { serviceTranslations } from '$lib/server/i18n';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index.js';
 
 export const load = async ({ params, locals }) => {
 	const { user } = locals;
 	return {
 		user,
-		translations: serviceTranslations.layout(params.lang)
+		systemTranslations: getSystemTranslationsSlice('layout', params.lang)
 	};
 };

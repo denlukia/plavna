@@ -8,7 +8,7 @@ type PageViewerServerLoad = DefaultPageServerLoad | NamedPageServerLoad;
 
 export const pageServerLoad = (async ({
 	params,
-	parent,
+
 	locals: { plavna }
 }: PageViewerServerLoadEvent) => {
 	const { username } = params;
@@ -19,6 +19,5 @@ export const pageServerLoad = (async ({
 	}
 	const result = await plavna.pages.getOneWithSectionsAndArticles(username, pagename);
 
-	const { translations } = await parent();
-	return { ...result, translations: { ...translations, ...result.translations } };
+	return { ...result, recordsTranslations: result.translations };
 }) satisfies PageViewerServerLoad;

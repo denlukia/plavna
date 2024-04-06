@@ -27,10 +27,10 @@
 		'[slug]': article.slug
 	})}
 >
-	<Translation key={article.title_translation_key} />
+	<Translation recordKey={article.title_translation_key} />
 	{#each tags as tag (tag.id)}
 		<p>
-			<Translation key={tag.name_translation_key} />
+			<Translation recordKey={tag.name_translation_key} />
 		</p>
 	{/each}
 </a>

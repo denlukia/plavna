@@ -7,9 +7,9 @@
 	export let data;
 </script>
 
-<Typography size="heading-1"><Translation key="landing" /></Typography>
+<Typography size="heading-1"><Translation key="main.landing" /></Typography>
 {#if data.user}
 	<form use:enhance method="POST">
-		<Button><Translation key="to_sign_out" /></Button>
+		<Button><Translation key="main.to_sign_out" /></Button>
 	</form>
 {/if}
