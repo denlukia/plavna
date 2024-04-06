@@ -16,9 +16,9 @@
 
 	let { formObj }: Props = $props();
 
-	const { form, errors, enhance } = superForm(formObj);
-
-	$inspect($errors);
+	const { form, errors, enhance } = superForm(formObj, {
+		resetForm: false
+	});
 
 	const placeholder = getSystemTranslation('user_pages.main_page', $page.data.systemTranslations);
 </script>

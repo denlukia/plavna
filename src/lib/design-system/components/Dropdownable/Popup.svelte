@@ -37,7 +37,7 @@
 
 	{#if opened}
 		<div class="popup-positioner">
-			<Box withGaps>
+			<Box>
 				{@render content()}
 			</Box>
 		</div>
