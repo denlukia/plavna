@@ -11,10 +11,9 @@
 		label: Snippet;
 		content: Snippet;
 		opened?: boolean;
-		closeOnClickInside?: boolean;
 	};
 
-	let { triggerType = 'dropdown', opened, label, content }: Props = $props();
+	let { triggerType = 'dropdown', opened = $bindable(), label, content }: Props = $props();
 
 	function onclick() {
 		opened = !opened;

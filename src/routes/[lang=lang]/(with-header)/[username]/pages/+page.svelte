@@ -7,6 +7,12 @@
 	import Typography from '$lib/design-system/components/Typography.svelte';
 
 	let { data } = $props();
+
+	let opened = $state(false);
+
+	function onSuccessfullUpdate() {
+		opened = false;
+	}
 </script>
 
 <Typography size="heading-1"><Translation key="layout.my_pages" /></Typography>
@@ -16,12 +22,12 @@
 		<PageItem {pageItem} />
 	{/each}
 	<div class="new-page-wrapper">
-		<Popup triggerType="button">
+		<Popup triggerType="button" bind:opened>
 			{#snippet label()}
 				<Translation key="user_pages.create_new_page" />
 			{/snippet}
 			{#snippet content()}
-				<PageEditor formObj={data.creationForm} />
+				<PageEditor formObj={data.creationForm} {onSuccessfullUpdate} />
 			{/snippet}
 		</Popup>
 	</div>

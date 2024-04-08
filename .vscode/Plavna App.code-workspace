@@ -1,10 +1,12 @@
 {
 	"folders": [
 		{
-			"path": ".."
+			"name": "src",
+			"path": "../src"
 		},
 		{
-			"path": "../src"
+			"name": "plavna-app",
+			"path": ".."
 		}
 	],
 	"settings": {

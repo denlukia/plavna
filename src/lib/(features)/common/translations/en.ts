@@ -21,26 +21,22 @@ export const EN = {
 		to_sign_out: 'Sign out'
 	},
 	user_pages: {
+		create: 'Create',
+		update: 'Update',
+		slug: 'Slug',
 		username: 'Username',
 		user_id: 'User ID',
 		main_page: 'Main',
-		couldnt_create_page: "Could not create a page and I don't know why",
-		invalid_slug: 'Invalid slug',
-		slug_in_use: 'Slug in use',
-		only_one_default_slug: 'Only one default slug is allowed',
 		delete_page: 'Delete',
-		couldnt_delete_page: "Could not delete a page and I don't know why",
 		edit_page: 'Edit',
-		couldnt_edit_page: "Could not edit a page slug and I don't know why",
-		create_new_page: 'Create new page',
-		couldnt_save_article: "Could not save a article and I don't know why",
+		create_new_page: 'Create',
 		preview_custom: 'Custom Preview',
 
 		errors: {
-			only_one_default: 'Only one default page can exist',
-			page_slug_exists: 'Page with this slug already exists',
 			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
-			max_length: 'Max length is 15 symbols'
+			max_length: 'Max length is 15 symbols',
+			slug_in_use: 'You already have a page with this slug',
+			only_one_default_slug: 'Only one default page can exist'
 		}
 	},
 	article_editor: {

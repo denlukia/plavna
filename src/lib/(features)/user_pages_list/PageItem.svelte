@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { fly, slide } from 'svelte/transition';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import PageEditor from '$lib/(features)/user_pages_list/PageEditor.svelte';
 	import Link from '$lib/components/Link.svelte';
@@ -8,12 +9,7 @@
 	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
 	import { defaultLang } from '$lib/isomorphic/languages';
-	import type {
-		PageCreateForm,
-		PageDeletionForm,
-		PageSelect,
-		PageUpdateForm
-	} from '$lib/server/collections/types';
+	import type { PageDeletionForm, PageSelect, PageUpdateForm } from '$lib/server/collections/types';
 
 	import { HOST } from '../common/constants';
 	import { generatePath } from '../common/links';
@@ -30,7 +26,7 @@
 
 	let { slug, editingForm, deletionForm } = $derived(pageItem);
 
-	const { form, enhance } = superForm(deletionForm);
+	let { form, enhance } = superForm(deletionForm);
 
 	let link = $derived(
 		generatePath(`/[lang]/[username]/[slug]`, {
@@ -39,13 +35,25 @@
 			'[slug]': slug
 		})
 	);
+
+	let opened = $state(false);
+
+	function onSuccessfullUpdate() {
+		opened = false;
+	}
+
+	function slugToTitle(str: string) {
+		const [first, ...rest] = str.split('');
+		const joined = [first.toUpperCase(), ...rest].join('');
+		return joined.replaceAll('-', ' ');
+	}
 </script>
 
 <div class="page-item">
 	<div class="info">
 		<Typography size="headline-short">
 			{#if slug}
-				{slug}
+				{slugToTitle(slug)}
 			{:else}
 				<Translation key="user_pages.main_page" />
 			{/if}
@@ -58,12 +66,12 @@
 	</div>
 
 	<div class="actions">
-		<Popup triggerType="button">
+		<Popup triggerType="button" bind:opened>
 			{#snippet label()}
 				<Translation key="user_pages.edit_page" />
 			{/snippet}
 			{#snippet content()}
-				<PageEditor formObj={editingForm} />
+				<PageEditor formObj={editingForm} {onSuccessfullUpdate} />
 			{/snippet}
 		</Popup>
 		<form class="deletion-form" method="POST" action="?/delete" use:enhance>
