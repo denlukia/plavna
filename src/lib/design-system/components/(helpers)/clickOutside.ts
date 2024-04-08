@@ -1,5 +1,5 @@
 export function clickoutside(node: HTMLElement, callback: () => void) {
-	window.addEventListener('click', handleClick);
+	window.addEventListener('pointerdown', handleClick);
 
 	function handleClick(e: MouseEvent) {
 		const target = e.target;
@@ -11,7 +11,7 @@ export function clickoutside(node: HTMLElement, callback: () => void) {
 
 	return {
 		destroy() {
-			window.removeEventListener('click', handleClick);
+			window.removeEventListener('pointerdown', handleClick);
 		}
 	};
 }

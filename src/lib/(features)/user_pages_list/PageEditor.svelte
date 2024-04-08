@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { superForm, type SuperForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import Error from '$lib/(features)/common/components/Error.svelte';
 	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
+	import Labeled from '$lib/design-system/components/Labeled.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
 	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
 
@@ -12,15 +14,19 @@
 
 	type Props = {
 		formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;
+		onSuccessfullUpdate?: () => void;
 	};
 
-	let { formObj }: Props = $props();
+	let { formObj, onSuccessfullUpdate }: Props = $props();
 
 	const { form, errors, enhance } = superForm(formObj, {
-		resetForm: false
+		resetForm: false,
+		onUpdate: (e) => {
+			if (e.result.type === 'success') {
+				onSuccessfullUpdate?.();
+			}
+		}
 	});
-
-	const placeholder = getSystemTranslation('user_pages.main_page', $page.data.systemTranslations);
 </script>
 
 <form class="page-editor" use:enhance method="POST">
@@ -28,25 +34,29 @@
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
 
-	<Input type="text" name="slug" {placeholder} bind:value={$form.slug} />
+	<Labeled>
+		<Typography size="small-short"><Translation key="user_pages.slug" /></Typography>
+		<Input type="text" name="slug" bind:value={$form.slug} />
+		<Error errors={$errors.slug} />
+	</Labeled>
 
 	{#if $form.id}
-		<Button formaction="?/update">Update</Button>
+		<Button formaction="?/update">
+			<Translation key="user_pages.update" />
+		</Button>
 	{:else}
-		<Button formaction="?/create">Create</Button>
+		<Button formaction="?/create">
+			<Translation key="user_pages.create" />
+		</Button>
 	{/if}
-
-	<div>
-		{#if $errors.slug}
-			{#each $errors.slug as error}
-				<Typography><Translation key={error as SystemTranslationKey} /></Typography>
-			{/each}
-		{/if}
-	</div>
 </form>
 
 <style>
 	.page-editor {
-		/* display: flex; */
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-m);
+	}
+	.errors {
 	}
 </style>

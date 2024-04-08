@@ -8,8 +8,7 @@ export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
 
 // Form Schemas
-export const pageCreateFormSchema = pageInsertSchema.omit({ user_id: true });
-export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true }).extend({
+export const pageCreateFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
 	slug: pageSelectSchema.shape.slug //
 		.max(15, {
 			message: checkTranslationKey('user_pages.errors.max_length')
@@ -18,3 +17,4 @@ export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true }).
 			message: checkTranslationKey('user_pages.errors.disallowed_chars')
 		})
 });
+export const pageUpdateFormSchema = pageCreateFormSchema.required({ id: true });

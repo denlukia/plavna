@@ -127,6 +127,11 @@
 	background: none;
 }
 
+.global-reset-list {
+	list-style: none;
+	padding: 0;
+}
+
 .global-dropdown-paddings {
 	padding-top: var(--size-dropdown-padding-top);
 	padding-bottom: var(--size-dropdown-padding-bottom);

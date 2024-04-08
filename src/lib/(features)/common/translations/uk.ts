@@ -25,26 +25,22 @@ export const UK = {
 		to_sign_out: 'Вийти'
 	},
 	user_pages: {
+		create: 'Створити',
+		update: 'Оновити',
+		slug: 'Адреса',
 		username: "Ім'я користувача",
 		user_id: 'ID Користувача',
 		main_page: 'Основна',
-		couldnt_create_page: 'Не вдалося створти сторінку і я не знаю чому',
-		invalid_slug: 'Не підходяща адреса сторінки',
-		slug_in_use: 'Така адреса сторінки у вас вже є',
-		only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням',
 		delete_page: 'Видалити',
-		couldnt_delete_page: 'Не вдалося видалити сторінку і я не знаю чому',
 		edit_page: 'Змінити',
-		couldnt_edit_page: 'Не вдалося змінити адресу сторінки і я не знаю чому',
-		create_new_page: 'Створити сторінку',
-		couldnt_save_article: 'Не вдалося зберігти пост і я не знаю чому',
+		create_new_page: 'Створити нову',
 		preview_custom: 'Кастомне превью',
 
 		errors: {
-			only_one_default: 'Ви вже маєте одну сторінку без імені',
-			page_slug_exists: 'Ми вже маєте сторінку з таким іменем',
 			disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
-			max_length: 'Не довше 15 символів'
+			max_length: 'Не довше 15 символів',
+			slug_in_use: 'Така адреса сторінки у вас вже є',
+			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
 		}
 	},
 	article_editor: {

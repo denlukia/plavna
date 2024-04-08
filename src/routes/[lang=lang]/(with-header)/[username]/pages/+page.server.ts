@@ -1,7 +1,10 @@
 import { fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms';
+import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
+import {
+	checkTranslationKey,
+	getSystemTranslationsSlice
+} from '$lib/(features)/common/translations/_index';
 import {
 	pageCreateFormSchema,
 	pageUpdateFormSchema
@@ -27,7 +30,18 @@ export const actions = {
 		const form = await superValidate(request, zod(pageCreateFormSchema));
 		if (!form.valid) return fail(400, { form });
 
-		await plavna.pages.create(form.data);
+		try {
+			await plavna.pages.create(form.data);
+		} catch {
+			const slug = form.data.slug;
+			setError(
+				form,
+				'slug',
+				checkTranslationKey(
+					slug ? 'user_pages.errors.slug_in_use' : 'user_pages.errors.only_one_default_slug'
+				)
+			);
+		}
 
 		return { form };
 	},
