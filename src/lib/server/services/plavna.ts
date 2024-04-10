@@ -19,11 +19,8 @@ import { marked } from 'marked';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import {
-	pageCreateFormSchema,
-	pageUpdateFormSchema
-} from '$lib/(features)/user_pages_list/parsers';
-import { pages } from '$lib/(features)/user_pages_list/schema';
+import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/(features)/pages-list/parsers';
+import { pages } from '$lib/(features)/pages-list/schemas';
 import { ERRORS } from '$lib/isomorphic/errors';
 import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
 import { findTagIdsInLinks } from '$lib/isomorphic/utils';
@@ -189,7 +186,7 @@ class Plavna {
 					return {
 						id: page.id,
 						slug: page.slug,
-						editingForm: await superValidate(page, zod(pageUpdateFormSchema), {
+						editingForm: await superValidate(page, zod(pageUpdatingFormSchema), {
 							id: 'page-edit-' + page.id
 						}),
 						deletionForm: await superValidate(page, zod(pageDeletionFormSchema), {
@@ -198,45 +195,45 @@ class Plavna {
 					};
 				})
 			);
-			const creationForm = await superValidate(null, zod(pageCreateFormSchema), {
+			const creationForm = await superValidate(null, zod(pageCreationFormSchema), {
 				id: 'page-create'
 			});
 			return { pageItems, creationForm };
 		},
+		// TODO Currently I see no way of DRYing with keeping good types
 		getOneWithSectionsAndArticles: async (
 			username: string,
-			pagename: string
+			pageslug: string
 			// excludedTags?: ExcludedTags
 		) => {
 			const user = await this.user.get();
+
+			// 0. Utilitary queries
+			const userIdSq = db.select({ id: users.id }).from(users).where(eq(users.username, username));
+			const pageIdSq = await db
+				.select()
+				.from(pages)
+				.where(and(eq(pages.slug, pageslug), eq(pages.user_id, userIdSq)))
+				.get();
+
+			if (!pageIdSq) {
+				return error(404);
+			}
+
 			const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
-				// TODO Currently I see no way of DRYing with keeping good types
-
 				// 1. Sections query
-				const userIdSq = db
-					.select({ id: users.id })
-					.from(users)
-					.where(eq(users.username, username));
-				const pageIdSq = db
-					.select()
-					.from(pages)
-					.where(and(eq(pages.slug, pagename), eq(pages.user_id, userIdSq)))
-					.as('page_sq');
-
 				const sectionQueryForArticles = db
 					.select({ id: sections.id })
-					.from(pageIdSq)
-					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
+					.from(sections)
 					.innerJoin(translations, eq(translations.key, sections.title_translation_key))
-					.where(isNotNull(translations[this.lang]))
+					.where(and(eq(sections.page_id, pageIdSq.id), isNotNull(translations[this.lang])))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
 				const sectionQueryForTranslatins = db
 					.select({ id: sections.title_translation_key })
-					.from(pageIdSq)
-					.innerJoin(sections, eq(sections.page_id, pageIdSq.id))
+					.from(sections)
 					.innerJoin(translations, eq(translations.key, sections.title_translation_key))
-					.where(isNotNull(translations[this.lang]))
+					.where(and(eq(sections.page_id, pageIdSq.id), isNotNull(translations[this.lang])))
 					.limit(SECTIONS_PER_LOAD)
 					.offset(index);
 				const sectionQueryAliased = sectionQueryForArticles.as('section_sq');
@@ -409,22 +406,24 @@ class Plavna {
 					};
 				}, {}),
 				translationForms: {
-					...(sectionsNonEmpty.reduce((acc, [, , , , sectionsTranslationsInfo]) => {
+					...(sectionsNonEmpty.reduce(async (acc, [, , , , sectionsTranslationsInfo]) => {
 						return {
 							...acc,
 							...Object.fromEntries(
-								sectionsTranslationsInfo.map(async (t) => {
-									if (user?.username === username) {
-										return [
-											t.translations.key,
-											superValidate(t.translations, zod(translationUpdateSchema), {
-												id: 'section-translation-' + t.translations.key
-											})
-										];
-									} else {
-										return [t.translations.key, t.translations[this.lang]];
-									}
-								})
+								await Promise.all(
+									sectionsTranslationsInfo.map(async (t) => {
+										if (user?.username === username) {
+											return [
+												t.translations.key,
+												superValidate(t.translations, zod(translationUpdateSchema), {
+													id: 'section-translation-' + t.translations.key
+												})
+											];
+										} else {
+											return [t.translations.key, t.translations[this.lang]];
+										}
+									})
+								)
 							)
 						};
 					}, {}) as Record<string, SuperValidated<TranslationUpdate>>)

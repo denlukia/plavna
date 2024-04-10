@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { fly, slide } from 'svelte/transition';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import PageEditor from '$lib/(features)/user_pages_list/PageEditor.svelte';
+	import PageEditor from '$lib/(features)/pages-list/PageEditor.svelte';
 	import Link from '$lib/components/Link.svelte';
 	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';

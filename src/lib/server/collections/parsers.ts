@@ -2,7 +2,7 @@ import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { pageSelectSchema } from '$lib/(features)/user_pages_list/parsers';
+import { pageSelectSchema } from '$lib/(features)/pages-list/parsers';
 
 import { ERRORS } from '../../isomorphic/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../helpers/objects';

@@ -1,7 +1,9 @@
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
-import { fail, redirect, type RequestEvent } from '@sveltejs/kit';
-import { setError, superValidate } from 'sveltekit-superforms';
+import { redirect } from '@sveltejs/kit';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { generatePath } from '$lib/(features)/common/links';
+import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
 import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
 import { ERRORS } from '$lib/isomorphic/errors';
 import { update_translation } from '$lib/server/actions';
@@ -27,57 +29,56 @@ import type {
 	ArticlePreviewImageHandlers
 } from '$lib/server/collections/types';
 
-import type { RouteParams as RouteParams1 } from './[slug]/edit/$types';
-import type { RouteParams as RouteParams2 } from './page-[pagename]/[slug]/edit/$types';
+import type { RequestEvent } from './$types';
 
-async function switch_tag(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, tagUpdateSchema);
+async function switch_tag(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(tagUpdateSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { slug } = event.params;
+	const { articleslug } = event.params;
 	const { plavna } = event.locals;
-	await plavna.tags.switchChecked(form.data, slug);
+	await plavna.tags.switchChecked(form.data, articleslug);
 }
 
-async function create_tag(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, translationInsertSchema);
+async function create_tag(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(translationInsertSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.tags.create(form.data);
 }
 
-async function delete_tag(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, tagDeleteSchema);
+async function delete_tag(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(tagDeleteSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.tags.delete(form.data);
 }
 
-async function update_slug(event: ActionRequestEvt) {
-	const { slug } = event.params;
-	const form = await superValidate(event.request, articleSlugUpdateSchema);
+async function update_slug(event: RequestEvent) {
+	const { articleslug } = event.params;
+	const form = await superValidate(event.request, zod(articleSlugUpdateSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
-	const result = await plavna.articles.updateSlug(slug, form.data);
+	const result = await plavna.articles.updateSlug(articleslug, form.data);
 
 	const replacementsObject: Record<string, string | undefined> = {
 		'[[lang=lang]]': event.params.lang,
 		'[username]': event.params.username,
-		'[slug]': result.slug
+		'[articleslug]': result.slug
 	};
-	if ('pagename' in event.params) {
-		replacementsObject['[pagename]'] = event.params.pagename;
+	if ('pageslug' in event.params) {
+		replacementsObject['[pageslug]'] = event.params.pageslug;
 	}
 	redirect(302, generatePath(event.route.id, replacementsObject));
 }
 
-async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 'delete') {
-	const { slug } = event.params;
+async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'delete') {
+	const { articleslug } = event.params;
 	const { plavna } = event.locals;
-	await plavna.articles[type](slug);
+	await plavna.articles[type](articleslug);
 
 	if (type === 'delete') {
 		let destinationRouteId = '/[[lang=lang]]/[username]';
@@ -85,19 +86,19 @@ async function edit_article(event: ActionRequestEvt, type: 'publish' | 'hide' | 
 			'[[lang=lang]]': event.params.lang,
 			'[username]': event.params.username
 		};
-		if ('pagename' in event.params) {
-			destinationRouteId = '/[[lang=lang]]/[username]/page-[pagename]';
-			replacementsObject['[pagename]'] = event.params.pagename;
+		if ('pageslug' in event.params) {
+			destinationRouteId = '/[[lang=lang]]/[username]/page-[pageslug]';
+			replacementsObject['[pageslug]'] = event.params.pageslug;
 		}
 		redirect(302, generatePath(destinationRouteId, replacementsObject));
 	}
 }
 
-async function update_preview(event: ActionRequestEvt) {
-	const { slug } = event.params;
+async function update_preview(event: RequestEvent) {
+	const { articleslug } = event.params;
 	const { plavna } = event.locals;
 	const formData = await event.request.formData();
-	const form = await superValidate(formData, articlePreviewUpdateSchema);
+	const form = await superValidate(formData, zod(articlePreviewUpdateSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
@@ -116,13 +117,13 @@ async function update_preview(event: ActionRequestEvt) {
 		}
 	}
 
-	await plavna.articles.updatePreview(slug, form.data, imagesHandlers, keysForDeletion);
+	await plavna.articles.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
 }
 
-async function create_preview_template(event: ActionRequestEvt) {
+async function create_preview_template(event: RequestEvent) {
 	const { plavna } = event.locals;
 	const formData = await event.request.formData();
-	const form = await superValidate(formData, previewTemplateCreationFormSchema);
+	const form = await superValidate(formData, zod(previewTemplateCreationFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const imageHandler = new ServerImageHandler(formData.get('image'));
@@ -134,10 +135,10 @@ async function create_preview_template(event: ActionRequestEvt) {
 	await plavna.previewTemplates.create(form.data, imageHandler);
 }
 
-async function update_preview_template(event: ActionRequestEvt) {
+async function update_preview_template(event: RequestEvent) {
 	const { plavna } = event.locals;
 	const formData = await event.request.formData();
-	const form = await superValidate(formData, previewTemplateEditingFormSchema);
+	const form = await superValidate(formData, zod(previewTemplateEditingFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const imageHandler = new ServerImageHandler(formData.get('image'));
@@ -148,16 +149,16 @@ async function update_preview_template(event: ActionRequestEvt) {
 
 	await plavna.previewTemplates.update(form.data, imageHandler);
 }
-async function delete_preview_template(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, previewTemplateDeletionFormSchema);
+async function delete_preview_template(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(previewTemplateDeletionFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.previewTemplates.delete(form.data);
 }
 
-async function update_image_provider(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, imageProviderUpdateFormSchema);
+async function update_image_provider(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(imageProviderUpdateFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
@@ -167,7 +168,7 @@ async function update_image_provider(event: ActionRequestEvt) {
 		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
 	}
 }
-async function delete_image_provider(event: ActionRequestEvt) {
+async function delete_image_provider(event: RequestEvent) {
 	const { plavna } = event.locals;
 
 	await plavna.user.updateImageProvider({
@@ -177,8 +178,8 @@ async function delete_image_provider(event: ActionRequestEvt) {
 	});
 }
 
-async function create_image(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, imageCreationFormSchema);
+async function create_image(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(imageCreationFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
@@ -189,9 +190,9 @@ async function create_image(event: ActionRequestEvt) {
 	});
 }
 
-async function update_image(event: ActionRequestEvt) {
+async function update_image(event: RequestEvent) {
 	const formData = await event.request.formData();
-	const form = await superValidate(formData, imageUpdateFormSchema);
+	const form = await superValidate(formData, zod(imageUpdateFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
@@ -199,17 +200,13 @@ async function update_image(event: ActionRequestEvt) {
 	await updateImages({ imagesKeys, plavna, rawData: formData, data: form.data });
 }
 
-async function delete_image(event: ActionRequestEvt) {
-	const form = await superValidate(event.request, imageDeletionFormSchema);
+async function delete_image(event: RequestEvent) {
+	const form = await superValidate(event.request, zod(imageDeletionFormSchema));
 	if (!form.valid) return fail(400, { form });
 
 	const { plavna } = event.locals;
 	await plavna.images.delete(form.data.id);
 }
-
-type ActionRequestEvt =
-	| RequestEvent<RouteParams1, '/[[lang=lang]]/[username]/[slug]/edit'>
-	| RequestEvent<RouteParams2, '/[[lang=lang]]/[username]/page-[pagename]/[slug]/edit'>;
 
 export const actions = {
 	update_translation,
@@ -217,9 +214,9 @@ export const actions = {
 	create_tag,
 	delete_tag,
 	update_slug,
-	publish: (event: ActionRequestEvt) => edit_article(event, 'publish'),
-	hide: (event: ActionRequestEvt) => edit_article(event, 'hide'),
-	delete: (event: ActionRequestEvt) => edit_article(event, 'delete'),
+	publish: (event) => edit_article(event, 'publish'),
+	hide: (event: RequestEvent) => edit_article(event, 'hide'),
+	delete: (event: RequestEvent) => edit_article(event, 'delete'),
 	update_preview,
 	create_preview_template,
 	update_preview_template,
@@ -229,4 +226,21 @@ export const actions = {
 	create_image,
 	update_image,
 	delete_image
+};
+
+export const load = async ({ params, parent, locals: { plavna } }) => {
+	const { translations: newTranslations, ...other } = await plavna.articles.loadEditor(
+		params.username,
+		params.articleslug
+	);
+	const { systemTranslations } = await parent();
+
+	return {
+		...other,
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('article_editor', params.lang)
+		},
+		recordsTranslations: newTranslations
+	};
 };
