@@ -26,7 +26,7 @@ export const EN = {
 		slug: 'Slug',
 		username: 'Username',
 		user_id: 'User ID',
-		main_page: 'Main',
+		main_page: 'Default',
 		delete_page: 'Delete',
 		edit_page: 'Edit',
 		create_new_page: 'Create',

@@ -5,11 +5,11 @@ import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { z } from 'zod';
 import type {
-	pageCreateFormSchema,
+	pageCreationFormSchema,
 	pageInsertSchema,
 	pageSelectSchema,
-	pageUpdateFormSchema
-} from '$lib/(features)/user_pages_list/parsers';
+	pageUpdatingFormSchema
+} from '$lib/(features)/pages-list/parsers';
 
 import type { PartialNonNull } from '../helpers/types';
 import type { auth } from '../services/auth';
@@ -72,10 +72,10 @@ export type ImageProdiverUpdate = z.infer<typeof imageProviderUpdateFormSchema>;
 // Pages
 export type PageSelect = z.infer<typeof pageSelectSchema>;
 export type PageInsert = z.infer<typeof pageInsertSchema>;
-export type PageCreateForm = z.infer<typeof pageCreateFormSchema>;
-export type PageCreateFormZod = typeof pageCreateFormSchema;
-export type PageUpdateForm = z.infer<typeof pageUpdateFormSchema>;
-export type PageUpdateFormZod = typeof pageUpdateFormSchema;
+export type PageCreateForm = z.infer<typeof pageCreationFormSchema>;
+export type PageCreateFormZod = typeof pageCreationFormSchema;
+export type PageUpdateForm = z.infer<typeof pageUpdatingFormSchema>;
+export type PageUpdateFormZod = typeof pageUpdatingFormSchema;
 export type PageDeletionForm = z.infer<typeof pageDeletionFormSchema>;
 export type PageDeletionFormZod = typeof pageDeletionFormSchema;
 

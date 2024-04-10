@@ -9,9 +9,6 @@
 	import Typography from '$lib/design-system/components/Typography.svelte';
 	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
 
-	import { getSystemTranslation } from '../common/translations/_index';
-	import { type SystemTranslationKey } from '../common/translations/_types';
-
 	type Props = {
 		formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;
 		onSuccessfullUpdate?: () => void;
@@ -36,7 +33,7 @@
 
 	<Labeled>
 		<Typography size="small-short"><Translation key="user_pages.slug" /></Typography>
-		<Input type="text" name="slug" bind:value={$form.slug} />
+		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
 	</Labeled>
 
@@ -56,7 +53,5 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-m);
-	}
-	.errors {
 	}
 </style>

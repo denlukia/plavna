@@ -9,7 +9,7 @@ import {
 	uniqueIndex,
 	type AnySQLiteColumn
 } from 'drizzle-orm/sqlite-core';
-import { pages } from '$lib/(features)/user_pages_list/schema';
+import { pages } from '$lib/(features)/pages-list/schemas';
 
 import { previewFamiliesIds } from './previews';
 
@@ -41,7 +41,7 @@ export const sessions = sqliteTable('auth_session', {
 	expiresAt: integer('expires_at').notNull()
 });
 
-export { pages, pagesRelations } from '$lib/(features)/user_pages_list/schema';
+export { pages, pagesRelations } from '$lib/(features)/pages-list/schemas';
 
 export const sections = sqliteTable('sections', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

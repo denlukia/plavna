@@ -1,18 +1,17 @@
 import { fail } from '@sveltejs/kit';
-import { setError, superValidate } from 'sveltekit-superforms';
+import { setError, superValidate, type SuperValidated } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import {
 	checkTranslationKey,
 	getSystemTranslationsSlice
 } from '$lib/(features)/common/translations/_index';
 import {
-	pageCreateFormSchema,
-	pageUpdateFormSchema
-} from '$lib/(features)/user_pages_list/parsers';
+	pageCreationFormSchema,
+	pageUpdatingFormSchema,
+	type PageCreationForm
+} from '$lib/(features)/pages-list/parsers';
 
-import type { PageServerLoad } from './$types';
-
-export const load: PageServerLoad = async ({ locals: { plavna }, params, parent }) => {
+export const load = async ({ locals: { plavna }, params, parent }) => {
 	const forms = await plavna.pages.getMyAsForms(params.username);
 	const { systemTranslations } = await parent();
 
@@ -25,40 +24,54 @@ export const load: PageServerLoad = async ({ locals: { plavna }, params, parent 
 	};
 };
 
+function failWithSlugError(form: SuperValidated<PageCreationForm>) {
+	const { slug } = form.data;
+
+	setError(
+		form,
+		'slug',
+		checkTranslationKey(
+			slug ? 'user_pages.errors.slug_in_use' : 'user_pages.errors.only_one_default_slug'
+		)
+	);
+	return fail(400, { form });
+}
+
 export const actions = {
 	create: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, zod(pageCreateFormSchema));
+		const form = await superValidate(request, zod(pageCreationFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		try {
 			await plavna.pages.create(form.data);
 		} catch {
-			const slug = form.data.slug;
-			setError(
-				form,
-				'slug',
-				checkTranslationKey(
-					slug ? 'user_pages.errors.slug_in_use' : 'user_pages.errors.only_one_default_slug'
-				)
-			);
+			return failWithSlugError(form);
 		}
 
 		return { form };
 	},
 	update: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, zod(pageUpdateFormSchema));
-		console.log(form);
+		const form = await superValidate(request, zod(pageUpdatingFormSchema));
+
 		if (!form.valid) return fail(400, { form });
 
-		await plavna.pages.update(form.data);
+		try {
+			await plavna.pages.update(form.data);
+		} catch {
+			return failWithSlugError(form);
+		}
 
 		return { form };
 	},
 	delete: async ({ locals: { plavna }, request }) => {
-		const form = await superValidate(request, zod(pageUpdateFormSchema));
+		const form = await superValidate(request, zod(pageUpdatingFormSchema));
 		if (!form.valid) return fail(400, { form });
 
-		await plavna.pages.delete(form.data.id);
+		try {
+			await plavna.pages.delete(form.data.id);
+		} catch (e) {
+			return fail(400, { form });
+		}
 
 		return { form };
 	}

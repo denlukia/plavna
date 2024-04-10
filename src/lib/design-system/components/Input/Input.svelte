@@ -37,12 +37,10 @@
 			pswdIconCurrentFrame.set(eyeOpenedFrame);
 		}
 	});
-
-	type DefaultInputTypes = 'text' | 'email';
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input" {...events} role="presentation">
+<span class="input-and-affixes" {...events} role="presentation">
 	<Layers --overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
@@ -59,22 +57,10 @@
 			>
 				{#if attributes.type === 'password'}
 					<PasswordInput {pswdVisible} {...attributes} bind:value />
-				{:else if attributes.type === 'text' || !attributes.type}
-					<input
-						bind:value
-						{...attributes}
-						type="text"
-						class="global-reset-input global-text-body"
-					/>
-				{:else if attributes.type === 'email'}
-					<input
-						bind:value
-						{...attributes}
-						type="email"
-						class="global-reset-input global-text-body"
-					/>
 				{:else if attributes.type === 'textarea'}
 					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
+				{:else}
+					<input bind:value {...attributes} class="global-reset-input global-text-body" />
 				{/if}
 			</span>
 			{#if hasTrailing}
@@ -97,7 +83,7 @@
 
 <style>
 	/* General */
-	.input {
+	.input-and-affixes {
 		display: inline-block;
 		min-width: var(--size-input-min-width);
 		max-width: var(--size-input-max-width);
@@ -108,6 +94,8 @@
 		margin-top: var(--input-margin-top);
 		margin-bottom: var(--input-margin-bottom);
 
+		transition: var(--transition-input);
+
 		/* For Layers */
 		--layers-border-radius: var(--size-input-border-radius);
 
@@ -115,8 +103,12 @@
 		--size-layer-flashlight-border-radius: var(--size-input-border-radius);
 		--color-layer-flashlight-pointer: var(--color-input-layer-flashlight-hover);
 	}
-	.input:last-child {
+	.input-and-affixes:last-child {
 		margin-bottom: var(--input-last-child-margin-bottom);
+	}
+	.input-and-affixes:has(input[aria-invalid='true']) {
+		background-color: var(--color-input-invalid-bg);
+		animation: error 300ms var(--smooth-ease-out);
 	}
 
 	.input-wrapper {
@@ -177,6 +169,24 @@
 	input::placeholder,
 	textarea::placeholder {
 		color: var(--color-input-placeholder-text);
+	}
+
+	@keyframes error {
+		0% {
+			transform: translateX(-10px);
+		}
+		25% {
+			transform: translateX(7px);
+		}
+		50% {
+			transform: translateX(-5px);
+		}
+		75% {
+			transform: translateX(3px);
+		}
+		100% {
+			transform: translateX(0);
+		}
 	}
 
 	@keyframes fade {
