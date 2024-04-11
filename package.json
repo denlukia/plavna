@@ -36,7 +36,7 @@
 		"oslo": "^1.2.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.2",
-		"svelte": "5.0.0-next.97",
+		"svelte": "5.0.0-next.100",
 		"svelte-check": "^3.6.9",
 		"svelte-markdown": "^0.4.1",
 		"sveltekit-superforms": "^2.12.2",
