@@ -4,16 +4,8 @@ import { assert } from '@denlukia/plavna-common/types';
 import type { TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { z } from 'zod';
-import type {
-	pageCreationFormSchema,
-	pageInsertSchema,
-	pageSelectSchema,
-	pageUpdatingFormSchema
-} from '$lib/(features)/pages-list/parsers';
 
-import type { PartialNonNull } from '../helpers/types';
-import type { auth } from '../services/auth';
-import type { screenshotsQueue, users } from './db-schema';
+import type { screenshotsQueue } from './db-schema';
 import type {
 	articleInsertSchema,
 	articlePreviewCellsTaken,
@@ -27,23 +19,17 @@ import type {
 	excludedTags,
 	imageCreationFormSchema,
 	imageInsertSchema,
-	imageProviderUpdateFormSchema,
 	imageSelectSchema,
 	imageUpdateFileFields,
 	imageUpdateFormSchema,
 	imageUpdateSchema,
-	pageDeletionFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema,
 	previewTemplateImageFieldsSchema,
 	previewTemplateSelectSchema,
-	sectionDeleteSchema,
-	sectionInsertSchema,
-	sectionSelectSchema,
 	sectionToTagInsertSchema,
 	sectionToTagSelectSchema,
-	sectionUpdateSchema,
 	tagDeleteSchema,
 	tagInsertSchema,
 	tagSelectSchema,
@@ -56,34 +42,6 @@ import type {
 	translationUpdateSchema
 } from './parsers';
 import type { PreviewFamilyId } from './previews';
-
-// Auth
-export type Auth = typeof auth;
-
-// Users
-export type User = typeof users.$inferSelect;
-export type UserWithImagekit = PartialNonNull<
-	User,
-	'imagekit_private_key' | 'imagekit_public_key' | 'imagekit_url_endpoint'
->;
-export type ImageProviderUpdateZod = typeof imageProviderUpdateFormSchema;
-export type ImageProdiverUpdate = z.infer<typeof imageProviderUpdateFormSchema>;
-
-// Pages
-export type PageSelect = z.infer<typeof pageSelectSchema>;
-export type PageInsert = z.infer<typeof pageInsertSchema>;
-export type PageCreateForm = z.infer<typeof pageCreationFormSchema>;
-export type PageCreateFormZod = typeof pageCreationFormSchema;
-export type PageUpdateForm = z.infer<typeof pageUpdatingFormSchema>;
-export type PageUpdateFormZod = typeof pageUpdatingFormSchema;
-export type PageDeletionForm = z.infer<typeof pageDeletionFormSchema>;
-export type PageDeletionFormZod = typeof pageDeletionFormSchema;
-
-// Sections
-export type SectionSelect = z.infer<typeof sectionSelectSchema>;
-export type SectionInsert = z.infer<typeof sectionInsertSchema>;
-export type SectionUpdate = z.infer<typeof sectionUpdateSchema>;
-export type SectionDelete = z.infer<typeof sectionDeleteSchema>;
 
 // Sections to Tags
 export type SectionToTagSelect = z.infer<typeof sectionToTagSelectSchema>;
@@ -161,13 +119,13 @@ export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
 export type ImageUpdateForm = z.infer<typeof imageUpdateFormSchema>;
 export type ImageUpdateFormZod = typeof imageUpdateFormSchema;
 export type ImageCollectionItem = {
-	form: SuperValidated<ImageUpdateFormZod>;
+	form: SuperValidated<ImageUpdateForm>;
 	meta: ImageSelect;
 };
 export type ImageUpdateFileFields = typeof imageUpdateFileFields;
-export type ImageCreationFormZod = typeof imageCreationFormSchema;
+export type ImageCreationForm = z.infer<typeof imageCreationFormSchema>;
 export type ImagesCollection = {
-	creation: SuperValidated<ImageCreationFormZod>;
+	creation: SuperValidated<ImageCreationForm>;
 	items: ImageCollectionItem[];
 };
 export type ImageUpdateImageHandlers = Record<keyof ImageUpdateFileFields, ServerImageHandler>;

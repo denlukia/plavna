@@ -4,11 +4,11 @@ import type { z } from 'zod';
 import { checkTranslationKey } from '../common/translations/_index';
 import { pages } from './schemas';
 
-// Schemas
+// Parsers
 export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
 
-// Form Schemas
+// Form Parsers
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
 	slug: pageSelectSchema.shape.slug //
 		.max(15, {
@@ -19,6 +19,17 @@ export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).e
 		})
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });
+// СПРОСТИТИ ДО ВІДСИЛАННЯ ПРОСТИХ КЛЮЧІВ
+export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true });
 
-// Typex
-export type PageCreationForm = z.infer<typeof pageCreationFormSchema>;
+// Types
+export type PageCreationForm = z.infer<typeof pageCreationFormSchema>; // Pages
+
+export type PageSelect = z.infer<typeof pageSelectSchema>;
+export type PageInsert = z.infer<typeof pageInsertSchema>;
+export type PageCreateForm = z.infer<typeof pageCreationFormSchema>;
+export type PageCreateFormZod = typeof pageCreationFormSchema;
+export type PageUpdateForm = z.infer<typeof pageUpdatingFormSchema>;
+export type PageUpdateFormZod = typeof pageUpdatingFormSchema;
+export type PageDeletionForm = z.infer<typeof pageDeletionFormSchema>;
+export type PageDeletionFormZod = typeof pageDeletionFormSchema;

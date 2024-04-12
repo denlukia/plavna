@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
-	import type { ImageProviderUpdateZod } from '$lib/server/collections/types';
-
-	export let providerForm: SuperValidated<ImageProviderUpdateZod>;
+	import type import type { ImageProviderUpdateZod } from '$lib/(features)/auth/parsers';
+ providerForm: SuperValidated<ImageProviderUpdateZod>;
 
 	$: ({ form, errors, enhance } = superForm(providerForm));
 </script>

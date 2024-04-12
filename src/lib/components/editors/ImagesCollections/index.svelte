@@ -3,10 +3,10 @@
 
 	import type {
 		ArticleSelect,
-		ImageProviderUpdateZod,
-		ImagesCollection
+		ImageProviderion
 	} from '$lib/server/collections/types';
-	import type { SuperValidated } from 'sveltekit-superforms';
+	import type import type { ImageProviderUpdateZod } from '$lib/(features)/auth/parsers';
+{ SuperValidated } from 'sveltekit-superforms';
 
 	import ImageCollection from './ImageCollection.svelte';
 
@@ -26,7 +26,7 @@
 
 	<div>
 		Common images:
-		<ImageCollection collection={collections.common} isAccountCommon/>
+		<ImageCollection collection={collections.common} isAccountCommon />
 	</div>
 
 	<div>

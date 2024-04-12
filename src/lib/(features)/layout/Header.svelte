@@ -47,7 +47,13 @@
 <header>
 	<Popup>
 		{#snippet label()}
-			<Translation key={currentPage?.translation} />
+			<span class="label-wrapper">
+				{#if currentPage}
+					<Translation key={currentPage.translation} />
+				{:else}
+					<Translation key="layout.my" />
+				{/if}
+			</span>
 		{/snippet}
 		{#snippet content()}
 			{#each pages as { href, translation, routeId }}

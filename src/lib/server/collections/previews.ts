@@ -1,4 +1,4 @@
-import type { TranslationKey } from '../i18n/en';
+import type { SystemTranslationKey } from '$lib/(features)/common/translations/_types';
 
 export const previewFamilies = [
 	{
@@ -22,6 +22,6 @@ type ExtractId<T> = T extends { id: infer U } ? U : never;
 export type PreviewFamilyId = ExtractId<(typeof previewFamilies)[number]>;
 
 type PossibleNameTranslationIds = (typeof previewFamilies)[number]['name_translation_key'];
-type CheckTranslationKey = PossibleNameTranslationIds extends TranslationKey ? true : false;
+type CheckTranslationKey = PossibleNameTranslationIds extends SystemTranslationKey ? true : false;
 // Will be red if previewFamilies contains name_translation_key with not existing TranslationKey
 let nameTranslationIdsAreCorrect: CheckTranslationKey = true;

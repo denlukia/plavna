@@ -32,7 +32,7 @@
 		generatePath(`/[lang]/[username]/[slug]`, {
 			'[lang]': $page.params.lang === defaultLang ? '' : $page.params.lang,
 			'[username]': $page.params.username,
-			'[slug]': slug
+			'[slug]': slug ? `page-${slug}` : ''
 		})
 	);
 

@@ -2,7 +2,8 @@ import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { pageSelectSchema } from '$lib/(features)/pages-list/parsers';
+import { users } from '$lib/(features)/auth/schemas';
+import { sectionSelectSchema } from '$lib/(features)/page/section/parsers';
 
 import { ERRORS } from '../../isomorphic/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '../helpers/objects';
@@ -10,12 +11,10 @@ import {
 	articles,
 	images,
 	previewTemplates,
-	sections,
 	sectionsToTags,
 	tags,
 	tagsToArticles,
-	translations,
-	users
+	translations
 } from './db-schema';
 import { previewFamiliesIds } from './previews';
 
@@ -45,17 +44,6 @@ function generateLanguagedFields<N extends string, V>(name: N, validator: V) {
 		{} as ReturnType<typeof createSuffixedField<typeof name, SupportedLang, V>>
 	);
 }
-
-// СПРОСТИТИ ДО ВІДСИЛАННЯ ПРОСТИХ КЛЮЧІВ
-export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true });
-
-// Sections
-export const sectionSelectSchema = createSelectSchema(sections);
-export const sectionInsertSchema = createInsertSchema(sections);
-export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
-	section_id: sectionSelectSchema.shape.id
-});
-export const sectionDeleteSchema = sectionSelectSchema.pick({ id: true });
 
 // Sections to Tags
 export const sectionToTagSelectSchema = createSelectSchema(sectionsToTags);

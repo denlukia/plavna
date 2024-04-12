@@ -2,12 +2,13 @@
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import type { SectionSelect, TranslationUpdateZod } from '$lib/server/collections/types';
+	import type { TranslationUpdate } from '$lib/server/collections/types';
 
-	import TranslationInput from '../inputs/TranslationInput.svelte';
+	import TranslationInput from '../../components/inputs/TranslationInput.svelte';
+	import type { SectionSelect } from './section/parsers';
 
 	export let section: SectionSelect;
-	export let formObj: SuperValidated<TranslationUpdateZod>;
+	export let formObj: SuperValidated<TranslationUpdate>;
 
 	$: superFormStores = superForm(formObj);
 	$: ({ form, enhance } = superFormStores);

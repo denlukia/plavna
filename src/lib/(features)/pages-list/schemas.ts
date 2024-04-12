@@ -1,6 +1,8 @@
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import { sections, users } from '$lib/server/collections/db-schema';
+
+import { users } from '../auth/schemas';
+import { sections } from '../page/section/schemas';
 
 export const pages = sqliteTable(
 	'pages',

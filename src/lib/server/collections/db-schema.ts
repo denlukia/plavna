@@ -9,64 +9,15 @@ import {
 	uniqueIndex,
 	type AnySQLiteColumn
 } from 'drizzle-orm/sqlite-core';
-import { pages } from '$lib/(features)/pages-list/schemas';
+import { sessions, users } from '$lib/(features)/auth/schemas';
+import { sections, sectionsRelations } from '$lib/(features)/page/section/schemas';
+import { pages, pagesRelations } from '$lib/(features)/pages-list/schemas';
 
 import { previewFamiliesIds } from './previews';
 
-// TODO Capital names of tables in singular
-// to deal with variable names for quaries problem
-
-export const users = sqliteTable(
-	'auth_user',
-	{
-		id: text('id').primaryKey(),
-		github_id: integer('github_id').unique().notNull(),
-		username: text('username').unique().notNull(),
-		imagekit_public_key: text('imagekit_public_key'),
-		imagekit_private_key: text('imagekit_private_key'),
-		imagekit_url_endpoint: text('imagekit_url_endpoint')
-	},
-	(table) => {
-		return {
-			slugIndex: uniqueIndex('idx_user_unique_username').on(table.username)
-		};
-	}
-);
-
-export const sessions = sqliteTable('auth_session', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id),
-	expiresAt: integer('expires_at').notNull()
-});
-
-export { pages, pagesRelations } from '$lib/(features)/pages-list/schemas';
-
-export const sections = sqliteTable('sections', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	page_id: integer('page_id')
-		.notNull()
-		.references(() => pages.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	user_id: text('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	title_translation_key: integer('title_translation_key')
-		.notNull()
-		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
-});
-
-export const sectionsRelations = relations(sections, ({ one, many }) => ({
-	page: one(pages, {
-		fields: [sections.page_id],
-		references: [pages.id]
-	}),
-	title_translation: one(translations, {
-		fields: [sections.title_translation_key],
-		references: [translations.key]
-	}),
-	sectionsToTags: many(sectionsToTags)
-}));
+export { users, sessions };
+export { pages, pagesRelations };
+export { sections, sectionsRelations };
 
 export const tags = sqliteTable('tags', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
