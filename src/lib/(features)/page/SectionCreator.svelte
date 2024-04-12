@@ -3,7 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { TranslationInsertZod } from '$lib/server/collections/types';
 
-	import TranslationInput from '../inputs/TranslationInput.svelte';
+	import TranslationInput from '../../components/inputs/TranslationInput.svelte';
 
 	export let formObj: SuperValidated<TranslationInsertZod>;
 

@@ -1,14 +1,13 @@
+import type { SupportedLang } from '@denlukia/plavna-common/types';
+import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { dev } from '$app/environment';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
-import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
+import type { User } from '$lib/(features)/auth/parsers';
+import { sessions, users } from '$lib/(features)/auth/schemas';
 
-import { sessions, users } from '../collections/db-schema';
 import { db } from './db';
-
-import type { User } from '../collections/types';
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 
 const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
 

@@ -36,7 +36,6 @@
 	.text {
 		margin: 0;
 		display: inline-block;
-
 		padding-inline: var(--text-padding-inline);
 	}
 	.outline {

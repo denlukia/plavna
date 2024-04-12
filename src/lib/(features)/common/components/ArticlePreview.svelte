@@ -4,7 +4,7 @@
 	import { generatePath } from '$lib/(features)/common/links';
 	import type { ArticleSelect, TagSelect } from '$lib/server/collections/types';
 
-	import Translation from './Translation.svelte';
+	import Translation from '../../../components/Translation.svelte';
 
 	export let article: ArticleSelect;
 	export let tags: TagSelect[];

@@ -7,7 +7,8 @@
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import Labeled from '$lib/design-system/components/Labeled.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
-	import type { PageCreateForm, PageUpdateForm } from '$lib/server/collections/types';
+
+	import type { PageCreateForm, PageUpdateForm } from './parsers';
 
 	type Props = {
 		formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;

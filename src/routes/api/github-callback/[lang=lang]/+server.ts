@@ -1,13 +1,11 @@
+import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
-
-import { users } from '$lib/server/collections/db-schema';
+import { users } from '$lib/(features)/auth/schemas';
 import { getGitHubProvider, lucia } from '$lib/server/services/auth';
 import { db } from '$lib/server/services/db';
-
-import type { SupportedLang } from '@denlukia/plavna-common/types';
-import type { RequestEvent } from '@sveltejs/kit';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');

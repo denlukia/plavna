@@ -5,7 +5,8 @@ import type { EN } from './en';
 export const UK = {
 	layout: {
 		language: 'Мова',
-		my_pages: 'Мої сторінки'
+		my_pages: 'Мої сторінки',
+		my: 'Мої'
 	},
 	auth: {
 		signup: 'Реєстрація',

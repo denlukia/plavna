@@ -19,7 +19,20 @@ import { marked } from 'marked';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/(features)/pages-list/parsers';
+import type { ImageProdiverUpdate, User } from '$lib/(features)/auth/parsers';
+import { users } from '$lib/(features)/auth/schemas';
+import type { SectionDelete, SectionUpdate } from '$lib/(features)/page/section/parsers';
+import { sections } from '$lib/(features)/page/section/schemas';
+import {
+	pageCreationFormSchema,
+	pageDeletionFormSchema,
+	pageUpdatingFormSchema
+} from '$lib/(features)/pages-list/parsers';
+import type {
+	PageCreateForm,
+	PageSelect,
+	PageUpdateForm
+} from '$lib/(features)/pages-list/parsers';
 import { pages } from '$lib/(features)/pages-list/schemas';
 import { ERRORS } from '$lib/isomorphic/errors';
 import { defaultLang, isSupportedLang } from '$lib/isomorphic/languages';
@@ -29,12 +42,10 @@ import {
 	images,
 	previewTemplates,
 	screenshotsQueue,
-	sections,
 	sectionsToTags,
 	tags,
 	tagsToArticles,
-	translations,
-	users
+	translations
 } from '$lib/server/collections/db-schema';
 import {
 	articlePreviewUpdateSchema,
@@ -43,7 +54,6 @@ import {
 	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFormSchema,
-	pageDeletionFormSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema,
 	tagUpdateSchema,
@@ -58,18 +68,12 @@ import type {
 	ArticleSelect,
 	ArticleSlugUpdate,
 	ImageInsert,
-	ImageProdiverUpdate,
 	ImageSelect,
 	ImageUpdate,
-	PageCreateForm,
-	PageSelect,
-	PageUpdateForm,
 	PreviewTemplateCreation,
 	PreviewTemplateDeletion,
 	PreviewTemplateEditing,
 	ScreenshotsQueueInsertLocal,
-	SectionDelete,
-	SectionUpdate,
 	TagDelete,
 	TagUpdate,
 	TranslationDelete,
@@ -82,7 +86,6 @@ import { getNullAndDupFilter, hasNonEmptyProperties, nonNull } from '$lib/server
 
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '../../isomorphic/constants';
 import { previewFamilies } from '../collections/previews';
-import type { User } from '../collections/types';
 import { decomposeImageField } from '../helpers/images';
 import {
 	calculateDimensionsFromCellsTaken,
@@ -851,15 +854,17 @@ class Plavna {
 					})
 				),
 				translationForms: Object.fromEntries(
-					translationsForForms.map(async (translation) => {
-						const { key } = translation;
-						return [
-							key,
-							await superValidate(translation, zod(translationUpdateSchema), {
-								id: 'translation-' + key
-							})
-						];
-					})
+					await Promise.all(
+						translationsForForms.map(async (translation) => {
+							const { key } = translation;
+							return [
+								key,
+								await superValidate(translation, zod(translationUpdateSchema), {
+									id: 'translation-' + key
+								})
+							];
+						})
+					)
 				)
 			};
 		},

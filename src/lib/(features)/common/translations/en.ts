@@ -1,7 +1,8 @@
 export const EN = {
 	layout: {
 		language: 'Language',
-		my_pages: 'My Pages'
+		my_pages: 'My pages',
+		my: 'My'
 	},
 	auth: {
 		signup: 'Sign up',

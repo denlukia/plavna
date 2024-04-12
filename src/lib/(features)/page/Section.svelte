@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import ArticlePreview from './ArticlePreview.svelte';
-	import SectionEditor from './editors/SectionEditor.svelte';
-
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import type {
 		ArticleSelect,
 		SectionSelect,
 		TagToArticleSelect,
-		TagSelect,
 		TranslationUpdateZod
 	} from '$lib/server/collections/types';
-	import SectionViewer from './SectionViewer.svelte';
-	import type { SuperValidated } from 'sveltekit-superforms';
+
+import type { SectionSelect } from './section/parsers';
+	import SectionViewer from '../../components/SectionViewer.svelte';
+	import ArticlePreview from '../common/components/ArticlePreview.svelte';
+	import SectionEditor from './SectionEditor.svelte';
 
 	export let section: {
 		meta: SectionSelect;

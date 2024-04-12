@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms';
 	import PageEditor from '$lib/(features)/pages-list/PageEditor.svelte';
 	import PageItem from '$lib/(features)/pages-list/PageItem.svelte';
 	import Translation from '$lib/components/Translation.svelte';
