@@ -1,7 +1,6 @@
 import { cubicInOut } from 'svelte/easing';
 import { type EasingFunction, type TransitionConfig } from 'svelte/transition';
-
-import { mapRange } from '$lib/isomorphic/math';
+import { mapRange } from '$lib/features/common/utils';
 
 export function spin(
 	node: Element,

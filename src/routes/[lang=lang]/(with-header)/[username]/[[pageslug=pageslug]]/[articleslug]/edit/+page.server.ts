@@ -2,32 +2,33 @@ import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { generatePath } from '$lib/(features)/common/links';
-import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
-import { IMG_VALIDATION_CONFIG } from '$lib/isomorphic/constants';
-import { ERRORS } from '$lib/isomorphic/errors';
-import { update_translation } from '$lib/server/actions';
-import { updateImages } from '$lib/server/actions/helpers';
+import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+import { ERRORS } from '$lib/collections/errors';
+import { articleSlugUpdateSchema } from '$lib/features/article/parsers';
+import type {
+	ArticlePreviewImageFileFieldsAll,
+	ArticlePreviewImageHandlers
+} from '$lib/features/article/parsers';
+import { generatePath } from '$lib/features/common/links';
+import { update_translation } from '$lib/features/i18n/actions';
+import { translationInsertSchema } from '$lib/features/i18n/parsers';
+import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
-	articlePreviewImageFileFieldsAllObj,
-	articlePreviewUpdateSchema,
-	articleSlugUpdateSchema,
 	imageCreationFormSchema,
 	imageDeletionFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFileFields,
-	imageUpdateFormSchema,
+	imageUpdateFormSchema
+} from '$lib/features/image/parsers';
+import { updateImages } from '$lib/features/image/updater.server';
+import {
+	articlePreviewImageFileFieldsAllObj,
+	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
-	previewTemplateEditingFormSchema,
-	tagDeleteSchema,
-	tagUpdateSchema,
-	translationInsertSchema
-} from '$lib/server/collections/parsers';
-import type {
-	ArticlePreviewImageFileFieldsAll,
-	ArticlePreviewImageHandlers
-} from '$lib/server/collections/types';
+	previewTemplateEditingFormSchema
+} from '$lib/features/preview/parsers';
+import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/parsers';
 
 import type { RequestEvent } from './$types';
 

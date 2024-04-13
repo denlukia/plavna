@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	export let data;
 </script>

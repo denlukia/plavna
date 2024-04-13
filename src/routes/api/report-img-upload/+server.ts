@@ -1,9 +1,9 @@
-import { SCREENSHOTTER_ACCESS_TOKEN } from '$env/static/private';
 import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
+import type { ImageProcessed, SupportedLang } from '@denlukia/plavna-common/types';
 import { error, text } from '@sveltejs/kit';
+import { SCREENSHOTTER_ACCESS_TOKEN } from '$env/static/private';
 
 import type { RequestHandler } from './$types';
-import type { ImageProcessed } from '@denlukia/plavna-common/types';
 
 export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	const body: ImageProcessed = await request.json();
@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	}
 
 	try {
-		await plavna.images.update(body.record, body.lang);
+		await plavna.images.update(body.record, body.lang as SupportedLang);
 		return text('OK');
 	} catch (e) {
 		console.error(e);

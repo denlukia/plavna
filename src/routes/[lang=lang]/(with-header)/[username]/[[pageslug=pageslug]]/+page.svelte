@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Section from '$lib/(features)/page/Section.svelte';
-	import SectionCreator from '$lib/(features)/page/SectionCreator.svelte';
+	import Section from '$lib/features/section/Section.svelte';
+	import SectionCreator from '$lib/features/section/SectionCreator.svelte';
 
 	let { data } = $props();
 </script>

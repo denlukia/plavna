@@ -1,0 +1,63 @@
+import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import type { SuperValidated } from 'sveltekit-superforms';
+import { z } from 'zod';
+
+import { articleSelectSchema } from '../article/parsers';
+import { users } from '../auth/schemas';
+import { generateLanguagedFields } from '../common/parsers-utils';
+import { images } from './schemas';
+
+// Images
+export const imageFileField = z.optional(z.string());
+
+export const imageSelectSchema = createSelectSchema(images);
+export const imageInsertSchema = createInsertSchema(images).omit({
+	user_id: true,
+	path_translation_key: true
+});
+export const imageUpdateSchema = imageInsertSchema.partial().required({
+	id: true
+});
+export const imageCreationFormSchema = z.object({
+	is_account_common: z.boolean().optional(),
+	article_id: articleSelectSchema.shape.id.optional()
+});
+export const imageUpdateFileFields = {
+	image: imageFileField,
+	delete_image: z.boolean().optional(),
+	...generateLanguagedFields('image', imageFileField),
+	...generateLanguagedFields('delete_image', z.boolean().optional())
+};
+export const imageUpdateFormSchema = imageSelectSchema
+	.pick({ id: true })
+	.extend(imageUpdateFileFields);
+export const imageDeletionFormSchema = imageSelectSchema.pick({ id: true });
+
+// TODO Refine all slug schemas to accept only valid slugs
+// TODO Refine url schemas to accept only valid urls
+// __UTILITY SCHEMAS__
+
+export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({
+	imagekit_private_key: true,
+	imagekit_public_key: true,
+	imagekit_url_endpoint: true
+});
+// Images
+
+export type ImageSelect = z.infer<typeof imageSelectSchema>;
+export type ImageInsert = z.infer<typeof imageInsertSchema>;
+export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
+export type ImageUpdateForm = z.infer<typeof imageUpdateFormSchema>;
+export type ImageUpdateFormZod = typeof imageUpdateFormSchema;
+export type ImageCollectionItem = {
+	form: SuperValidated<ImageUpdateForm>;
+	meta: ImageSelect;
+};
+export type ImageUpdateFileFields = typeof imageUpdateFileFields;
+export type ImageCreationForm = z.infer<typeof imageCreationFormSchema>;
+export type ImagesCollection = {
+	creation: SuperValidated<ImageCreationForm>;
+	items: ImageCollectionItem[];
+};
+export type ImageUpdateImageHandlers = Record<keyof ImageUpdateFileFields, ServerImageHandler>;

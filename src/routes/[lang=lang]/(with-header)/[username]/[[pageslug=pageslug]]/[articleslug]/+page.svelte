@@ -1,7 +1,15 @@
 <script lang="ts">
-	// import type { PageData } from './$types';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	// export let data: PageData;
+	let { data } = $props();
 </script>
 
-Article under page
+<h1>
+	<Translation recordKey={data.article.title_translation_key} />
+</h1>
+<Translation recordKey={data.article.content_translation_key} markdownMode />
+<!-- {#if data.previewComponent}
+	<svelte:component this={data.previewComponent} />
+{:else}
+	No preview
+{/if} -->

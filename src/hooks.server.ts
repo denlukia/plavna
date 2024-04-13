@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
-import { lucia } from '$lib/server/services/auth';
-import Plavna from '$lib/server/services/plavna';
+import { lucia } from '$lib/services/auth';
+import Plavna from '$lib/services/plavna';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// 1. Handling auth with Lucia

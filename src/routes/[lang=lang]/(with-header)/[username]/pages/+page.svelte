@@ -1,9 +1,9 @@
 <script lang="ts">
-	import PageEditor from '$lib/(features)/pages-list/PageEditor.svelte';
-	import PageItem from '$lib/(features)/pages-list/PageItem.svelte';
-	import Translation from '$lib/components/Translation.svelte';
 	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
+	import PageEditor from '$lib/features/page/PageEditor.svelte';
+	import PageItem from '$lib/features/page/PageItem.svelte';
 
 	let { data } = $props();
 

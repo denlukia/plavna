@@ -1,8 +1,10 @@
 // See https://kit.svelte.dev/docs/types#app
 import type { Session, User } from 'lucia';
-import type { SystemTranslationDict } from '$lib/(features)/common/translations/_types';
-import type { ImageSelect, TagSelect, TranslationSelect } from '$lib/server/collections/types';
-import type Plavna from '$lib/server/services/plavna';
+import type { TranslationSelect } from '$lib/features/i18n/parsers';
+import type { SystemTranslationDict } from '$lib/features/i18n/types';
+import type { ImageSelect } from '$lib/features/image/parsers';
+import type { TagSelect } from '$lib/features/tag/parsers';
+import type Plavna from '$lib/services/plavna';
 
 declare global {
 	namespace App {

@@ -1,11 +1,9 @@
-import { dev } from '$app/environment';
-import { redirect } from '@sveltejs/kit';
-import { generateState } from 'arctic';
-
-import { getGitHubProvider } from '$lib/server/services/auth';
-
 import type { SupportedLang } from '@denlukia/plavna-common/types';
+import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
+import { dev } from '$app/environment';
+import { generateState } from 'arctic';
+import { getGitHubProvider } from '$lib/services/auth';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const state = generateState();

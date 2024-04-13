@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Translation from '$lib/components/Translation.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 </script>
 
 <div class="button-wrapper">

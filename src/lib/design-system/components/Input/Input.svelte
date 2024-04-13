@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
-	import LanguagedImagesInput from '$lib/components/inputs/image/LanguagedImagesInput.svelte';
 
 	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
