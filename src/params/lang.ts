@@ -1,4 +1,4 @@
-import { isSupportedLang } from '$lib/isomorphic/languages';
+import { isSupportedLang } from '$lib/features/i18n/utils';
 
 export function match(param) {
 	return isSupportedLang(param);

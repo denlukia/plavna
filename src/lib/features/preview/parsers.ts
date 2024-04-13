@@ -1,0 +1,81 @@
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from 'zod';
+
+import { articleInsertSchema, type articleSelectSchema } from '../article/parsers';
+import { generateLanguagedFields } from '../common/parsers-utils';
+import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
+import { imageFileField } from '../image/parsers';
+import type { PreviewFamilyId } from './families';
+import { previewTemplates } from './schemas';
+
+// Previews
+const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSchema>, true>> = {
+	preview_family: true,
+	preview_template_id: true,
+	preview_prop_1: true,
+	preview_prop_2: true,
+	preview_create_localized_screenshots: true
+};
+export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
+	preview_image_1_id: true,
+	preview_image_2_id: true
+});
+export const articlePreviewImageFileFieldsAllObj = {
+	preview_image_1: imageFileField,
+	preview_image_2: imageFileField,
+	delete_preview_image_1: z.boolean().optional(),
+	delete_preview_image_2: z.boolean().optional(),
+	...generateLanguagedFields('preview_image_1', imageFileField),
+	...generateLanguagedFields('preview_image_2', imageFileField),
+	...generateLanguagedFields('delete_preview_image_1', z.boolean().optional()),
+	...generateLanguagedFields('delete_preview_image_2', z.boolean().optional())
+};
+
+export const articlePreviewUpdateSchema = articleInsertSchema
+	.pick(previewRelatedFields)
+	.merge(articlePreviewImageIdsFieldsSchema)
+	.extend(articlePreviewImageFileFieldsAllObj);
+
+// Preview Templates
+export const previewTemplateImageFieldsSchema = z.object({
+	image: imageFileField,
+	delete_image: z.boolean().optional()
+});
+export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
+export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
+export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
+	.pick({ url: true })
+	.merge(previewTemplateImageFieldsSchema)
+	.merge(translationInsertBaseSchema)
+	.omit({ key: true, user_id: true })
+	.refine(...translationRefineArgs);
+export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
+	.pick({ url: true })
+	.extend({ template_id: previewTemplateSelectSchema.shape.id })
+	.merge(previewTemplateImageFieldsSchema)
+	.merge(translationInsertBaseSchema)
+	.omit({ user_id: true })
+	.refine(...translationRefineArgs);
+export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pick({ id: true });
+
+export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;
+export type PreviewTemplateCreationForm = z.infer<typeof previewTemplateCreationFormSchema>;
+export type PreviewTemplateEditingForm = z.infer<typeof previewTemplateEditingFormSchema>;
+export type PreviewTemplateDeletionForm = z.infer<typeof previewTemplateDeletionFormSchema>;
+export type PreviewTemplateCreation = z.infer<typeof previewTemplateCreationFormSchema>;
+export type PreviewTemplateEditing = z.infer<typeof previewTemplateEditingFormSchema>;
+export type PreviewTemplateDeletion = z.infer<typeof previewTemplateDeletionFormSchema>;
+export type PreviewTemplateImageFields = z.infer<typeof previewTemplateImageFieldsSchema>;
+export type PreviewTemplateImageFieldsZod = typeof previewTemplateImageFieldsSchema;
+
+export type PreviewComponents = Record<
+	PreviewFamilyId,
+	{
+		editor?:
+			| ConstructorOfATypedSvelteComponent
+			| Promise<ConstructorOfATypedSvelteComponent | Error>
+			| Error;
+		static?: ConstructorOfATypedSvelteComponent;
+		dynamic?: ConstructorOfATypedSvelteComponent;
+	}
+>;

@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
+import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 
 import type { PageServerLoad } from './$types';
 

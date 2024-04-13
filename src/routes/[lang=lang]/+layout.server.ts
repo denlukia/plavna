@@ -1,4 +1,4 @@
-import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index.js';
+import { getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
 
 export const load = async ({ params, locals }) => {
 	const { user } = locals;

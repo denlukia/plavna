@@ -1,5 +1,5 @@
 <script>
-	import Header from '$lib/(features)/layout/Header.svelte';
+	import Header from '$lib/features/layout/Header.svelte';
 
 	export let data;
 </script>

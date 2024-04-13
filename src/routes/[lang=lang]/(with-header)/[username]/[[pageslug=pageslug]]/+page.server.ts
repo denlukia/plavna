@@ -1,8 +1,8 @@
 import { error, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { sectionDeleteSchema, sectionUpdateSchema } from '$lib/(features)/page/section/parsers';
-import { translationInsertSchema } from '$lib/server/collections/parsers';
+import { translationInsertSchema } from '$lib/features/i18n/parsers';
+import { sectionDeleteSchema, sectionUpdateSchema } from '$lib/features/section/parsers';
 
 export const load = async ({ params, locals: { plavna } }) => {
 	const { username } = params;

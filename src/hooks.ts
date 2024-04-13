@@ -1,6 +1,6 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { defaultLang } from '$lib/isomorphic/languages';
+import { defaultLang } from '$lib/features/i18n/utils';
 
 const NON_LANGUAGED_ROUTES = ['api'];
 

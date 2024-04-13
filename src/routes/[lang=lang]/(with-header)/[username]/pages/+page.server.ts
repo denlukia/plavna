@@ -1,15 +1,12 @@
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate, type SuperValidated } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import {
-	checkTranslationKey,
-	getSystemTranslationsSlice
-} from '$lib/(features)/common/translations/_index';
+import { checkTranslationKey, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	pageCreationFormSchema,
 	pageUpdatingFormSchema,
 	type PageCreationForm
-} from '$lib/(features)/pages-list/parsers';
+} from '$lib/features/page/parsers';
 
 export const load = async ({ locals: { plavna }, params, parent }) => {
 	const forms = await plavna.pages.getMyAsForms(params.username);

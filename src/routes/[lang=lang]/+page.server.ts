@@ -1,7 +1,7 @@
 // routes/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
-import { getSystemTranslationsSlice } from '$lib/(features)/common/translations/_index';
-import { lucia } from '$lib/server/services/auth';
+import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { lucia } from '$lib/services/auth';
 
 import type { Actions, PageServerLoad } from './$types';
 

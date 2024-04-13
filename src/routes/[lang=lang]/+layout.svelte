@@ -7,7 +7,7 @@
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
 
-	export let data;
+	// export let data;
 </script>
 
 <svelte:head>
