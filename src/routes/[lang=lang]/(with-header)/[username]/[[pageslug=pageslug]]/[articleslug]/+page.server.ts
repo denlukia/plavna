@@ -1,5 +1,5 @@
-export const load = async ({ params, locals: { plavna } }) => {
-	const { translations, ...other } = await plavna.articles.getOne(
+export const load = async ({ params, locals: { articleService } }) => {
+	const { translations, ...other } = await articleService.getOne(
 		params.username,
 		params.articleslug
 	);

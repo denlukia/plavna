@@ -37,24 +37,24 @@ async function switch_tag(event: RequestEvent) {
 	if (!form.valid) return fail(400, { form });
 
 	const { articleslug } = event.params;
-	const { plavna } = event.locals;
-	await plavna.tags.switchChecked(form.data, articleslug);
+	const { tagService } = event.locals;
+	await tagService.switchChecked(form.data, articleslug);
 }
 
 async function create_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(translationInsertSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
-	await plavna.tags.create(form.data);
+	const { tagService } = event.locals;
+	await tagService.create(form.data);
 }
 
 async function delete_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(tagDeleteSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
-	await plavna.tags.delete(form.data);
+	const { tagService } = event.locals;
+	await tagService.delete(form.data);
 }
 
 async function update_slug(event: RequestEvent) {
@@ -62,8 +62,8 @@ async function update_slug(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(articleSlugUpdateSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
-	const result = await plavna.articles.updateSlug(articleslug, form.data);
+	const { articleService } = event.locals;
+	const result = await articleService.updateSlug(articleslug, form.data);
 
 	const replacementsObject: Record<string, string | undefined> = {
 		'[[lang=lang]]': event.params.lang,
@@ -78,8 +78,8 @@ async function update_slug(event: RequestEvent) {
 
 async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'delete') {
 	const { articleslug } = event.params;
-	const { plavna } = event.locals;
-	await plavna.articles[type](articleslug);
+	const { articleService } = event.locals;
+	await articleService[type](articleslug);
 
 	if (type === 'delete') {
 		let destinationRouteId = '/[[lang=lang]]/[username]';
@@ -97,7 +97,7 @@ async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'del
 
 async function update_preview(event: RequestEvent) {
 	const { articleslug } = event.params;
-	const { plavna } = event.locals;
+	const { articleService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(articlePreviewUpdateSchema));
 	if (!form.valid) return fail(400, { form });
@@ -118,11 +118,11 @@ async function update_preview(event: RequestEvent) {
 		}
 	}
 
-	await plavna.articles.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
+	await articleService.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
 }
 
 async function create_preview_template(event: RequestEvent) {
-	const { plavna } = event.locals;
+	const { previewService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(previewTemplateCreationFormSchema));
 	if (!form.valid) return fail(400, { form });
@@ -133,11 +133,11 @@ async function create_preview_template(event: RequestEvent) {
 		await imageHandler.validate(IMG_VALIDATION_CONFIG);
 	}
 
-	await plavna.previewTemplates.create(form.data, imageHandler);
+	await previewService.create(form.data, imageHandler);
 }
 
 async function update_preview_template(event: RequestEvent) {
-	const { plavna } = event.locals;
+	const { previewService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(previewTemplateEditingFormSchema));
 	if (!form.valid) return fail(400, { form });
@@ -148,31 +148,31 @@ async function update_preview_template(event: RequestEvent) {
 		await imageHandler.validate(IMG_VALIDATION_CONFIG);
 	}
 
-	await plavna.previewTemplates.update(form.data, imageHandler);
+	await previewService.update(form.data, imageHandler);
 }
 async function delete_preview_template(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(previewTemplateDeletionFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
-	await plavna.previewTemplates.delete(form.data);
+	const { previewService } = event.locals;
+	await previewService.delete(form.data);
 }
 
 async function update_image_provider(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageProviderUpdateFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
+	const { userService } = event.locals;
 	try {
-		await plavna.user.updateImageProvider(form.data);
+		await userService.updateImageProvider(form.data);
 	} catch {
 		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
 	}
 }
 async function delete_image_provider(event: RequestEvent) {
-	const { plavna } = event.locals;
+	const { userService } = event.locals;
 
-	await plavna.user.updateImageProvider({
+	await userService.updateImageProvider({
 		imagekit_private_key: '',
 		imagekit_public_key: '',
 		imagekit_url_endpoint: ''
@@ -183,9 +183,9 @@ async function create_image(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageCreationFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
+	const { imageService } = event.locals;
 
-	await plavna.images.create({
+	await imageService.create({
 		owning_article_id: form.data.article_id,
 		is_account_common: form.data.is_account_common
 	});
@@ -196,17 +196,17 @@ async function update_image(event: RequestEvent) {
 	const form = await superValidate(formData, zod(imageUpdateFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
+	const { imageService } = event.locals;
 	const imagesKeys = Object.keys(imageUpdateFileFields);
-	await updateImages({ imagesKeys, plavna, rawData: formData, data: form.data });
+	await updateImages({ imagesKeys, imageService, rawData: formData, data: form.data });
 }
 
 async function delete_image(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageDeletionFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { plavna } = event.locals;
-	await plavna.images.delete(form.data.id);
+	const { imageService } = event.locals;
+	await imageService.delete(form.data.id);
 }
 
 export const actions = {
@@ -229,8 +229,8 @@ export const actions = {
 	delete_image
 };
 
-export const load = async ({ params, parent, locals: { plavna } }) => {
-	const { translations: newTranslations, ...other } = await plavna.articles.loadEditor(
+export const load = async ({ params, parent, locals: { articleService } }) => {
+	const { translations: newTranslations, ...other } = await articleService.loadEditor(
 		params.username,
 		params.articleslug
 	);

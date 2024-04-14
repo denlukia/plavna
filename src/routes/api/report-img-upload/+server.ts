@@ -7,16 +7,16 @@ import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	const body: ImageProcessed = await request.json();
-	const { plavna } = locals;
+	const { userService, imageService } = locals;
 
-	const user = await plavna.user.get();
+	const user = await userService.get();
 	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE_NAME);
 	if (accessCookie !== SCREENSHOTTER_ACCESS_TOKEN && !user) {
 		error(403);
 	}
 
 	try {
-		await plavna.images.update(body.record, body.lang as SupportedLang);
+		await imageService.update(body.record, body.lang as SupportedLang);
 		return text('OK');
 	} catch (e) {
 		console.error(e);
