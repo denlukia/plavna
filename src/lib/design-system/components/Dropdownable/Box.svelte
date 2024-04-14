@@ -18,7 +18,7 @@
 
 <div
 	class="box-wrapper"
-	transition:fade={{
+	transition:fade|global={{
 		duration: animationDuration,
 		easing: cubicOut
 	}}
@@ -28,7 +28,7 @@
 	</div>
 	<div
 		class="box"
-		transition:rotateAndScale={{
+		transition:rotateAndScale|global={{
 			duration: animationDuration,
 			easing: cubicOut,
 			scaleX: 0.1,

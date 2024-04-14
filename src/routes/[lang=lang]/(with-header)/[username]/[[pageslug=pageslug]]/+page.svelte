@@ -4,10 +4,12 @@
 	import SectionCreator from '$lib/features/section/SectionCreator.svelte';
 
 	let { data } = $props();
+
+	$inspect(data);
 </script>
 
 {#each data.sections as section}
-	<Section {section} formObj={data.translationForms[section.meta.title_translation_key]} />
+	<Section {section} formObj={data.descriptionForms[section.meta.title_translation_key]} />
 {/each}
 {#if $page.data.user && $page.data.user.username === $page.params.username}
 	<SectionCreator formObj={data.sectionCreationForm} />
