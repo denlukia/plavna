@@ -2,7 +2,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { z } from 'zod';
 
 import { checkTranslationKey } from '../i18n/utils';
-import { pages } from './schemas';
+import { pages } from './schema';
 
 // Parsers
 export const pageSelectSchema = createSelectSchema(pages);

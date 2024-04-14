@@ -10,11 +10,11 @@ import type { UserService } from '../auth/service';
 import { nonNull } from '../common/utils';
 import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
-import { pages } from '../page/schemas';
+import { pages } from '../page/schema';
 import type { TagUpdate } from '../tag/parsers';
-import { tags } from '../tag/schemas';
+import { tags } from '../tag/schema';
 import type { SectionDelete, SectionUpdate } from './parsers';
-import { sections, sectionsToTags } from './schemas';
+import { sections, sectionsToTags } from './schema';
 import { findTagIdsInLinks } from './utils';
 
 export class SectionService {

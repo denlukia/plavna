@@ -1,8 +1,8 @@
 import { integer, sqliteTable, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/auth/schemas';
+import { users } from '$lib/features/auth/schema';
 
-import { articles } from '../article/schemas';
-import { translations } from '../i18n/schemas';
+import { articles } from '../article/schema';
+import { translations } from '../i18n/schema';
 
 export const images = sqliteTable('images', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

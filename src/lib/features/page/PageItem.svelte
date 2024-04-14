@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fly, slide } from 'svelte/transition';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { HOST } from '$lib/collections/constants';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
@@ -9,7 +9,6 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageEditor from '$lib/features/page/PageEditor.svelte';
 
-	import { HOST } from '../common/constants';
 	import { generatePath } from '../common/links';
 	import { defaultLang } from '../i18n/utils';
 	import type { PageDeletionForm, PageSelect, PageUpdateForm } from './parsers';

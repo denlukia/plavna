@@ -4,7 +4,7 @@ import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
-import { screenshotsQueue } from './schemas';
+import { screenshotsQueue } from './schema';
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({

@@ -5,7 +5,7 @@ import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
 import type { User } from '$lib/features/auth/parsers';
-import { sessions, users } from '$lib/features/auth/schemas';
+import { sessions, users } from '$lib/features/auth/schema';
 
 import { db } from './db';
 

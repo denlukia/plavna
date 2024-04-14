@@ -1,12 +1,12 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
-import { articles } from '../article/schemas';
+import { articles } from '../article/schema';
 import type { UserService } from '../auth/service';
 import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
 import type { TagDelete, TagUpdate } from './parsers';
-import { tags, tagsToArticles } from './schemas';
+import { tags, tagsToArticles } from './schema';
 
 export class TagService {
 	private readonly userService: UserService;

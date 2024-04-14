@@ -2,7 +2,7 @@ import type { z } from 'zod';
 import type { PartialNonNull } from '$lib/features/common/types';
 
 import type { imageProviderUpdateFormSchema } from '../image/parsers';
-import type { users } from './schemas';
+import type { users } from './schema';
 
 // Types
 export type User = typeof users.$inferSelect;

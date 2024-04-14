@@ -5,7 +5,7 @@ import type { User as LuciaUser } from 'lucia';
 import { db } from '$lib/services/db';
 
 import type { ImageProviderUpdate, User } from './parsers';
-import { users } from './schemas';
+import { users } from './schema';
 
 export class UserService {
 	private userObj: LuciaUser | null;
