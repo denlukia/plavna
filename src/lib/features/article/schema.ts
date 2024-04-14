@@ -1,12 +1,12 @@
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/auth/schemas';
+import { users } from '$lib/features/auth/schema';
 
-import { translations } from '../i18n/schemas';
-import { images } from '../image/schemas';
+import { translations } from '../i18n/schema';
+import { images } from '../image/schema';
 import { previewFamiliesIds } from '../preview/families';
-import { previewTemplates } from '../preview/schemas';
-import { tagsToArticles } from '../tag/schemas';
+import { previewTemplates } from '../preview/schema';
+import { tagsToArticles } from '../tag/schema';
 
 export const articles = sqliteTable(
 	'articles',

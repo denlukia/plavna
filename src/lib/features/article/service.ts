@@ -10,18 +10,18 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { users } from '../auth/schemas';
+import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
 import { getNullAndDupFilter, nonNull } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
-import { translations } from '../i18n/schemas';
+import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import {
 	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFormSchema
 } from '../image/parsers';
-import { images } from '../image/schemas';
+import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import { decomposeImageField } from '../image/utils';
 import { previewFamilies } from '../preview/families';
@@ -30,16 +30,16 @@ import {
 	previewTemplateCreationFormSchema,
 	previewTemplateEditingFormSchema
 } from '../preview/parsers';
-import { previewTemplates } from '../preview/schemas';
+import { previewTemplates } from '../preview/schema';
 import type { ScreenshotsQueueInsertLocal } from '../screenshot/parsers';
-import { screenshotsQueue } from '../screenshot/schemas';
+import { screenshotsQueue } from '../screenshot/schema';
 import {
 	calculateDimensionsFromCellsTaken,
 	composeURLForScreenshot,
 	getMaybeTranslatedImagePath
 } from '../screenshot/utils';
 import { tagUpdateSchema } from '../tag/parsers';
-import { tags, tagsToArticles } from '../tag/schemas';
+import { tags, tagsToArticles } from '../tag/schema';
 import {
 	articleSelectSchema,
 	articleSlugUpdateSchema,
@@ -50,7 +50,7 @@ import {
 	type ArticleSelect,
 	type ArticleSlugUpdate
 } from './parsers';
-import { articles } from './schemas';
+import { articles } from './schema';
 
 export class ArticleService {
 	private readonly userService: UserService;

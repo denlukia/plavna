@@ -6,10 +6,10 @@ import { db } from '$lib/services/db';
 import type { UserService } from '../auth/service';
 import type { TransactionContext } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
-import { translations } from '../i18n/schemas';
+import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
-import { images } from './schemas';
+import { images } from './schema';
 import type { ImageAnyParams, ImageCreationParams, ImagesUpdateParams } from './types';
 
 export class ImageService {

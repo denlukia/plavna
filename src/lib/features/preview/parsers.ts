@@ -6,7 +6,7 @@ import { generateLanguagedFields } from '../common/parsers-utils';
 import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
 import type { PreviewFamilyId } from './families';
-import { previewTemplates } from './schemas';
+import { previewTemplates } from './schema';
 
 // Previews
 const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSchema>, true>> = {

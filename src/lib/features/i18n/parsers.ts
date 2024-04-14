@@ -3,7 +3,7 @@ import type { z } from 'zod';
 import { ERRORS } from '$lib/collections/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '$lib/features/common/utils';
 
-import { translations } from './schemas';
+import { translations } from './schema';
 
 // Translations
 

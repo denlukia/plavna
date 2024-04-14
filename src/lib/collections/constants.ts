@@ -1,3 +1,6 @@
+import { dev } from '$app/environment';
+import { PUBLIC_HOST, PUBLIC_PORT } from '$env/static/public';
+
 export const SECTIONS_PER_LOAD = 2;
 export const POSTS_PER_SECTION = 10;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
@@ -30,3 +33,4 @@ export const IMG_VALIDATION_CONFIG = {
 
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const ARTISTIC_OVERFLOW_PADDING = 20;
+export const HOST = dev ? `${PUBLIC_HOST}:${PUBLIC_PORT}` : `${PUBLIC_HOST}`;

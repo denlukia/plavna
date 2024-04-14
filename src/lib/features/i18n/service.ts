@@ -8,7 +8,7 @@ import type { UserService } from '../auth/service';
 import type { TransactionContext } from '../common/types';
 import { hasNonEmptyProperties } from '../common/utils';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
-import { translations } from './schemas';
+import { translations } from './schema';
 import { defaultLang, isSupportedLang } from './utils';
 
 export class TranslationService {

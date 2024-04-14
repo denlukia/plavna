@@ -8,7 +8,7 @@ import type {
 	articlePreviewImageIdsFieldsSchema,
 	articlePreviewUpdateSchema
 } from '../preview/parsers';
-import { articles } from './schemas';
+import { articles } from './schema';
 
 // Articles
 

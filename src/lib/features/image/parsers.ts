@@ -4,9 +4,9 @@ import type { SuperValidated } from 'sveltekit-superforms';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
-import { users } from '../auth/schemas';
+import { users } from '../auth/schema';
 import { generateLanguagedFields } from '../common/parsers-utils';
-import { images } from './schemas';
+import { images } from './schema';
 
 // Images
 export const imageFileField = z.optional(z.string());
@@ -34,8 +34,8 @@ export const imageUpdateFormSchema = imageSelectSchema
 	.extend(imageUpdateFileFields);
 export const imageDeletionFormSchema = imageSelectSchema.pick({ id: true });
 
-// TODO Refine all slug schemas to accept only valid slugs
-// TODO Refine url schemas to accept only valid urls
+// TODO Refine all slug schema to accept only valid slugs
+// TODO Refine url schema to accept only valid urls
 // __UTILITY SCHEMAS__
 
 export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({

@@ -1,9 +1,9 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { translations } from '../i18n/schemas';
+import { translations } from '../i18n/schema';
 import { tagSelectSchema } from '../tag/parsers';
-import { sections, sectionsToTags } from './schemas';
+import { sections, sectionsToTags } from './schema';
 
 // Parsers
 export const sectionSelectSchema = createSelectSchema(sections);

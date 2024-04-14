@@ -4,19 +4,19 @@ import { and, eq } from 'drizzle-orm';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { articles } from '../article/schemas';
+import { articles } from '../article/schema';
 import type { UserService } from '../auth/service';
-import { translations } from '../i18n/schemas';
+import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageSelect } from '../image/parsers';
-import { images } from '../image/schemas';
+import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type {
 	PreviewTemplateCreation,
 	PreviewTemplateDeletion,
 	PreviewTemplateEditing
 } from './parsers';
-import { previewTemplates } from './schemas';
+import { previewTemplates } from './schema';
 
 export class PreviewService {
 	private readonly userService: UserService;

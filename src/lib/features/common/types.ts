@@ -23,6 +23,6 @@ export type PartialNonNull<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K
 export type TransactionContext = SQLiteTransaction<
 	'async',
 	ResultSet,
-	typeof import('$lib/collections/schemas'),
-	ExtractTablesWithRelations<typeof import('$lib/collections/schemas')>
+	typeof import('$lib/collections/main-schema'),
+	ExtractTablesWithRelations<typeof import('$lib/collections/main-schema')>
 >;

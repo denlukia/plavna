@@ -1,10 +1,10 @@
 import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/auth/schemas';
+import { users } from '$lib/features/auth/schema';
 
-import { articles } from '../article/schemas';
-import { translations } from '../i18n/schemas';
-import { sectionsToTags } from '../section/schemas';
+import { articles } from '../article/schema';
+import { translations } from '../i18n/schema';
+import { sectionsToTags } from '../section/schema';
 
 export const tags = sqliteTable('tags', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

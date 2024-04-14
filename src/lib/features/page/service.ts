@@ -6,15 +6,15 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
-import { articles } from '../article/schemas';
-import { users } from '../auth/schemas';
+import { articles } from '../article/schema';
+import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
-import { translations } from '../i18n/schemas';
+import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import { previewTemplates } from '../preview/schemas';
-import { sections, sectionsToTags } from '../section/schemas';
-import { tags, tagsToArticles } from '../tag/schemas';
+import { previewTemplates } from '../preview/schema';
+import { sections, sectionsToTags } from '../section/schema';
+import { tags, tagsToArticles } from '../tag/schema';
 import {
 	pageCreationFormSchema,
 	pageDeletionFormSchema,
@@ -23,7 +23,7 @@ import {
 	type PageSelect,
 	type PageUpdateForm
 } from './parsers';
-import { pages } from './schemas';
+import { pages } from './schema';
 
 export class PageService {
 	private readonly userService: UserService;

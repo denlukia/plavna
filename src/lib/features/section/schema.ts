@@ -1,11 +1,11 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/auth/schemas';
-import { pages } from '$lib/features/page/schemas';
+import { users } from '$lib/features/auth/schema';
+import { pages } from '$lib/features/page/schema';
 
-import { translations } from '../i18n/schemas';
-import { tags } from '../tag/schemas';
+import { translations } from '../i18n/schema';
+import { tags } from '../tag/schema';
 
 export const sections = sqliteTable('sections', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

@@ -3,7 +3,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
-import { users } from '$lib/features/auth/schemas';
+import { users } from '$lib/features/auth/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
 
