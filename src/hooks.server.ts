@@ -1,8 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
+import { ArticleService } from '$lib/features/article/service';
 import { UserService } from '$lib/features/auth/service';
 import { TranslationService } from '$lib/features/i18n/service';
+import { ImageService } from '$lib/features/image/service';
 import { PageService } from '$lib/features/page/service';
+import { PreviewService } from '$lib/features/preview/service';
 import { SectionService } from '$lib/features/section/service';
+import { TagService } from '$lib/features/tag/service';
 import { lucia } from '$lib/services/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -39,9 +43,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 	locals.translationService = new TranslationService(locals.userService, params.lang);
 	locals.pageService = new PageService(locals.userService, locals.translationService);
 	locals.sectionService = new SectionService(locals.userService, locals.translationService);
-
-	// const plavnaService = new Plavna(user, session, params.lang);
-	// locals.plavna = plavnaService;
+	locals.tagService = new TagService(locals.userService, locals.translationService);
+	locals.imageService = new ImageService(locals.userService, locals.translationService);
+	locals.articleService = new ArticleService(
+		locals.userService,
+		locals.translationService,
+		locals.imageService
+	);
+	locals.previewService = new PreviewService(
+		locals.userService,
+		locals.translationService,
+		locals.imageService
+	);
 
 	return await resolve(event);
 };

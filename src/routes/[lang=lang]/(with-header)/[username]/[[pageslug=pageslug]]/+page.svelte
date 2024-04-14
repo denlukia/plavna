@@ -4,8 +4,6 @@
 	import SectionCreator from '$lib/features/section/SectionCreator.svelte';
 
 	let { data } = $props();
-
-	$inspect(data);
 </script>
 
 {#each data.sections as section}

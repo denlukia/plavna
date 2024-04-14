@@ -2,18 +2,18 @@ import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 
-import type Plavna from '../page/service';
+import type { ImageService } from './service';
 
 export async function updateImages({
 	imagesKeys,
 	rawData,
 	data,
-	plavna
+	imageService
 }: {
 	imagesKeys: string[];
 	rawData: FormData;
 	data: { id: number; [key: string]: string | number | boolean | undefined };
-	plavna: Plavna;
+	imageService: ImageService;
 }) {
 	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandler>;
 	const imageHandledPromises = imagesKeys.map(async (key) => {
@@ -22,14 +22,14 @@ export async function updateImages({
 		const lang = (key.split('.')[1] || null) as SupportedLang | null;
 		const markedForDeletion = key.startsWith('delete') && data[key] === true;
 		if (markedForDeletion) {
-			await plavna.images.delete(data.id, lang);
+			await imageService.delete(data.id, lang);
 		} else if (filePresent) {
 			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
 			const report = await imagesHandlers[key].processAndUpload({
 				imageId: data.id,
 				lang: lang
 			});
-			await plavna.images.update(report.record, lang);
+			await imageService.update(report.record, lang);
 		}
 	});
 	await Promise.all(imageHandledPromises);

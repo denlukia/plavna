@@ -15,6 +15,6 @@ export async function update_translation(event: RequestEvent) {
 	const detokenizedData = detokenizeEmptyStrings(form.data);
 	const onlyNonNull = removeNullValues(detokenizedData);
 
-	const { plavna } = event.locals;
-	await plavna.translations.update(onlyNonNull);
+	const { translationService } = event.locals;
+	await translationService.update(onlyNonNull);
 }

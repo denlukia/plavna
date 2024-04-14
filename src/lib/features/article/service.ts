@@ -1,0 +1,641 @@
+import { supportedLangs } from '@denlukia/plavna-common/constants';
+import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { ResultSet } from '@libsql/client';
+import { error } from '@sveltejs/kit';
+import { and, eq, isNotNull, or } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/sqlite-core';
+import type { User } from 'lucia';
+import { fail, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { ERRORS } from '$lib/collections/errors';
+import { db } from '$lib/services/db';
+
+import { users } from '../auth/schemas';
+import type { UserService } from '../auth/service';
+import { getNullAndDupFilter, nonNull } from '../common/utils';
+import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
+import { translations } from '../i18n/schemas';
+import type { TranslationService } from '../i18n/service';
+import {
+	imageCreationFormSchema,
+	imageProviderUpdateFormSchema,
+	imageUpdateFormSchema
+} from '../image/parsers';
+import { images } from '../image/schemas';
+import type { ImageService } from '../image/service';
+import { decomposeImageField } from '../image/utils';
+import { previewFamilies } from '../preview/families';
+import {
+	articlePreviewUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateEditingFormSchema
+} from '../preview/parsers';
+import { previewTemplates } from '../preview/schemas';
+import type { ScreenshotsQueueInsertLocal } from '../screenshot/parsers';
+import { screenshotsQueue } from '../screenshot/schemas';
+import {
+	calculateDimensionsFromCellsTaken,
+	composeURLForScreenshot,
+	getMaybeTranslatedImagePath
+} from '../screenshot/utils';
+import { tagUpdateSchema } from '../tag/parsers';
+import { tags, tagsToArticles } from '../tag/schemas';
+import {
+	articleSelectSchema,
+	articleSlugUpdateSchema,
+	type ArticleInsert,
+	type ArticlePreviewImageFileFieldNamesAll,
+	type ArticlePreviewImageHandlers,
+	type ArticlePreviewUpdate,
+	type ArticleSelect,
+	type ArticleSlugUpdate
+} from './parsers';
+import { articles } from './schemas';
+
+export class ArticleService {
+	private readonly userService: UserService;
+	private readonly translationService: TranslationService;
+	private readonly imageService: ImageService;
+
+	constructor(
+		userService: UserService,
+		translationService: TranslationService,
+		imageService: ImageService
+	) {
+		this.userService = userService;
+		this.translationService = translationService;
+		this.imageService = imageService;
+	}
+
+	async getIdIfExists(slug: ArticleSelect['slug']) {
+		const article = await db
+			.select({ id: articles.id })
+			.from(articles)
+			.where(eq(articles.slug, slug))
+			.get();
+		if (article) {
+			return article.id;
+		} else {
+			return null;
+		}
+	}
+	async createFromSlug(slug: ArticleInsert['slug']) {
+		const user = await this.userService.getOrThrow();
+		return db.transaction(async (trx) => {
+			const newTranslation = {
+				user_id: user.id
+			};
+			const [
+				{ key: title_translation_key },
+				{ key: content_translation_key },
+				{ key: preview_translation_1_key },
+				{ key: preview_translation_2_key }
+			] = await this.translationService.create(
+				new Array(4).fill(newTranslation),
+				'allow-empty',
+				trx
+			);
+			const { source } = await new ServerImageHandler(null).setUploaderFromUser(user);
+			const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
+				this.imageService.create({ source }, trx),
+				this.imageService.create({ source }, trx)
+			]);
+
+			const article = await trx
+				.insert(articles)
+				.values({
+					user_id: user.id,
+					slug: slug,
+					title_translation_key: Number(title_translation_key),
+					content_translation_key: Number(content_translation_key),
+					preview_family: 'plavna-modern',
+					preview_translation_1_key,
+					preview_translation_2_key,
+					preview_image_1_id,
+					preview_image_2_id
+				})
+				.returning({ id: articles.id })
+				.get();
+
+			return article.id;
+		});
+	}
+	async loadEditor(username: User['username'], slug: ArticleSelect['slug']) {
+		const user = await this.userService.checkOrThrow(null, username);
+
+		let exisingId = await this.getIdIfExists(slug);
+		if (exisingId === null) {
+			exisingId = await this.createFromSlug(slug);
+		}
+
+		const translForForms = alias(translations, 'translForForms');
+		const translForPreviewTemplates = alias(translations, 'translForPreviewTemplates');
+		const commonImagesTable = alias(images, 'commonImages');
+		const articleImagesTable = alias(images, 'articleImages');
+		const results = await db
+			.select({
+				articles: articles,
+				tagsArticles: tagsToArticles,
+				tags,
+				translations,
+				translForForms,
+				translForPreviewTemplates,
+				previewTemplates,
+				images,
+				commonImagesTable,
+				articleImagesTable
+			})
+			.from(articles)
+			.leftJoin(previewTemplates, eq(previewTemplates.user_id, user.id))
+			.leftJoin(
+				images,
+				or(
+					eq(images.id, previewTemplates.image_id),
+					eq(images.id, articles.preview_image_1_id),
+					eq(images.id, articles.preview_image_2_id)
+				)
+			)
+			.leftJoin(
+				commonImagesTable,
+				and(eq(commonImagesTable.user_id, user.id), eq(commonImagesTable.is_account_common, true))
+			)
+			.leftJoin(
+				articleImagesTable,
+				and(
+					eq(articleImagesTable.user_id, user.id),
+					eq(articleImagesTable.owning_article_id, exisingId)
+				)
+			)
+			.leftJoin(tags, eq(tags.user_id, user.id))
+			.leftJoin(translations, eq(translations.key, images.path_translation_key))
+			.leftJoin(
+				translForPreviewTemplates,
+				eq(translForPreviewTemplates.key, previewTemplates.name_translation_key)
+			)
+			.leftJoin(
+				translForForms,
+				or(
+					eq(translForForms.key, articles.content_translation_key),
+					eq(translForForms.key, articles.title_translation_key),
+					eq(translForForms.key, tags.name_translation_key),
+					eq(translForForms.key, articles.preview_translation_1_key),
+					eq(translForForms.key, articles.preview_translation_2_key)
+				)
+			)
+			.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
+			.where(eq(articles.id, exisingId))
+			.all();
+
+		const articleResult = results[0].articles;
+		const translationsArr = results
+			.map((rows) => rows.translations)
+			.filter(getNullAndDupFilter('key'));
+		const translationsForPreviewTemplates = results
+			.map((rows) => rows.translForPreviewTemplates)
+			.filter(getNullAndDupFilter('key'));
+		const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('id'));
+		const previewTemplatesResults = await Promise.all(
+			results
+				.map((rows) => rows.previewTemplates)
+				.filter(getNullAndDupFilter('id'))
+				.map(async (template) => {
+					const foundTranslation = translationsForPreviewTemplates.find(
+						(translation) => translation.key === template.name_translation_key
+					);
+
+					return {
+						meta: template,
+						form: await superValidate(
+							{ ...template, template_id: template.id, ...foundTranslation },
+							zod(previewTemplateEditingFormSchema)
+						)
+					};
+				})
+		);
+		const allTags = results.map((rows) => rows.tags).filter(getNullAndDupFilter('id'));
+		const articleTags = results
+			.map((rows) => rows.tagsArticles)
+			.filter(getNullAndDupFilter('tag_id'));
+		const translationsForForms = results
+			.map((rows) => rows.translForForms)
+			.filter(getNullAndDupFilter('key'));
+		const tagInfos = await Promise.all(
+			allTags.map(async (tag) => ({
+				checkedForm: await superValidate(
+					{ ...tag, checked: !!articleTags.find((t) => t.tag_id === tag.id) },
+					zod(tagUpdateSchema),
+					{ id: 'is-checked-' + tag.id }
+				),
+				name_translation_key: tag.name_translation_key
+			}))
+		);
+		const previewForms = await Promise.all(
+			[...previewFamilies, ...previewTemplatesResults].map(async (familyOrTemplate) => {
+				const emptyForm = await superValidate(zod(articlePreviewUpdateSchema));
+				const filledForm = await superValidate(articleResult, zod(articlePreviewUpdateSchema));
+				if ('meta' in familyOrTemplate) {
+					return {
+						familyId: 'custom',
+						templateId: familyOrTemplate.meta.id,
+						propsForm:
+							articleResult.preview_family === 'custom' &&
+							articleResult.preview_template_id === familyOrTemplate.meta.id
+								? filledForm
+								: emptyForm
+					};
+				} else {
+					return {
+						familyId: familyOrTemplate.id,
+						templateId: null,
+						propsForm:
+							articleResult.preview_family === familyOrTemplate.id &&
+							articleResult.preview_template_id === null
+								? filledForm
+								: emptyForm
+					};
+				}
+			})
+		);
+		const commonImages = {
+			creation: await superValidate(zod(imageCreationFormSchema), {
+				id: 'common-image-creation'
+			}),
+			items: await Promise.all(
+				results
+					.map((rows) => rows.commonImagesTable)
+					.filter(getNullAndDupFilter('id'))
+					.map(async (image) => ({
+						meta: image,
+						form: await superValidate(image, zod(imageUpdateFormSchema), {
+							id: 'image-' + image.id
+						})
+					}))
+			)
+		};
+		const articleImages = {
+			creation: await superValidate(zod(imageCreationFormSchema), {
+				id: 'article-image-creation'
+			}),
+			items: await Promise.all(
+				results
+					.map((rows) => rows.articleImagesTable)
+					.filter(getNullAndDupFilter('id'))
+					.map(async (image) => ({
+						meta: image,
+						form: await superValidate(image, zod(imageUpdateFormSchema), {
+							id: 'image-' + image.id
+						})
+					}))
+			)
+		};
+
+		return {
+			meta: articleSelectSchema.parse(articleResult),
+			slugForm: await superValidate(articleResult, zod(articleSlugUpdateSchema)),
+			previewForms,
+			previewFamilies,
+			previewTemplates: previewTemplatesResults,
+			previewTemplateCreationForm: await superValidate(zod(previewTemplateCreationFormSchema)),
+			tagInfos,
+			tagCreationForm: await superValidate(zod(translationInsertSchema)),
+			imageProviderForm: await superValidate(user, zod(imageProviderUpdateFormSchema)),
+			images: imagesArr,
+			commonImages,
+			articleImages,
+			translations: Object.fromEntries(
+				translationsArr.map((translation) => {
+					return [translation.key, translation[this.translationService.currentLang]];
+				})
+			),
+			translationForms: Object.fromEntries(
+				await Promise.all(
+					translationsForForms.map(async (translation) => {
+						const { key } = translation;
+						return [
+							key,
+							await superValidate(translation, zod(translationUpdateSchema), {
+								id: 'translation-' + key
+							})
+						];
+					})
+				)
+			)
+		};
+	}
+	async updateSlug(slug: string, article: ArticleSlugUpdate) {
+		const user = await this.userService.getOrThrow();
+		return db
+			.update(articles)
+			.set(article)
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.returning({ slug: articles.slug })
+			.get();
+	}
+	async publish(slug: string) {
+		const user = await this.userService.getOrThrow();
+		return db
+			.update(articles)
+			.set({ publish_time: new Date() })
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.returning({ slug: articles.slug })
+			.get();
+	}
+	async hide(slug: string) {
+		const user = await this.userService.getOrThrow();
+		return db
+			.update(articles)
+			.set({ publish_time: null })
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.returning({ slug: articles.slug })
+			.get();
+	}
+	async delete(slug: string) {
+		const user = await this.userService.getOrThrow();
+		const articleDeleted = await db
+			.delete(articles)
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.returning({ id: articles.id })
+			.get();
+		if (!articleDeleted) throw new Error('Article not found');
+		await this.imageService.delete(articleDeleted.id);
+	}
+	async updatePreview(
+		slug: string,
+		preview: ArticlePreviewUpdate,
+		imageHandlers: ArticlePreviewImageHandlers,
+		keysForDeletion: string[]
+	) {
+		// Common for 1. and 3.
+		const user = await this.userService.getOrThrow();
+		const { source, providerData: imageProviderData } = await new ServerImageHandler(
+			null
+		).setUploaderFromUser(user);
+
+		// 1. Article fields update
+		if (preview.preview_family && preview.preview_family !== 'custom')
+			preview.preview_template_id = null;
+		if (preview.preview_template_id) preview.preview_family = 'custom';
+
+		const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
+		const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
+		const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
+
+		// 2. Upload images if present and update records
+		const validImagesPresent = Object.entries(imageHandlers).some(([key, { hasValidImage }]) => {
+			hasValidImage && !keysForDeletion.find((k) => k === `delete_${key}`);
+		});
+		if (validImagesPresent) {
+			const queryResult = await db
+				.select({
+					preview_image_1_id: articles.preview_image_1_id,
+					preview_image_2_id: articles.preview_image_2_id
+				})
+				.from(articles)
+				.where(whereCondition)
+				.all();
+			const articleRecord = queryResult[0];
+
+			if (!queryResult) error(500);
+			const uploadPromises = Object.entries(imageHandlers).map(
+				async ([fieldName, imageHandler]) => {
+					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
+					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
+					if (
+						imageHandler.hasValidImage &&
+						!keysForDeletion.find((k) => k === `delete_${fieldName}`)
+					) {
+						await imageHandler.setUploaderFromUser(user);
+						const record = await imageHandler.processAndUpload({
+							imageId: articleRecord[fieldNameWithIdPrefix],
+							lang
+						});
+						await this.imageService.update(record.record, lang);
+					}
+				}
+			);
+			const deletionPromises = keysForDeletion.map((key) => {
+				const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
+				const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
+
+				return this.imageService.delete(articleRecord[fieldNameWithIdPrefix], lang);
+			});
+			await Promise.all([...deletionPromises, ...uploadPromises]);
+		}
+
+		// 3. Enqueue preview screenshots if needed
+		if (preview.preview_family === 'custom' && preview.preview_template_id) {
+			const articleResult = await db
+				.select({
+					articles,
+					images,
+					translations,
+					previewTemplateUrl: previewTemplates.url
+				})
+				.from(articles)
+				.innerJoin(previewTemplates, eq(previewTemplates.id, preview.preview_template_id))
+				.leftJoin(
+					images,
+					or(eq(images.id, articles.preview_image_1_id), eq(images.id, articles.preview_image_2_id))
+				)
+				.leftJoin(
+					translations,
+					or(
+						eq(translations.key, articles.preview_translation_1_key),
+						eq(translations.key, articles.preview_translation_2_key),
+						eq(translations.key, images.path_translation_key),
+						eq(translations.key, articles.title_translation_key)
+					)
+				)
+				.where(whereCondition)
+				.all();
+
+			if (articleResult) {
+				const { previewTemplateUrl } = articleResult[0];
+				const {
+					preview_columns,
+					preview_rows,
+					preview_translation_1_key,
+					preview_translation_2_key,
+					preview_image_1_id,
+					preview_image_2_id,
+					title_translation_key
+				} = articleResult[0].articles;
+				let { preview_screenshot_image_id } = articleResult[0].articles;
+
+				const imagesArr = articleResult
+					.map(({ images }) => images)
+					.filter(getNullAndDupFilter('id'));
+				const translationsArr = articleResult
+					.map(({ translations }) => translations)
+					.filter(getNullAndDupFilter('key'));
+
+				const preview_translation_1 =
+					translationsArr.find((t) => t.key === preview_translation_1_key)?.[
+						this.translationService.currentLang
+					] || '';
+				const preview_translation_2 =
+					translationsArr.find((t) => t.key === preview_translation_2_key)?.[
+						this.translationService.currentLang
+					] || '';
+				const titleTranslationObj = translationsArr.find((t) => t.key === title_translation_key);
+
+				const { width, height } = calculateDimensionsFromCellsTaken({
+					preview_columns,
+					preview_rows
+				});
+				const preview_image_1 = getMaybeTranslatedImagePath(
+					imagesArr,
+					translationsArr,
+					preview_image_1_id,
+					this.translationService.currentLang
+				);
+				const preview_image_2 = getMaybeTranslatedImagePath(
+					imagesArr,
+					translationsArr,
+					preview_image_2_id,
+					this.translationService.currentLang
+				);
+				const url = composeURLForScreenshot(previewTemplateUrl, {
+					width,
+					height,
+					lang: this.translationService.currentLang,
+					preview_prop_1: preview.preview_prop_1 || null,
+					preview_prop_2: preview.preview_prop_2 || null,
+					preview_translation_1,
+					preview_translation_2,
+					preview_image_1,
+					preview_image_2
+				});
+
+				// Creating screenshot image record if needed
+				if (!preview_screenshot_image_id) {
+					const newImageRecord = await this.imageService.create({ source });
+					preview_screenshot_image_id = newImageRecord.id;
+					await db
+						.update(articles)
+						.set({ preview_screenshot_image_id: newImageRecord.id })
+						.where(whereCondition);
+				}
+
+				if (preview_screenshot_image_id) {
+					const image_id = preview_screenshot_image_id;
+					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
+					if (preview.preview_create_localized_screenshots) {
+						queueRecordsForInsert = supportedLangs
+							.map((lang) => {
+								if (titleTranslationObj?.[lang]) {
+									return {
+										image_id,
+										width,
+										height,
+										lang,
+										url,
+										imageProviderData
+									};
+								} else {
+									return null;
+								}
+							})
+							.filter(nonNull);
+						if (queueRecordsForInsert.length === 0) {
+							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+						}
+					} else {
+						queueRecordsForInsert = [
+							{
+								image_id,
+								width,
+								height,
+								url,
+								imageProviderData
+							}
+						];
+					}
+
+					const queueRecordsInserPromise = db
+						.insert(screenshotsQueue)
+						.values(queueRecordsForInsert)
+						.run();
+					promisesToWaitFor.push(queueRecordsInserPromise);
+				}
+			}
+		} else {
+			// Delete any queues and images
+		}
+		return Promise.all(promisesToWaitFor);
+	}
+	async getOne(username: string, slug: string) {
+		const userPromise = await this.userService.get();
+		const titleTranslationAlias = alias(translations, 'title_translation');
+		const queryPromise = db
+			.select({
+				articles: articles,
+				titleTranslationAlias,
+				translations: {
+					key: translations.key,
+					[this.translationService.currentLang]: translations[this.translationService.currentLang]
+				},
+				previewTypes: previewTemplates,
+				tags,
+				images
+			})
+			.from(articles)
+			.innerJoin(users, eq(users.id, articles.user_id))
+			.leftJoin(previewTemplates, eq(previewTemplates.id, articles.preview_template_id))
+			.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, articles.id))
+			.leftJoin(tags, eq(tags.id, tagsToArticles.tag_id))
+			.leftJoin(
+				titleTranslationAlias,
+				eq(titleTranslationAlias.key, articles.title_translation_key)
+			)
+			.leftJoin(
+				images,
+				and(
+					eq(images.user_id, articles.user_id),
+					or(eq(images.owning_article_id, articles.id), eq(images.is_account_common, true))
+				)
+			)
+			.leftJoin(
+				translations,
+				or(
+					eq(translations.key, articles.content_translation_key),
+					eq(translations.key, tags.name_translation_key),
+					eq(translations.key, images.path_translation_key)
+				)
+			)
+
+			.where(
+				and(
+					eq(users.username, username),
+					eq(articles.slug, slug),
+					isNotNull(titleTranslationAlias[this.translationService.currentLang])
+				)
+			)
+			.all();
+
+		const [query, user] = await Promise.all([queryPromise, userPromise]);
+
+		if (!query.length) {
+			error(404);
+		}
+		if ((!user || user.username !== username) && query[0].articles.publish_time === null) {
+			error(404);
+		}
+		return {
+			article: query[0].articles,
+			previewType: query[0].previewTypes,
+			translations: Object.fromEntries([
+				...query
+					.map((row) => row.translations)
+					.filter(getNullAndDupFilter('key'))
+					.map((row) => [row.key, row[this.translationService.currentLang]]),
+				...query
+					.map((row) => row.titleTranslationAlias)
+					.filter(getNullAndDupFilter('key'))
+					.map((row) => [row.key, row[this.translationService.currentLang]])
+			]),
+			images: query.map((rows) => rows.images).filter(getNullAndDupFilter('id')),
+			tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
+		};
+	}
+}

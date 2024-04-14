@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { and, desc, eq, getTableColumns, inArray, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
-import { superValidate, type SuperValidated } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
@@ -9,11 +9,7 @@ import { db } from '$lib/services/db';
 import { articles } from '../article/schemas';
 import { users } from '../auth/schemas';
 import type { UserService } from '../auth/service';
-import {
-	translationInsertSchema,
-	translationUpdateSchema,
-	type TranslationUpdate
-} from '../i18n/parsers';
+import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schemas';
 import type { TranslationService } from '../i18n/service';
 import { previewTemplates } from '../preview/schemas';
@@ -312,8 +308,6 @@ export class PageService {
 		);
 		const descriptionFormsArr = await Promise.all(descriptionFormsPromises);
 		const descriptionForms = Object.fromEntries(descriptionFormsArr.flat());
-
-		console.log('descriptionsForms', descriptionForms);
 
 		return {
 			sections: sectionsNonEmpty.map(([sectionInfo, articlesInfo, tagsArticlesInfo]) => {
