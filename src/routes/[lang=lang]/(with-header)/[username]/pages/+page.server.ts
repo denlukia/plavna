@@ -8,8 +8,8 @@ import {
 	type PageCreationForm
 } from '$lib/features/page/parsers';
 
-export const load = async ({ locals: { plavna }, params, parent }) => {
-	const forms = await plavna.pages.getMyAsForms(params.username);
+export const load = async ({ locals: { pageService }, params, parent }) => {
+	const forms = await pageService.getMyAsForms(params.username);
 	const { systemTranslations } = await parent();
 
 	return {
@@ -35,37 +35,37 @@ function failWithSlugError(form: SuperValidated<PageCreationForm>) {
 }
 
 export const actions = {
-	create: async ({ locals: { plavna }, request }) => {
+	create: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageCreationFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			await plavna.pages.create(form.data);
+			await pageService.create(form.data);
 		} catch {
 			return failWithSlugError(form);
 		}
 
 		return { form };
 	},
-	update: async ({ locals: { plavna }, request }) => {
+	update: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
 
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			await plavna.pages.update(form.data);
+			await pageService.update(form.data);
 		} catch {
 			return failWithSlugError(form);
 		}
 
 		return { form };
 	},
-	delete: async ({ locals: { plavna }, request }) => {
+	delete: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			await plavna.pages.delete(form.data.id);
+			await pageService.delete(form.data.id);
 		} catch (e) {
 			return fail(400, { form });
 		}

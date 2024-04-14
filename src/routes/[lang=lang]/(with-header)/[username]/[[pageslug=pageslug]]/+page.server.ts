@@ -4,7 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { translationInsertSchema } from '$lib/features/i18n/parsers';
 import { sectionDeleteSchema, sectionUpdateSchema } from '$lib/features/section/parsers';
 
-export const load = async ({ params, locals: { plavna } }) => {
+export const load = async ({ params, locals: { pageService } }) => {
 	const { username } = params;
 
 	let pageslug = '';
@@ -15,30 +15,28 @@ export const load = async ({ params, locals: { plavna } }) => {
 		pageslug = params.pageslug?.slice(prefix.length) || '';
 		if (!pageslug) return error(404);
 	}
-	const result = await plavna.pages.getOneWithSectionsAndArticles(username, pageslug);
-
-	return { ...result, recordsTranslations: result.translations };
+	return pageService.getOneWithSectionsAndArticles(username, pageslug);
 };
 
 export const actions = {
-	create_section: async ({ request, params, locals: { plavna } }) => {
+	create_section: async ({ request, params, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(translationInsertSchema));
 		if (!form.valid) return fail(400, { form });
 
 		const pageslug = params.pageslug ?? '';
 
-		await plavna.sections.create(pageslug, form.data);
+		await sectionService.create(pageslug, form.data);
 	},
-	update_section: async ({ request, locals: { plavna } }) => {
+	update_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionUpdateSchema));
 		if (!form.valid) return fail(400, { form });
 
-		await plavna.sections.update(form.data);
+		await sectionService.update(form.data);
 	},
-	delete_section: async ({ request, locals: { plavna } }) => {
+	delete_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionDeleteSchema));
 		if (!form.valid) return fail(400, { form });
 
-		await plavna.sections.delete(form.data);
+		await sectionService.delete(form.data);
 	}
 };

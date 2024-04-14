@@ -1,3 +1,7 @@
+import type { ResultSet } from '@libsql/client';
+import type { ExtractTablesWithRelations } from 'drizzle-orm';
+import type { SQLiteTransaction } from 'drizzle-orm/sqlite-core';
+
 export type UnionIncludesAll<T, U> = Exclude<U, T> extends never ? true : false;
 
 export type RemoveNullValues<T> = {
@@ -15,3 +19,10 @@ type RequiredNotNull<T> = {
 };
 
 export type PartialNonNull<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;
+
+export type TransactionContext = SQLiteTransaction<
+	'async',
+	ResultSet,
+	typeof import('$lib/collections/schemas'),
+	ExtractTablesWithRelations<typeof import('$lib/collections/schemas')>
+>;

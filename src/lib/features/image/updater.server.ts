@@ -2,7 +2,7 @@ import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 
-import type Plavna from '../../services/plavna';
+import type Plavna from '../page/service';
 
 export async function updateImages({
 	imagesKeys,
