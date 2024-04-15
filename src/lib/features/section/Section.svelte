@@ -1,21 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import ArticlePreview from '../article/ArticlePreview.svelte';
 	import type { ArticleSelect } from '../article/parsers';
-	import type { TranslationUpdate } from '../i18n/parsers';
 	import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
-	import type { SectionSelect } from './parsers';
 	import SectionEditor from './SectionEditor.svelte';
 	import SectionViewer from './SectionViewer.svelte';
+	import type { SectionProp, SectionPropNonEmptyForms } from './types';
 
-	export let section: {
-		meta: SectionSelect;
-		articles: ArticleSelect[];
-		tagsArticles: TagToArticleSelect[];
+	type Props = {
+		section: SectionProp;
 	};
-	export let formObj: SuperValidated<TranslationUpdate>;
+
+	let { section }: Props = $props();
 
 	function getTagsForArticle(
 		article: ArticleSelect,
@@ -29,12 +26,16 @@
 			return [];
 		}
 	}
+
+	function sectionHasForms(section: SectionProp): section is SectionPropNonEmptyForms {
+		return Boolean(section.forms);
+	}
 </script>
 
-{#if $page.data.user && $page.data.user.username === $page.params.username}
-	<SectionEditor section={section.meta} {formObj} />
+{#if $page.data.user && $page.data.user.username === $page.params.username && sectionHasForms(section)}
+	<SectionEditor {section} />
 {:else}
-	<SectionViewer section={section.meta} />
+	<SectionViewer {section} />
 {/if}
 
 {#each section.articles as article (article.id)}

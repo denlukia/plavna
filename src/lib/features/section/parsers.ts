@@ -7,29 +7,27 @@ import { sections, sectionsToTags } from './schema';
 
 // Parsers
 export const sectionSelectSchema = createSelectSchema(sections);
-export const sectionInsertSchema = createInsertSchema(sections);
-export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
+export const sectionInsertSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
 	section_id: sectionSelectSchema.shape.id
 });
-export const sectionDeleteSchema = sectionSelectSchema.pick({ id: true });
-
-// Types
-export type SectionSelect = z.infer<typeof sectionSelectSchema>;
-export type SectionInsert = z.infer<typeof sectionInsertSchema>;
-export type SectionUpdate = z.infer<typeof sectionUpdateSchema>;
-export type SectionDelete = z.infer<typeof sectionDeleteSchema>; // Sections to Tags
+export const sectionUpdateSchema = sectionInsertSchema;
+export const sectionDeleteSchema = sectionUpdateSchema.pick({ section_id: true });
 
 export const sectionToTagSelectSchema = createSelectSchema(sectionsToTags);
-export const sectionToTagInsertSchema = createInsertSchema(sectionsToTags); // Excluded Tags Config
+export const sectionToTagInsertSchema = createInsertSchema(sectionsToTags);
 
 export const excludedTags = z.record(
 	sectionSelectSchema.shape.id,
 	z.array(tagSelectSchema.shape.id)
 );
-// Sections to Tags
+
+// Types
+export type SectionSelect = z.infer<typeof sectionSelectSchema>;
+export type SectionInsert = z.infer<typeof sectionInsertSchema>;
+export type SectionUpdate = z.infer<typeof sectionUpdateSchema>;
+export type SectionDelete = z.infer<typeof sectionDeleteSchema>;
 
 export type SectionToTagSelect = z.infer<typeof sectionToTagSelectSchema>;
 export type SectionToTagInsert = z.infer<typeof sectionToTagInsertSchema>;
-// Excluded Tags Config
 
 export type ExcludedTags = z.infer<typeof excludedTags>;

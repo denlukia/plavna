@@ -12,7 +12,7 @@ import { db } from '$lib/services/db';
 
 import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
-import { getNullAndDupFilter, nonNull } from '../common/utils';
+import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -536,7 +536,7 @@ export class ArticleService {
 									return null;
 								}
 							})
-							.filter(nonNull);
+							.filter(isNonNullable);
 						if (queueRecordsForInsert.length === 0) {
 							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}

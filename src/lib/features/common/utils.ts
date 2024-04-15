@@ -108,8 +108,8 @@ export function removeNullValues<T extends Object>(obj: T) {
 	) as RemoveNullValues<T>;
 }
 
-export function nonNull<T>(value: T): value is NonNullable<T> {
-	return value !== null;
+export function isNonNullable<T>(value: T): value is NonNullable<T> {
+	return value !== null && value !== undefined;
 }
 
 export function nonNullValueInEntry<T>(entry: [string, T]): entry is [string, NonNullable<T>] {

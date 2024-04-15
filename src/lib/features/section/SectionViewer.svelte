@@ -1,8 +1,14 @@
 <script lang="ts">
-	import Translation from '../i18n/Translation.svelte';
-	import type { SectionSelect } from './parsers';
+	import Typography from '$lib/design-system/components/Typography.svelte';
 
-	export let section: SectionSelect;
+	import Translation from '../i18n/Translation.svelte';
+	import type { SectionProp } from './types';
+
+	type Props = {
+		section: SectionProp;
+	};
+
+	let { section }: Props = $props();
 </script>
 
-<Translation recordKey={section.title_translation_key} />
+<Translation recordKey={section.meta.title_translation_key} markdown />

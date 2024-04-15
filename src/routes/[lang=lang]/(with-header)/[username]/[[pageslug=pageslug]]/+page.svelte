@@ -6,9 +6,9 @@
 	let { data } = $props();
 </script>
 
-{#each data.sections as section}
-	<Section {section} formObj={data.descriptionForms[section.meta.title_translation_key]} />
+{#each data.sections.items as section}
+	<Section {section} />
 {/each}
 {#if $page.data.user && $page.data.user.username === $page.params.username}
-	<SectionCreator formObj={data.sectionCreationForm} />
+	<SectionCreator formData={data.sections.creationForm} />
 {/if}

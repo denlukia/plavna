@@ -9,10 +9,12 @@ import { db } from '$lib/services/db';
 import { articles } from '../article/schema';
 import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
+import { isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import { previewTemplates } from '../preview/schema';
+import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
 import { tags, tagsToArticles } from '../tag/schema';
 import {
@@ -110,7 +112,7 @@ export class PageService {
 						isNotNull(translations[this.translationService.currentLang])
 					)
 				)
-				.limit(SECTIONS_PER_LOAD)
+				.limit(1)
 				.offset(index);
 			const sectionQueryForTranslatins = db
 				.select({ id: sections.title_translation_key })
@@ -122,7 +124,7 @@ export class PageService {
 						isNotNull(translations[this.translationService.currentLang])
 					)
 				)
-				.limit(SECTIONS_PER_LOAD)
+				.limit(1)
 				.offset(index);
 			const sectionQueryAliased = sectionQueryForArticles.as('section_sq');
 
@@ -236,12 +238,13 @@ export class PageService {
 								)
 							);
 
-			// 5. Sections Translations query
-			const sectionsTranslationsQuery = db
-				.select({ translations })
+			// 5. Description Translation query
+			const descriptionTranslationQuery = db
+				.select()
 				.from(translations)
 				.where(inArray(translations.key, sectionQueryForTranslatins))
-				.groupBy(translations.key);
+				.groupBy(translations.key)
+				.limit(1);
 
 			// 6. Other Translations query
 			const otherTranslationsQuery = db
@@ -268,11 +271,11 @@ export class PageService {
 				)
 				.groupBy(previewTemplates.id);
 
-			const sectionInfo = sectionQueryForArticles.all();
+			const sectionInfo = sectionQueryForArticles.get();
 			const articlesInfo = articlesQuery.all();
 			const tagsArticlesInfo = tagsArticlesQuery.all();
 			const tagsInfo = tagsQuery.all();
-			const sectionsTranslationsInfo = sectionsTranslationsQuery.all();
+			const descriptionTranslationInfo = descriptionTranslationQuery.get();
 			const otherTranslationsInfo = otherTranslationsQuery.all();
 			const previewTypesInfo = allPreviewTypesQuery.all();
 
@@ -281,50 +284,75 @@ export class PageService {
 				articlesInfo,
 				tagsArticlesInfo,
 				tagsInfo,
-				sectionsTranslationsInfo,
+				descriptionTranslationInfo,
 				otherTranslationsInfo,
 				previewTypesInfo
 			]);
 		});
 		const sectionsResponses = await Promise.all(sectionsPromises);
-		const sectionsNonEmpty = sectionsResponses.filter((res) => res[0].length);
+		const sectionsNonEmpty = sectionsResponses
+			.map(([sectionInfo, ...other]) =>
+				isNonNullable(sectionInfo) ? ([sectionInfo, ...other] as const) : null
+			)
+			.filter(isNonNullable);
 
-		const descriptionFormsPromises = sectionsNonEmpty.map(
-			async ([, , , , sectionsTranslationsInfo]) => {
-				const translationsPromises = sectionsTranslationsInfo.map(async (t) => {
-					if (user?.username === username) {
-						return [
-							t.translations.key,
-							await superValidate(t.translations, zod(translationUpdateSchema), {
-								id: 'section-translation-' + t.translations.key
-							})
-						];
-					} else {
-						return [t.translations.key, t.translations[this.translationService.currentLang]];
-					}
-				});
-				return await Promise.all(translationsPromises);
+		type SectionInfo = (typeof sectionsNonEmpty)[number][0];
+		type DescriptionTranslationInfo = (typeof sectionsNonEmpty)[number][4];
+
+		const canAddDescriptionForms = user?.username === username;
+
+		const getSectionForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
+			if (!t) throw new Error('Translation not found');
+			if (canAddDescriptionForms) {
+				const data = { ...t, section_id: sectionInfo.id };
+				return {
+					updating: await superValidate(data, zod(sectionUpdateSchema), {
+						id: `section-updating-${t.key}`
+					}),
+					deletion: await superValidate(data, zod(sectionDeleteSchema), {
+						id: `section-deletion-${t.key}`
+					})
+				};
+			} else {
+				return null;
 			}
-		);
-		const descriptionFormsArr = await Promise.all(descriptionFormsPromises);
-		const descriptionForms = Object.fromEntries(descriptionFormsArr.flat());
+		};
 
 		return {
-			sections: sectionsNonEmpty.map(([sectionInfo, articlesInfo, tagsArticlesInfo]) => {
-				return { meta: sectionInfo[0], articles: articlesInfo, tagsArticles: tagsArticlesInfo };
-			}),
+			sections: {
+				items: await Promise.all(
+					sectionsNonEmpty.map(
+						async ([sectionInfo, articlesInfo, tagsArticlesInfo, , descriptionTranslationInfo]) => {
+							return {
+								meta: sectionInfo,
+								articles: articlesInfo,
+								tagsArticles: tagsArticlesInfo,
+								forms: await getSectionForms(sectionInfo, descriptionTranslationInfo)
+							};
+						}
+					)
+				),
+				creationForm: await superValidate(zod(sectionInsertSchema))
+			},
 			tags: sectionsNonEmpty.reduce((acc, [, , , tagsInfo]) => {
 				return {
 					...acc,
 					...Object.fromEntries(tagsInfo.map((t) => [t.tags.id, t]))
 				};
 			}, {}),
-			descriptionForms,
 			recordsTranslations: {
 				...sectionsNonEmpty.reduce(
-					(acc, [, , , , , otherTranslationsInfo]) => {
+					(acc, [, , , , descriptionTranslationInfo, otherTranslationsInfo]) => {
+						if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
+						const descriptionTranslation = !canAddDescriptionForms
+							? {
+									[descriptionTranslationInfo.key]:
+										descriptionTranslationInfo[this.translationService.currentLang]
+								}
+							: {};
 						return {
 							...acc,
+							...descriptionTranslation,
 							...Object.fromEntries(
 								otherTranslationsInfo.map((t) => {
 									return [t.key, t[this.translationService.currentLang]];
@@ -344,8 +372,7 @@ export class PageService {
 						})
 					)
 				};
-			}, {}),
-			sectionCreationForm: await superValidate(zod(translationInsertSchema))
+			}, {})
 		};
 	}
 }
