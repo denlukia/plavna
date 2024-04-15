@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
-	import type { SuperValidated } from 'sveltekit-superforms';
 
-	import type { TranslationUpdate } from '../i18n/parsers';
 	import TranslationInput from '../i18n/TranslationInput.svelte';
-	import type { SectionSelect } from './parsers';
+	import type { SectionPropNonEmptyForms } from './types';
 
-	export let section: SectionSelect;
-	export let formObj: SuperValidated<TranslationUpdate>;
+	type Props = {
+		section: SectionPropNonEmptyForms;
+	};
 
-	$: superFormStores = superForm(formObj);
-	$: ({ form, enhance } = superFormStores);
+	let { section }: Props = $props();
+
+	let {
+		forms: { updating: updatingFormData, deletion: deletionFormData }
+	} = section;
+
+	let { form: updatingForm, enhance: updatingEnhance } = superForm(updatingFormData);
+	let { form: deletionForm, enhance: deletionEnhance } = superForm(deletionFormData);
 </script>
 
-<form use:enhance action="?/update_section" method="POST">
-	<input name="section_id" type="hidden" bind:value={section.id} />
-	<TranslationInput {superFormStores} />
+<form use:updatingEnhance action="?/update_section" method="POST">
+	<input name="section_id" type="hidden" bind:value={$updatingForm.section_id} />
+	<TranslationInput form={updatingForm} />
 	<button type="submit">Update Section</button>
 </form>
-<form use:enhance action="?/delete_section" method="POST">
-	<input name="id" type="hidden" bind:value={section.id} />
+<form use:deletionEnhance action="?/delete_section" method="POST">
+	<input name="section_id" type="hidden" bind:value={$deletionForm.section_id} />
 	<button type="submit">Delete Section</button>
 </form>

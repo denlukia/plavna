@@ -10,16 +10,13 @@ import type {
 } from '../preview/parsers';
 import { articles } from './schema';
 
-// Articles
-
 export const articleSelectSchema = createSelectSchema(articles, {
 	preview_family: z.enum(previewFamiliesIds)
 });
 export const articleInsertSchema = createInsertSchema(articles, {
 	preview_family: z.enum(previewFamiliesIds)
 });
-
-export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true }); // Articles
+export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true });
 
 export type ArticleSelect = z.infer<typeof articleSelectSchema>;
 export type ArticleInsert = z.infer<typeof articleInsertSchema>;

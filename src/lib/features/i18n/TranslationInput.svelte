@@ -7,18 +7,22 @@
 	import { generatePath } from '$lib/features/common/links';
 
 	import type { PreviewTemplateCreationForm, PreviewTemplateEditingForm } from '../preview/parsers';
+	import type { SectionUpdate } from '../section/parsers';
 	import type { TranslationInsert, TranslationUpdate } from './parsers';
 
-	export let superFormStores:
-		| SuperForm<TranslationInsert>
-		| SuperForm<TranslationUpdate>
-		| SuperForm<PreviewTemplateCreationForm>
-		| SuperForm<PreviewTemplateEditingForm>;
+	type Props = {
+		form:
+			| SuperForm<TranslationInsert>['form']
+			| SuperForm<TranslationUpdate>['form']
+			| SuperForm<SectionUpdate>['form']
+			| SuperForm<PreviewTemplateCreationForm>['form']
+			| SuperForm<PreviewTemplateEditingForm>['form'];
+		prefix?: string;
+	};
 
-	export let prefix: string = '';
+	let { form, prefix }: Props = $props();
 
-	$: ({ form, errors, enhance } = superFormStores);
-	$: currentLang = $page.params.lang as SupportedLang;
+	let currentLang = $state($page.params.lang as SupportedLang);
 </script>
 
 <div class="translation-input">

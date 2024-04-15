@@ -25,10 +25,10 @@
 		recordKey?: null;
 	};
 	type Props = {
-		markdownMode?: boolean;
+		markdown?: boolean;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let { formObj, key, recordKey, markdownMode = false }: Props = $props();
+	let { formObj, key, recordKey, markdown = false }: Props = $props();
 
 	function getTranslation() {
 		if (formObj) return formObj.data[$page.params.lang as SupportedLang];
@@ -48,16 +48,13 @@
 	});
 </script>
 
-{#if formObj}
-	{formObj.data[$page.params.lang as SupportedLang]}
-{:else if key}
-	{#if nonNullTranslation}
-		{#if markdownMode}
-			<SvelteMarkdown source={nonNullTranslation} renderers={{ image: Image }} />
-		{:else}
-			{nonNullTranslation}
-		{/if}
+<!-- TODO add typography renderers for markdown  -->
+{#if nonNullTranslation}
+	{#if markdown}
+		<SvelteMarkdown source={nonNullTranslation} renderers={{ image: Image }} />
 	{:else}
-		...
+		{nonNullTranslation}
 	{/if}
+{:else}
+	...
 {/if}

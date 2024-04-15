@@ -2,16 +2,19 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	import type { TranslationInsert } from '../i18n/parsers';
 	import TranslationInput from '../i18n/TranslationInput.svelte';
+	import type { SectionInsert } from './parsers';
 
-	export let formObj: SuperValidated<TranslationInsert>;
+	type Props = {
+		formData: SuperValidated<SectionInsert>;
+	};
 
-	$: superFormStores = superForm(formObj);
-	$: ({ enhance } = superFormStores);
+	let { formData }: Props = $props();
+
+	let { form, enhance } = superForm(formData);
 </script>
 
 <form use:enhance action="?/create_section" method="POST">
-	<TranslationInput {superFormStores} />
+	<TranslationInput {form} />
 	<button type="submit">Create Section</button>
 </form>

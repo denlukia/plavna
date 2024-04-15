@@ -7,7 +7,7 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import type { UserService } from '../auth/service';
-import { nonNull } from '../common/utils';
+import { isNonNullable } from '../common/utils';
 import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
 import { pages } from '../page/schema';
@@ -31,7 +31,7 @@ export class SectionService {
 
 		supportedLangs.forEach((lang) => {
 			const translationText = translation[lang];
-			if (nonNull(translationText)) {
+			if (isNonNullable(translationText)) {
 				const tokens = marked.lexer(translationText);
 				const thisLangTags = findTagIdsInLinks(tokens);
 				foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
@@ -86,7 +86,7 @@ export class SectionService {
 
 		supportedLangs.forEach((lang) => {
 			const translationText = translation[lang];
-			if (nonNull(translationText)) {
+			if (isNonNullable(translationText)) {
 				const tokens = marked.lexer(translationText);
 				const thisLangTags = findTagIdsInLinks(tokens);
 				foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));

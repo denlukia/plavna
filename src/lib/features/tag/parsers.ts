@@ -18,8 +18,6 @@ export const tagToArticleSelectSchema = createSelectSchema(tagsToArticles); // T
 export type TagSelect = z.infer<typeof tagSelectSchema>;
 export type TagInsert = z.infer<typeof tagInsertSchema>;
 export type TagUpdate = z.infer<typeof tagUpdateSchema>;
-export type TagUpdateZod = typeof tagUpdateSchema;
 export type TagDelete = z.infer<typeof tagDeleteSchema>;
-export type TagDeleteZod = typeof tagDeleteSchema;
 
 export type TagToArticleSelect = z.infer<typeof tagToArticleSelectSchema>;
