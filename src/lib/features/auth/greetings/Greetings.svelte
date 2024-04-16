@@ -2,9 +2,9 @@
 	import GreetingsScene from './GreetingsScene.svelte';
 </script>
 
-<div class="greetings-layer shade" />
-<video class="greetings-layer video" src="/videos/Colorfull Clouds.mp4" loop autoplay muted />
-<div class="greetings-layer noise" />
+<div class="greetings-layer shade"></div>
+<video class="greetings-layer video" src="/videos/Colorfull Clouds.mp4" loop autoplay muted></video>
+<div class="greetings-layer noise"></div>
 <div class="greetings-layer scene">
 	<GreetingsScene />
 </div>

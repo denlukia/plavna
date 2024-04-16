@@ -344,12 +344,10 @@ export class PageService {
 				...sectionsNonEmpty.reduce(
 					(acc, [, , , , descriptionTranslationInfo, otherTranslationsInfo]) => {
 						if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
-						const descriptionTranslation = !canAddDescriptionForms
-							? {
-									[descriptionTranslationInfo.key]:
-										descriptionTranslationInfo[this.translationService.currentLang]
-								}
-							: {};
+						const descriptionTranslation = {
+							[descriptionTranslationInfo.key]:
+								descriptionTranslationInfo[this.translationService.currentLang]
+						};
 						return {
 							...acc,
 							...descriptionTranslation,

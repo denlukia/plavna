@@ -29,7 +29,7 @@
 </script>
 
 <svelte:window {onkeypress} />
-<div style="--bg-url: {bgURL}; --size: {size}px;" class="grid" class:visible />
+<div style="--bg-url: {bgURL}; --size: {size}px;" class="grid" class:visible></div>
 
 <style>
 	.grid {
