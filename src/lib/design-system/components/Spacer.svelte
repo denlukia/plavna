@@ -6,7 +6,7 @@
 	let { size = 'm' }: Props = $props();
 </script>
 
-<span class="spacer {size}" />
+<span class="spacer {size}"></span>
 
 <style>
 	.spacer {

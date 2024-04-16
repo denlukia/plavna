@@ -38,11 +38,14 @@
 
 	// At new page loads translations for outroing page are erased
 	// but are still needed while outroing transitons are played, so:
-	// 1. We get the translation, wether present or null
+
+	// 1. We get the translation, whether present or null
 	let translation = $derived.by(getTranslation);
 
-	// 2. We create a state that is updated only when translation is not null
+	// 2. We create a state from that initial value...
 	let nonNullTranslation: typeof translation = $state(translation);
+
+	// 3. ...and update it only when translation is not null
 	$effect(() => {
 		if (translation) nonNullTranslation = translation;
 	});

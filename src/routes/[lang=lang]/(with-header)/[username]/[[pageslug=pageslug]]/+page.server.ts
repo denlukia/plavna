@@ -1,8 +1,11 @@
 import { error, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { translationInsertSchema } from '$lib/features/i18n/parsers';
-import { sectionDeleteSchema, sectionUpdateSchema } from '$lib/features/section/parsers';
+import {
+	sectionDeleteSchema,
+	sectionInsertSchema,
+	sectionUpdateSchema
+} from '$lib/features/section/parsers';
 
 export const load = async ({ params, locals: { pageService } }) => {
 	const { username } = params;
@@ -20,7 +23,7 @@ export const load = async ({ params, locals: { pageService } }) => {
 
 export const actions = {
 	create_section: async ({ request, params, locals: { sectionService } }) => {
-		const form = await superValidate(request, zod(translationInsertSchema));
+		const form = await superValidate(request, zod(sectionInsertSchema));
 		if (!form.valid) return fail(400, { form });
 
 		const pageslug = params.pageslug ?? '';

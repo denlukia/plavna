@@ -8,12 +8,11 @@ import { db } from '$lib/services/db';
 
 import type { UserService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
-import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
 import { pages } from '../page/schema';
 import type { TagUpdate } from '../tag/parsers';
 import { tags } from '../tag/schema';
-import type { SectionDelete, SectionUpdate } from './parsers';
+import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
 import { sections, sectionsToTags } from './schema';
 import { findTagIdsInLinks } from './utils';
 
@@ -25,12 +24,12 @@ export class SectionService {
 		this.userService = userService;
 		this.translationService = translationService;
 	}
-	async create(pagename: string, translation: TranslationInsert) {
+	async create(pagename: string, section: SectionInsert) {
 		const user = await this.userService.getOrThrow();
 		const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
 
 		supportedLangs.forEach((lang) => {
-			const translationText = translation[lang];
+			const translationText = section[lang];
 			if (isNonNullable(translationText)) {
 				const tokens = marked.lexer(translationText);
 				const thisLangTags = findTagIdsInLinks(tokens);
@@ -39,7 +38,7 @@ export class SectionService {
 		});
 
 		await db.transaction(async (trx) => {
-			const translationForRecord = { ...translation, user_id: user.id };
+			const translationForRecord = { ...section, user_id: user.id };
 			const [createdTranslation] = await this.translationService.create(
 				[translationForRecord],
 				'disallow-empty',
@@ -133,7 +132,7 @@ export class SectionService {
 			const translation = await trx
 				.select({ title_translation_key: sections.title_translation_key })
 				.from(sections)
-				.where(and(eq(sections.id, sectionDelete.id), eq(sections.user_id, user.id)))
+				.where(and(eq(sections.id, sectionDelete.section_id), eq(sections.user_id, user.id)))
 				.get();
 			if (!translation) {
 				error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
@@ -142,7 +141,7 @@ export class SectionService {
 			await this.translationService.delete({ key: title_translation_key }, trx);
 			await trx
 				.delete(sectionsToTags)
-				.where(and(eq(sectionsToTags.section_id, sectionDelete.id)))
+				.where(and(eq(sectionsToTags.section_id, sectionDelete.section_id)))
 				.run();
 		});
 	}

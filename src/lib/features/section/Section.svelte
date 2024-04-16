@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Button from '$lib/design-system/components/Button.svelte';
 
 	import ArticlePreview from '../article/ArticlePreview.svelte';
 	import type { ArticleSelect } from '../article/parsers';
@@ -13,6 +14,8 @@
 	};
 
 	let { section }: Props = $props();
+
+	let editorOpened = $state(false);
 
 	function getTagsForArticle(
 		article: ArticleSelect,
@@ -32,9 +35,11 @@
 	}
 </script>
 
-{#if $page.data.user && $page.data.user.username === $page.params.username && sectionHasForms(section)}
+{#if sectionHasForms(section) && editorOpened}
+	<Button onclick={() => (editorOpened = false)}>Close Editor</Button>
 	<SectionEditor {section} />
 {:else}
+	<Button onclick={() => (editorOpened = true)}>Edit Section</Button>
 	<SectionViewer {section} />
 {/if}
 

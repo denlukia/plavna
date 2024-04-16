@@ -20,7 +20,7 @@
 		prefix?: string;
 	};
 
-	let { form, prefix }: Props = $props();
+	let { form, prefix = '' }: Props = $props();
 
 	let currentLang = $state($page.params.lang as SupportedLang);
 </script>

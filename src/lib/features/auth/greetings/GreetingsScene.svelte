@@ -131,7 +131,7 @@
 	bind:this={canvas}
 	bind:clientWidth={canvasRect.width}
 	bind:clientHeight={canvasRect.height}
-/>
+></canvas>
 
 <style>
 	canvas {
