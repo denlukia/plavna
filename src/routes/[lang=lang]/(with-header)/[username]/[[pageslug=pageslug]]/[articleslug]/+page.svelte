@@ -7,7 +7,7 @@
 <h1>
 	<Translation recordKey={data.article.title_translation_key} />
 </h1>
-<Translation recordKey={data.article.content_translation_key} markdownMode />
+<Translation recordKey={data.article.content_translation_key} markdown />
 <!-- {#if data.previewComponent}
 	<svelte:component this={data.previewComponent} />
 {:else}
