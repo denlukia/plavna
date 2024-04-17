@@ -27,6 +27,8 @@ export function createPressWatcher(releaseTime: number = 150) {
 		onpointerup() {
 			truePressed = false;
 		}
+
+		// TODO Improve pressedness cancelation on mouse leave (onmouseleave/out/cancel are not working)
 	};
 }
 

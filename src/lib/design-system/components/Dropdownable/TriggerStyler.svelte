@@ -14,7 +14,7 @@
 	};
 	let { isInInput = false, isActive = false, children }: Props = $props();
 
-	let watcher = createPressWatcher();
+	const watcher = createPressWatcher();
 </script>
 
 <span

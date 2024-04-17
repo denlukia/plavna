@@ -8,11 +8,11 @@
 	export let formObj: SuperValidated<TranslationUpdate>;
 
 	$: superFormStores = superForm(formObj);
-	$: ({ enhance } = superFormStores);
+	$: ({ form, enhance } = superFormStores);
 </script>
 
 <form use:enhance action="?/update_translation" class="translation-input" method="POST">
-	<TranslationInput {superFormStores} />
+	<TranslationInput {form} />
 	<button type="submit">Save</button>
 </form>
 

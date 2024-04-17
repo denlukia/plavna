@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
+	import Button from '$lib/design-system/components/Button.svelte';
 
 	import TranslationInput from '../i18n/TranslationInput.svelte';
-	import type { SectionPropNonEmptyForms } from './types';
+	import type { SectionPropWithAuthorship } from './types';
 
 	type Props = {
-		section: SectionPropNonEmptyForms;
+		forms: SectionPropWithAuthorship['forms'];
+		oncancel: () => void;
 	};
 
-	let { section }: Props = $props();
+	let { forms, oncancel }: Props = $props();
 
-	let {
-		forms: { updating: updatingFormData, deletion: deletionFormData }
-	} = section;
+	let { updating: updatingFormData, deletion: deletionFormData } = forms;
 
 	let { form: updatingForm, enhance: updatingEnhance } = superForm(updatingFormData);
 	let { form: deletionForm, enhance: deletionEnhance } = superForm(deletionFormData);
@@ -27,3 +27,4 @@
 	<input name="section_id" type="hidden" bind:value={$deletionForm.section_id} />
 	<button type="submit">Delete Section</button>
 </form>
+<Button onclick={oncancel}>Cancel</Button>

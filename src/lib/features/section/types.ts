@@ -1,0 +1,18 @@
+import type { SuperValidated } from 'sveltekit-superforms';
+
+import type { ArticleSelect } from '../article/parsers';
+import type { TagToArticleSelect } from '../tag/parsers';
+import type { SectionDelete, SectionSelect, SectionUpdate } from './parsers';
+
+export type SectionProp = {
+	meta: SectionSelect;
+	articles: ArticleSelect[];
+	tagsArticles: TagToArticleSelect[];
+	forms: {
+		updating: SuperValidated<SectionUpdate>;
+		deletion: SuperValidated<SectionDelete>;
+	} | null;
+};
+export type SectionPropWithAuthorship = SectionProp & {
+	forms: NonNullable<SectionProp['forms']>;
+};

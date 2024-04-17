@@ -8,13 +8,13 @@
 	export let superFormObj: SuperValidated<TranslationInsert>;
 
 	$: superFormStores = superForm(superFormObj);
-	$: ({ enhance } = superFormStores);
+	$: ({ form, enhance } = superFormStores);
 </script>
 
 <fieldset>
 	Створення тегу
 	<form use:enhance action="?/create_tag" method="POST">
-		<TranslationInput {superFormStores} />
+		<TranslationInput {form} />
 		<button type="submit">Save</button>
 	</form>
 </fieldset>

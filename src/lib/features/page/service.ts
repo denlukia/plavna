@@ -10,7 +10,6 @@ import { articles } from '../article/schema';
 import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
-import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import { previewTemplates } from '../preview/schema';

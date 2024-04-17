@@ -7,7 +7,7 @@
 	import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 	import SectionEditor from './SectionEditor.svelte';
 	import SectionViewer from './SectionViewer.svelte';
-	import type { SectionProp, SectionPropNonEmptyForms } from './types';
+	import type { SectionProp, SectionPropWithAuthorship } from './types';
 
 	type Props = {
 		section: SectionProp;
@@ -30,14 +30,14 @@
 		}
 	}
 
-	function sectionHasForms(section: SectionProp): section is SectionPropNonEmptyForms {
+	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
 		return Boolean(section.forms);
 	}
 </script>
 
 {#if sectionHasForms(section) && editorOpened}
 	<Button onclick={() => (editorOpened = false)}>Close Editor</Button>
-	<SectionEditor {section} />
+	<SectionEditor forms={section.forms} />
 {:else}
 	<Button onclick={() => (editorOpened = true)}>Edit Section</Button>
 	<SectionViewer {section} />
