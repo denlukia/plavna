@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { PUBLIC_HOST, PUBLIC_PORT } from '$env/static/public';
 
-export const SECTIONS_PER_LOAD = 2;
+export const SECTIONS_PER_LOAD = 3;
 export const POSTS_PER_SECTION = 10;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
 export const PREVIEW_TEMPLATE_PARAM = 'preview-template';

@@ -25,7 +25,7 @@ export const UK = {
 		landing: 'Лендинг',
 		to_sign_out: 'Вийти'
 	},
-	user_pages: {
+	pages_list: {
 		create: 'Створити',
 		update: 'Оновити',
 		slug: 'Адреса',
@@ -41,6 +41,15 @@ export const UK = {
 			max_length: 'Не довше 15 символів',
 			slug_in_use: 'Така адреса сторінки у вас вже є',
 			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
+		}
+	},
+	page: {
+		section: {
+			create: 'Створити',
+			update: 'Оновити',
+			edit: 'Редагувати',
+			delete: 'Видалити',
+			cancel: 'Відмінити'
 		}
 	},
 	article_editor: {

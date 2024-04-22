@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import SvelteMarkdown from 'svelte-markdown';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import { number } from 'zod';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
 	import { getSystemTranslation } from '$lib/features/i18n/utils';
 
@@ -32,8 +33,8 @@
 
 	function getTranslation() {
 		if (formObj) return formObj.data[$page.params.lang as SupportedLang];
-		if (key) return getSystemTranslation(key, $page.data.systemTranslations);
-		if (recordKey) return $page.data.recordsTranslations?.[recordKey];
+		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);
+		if (typeof recordKey === 'number') return $page.data.recordsTranslations?.[recordKey];
 	}
 
 	// At new page loads translations for outroing page are erased

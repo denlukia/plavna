@@ -1,13 +1,14 @@
 import { error, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionUpdateSchema
 } from '$lib/features/section/parsers';
 
-export const load = async ({ params, locals: { pageService } }) => {
+export const load = async ({ params, parent, locals: { pageService } }) => {
 	const { username } = params;
 
 	let pageslug = '';
@@ -18,7 +19,16 @@ export const load = async ({ params, locals: { pageService } }) => {
 		pageslug = params.pageslug?.slice(prefix.length) || '';
 		if (!pageslug) return error(404);
 	}
-	return pageService.getOneWithSectionsAndArticles(username, pageslug);
+	const page = await pageService.getOneWithSectionsAndArticles(username, pageslug);
+	const { systemTranslations } = await parent();
+
+	return {
+		...page,
+		systemTranslations: {
+			...systemTranslations,
+			...getSystemTranslationsSlice('page', params.lang)
+		}
+	};
 };
 
 export const actions = {

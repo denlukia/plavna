@@ -9,9 +9,9 @@
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';
 	import PasswordInput from './PasswordInput.svelte';
-	import type { LanguagedInputProps } from './types';
+	import type { InputProps } from './types';
 
-	let { value = $bindable(), ...attributes }: LanguagedInputProps = $props();
+	let { value = $bindable(), translationForm, ...attributes }: InputProps = $props();
 
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
@@ -23,7 +23,7 @@
 	let pswdVisible = $state(false);
 
 	let hasLeading = $derived(attributes.type === 'color');
-	let hasTrailing = $derived(attributes.type === 'password' || attributes.languaged);
+	let hasTrailing = $derived(attributes.type === 'password' || translationForm);
 
 	function togglePswdVisibility() {
 		pswdVisible = !pswdVisible;
@@ -71,7 +71,7 @@
 							</IconWrapper>
 						</ButtonInInput>
 					{/if}
-					{#if attributes.languaged}
+					{#if translationForm}
 						<LangSelector />
 					{/if}
 				</span>

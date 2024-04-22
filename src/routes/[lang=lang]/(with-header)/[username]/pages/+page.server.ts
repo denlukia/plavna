@@ -16,7 +16,7 @@ export const load = async ({ locals: { pageService }, params, parent }) => {
 		...forms,
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('user_pages', params.lang)
+			...getSystemTranslationsSlice('pages_list', params.lang)
 		}
 	};
 };
@@ -28,7 +28,7 @@ function failWithSlugError(form: SuperValidated<PageCreationForm>) {
 		form,
 		'slug',
 		checkTranslationKey(
-			slug ? 'user_pages.errors.slug_in_use' : 'user_pages.errors.only_one_default_slug'
+			slug ? 'pages_list.errors.slug_in_use' : 'pages_list.errors.only_one_default_slug'
 		)
 	);
 	return fail(400, { form });
