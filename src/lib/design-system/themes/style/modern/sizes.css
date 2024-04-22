@@ -165,4 +165,14 @@
 	--size-box-padding-bottom: var(--size-m-to-l);
 	--size-box-padding-inline: var(--size-m-to-l);
 	--size-box-gap: var(--size-s);
+
+	/* --- Section --- */
+	--size-section-width: 100%;
+	--size-section-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
+
+	/* --- Section Editor --- */
+	--size-section-editor-padding-inline: var(--size-m-to-l);
+	--size-section-editor-padding-top: var(--size-m-to-l);
+	--size-section-editor-padding-bottom: var(--size-m-to-l);
+	--size-section-editor-border-radius: var(--size-xl);
 }

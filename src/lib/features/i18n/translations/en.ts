@@ -1,3 +1,5 @@
+import { update } from 'three/examples/jsm/libs/tween.module.js';
+
 export const EN = {
 	layout: {
 		language: 'Language',
@@ -21,7 +23,7 @@ export const EN = {
 		landing: 'Landing',
 		to_sign_out: 'Sign out'
 	},
-	user_pages: {
+	pages_list: {
 		create: 'Create',
 		update: 'Update',
 		slug: 'Slug',
@@ -37,6 +39,15 @@ export const EN = {
 			max_length: 'Max length is 15 symbols',
 			slug_in_use: 'You already have a page with this slug',
 			only_one_default_slug: 'Only one default page can exist'
+		}
+	},
+	page: {
+		section: {
+			create: 'Create',
+			update: 'Update',
+			edit: 'Edit',
+			delete: 'Delete',
+			cancel: 'Cancel'
 		}
 	},
 	article_editor: {

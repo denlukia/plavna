@@ -47,8 +47,8 @@ devDependencies:
     specifier: ^9.5.0
     version: 9.5.0
   drizzle-kit:
-    specifier: ^0.20.14
-    version: 0.20.14
+    specifier: ^0.20.17
+    version: 0.20.17
   drizzle-orm:
     specifier: ^0.30.8
     version: 0.30.8(@libsql/client@0.6.0)(better-sqlite3@9.5.0)
@@ -309,12 +309,6 @@ packages:
       '@babel/helper-string-parser': 7.24.1
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
-    dev: true
-
-  /@drizzle-team/studio@0.0.39:
-    resolution: {integrity: sha512-c5Hkm7MmQC2n5qAsKShjQrHoqlfGslB8+qWzsGGZ+2dHMRTNG60UuzalF0h0rvBax5uzPXuGkYLGaQ+TUX3yMw==}
-    dependencies:
-      superjson: 2.2.1
     dev: true
 
   /@emnapi/core@0.45.0:
@@ -1039,6 +1033,21 @@ packages:
     dev: true
     optional: true
 
+  /@hono/node-server@1.11.0:
+    resolution: {integrity: sha512-TLIJq9TMtD1NEG1mVoqNUn1Ita0qSaB5XboZErjFBcO/GJYXwWY4dVdTi9G0lbxtu0x+hJXDItcLaFHb7rlFTw==}
+    engines: {node: '>=18.14.1'}
+    dev: true
+
+  /@hono/zod-validator@0.2.1(hono@4.2.6)(zod@3.22.4):
+    resolution: {integrity: sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+    dependencies:
+      hono: 4.2.6
+      zod: 3.22.4
+    dev: true
+
   /@humanwhocodes/config-array@0.12.3:
     resolution: {integrity: sha512-jsNnTBlMWuTpDkeE3on7+dWJi0D6fdDfeANj/w7MpS8ztROCoLvIO2nG0CcFj+E4k8j4QrSTh4Oryi3i2G669g==}
     engines: {node: '>=10.10.0'}
@@ -1223,7 +1232,7 @@ packages:
     dependencies:
       '@emnapi/core': 1.1.1
       '@emnapi/runtime': 1.1.1
-      '@tybys/wasm-util': 0.8.1
+      '@tybys/wasm-util': 0.8.3
     optional: true
 
   /@neon-rs/load@0.0.4:
@@ -1398,7 +1407,7 @@ packages:
     dependencies:
       '@emnapi/core': 0.45.0
       '@emnapi/runtime': 0.45.0
-      '@tybys/wasm-util': 0.8.1
+      '@tybys/wasm-util': 0.8.3
       memfs-browser: 3.5.10302
     optional: true
 
@@ -1665,7 +1674,7 @@ packages:
     dependencies:
       '@emnapi/core': 0.45.0
       '@emnapi/runtime': 0.45.0
-      '@tybys/wasm-util': 0.8.1
+      '@tybys/wasm-util': 0.8.3
       memfs-browser: 3.5.10302
     optional: true
 
@@ -1944,8 +1953,8 @@ packages:
     dev: true
     optional: true
 
-  /@sinclair/typebox@0.32.20:
-    resolution: {integrity: sha512-ziK497ILSIYMxD/thl496idIb03IZPlha04itLQu1xAFQbumWZ+Dj4PMMCkDRpAYhvVSdmRlTjGu2B2MA5RplQ==}
+  /@sinclair/typebox@0.32.22:
+    resolution: {integrity: sha512-4uH8BLhNbptL2UkfS/a63tQ6uZGGZ4DT6zFq7ZkE+KQi7/56ZYkkWniAqz4bUr4cZGfoR83zRvSh39ZpH8DKDw==}
     requiresBuild: true
     dev: true
     optional: true
@@ -2032,8 +2041,8 @@ packages:
     resolution: {integrity: sha512-ZpboH7pCPPeyBWKf8c7TJswtCEQObFo3bOBYalm99NzZarATALYCo5OhbCa/n4RQyJyHfhkdx+hNrdL5ByFYDw==}
     dev: true
 
-  /@tybys/wasm-util@0.8.1:
-    resolution: {integrity: sha512-GSsTwyBl4pIzsxAY5wroZdyQKyhXk0d8PCRZtrSZ2WEB1cBdrp2EgGBwHOGCZtIIPun/DL3+AykCv+J6fyRH4Q==}
+  /@tybys/wasm-util@0.8.3:
+    resolution: {integrity: sha512-Z96T/L6dUFFxgFJ+pQtkPpne9q7i6kIPYCFnQBHSgSPV9idTsKfIhCss0h5iM9irweZCatkrdeP8yi5uM1eX6Q==}
     requiresBuild: true
     dependencies:
       tslib: 2.6.2
@@ -2669,12 +2678,13 @@ packages:
       wordwrap: 1.0.0
     dev: true
 
-  /drizzle-kit@0.20.14:
-    resolution: {integrity: sha512-0fHv3YIEaUcSVPSGyaaBfOi9bmpajjhbJNdPsRMIUvYdLVxBu9eGjH8mRc3Qk7HVmEidFc/lhG1YyJhoXrn5yA==}
+  /drizzle-kit@0.20.17:
+    resolution: {integrity: sha512-mLVDS4nXmO09wFVlzGrdshWnAL+U9eQGC5zRs6hTN6Q9arwQGWU2XnZ17I8BM8Quau8CQRx3Ms6VPgRWJFVp7Q==}
     hasBin: true
     dependencies:
-      '@drizzle-team/studio': 0.0.39
       '@esbuild-kit/esm-loader': 2.6.5
+      '@hono/node-server': 1.11.0
+      '@hono/zod-validator': 0.2.1(hono@4.2.6)(zod@3.22.4)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -2683,9 +2693,11 @@ packages:
       esbuild-register: 3.5.0(esbuild@0.19.12)
       glob: 8.1.0
       hanji: 0.0.5
+      hono: 4.2.6
       json-diff: 0.9.0
       minimatch: 7.4.6
       semver: 7.6.0
+      superjson: 2.2.1
       zod: 3.22.4
     transitivePeerDependencies:
       - supports-color
@@ -3383,6 +3395,11 @@ packages:
 
   /heap@0.2.7:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
+    dev: true
+
+  /hono@4.2.6:
+    resolution: {integrity: sha512-AtbHZJYWsm+uFHLz0C6xltX7hjOV44a55gSEGBfoQOJ00KSxEUOoiIkmd+NXfapNX0j2GCKhqMmYeegBdHRwcQ==}
+    engines: {node: '>=16.0.0'}
     dev: true
 
   /ieee754@1.2.1:
@@ -4397,7 +4414,7 @@ packages:
       ts-deepmerge: 7.0.0
     optionalDependencies:
       '@gcornut/valibot-json-schema': 0.0.27(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(valibot@0.30.0)
-      '@sinclair/typebox': 0.32.20
+      '@sinclair/typebox': 0.32.22
       '@sodaru/yup-to-json-schema': 2.0.1
       '@vinejs/vine': 1.8.0
       arktype: 1.0.29-alpha

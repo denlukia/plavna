@@ -101,5 +101,6 @@
 		display: flex;
 		align-items: flex-start;
 		gap: var(--size-m);
+		z-index: 1;
 	}
 </style>

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Typography from '$lib/design-system/components/Typography.svelte';
-
 	import Translation from '../i18n/Translation.svelte';
 	import type { SectionProp } from './types';
 
@@ -11,4 +9,12 @@
 	let { section }: Props = $props();
 </script>
 
-<Translation recordKey={section.meta.title_translation_key} markdown />
+<div class="section-viewer">
+	<Translation recordKey={section.meta.title_translation_key} markdown />
+</div>
+
+<style>
+	.section-viewer {
+		min-height: 20px;
+	}
+</style>

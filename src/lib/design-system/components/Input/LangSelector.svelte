@@ -1,18 +1,11 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
-	import Trigger from '../Dropdownable/TriggerStyler.svelte';
-
-	type SelectorLang = {
-		name: string;
-		code: string;
-	};
-
-	const supportedLangs = getContext<Array<SelectorLang>>('selector-languages');
+	import Select from '../Dropdownable/Select.svelte';
 </script>
 
-<Trigger isInInput>
+<Select isInInput>
 	{#each supportedLangs as lang}
-		<option value={lang.code}>{lang.code.toUpperCase()}</option>
+		<option value={lang}>{lang.toUpperCase()}</option>
 	{/each}
-</Trigger>
+</Select>

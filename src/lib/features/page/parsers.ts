@@ -12,10 +12,10 @@ export const pageInsertSchema = createInsertSchema(pages);
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
 	slug: pageSelectSchema.shape.slug //
 		.max(15, {
-			message: checkTranslationKey('user_pages.errors.max_length')
+			message: checkTranslationKey('pages_list.errors.max_length')
 		})
 		.regex(/^[a-z0-9-]*$/i, {
-			message: checkTranslationKey('user_pages.errors.disallowed_chars')
+			message: checkTranslationKey('pages_list.errors.disallowed_chars')
 		})
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });

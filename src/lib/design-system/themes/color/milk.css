@@ -133,4 +133,7 @@
 	--color-link: var(--cold-200);
 	--color-link-shadow: var(--cold-200-transparent-200);
 	--color-link-hovered-shadow: var(--cold-200);
+
+	/* --- Section Editor --- */
+	--color-section-editor-bg: var(--warm-300-transparent-100);
 }

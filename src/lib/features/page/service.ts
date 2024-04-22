@@ -289,6 +289,7 @@ export class PageService {
 			]);
 		});
 		const sectionsResponses = await Promise.all(sectionsPromises);
+
 		const sectionsNonEmpty = sectionsResponses
 			.map(([sectionInfo, ...other]) =>
 				isNonNullable(sectionInfo) ? ([sectionInfo, ...other] as const) : null
@@ -298,11 +299,11 @@ export class PageService {
 		type SectionInfo = (typeof sectionsNonEmpty)[number][0];
 		type DescriptionTranslationInfo = (typeof sectionsNonEmpty)[number][4];
 
-		const canAddDescriptionForms = user?.username === username;
+		const canAddForms = user?.username === username;
 
 		const getSectionForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
 			if (!t) throw new Error('Translation not found');
-			if (canAddDescriptionForms) {
+			if (canAddForms) {
 				const data = { ...t, section_id: sectionInfo.id };
 				return {
 					updating: await superValidate(data, zod(sectionUpdateSchema), {
@@ -331,7 +332,7 @@ export class PageService {
 						}
 					)
 				),
-				creationForm: await superValidate(zod(sectionInsertSchema))
+				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
 			tags: sectionsNonEmpty.reduce((acc, [, , , tagsInfo]) => {
 				return {

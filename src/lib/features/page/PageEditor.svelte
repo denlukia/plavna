@@ -32,18 +32,18 @@
 	{/if}
 
 	<Labeled>
-		<Typography size="small-short"><Translation key="user_pages.slug" /></Typography>
+		<Typography size="small-short"><Translation key="pages_list.slug" /></Typography>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
 	</Labeled>
 
 	{#if $form.id}
 		<Button formaction="?/update">
-			<Translation key="user_pages.update" />
+			<Translation key="pages_list.update" />
 		</Button>
 	{:else}
 		<Button formaction="?/create">
-			<Translation key="user_pages.create" />
+			<Translation key="pages_list.create" />
 		</Button>
 	{/if}
 </form>
