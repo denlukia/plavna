@@ -7,11 +7,11 @@ import { sections, sectionsToTags } from './schema';
 
 // Parsers
 export const sectionSelectSchema = createSelectSchema(sections);
-export const sectionInsertSchema = createSelectSchema(translations)
-	.omit({ user_id: true, key: true })
-	.extend({
-		section_id: sectionSelectSchema.shape.id
-	});
+export const sectionInsertSchema = createSelectSchema(translations).omit({
+	user_id: true,
+	key: true
+});
+
 export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
 	section_id: sectionSelectSchema.shape.id
 });
