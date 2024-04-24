@@ -12,7 +12,7 @@ export const sectionInsertSchema = createSelectSchema(translations).omit({
 	key: true
 });
 
-export const sectionUpdateSchema = createSelectSchema(translations).omit({ user_id: true }).extend({
+export const sectionUpdateSchema = sectionInsertSchema.extend({
 	section_id: sectionSelectSchema.shape.id
 });
 export const sectionDeleteSchema = sectionUpdateSchema.pick({ section_id: true });

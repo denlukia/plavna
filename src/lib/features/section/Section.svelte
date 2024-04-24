@@ -1,14 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Button from '$lib/design-system/components/Button.svelte';
-
-	import ArticlePreview from '../article/ArticlePreview.svelte';
-	import type { ArticleSelect } from '../article/parsers';
-	import Translation from '../i18n/Translation.svelte';
-	import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
-	import SectionDeletion from './SectionDeletion.svelte';
+	import ArticlesList from './ArticlesList.svelte';
+	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
-	import SectionViewer from './SectionViewer.svelte';
 	import type { SectionProp, SectionPropWithAuthorship } from './types';
 
 	type Props = {
@@ -19,64 +12,37 @@
 
 	let editorOpened = $state(false);
 
-	function getTagsForArticle(
-		article: ArticleSelect,
-		tagsArticles: TagToArticleSelect[],
-		tags: Record<string, TagSelect> | undefined
-	) {
-		const selectedTags = tagsArticles.filter((el) => el.article_id === article.id);
-		if (tags) {
-			return selectedTags.map((tagArticle) => tags[tagArticle.tag_id]).filter(Boolean);
-		} else {
-			return [];
-		}
-	}
-
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
 		return Boolean(section.forms);
+	}
+
+	function onEditorOpen() {
+		editorOpened = true;
 	}
 </script>
 
 <section class="section">
-	{#if sectionHasForms(section) && editorOpened}
-		<SectionEditor form={section.forms.updating} oncancel={() => (editorOpened = false)} />
-	{:else}
-		<div class="actions-wrapper">
-			<Button size="small" type="prominent" onclick={() => (editorOpened = true)}>
-				<Translation key="page.section.edit" />
-			</Button>
-			{#if section.forms}
-				<SectionDeletion form={section.forms.deletion} />
-			{/if}
-		</div>
+	<div class="description">
+		{#if sectionHasForms(section) && editorOpened}
+			<SectionEditor
+				mainForm={section.forms.updating}
+				deletionForm={section.forms.deletion}
+				oncancel={() => (editorOpened = false)}
+			/>
+		{:else}
+			<DescriptionViewer {section} {onEditorOpen} />
+		{/if}
+	</div>
 
-		<SectionViewer {section} />
-	{/if}
+	<ArticlesList {section} />
 </section>
 
-{#each section.articles as article (article.id)}
-	<ArticlePreview
-		{article}
-		tags={getTagsForArticle(article, section.tagsArticles, $page.data.tags)}
-	/>
-{/each}
-
 <style>
-	.section {
-		position: relative;
-		width: var(--size-section-width);
+	.description {
 		max-width: var(--size-section-max-width);
 	}
-	.section:hover .actions-wrapper {
-		display: flex;
-	}
-	.actions-wrapper {
-		display: none;
-		gap: var(--size-m);
-		align-items: flex-start;
-		position: absolute;
-		top: 0;
-		left: 0;
-		transform: translateY(-100%);
+	.section {
+		position: relative;
+		margin-bottom: var(--size-section-margin-bottom);
 	}
 </style>

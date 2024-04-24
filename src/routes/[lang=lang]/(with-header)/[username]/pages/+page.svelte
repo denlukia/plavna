@@ -7,10 +7,10 @@
 
 	let { data } = $props();
 
-	let opened = $state(false);
+	let active = $state(false);
 
 	function onSuccessfullUpdate() {
-		opened = false;
+		active = false;
 	}
 </script>
 
@@ -21,7 +21,7 @@
 		<PageItem {pageItem} />
 	{/each}
 	<div class="new-page-wrapper">
-		<Popup triggerType="button" bind:opened>
+		<Popup triggerType="button" bind:active>
 			{#snippet label()}
 				<Translation key="pages_list.create_new_page" />
 			{/snippet}

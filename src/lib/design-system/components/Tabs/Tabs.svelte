@@ -7,6 +7,8 @@
 	import Layers from '../(helpers)/Layers.svelte';
 	import { crossfade } from './crossfade';
 
+	// TODO Fix animation on first switching
+
 	type Props = {
 		children: Snippet;
 		size?: 'body' | 'small' | 'heading-2';

@@ -13,8 +13,8 @@
 body {
 	line-height: 1.5;
 	font-synthesis: none;
-	/* -webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale; */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 img,
 picture,
@@ -41,4 +41,9 @@ h6 {
 #root,
 #__next {
 	isolation: isolate;
+}
+
+form {
+	display: block;
+	line-height: 0;
 }

@@ -6,14 +6,17 @@
 	import type { SectionDelete } from './parsers';
 
 	type Props = {
-		form: SuperValidated<SectionDelete>;
+		formData: SuperValidated<SectionDelete>;
 	};
-	let { form: formData }: Props = $props();
+
+	let { formData }: Props = $props();
 
 	let { form, enhance } = superForm(formData);
 </script>
 
-<form class="global-reset-line-height" action="?/delete_section" method="POST" use:enhance>
+<form action="?/delete_section" method="POST" use:enhance>
 	<input name="section_id" type="hidden" bind:value={$form.section_id} />
-	<Button type="destructive" size="small"><Translation key="page.section.delete" /></Button>
+	<Button type="destructive">
+		<Translation key="page.section.delete" />
+	</Button>
 </form>

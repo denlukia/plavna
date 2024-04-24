@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 	import { setContext } from 'svelte';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Layers from '$lib/design-system/components/(helpers)/Layers.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
@@ -14,6 +15,10 @@
 	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design-system/components/Typography.svelte';
 
+	let { data } = $props();
+
+	let { translationFormData } = data;
+
 	const mockedSelectorLanguages = [
 		{ name: 'English', code: 'en' },
 		{ name: 'Українська', code: 'uk' }
@@ -24,6 +29,8 @@
 	const tabs = ['Test 1', 'Many Pelmeni'];
 
 	let activeTabIndex = $state(0);
+
+	const { form: translationForm } = superForm(translationFormData);
 </script>
 
 <Layers>
@@ -34,9 +41,9 @@
 			<Typography block size="headline">Тестовий <br /> текст</Typography>
 			<Typography block size="headline-short">Тестовий <br /> текст</Typography>
 			<Typography block size="body">Тестовий <br /> текст</Typography>
-			<Typography block size="body-short"
-				>Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту</Typography
-			>
+			<Typography block size="body-short">
+				Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту
+			</Typography>
 			<Typography block size="small">Тестовий <br /> текст</Typography>
 			<Typography block size="small-short">Тестовий <br /> текст</Typography>
 		</div>
@@ -58,6 +65,7 @@
 				<Typography size="small-short">Тест</Typography>
 				<Typography size="small-short" tone="additional">Тест</Typography>
 				<Input type="password" placeholder="Тест" />
+				<Input {translationForm} />
 			</Labeled>
 		</div>
 		<div class="group">

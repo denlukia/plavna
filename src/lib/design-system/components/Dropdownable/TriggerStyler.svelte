@@ -10,21 +10,16 @@
 		isInInput?: boolean;
 		children: Snippet;
 		isLabel?: boolean;
-		isActive?: boolean;
+		active?: boolean;
 	};
-	let { isInInput = false, isActive = false, children }: Props = $props();
-
-	const watcher = createPressWatcher();
+	let { isInInput = false, active = false, children }: Props = $props();
 </script>
 
 <span
 	class={`
-		main-wrapper 
+		dropdown-trigger
 		${isInInput ? 'type-in-input' : 'type-default'}`}
-	class:global-button-in-input={isInInput}
-	class:pressed={isActive || watcher.pressed}
-	onpointerdown={watcher.onpointerdown}
-	onpointerup={watcher.onpointerup}
+	class:active
 >
 	<Effects>
 		<span
@@ -37,7 +32,7 @@
 		>
 			{@render children()}
 		</span>
-		<span class="arrow-wrapper">
+		<span class="arrow-wrapper global-reset-line-height">
 			<IconWrapper size={isInInput ? 'small' : 'body'}>
 				<ArrowDown />
 			</IconWrapper>
@@ -47,26 +42,14 @@
 
 <style>
 	/* General */
-	.main-wrapper {
+	.dropdown-trigger {
 		position: relative;
 		display: inline-block;
-		background: var(--color-dropdown-bg);
 		color: var(--color-dropdown-text);
 		box-shadow: var(--shadow-dropdown);
-		border-radius: var(--size-dropdown-border-radius);
 		transition: var(--transition-select);
 
 		--layers-border-radius: var(--size-dropdown-border-radius);
-		--color-layer-flashlight-pointer: var(--color-dropdown-layer-flashlight-hover);
-	}
-	.main-wrapper:hover {
-		box-shadow: var(--shadow-dropdown-hover);
-		transform: var(--transform-dropdown-hover);
-	}
-	.main-wrapper:active,
-	.main-wrapper.pressed {
-		box-shadow: var(--shadow-dropdown-active);
-		transform: var(--transform-dropdown-active);
 	}
 
 	.arrow-wrapper {
@@ -85,13 +68,46 @@
 	}
 
 	/* Type Specific */
+	.type-default {
+		background: var(--color-dropdown-bg);
+		border-radius: var(--size-dropdown-border-radius);
+
+		--color-layer-flashlight-pointer: var(--color-dropdown-layer-flashlight-hover);
+	}
+	.type-default:hover {
+		box-shadow: var(--shadow-dropdown-hover);
+		transform: var(--transform-dropdown-hover);
+	}
+	.type-default:active,
+	.type-default.active {
+		box-shadow: var(--shadow-dropdown-active);
+		transform: var(--transform-dropdown-active);
+	}
+
+	.type-in-input {
+		background: var(--color-button-in-input-bg);
+		border-radius: var(--size-button-in-input-border-radius);
+		box-shadow: var(--shadow-button-in-input);
+
+		--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
+	}
+	.type-in-input:hover {
+		box-shadow: var(--shadow-button-in-input-hover);
+		transform: var(--transform-button-in-input-hover);
+	}
+	.type-in-input:active,
+	.type-in-input.active {
+		box-shadow: var(--shadow-button-in-input-pressed);
+		transform: var(--transform-button-in-input-pressed);
+	}
+
 	.type-default .arrow-wrapper {
-		width: var(--size-dropdown-arrow-width);
+		/* width: var(--size-dropdown-arrow-width); */
 		right: var(--size-dropdown-arrow-padding-right);
 	}
 
 	.type-in-input .arrow-wrapper {
-		width: var(--size-dropdown-in-input-arrow-width);
-		right: var(--size-dropdown-in-input-padding-right);
+		/* width: var(--size-dropdown-in-input-arrow-width); */
+		right: var(--size-dropdown-in-input-arrow-padding-right);
 	}
 </style>
