@@ -10,31 +10,31 @@
 		triggerType?: 'button' | 'dropdown';
 		label: Snippet;
 		content: Snippet;
-		opened?: boolean;
+		active?: boolean;
 	};
 
-	let { triggerType = 'dropdown', opened = $bindable(), label, content }: Props = $props();
+	let { triggerType = 'dropdown', active = $bindable(), label, content }: Props = $props();
 
 	function onclick() {
-		opened = !opened;
+		active = !active;
 	}
 	function onclickoutside() {
-		opened = false;
+		active = false;
 	}
 </script>
 
 <span class="popup-group global-reset-line-height" use:clickoutside={onclickoutside}>
 	{#if triggerType === 'button'}
-		<Button {onclick} isActive={opened} imitatePressingOnClick={false}>{@render label()}</Button>
+		<Button {onclick} {active} imitatePressingOnClick={false}>{@render label()}</Button>
 	{:else}
-		<TriggerStyler isActive={opened}>
+		<TriggerStyler {active}>
 			<button class="global-reset-button global-dropdown-paddings" {onclick}>
 				{@render label()}
 			</button>
 		</TriggerStyler>
 	{/if}
 
-	{#if opened}
+	{#if active}
 		<div class="popup-positioner">
 			<Box>
 				{@render content()}

@@ -3,10 +3,13 @@
 
 	import Image from '../../image/Image.svelte';
 
-	export let href = '';
-	// export let text = '';
+	type Props = {
+		href: string;
+	};
 
-	$: image = $page.data.images?.find((el) => el.id === Number(href));
+	let { href }: Props = $props();
+
+	let image = $derived($page.data.images?.find((el) => el.id === Number(href)));
 </script>
 
 {#if image}

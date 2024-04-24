@@ -109,14 +109,14 @@
 	/* --- Dropdown in Input --- */
 	--size-dropdown-in-input-padding-left: var(--size-m);
 
-	--size-dropdown-in-input-arrow-text-gap: var(--size-s);
-	--size-dropdown-in-input-arrow-padding-right: var(--size-s);
+	--size-dropdown-in-input-arrow-text-gap: var(--size-xs);
+	--size-dropdown-in-input-arrow-padding-right: var(--size-s-to-m);
 	--size-dropdown-in-input-padding-right: calc(
 		var(--size-dropdown-in-input-arrow-text-gap) + var(--size-icon-small-size) +
 			var(--size-dropdown-in-input-arrow-padding-right)
 	);
-	--size-dropdown-in-input-padding-top: var(--size-s-to-m);
-	--size-dropdown-in-input-padding-bottom: var(--size-s-to-m);
+	--size-dropdown-in-input-padding-top: var(--size-m);
+	--size-dropdown-in-input-padding-bottom: var(--size-m);
 
 	/* --- Switch --- */
 	--size-switch-width: var(--size-3xl-to-4xl);
@@ -167,12 +167,12 @@
 	--size-box-gap: var(--size-s);
 
 	/* --- Section --- */
-	--size-section-width: 100%;
 	--size-section-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
+	--size-section-margin-bottom: var(--size-3xl);
 
 	/* --- Section Editor --- */
 	--size-section-editor-padding-inline: var(--size-m-to-l);
-	--size-section-editor-padding-top: var(--size-m-to-l);
+	--size-section-editor-padding-top: var(--size-m);
 	--size-section-editor-padding-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
 }

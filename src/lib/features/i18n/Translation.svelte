@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
-	import SvelteMarkdown from 'svelte-markdown';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { number } from 'zod';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
 	import { getSystemTranslation } from '$lib/features/i18n/utils';
 
-	import Image from '../article/markdown/Image.svelte';
+	import Markdown from '../markdown/Markdown.svelte';
 	import type { TranslationSelect, TranslationUpdate } from './parsers';
 
 	type FormTranslation = {
@@ -55,7 +53,7 @@
 <!-- TODO add typography renderers for markdown  -->
 {#if nonNullTranslation}
 	{#if markdown}
-		<SvelteMarkdown source={nonNullTranslation} renderers={{ image: Image }} />
+		<Markdown source={nonNullTranslation} />
 	{:else}
 		{nonNullTranslation}
 	{/if}

@@ -45,6 +45,7 @@ export const UK = {
 	},
 	page: {
 		section: {
+			editor_title: 'Секція',
 			create: 'Створити',
 			update: 'Оновити',
 			edit: 'Редагувати',

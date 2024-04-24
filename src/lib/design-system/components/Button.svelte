@@ -16,7 +16,7 @@
 		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 		href?: string;
 		onclick?: UniversalMouseEventHandler;
-		isActive?: boolean;
+		active?: boolean;
 		imitatePressingOnClick?: boolean;
 		formaction?: string;
 	};
@@ -27,7 +27,7 @@
 		href,
 		dataSvelteKitReload,
 		onclick: onclickProp,
-		isActive = false,
+		active = false,
 		imitatePressingOnClick = true,
 		formaction
 	}: Props = $props();
@@ -47,7 +47,7 @@
 	class={`button type-${type} size-${size} 
 	 global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
-	class:pressed={isActive || watcher.pressed}
+	class:pressed={active || watcher.pressed}
 	onpointerdown={watcher.onpointerdown}
 	onpointerup={watcher.onpointerup}
 	{formaction}

@@ -1,5 +1,3 @@
-import { update } from 'three/examples/jsm/libs/tween.module.js';
-
 export const EN = {
 	layout: {
 		language: 'Language',
@@ -43,6 +41,7 @@ export const EN = {
 	},
 	page: {
 		section: {
+			editor_title: 'Section',
 			create: 'Create',
 			update: 'Update',
 			edit: 'Edit',

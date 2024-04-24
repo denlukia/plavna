@@ -35,10 +35,10 @@
 		})
 	);
 
-	let opened = $state(false);
+	let active = $state(false);
 
 	function onSuccessfullUpdate() {
-		opened = false;
+		active = false;
 	}
 
 	function slugToTitle(str: string) {
@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="actions">
-		<Popup triggerType="button" bind:opened>
+		<Popup triggerType="button" bind:active>
 			{#snippet label()}
 				<Translation key="pages_list.edit_page" />
 			{/snippet}

@@ -22,11 +22,20 @@
 {/each}
 
 {#if creationForm}
-	{#if creatorShown}
-		<SectionEditor form={creationForm} {oncancel} />
-	{:else}
-		<Button onclick={() => (creatorShown = true)}>
-			<Translation key="page.section.create" />
-		</Button>
-	{/if}
+	<div class="section-creator">
+		{#if creatorShown}
+			<SectionEditor mainForm={creationForm} {oncancel} />
+		{:else}
+			<Button onclick={() => (creatorShown = true)}>
+				<Translation key="page.section.create" />
+			</Button>
+		{/if}
+	</div>
 {/if}
+
+<style>
+	.section-creator {
+		width: var(--size-section-width);
+		max-width: var(--size-section-max-width);
+	}
+</style>
