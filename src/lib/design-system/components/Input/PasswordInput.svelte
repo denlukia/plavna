@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { fly, type EasingFunction, type FlyParams } from 'svelte/transition';
+	import { type EasingFunction, type FlyParams } from 'svelte/transition';
 
 	import Layers from '../(helpers)/Layers.svelte';
+	import { fly } from './fly';
+
+	// import { customFly } from './customFly';
 
 	type Props = HTMLInputAttributes & {
 		pswdVisible: boolean;
@@ -35,19 +38,22 @@
 		}
 	});
 
-	const flyConf: (easing: EasingFunction, y: number) => FlyParams = (easing, y) => ({
-		duration: 400,
-		easing,
-		y,
-		opacity: 0
-	});
+	function getFlyConf(easing: EasingFunction, yshift: 'top' | 'bottom'): FlyParams {
+		return {
+			duration: 700,
+			easing,
+			y: 7 * (yshift === 'top' ? -1 : 1),
+			opacity: 0
+		};
+	}
 </script>
 
+<!-- We explicitly set wisible cause parent Layers sets hidden -->
 <Layers>
 	{#if pswdVisible}
 		<input
-			in:fly={flyConf(cubicOut, -4)}
-			out:fly={flyConf(cubicIn, -4)}
+			in:fly={getFlyConf(expoOut, 'top')}
+			out:fly={getFlyConf(expoOut, 'top')}
 			bind:value
 			bind:this={textInputRef}
 			type="text"
@@ -57,8 +63,8 @@
 		/>
 	{:else}
 		<input
-			in:fly={flyConf(cubicOut, 4)}
-			out:fly={flyConf(cubicIn, 4)}
+			in:fly={getFlyConf(expoOut, 'bottom')}
+			out:fly={getFlyConf(expoOut, 'bottom')}
 			bind:value
 			bind:this={pswdInputRef}
 			type="password"

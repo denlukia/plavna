@@ -40,7 +40,7 @@
 
 <!-- TODO: What would the correct role be? -->
 <span class="input-and-affixes" {...events} role="presentation">
-	<Layers --overflow="hidden">
+	<Layers overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
 			{#if attributes.type === 'color'}

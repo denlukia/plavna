@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
-	import { cubicOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 
 	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
 	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
@@ -26,8 +26,8 @@
 	let pillPos = $state({ left: 0, top: 0, right: 0, bottom: 0 });
 	let pillSkipTransition = $state(false);
 
-	const pillAnimDuration = 450;
-	let [send, receive] = crossfade({ easing: cubicOut });
+	const pillAnimDuration = 500;
+	let [send, receive] = crossfade({ easing: expoOut });
 
 	function mutationCallback(mutation: MutationRecord[]) {
 		const activeTabMutations = mutation.filter(
@@ -62,6 +62,8 @@
 		pillPos = getPillRelativePositionFromNode(activeTab);
 	}
 
+	$inspect(pillPos);
+
 	onMount(() => {
 		if (!ref) return;
 
@@ -75,9 +77,12 @@
 
 		resizeObserver = new ResizeObserver(() => {
 			if (!ref) return;
+
 			pillSkipTransition = true;
 			findActiveTabAndSetPillPos(ref);
-			setTimeout(() => (pillSkipTransition = false), 0);
+			setTimeout(() => {
+				pillSkipTransition = false;
+			}, 0);
 		});
 		resizeObserver.observe(ref);
 
@@ -98,7 +103,7 @@
 	<Layers>
 		<LayerFlashlight {mouse} />
 		{#if pillActive}
-			{#key pillPos.left}
+			{#key pillPos}
 				<div
 					out:send={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
 					in:receive={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}

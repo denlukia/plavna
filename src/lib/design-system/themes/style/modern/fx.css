@@ -1,6 +1,7 @@
 :root {
 	/* --- General --- */
-	--smooth-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+	/* --smooth-ease-out: cubic-bezier(0.4, 0, 0.2, 1); */
+	--smooth-ease-out: cubic-bezier(0.19, 1, 0.22, 1); /* exponential */
 
 	/* --- Layers --- */
 	--transition-layer-flashlight: opacity 500ms;
@@ -62,7 +63,7 @@
 		0 5px 10px var(--color-switch-checked-shadow-1);
 	--shadow-switch-checked-hover: inset 0 0 0 transparent, 0 2px 4px var(--color-switch-shadow-1),
 		0 8px 10px var(--color-switch-shadow-1);
-	--transition-switch-duration: 400ms;
+	--transition-switch-duration: 600ms;
 	--transition-switch-easing: var(--smooth-ease-out);
 	--transform-switch-checked-hover: translateY(-1px);
 	--transform-switch-checked-active: translateY(1px);

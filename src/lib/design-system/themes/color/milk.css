@@ -5,11 +5,11 @@
 	--warm-950: hsl(30, 30%, 95%);
 
 	--warm-300-transparent-100: hsla(30, 100%, 20%, 7%);
-	--warm-300-transparent-200: hsla(30, 100%, 20%, 10%);
-	--warm-300-transparent-300: hsla(30, 100%, 20%, 15%);
-	--warm-300-transparent-400: hsla(30, 100%, 20%, 20%);
-	--warm-300-transparent-500: hsla(30, 100%, 20%, 33%);
-	--warm-200-transparent-600: hsla(30, 100%, 20%, 50%);
+	--warm-300-transparent-200: hsla(30, 100%, 30%, 11%);
+	--warm-300-transparent-300: hsla(30, 100%, 30%, 15%);
+	--warm-300-transparent-400: hsla(30, 100%, 30%, 20%);
+	--warm-300-transparent-500: hsla(30, 100%, 30%, 33%);
+	--warm-200-transparent-600: hsla(30, 100%, 30%, 50%);
 
 	--neutral-0: hsl(0, 0%, 0%);
 	--neutral-0-transparent-100: hsla(0, 0%, 0%, 10%);

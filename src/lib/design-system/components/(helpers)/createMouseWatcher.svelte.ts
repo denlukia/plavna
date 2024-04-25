@@ -17,10 +17,10 @@ export function createMouseWatcher() {
 			mouse.x = e.clientX - rect.left;
 			mouse.y = e.clientY - rect.top;
 		},
-		onmouseenter() {
+		onmouseenter(e: MouseEvent) {
 			mouse.hovered = true;
 		},
-		onmouseleave() {
+		onmouseleave(e: MouseEvent) {
 			mouse.hovered = false;
 		}
 	};

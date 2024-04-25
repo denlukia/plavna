@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { cubicOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 
-	import PerspectiveWrapper from '../(helpers)/PerspectiveWrapper.svelte';
 	import { rotateAndScale } from './rotateAndScale';
 	import Tail from './Tail.svelte';
 
@@ -11,7 +10,7 @@
 		children: Snippet;
 	};
 
-	const animationDuration = 300;
+	const animationDuration = 500;
 
 	let { children }: Props = $props();
 </script>
@@ -20,7 +19,7 @@
 	class="box-wrapper"
 	transition:fade|global={{
 		duration: animationDuration,
-		easing: cubicOut
+		easing: expoOut
 	}}
 >
 	<div class="tail-wrapper">
@@ -30,7 +29,7 @@
 		class="box"
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
-			easing: cubicOut,
+			easing: expoOut,
 			scaleX: 0.1,
 			scaleY: 0.1,
 			opacity: 1
