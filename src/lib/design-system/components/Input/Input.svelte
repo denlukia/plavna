@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import { page } from '$app/stores';
 	import { tweened } from 'svelte/motion';
 
 	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
@@ -9,9 +11,15 @@
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';
 	import PasswordInput from './PasswordInput.svelte';
+	import TranslationsInputs from './TranslationsInputs.svelte';
 	import type { InputProps } from './types';
 
-	let { value = $bindable(), translationForm, ...attributes }: InputProps = $props();
+	let {
+		value = $bindable(),
+		translations,
+		translationsPrefix,
+		...attributes
+	}: InputProps = $props();
 
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
@@ -23,7 +31,9 @@
 	let pswdVisible = $state(false);
 
 	let hasLeading = $derived(attributes.type === 'color');
-	let hasTrailing = $derived(attributes.type === 'password' || translationForm);
+	let hasTrailing = $derived(attributes.type === 'password' || translations);
+
+	let currentLanguage = $state($page.params.lang as SupportedLang);
 
 	function togglePswdVisibility() {
 		pswdVisible = !pswdVisible;
@@ -54,7 +64,14 @@
 				class:no-left-padding={hasLeading}
 				class:textarea-wrapper={attributes.type === 'textarea'}
 			>
-				{#if attributes.type === 'password'}
+				{#if translations}
+					<TranslationsInputs
+						{translationsPrefix}
+						{translations}
+						{currentLanguage}
+						{...attributes}
+					/>
+				{:else if attributes.type === 'password'}
 					<PasswordInput {pswdVisible} {...attributes} bind:value />
 				{:else if attributes.type === 'textarea'}
 					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
@@ -71,8 +88,8 @@
 							</IconWrapper>
 						</ButtonInInput>
 					{/if}
-					{#if translationForm}
-						<LangSelector />
+					{#if translations}
+						<LangSelector bind:value={currentLanguage} />
 					{/if}
 				</span>
 			{/if}
@@ -167,7 +184,7 @@
 
 	input::placeholder,
 	textarea::placeholder {
-		color: var(--color-input-placeholder-text);
+		color: var(--color-input-placeholder);
 	}
 
 	@keyframes error {

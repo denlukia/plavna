@@ -172,7 +172,7 @@
 
 	/* --- Section Editor --- */
 	--size-section-editor-padding-inline: var(--size-m-to-l);
-	--size-section-editor-padding-top: var(--size-m);
+	--size-section-editor-padding-top: var(--size-s);
 	--size-section-editor-padding-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
 }

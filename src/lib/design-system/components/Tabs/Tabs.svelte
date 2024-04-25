@@ -62,8 +62,6 @@
 		pillPos = getPillRelativePositionFromNode(activeTab);
 	}
 
-	$inspect(pillPos);
-
 	onMount(() => {
 		if (!ref) return;
 

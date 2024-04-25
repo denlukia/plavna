@@ -1,5 +1,5 @@
 import { cubicOut } from 'svelte/easing';
-import type { FlyParams } from 'svelte/transition';
+import type { EasingFunction, FlyParams } from 'svelte/transition';
 
 export function fly(
 	node: Element,
@@ -31,4 +31,13 @@ function split_css_unit(value: number | string) {
 	return split
 		? ([parseFloat(split[1]), split[2] || 'px'] as const)
 		: ([/** @type {number} */ value, 'px'] as const);
+}
+
+export function getFlyConf(easing: EasingFunction, yshift: 'top' | 'bottom'): FlyParams {
+	return {
+		duration: 700,
+		easing,
+		y: 7 * (yshift === 'top' ? -1 : 1),
+		opacity: 0
+	};
 }

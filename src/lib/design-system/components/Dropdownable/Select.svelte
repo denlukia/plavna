@@ -10,7 +10,7 @@
 		value?: string;
 	};
 
-	let { children, isInInput = false, value, ...other }: Props = $props();
+	let { children, isInInput = false, value = $bindable(), ...other }: Props = $props();
 </script>
 
 <TriggerStyler isLabel {isInInput}>

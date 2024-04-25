@@ -3,8 +3,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { type EasingFunction, type FlyParams } from 'svelte/transition';
 
+	import { fly, getFlyConf } from '../../transitions/fly';
 	import Layers from '../(helpers)/Layers.svelte';
-	import { fly } from './fly';
 
 	// import { customFly } from './customFly';
 
@@ -37,15 +37,6 @@
 			targetRef.selectionEnd = selectionEnd;
 		}
 	});
-
-	function getFlyConf(easing: EasingFunction, yshift: 'top' | 'bottom'): FlyParams {
-		return {
-			duration: 700,
-			easing,
-			y: 7 * (yshift === 'top' ? -1 : 1),
-			opacity: 0
-		};
-	}
 </script>
 
 <!-- We explicitly set wisible cause parent Layers sets hidden -->
@@ -77,6 +68,6 @@
 
 <style>
 	input::placeholder {
-		color: var(--color-input-placeholder-text);
+		color: var(--color-input-placeholder);
 	}
 </style>
