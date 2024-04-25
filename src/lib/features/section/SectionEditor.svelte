@@ -11,12 +11,24 @@
 	type Props = {
 		mainForm: SuperValidated<SectionInsert | SectionUpdate>;
 		deletionForm?: SuperValidated<SectionDelete>;
-		oncancel: () => void;
+		onCancel: () => void;
+		onSuccessfullUpdate?: () => void;
 	};
 
-	let { mainForm: mainFormData, deletionForm: deletionFormData, oncancel }: Props = $props();
+	let {
+		mainForm: mainFormData,
+		deletionForm: deletionFormData,
+		onCancel,
+		onSuccessfullUpdate
+	}: Props = $props();
 
-	let { form, enhance } = superForm(mainFormData);
+	let { form, enhance } = superForm(mainFormData, {
+		onUpdate: (e) => {
+			if (e.result.type === 'success') {
+				onSuccessfullUpdate?.();
+			}
+		}
+	});
 </script>
 
 <div class="section-editor">
@@ -27,9 +39,12 @@
 		{#if 'section_id' in $form}
 			<input name="section_id" type="hidden" bind:value={$form.section_id} />
 		{/if}
-		<Input translationForm={form} />
+		<div class="inputs">
+			<Input translations={form} type="textarea" />
+		</div>
+
 		<div class="actions">
-			<Button type="secondary" onclick={oncancel}>
+			<Button type="secondary" onclick={onCancel}>
 				<Translation key="page.section.cancel" />
 			</Button>
 			<Button>
@@ -63,5 +78,9 @@
 		position: absolute;
 		bottom: var(--size-section-editor-padding-bottom);
 		left: var(--size-section-editor-padding-inline);
+	}
+
+	.inputs {
+		margin-top: var(--size-l);
 	}
 </style>

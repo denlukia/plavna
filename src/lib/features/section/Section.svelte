@@ -27,7 +27,8 @@
 			<SectionEditor
 				mainForm={section.forms.updating}
 				deletionForm={section.forms.deletion}
-				oncancel={() => (editorOpened = false)}
+				onCancel={() => (editorOpened = false)}
+				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
 		{:else}
 			<DescriptionViewer {section} {onEditorOpen} />

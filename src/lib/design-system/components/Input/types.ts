@@ -2,7 +2,10 @@ import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/element
 import type { SuperForm } from 'sveltekit-superforms';
 import type { TranslationInsert } from '$lib/features/i18n/parsers';
 
-type LanguagedInputProps = { translationForm?: SuperForm<TranslationInsert>['form'] };
+type LanguagedInputProps = {
+	translations?: SuperForm<TranslationInsert>['form'];
+	translationsPrefix?: string;
+};
 
 type Input = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' | 'email' };
 type Textarea = HTMLTextareaAttributes & { type: 'textarea' };

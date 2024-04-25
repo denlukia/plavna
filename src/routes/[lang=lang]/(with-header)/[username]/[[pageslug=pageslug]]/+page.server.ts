@@ -39,17 +39,23 @@ export const actions = {
 		const pageslug = params.pageslug ?? '';
 
 		await sectionService.create(pageslug, form.data);
+
+		return { form };
 	},
 	update_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionUpdateSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await sectionService.update(form.data);
+
+		return { form };
 	},
 	delete_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionDeleteSchema));
 		if (!form.valid) return fail(400, { form });
 
 		await sectionService.delete(form.data);
+
+		return { form };
 	}
 };

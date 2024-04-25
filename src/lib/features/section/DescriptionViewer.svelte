@@ -25,6 +25,7 @@
 	.description-viewer {
 		position: relative;
 		width: max-content;
+		max-width: 100%;
 	}
 	.actions-wrapper {
 		padding-left: var(--size-m);

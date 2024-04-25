@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SvelteMarkdown from 'svelte-markdown';
 
+	import Heading from './renderers/Heading.svelte';
 	import Image from './renderers/Image.svelte';
 	import Paragraph from './renderers/Paragraph.svelte';
 
@@ -11,4 +12,4 @@
 	let { source }: Props = $props();
 </script>
 
-<SvelteMarkdown {source} renderers={{ image: Image, paragraph: Paragraph }} />
+<SvelteMarkdown {source} renderers={{ image: Image, paragraph: Paragraph, heading: Heading }} />
