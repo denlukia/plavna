@@ -21,7 +21,7 @@
 	{...events}
 	{onclick}
 >
-	<Layers --overflow="hidden">
+	<Layers overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<LayerShift {mouse}>
 			<div class="content-padder">
