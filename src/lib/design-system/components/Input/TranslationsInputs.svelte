@@ -4,7 +4,7 @@
 	import { expoOut } from 'svelte/easing';
 	import { fly, getFlyConf } from '$lib/design-system/transitions/fly';
 
-	import Layers from '../(helpers)/Layers.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
 	import type { InputProps } from './types';
 
 	type Props = InputProps & {

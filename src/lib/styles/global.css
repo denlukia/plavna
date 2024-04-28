@@ -81,8 +81,12 @@
 	letter-spacing: var(--text-letter-spacing);
 }
 
-.global-text-bold {
-	font-weight: var(--text-bold-font-weight);
+.global-text-strong {
+	font-weight: var(--text-strong-font-weight);
+}
+
+.global-text-em {
+	font-style: italic;
 }
 
 .global-reset-button {

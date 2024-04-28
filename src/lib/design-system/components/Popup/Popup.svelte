@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { clickoutside } from '../(helpers)/clickOutside';
+	import { clickOutside } from '../../actions/click-outside';
 	import Button from '../Button.svelte';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
@@ -23,7 +23,7 @@
 	}
 </script>
 
-<span class="popup-group global-reset-line-height" use:clickoutside={onclickoutside}>
+<span class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
 	{#if triggerType === 'button'}
 		<Button {onclick} {active} imitatePressingOnClick={false}>{@render label()}</Button>
 	{:else}

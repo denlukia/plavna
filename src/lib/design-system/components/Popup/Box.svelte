@@ -3,7 +3,7 @@
 	import { expoOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 
-	import { rotateAndScale } from './rotateAndScale';
+	import { rotateAndScale } from '../../transitions/rotate-and-scale';
 	import Tail from './Tail.svelte';
 
 	type Props = {

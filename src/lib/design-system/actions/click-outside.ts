@@ -1,4 +1,4 @@
-export function clickoutside(node: HTMLElement, callback: () => void) {
+export function clickOutside(node: HTMLElement, callback: () => void) {
 	window.addEventListener('pointerdown', handleClick);
 
 	function handleClick(e: MouseEvent) {

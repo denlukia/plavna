@@ -9,6 +9,6 @@
 	let { children }: Props = $props();
 </script>
 
-<Typography>
+<em class="global-text-em">
 	{@render children()}
-</Typography>
+</em>

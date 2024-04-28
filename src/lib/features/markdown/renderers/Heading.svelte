@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Tokens } from 'marked';
 	import type { Snippet } from 'svelte';
-	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 
 	type Props = Omit<Tokens.Heading, 'type'> & {
 		children: Snippet;

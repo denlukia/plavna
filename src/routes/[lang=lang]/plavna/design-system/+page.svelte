@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Layers from '$lib/design-system/components/(helpers)/Layers.svelte';
+	import Layers from '$lib/design-system/components/ActiveElementFX/Layers.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
-	import Box from '$lib/design-system/components/Dropdownable/Box.svelte';
-	import Select from '$lib/design-system/components/Dropdownable/Select.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import Labeled from '$lib/design-system/components/Labeled.svelte';
+	import Box from '$lib/design-system/components/Popup/Box.svelte';
+	import Select from '$lib/design-system/components/Popup/Select.svelte';
 	import Spacer from '$lib/design-system/components/Spacer.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
-	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 
 	let { data } = $props();
 

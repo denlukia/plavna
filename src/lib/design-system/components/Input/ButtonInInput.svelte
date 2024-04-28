@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
-	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
-	import Layers from '../(helpers)/Layers.svelte';
-	import LayerShift from '../(helpers)/LayerShift.svelte';
+	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
+	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
+	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
 	type Props = {
 		children: Snippet;

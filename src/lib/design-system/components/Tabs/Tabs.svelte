@@ -2,10 +2,10 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 
-	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
-	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
-	import Layers from '../(helpers)/Layers.svelte';
-	import { crossfade } from './crossfade';
+	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
+	import { crossfade } from '../../transitions/crossfade';
+	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
 
 	// TODO Fix animation on first switching
 

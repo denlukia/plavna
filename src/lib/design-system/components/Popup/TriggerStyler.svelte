@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { createPressWatcher } from '../(helpers)/createPressWatcher.svelte';
-	import Effects from '../(helpers)/Effects.svelte';
-	import ArrowDown from '../(icons)/ArrowDown.svelte';
-	import IconWrapper from '../(icons)/IconWrapper.svelte';
+	import ArrowDown from '../../icons/ArrowDown.svelte';
+	import IconWrapper from '../../icons/IconWrapper.svelte';
+	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
 
 	type Props = {
 		isInInput?: boolean;
@@ -21,12 +20,12 @@
 		${isInInput ? 'type-in-input' : 'type-default'}`}
 	class:active
 >
-	<Effects>
+	<ActiveElementFX>
 		<span
 			class={`
 					dropdown
 					global-disable-default-outline 	
-					global-text-bold
+					global-text-strong
 					global-text-${isInInput ? 'small-short' : 'body-short'}
 					global-reset-select`}
 		>
@@ -37,7 +36,7 @@
 				<ArrowDown />
 			</IconWrapper>
 		</span>
-	</Effects>
+	</ActiveElementFX>
 </span>
 
 <style>
