@@ -24,18 +24,11 @@
 <style>
 	.description-viewer {
 		position: relative;
-		width: max-content;
-		max-width: 100%;
 	}
 	.actions-wrapper {
-		padding-left: var(--size-m);
-		padding-top: var(--size-s);
-		display: flex;
-		gap: var(--size-m);
-		align-items: flex-start;
 		position: absolute;
-		top: 0;
-		right: 0;
-		transform: translateX(100%);
+		left: 0;
+		top: var(--size-m);
+		transform: translateY(-100%);
 	}
 </style>

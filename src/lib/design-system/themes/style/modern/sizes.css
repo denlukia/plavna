@@ -21,7 +21,7 @@
 	--size-column-gap: var(--size-m);
 
 	/* --- Main Layout --- */
-	--size-main-layout-margin-top: var(--size-xl);
+	--size-main-layout-margin-top: var(--size-2xl);
 	--size-main-layout-padding-inline: var(--size-l);
 	--size-main-layout-max-width: calc(
 		var(--size-column-width) * 5 + var(--size-column-gap) * 4 +

@@ -12,7 +12,7 @@
 
 	let creatorShown = $state(false);
 
-	function oncancel() {
+	function closeCreator() {
 		creatorShown = false;
 	}
 </script>
@@ -24,7 +24,11 @@
 {#if creationForm}
 	<div class="section-creator">
 		{#if creatorShown}
-			<SectionEditor mainForm={creationForm} {oncancel} />
+			<SectionEditor
+				mainForm={creationForm}
+				onCancel={closeCreator}
+				onSuccessfullUpdate={closeCreator}
+			/>
 		{:else}
 			<Button onclick={() => (creatorShown = true)}>
 				<Translation key="page.section.create" />
