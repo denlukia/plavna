@@ -7,11 +7,11 @@
 		size?: TextSizes;
 		children: Snippet;
 		block?: boolean;
-		bold?: boolean;
+
 		tone?: 'default' | 'additional' | 'danger';
 	};
 
-	let { size = 'body', tone = 'default', children, block = false, bold = false }: Props = $props();
+	let { size = 'body', tone = 'default', children, block = false }: Props = $props();
 
 	let outline = $state(false);
 
@@ -27,7 +27,6 @@
 	this={block ? 'p' : 'span'}
 	class="text global-text-{size} tone-{tone}"
 	class:outline
-	class:global-text-bold={bold}
 >
 	{@render children()}
 </svelte:element>

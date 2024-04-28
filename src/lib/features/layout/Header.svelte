@@ -3,8 +3,8 @@
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
 	import Button from '$lib/design-system/components/Button.svelte';
-	import Box from '$lib/design-system/components/Dropdownable/Box.svelte';
-	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
+	import Box from '$lib/design-system/components/Popup/Box.svelte';
+	import Popup from '$lib/design-system/components/Popup/Popup.svelte';
 	import { generatePath } from '$lib/features/common/links.js';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

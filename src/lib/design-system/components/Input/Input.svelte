@@ -3,11 +3,11 @@
 	import { page } from '$app/stores';
 	import { tweened } from 'svelte/motion';
 
-	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
-	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
-	import Layers from '../(helpers)/Layers.svelte';
-	import Eye from '../(icons)/Eye.svelte';
-	import IconWrapper from '../(icons)/IconWrapper.svelte';
+	import Eye from '../../icons/Eye.svelte';
+	import IconWrapper from '../../icons/IconWrapper.svelte';
+	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
+	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
 	import ButtonInInput from './ButtonInInput.svelte';
 	import LangSelector from './LangSelector.svelte';
 	import PasswordInput from './PasswordInput.svelte';

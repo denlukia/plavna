@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 
-	import Select from '../Dropdownable/Select.svelte';
+	import Select from '../Popup/Select.svelte';
 
 	type Props = {
 		value: string;

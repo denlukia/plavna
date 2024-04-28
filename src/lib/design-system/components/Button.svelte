@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
+	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
-	import { createPressWatcher } from './(helpers)/createPressWatcher.svelte';
-	import Effects from './(helpers)/Effects.svelte';
-	import Typography from './Typography.svelte';
+	import { createPressWatcher } from '../reactivity/press-watcher.svelte';
+	import ActiveElementFX from './ActiveElementFX/ActiveElementFX.svelte';
+	import Typography from './Typography/Typography.svelte';
 
 	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
 
@@ -54,11 +55,11 @@
 	{onclick}
 	{href}
 >
-	<Effects>
+	<ActiveElementFX>
 		<span class="content">
-			<Typography size={`${size}-short`} bold={true}>{@render children()}</Typography>
+			<Typography size={`${size}-short`}><Strong>{@render children()}</Strong></Typography>
 		</span>
-	</Effects>
+	</ActiveElementFX>
 </svelte:element>
 
 <style>

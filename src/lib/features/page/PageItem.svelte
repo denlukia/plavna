@@ -3,9 +3,9 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { HOST } from '$lib/collections/constants';
 	import Button from '$lib/design-system/components/Button.svelte';
-	import Popup from '$lib/design-system/components/Dropdownable/Popup.svelte';
-	import Typography from '$lib/design-system/components/Typography.svelte';
-	import Link from '$lib/features/common/components/Link.svelte';
+	import Link from '$lib/design-system/components/Link.svelte';
+	import Popup from '$lib/design-system/components/Popup/Popup.svelte';
+	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageEditor from '$lib/features/page/PageEditor.svelte';
 

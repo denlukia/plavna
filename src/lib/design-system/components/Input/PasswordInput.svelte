@@ -4,7 +4,7 @@
 	import { type EasingFunction, type FlyParams } from 'svelte/transition';
 
 	import { fly, getFlyConf } from '../../transitions/fly';
-	import Layers from '../(helpers)/Layers.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
 
 	// import { customFly } from './customFly';
 

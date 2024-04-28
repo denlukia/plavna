@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { createMouseWatcher } from './createMouseWatcher.svelte';
+	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from './LayerFlashlight.svelte';
 	import Layers from './Layers.svelte';
 	import LayerShift from './LayerShift.svelte';

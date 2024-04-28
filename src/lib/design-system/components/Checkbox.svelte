@@ -3,10 +3,10 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { tweened } from 'svelte/motion';
 
-	import { createMouseWatcher } from './(helpers)/createMouseWatcher.svelte';
-	import LayerShift from './(helpers)/LayerShift.svelte';
-	import CheckMark from './(icons)/CheckMark.svelte';
-	import IconWrapper from './(icons)/IconWrapper.svelte';
+	import CheckMark from '../icons/CheckMark.svelte';
+	import IconWrapper from '../icons/IconWrapper.svelte';
+	import { createMouseWatcher } from '../reactivity/mouse-watcher.svelte';
+	import LayerShift from './ActiveElementFX/LayerShift.svelte';
 
 	let { type, checked, ...attributes }: HTMLInputAttributes = $props();
 

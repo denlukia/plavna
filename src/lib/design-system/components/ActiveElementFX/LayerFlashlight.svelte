@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MouseState } from './createMouseWatcher.svelte';
+	import type { MouseState } from '../../reactivity/mouse-watcher.svelte';
 
 	type Props = {
 		mouse: MouseState;

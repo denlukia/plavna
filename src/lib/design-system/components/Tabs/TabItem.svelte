@@ -2,12 +2,12 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
-	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 
-	import { createMouseWatcher } from '../(helpers)/createMouseWatcher.svelte';
-	import LayerFlashlight from '../(helpers)/LayerFlashlight.svelte';
-	import Layers from '../(helpers)/Layers.svelte';
-	import LayerShift from '../(helpers)/LayerShift.svelte';
+	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
+	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
+	import Layers from '../ActiveElementFX/Layers.svelte';
+	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
 	type Props = HTMLButtonAttributes & {
 		children: Snippet;

@@ -2,7 +2,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import Typography from '$lib/design-system/components/Typography.svelte';
+	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
