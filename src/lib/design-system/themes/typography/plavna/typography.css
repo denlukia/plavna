@@ -8,7 +8,7 @@
 	--text-heading-1-padding-bottom: 2px;
 	--text-heading-1-size: 53px;
 	--text-heading-1-weight: 800;
-	--text-heading-1-line-height: 52px;
+	--text-heading-1-line-height: 56px;
 	--text-heading-1-letter-spacing: -0.04em;
 
 	--text-heading-2-font-family: 'Manrope Rounded', -system-ui, sans-serif;
@@ -16,7 +16,7 @@
 	--text-heading-2-padding-bottom: 3px;
 	--text-heading-2-size: 29px;
 	--text-heading-2-weight: 800;
-	--text-heading-2-line-height: 32px;
+	--text-heading-2-line-height: 34px;
 	--text-heading-2-letter-spacing: -0.02em;
 
 	--text-headline-font-family: var(--text-main-font-family);
