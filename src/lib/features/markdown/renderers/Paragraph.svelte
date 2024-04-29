@@ -9,6 +9,8 @@
 	let { children }: Props = $props();
 </script>
 
-<Typography>
-	{@render children()}
-</Typography>
+<p>
+	<Typography>
+		{@render children()}
+	</Typography>
+</p>

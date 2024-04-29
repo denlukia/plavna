@@ -23,10 +23,9 @@
 		margin-inline: -125px;
 		mask-image: linear-gradient(
 			hsla(0deg, 0%, 0%, 1) 0%,
-			hsla(0deg, 0%, 0%, 0.5) 20%,
-			hsla(0deg, 0%, 0%, 0.3) 40%,
-			hsla(0deg, 0%, 0%, 0.15) 60%,
-			hsla(0deg, 0%, 0%, 0.1) 80%,
+			hsla(0deg, 0%, 0%, 0.65) 5%,
+			hsla(0deg, 0%, 0%, 0.4) 15%,
+			hsla(0deg, 0%, 0%, 0.2) 40%,
 			hsla(0deg, 0%, 0%, 0) 100%
 		);
 	}

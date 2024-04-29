@@ -5,16 +5,27 @@
 		color?: string;
 		opacity?: number;
 	};
-	let { size = 4, thickness = 0.5, color = 'red', opacity = 0.5 }: Props = $props();
+	let { size = 8, thickness = 0.5, color = '#000', opacity = 0.2 }: Props = $props();
 
 	let visible = $state(false);
+
+	function getModule(size: number, shiftX: number, shiftY: number, opacity = 1) {
+		return `<path d="M${shiftX} ${shiftY} H${size - shiftX} V${size - shiftY}"
+							    stroke-width="${thickness}" stroke="${color}" stroke-opacity="${opacity}" />`;
+	}
+
+	const shifts = [
+		[0, 0],
+		[size / 2, 0],
+		[0, size / 2],
+		[size / 2, size / 2]
+	];
 
 	let gridModuleSvg = $derived(
 		`
 			<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M${size} ${thickness / 2}H${
-					thickness / 2
-				}V${size}" stroke-width="${thickness}" stroke="${color}" stroke-opacity="${opacity}" />
+				${getModule(size, 0, 0, opacity)}
+				${shifts.map(([shiftX, shiftY]) => getModule(size, shiftX, shiftY, opacity / 4)).join('\n')}
 			</svg>
 		`
 	);
@@ -29,14 +40,18 @@
 </script>
 
 <svelte:window {onkeypress} />
-<div style="--bg-url: {bgURL}; --size: {size}px;" class="grid" class:visible></div>
+{#if visible}
+	<div style="--bg-url: {bgURL}; --size: {size}px;" class="grid"></div>
+{/if}
 
 <style>
 	.grid {
-		pointer-events: none;
-		z-index: 999;
-	}
-	.visible {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
 		background: var(--bg-url);
+		pointer-events: none;
 	}
 </style>

@@ -7,11 +7,11 @@
 		size?: TextSizes;
 		children: Snippet;
 		block?: boolean;
-
+		resetPaddingBlock?: boolean;
 		tone?: 'default' | 'additional' | 'danger';
 	};
 
-	let { size = 'body', tone = 'default', children, block = false }: Props = $props();
+	let { size = 'body', tone = 'default', children, block, resetPaddingBlock }: Props = $props();
 
 	let outline = $state(false);
 
@@ -27,6 +27,7 @@
 	this={block ? 'p' : 'span'}
 	class="text global-text-{size} tone-{tone}"
 	class:outline
+	class:reset-padding-block={resetPaddingBlock}
 >
 	{@render children()}
 </svelte:element>
@@ -47,5 +48,9 @@
 	}
 	.tone-danger {
 		color: var(--color-text-danger);
+	}
+
+	.reset-padding-block {
+		padding-block: 0;
 	}
 </style>
