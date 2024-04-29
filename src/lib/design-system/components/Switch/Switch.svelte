@@ -5,19 +5,19 @@
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 	import type { SwitchProps } from './types';
 
-	let { ...props }: SwitchProps = $props();
+	let { checked = $bindable(), ...props }: SwitchProps = $props();
 
 	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <label class="switch global-reset-line-height">
-	<input {...props} type="checkbox" />
+	<input bind:checked {...props} type="checkbox" />
 	<span class="switch-visualizer global-" {...events}>
 		<Layers overflow="hidden">
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
 				<span class="layer-handle global-fix-overflow">
-					<span class="handle" />
+					<span class="handle"></span>
 				</span>
 			</LayerShift>
 		</Layers>

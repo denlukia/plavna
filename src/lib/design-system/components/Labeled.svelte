@@ -16,7 +16,7 @@
 
 <style>
 	label {
-		display: flex;
+		display: inline-flex;
 
 		/* For Text */
 		--text-padding-inline: var(--size-labeled-text-padding-inline);
