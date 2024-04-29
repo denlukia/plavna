@@ -27,16 +27,16 @@
 
 {#if tagId !== null}
 	<Labeled type="switch-with-bg">
+		<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
+			{@render children()}
+		</Typography>
 		<Switch
 			bind:checked
 			onchange={(e) => {
-				const {checked} = e.target as HTMLInputElement;
-				sectionContext?.onTagSwitch?.(tagId,checked); 
-			}}
+			const {checked} = e.target as HTMLInputElement;
+			sectionContext?.onTagSwitch?.(tagId,checked); 
+		}}
 		/>
-		<Typography size={depthToTypographySize(headingContext?.depth)}>
-			{@render children()}
-		</Typography>
 	</Labeled>
 {:else}
 	<Link {href}>

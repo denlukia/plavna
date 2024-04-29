@@ -17,7 +17,7 @@
 
 	/* ------ Semantic ------ */
 	/* --- General --- */
-	--size-column-width: 220px;
+	--size-column-width: 224px;
 	--size-column-gap: var(--size-m);
 
 	/* --- Main Layout --- */
@@ -48,9 +48,9 @@
 	--size-labeled-input-margin-top: var(--size-s);
 	--size-labeled-input-margin-bottom: var(--size-s);
 	--size-labeled-switch-with-bg-border-radius: var(--size-full);
-	--size-labeled-switch-with-bg-margin-top: var(--size-s);
-	--size-labeled-switch-with-bg-padding-inline: var(--size-s);
-	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s-to-m);
+	--size-labeled-switch-with-bg-margin-top: var(--size-xs);
+	--size-labeled-switch-with-bg-padding-inline: var(--size-xs);
+	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
 	--size-labeled-checkbox-margin-top: var(--size-s);
 	--size-labeled-checkbox-margin-bottom: var(--size-s);
 
@@ -119,16 +119,16 @@
 	--size-dropdown-in-input-padding-bottom: var(--size-m);
 
 	/* --- Switch --- */
-	--size-switch-width: var(--size-3xl-to-4xl);
+	--size-switch-width: var(--size-3xl);
 	--size-switch-border-radius: var(--size-full);
 	--size-switch-padding-to-handle: var(--size-s);
 	--size-switch-layer-flashlight-hover: 50px;
 
 	/* --- Switch Handle */
-	--size-switch-handle-width: var(--size-l-to-xl);
-	--size-switch-handle-height: var(--size-l-to-xl);
+	--size-switch-handle-width: var(--size-l);
+	--size-switch-handle-height: var(--size-l);
 	--size-switch-handle-border-radius: var(--size-full);
-	--size-switch-handle-border-width: 4px;
+	--size-switch-handle-border-width: 3px;
 	--size-switch-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */

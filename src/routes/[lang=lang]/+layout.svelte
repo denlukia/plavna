@@ -7,6 +7,9 @@
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
 
+	import Layers from '$lib/design-system/components/ActiveElementFX/Layers.svelte';
+	import Grid from '$lib/design-system/components/Grid.svelte';
+
 	// export let data;
 </script>
 
@@ -22,11 +25,15 @@
 	<div class="content-wrapper">
 		<slot />
 	</div>
+	<!-- <div class="grid-wrapper"> -->
+	<Grid />
+	<!-- </div> -->
 	<!-- <Greetings /> -->
 </div>
 
 <style>
 	.main-layout {
+		position: relative;
 		flex-grow: 1;
 		max-width: var(--size-main-layout-max-width);
 		background-color: var(--color-main-layout-bg);
@@ -35,6 +42,9 @@
 			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-layout-padding-inline);
 	}
+
+	/* .grid-wrapper {
+	} */
 
 	.lights-wrapper {
 		position: absolute;

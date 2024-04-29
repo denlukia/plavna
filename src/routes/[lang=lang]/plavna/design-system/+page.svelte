@@ -33,78 +33,75 @@
 	const { form: translationForm } = superForm(translationFormData);
 </script>
 
-<Layers>
-	<div class="blocks">
-		<div class="group">
-			<Typography block size="heading-1">denis lukianenko</Typography>
-			<Typography block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
-			<Typography block size="headline">Тестовий <br /> текст</Typography>
-			<Typography block size="headline-short">Тестовий <br /> текст</Typography>
-			<Typography block size="body">Тестовий <br /> текст</Typography>
-			<Typography block size="body-short">
-				Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту
-			</Typography>
-			<Typography block size="small">Тестовий <br /> текст</Typography>
-			<Typography block size="small-short">Тестовий <br /> текст</Typography>
-		</div>
-		<div class="group">
-			<Button>Testy</Button>
-			<Button type="secondary">Testy</Button>
-			<Button type="prominent">Testy</Button>
-			<Button type="destructive">Testy</Button>
-			<Button href="/">Link</Button>
-		</div>
-		<div class="group">
-			<Button size="small">Testy</Button>
-			<Button size="small" type="secondary">Testy</Button>
-			<Button size="small" type="prominent">Testy</Button>
-			<Button size="small" type="destructive">Testy</Button>
-		</div>
-		<div class="group">
-			<Labeled>
-				<Typography size="small-short">Тест</Typography>
-				<Typography size="small-short" tone="additional">Тест</Typography>
-				<Input type="password" placeholder="Тест" />
-				<Input {translationForm} />
-			</Labeled>
-		</div>
-		<div class="group">
-			<Select>
-				<option>Test</option>
-			</Select>
-			<Labeled type="horizontal">
-				<Switch />
-				<Typography>Тест</Typography>
-			</Labeled>
-			<Labeled type="switch-with-bg">
-				<Typography size="heading-2">Тест</Typography>
-				<Switch />
-			</Labeled>
-			<Labeled type="horizontal">
-				<Checkbox />
-				<Typography>Тест</Typography>
-			</Labeled>
-			<Tabs>
-				{#each tabs as tab, index}
-					<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>
-						{tab}
-					</TabItem>
-				{/each}
-			</Tabs>
-		</div>
-		<div class="group">
-			<Box>
-				<form>
-					<Typography size="heading-2">Тест</Typography>
-					<Input placeholder="Тест" />
-					<Spacer size="m" />
-					<Button>Let's Go!</Button>
-				</form>
-			</Box>
-		</div>
+<div class="blocks">
+	<div class="group">
+		<Typography block size="heading-1">denis lukianenko</Typography>
+		<Typography block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
+		<Typography block size="headline">Тестовий <br /> текст</Typography>
+		<Typography block size="headline-short">Тестовий <br /> текст</Typography>
+		<Typography block size="body">Тестовий <br /> текст</Typography>
+		<Typography block size="body-short">
+			Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту
+		</Typography>
+		<Typography block size="small">Тестовий <br /> текст</Typography>
+		<Typography block size="small-short">Тестовий <br /> текст</Typography>
 	</div>
-	<Grid />
-</Layers>
+	<div class="group">
+		<Button>Testy</Button>
+		<Button type="secondary">Testy</Button>
+		<Button type="prominent">Testy</Button>
+		<Button type="destructive">Testy</Button>
+		<Button href="/">Link</Button>
+	</div>
+	<div class="group">
+		<Button size="small">Testy</Button>
+		<Button size="small" type="secondary">Testy</Button>
+		<Button size="small" type="prominent">Testy</Button>
+		<Button size="small" type="destructive">Testy</Button>
+	</div>
+	<div class="group">
+		<Labeled>
+			<Typography size="small-short">Тест</Typography>
+			<Typography size="small-short" tone="additional">Тест</Typography>
+			<Input type="password" placeholder="Тест" />
+			<Input {translationForm} />
+		</Labeled>
+	</div>
+	<div class="group">
+		<Select>
+			<option>Test</option>
+		</Select>
+		<Labeled type="horizontal">
+			<Switch />
+			<Typography>Тест</Typography>
+		</Labeled>
+		<Labeled type="switch-with-bg">
+			<Typography size="heading-2">Тест</Typography>
+			<Switch />
+		</Labeled>
+		<Labeled type="horizontal">
+			<Checkbox />
+			<Typography>Тест</Typography>
+		</Labeled>
+		<Tabs>
+			{#each tabs as tab, index}
+				<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>
+					{tab}
+				</TabItem>
+			{/each}
+		</Tabs>
+	</div>
+	<div class="group">
+		<Box>
+			<form>
+				<Typography size="heading-2">Тест</Typography>
+				<Input placeholder="Тест" />
+				<Spacer size="m" />
+				<Button>Let's Go!</Button>
+			</form>
+		</Box>
+	</div>
+</div>
 
 <style>
 	.group {

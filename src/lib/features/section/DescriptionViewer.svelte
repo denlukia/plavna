@@ -28,7 +28,7 @@
 	.actions-wrapper {
 		position: absolute;
 		left: 0;
-		top: var(--size-m);
+		top: var(--size-s);
 		transform: translateY(-100%);
 	}
 </style>

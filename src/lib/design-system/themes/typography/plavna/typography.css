@@ -12,19 +12,19 @@
 	--text-heading-1-letter-spacing: -0.04em;
 
 	--text-heading-2-font-family: 'Manrope Rounded', -system-ui, sans-serif;
-	--text-heading-2-padding-top: 1px;
-	--text-heading-2-padding-bottom: 3px;
-	--text-heading-2-size: 29px;
+	--text-heading-2-padding-top: 2px;
+	--text-heading-2-padding-bottom: 2px;
+	--text-heading-2-size: 24px;
 	--text-heading-2-weight: 800;
-	--text-heading-2-line-height: 34px;
+	--text-heading-2-line-height: 28px;
 	--text-heading-2-letter-spacing: -0.02em;
 
 	--text-headline-font-family: var(--text-main-font-family);
-	--text-headline-padding-top: 3px;
-	--text-headline-padding-bottom: 1px;
+	--text-headline-padding-top: 1px;
+	--text-headline-padding-bottom: 3px;
 	--text-headline-size: 15px;
 	--text-headline-weight: 800;
-	--text-headline-line-height: 24px;
+	--text-headline-line-height: 28px;
 	--text-headline-letter-spacing: 0;
 
 	--text-headline-short-font-family: var(--text-main-font-family);
@@ -36,11 +36,11 @@
 	--text-headline-short-letter-spacing: 0;
 
 	--text-body-font-family: var(--text-main-font-family);
-	--text-body-padding-top: 3px;
-	--text-body-padding-bottom: 1px;
+	--text-body-padding-top: 1px;
+	--text-body-padding-bottom: 3px;
 	--text-body-size: 15px;
 	--text-body-weight: var(--text-main-font-weight);
-	--text-body-line-height: 24px;
+	--text-body-line-height: 28px;
 	--text-body-letter-spacing: 0;
 
 	--text-body-short-font-family: var(--text-main-font-family);

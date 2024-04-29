@@ -40,7 +40,7 @@
 		padding-inline: var(--size-labeled-switch-with-bg-padding-inline);
 		background: var(--color-labeled-switch-with-bg-bg);
 		border-radius: var(--size-labeled-switch-with-bg-border-radius);
-		overflow: hidden;
+		/* overflow: hidden; */
 
 		/* For Switch */
 		--switch-margin-top: var(--size-labeled-switch-with-bg-margin-top);
