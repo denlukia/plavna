@@ -18,8 +18,8 @@
 <SvelteMarkdown
 	{source}
 	renderers={{
-		image: Image,
 		paragraph: Paragraph,
+		image: Image,
 		heading: Heading,
 		strong: Strong,
 		em: Em,

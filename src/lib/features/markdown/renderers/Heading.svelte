@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { Tokens } from 'marked';
-	import type { Snippet } from 'svelte';
+	import { setContext, type Snippet } from 'svelte';
 	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+
+	import { depthToTypographySize } from './heading-depth';
+	import type { HeadingContext } from './types';
 
 	type Props = Omit<Tokens.Heading, 'type'> & {
 		children: Snippet;
@@ -9,15 +12,11 @@
 
 	let { children, depth }: Props = $props();
 
-	let size = $derived.by(() => {
-		if (depth === 1) {
-			return 'heading-1' as const;
-		} else if (depth === 2) {
-			return 'heading-2' as const;
-		} else {
-			return 'headline' as const;
-		}
-	});
+	let size = $derived(depthToTypographySize(depth));
+
+	const headingContext: HeadingContext = { depth };
+
+	setContext('heading', headingContext);
 </script>
 
 <Typography {size}>

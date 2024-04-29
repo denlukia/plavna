@@ -1,8 +1,16 @@
 <script lang="ts">
+	import { setContext } from 'svelte';
+
+	import type { TagSelect } from '../tag/parsers';
 	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
-	import type { SectionProp, SectionPropWithAuthorship } from './types';
+	import type {
+		OnTagSwitchFunction,
+		SectionContext,
+		SectionProp,
+		SectionPropWithAuthorship
+	} from './types';
 
 	type Props = {
 		section: SectionProp;
@@ -19,6 +27,14 @@
 	function onEditorOpen() {
 		editorOpened = true;
 	}
+
+	const sectionContext: SectionContext = {
+		onTagSwitch: (tagId, newState) => {
+			console.log(`Tag switch: ${tagId} to ${newState}`);
+		}
+	};
+
+	setContext('section', sectionContext);
 </script>
 
 <section class="section">
