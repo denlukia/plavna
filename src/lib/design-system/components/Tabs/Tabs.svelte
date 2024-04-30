@@ -91,7 +91,6 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y-interactive-supports-focus a11y-click-events-have-key-events -->
 <div
 	class="tabs global-fix-overflow global-text-{size}"
 	role="tablist"
@@ -108,7 +107,7 @@
 					class="active-tab-pill"
 					class:skip-transition={pillSkipTransition}
 					style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
-				/>
+				></div>
 			{/key}
 		{/if}
 		<span class="tab-items-wrapper" bind:this={ref}>

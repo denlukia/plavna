@@ -35,7 +35,6 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
 <label class="checkbox" {...events}>
 	<input type="checkbox" bind:checked {...attributes} />
 	<span class="checkbox-visualizer">

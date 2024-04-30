@@ -10,7 +10,7 @@
 	let { children, type = 'vertical', ...attributes }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <label class="global-reset-line-height {type}" {...attributes}>
 	{@render children()}
 </label>
