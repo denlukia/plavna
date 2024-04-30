@@ -6,7 +6,7 @@
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import Labeled from '$lib/design-system/components/Labeled.svelte';
+	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
 	import Box from '$lib/design-system/components/Popup/Box.svelte';
 	import Select from '$lib/design-system/components/Popup/Select.svelte';
 	import Spacer from '$lib/design-system/components/Spacer.svelte';
@@ -60,29 +60,29 @@
 		<Button size="small" type="destructive">Testy</Button>
 	</div>
 	<div class="group">
-		<Labeled>
+		<LabeledInput>
 			<Typography size="small-short">Тест</Typography>
 			<Typography size="small-short" tone="additional">Тест</Typography>
 			<Input type="password" placeholder="Тест" />
-			<Input {translationForm} />
-		</Labeled>
+			<Input translations={translationForm} />
+		</LabeledInput>
 	</div>
 	<div class="group">
 		<Select>
 			<option>Test</option>
 		</Select>
-		<Labeled type="horizontal">
+		<LabeledInput type="horizontal">
 			<Switch />
 			<Typography>Тест</Typography>
-		</Labeled>
-		<Labeled type="switch-with-bg">
+		</LabeledInput>
+		<LabeledInput type="switch-with-bg">
 			<Typography size="heading-2">Тест</Typography>
 			<Switch />
-		</Labeled>
-		<Labeled type="horizontal">
+		</LabeledInput>
+		<LabeledInput type="horizontal">
 			<Checkbox />
 			<Typography>Тест</Typography>
-		</Labeled>
+		</LabeledInput>
 		<Tabs>
 			{#each tabs as tab, index}
 				<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>

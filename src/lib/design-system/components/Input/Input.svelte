@@ -18,6 +18,7 @@
 		value = $bindable(),
 		translations,
 		translationsPrefix,
+		style,
 		...attributes
 	}: InputProps = $props();
 
@@ -49,7 +50,7 @@
 </script>
 
 <!-- TODO: What would the correct role be? -->
-<span class="input-and-affixes" {...events} role="presentation">
+<span class="input-and-affixes" {...events} role="presentation" {style}>
 	<Layers overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
@@ -74,7 +75,8 @@
 				{:else if attributes.type === 'password'}
 					<PasswordInput {pswdVisible} {...attributes} bind:value />
 				{:else if attributes.type === 'textarea'}
-					<textarea bind:value {...attributes} class="global-reset-input global-text-body" />
+					<textarea bind:value {...attributes} class="global-reset-input global-text-body">
+					</textarea>
 				{:else}
 					<input bind:value {...attributes} class="global-reset-input global-text-body" />
 				{/if}
@@ -127,6 +129,30 @@
 		animation: error 300ms var(--smooth-ease-out);
 	}
 
+	/* We use global to stylize possible textare inside TranslationsInputs */
+	.input-and-affixes :global {
+		textarea {
+			min-height: calc(
+				var(--text-body-padding-top) + var(--text-body-line-height) * 2 +
+					var(--text-body-padding-bottom)
+			);
+			min-width: calc(var(--size-column-width) - var(--size-3xl));
+			max-height: calc(
+				var(--text-body-padding-top) + var(--text-body-line-height) * 10 +
+					var(--text-body-padding-bottom)
+			);
+			resize: vertical;
+			padding-inline-end: var(--size-input-textarea-padding-inline-end);
+			overflow-y: scroll;
+		}
+		textarea::placeholder {
+			color: var(--color-input-placeholder);
+		}
+		textarea::-webkit-resizer {
+			display: none;
+		}
+	}
+
 	.input-wrapper {
 		padding-inline: var(--size-input-padding-inline);
 		padding-top: var(--size-input-padding-top);
@@ -162,14 +188,6 @@
 		padding-inline-end: var(--size-input-textarea-wrapper-padding-inline-end);
 	}
 
-	textarea {
-		min-height: calc(
-			var(--text-body-padding-top) + var(--text-body-line-height) + var(--text-body-padding-bottom)
-		);
-		resize: vertical;
-		padding-inline-end: var(--size-input-textarea-padding-inline-end);
-	}
-
 	.color-picker {
 		width: var(--size-input-color-picker);
 		height: var(--size-input-color-picker);
@@ -182,8 +200,7 @@
 		padding: 0;
 	}
 
-	input::placeholder,
-	textarea::placeholder {
+	input::placeholder {
 		color: var(--color-input-placeholder);
 	}
 

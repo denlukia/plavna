@@ -2,6 +2,8 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
+	import Label from '$lib/design-system/components/Label/Label.svelte';
+	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
 	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
@@ -40,7 +42,10 @@
 			<input name="section_id" type="hidden" bind:value={$form.section_id} />
 		{/if}
 		<div class="inputs">
-			<Input translations={form} type="textarea" />
+			<LabeledInput style="width: 100%;">
+				<Label><Translation key="page.section.description" /></Label>
+				<Input type="textarea" translations={form} style="width: 100%;" rows={3} />
+			</LabeledInput>
 		</div>
 
 		<div class="actions">

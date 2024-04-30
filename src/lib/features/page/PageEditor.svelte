@@ -2,7 +2,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import Labeled from '$lib/design-system/components/Labeled.svelte';
+	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
 	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
 
 	import Error from '../common/components/Error.svelte';
@@ -31,11 +31,11 @@
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
 
-	<Labeled>
+	<LabeledInput>
 		<Typography size="small-short"><Translation key="pages_list.slug" /></Typography>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
-	</Labeled>
+	</LabeledInput>
 
 	{#if $form.id}
 		<Button formaction="?/update">
