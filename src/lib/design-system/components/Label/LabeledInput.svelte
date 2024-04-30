@@ -1,16 +1,17 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLLabelAttributes } from 'svelte/elements';
 
-	type Props = {
+	type Props = HTMLLabelAttributes & {
 		children: Snippet;
 		type?: 'horizontal' | 'vertical' | 'switch-with-bg';
 	};
 
-	let { children, type = 'vertical' }: Props = $props();
+	let { children, type = 'vertical', ...attributes }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y-label-has-associated-control -->
-<label class="global-reset-line-height {type}">
+<label class="global-reset-line-height {type}" {...attributes}>
 	{@render children()}
 </label>
 

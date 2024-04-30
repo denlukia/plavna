@@ -33,10 +33,10 @@
 		formaction
 	}: Props = $props();
 
-	const watcher = createPressWatcher();
+	const { pressed, onclick: onclickWatcher, ...events } = $derived(createPressWatcher());
 
 	function onclick(event: UniversalMouseEventHandler['arguments'][0]) {
-		imitatePressingOnClick && watcher.onclick();
+		imitatePressingOnClick && onclickWatcher();
 		if (onclickProp) onclickProp(event);
 	}
 </script>
@@ -48,9 +48,8 @@
 	class={`button type-${type} size-${size} 
 	 global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
-	class:pressed={active || watcher.pressed}
-	onpointerdown={watcher.onpointerdown}
-	onpointerup={watcher.onpointerup}
+	class:pressed={active || pressed}
+	{...events}
 	{formaction}
 	{onclick}
 	{href}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Tokens } from 'marked';
 	import { getContext, type Snippet } from 'svelte';
-	import Labeled from '$lib/design-system/components/Labeled.svelte';
+	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
 	import Link from '$lib/design-system/components/Link.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
@@ -26,7 +26,7 @@
 </script>
 
 {#if tagId !== null}
-	<Labeled type="switch-with-bg">
+	<LabeledInput type="switch-with-bg">
 		<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 			{@render children()}
 		</Typography>
@@ -37,7 +37,7 @@
 			sectionContext?.onTagSwitch?.(tagId,checked); 
 		}}
 		/>
-	</Labeled>
+	</LabeledInput>
 {:else}
 	<Link {href}>
 		{@render children()}

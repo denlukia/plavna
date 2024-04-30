@@ -100,7 +100,7 @@
 
 	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-body-short-padding-top));
 	--size-dropdown-padding-bottom: calc(var(--size-s) + var(--text-body-short-padding-bottom));
-	--size-dropdown-border-radius: var(--size-m);
+	--size-dropdown-border-radius: var(--size-m-to-l);
 
 	/* --- Dropdown as Disclosure */
 	--size-dropdown-disclosure-padding-top: var(--size-s);
@@ -172,7 +172,7 @@
 
 	/* --- Section Editor --- */
 	--size-section-editor-padding-inline: var(--size-m-to-l);
-	--size-section-editor-padding-top: var(--size-s);
+	--size-section-editor-padding-top: var(--size-none);
 	--size-section-editor-padding-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
 }
