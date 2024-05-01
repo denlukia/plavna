@@ -7,10 +7,10 @@
 	import '$lib/design-system/themes/style/modern/index.css';
 	import '$lib/design-system/themes/typography/plavna/index.css';
 
-	import Layers from '$lib/design-system/components/ActiveElementFX/Layers.svelte';
 	import Grid from '$lib/design-system/components/Grid.svelte';
+	import Header from '$lib/features/layout/Header.svelte';
 
-	// export let data;
+	let { data, children } = $props();
 </script>
 
 <svelte:head>
@@ -23,7 +23,8 @@
 		<Lights />
 	</div>
 	<div class="content-wrapper">
-		<slot />
+		<Header user={data.user} />
+		{@render children()}
 	</div>
 	<!-- <div class="grid-wrapper"> -->
 	<Grid />

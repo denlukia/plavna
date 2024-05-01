@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
 	import Typography from '../Typography/Typography.svelte';
 
@@ -12,7 +11,5 @@
 </script>
 
 <Typography size="small-short">
-	<Strong>
-		{@render children()}
-	</Strong>
+	{@render children()}
 </Typography>

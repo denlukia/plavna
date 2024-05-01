@@ -95,7 +95,13 @@ export class ArticleService {
 				'allow-empty',
 				trx
 			);
-			const { source } = await new ServerImageHandler(null).setUploaderFromUser(user);
+
+			let source = null;
+			try {
+				({ source } = await new ServerImageHandler(null).setUploaderFromUser(user));
+			} catch (err) {
+				console.error(err);
+			}
 			const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
 				this.imageService.create({ source }, trx),
 				this.imageService.create({ source }, trx)

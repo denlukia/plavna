@@ -33,7 +33,7 @@ export class PreviewService {
 		this.imageService = imageService;
 	}
 
-	// TODO Show image input only if account has imagekit keys
+	// TODO Show image input only if account has Image Provider keys
 	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler) {
 		const user = await this.userService.getOrThrow();
 		const { url, ...translation } = template;
