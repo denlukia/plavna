@@ -3,6 +3,7 @@
 
 	import ArticlePreview from '../article/ArticlePreview.svelte';
 	import type { ArticleSelect } from '../article/parsers';
+	import { getNullAndDupFilter } from '../common/utils';
 	import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 	import type { SectionProp } from './types';
 
@@ -12,14 +13,18 @@
 
 	let { section }: Props = $props();
 
+	// TODO Form list of article's tags on backend
 	function getTagsForArticle(
 		article: ArticleSelect,
 		tagsArticles: TagToArticleSelect[],
 		tags: Record<string, TagSelect> | undefined
 	) {
-		const selectedTags = tagsArticles.filter((el) => el.article_id === article.id);
+		const articleTags = tagsArticles.filter((el) => el.article_id === article.id);
+		const articleTagsUnique = articleTags.filter((el, index, arr) =>
+			getNullAndDupFilter('id')(el, index, arr)
+		);
 		if (tags) {
-			return selectedTags.map((tagArticle) => tags[tagArticle.tag_id]).filter(Boolean);
+			return articleTagsUnique.map((tagArticle) => tags[tagArticle.tag_id]).filter(Boolean);
 		} else {
 			return [];
 		}

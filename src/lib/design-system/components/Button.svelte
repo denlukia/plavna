@@ -26,6 +26,7 @@
 		type = 'primary',
 		size = 'body',
 		href,
+		dataSvelteKitPreloadData,
 		dataSvelteKitReload,
 		onclick: onclickProp,
 		active = false,
@@ -44,6 +45,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	role={href ? 'link' : 'button'}
+	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
 	class={`button type-${type} size-${size} 
 	 global-reset-line-height

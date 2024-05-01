@@ -21,7 +21,7 @@ export class ImageService {
 		this.translationService = translationService;
 	}
 
-	private readonly imagesCommon = async ({
+	private readonly runCommonPipeline = async ({
 		initialImage,
 		mode,
 		lang,
@@ -94,7 +94,7 @@ export class ImageService {
 		const chosenDBInstance = trx || db;
 		const user = await this.userService.getOrThrow();
 
-		const processedImage = await this.imagesCommon({
+		const processedImage = await this.runCommonPipeline({
 			mode: 'create',
 			initialImage: newImage,
 			lang: null,
@@ -115,7 +115,7 @@ export class ImageService {
 
 		// TODO Delete old image from provider
 
-		const processedImage = await this.imagesCommon({
+		const processedImage = await this.runCommonPipeline({
 			mode: 'update',
 			initialImage: newImage,
 			lang,

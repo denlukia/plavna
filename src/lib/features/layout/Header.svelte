@@ -38,7 +38,7 @@
 	}
 
 	function generateCreateArticleURL(lang: string, username: string) {
-		return generatePath('/[lang]/[username]/create-article', {
+		return generatePath('/[lang]/[username]/new', {
 			'[lang]': lang,
 			'[username]': username
 		});
