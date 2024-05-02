@@ -1,7 +1,9 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 import { checkTranslationKey } from '../i18n/utils';
+import { sectionSelectSchema } from '../section/parsers';
+import { tagSelectSchema } from '../tag/parsers';
 import { pages } from './schema';
 
 // Parsers
@@ -19,8 +21,7 @@ export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).e
 		})
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });
-// СПРОСТИТИ ДО ВІДСИЛАННЯ ПРОСТИХ КЛЮЧІВ
-export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true });
+export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true }); // TODO: Maybe simplify to simple key type?
 
 // Types
 export type PageCreationForm = z.infer<typeof pageCreationFormSchema>; // Pages
@@ -33,3 +34,12 @@ export type PageUpdateForm = z.infer<typeof pageUpdatingFormSchema>;
 export type PageUpdateFormZod = typeof pageUpdatingFormSchema;
 export type PageDeletionForm = z.infer<typeof pageDeletionFormSchema>;
 export type PageDeletionFormZod = typeof pageDeletionFormSchema;
+
+// Reader's Page Config
+export const readerPageConfig = z.record(
+	sectionSelectSchema.shape.id,
+	z.object({
+		excludedTags: z.array(tagSelectSchema.shape.id)
+	})
+);
+export type ReaderPageConfig = z.infer<typeof readerPageConfig>;

@@ -1,11 +1,12 @@
 import { error } from '@sveltejs/kit';
-import { and, desc, eq, getTableColumns, inArray, isNotNull, or } from 'drizzle-orm';
+import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
+import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
 import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
@@ -15,6 +16,7 @@ import type { TranslationService } from '../i18n/service';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
+import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
 import {
 	pageCreationFormSchema,
@@ -22,9 +24,11 @@ import {
 	pageUpdatingFormSchema,
 	type PageCreateForm,
 	type PageSelect,
-	type PageUpdateForm
+	type PageUpdateForm,
+	type ReaderPageConfig
 } from './parsers';
 import { pages } from './schema';
+import { findExcludedTagsInReaderPageConfig } from './utils';
 
 export class PageService {
 	private readonly userService: UserService;
@@ -82,8 +86,8 @@ export class PageService {
 	// TODO Currently I see no way of DRYing with keeping good types
 	async getOneWithSectionsAndArticles(
 		username: string,
-		pageslug: string
-		// excludedTags?: ExcludedTags
+		pageslug: string,
+		readerPageConfig: ReaderPageConfig
 	) {
 		const user = await this.userService.get();
 
@@ -99,9 +103,9 @@ export class PageService {
 			return error(404);
 		}
 
-		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map((_, index) => {
+		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, index) => {
 			// 1. Sections query
-			const sectionQueryForArticles = db
+			const sectionInfo = await db
 				.select(getTableColumns(sections))
 				.from(sections)
 				.innerJoin(translations, eq(translations.key, sections.title_translation_key))
@@ -112,35 +116,35 @@ export class PageService {
 					)
 				)
 				.limit(1)
-				.offset(index);
-			const sectionQueryForTranslatins = db
-				.select({ id: sections.title_translation_key })
-				.from(sections)
-				.innerJoin(translations, eq(translations.key, sections.title_translation_key))
+				.offset(index)
+				.get();
+
+			if (!sectionInfo) return;
+
+			// 1.5. Active tags query
+			const excludedTags = findExcludedTagsInReaderPageConfig(readerPageConfig, sectionInfo.id);
+			const excludedTagsConfition = excludedTags.length
+				? notInArray(sectionsToTags.tag_id, excludedTags)
+				: undefined;
+			const activeTagsQuery = db
+				.select({ id: sectionsToTags.tag_id })
+				.from(sectionsToTags)
 				.where(
 					and(
-						eq(sections.page_id, pageIdSq.id),
-						isNotNull(translations[this.translationService.currentLang])
+						eq(sectionsToTags.lang, this.translationService.currentLang),
+						eq(sectionsToTags.section_id, sectionInfo.id),
+						excludedTagsConfition
 					)
-				)
-				.limit(1)
-				.offset(index);
-			const sectionQueryAliased = sectionQueryForArticles.as('section_sq');
+				);
 
 			// 2. Articles query
 			const translationForTag = alias(translations, 'translation_for_tag');
 			const translationForArticle = alias(translations, 'translation_for_article');
+			const tagsCondition = inArray(tags.id, activeTagsQuery);
+
 			const articlesQuery = db
 				.select(getTableColumns(articles))
-				.from(sectionQueryAliased)
-				.innerJoin(
-					sectionsToTags,
-					and(
-						eq(sectionsToTags.section_id, sectionQueryAliased.id),
-						eq(sectionsToTags.lang, this.translationService.currentLang)
-					)
-				)
-				.innerJoin(tags, eq(tags.id, sectionsToTags.tag_id))
+				.from(tags)
 				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
 				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
 				.innerJoin(
@@ -157,21 +161,14 @@ export class PageService {
 						isNotNull(translationForArticle[this.translationService.currentLang])
 					)
 				)
-				.where(isNotNull(articles.publish_time))
+				.where(and(isNotNull(articles.publish_time), tagsCondition))
 				.orderBy(desc(articles.publish_time))
 				.groupBy(articles.id)
 				.limit(POSTS_PER_SECTION);
+
 			const articlesQueryForTranslations = db
 				.select({ id: articles.title_translation_key })
-				.from(sectionQueryAliased)
-				.innerJoin(
-					sectionsToTags,
-					and(
-						eq(sectionsToTags.section_id, sectionQueryAliased.id),
-						eq(sectionsToTags.lang, this.translationService.currentLang)
-					)
-				)
-				.innerJoin(tags, eq(tags.id, sectionsToTags.tag_id))
+				.from(tags)
 				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
 				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
 				.innerJoin(
@@ -188,7 +185,7 @@ export class PageService {
 						isNotNull(translationForArticle[this.translationService.currentLang])
 					)
 				)
-				.where(isNotNull(articles.publish_time))
+				.where(and(isNotNull(articles.publish_time), tagsCondition))
 				.orderBy(desc(articles.publish_time))
 				.groupBy(articles.id)
 				.limit(POSTS_PER_SECTION);
@@ -212,9 +209,9 @@ export class PageService {
 			// 4. Tags
 			const tagsQuery =
 				user?.username === username
-					? db.select({ tags }).from(tags).where(eq(tags.user_id, user?.id))
+					? db.select(getTableColumns(tags)).from(tags).where(eq(tags.user_id, user?.id))
 					: db
-							.select({ tags })
+							.select(getTableColumns(tags))
 							.from(tagsArticlesQueryAliased)
 							.innerJoin(tags, eq(tags.id, tagsArticlesQueryAliased.tag_id))
 							.groupBy(tags.id);
@@ -241,8 +238,7 @@ export class PageService {
 			const descriptionTranslationQuery = db
 				.select()
 				.from(translations)
-				.where(inArray(translations.key, sectionQueryForTranslatins))
-				.groupBy(translations.key)
+				.where(eq(translations.key, sectionInfo.title_translation_key))
 				.limit(1);
 
 			// 6. Other Translations query
@@ -270,7 +266,7 @@ export class PageService {
 				)
 				.groupBy(previewTemplates.id);
 
-			const sectionInfo = sectionQueryForArticles.get();
+			const activeTagsInfo = activeTagsQuery.all();
 			const articlesInfo = articlesQuery.all();
 			const tagsArticlesInfo = tagsArticlesQuery.all();
 			const tagsInfo = tagsQuery.all();
@@ -280,6 +276,7 @@ export class PageService {
 
 			return Promise.all([
 				sectionInfo,
+				activeTagsInfo,
 				articlesInfo,
 				tagsArticlesInfo,
 				tagsInfo,
@@ -291,13 +288,15 @@ export class PageService {
 		const sectionsResponses = await Promise.all(sectionsPromises);
 
 		const sectionsNonEmpty = sectionsResponses
-			.map(([sectionInfo, ...other]) =>
-				isNonNullable(sectionInfo) ? ([sectionInfo, ...other] as const) : null
-			)
+			.map((section) => {
+				if (!section) return null;
+				const [sectionInfo, ...other] = section;
+				return isNonNullable(sectionInfo) ? ([sectionInfo, ...other] as const) : null;
+			})
 			.filter(isNonNullable);
 
 		type SectionInfo = (typeof sectionsNonEmpty)[number][0];
-		type DescriptionTranslationInfo = (typeof sectionsNonEmpty)[number][4];
+		type DescriptionTranslationInfo = (typeof sectionsNonEmpty)[number][5];
 
 		const canAddForms = user?.username === username;
 
@@ -318,15 +317,39 @@ export class PageService {
 			}
 		};
 
+		const getArticleWithTags = (
+			article: ArticleSelect,
+			tagsToArticles: TagToArticleSelect[],
+			tagsInfo: TagSelect[]
+		) => {
+			const filteredTagsToArticles = tagsToArticles.filter(
+				({ article_id }) => article_id === article.id
+			);
+			const tags = tagsInfo.filter(({ id }) =>
+				filteredTagsToArticles.some(({ tag_id }) => tag_id === id)
+			);
+
+			return { meta: article, tags };
+		};
+
 		return {
 			sections: {
 				items: await Promise.all(
 					sectionsNonEmpty.map(
-						async ([sectionInfo, articlesInfo, tagsArticlesInfo, , descriptionTranslationInfo]) => {
+						async ([
+							sectionInfo,
+							activeTagsInfo,
+							articlesInfo,
+							tagsArticlesInfo,
+							tagsInfo,
+							descriptionTranslationInfo
+						]) => {
 							return {
 								meta: sectionInfo,
-								articles: articlesInfo,
-								tagsArticles: tagsArticlesInfo,
+								activeTags: activeTagsInfo,
+								articles: articlesInfo.map((article) =>
+									getArticleWithTags(article, tagsArticlesInfo, tagsInfo)
+								),
 								forms: await getSectionForms(sectionInfo, descriptionTranslationInfo)
 							};
 						}
@@ -334,15 +357,9 @@ export class PageService {
 				),
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
-			tags: sectionsNonEmpty.reduce((acc, [, , , tagsInfo]) => {
-				return {
-					...acc,
-					...Object.fromEntries(tagsInfo.map((t) => [t.tags.id, t]))
-				};
-			}, {}),
 			recordsTranslations: {
 				...sectionsNonEmpty.reduce(
-					(acc, [, , , , descriptionTranslationInfo, otherTranslationsInfo]) => {
+					(acc, [, , , , , descriptionTranslationInfo, otherTranslationsInfo]) => {
 						if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
 						const descriptionTranslation = {
 							[descriptionTranslationInfo.key]:
