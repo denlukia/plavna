@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	import ArticlePreview from '../article/ArticlePreview.svelte';
 	import type { ArticleSelect } from '../article/parsers';
 	import { getNullAndDupFilter } from '../common/utils';
@@ -32,10 +30,7 @@
 </script>
 
 <div class="articles-list">
-	{#each section.articles as article (article.id)}
-		<ArticlePreview
-			{article}
-			tags={getTagsForArticle(article, section.tagsArticles, $page.data.tags)}
-		/>
+	{#each section.articles as article (article.meta.id)}
+		<ArticlePreview {article} />
 	{/each}
 </div>

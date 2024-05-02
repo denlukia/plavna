@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import { PUBLIC_HOST, PUBLIC_PORT } from '$env/static/public';
+import type { CookieSerializeOptions } from 'node_modules/sveltekit-superforms/dist/actionResult';
 
 export const SECTIONS_PER_LOAD = 3;
 export const POSTS_PER_SECTION = 10;
@@ -34,3 +35,14 @@ export const IMG_VALIDATION_CONFIG = {
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 export const HOST = dev ? `${PUBLIC_HOST}:${PUBLIC_PORT}` : `${PUBLIC_HOST}`;
+
+export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string) =>
+	`page-config-${username}-${pageslug}`;
+
+export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
+	({
+		path,
+		sameSite: 'strict',
+		secure: true,
+		maxAge: 60 * 60 * 24 * 365 // a year,
+	}) as const;

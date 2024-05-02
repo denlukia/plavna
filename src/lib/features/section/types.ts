@@ -4,10 +4,12 @@ import type { ArticleSelect } from '../article/parsers';
 import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import type { SectionDelete, SectionSelect, SectionUpdate } from './parsers';
 
+type ActiveTag = { id: TagToArticleSelect['tag_id'] };
+
 export type SectionProp = {
 	meta: SectionSelect;
-	articles: ArticleSelect[];
-	tagsArticles: TagToArticleSelect[];
+	activeTags: Array<ActiveTag>;
+	articles: Array<{ meta: ArticleSelect; tags: Array<TagSelect> }>;
 	forms: {
 		updating: SuperValidated<SectionUpdate>;
 		deletion: SuperValidated<SectionDelete>;
@@ -19,5 +21,6 @@ export type SectionPropWithAuthorship = SectionProp & {
 export type OnTagSwitchFunction = (tagId: TagSelect['id'], newState: boolean) => void;
 
 export type SectionContext = {
+	activeTags: Array<ActiveTag>;
 	onTagSwitch?: OnTagSwitchFunction;
 };

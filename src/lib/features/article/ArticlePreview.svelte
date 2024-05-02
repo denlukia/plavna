@@ -4,11 +4,15 @@
 	import { generatePath } from '$lib/features/common/links';
 
 	import Translation from '../i18n/Translation.svelte';
-	import type { TagSelect } from '../tag/parsers';
-	import type { ArticleSelect } from './parsers';
+	import type { SectionProp } from '../section/types';
 
-	export let article: ArticleSelect;
-	export let tags: TagSelect[];
+	type Props = {
+		article: SectionProp['articles'][number];
+	};
+
+	let { article }: Props = $props();
+
+	let { meta, tags } = $derived(article);
 
 	function getRouteId(params: Page['params']) {
 		if ('pagename' in params) {
@@ -25,10 +29,10 @@
 		'[[lang=lang]]': $page.params.lang,
 		'[username]': $page.params.username,
 		'[pagename]': $page.params.pagename,
-		'[slug]': article.slug
+		'[slug]': meta.slug
 	})}
 >
-	<Translation recordKey={article.title_translation_key} />
+	<Translation recordKey={meta.title_translation_key} />
 	{#each tags as tag (tag.id)}
 		<p>
 			<Translation recordKey={tag.name_translation_key} />
