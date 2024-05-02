@@ -41,8 +41,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// 2. Adding our Services
 	locals.userService = new UserService(locals.user);
 	locals.translationService = new TranslationService(locals.userService, params.lang);
-	locals.pageService = new PageService(locals.userService, locals.translationService);
+
 	locals.sectionService = new SectionService(locals.userService, locals.translationService);
+	locals.pageService = new PageService(
+		locals.userService,
+		locals.translationService,
+		locals.sectionService
+	);
 	locals.tagService = new TagService(locals.userService, locals.translationService);
 	locals.imageService = new ImageService(locals.userService, locals.translationService);
 	locals.articleService = new ArticleService(

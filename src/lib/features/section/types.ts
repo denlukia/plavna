@@ -18,9 +18,15 @@ export type SectionProp = {
 export type SectionPropWithAuthorship = SectionProp & {
 	forms: NonNullable<SectionProp['forms']>;
 };
-export type OnTagSwitchFunction = (tagId: TagSelect['id'], newState: boolean) => void;
+export type OnTagSwitchFunction = (tagId: TagSelect['id'], checked: boolean) => void;
 
 export type SectionContext = {
 	activeTags: Array<ActiveTag>;
 	onTagSwitch?: OnTagSwitchFunction;
+};
+
+export type SectionReconfigRequest = {
+	sectionId: SectionSelect['id'];
+	tagId: TagSelect['id'];
+	checked: boolean;
 };

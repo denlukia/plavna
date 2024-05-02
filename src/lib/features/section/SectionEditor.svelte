@@ -71,6 +71,7 @@
 		padding-bottom: var(--size-section-editor-padding-bottom);
 		border-radius: var(--size-section-editor-border-radius);
 		background: var(--color-section-editor-bg);
+		position: relative;
 	}
 
 	.actions {

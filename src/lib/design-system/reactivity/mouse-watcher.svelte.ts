@@ -14,16 +14,16 @@ export function createMouseWatcher() {
 		// We use capture because not using it fired parent events
 		// Supposedly because of this https://github.com/sveltejs/svelte/issues/11328
 		// TODO Remove when fixed
-		onmousemovecapture(e: MouseEvent) {
+		onmousemove(e: MouseEvent) {
 			const currentTarget = e.currentTarget as HTMLButtonElement | HTMLAnchorElement;
 			const rect = currentTarget.getBoundingClientRect();
 			mouse.x = e.clientX - rect.left;
 			mouse.y = e.clientY - rect.top;
 		},
-		onmouseentercapture(e: MouseEvent) {
+		onmouseenter(e: MouseEvent) {
 			mouse.hovered = true;
 		},
-		onmouseleavecapture(e: MouseEvent) {
+		onmouseleave(e: MouseEvent) {
 			mouse.hovered = false;
 		}
 	};

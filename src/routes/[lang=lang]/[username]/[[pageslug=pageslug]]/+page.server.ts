@@ -2,7 +2,7 @@ import { error, fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { findPageConfigInCookies } from '$lib/features/page/utils';
+import { findReaderPageConfigInCookies } from '$lib/features/page/utils';
 import {
 	sectionDeleteSchema,
 	sectionInsertSchema,
@@ -21,7 +21,7 @@ export const load = async ({ params, parent, locals: { pageService }, cookies })
 		if (!pageslug) return error(404);
 	}
 
-	const readerPageConfig = findPageConfigInCookies(cookies, username, pageslug);
+	const readerPageConfig = findReaderPageConfigInCookies(cookies, username, pageslug);
 
 	const page = await pageService.getOneWithSectionsAndArticles(
 		username,
