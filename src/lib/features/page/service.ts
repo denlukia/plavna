@@ -16,6 +16,7 @@ import type { TranslationService } from '../i18n/service';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
+import type { SectionService } from '../section/service';
 import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
 import {
@@ -28,15 +29,20 @@ import {
 	type ReaderPageConfig
 } from './parsers';
 import { pages } from './schema';
-import { findExcludedTagsInReaderPageConfig } from './utils';
 
 export class PageService {
 	private readonly userService: UserService;
 	private readonly translationService: TranslationService;
+	private readonly sectionService: SectionService;
 
-	constructor(userService: UserService, translationService: TranslationService) {
+	constructor(
+		userService: UserService,
+		translationService: TranslationService,
+		sectionService: SectionService
+	) {
 		this.userService = userService;
 		this.translationService = translationService;
+		this.sectionService = sectionService;
 	}
 
 	async create(page: PageCreateForm) {
@@ -93,197 +99,23 @@ export class PageService {
 
 		// 0. Utilitary queries
 		const userIdSq = db.select({ id: users.id }).from(users).where(eq(users.username, username));
-		const pageIdSq = await db
+		const pageInfo = await db
 			.select()
 			.from(pages)
 			.where(and(eq(pages.slug, pageslug), eq(pages.user_id, userIdSq)))
 			.get();
 
-		if (!pageIdSq) {
+		if (!pageInfo) {
 			return error(404);
 		}
 
-		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, index) => {
-			// 1. Sections query
-			const sectionInfo = await db
-				.select(getTableColumns(sections))
-				.from(sections)
-				.innerJoin(translations, eq(translations.key, sections.title_translation_key))
-				.where(
-					and(
-						eq(sections.page_id, pageIdSq.id),
-						isNotNull(translations[this.translationService.currentLang])
-					)
-				)
-				.limit(1)
-				.offset(index)
-				.get();
-
-			if (!sectionInfo) return;
-
-			// 1.5. Active tags query
-			const excludedTags = findExcludedTagsInReaderPageConfig(readerPageConfig, sectionInfo.id);
-			const excludedTagsConfition = excludedTags.length
-				? notInArray(sectionsToTags.tag_id, excludedTags)
-				: undefined;
-			const activeTagsQuery = db
-				.select({ id: sectionsToTags.tag_id })
-				.from(sectionsToTags)
-				.where(
-					and(
-						eq(sectionsToTags.lang, this.translationService.currentLang),
-						eq(sectionsToTags.section_id, sectionInfo.id),
-						excludedTagsConfition
-					)
-				);
-
-			// 2. Articles query
-			const translationForTag = alias(translations, 'translation_for_tag');
-			const translationForArticle = alias(translations, 'translation_for_article');
-			const tagsCondition = inArray(tags.id, activeTagsQuery);
-
-			const articlesQuery = db
-				.select(getTableColumns(articles))
-				.from(tags)
-				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
-				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
-				.innerJoin(
-					translationForTag,
-					and(
-						eq(translationForTag.key, tags.name_translation_key),
-						isNotNull(translationForTag[this.translationService.currentLang])
-					)
-				)
-				.innerJoin(
-					translationForArticle,
-					and(
-						eq(translationForArticle.key, articles.title_translation_key),
-						isNotNull(translationForArticle[this.translationService.currentLang])
-					)
-				)
-				.where(and(isNotNull(articles.publish_time), tagsCondition))
-				.orderBy(desc(articles.publish_time))
-				.groupBy(articles.id)
-				.limit(POSTS_PER_SECTION);
-
-			const articlesQueryForTranslations = db
-				.select({ id: articles.title_translation_key })
-				.from(tags)
-				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
-				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
-				.innerJoin(
-					translationForTag,
-					and(
-						eq(translationForTag.key, tags.name_translation_key),
-						isNotNull(translationForTag[this.translationService.currentLang])
-					)
-				)
-				.innerJoin(
-					translationForArticle,
-					and(
-						eq(translationForArticle.key, articles.title_translation_key),
-						isNotNull(translationForArticle[this.translationService.currentLang])
-					)
-				)
-				.where(and(isNotNull(articles.publish_time), tagsCondition))
-				.orderBy(desc(articles.publish_time))
-				.groupBy(articles.id)
-				.limit(POSTS_PER_SECTION);
-			const articlesQueryAliased = articlesQuery.as('articles_sq');
-
-			// 3. Tags articles query
-			const tagsArticlesQuery = db
-				.select({ tag_id: tagsToArticles.tag_id, article_id: tagsToArticles.article_id })
-				.from(articlesQueryAliased)
-				.innerJoin(tagsToArticles, eq(tagsToArticles.article_id, articlesQueryAliased.id))
-				.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
-				.innerJoin(
-					translations,
-					and(
-						eq(translations.key, tags.name_translation_key),
-						isNotNull(translations[this.translationService.currentLang])
-					)
-				);
-			const tagsArticlesQueryAliased = tagsArticlesQuery.as('tags_articles_sq');
-
-			// 4. Tags
-			const tagsQuery =
-				user?.username === username
-					? db.select(getTableColumns(tags)).from(tags).where(eq(tags.user_id, user?.id))
-					: db
-							.select(getTableColumns(tags))
-							.from(tagsArticlesQueryAliased)
-							.innerJoin(tags, eq(tags.id, tagsArticlesQueryAliased.tag_id))
-							.groupBy(tags.id);
-			const tagsQueryForTranslations =
-				user?.username === username
-					? db
-							.select({ id: tags.name_translation_key })
-							.from(tags)
-							.where(eq(tags.user_id, user?.id))
-					: db
-							.select({ id: tags.name_translation_key })
-							.from(articlesQueryAliased)
-							.innerJoin(tagsToArticles, eq(tagsToArticles.article_id, articlesQueryAliased.id))
-							.innerJoin(tags, eq(tags.id, tagsToArticles.tag_id))
-							.innerJoin(
-								translations,
-								and(
-									eq(translations.key, tags.name_translation_key),
-									isNotNull(translations[this.translationService.currentLang])
-								)
-							);
-
-			// 5. Description Translation query
-			const descriptionTranslationQuery = db
-				.select()
-				.from(translations)
-				.where(eq(translations.key, sectionInfo.title_translation_key))
-				.limit(1);
-
-			// 6. Other Translations query
-			const otherTranslationsQuery = db
-				.select({
-					key: translations.key,
-					[this.translationService.currentLang]: translations[this.translationService.currentLang]
-				})
-				.from(translations)
-				.where(
-					or(
-						inArray(translations.key, articlesQueryForTranslations),
-						inArray(translations.key, tagsQueryForTranslations)
-					)
-				)
-				.groupBy(translations.key);
-
-			// 6. Preview types query
-			const allPreviewTypesQuery = db
-				.select({ id: previewTemplates.id, component_reference: previewTemplates.url })
-				.from(articlesQueryAliased)
-				.innerJoin(
-					previewTemplates,
-					eq(previewTemplates.id, articlesQueryAliased.preview_template_id)
-				)
-				.groupBy(previewTemplates.id);
-
-			const activeTagsInfo = activeTagsQuery.all();
-			const articlesInfo = articlesQuery.all();
-			const tagsArticlesInfo = tagsArticlesQuery.all();
-			const tagsInfo = tagsQuery.all();
-			const descriptionTranslationInfo = descriptionTranslationQuery.get();
-			const otherTranslationsInfo = otherTranslationsQuery.all();
-			const previewTypesInfo = allPreviewTypesQuery.all();
-
-			return Promise.all([
-				sectionInfo,
-				activeTagsInfo,
-				articlesInfo,
-				tagsArticlesInfo,
-				tagsInfo,
-				descriptionTranslationInfo,
-				otherTranslationsInfo,
-				previewTypesInfo
-			]);
+		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, offset) => {
+			return this.sectionService.getOne({
+				pageId: pageInfo.id,
+				offset,
+				readerPageConfig,
+				username
+			});
 		});
 		const sectionsResponses = await Promise.all(sectionsPromises);
 

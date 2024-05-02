@@ -7,18 +7,21 @@
 	type Props = {
 		section: SectionProp;
 		onEditorOpen: () => void;
+		showEditButton: boolean;
 	};
 
-	let { section, onEditorOpen }: Props = $props();
+	let { section, onEditorOpen, showEditButton }: Props = $props();
 </script>
 
 <div class="description-viewer">
 	<Translation recordKey={section.meta.title_translation_key} markdown />
-	<div class="actions-wrapper">
-		<Button size="small" type="secondary" onclick={onEditorOpen}>
-			<Translation key="page.section.edit" />
-		</Button>
-	</div>
+	{#if showEditButton}
+		<div class="actions-wrapper">
+			<Button size="small" type="secondary" onclick={onEditorOpen}>
+				<Translation key="page.section.edit" />
+			</Button>
+		</div>
+	{/if}
 </div>
 
 <style>

@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Layers from '$lib/design-system/components/ActiveElementFX/Layers.svelte';
 	import Button from '$lib/design-system/components/Button.svelte';
 	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
-	import Grid from '$lib/design-system/components/Grid.svelte';
 	import Input from '$lib/design-system/components/Input/Input.svelte';
 	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
-	import Box from '$lib/design-system/components/Popup/Box.svelte';
+	import Popup from '$lib/design-system/components/Popup/Popup.svelte';
 	import Select from '$lib/design-system/components/Popup/Select.svelte';
 	import Spacer from '$lib/design-system/components/Spacer.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
@@ -27,10 +25,12 @@
 	setContext('selector-languages', mockedSelectorLanguages);
 
 	const tabs = ['Test 1', 'Many Pelmeni'];
-
 	let activeTabIndex = $state(0);
 
 	const { form: translationForm } = superForm(translationFormData);
+
+	// Popup
+	let active = $state(false);
 </script>
 
 <div class="blocks">
@@ -39,9 +39,19 @@
 		<Typography block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
 		<Typography block size="headline">Тестовий <br /> текст</Typography>
 		<Typography block size="headline-short">Тестовий <br /> текст</Typography>
-		<Typography block size="body">Тестовий <br /> текст</Typography>
+		<Typography block size="body"
+			>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quas nesciunt ratione iste
+			<br />
+			eveniet. Dolorem officia suscipit veniam voluptas minima amet consequuntur neque nihil maiores
+			<br />
+			hic sed, laborum laboriosam quod.
+		</Typography>
 		<Typography block size="body-short">
-			Тестовий чудовий текст дає<br /> вам зрозуміти читаємість тексту
+			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quas nesciunt ratione iste
+			<br />
+			eveniet. Dolorem officia suscipit veniam voluptas minima amet consequuntur neque nihil maiores
+			<br />
+			hic sed, laborum laboriosam quod.
 		</Typography>
 		<Typography block size="small">Тестовий <br /> текст</Typography>
 		<Typography block size="small-short">Тестовий <br /> текст</Typography>
@@ -92,14 +102,17 @@
 		</Tabs>
 	</div>
 	<div class="group">
-		<Box>
-			<form>
+		<Popup triggerType="button" bind:active>
+			{#snippet label()}
+				Test
+			{/snippet}
+			{#snippet content()}
 				<Typography size="heading-2">Тест</Typography>
 				<Input placeholder="Тест" />
-				<Spacer size="m" />
+				<Spacer />
 				<Button>Let's Go!</Button>
-			</form>
-		</Box>
+			{/snippet}
+		</Popup>
 	</div>
 </div>
 

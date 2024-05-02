@@ -1,10 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { setContext } from 'svelte';
 
 	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
-	import type { SectionContext, SectionProp, SectionPropWithAuthorship } from './types';
+	import type {
+		SectionContext,
+		SectionProp,
+		SectionPropWithAuthorship,
+		SectionReconfigRequest
+	} from './types';
 
 	type Props = {
 		section: SectionProp;
@@ -24,8 +30,19 @@
 
 	const sectionContext: SectionContext = {
 		activeTags: section.activeTags,
-		onTagSwitch: (tagId, newState) => {
-			console.log(`Tag switch: ${tagId} to ${newState}`);
+		onTagSwitch: async (tagId, checked) => {
+			const body: SectionReconfigRequest = { sectionId: section.meta.id, tagId, checked };
+			try {
+				const response = await fetch($page.url, {
+					method: 'POST',
+					body: JSON.stringify(body)
+				});
+				if (response.ok) {
+					section = await response.json();
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	};
 
@@ -42,7 +59,7 @@
 				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
 		{:else}
-			<DescriptionViewer {section} {onEditorOpen} />
+			<DescriptionViewer {section} {onEditorOpen} showEditButton={sectionHasForms(section)} />
 		{/if}
 	</div>
 
