@@ -4,22 +4,34 @@ import { error } from '@sveltejs/kit';
 import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { marked } from 'marked';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { POSTS_PER_SECTION } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
+import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
 import type { UserService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { RecordsTranslations } from '../i18n/types';
 import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import { pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
 import { previewTemplates } from '../preview/schema';
-import type { TagUpdate } from '../tag/parsers';
+import type { PreviewTypes } from '../preview/types';
+import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
-import type { SectionDelete, SectionInsert, SectionSelect, SectionUpdate } from './parsers';
+import {
+	sectionDeleteSchema,
+	sectionUpdateSchema,
+	type SectionDelete,
+	type SectionInsert,
+	type SectionSelect,
+	type SectionUpdate
+} from './parsers';
 import { sections, sectionsToTags } from './schema';
 import { findTagIdsInLinks } from './utils';
 
@@ -54,7 +66,7 @@ export class SectionService {
 			.offset(offset)
 			.get();
 
-		if (!sectionInfo) return;
+		if (!sectionInfo) return null;
 
 		// 1.5. Active tags query
 		const readerPageConfig = 'readerPageConfig' in config ? config.readerPageConfig : {};
@@ -191,7 +203,7 @@ export class SectionService {
 
 		// 6. Preview types query
 		const allPreviewTypesQuery = db
-			.select({ id: previewTemplates.id, component_reference: previewTemplates.url })
+			.select({ id: previewTemplates.id, url: previewTemplates.url })
 			.from(articlesQueryAliased)
 			.innerJoin(
 				previewTemplates,
@@ -199,16 +211,15 @@ export class SectionService {
 			)
 			.groupBy(previewTemplates.id);
 
-		const activeTagsInfo = activeTagsQuery.all();
-		const articlesInfo = articlesQuery.all();
-		const tagsArticlesInfo = tagsArticlesQuery.all();
-		const tagsInfo = tagsQuery.all();
-		const descriptionTranslationInfo = descriptionTranslationQuery.get();
-		const otherTranslationsInfo = otherTranslationsQuery.all();
-		const previewTypesInfo = allPreviewTypesQuery.all();
+		const activeTagsPromise = activeTagsQuery.all();
+		const articlesPromise = articlesQuery.all();
+		const tagsArticlesPromise = tagsArticlesQuery.all();
+		const tagsPromise = tagsQuery.all();
+		const descriptionTranslationPromise = descriptionTranslationQuery.get();
+		const otherTranslationsPromise = otherTranslationsQuery.all();
+		const previewTypesPromise = allPreviewTypesQuery.all();
 
-		const responses = await Promise.all([
-			sectionInfo,
+		const [
 			activeTagsInfo,
 			articlesInfo,
 			tagsArticlesInfo,
@@ -216,12 +227,81 @@ export class SectionService {
 			descriptionTranslationInfo,
 			otherTranslationsInfo,
 			previewTypesInfo
+		] = await Promise.all([
+			activeTagsPromise,
+			articlesPromise,
+			tagsArticlesPromise,
+			tagsPromise,
+			descriptionTranslationPromise,
+			otherTranslationsPromise,
+			previewTypesPromise
 		]);
 
-		// TODO: Move here composing of section object away from page service
-		// return { section: {}, recordsTranslations: {}, previewTypes: {} };
+		if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
 
-		return responses;
+		const getArticleWithTags = (
+			article: ArticleSelect,
+			tagsToArticles: TagToArticleSelect[],
+			tagsInfo: TagSelect[]
+		) => {
+			const filteredTagsToArticles = tagsToArticles.filter(
+				({ article_id }) => article_id === article.id
+			);
+			const tags = tagsInfo.filter(({ id }) =>
+				filteredTagsToArticles.some(({ tag_id }) => tag_id === id)
+			);
+
+			return { meta: article, tags };
+		};
+
+		const canAddForms = user?.username === config.username;
+
+		type SectionInfo = typeof sectionInfo;
+		type DescriptionTranslationInfo = typeof descriptionTranslationInfo;
+
+		const getSectionForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
+			if (!t) throw new Error('Translation not found');
+			if (canAddForms) {
+				const data = { ...t, section_id: sectionInfo.id };
+				return {
+					updating: await superValidate(data, zod(sectionUpdateSchema), {
+						id: `section-updating-${t.key}`
+					}),
+					deletion: await superValidate(data, zod(sectionDeleteSchema), {
+						id: `section-deletion-${t.key}`
+					})
+				};
+			} else {
+				return null;
+			}
+		};
+
+		return {
+			section: {
+				meta: sectionInfo,
+				activeTags: activeTagsInfo,
+				articles: articlesInfo.map((article) =>
+					getArticleWithTags(article, tagsArticlesInfo, tagsInfo)
+				),
+				forms: await getSectionForms(sectionInfo, descriptionTranslationInfo)
+			},
+			recordsTranslations: {
+				// Description Translation
+				[descriptionTranslationInfo.key]:
+					descriptionTranslationInfo[this.translationService.currentLang],
+				// Other Translations
+				...Object.fromEntries(
+					otherTranslationsInfo.map((t) => {
+						return [t.key, t[this.translationService.currentLang]];
+					})
+				)
+			} as RecordsTranslations,
+			previewTypes: Object.fromEntries(
+				previewTypesInfo.map((p) => {
+					return [p.id, { url: p.url }];
+				})
+			) as PreviewTypes
+		};
 	}
 	async create(pagename: string, section: SectionInsert) {
 		const user = await this.userService.getOrThrow();

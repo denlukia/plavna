@@ -47,7 +47,7 @@ export const EN = {
 			edit: 'Edit',
 			delete: 'Delete',
 			cancel: 'Cancel',
-			description: "Secition's description"
+			description: 'Description'
 		}
 	},
 	article_editor: {

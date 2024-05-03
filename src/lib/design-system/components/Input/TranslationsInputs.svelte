@@ -36,28 +36,31 @@
 			{/if}
 		{/if}
 	{/each}
-	{#key currentLanguage}
-		{#if attributes.type === 'textarea'}
+
+	{#if attributes.type === 'textarea'}
+		{#key currentLanguage}
 			<textarea
-				in:fly={getFlyConf(expoOut, 'top')}
-				out:fly={getFlyConf(expoOut, 'bottom')}
+				in:fly={getFlyConf(expoOut, 'bottom')}
+				out:fly={getFlyConf(expoOut, 'top')}
 				class="global-reset-input global-text-body"
 				name="{translationsPrefix}{currentLanguage}"
 				bind:value={$translations[currentLanguage]}
 				{...attributes}
 			></textarea>
-		{:else}
+		{/key}
+	{:else}
+		{#key currentLanguage}
 			<input
 				type="text"
-				in:fly={getFlyConf(expoOut, 'top')}
-				out:fly={getFlyConf(expoOut, 'bottom')}
+				in:fly={getFlyConf(expoOut, 'bottom')}
+				out:fly={getFlyConf(expoOut, 'top')}
 				class="global-reset-input global-text-body"
 				name="{translationsPrefix}{currentLanguage}"
 				bind:value={$translations[currentLanguage]}
 				{...attributes}
 			/>
-		{/if}
-	{/key}
+		{/key}
+	{/if}
 </Layers>
 
 <style>

@@ -7,7 +7,9 @@
 	let { data } = $props();
 
 	let {
-		sections: { items, creationForm }
+		sections: { items, creationForm },
+		recordsTranslations,
+		previewTypes
 	} = $derived(data);
 
 	let creatorShown = $state(false);
@@ -18,7 +20,7 @@
 </script>
 
 {#each items as section (section.meta.id)}
-	<Section {section} />
+	<Section {section} {recordsTranslations} {previewTypes} />
 {/each}
 
 {#if creationForm}

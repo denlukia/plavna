@@ -4,10 +4,11 @@ import type { ArticleService } from '$lib/features/article/service';
 import type { UserService } from '$lib/features/auth/service';
 import type { TranslationSelect } from '$lib/features/i18n/parsers';
 import type { TranslationService } from '$lib/features/i18n/service';
-import type { SystemTranslationDict } from '$lib/features/i18n/types';
+import type { RecordsTranslations, SystemTranslationDict } from '$lib/features/i18n/types';
 import type { ImageSelect } from '$lib/features/image/parsers';
 import type { ImageService } from '$lib/features/image/service';
 import type { PageService } from '$lib/features/page/service';
+import type { PreviewType } from '$lib/features/preview/parsers';
 import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
 import type { TagSelect } from '$lib/features/tag/parsers';
@@ -33,7 +34,8 @@ declare global {
 		interface PageData {
 			user: User | null;
 			systemTranslations: SystemTranslationDict;
-			recordsTranslations?: Record<TranslationSelect['key'], string>;
+			recordsTranslations?: RecordsTranslations;
+			previewTypes?: PreviewType;
 			tags?: Record<string, TagSelect>; // TODO Refactor into just array
 			images?: ImageSelect[];
 		}

@@ -18,8 +18,14 @@
 	let headingContext: HeadingContext | undefined = getContext('heading');
 	let sectionContext: SectionContext | undefined = getContext('section');
 
-	const initialState = sectionContext?.activeTags.find((tag) => tag.id === tagId) ? true : false;
+	const initialState = $derived(
+		sectionContext?.activeTags.find((tag) => tag.id === tagId) ? true : false
+	);
 	let checked = $state(initialState);
+
+	$effect(() => {
+		checked = initialState;
+	});
 </script>
 
 <LabeledInput type="switch-with-bg">
