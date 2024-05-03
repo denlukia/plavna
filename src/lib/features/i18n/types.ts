@@ -1,3 +1,4 @@
+import type { TranslationSelect } from './parsers';
 import type { EN } from './translations/en';
 
 export type SystemTranslationDict = {
@@ -22,3 +23,5 @@ type NestedKeyOfObjectValuesOf<T extends SystemTranslationDict> = {
 
 export type SystemTranslationKey = NestedKeyOfStringValuesOf<typeof EN>;
 export type SystemTranslationSliceKey = NestedKeyOfObjectValuesOf<typeof EN>;
+
+export type RecordsTranslations = Record<TranslationSelect['key'], string>;

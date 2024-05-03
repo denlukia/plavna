@@ -51,7 +51,7 @@ export const UK = {
 			edit: 'Редагувати',
 			delete: 'Видалити',
 			cancel: 'Відмінити',
-			description: 'Опис секції'
+			description: 'Опис'
 		}
 	},
 	article_editor: {

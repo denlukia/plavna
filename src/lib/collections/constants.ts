@@ -47,7 +47,5 @@ export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string |
 export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
 	({
 		path,
-		sameSite: 'strict',
-		secure: true,
 		maxAge: 60 * 60 * 24 * 365 // a year,
 	}) as const;

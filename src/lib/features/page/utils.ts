@@ -9,28 +9,38 @@ import type { TagSelect } from '../tag/parsers';
 import type { ReaderPageConfig } from './parsers';
 
 export function findExcludedTagsInReaderPageConfig(
-	readerPageConfig: ReaderPageConfig,
+	readerPageConfig: ReaderPageConfig | null,
 	sectionId: SectionSelect['id']
 ): Array<TagSelect['id']> {
-	return readerPageConfig[sectionId]?.excludedTags || [];
+	return readerPageConfig?.[sectionId]?.excludedTags || [];
 }
 
 export function findReaderPageConfigInCookies(
 	cookies: Cookies,
 	username: string,
 	pageslug: string | undefined
-): ReaderPageConfig {
+): ReaderPageConfig | null {
 	const cookie = cookies.get(GET_PAGE_CONFIG_COOKIE_NAME(username, pageslug));
-	return cookie ? JSON.parse(cookie) : {};
+	const parsed = cookie ? JSON.parse(cookie) : null;
+	if (typeof parsed === 'object') {
+		return parsed;
+	} else {
+		return null;
+	}
 }
 
 export function updateTagInReaderPageConfig(
-	readerPageConfig: ReaderPageConfig,
+	readerPageConfig: ReaderPageConfig | null,
 	sectionId: SectionSelect['id'],
 	tagId: TagSelect['id'],
 	checked: boolean
 ) {
-	let section = readerPageConfig[sectionId];
+	let section = { excludedTags: [] as Array<TagSelect['id']> };
+	if (readerPageConfig && sectionId in readerPageConfig) {
+		section = readerPageConfig[sectionId];
+	} else {
+		readerPageConfig = { ...readerPageConfig, [sectionId]: section };
+	}
 
 	if (checked) {
 		section = {

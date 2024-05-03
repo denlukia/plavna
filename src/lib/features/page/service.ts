@@ -13,6 +13,7 @@ import type { UserService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { RecordsTranslations } from '../i18n/types';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
@@ -119,106 +120,20 @@ export class PageService {
 		});
 		const sectionsResponses = await Promise.all(sectionsPromises);
 
-		const sectionsNonEmpty = sectionsResponses
-			.map((section) => {
-				if (!section) return null;
-				const [sectionInfo, ...other] = section;
-				return isNonNullable(sectionInfo) ? ([sectionInfo, ...other] as const) : null;
-			})
-			.filter(isNonNullable);
-
-		type SectionInfo = (typeof sectionsNonEmpty)[number][0];
-		type DescriptionTranslationInfo = (typeof sectionsNonEmpty)[number][5];
+		const sectionsNonEmpty = sectionsResponses.filter(isNonNullable);
 
 		const canAddForms = user?.username === username;
 
-		const getSectionForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
-			if (!t) throw new Error('Translation not found');
-			if (canAddForms) {
-				const data = { ...t, section_id: sectionInfo.id };
-				return {
-					updating: await superValidate(data, zod(sectionUpdateSchema), {
-						id: `section-updating-${t.key}`
-					}),
-					deletion: await superValidate(data, zod(sectionDeleteSchema), {
-						id: `section-deletion-${t.key}`
-					})
-				};
-			} else {
-				return null;
-			}
-		};
-
-		const getArticleWithTags = (
-			article: ArticleSelect,
-			tagsToArticles: TagToArticleSelect[],
-			tagsInfo: TagSelect[]
-		) => {
-			const filteredTagsToArticles = tagsToArticles.filter(
-				({ article_id }) => article_id === article.id
-			);
-			const tags = tagsInfo.filter(({ id }) =>
-				filteredTagsToArticles.some(({ tag_id }) => tag_id === id)
-			);
-
-			return { meta: article, tags };
-		};
-
 		return {
 			sections: {
-				items: await Promise.all(
-					sectionsNonEmpty.map(
-						async ([
-							sectionInfo,
-							activeTagsInfo,
-							articlesInfo,
-							tagsArticlesInfo,
-							tagsInfo,
-							descriptionTranslationInfo
-						]) => {
-							return {
-								meta: sectionInfo,
-								activeTags: activeTagsInfo,
-								articles: articlesInfo.map((article) =>
-									getArticleWithTags(article, tagsArticlesInfo, tagsInfo)
-								),
-								forms: await getSectionForms(sectionInfo, descriptionTranslationInfo)
-							};
-						}
-					)
-				),
+				items: sectionsNonEmpty.map((s) => s.section),
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
-			recordsTranslations: {
-				...sectionsNonEmpty.reduce(
-					(acc, [, , , , , descriptionTranslationInfo, otherTranslationsInfo]) => {
-						if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
-						const descriptionTranslation = {
-							[descriptionTranslationInfo.key]:
-								descriptionTranslationInfo[this.translationService.currentLang]
-						};
-						return {
-							...acc,
-							...descriptionTranslation,
-							...Object.fromEntries(
-								otherTranslationsInfo.map((t) => {
-									return [t.key, t[this.translationService.currentLang]];
-								})
-							)
-						};
-					},
-					{} as Record<string, string | number | null>
-				)
-			},
-			previewTypes: sectionsNonEmpty.reduce((acc, [, , , , , , previewTypesInfo]) => {
-				return {
-					...acc,
-					...Object.fromEntries(
-						previewTypesInfo.map((p) => {
-							return [p.id, { component_reference: p.component_reference }];
-						})
-					)
-				};
+			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
+				return { ...acc, ...s.recordsTranslations };
+			}, {} as RecordsTranslations),
+			previewTypes: sectionsNonEmpty.reduce((acc, s) => {
+				return { ...acc, ...s.previewTypes };
 			}, {})
 		};
 	}
