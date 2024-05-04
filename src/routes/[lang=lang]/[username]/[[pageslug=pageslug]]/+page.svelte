@@ -7,9 +7,7 @@
 	let { data } = $props();
 
 	let {
-		sections: { items, creationForm },
-		recordsTranslations,
-		previewTypes
+		sections: { items, creationForm }
 	} = $derived(data);
 
 	let creatorShown = $state(false);
@@ -19,8 +17,12 @@
 	}
 </script>
 
-{#each items as section (section.meta.id)}
-	<Section {section} {recordsTranslations} {previewTypes} />
+{#each items as section, index (section.meta.id)}
+	<Section
+		bind:section={items[index]}
+		bind:recordsTranslations={data.recordsTranslations}
+		bind:previewTypes={data.previewTypes}
+	/>
 {/each}
 
 {#if creationForm}

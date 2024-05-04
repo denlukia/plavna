@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getContext, type Snippet } from 'svelte';
+	import type { ChangeEventHandler } from 'svelte/elements';
 	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
 	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
 	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
@@ -26,17 +27,16 @@
 	$effect(() => {
 		checked = initialState;
 	});
+
+	function onSwitchChange(e: Event) {
+		const { checked } = e.target as HTMLInputElement;
+		sectionContext?.onTagSwitch?.(tagId, checked);
+	}
 </script>
 
 <LabeledInput type="switch-with-bg">
 	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 		{@render children()}
 	</Typography>
-	<Switch
-		bind:checked
-		onchange={(e) => {
-    const {checked} = e.target as HTMLInputElement;
-    sectionContext?.onTagSwitch?.(tagId,checked); 
-  }}
-	/>
+	<Switch bind:checked onchange={onSwitchChange} />
 </LabeledInput>

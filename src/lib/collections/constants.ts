@@ -36,13 +36,14 @@ export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 export const HOST = dev ? `${PUBLIC_HOST}:${PUBLIC_PORT}` : `${PUBLIC_HOST}`;
 
-export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
-	let result = `page-config-${username}`;
-	if (pageslug) {
-		result += `-${pageslug}`;
-	}
-	return result;
-};
+// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
+// 	let result = `page-config-${username}`;
+// 	if (pageslug) {
+// 		result += `-${pageslug}`;
+// 	}
+// 	return result;
+// };
+export const PAGE_CONFIG_COOKIE_NAME = 'page-config';
 
 export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
 	({

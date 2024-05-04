@@ -12,16 +12,24 @@ import {
 export const load = async ({ params, parent, locals: { pageService }, cookies }) => {
 	const { username } = params;
 
-	let pageslug = '';
-	const prefix = 'page-';
-	const hasPrefix = params.pageslug?.startsWith(prefix);
+	function getUnprefixedPageSlug(prefixed: string | undefined) {
+		let pageslug = '';
+		if (!prefixed) return pageslug;
 
-	if (hasPrefix) {
-		pageslug = params.pageslug?.slice(prefix.length) || '';
-		if (!pageslug) return error(404);
+		const prefix = 'page-';
+		const hasPrefix = prefixed.startsWith(prefix);
+
+		if (hasPrefix) {
+			pageslug = prefixed.slice(prefix.length) || '';
+			if (!pageslug) return error(404);
+		}
+
+		return pageslug;
 	}
 
-	const readerPageConfig = findReaderPageConfigInCookies(cookies, username, pageslug);
+	const pageslug = getUnprefixedPageSlug(params.pageslug);
+
+	const readerPageConfig = findReaderPageConfigInCookies(cookies);
 
 	const page = await pageService.getOneWithSectionsAndArticles(
 		username,

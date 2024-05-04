@@ -94,7 +94,7 @@ export class PageService {
 	async getOneWithSectionsAndArticles(
 		username: string,
 		pageslug: string,
-		readerPageConfig: ReaderPageConfig
+		readerPageConfig: ReaderPageConfig | null
 	) {
 		const user = await this.userService.get();
 
