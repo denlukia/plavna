@@ -21,7 +21,11 @@
 		previewTypes: PreviewTypes;
 	};
 
-	let { section, recordsTranslations, previewTypes }: Props = $props();
+	let {
+		section = $bindable(),
+		recordsTranslations = $bindable(),
+		previewTypes = $bindable()
+	}: Props = $props();
 
 	let editorOpened = $state(false);
 

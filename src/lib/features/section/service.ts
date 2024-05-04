@@ -37,7 +37,7 @@ import { findTagIdsInLinks } from './utils';
 
 type GetOneConfig = { username: string } & (
 	| { pageId: PageSelect['id']; offset: number }
-	| { sectionId: SectionSelect['id']; readerPageConfig: ReaderPageConfig }
+	| { sectionId: SectionSelect['id']; readerPageConfig: ReaderPageConfig | null }
 );
 
 export class SectionService {

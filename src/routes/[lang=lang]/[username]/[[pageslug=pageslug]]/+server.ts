@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import {
-	GET_PAGE_CONFIG_COOKIE_NAME,
-	GET_PAGE_CONFIG_COOKIE_OPTIONS
+	GET_PAGE_CONFIG_COOKIE_OPTIONS,
+	PAGE_CONFIG_COOKIE_NAME
 } from '$lib/collections/constants';
 import {
 	findReaderPageConfigInCookies,
@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, cookies, params, locals, u
 	const { sectionId, tagId, checked } = data;
 
 	const { username, pageslug } = params;
-	const readerPageConfig = findReaderPageConfigInCookies(cookies, username, pageslug);
+	const readerPageConfig = findReaderPageConfigInCookies(cookies);
 	const updatedReaderPageConfig = updateTagInReaderPageConfig(
 		readerPageConfig,
 		sectionId,
@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, cookies, params, locals, u
 	});
 
 	cookies.set(
-		GET_PAGE_CONFIG_COOKIE_NAME(username, pageslug),
+		PAGE_CONFIG_COOKIE_NAME,
 		JSON.stringify(updatedReaderPageConfig),
 		GET_PAGE_CONFIG_COOKIE_OPTIONS(url.pathname)
 	);

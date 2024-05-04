@@ -1,8 +1,5 @@
 import type { Cookies } from '@sveltejs/kit';
-import {
-	GET_PAGE_CONFIG_COOKIE_NAME,
-	GET_PAGE_CONFIG_COOKIE_OPTIONS
-} from '$lib/collections/constants';
+import { PAGE_CONFIG_COOKIE_NAME } from '$lib/collections/constants';
 
 import type { SectionSelect } from '../section/parsers';
 import type { TagSelect } from '../tag/parsers';
@@ -15,12 +12,8 @@ export function findExcludedTagsInReaderPageConfig(
 	return readerPageConfig?.[sectionId]?.excludedTags || [];
 }
 
-export function findReaderPageConfigInCookies(
-	cookies: Cookies,
-	username: string,
-	pageslug: string | undefined
-): ReaderPageConfig | null {
-	const cookie = cookies.get(GET_PAGE_CONFIG_COOKIE_NAME(username, pageslug));
+export function findReaderPageConfigInCookies(cookies: Cookies): ReaderPageConfig | null {
+	const cookie = cookies.get(PAGE_CONFIG_COOKIE_NAME);
 	const parsed = cookie ? JSON.parse(cookie) : null;
 	if (typeof parsed === 'object') {
 		return parsed;
@@ -56,17 +49,4 @@ export function updateTagInReaderPageConfig(
 
 	readerPageConfig[sectionId] = section;
 	return readerPageConfig;
-}
-
-export function setReaderPageConfigInCookies(
-	cookies: Cookies,
-	username: string,
-	pageslug: string | undefined,
-	readerPageConfig: ReaderPageConfig
-) {
-	cookies.set(
-		GET_PAGE_CONFIG_COOKIE_NAME(username, pageslug),
-		JSON.stringify(readerPageConfig),
-		GET_PAGE_CONFIG_COOKIE_OPTIONS('.')
-	);
 }
