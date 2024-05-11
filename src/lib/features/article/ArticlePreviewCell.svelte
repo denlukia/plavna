@@ -1,0 +1,75 @@
+<script lang="ts">
+	import type { Page } from '@sveltejs/kit';
+	import { page } from '$app/stores';
+	import { generatePath } from '$lib/features/common/links';
+
+	import Translation from '../i18n/Translation.svelte';
+	import PreviewRenderer from '../preview/PreviewRenderer.svelte';
+	import type { SectionProp } from '../section/types';
+
+	type Props = {
+		article: SectionProp['articles'][number];
+	};
+
+	let { article }: Props = $props();
+
+	let { meta, tags } = $derived(article);
+
+	function getRouteId(params: Page['params']) {
+		if ('pagename' in params) {
+			return '/[[lang=lang]]/[username]/page-[pagename]/[slug]';
+		} else {
+			return '/[[lang=lang]]/[username]/[slug]';
+		}
+	}
+</script>
+
+<a
+	class="article"
+	style="--rows-taken:{meta.preview_rows}; --cols-taken:{meta.preview_columns}"
+	href={generatePath(getRouteId($page.params), {
+		'[[lang=lang]]': $page.params.lang,
+		'[username]': $page.params.username,
+		'[pagename]': $page.params.pagename,
+		'[slug]': meta.slug
+	})}
+>
+	<span class="height-sizer">
+		<span class="preview-wrapper">
+			<PreviewRenderer />
+		</span>
+	</span>
+</a>
+
+<style>
+	.article {
+		display: block;
+
+		--max-width-base: calc(var(--cols-taken) * var(--size-cell-width));
+		--max-width-gaps: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
+		max-width: calc(var(--max-width-base) + var(--max-width-gaps));
+
+		--width-base: calc(var(--cols-taken) / var(--count-cols-total) * 100%);
+		--width-gaps: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
+		--width-layout-paddings: var(--size-main-layout-padding-inline) * 2;
+		width: var(--width-base);
+	}
+	.height-sizer {
+		display: block;
+		position: relative;
+		height: 0;
+		--height-base: calc(var(--rows-taken) * var(--size-cell-height-unitless));
+		--height-gaps: calc((var(--rows-taken) - 1) * var(--size-cell-gap-unitless));
+		padding-top: calc(
+			(var(--height-base) + var(--height-gaps)) / var(--size-cell-width-unitless) * 100%
+		);
+	}
+	.preview-wrapper {
+		position: absolute;
+		--negative-edge: calc(var(--size-l) * -1);
+		top: var(--negative-edge);
+		left: var(--negative-edge);
+		right: var(--negative-edge);
+		bottom: var(--negative-edge);
+	}
+</style>

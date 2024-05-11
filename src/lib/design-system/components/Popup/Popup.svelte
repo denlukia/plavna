@@ -8,12 +8,13 @@
 
 	type Props = {
 		triggerType?: 'button' | 'dropdown';
+		active?: boolean;
+		list?: boolean;
 		label: Snippet;
 		content: Snippet;
-		active?: boolean;
 	};
 
-	let { triggerType = 'dropdown', active = $bindable(), label, content }: Props = $props();
+	let { triggerType = 'dropdown', list, active = $bindable(), label, content }: Props = $props();
 
 	function onclick() {
 		active = !active;
@@ -36,7 +37,7 @@
 
 	{#if active}
 		<div class="popup-positioner">
-			<Box>
+			<Box {list}>
 				{@render content()}
 			</Box>
 		</div>

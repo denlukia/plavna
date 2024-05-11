@@ -1,6 +1,5 @@
 import { dev } from '$app/environment';
 import { PUBLIC_HOST, PUBLIC_PORT } from '$env/static/public';
-import type { CookieSerializeOptions } from 'node_modules/sveltekit-superforms/dist/actionResult';
 
 export const SECTIONS_PER_LOAD = 3;
 export const POSTS_PER_SECTION = 10;

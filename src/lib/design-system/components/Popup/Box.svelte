@@ -8,11 +8,12 @@
 
 	type Props = {
 		children: Snippet;
+		list?: boolean;
 	};
 
 	const animationDuration = 500;
 
-	let { children }: Props = $props();
+	let { children, list }: Props = $props();
 </script>
 
 <div
@@ -27,6 +28,7 @@
 	</div>
 	<div
 		class="box"
+		class:list
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
 			easing: expoOut,
@@ -65,6 +67,9 @@
 		z-index: 1;
 		margin-bottom: -0.5px;
 		transform-origin: bottom center;
+	}
+	.list {
+		gap: var(--size-box-gap);
 	}
 	/* We use global cause we'd like Tail component to be raw SVG code from Figma */
 	.tail-wrapper > :global(svg) {

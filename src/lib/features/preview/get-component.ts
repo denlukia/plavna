@@ -2,7 +2,7 @@ import { ERRORS } from '../../collections/errors';
 
 export async function getPreviewComponent(folder: string, type: 'Static' | 'Editor' | 'Dynamic') {
 	const previewComponents = import.meta.glob('$lib/features/preview/families/*/*.svelte');
-	const moduleSearchString = `preview/families/${folder}/${type}.svelte`;
+	const moduleSearchString = `${folder}/${type}.svelte`;
 	const moduleKey = Object.keys(previewComponents).find((key) => key.includes(moduleSearchString));
 	if (moduleKey === undefined) {
 		return new Error(ERRORS.COULDNT_LOAD_PREVIEW_COMPONENT);

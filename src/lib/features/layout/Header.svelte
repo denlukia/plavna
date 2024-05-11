@@ -27,7 +27,7 @@
 </script>
 
 <header>
-	<Popup>
+	<Popup list>
 		{#snippet label()}
 			{$page.params.lang.toUpperCase()}
 		{/snippet}

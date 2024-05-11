@@ -30,7 +30,7 @@
 	}
 </script>
 
-<Popup>
+<Popup list>
 	{#snippet label()}
 		<span class="label-wrapper">
 			{#if currentPage}

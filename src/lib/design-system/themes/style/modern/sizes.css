@@ -16,16 +16,23 @@
 	--size-full: 999px;
 
 	/* ------ Semantic ------ */
-	/* --- General --- */
-	--size-column-width: 224px;
-	--size-column-gap: var(--size-m);
+	/* --- Grid --- */
+	--size-cell-width-unitless: 224;
+	--size-cell-width: calc(var(--size-cell-width-unitless) * 1px);
+
+	--size-cell-height-unitless: 112;
+	--size-cell-height: calc(var(--size-cell-height-unitless) * 1px);
+
+	--size-cell-gap-unitless: 8;
+	--size-cell-gap: calc(var(--size-cell-gap-unitless) * 1px);
+	--count-cols-total: 5;
 
 	/* --- Main Layout --- */
 	--size-main-layout-margin-top: var(--size-3xl);
 	--size-main-layout-padding-inline: var(--size-l);
 	--size-main-layout-max-width: calc(
-		var(--size-column-width) * 5 + var(--size-column-gap) * 4 +
-			var(--size-main-layout-padding-inline) * 2
+		var(--size-cell-width) * 5 + var(--size-cell-gap) * 4 + var(--size-main-layout-padding-inline) *
+			2
 	);
 
 	/* --- Layers --- */
@@ -56,7 +63,7 @@
 
 	/* --- Input --- */
 	--size-input-min-width: 100px;
-	--size-input-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
+	--size-input-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-none);
 	--size-input-padding-bottom: var(--size-s);
@@ -169,7 +176,7 @@
 	--size-box-gap: var(--size-s);
 
 	/* --- Section --- */
-	--size-section-max-width: calc(var(--size-column-width) * 3 + var(--size-column-gap) * 2);
+	--size-section-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-3xl);
 
 	/* --- Section Editor --- */
