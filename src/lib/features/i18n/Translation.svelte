@@ -29,8 +29,6 @@
 
 	let { formObj, key, recordKey, markdown = false }: Props = $props();
 
-	$inspect($page.data.recordsTranslations);
-
 	function getTranslation() {
 		if (formObj) return formObj.data[$page.params.lang as SupportedLang];
 		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);

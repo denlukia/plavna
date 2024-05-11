@@ -38,7 +38,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: var(--size-column-gap);
+		gap: var(--size-cell-gap);
 	}
 	.new-page-wrapper {
 		margin-left: var(--size-m);

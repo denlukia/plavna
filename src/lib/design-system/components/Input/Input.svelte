@@ -136,7 +136,7 @@
 				var(--text-body-padding-top) + var(--text-body-line-height) * 2 +
 					var(--text-body-padding-bottom)
 			);
-			min-width: calc(var(--size-column-width) - var(--size-3xl));
+			min-width: calc(var(--size-cell-width) - var(--size-3xl));
 			max-height: calc(
 				var(--text-body-padding-top) + var(--text-body-line-height) * 10 +
 					var(--text-body-padding-bottom)

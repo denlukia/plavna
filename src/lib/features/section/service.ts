@@ -239,7 +239,7 @@ export class SectionService {
 
 		if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
 
-		const getArticleWithTags = (
+		const getArticle = (
 			article: ArticleSelect,
 			tagsToArticles: TagToArticleSelect[],
 			tagsInfo: TagSelect[]
@@ -259,7 +259,7 @@ export class SectionService {
 		type SectionInfo = typeof sectionInfo;
 		type DescriptionTranslationInfo = typeof descriptionTranslationInfo;
 
-		const getSectionForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
+		const getForms = async (sectionInfo: SectionInfo, t: DescriptionTranslationInfo) => {
 			if (!t) throw new Error('Translation not found');
 			if (canAddForms) {
 				const data = { ...t, section_id: sectionInfo.id };
@@ -280,10 +280,8 @@ export class SectionService {
 			section: {
 				meta: sectionInfo,
 				activeTags: activeTagsInfo,
-				articles: articlesInfo.map((article) =>
-					getArticleWithTags(article, tagsArticlesInfo, tagsInfo)
-				),
-				forms: await getSectionForms(sectionInfo, descriptionTranslationInfo)
+				articles: articlesInfo.map((article) => getArticle(article, tagsArticlesInfo, tagsInfo)),
+				forms: await getForms(sectionInfo, descriptionTranslationInfo)
 			},
 			recordsTranslations: {
 				// Description Translation

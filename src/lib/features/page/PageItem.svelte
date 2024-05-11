@@ -89,7 +89,7 @@
 		padding-block-end: var(--size-m);
 		background-color: var(--color-input-bg);
 		border-radius: var(--size-m-to-l);
-		width: calc(var(--size-column-width) * 2 + var(--size-column-gap));
+		width: calc(var(--size-cell-width) * 2 + var(--size-cell-gap));
 	}
 
 	.info {
