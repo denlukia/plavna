@@ -8,6 +8,7 @@ import type { RecordsTranslations, SystemTranslationDict } from '$lib/features/i
 import type { ImageSelect } from '$lib/features/image/parsers';
 import type { ImageService } from '$lib/features/image/service';
 import type { PageService } from '$lib/features/page/service';
+import type { PreviewFamiliesStore } from '$lib/features/preview/families/types';
 import type { PreviewType } from '$lib/features/preview/parsers';
 import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
@@ -35,8 +36,8 @@ declare global {
 			user: User | null;
 			systemTranslations: SystemTranslationDict;
 			recordsTranslations?: RecordsTranslations;
-			previewTypes?: PreviewType;
-			tags?: Record<string, TagSelect>; // TODO Refactor into just array
+			previewFamilies?: PreviewFamiliesStore;
+			tags?: Record<string, TagSelect>; // TODO: Refactor into just array
 			images?: ImageSelect[];
 		}
 	}

@@ -25,7 +25,9 @@
 
 	--size-cell-gap-unitless: 8;
 	--size-cell-gap: calc(var(--size-cell-gap-unitless) * 1px);
+
 	--count-cols-total: 5;
+	--size-cell-overflow: var(--size-l);
 
 	/* --- Main Layout --- */
 	--size-main-layout-margin-top: var(--size-3xl);
@@ -178,6 +180,7 @@
 	/* --- Section --- */
 	--size-section-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-3xl);
+	--size-section-articles-margin-top: var(--size-xl);
 
 	/* --- Section Editor --- */
 	--size-section-editor-padding-inline: var(--size-m-to-l);

@@ -1,6 +1,6 @@
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
-// TODO Capital names of tables in singular
+// TODO: Capital names of tables in singular
 // to deal with variable names for queries problem
 
 export const users = sqliteTable(

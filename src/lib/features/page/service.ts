@@ -14,6 +14,7 @@ import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
+import type { PreviewFamiliesStore } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
@@ -90,7 +91,7 @@ export class PageService {
 		});
 		return { pageItems, creationForm };
 	}
-	// TODO Currently I see no way of DRYing with keeping good types
+	// TODO: Currently I see no way of DRYing with keeping good types
 	async getOneWithSectionsAndArticles(
 		username: string,
 		pageslug: string,
@@ -132,9 +133,16 @@ export class PageService {
 			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.recordsTranslations };
 			}, {} as RecordsTranslations),
-			previewTypes: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.previewTypes };
-			}, {})
+			previewFamilies: sectionsNonEmpty.reduce((acc, { previewFamilies }) => {
+				const result = {
+					...acc,
+					...previewFamilies
+				};
+				if ('custom' in previewFamilies) {
+					result.custom = { ...acc.custom, ...previewFamilies.custom };
+				}
+				return result;
+			}, {} as PreviewFamiliesStore)
 		};
 	}
 }

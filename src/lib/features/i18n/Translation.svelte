@@ -50,7 +50,7 @@
 	});
 </script>
 
-<!-- TODO add typography renderers for markdown  -->
+<!-- TODO: add typography renderers for markdown  -->
 {#if nonNullTranslation}
 	{#if markdown}
 		<Markdown source={nonNullTranslation} />

@@ -34,8 +34,8 @@ export const imageUpdateFormSchema = imageSelectSchema
 	.extend(imageUpdateFileFields);
 export const imageDeletionFormSchema = imageSelectSchema.pick({ id: true });
 
-// TODO Refine all slug schema to accept only valid slugs
-// TODO Refine url schema to accept only valid urls
+// TODO: Refine all slug schema to accept only valid slugs
+// TODO: Refine url schema to accept only valid urls
 // __UTILITY SCHEMAS__
 
 export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({

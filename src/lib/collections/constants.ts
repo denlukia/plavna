@@ -32,6 +32,7 @@ export const IMG_VALIDATION_CONFIG = {
 };
 
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
+export const MAX_ROWS_IN_SECTION = 3;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 export const HOST = dev ? `${PUBLIC_HOST}:${PUBLIC_PORT}` : `${PUBLIC_HOST}`;
 

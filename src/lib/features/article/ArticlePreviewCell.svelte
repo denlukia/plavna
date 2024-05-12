@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import { generatePath } from '$lib/features/common/links';
 
-	import Translation from '../i18n/Translation.svelte';
 	import PreviewRenderer from '../preview/PreviewRenderer.svelte';
 	import type { SectionProp } from '../section/types';
 
@@ -25,7 +24,7 @@
 </script>
 
 <a
-	class="article"
+	class="article global-reset-link"
 	style="--rows-taken:{meta.preview_rows}; --cols-taken:{meta.preview_columns}"
 	href={generatePath(getRouteId($page.params), {
 		'[[lang=lang]]': $page.params.lang,
@@ -36,7 +35,7 @@
 >
 	<span class="height-sizer">
 		<span class="preview-wrapper">
-			<PreviewRenderer />
+			<PreviewRenderer article={meta} />
 		</span>
 	</span>
 </a>
@@ -53,6 +52,9 @@
 		--width-gaps: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
 		--width-layout-paddings: var(--size-main-layout-padding-inline) * 2;
 		width: var(--width-base);
+
+		margin-bottom: var(--size-cell-gap);
+		margin-right: var(--size-cell-gap);
 	}
 	.height-sizer {
 		display: block;
@@ -66,10 +68,11 @@
 	}
 	.preview-wrapper {
 		position: absolute;
-		--negative-edge: calc(var(--size-l) * -1);
-		top: var(--negative-edge);
-		left: var(--negative-edge);
-		right: var(--negative-edge);
-		bottom: var(--negative-edge);
+
+		top: calc(var(--size-cell-overflow) * -1);
+		left: calc(var(--size-cell-overflow) * -1);
+		right: calc(var(--size-cell-overflow) * -1);
+		bottom: calc(var(--size-cell-overflow) * -1);
+		pointer-events: none;
 	}
 </style>

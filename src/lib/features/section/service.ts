@@ -13,13 +13,15 @@ import { db } from '$lib/services/db';
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
 import type { UserService } from '../auth/service';
-import { isNonNullable } from '../common/utils';
+import { dedupeArray, getNullAndDupFilter, isNonNullable, isUniqueElement } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
 import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import { pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
+import type { previewFamilies } from '../preview/families';
+import type { PreviewFamiliesStore } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import type { PreviewTypes } from '../preview/types';
 import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
@@ -276,6 +278,29 @@ export class SectionService {
 			}
 		};
 
+		const previewStoreComponentsTemplate = {
+			components: { Static: null, Editor: null, Preview: null }
+		};
+
+		const getPreviewStoreEntry = (
+			previewFamilyId: NonNullable<ArticleSelect['preview_family']>
+		) => {
+			if (previewFamilyId === 'custom') {
+				return [
+					previewFamilyId,
+					{
+						...previewStoreComponentsTemplate,
+						...Object.fromEntries(
+							previewTypesInfo.filter(getNullAndDupFilter('id')).map((p) => {
+								return [p.id, p.url];
+							})
+						)
+					}
+				];
+			}
+			return [previewFamilyId, previewStoreComponentsTemplate];
+		};
+
 		return {
 			section: {
 				meta: sectionInfo,
@@ -294,11 +319,11 @@ export class SectionService {
 					})
 				)
 			} as RecordsTranslations,
-			previewTypes: Object.fromEntries(
-				previewTypesInfo.map((p) => {
-					return [p.id, { url: p.url }];
-				})
-			) as PreviewTypes
+			previewFamilies: Object.fromEntries(
+				dedupeArray(articlesInfo.map((a) => a.preview_family).filter(isNonNullable)).map(
+					getPreviewStoreEntry
+				)
+			) as PreviewFamiliesStore
 		};
 	}
 	async create(pagename: string, section: SectionInsert) {
@@ -405,7 +430,7 @@ export class SectionService {
 			}
 		});
 	}
-	// TODO Remake all delete params to just id
+	// TODO: Remake all delete params to just id
 	async delete(sectionDelete: SectionDelete) {
 		const user = await this.userService.getOrThrow();
 

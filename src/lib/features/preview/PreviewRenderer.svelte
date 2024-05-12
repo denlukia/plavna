@@ -1,17 +1,31 @@
 <script lang="ts">
-	import type { PreviewFamilyId } from './families';
+	import { page } from '$app/stores';
 
-	type Props = {};
+	import type { ArticleSelect } from '../article/parsers';
+
+	type Props = {
+		article: ArticleSelect;
+	};
+
+	let { article }: Props = $props();
+
+	let familyId = $derived(article.preview_family);
+	let staticComponent = $derived.by(() => {
+		const previewFamilies = $page.data.previewFamilies;
+
+		if (!previewFamilies) return null;
+		if (!familyId) return null;
+		if (!(familyId in previewFamilies)) return null;
+
+		const previewFamilyObj = previewFamilies[familyId];
+		if (!previewFamilyObj) return null;
+
+		return previewFamilyObj.components['Static'];
+	});
 </script>
 
-<span> Preview </span>
-
-<style>
-	span {
-		display: block;
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		background-color: lightblue;
-	}
-</style>
+{#if staticComponent}
+	<svelte:component this={staticComponent} {article} />
+{:else}
+	Static component not found
+{/if}

@@ -33,7 +33,7 @@ export class PreviewService {
 		this.imageService = imageService;
 	}
 
-	// TODO Show image input only if account has Image Provider keys
+	// TODO: Show image input only if account has Image Provider keys
 	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler) {
 		const user = await this.userService.getOrThrow();
 		const { url, ...translation } = template;
@@ -120,7 +120,7 @@ export class PreviewService {
 			}
 			if (recordResult) {
 				if (recordResult.images.path) {
-					// TODO Folder deletion
+					// TODO: Folder deletion
 				}
 				await this.imageService.delete(recordResult.images.id, undefined, trx);
 			}

@@ -5,7 +5,7 @@ import { articleInsertSchema, type articleSelectSchema } from '../article/parser
 import { generateLanguagedFields } from '../common/parsers-utils';
 import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
-import type { PreviewFamilyId } from './families';
+import type { PreviewFamilyId } from './families/types';
 import { previewTemplates } from './schema';
 
 // Previews
