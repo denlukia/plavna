@@ -7,7 +7,7 @@
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
 
-	// TODO Fix animation on first switching
+	// TODO: Fix animation on first switching
 
 	type Props = {
 		children: Snippet;

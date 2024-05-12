@@ -16,7 +16,7 @@
 </script>
 
 <Layers>
-	<!-- TODO Directional transitions based on lang index -->
+	<!-- TODO: Directional transitions based on lang index -->
 	{#each supportedLangs as lang}
 		{#if lang !== currentLanguage}
 			{#if attributes.type === 'textarea'}

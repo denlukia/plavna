@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
-	import type { PreviewFamilyId } from '$lib/features/preview/families';
-	import { getPreviewComponent } from '$lib/features/preview/get-component';
+	import type import type { PreviewFamilyId } from '$lib/features/preview/families/types';
+tPreviewComponent } from '$lib/features/preview/get-component';
 	import type { PreviewTemplateSelect } from '$lib/features/preview/parsers';
 
 	import type { PageData } from '../../../../routes/[lang=lang]/(with-header)/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';

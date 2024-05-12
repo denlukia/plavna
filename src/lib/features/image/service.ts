@@ -113,7 +113,7 @@ export class ImageService {
 		const chosenDBInstance = trx || db;
 		const user = await this.userService.getOrThrow();
 
-		// TODO Delete old image from provider
+		// TODO: Delete old image from provider
 
 		const processedImage = await this.runCommonPipeline({
 			mode: 'update',
@@ -148,7 +148,7 @@ export class ImageService {
 			.where(whereCondition)
 			.get();
 
-		// TODO Delete image from provider
+		// TODO: Delete image from provider
 
 		if (mode === 'translation-deletion') {
 			if (translation) {

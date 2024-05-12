@@ -1,4 +1,4 @@
-import { type CrossfadeParams, type TransitionConfig, fade } from 'svelte/transition';
+import { fade, type CrossfadeParams, type TransitionConfig } from 'svelte/transition';
 
 function cubic_out(t: number) {
 	const f = t - 1.0;
@@ -56,7 +56,7 @@ export function crossfade({
 		counterparts: Map<Key, Element>,
 		intro: boolean
 	): (node: Element, params: CrossfadeParams & { key: Key }) => () => TransitionConfig {
-		// @ts-expect-error TODO improve typings (are the public types wrong?)
+		// @ts-expect-error TODO: improve typings (are the public types wrong?)
 		return (node, params) => {
 			items.set(params.key, node);
 			return () => {

@@ -13,7 +13,7 @@ export function createMouseWatcher() {
 		},
 		// We use capture because not using it fired parent events
 		// Supposedly because of this https://github.com/sveltejs/svelte/issues/11328
-		// TODO Remove when fixed
+		// TODO: Remove when fixed
 		onmousemove(e: MouseEvent) {
 			const currentTarget = e.currentTarget as HTMLButtonElement | HTMLAnchorElement;
 			const rect = currentTarget.getBoundingClientRect();

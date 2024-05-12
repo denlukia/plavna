@@ -145,3 +145,7 @@ export function mapRange(
 ) {
 	return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
+
+export function dedupeArray(arr: Array<any>) {
+	return Array.from(new Set(arr));
+}
