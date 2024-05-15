@@ -5,8 +5,7 @@ export type ImagekitAuthParams = ReturnType<ServerImageHandler['getImageKitCrede
 
 export const GET = async ({ locals: { userService } }) => {
 	const user = await userService.getOrThrow();
-	const imageHandler = new ServerImageHandler(null);
-	const authParams = imageHandler.getImageKitCredentials(user);
+	const authParams = new ServerImageHandler().getImageKitCredentials(user);
 
 	return json(authParams);
 };

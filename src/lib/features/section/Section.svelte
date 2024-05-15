@@ -3,7 +3,8 @@
 	import { setContext } from 'svelte';
 
 	import type { RecordsTranslations } from '../i18n/types';
-	import type { PreviewTypes } from '../preview/types';
+	import { enrichPreviewFamilies } from '../preview/enricher';
+	import type { PreviewFamiliesStore } from '../preview/families/types';
 	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
@@ -18,13 +19,13 @@
 	type Props = {
 		section: SectionProp;
 		recordsTranslations: RecordsTranslations;
-		previewTypes: PreviewTypes;
+		previewFamilies: PreviewFamiliesStore;
 	};
 
 	let {
 		section = $bindable(),
 		recordsTranslations = $bindable(),
-		previewTypes = $bindable()
+		previewFamilies = $bindable()
 	}: Props = $props();
 
 	let editorOpened = $state(false);
@@ -50,9 +51,12 @@
 				});
 				if (response.ok) {
 					const result: SectionFetchReturn = await response.json();
+
 					if (result) {
+						const enriched = await enrichPreviewFamilies(result.previewFamilies);
+
 						recordsTranslations = { ...recordsTranslations, ...result.recordsTranslations };
-						previewTypes = { ...previewTypes, ...result.previewTypes };
+						previewFamilies = { ...previewFamilies, ...enriched };
 						section = result.section;
 					}
 				}

@@ -22,7 +22,7 @@
 <h2>PLAVNA MODERN</h2>
 <TranslationEditor formObj={translationForms.preview_translation_1} />
 <TranslationEditor formObj={translationForms.preview_translation_1} />
-<form use:enhance method="POST" action="?/update_preview">
+<form use:enhance method="POST" action="?/update_preview" enctype="multipart/form-data">
 	<input name="preview_family" type="hidden" value="plavna-modern" />
 	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />

@@ -1,23 +1,11 @@
-import type { PreviewFamilyId } from '$lib/features/preview/families/types';
-import { getPreviewComponent } from '$lib/features/preview/get-component';
+import { enrichPreviewFamilies } from '$lib/features/preview/enricher';
 
 import type { PageLoad } from './$types';
 
-// TODO: Investigate error here
 export const load: PageLoad = async ({ data }) => {
-	const { previewFamilies, ...other } = structuredClone(data);
+	const { previewFamilies, ...pageData } = structuredClone(data);
 
-	for (const previewFamily in previewFamilies) {
-		const previewFamilyTyped = previewFamily as PreviewFamilyId;
+	const enriched = await enrichPreviewFamilies(previewFamilies);
 
-		const component = await getPreviewComponent(previewFamily, 'Static');
-		if (component instanceof Error) continue;
-
-		previewFamilies[previewFamilyTyped].components = {
-			...previewFamilies[previewFamilyTyped].components,
-			Static: component
-		};
-	}
-
-	return { ...other, previewFamilies };
+	return { ...pageData, previewFamilies: enriched };
 };

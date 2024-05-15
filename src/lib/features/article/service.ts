@@ -16,6 +16,7 @@ import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import { getSystemTranslation } from '../i18n/utils';
 import {
 	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
@@ -98,9 +99,9 @@ export class ArticleService {
 
 			let source = null;
 			try {
-				({ source } = await new ServerImageHandler(null).setUploaderFromUser(user));
-			} catch (err) {
-				console.error(err);
+				source = (await new ServerImageHandler().setProviderAndUploader(user)).provider?.type;
+			} catch {
+				console.log('Error setting image uploader from user');
 			}
 			const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
 				this.imageService.create({ source }, trx),
@@ -373,22 +374,36 @@ export class ArticleService {
 	) {
 		// Common for 1. and 3.
 		const user = await this.userService.getOrThrow();
-		const { source, providerData: imageProviderData } = await new ServerImageHandler(
-			null
-		).setUploaderFromUser(user);
+		let source,
+			providerData = null;
 
+		// TODO: Remake all such places to not call Image Handler if not uploading images
+		try {
+			let provider = (await new ServerImageHandler().setProviderAndUploader(user)).provider;
+			if (provider) {
+				source = provider.type;
+				providerData = provider.data;
+			}
+		} catch {
+			console.error('Error setting image uploader from user');
+		}
 		// 1. Article fields update
-		if (preview.preview_family && preview.preview_family !== 'custom')
+		if (preview.preview_family && preview.preview_family !== 'custom') {
 			preview.preview_template_id = null;
-		if (preview.preview_template_id) preview.preview_family = 'custom';
+		}
+		if (preview.preview_template_id) {
+			preview.preview_family = 'custom';
+		}
 
 		const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
 		const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
 		const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
 		// 2. Upload images if present and update records
-		const validImagesPresent = Object.entries(imageHandlers).some(([key, { hasValidImage }]) => {
-			hasValidImage && !keysForDeletion.find((k) => k === `delete_${key}`);
+		// TODO: There were validImage field in ImageHandler, we replaced
+		// for just imageHandler presence, check if everything works ok still
+		const validImagesPresent = Object.entries(imageHandlers).some(([key, imageHandler]) => {
+			imageHandler && !keysForDeletion.find((k) => k === `delete_${key}`);
 		});
 		if (validImagesPresent) {
 			const queryResult = await db
@@ -406,12 +421,9 @@ export class ArticleService {
 				async ([fieldName, imageHandler]) => {
 					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
 					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
-					if (
-						imageHandler.hasValidImage &&
-						!keysForDeletion.find((k) => k === `delete_${fieldName}`)
-					) {
-						await imageHandler.setUploaderFromUser(user);
-						const record = await imageHandler.processAndUpload({
+					if (imageHandler && !keysForDeletion.find((k) => k === `delete_${fieldName}`)) {
+						await imageHandler.setProviderAndUploader(user);
+						const record = await imageHandler.upload({
 							imageId: articleRecord[fieldNameWithIdPrefix],
 							lang
 						});
@@ -523,7 +535,7 @@ export class ArticleService {
 						.where(whereCondition);
 				}
 
-				if (preview_screenshot_image_id) {
+				if (preview_screenshot_image_id && providerData) {
 					const image_id = preview_screenshot_image_id;
 					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
 					if (preview.preview_create_localized_screenshots) {
@@ -536,7 +548,7 @@ export class ArticleService {
 										height,
 										lang,
 										url,
-										imageProviderData
+										imageProviderData: providerData
 									};
 								} else {
 									return null;
@@ -553,7 +565,7 @@ export class ArticleService {
 								width,
 								height,
 								url,
-								imageProviderData
+								imageProviderData: providerData
 							}
 						];
 					}

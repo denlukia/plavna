@@ -1,5 +1,6 @@
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { redirect } from '@sveltejs/kit';
+import { ImageHandler } from 'node_modules/@denlukia/plavna-common/dist/handler/class/base';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
@@ -111,10 +112,16 @@ async function update_preview(event: RequestEvent) {
 	);
 
 	for (const key of imagesKeys) {
-		imagesHandlers[key] = new ServerImageHandler(formData.get(key));
-		const filePresent = imagesHandlers[key].checkPresence();
-		if (filePresent) {
-			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
+		const entry = formData.get(key);
+		if (entry) {
+			try {
+				imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
+					entry,
+					IMG_VALIDATION_CONFIG
+				);
+			} catch (error) {}
+		} else {
+			imagesHandlers[key] = null;
 		}
 	}
 
@@ -127,10 +134,15 @@ async function create_preview_template(event: RequestEvent) {
 	const form = await superValidate(formData, zod(previewTemplateCreationFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const imageHandler = new ServerImageHandler(formData.get('image'));
-	const filePresent = imageHandler.checkPresence();
-	if (filePresent) {
-		await imageHandler.validate(IMG_VALIDATION_CONFIG);
+	const entry = formData.get('image');
+	let imageHandler: ServerImageHandler | null = null;
+	if (entry) {
+		try {
+			imageHandler = await new ServerImageHandler().setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+		} catch (error) {
+			// TODO: Error for unsupported image
+			return fail(400, { form });
+		}
 	}
 
 	await previewService.create(form.data, imageHandler);
@@ -142,10 +154,15 @@ async function update_preview_template(event: RequestEvent) {
 	const form = await superValidate(formData, zod(previewTemplateEditingFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const imageHandler = new ServerImageHandler(formData.get('image'));
-	const filePresent = imageHandler.checkPresence();
-	if (filePresent) {
-		await imageHandler.validate(IMG_VALIDATION_CONFIG);
+	const entry = formData.get('image');
+	let imageHandler: ServerImageHandler | null = null;
+	if (entry) {
+		try {
+			imageHandler = await new ServerImageHandler().setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+		} catch (error) {
+			// TODO: Error for unsupported image
+			return fail(400, { form });
+		}
 	}
 
 	await previewService.update(form.data, imageHandler);

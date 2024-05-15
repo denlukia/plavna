@@ -17,15 +17,23 @@ export async function updateImages({
 }) {
 	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandler>;
 	const imageHandledPromises = imagesKeys.map(async (key) => {
-		imagesHandlers[key] = new ServerImageHandler(rawData.get(key));
-		const filePresent = imagesHandlers[key].checkPresence();
+		let fileIsValid = true;
+		try {
+			imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
+				rawData.get(key),
+				IMG_VALIDATION_CONFIG
+			);
+		} catch {
+			fileIsValid = false;
+		}
+
+		// TODO: There were a check for file presence, now it throws, check if everything is ok
 		const lang = (key.split('.')[1] || null) as SupportedLang | null;
 		const markedForDeletion = key.startsWith('delete') && data[key] === true;
 		if (markedForDeletion) {
 			await imageService.delete(data.id, lang);
-		} else if (filePresent) {
-			await imagesHandlers[key].validate(IMG_VALIDATION_CONFIG);
-			const report = await imagesHandlers[key].processAndUpload({
+		} else if (fileIsValid) {
+			const report = await imagesHandlers[key].upload({
 				imageId: data.id,
 				lang: lang
 			});

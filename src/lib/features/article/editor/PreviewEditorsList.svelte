@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
-	import type import type { PreviewFamilyId } from '$lib/features/preview/families/types';
-tPreviewComponent } from '$lib/features/preview/get-component';
+	import { getPreviewComponent } from '$lib/features/preview/enricher';
+	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 	import type { PreviewTemplateSelect } from '$lib/features/preview/parsers';
 
-	import type { PageData } from '../../../../routes/[lang=lang]/(with-header)/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
+	import type { PageData } from '../../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
 	import Translation from '../../i18n/Translation.svelte';
 	import PreviewTemplateCreator from '../../preview/PreviewTemplateCreator.svelte';
 	import PreviewTemplateEditor from '../../preview/PreviewTemplateEditor.svelte';

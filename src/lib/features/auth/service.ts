@@ -31,7 +31,7 @@ export class UserService {
 	}
 	async updateImageProvider(providerData: ImageProviderUpdate) {
 		const user = await this.getOrThrow();
-		await new ServerImageHandler(null).setUploaderFromUser(providerData);
+		await new ServerImageHandler().setProviderAndUploader(providerData);
 		return db.update(users).set(providerData).where(eq(users.id, user.id));
 	}
 }

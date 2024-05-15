@@ -1,5 +1,5 @@
 import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
-import { getPreviewComponent } from '$lib/features/preview/get-component';
+import { getPreviewComponent } from '$lib/features/preview/enricher';
 import type { PreviewComponents } from '$lib/features/preview/parsers';
 
 export const load = async ({ data, url }) => {

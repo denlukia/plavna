@@ -29,5 +29,5 @@ export type ArticlePreviewImageFileFieldsAll = typeof articlePreviewImageFileFie
 export type ArticlePreviewImageFileFieldNamesAll = keyof ArticlePreviewImageFileFieldsAll;
 export type ArticlePreviewImageHandlers = Record<
 	ArticlePreviewImageFileFieldNamesAll,
-	ServerImageHandler
+	ServerImageHandler | null
 >;

@@ -33,7 +33,7 @@ export const articlePreviewImageFileFieldsAllObj = {
 
 export const articlePreviewUpdateSchema = articleInsertSchema
 	.pick(previewRelatedFields)
-	.merge(articlePreviewImageIdsFieldsSchema)
+	// .merge(articlePreviewImageIdsFieldsSchema)
 	.extend(articlePreviewImageFileFieldsAllObj);
 
 // Preview Templates
