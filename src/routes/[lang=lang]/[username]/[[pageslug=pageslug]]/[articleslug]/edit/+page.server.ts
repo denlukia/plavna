@@ -1,6 +1,5 @@
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { redirect } from '@sveltejs/kit';
-import { ImageHandler } from 'node_modules/@denlukia/plavna-common/dist/handler/class/base';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
