@@ -23,6 +23,7 @@ export const articles = sqliteTable(
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		publish_time: integer('publish_time', { mode: 'timestamp' }),
+		likes_count: integer('likes_count').notNull().default(0),
 		preview_columns: integer('preview_columns').notNull().default(1),
 		preview_rows: integer('preview_rows').notNull().default(1),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),

@@ -21,7 +21,7 @@
 	<Section
 		bind:section={items[index]}
 		bind:recordsTranslations={data.recordsTranslations}
-		bind:previewTypes={data.previewTypes}
+		bind:previewFamilies={data.previewFamilies}
 	/>
 {/each}
 

@@ -35,7 +35,7 @@
 			style={currentLang === lang ? 'font-weight: bold;' : 'font-weight: normal;'}
 			type={browser ? 'button' : null}
 			role={browser ? 'button' : 'link'}
-			on:click={() => (currentLang = lang)}
+			onclick={() => (currentLang = lang)}
 			href={browser ? undefined : generatePath($page.route.id || '', { '[lang]': lang })}
 		>
 			{lang}

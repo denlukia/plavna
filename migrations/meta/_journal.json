@@ -1,12 +1,12 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1710355248926,
-      "tag": "0000_demonic_microbe",
+      "version": "6",
+      "when": 1715647789665,
+      "tag": "0000_clammy_silverclaw",
       "breakpoints": true
     }
   ]

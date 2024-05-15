@@ -37,7 +37,7 @@
 	<Typography size="heading-1">
 		<Translation key="page.section.editor_title" />
 	</Typography>
-	<form use:enhance action="?/update_section" method="POST">
+	<form use:enhance action="?/{'section_id' in $form ? 'update' : 'create'}_section" method="POST">
 		{#if 'section_id' in $form}
 			<input name="section_id" type="hidden" bind:value={$form.section_id} />
 		{/if}

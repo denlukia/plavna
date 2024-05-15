@@ -34,16 +34,16 @@ export class PreviewService {
 	}
 
 	// TODO: Show image input only if account has Image Provider keys
-	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler) {
+	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler | null) {
 		const user = await this.userService.getOrThrow();
 		const { url, ...translation } = template;
 		await db.transaction(async (trx) => {
 			const [{ key }] = await this.translationService.create([translation], 'disallow-empty', trx);
 			let imageId: ImageSelect['id'] | null = null;
-			if (imageHandler.hasValidImage) {
-				const { source } = await imageHandler.setUploaderFromUser(user);
+			if (imageHandler) {
+				const source = (await imageHandler.setProviderAndUploader(user)).provider?.type;
 				({ id: imageId } = await this.imageService.create({ source }, trx));
-				const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
+				const { record } = await imageHandler.upload({ imageId, lang: null });
 				await this.imageService.update(record, null, trx);
 			}
 			await trx
@@ -52,7 +52,7 @@ export class PreviewService {
 				.run();
 		});
 	}
-	async update(template: PreviewTemplateEditing, imageHandler: ServerImageHandler) {
+	async update(template: PreviewTemplateEditing, imageHandler: ServerImageHandler | null) {
 		const user = await this.userService.getOrThrow();
 		const { url, template_id, ...translation } = template;
 		await db.transaction(async (trx) => {
@@ -76,21 +76,21 @@ export class PreviewService {
 			await trx.update(previewTemplates).set({ url }).where(whereCondition);
 
 			// 2. Create/Upload/Update image
-			if (imageHandler.hasValidImage) {
+			if (imageHandler) {
 				const imageResult = await trx
 					.select({ id: images.id })
 					.from(previewTemplates)
 					.innerJoin(images, eq(images.id, previewTemplates.image_id))
 					.where(whereCondition)
 					.get();
-				const { source } = await imageHandler.setUploaderFromUser(user);
+				const source = (await imageHandler.setProviderAndUploader(user)).provider?.type;
 
 				let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 				if (!imageId) {
 					({ id: imageId } = await this.imageService.create({ source }, trx));
 					await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 				}
-				const { record } = await imageHandler.processAndUpload({ imageId, lang: null });
+				const { record } = await imageHandler.upload({ imageId, lang: null });
 				await this.imageService.update(record, null, trx);
 			}
 		});

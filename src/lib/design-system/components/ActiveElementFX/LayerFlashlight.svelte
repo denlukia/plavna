@@ -8,7 +8,7 @@
 </script>
 
 <span class="layer-flashlight" class:hovered={mouse.hovered}>
-	<span class="poiner" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}" />
+	<span class="poiner" style="--pointer-x: {mouse.x}; --pointer-y: {mouse.y}"></span>
 </span>
 
 <style>

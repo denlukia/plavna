@@ -1,7 +1,7 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "4d7adbc9-a15a-4e1d-b775-126915a9cfd3",
+  "id": "2d10eb25-e8f4-42d2-8d56-f51daedddd35",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "articles": {
@@ -48,6 +48,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "likes_count": {
+          "name": "likes_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
         },
         "preview_columns": {
           "name": "preview_columns",

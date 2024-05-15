@@ -37,26 +37,25 @@
 		if (!imageId) throw Error('Image not found');
 
 		// 2. Validate image
-		const imageHandler = new ClientImageHandler(file);
-		if (imageHandler.checkPresence()) {
-			try {
-				await imageHandler.validate(IMG_VALIDATION_CONFIG);
-			} catch (err: any) {
-				errors = err;
-				dispatch('processing-finished');
-				return;
-			}
-
-			// 3. Process and upload image
-			await imageHandler.setUploaderFromUser(user, '/api/imagekit-auth-params');
-			const report = await imageHandler.processAndUpload({ imageId, lang });
-
-			// 4. Report image upload
-			await fetch('/api/report-img-upload', {
-				method: 'POST',
-				body: JSON.stringify(report)
-			});
+		let imageHandler: ClientImageHandlerType;
+		try {
+			imageHandler = await new ClientImageHandler().setImageFromEntry(file, IMG_VALIDATION_CONFIG);
+		} catch (err: any) {
+			errors = err;
+			dispatch('processing-finished');
+			return;
 		}
+
+		// 3. Process and upload image
+		await imageHandler.setProviderAndUploader(user, '/api/imagekit-auth-params');
+		const report = await imageHandler.upload({ imageId, lang });
+
+		// 4. Report image upload
+		await fetch('/api/report-img-upload', {
+			method: 'POST',
+			body: JSON.stringify(report)
+		});
+
 		dispatch('processing-finished');
 	}
 </script>

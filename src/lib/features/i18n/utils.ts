@@ -1,6 +1,7 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
+import type { TranslationSelect } from './parsers';
 import { EN } from './translations/en';
 import { UK } from './translations/uk';
 import type {
@@ -81,6 +82,13 @@ export function getSystemTranslation(key: string, systemTranslations: SystemTran
 		throw Error(`Translation ${key} is not a string`);
 	}
 }
+export function getRecordTranslation(
+	key: TranslationSelect['key'],
+	recordsTranslations: App.PageData['recordsTranslations']
+) {
+	return recordsTranslations?.[key];
+}
+
 export const defaultLang: SupportedLang = 'en';
 export function isSupportedLang(lang: string): lang is SupportedLang {
 	return supportedLangs.includes(lang as SupportedLang);

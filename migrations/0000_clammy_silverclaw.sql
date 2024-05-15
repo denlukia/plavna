@@ -5,6 +5,7 @@ CREATE TABLE `articles` (
 	`title_translation_key` integer NOT NULL,
 	`content_translation_key` integer NOT NULL,
 	`publish_time` integer,
+	`likes_count` integer DEFAULT 0 NOT NULL,
 	`preview_columns` integer DEFAULT 1 NOT NULL,
 	`preview_rows` integer DEFAULT 1 NOT NULL,
 	`preview_family` text,

@@ -35,7 +35,7 @@
 >
 	<span class="height-sizer">
 		<span class="preview-wrapper">
-			<PreviewRenderer article={meta} />
+			<PreviewRenderer {article} />
 		</span>
 	</span>
 </a>

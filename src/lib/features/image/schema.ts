@@ -9,6 +9,7 @@ export const images = sqliteTable('images', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	// TODO: rename to smth like "common"
 	is_account_common: integer('is_account_common', { mode: 'boolean' }).notNull().default(false),
 	owning_article_id: integer('owning_article_id').references((): AnySQLiteColumn => articles.id, {
 		onDelete: 'set null',
