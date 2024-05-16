@@ -1,8 +1,10 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { error } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, getTableColumns } from 'drizzle-orm';
+import type { User } from 'lucia';
 import { db } from '$lib/services/db';
 
+import { users } from '../auth/schema';
 import type { UserService } from '../auth/service';
 import type { TransactionContext } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
@@ -21,7 +23,7 @@ export class ImageService {
 		this.translationService = translationService;
 	}
 
-	private readonly runCommonPipeline = async ({
+	private readonly runEffects = async ({
 		initialImage,
 		mode,
 		lang,
@@ -94,7 +96,7 @@ export class ImageService {
 		const chosenDBInstance = trx || db;
 		const user = await this.userService.getOrThrow();
 
-		const processedImage = await this.runCommonPipeline({
+		const processedImage = await this.runEffects({
 			mode: 'create',
 			initialImage: newImage,
 			lang: null,
@@ -109,13 +111,24 @@ export class ImageService {
 			.returning()
 			.get();
 	}
-	async update(newImage: ImageUpdate, lang: SupportedLang | null, trx?: TransactionContext) {
+	async update(
+		newImage: ImageUpdate,
+		lang: SupportedLang | null,
+		trx?: TransactionContext,
+		type?: 'from-screenshotter'
+	) {
 		const chosenDBInstance = trx || db;
-		const user = await this.userService.getOrThrow();
+
+		let user: User;
+		if (type === 'from-screenshotter') {
+			user = await this.userService.setFromImageIdOrThrow(newImage.id);
+		} else {
+			user = await this.userService.getOrThrow();
+		}
 
 		// TODO: Delete old image from provider
 
-		const processedImage = await this.runCommonPipeline({
+		const processedImage = await this.runEffects({
 			mode: 'update',
 			initialImage: newImage,
 			lang,

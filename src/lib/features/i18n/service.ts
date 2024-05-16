@@ -1,6 +1,7 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
+import type { User } from 'lucia';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
@@ -54,8 +55,10 @@ export class TranslationService {
 			.returning({ key: translations.key })
 			.all();
 	}
-	async update(translation: TranslationUpdate, trx?: TransactionContext) {
-		const user = await this.userService.getOrThrow();
+	async update(translation: TranslationUpdate, trx?: TransactionContext, user?: User) {
+		if (!user) {
+			user = await this.userService.getOrThrow();
+		}
 		const chosenDBInstance = trx || db;
 
 		return chosenDBInstance

@@ -132,6 +132,7 @@ export class ArticleService {
 
 		let exisingId = await this.getIdIfExists(slug);
 		if (exisingId === null) {
+			// TODO Remove creating new by just visiting url
 			exisingId = await this.createFromSlug(slug);
 		}
 
