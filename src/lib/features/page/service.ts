@@ -108,7 +108,7 @@ export class PageService {
 			.get();
 
 		if (!pageInfo) {
-			return error(404);
+			error(404);
 		}
 
 		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, offset) => {

@@ -237,7 +237,9 @@ export class SectionService {
 			previewTypesPromise
 		]);
 
-		if (!descriptionTranslationInfo) throw error(500, 'Translation for section not found');
+		if (!descriptionTranslationInfo) {
+			error(500, 'Translation for section not found');
+		}
 
 		const getArticle = (
 			article: ArticleSelect,

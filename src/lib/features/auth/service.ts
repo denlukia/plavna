@@ -1,9 +1,11 @@
 import { ServerImageHandler } from '@denlukia/plavna-common/server';
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, getTableColumns } from 'drizzle-orm';
 import type { User as LuciaUser } from 'lucia';
 import { db } from '$lib/services/db';
 
+import type { ImageSelect } from '../image/parsers';
+import { images } from '../image/schema';
 import type { ImageProviderUpdate, User } from './parsers';
 import { users } from './schema';
 
@@ -33,5 +35,18 @@ export class UserService {
 		const user = await this.getOrThrow();
 		await new ServerImageHandler().setProviderAndUploader(providerData);
 		return db.update(users).set(providerData).where(eq(users.id, user.id));
+	}
+	async setFromImageIdOrThrow(imageId: ImageSelect['id']) {
+		const result = await db
+			.select(getTableColumns(users))
+			.from(images)
+			.where(eq(images.id, imageId))
+			.innerJoin(users, eq(users.id, images.user_id))
+			.get();
+		if (!result) {
+			error(403);
+		}
+		this.userObj = result;
+		return result;
 	}
 }

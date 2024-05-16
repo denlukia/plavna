@@ -21,7 +21,9 @@ export const load = async ({ params, parent, locals: { pageService }, cookies })
 
 		if (hasPrefix) {
 			pageslug = prefixed.slice(prefix.length) || '';
-			if (!pageslug) return error(404);
+			if (!pageslug) {
+				error(404);
+			}
 		}
 
 		return pageslug;

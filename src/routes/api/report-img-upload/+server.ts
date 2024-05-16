@@ -11,12 +11,18 @@ export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 
 	const user = await userService.get();
 	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE_NAME);
+
 	if (accessCookie !== SCREENSHOTTER_ACCESS_TOKEN && !user) {
 		error(403);
 	}
 
 	try {
-		await imageService.update(body.record, body.lang as SupportedLang);
+		await imageService.update(
+			body.record,
+			body.lang as SupportedLang,
+			undefined,
+			'from-screenshotter'
+		);
 		return text('OK');
 	} catch (e) {
 		console.error(e);
