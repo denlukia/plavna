@@ -1,7 +1,7 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { dev } from '$app/environment';
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
 import type { User } from '$lib/features/auth/parsers';
@@ -27,7 +27,7 @@ export const lucia = new Lucia(adapter, {
 export function getGitHubProvider(lang: SupportedLang) {
 	const base = dev ? `http://localhost:5173` : `https://plvn.app`;
 	const redirectURI = `${base}/api/github-callback/${lang}`;
-	return new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, { redirectURI });
+	return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, { redirectURI });
 }
 
 declare module 'lucia' {
