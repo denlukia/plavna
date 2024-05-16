@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { PUBLIC_HOST, PUBLIC_PORT } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 export const SECTIONS_PER_LOAD = 3;
 export const POSTS_PER_SECTION = 10;
@@ -34,7 +34,7 @@ export const IMG_VALIDATION_CONFIG = {
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const MAX_ROWS_IN_SECTION = 3;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
-export const HOST = dev ? `${PUBLIC_HOST}:${PUBLIC_PORT}` : `${PUBLIC_HOST}`;
+export const HOST = dev ? `${env.PUBLIC_HOST}:${env.PUBLIC_PORT}` : `${env.PUBLIC_HOST}`;
 
 // export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
 // 	let result = `page-config-${username}`;
