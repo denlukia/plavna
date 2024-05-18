@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 
 	import { getRecordTranslation } from '../i18n/utils';
+	import { getImageSrc } from '../image/utils';
 	import type { SectionProp } from '../section/types';
 	import type { PreviewDataProp } from './types';
 
@@ -28,34 +29,33 @@
 	});
 
 	let recordsTranslations = $derived($page.data.recordsTranslations);
+	let images = $derived($page.data.images || {});
 
-	function getPreviewData(article: SectionProp['articles'][number]): PreviewDataProp {
-		let didntFind = "Didn't found translation";
+	function getPreviewData(): PreviewDataProp {
 		return {
-			title_translation:
-				getRecordTranslation(meta.title_translation_key, recordsTranslations) || didntFind,
+			title_translation: getRecordTranslation(meta.title_translation_key, recordsTranslations),
 			likes_count: meta.likes_count,
 			prop_1: meta.preview_prop_1,
 			prop_2: meta.preview_prop_2,
-			translation_1:
-				getRecordTranslation(meta.preview_translation_1_key, recordsTranslations) || didntFind,
-			translation_2:
-				getRecordTranslation(meta.preview_translation_2_key, recordsTranslations) || didntFind,
+			translation_1: getRecordTranslation(meta.preview_translation_1_key, recordsTranslations),
+			translation_2: getRecordTranslation(meta.preview_translation_2_key, recordsTranslations),
 			publish_time: meta.publish_time,
-			tags: tags.map(
-				(tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations) || didntFind
-			),
+			tags: tags.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations)),
 
-			// TODO: Make image gathering fn
-			img_1_src: '',
-			img_2_src: '',
-			screenshot_src: ''
+			img_1_src: getImageSrc(meta.preview_image_1_id, $page.data.user, images, recordsTranslations),
+			img_2_src: getImageSrc(meta.preview_image_2_id, $page.data.user, images, recordsTranslations),
+			screenshot_src: getImageSrc(
+				meta.preview_screenshot_image_id,
+				$page.data.user,
+				images,
+				recordsTranslations
+			)
 		};
 	}
 </script>
 
 {#if staticComponent}
-	<svelte:component this={staticComponent} data={getPreviewData(article)} />
+	<svelte:component this={staticComponent} data={getPreviewData()} />
 {:else}
 	Static component not found
 {/if}

@@ -2,7 +2,7 @@ import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { User } from 'lucia';
 
 import type { TransactionContext } from '../common/types';
-import type { ImageInsert, ImageUpdate } from './parsers';
+import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 
 export type ImageAnyParams = {
 	lang: SupportedLang | null;
@@ -17,3 +17,5 @@ export type ImagesUpdateParams = {
 	mode: 'update';
 	initialImage: ImageUpdate;
 };
+
+export type ImagesStore = Record<ImageSelect['id'], Omit<ImageSelect, 'id'>>;

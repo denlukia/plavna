@@ -14,6 +14,7 @@ import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
+import type { ImagesStore } from '../image/types';
 import type { PreviewFamiliesStore } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
@@ -130,9 +131,6 @@ export class PageService {
 				items: sectionsNonEmpty.map((s) => s.section),
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
-			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.recordsTranslations };
-			}, {} as RecordsTranslations),
 			previewFamilies: sectionsNonEmpty.reduce((acc, { previewFamilies }) => {
 				const result = {
 					...acc,
@@ -142,7 +140,13 @@ export class PageService {
 					result.custom = { ...acc.custom, ...previewFamilies.custom };
 				}
 				return result;
-			}, {} as PreviewFamiliesStore)
+			}, {} as PreviewFamiliesStore),
+			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
+				return { ...acc, ...s.recordsTranslations };
+			}, {} as RecordsTranslations),
+			images: sectionsNonEmpty.reduce((acc, s) => {
+				return { ...acc, ...s.images };
+			}, {} as ImagesStore)
 		};
 	}
 }

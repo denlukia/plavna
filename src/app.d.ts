@@ -7,6 +7,7 @@ import type { TranslationService } from '$lib/features/i18n/service';
 import type { RecordsTranslations, SystemTranslationDict } from '$lib/features/i18n/types';
 import type { ImageSelect } from '$lib/features/image/parsers';
 import type { ImageService } from '$lib/features/image/service';
+import type { ImagesStore } from '$lib/features/image/types';
 import type { PageService } from '$lib/features/page/service';
 import type { PreviewFamiliesStore } from '$lib/features/preview/families/types';
 import type { PreviewType } from '$lib/features/preview/parsers';
@@ -33,12 +34,12 @@ declare global {
 		}
 
 		interface PageData {
+			// Change for actor and user
 			user: User | null;
 			systemTranslations: SystemTranslationDict;
 			recordsTranslations?: RecordsTranslations;
 			previewFamilies?: PreviewFamiliesStore;
-			tags?: Record<string, TagSelect>; // TODO: Refactor into just array
-			images?: ImageSelect[];
+			images?: ImagesStore;
 		}
 	}
 }

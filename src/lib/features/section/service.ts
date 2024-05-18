@@ -17,6 +17,9 @@ import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
+import type { ImageSelect } from '../image/parsers';
+import { images } from '../image/schema';
+import type { ImagesStore } from '../image/types';
 import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import { pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
@@ -186,23 +189,8 @@ export class SectionService {
 			.where(eq(translations.key, sectionInfo.title_translation_key))
 			.limit(1);
 
-		// 6. Other Translations query
-		const otherTranslationsQuery = db
-			.select({
-				key: translations.key,
-				[this.translationService.currentLang]: translations[this.translationService.currentLang]
-			})
-			.from(translations)
-			.where(
-				or(
-					inArray(translations.key, articlesQueryForTranslations),
-					inArray(translations.key, tagsQueryForTranslations)
-				)
-			)
-			.groupBy(translations.key);
-
 		// 6. Preview types query
-		const allPreviewTypesQuery = db
+		const previewTypesQuery = db
 			.select({ id: previewTemplates.id, url: previewTemplates.url })
 			.from(articlesQueryAliased)
 			.innerJoin(
@@ -211,13 +199,58 @@ export class SectionService {
 			)
 			.groupBy(previewTemplates.id);
 
+		// 7. Preview Images query
+		const previewImagesQuery = db
+			.select(getTableColumns(images))
+			.from(articlesQueryAliased)
+			.innerJoin(
+				images,
+				or(
+					eq(images.id, articlesQueryAliased.preview_image_1_id),
+					eq(images.id, articlesQueryAliased.preview_image_2_id),
+					eq(images.id, articlesQueryAliased.preview_screenshot_image_id)
+				)
+			);
+
+		const previewImagesQueryForTranslations = db
+			.select({ id: images.path_translation_key })
+			.from(articlesQueryAliased)
+			.innerJoin(
+				images,
+				or(
+					eq(images.id, articlesQueryAliased.preview_image_1_id),
+					eq(images.id, articlesQueryAliased.preview_image_2_id),
+					eq(images.id, articlesQueryAliased.preview_screenshot_image_id)
+				)
+			);
+
+		// 8. Other Translations query
+		const otherTranslationsQuery = db
+			.select({
+				key: translations.key,
+				[this.translationService.currentLang]: translations[this.translationService.currentLang]
+			})
+			.from(translations)
+			.where(
+				and(
+					or(
+						inArray(translations.key, articlesQueryForTranslations),
+						inArray(translations.key, tagsQueryForTranslations),
+						inArray(translations.key, previewImagesQueryForTranslations)
+					),
+					isNotNull(translations[this.translationService.currentLang])
+				)
+			)
+			.groupBy(translations.key);
+
 		const activeTagsPromise = activeTagsQuery.all();
 		const articlesPromise = articlesQuery.all();
 		const tagsArticlesPromise = tagsArticlesQuery.all();
 		const tagsPromise = tagsQuery.all();
 		const descriptionTranslationPromise = descriptionTranslationQuery.get();
+		const previewTypesPromise = previewTypesQuery.all();
+		const previewImagesPromise = previewImagesQuery.all();
 		const otherTranslationsPromise = otherTranslationsQuery.all();
-		const previewTypesPromise = allPreviewTypesQuery.all();
 
 		const [
 			activeTagsInfo,
@@ -225,16 +258,18 @@ export class SectionService {
 			tagsArticlesInfo,
 			tagsInfo,
 			descriptionTranslationInfo,
-			otherTranslationsInfo,
-			previewTypesInfo
+			previewTypesInfo,
+			previewImagesInfo,
+			otherTranslationsInfo
 		] = await Promise.all([
 			activeTagsPromise,
 			articlesPromise,
 			tagsArticlesPromise,
 			tagsPromise,
 			descriptionTranslationPromise,
-			otherTranslationsPromise,
-			previewTypesPromise
+			previewTypesPromise,
+			previewImagesPromise,
+			otherTranslationsPromise
 		]);
 
 		if (!descriptionTranslationInfo) {
@@ -301,6 +336,16 @@ export class SectionService {
 			return [previewFamilyId, previewStoreComponentsTemplate];
 		};
 
+		const getImageStoreEntry = ({
+			id,
+			path,
+			path_translation_key,
+			width,
+			height,
+			background,
+			source
+		}: ImageSelect) => [id, { path, path_translation_key, width, height, background, source }];
+
 		return {
 			section: {
 				meta: sectionInfo,
@@ -323,7 +368,8 @@ export class SectionService {
 				dedupeArray(articlesInfo.map((a) => a.preview_family).filter(isNonNullable)).map(
 					getPreviewStoreEntry
 				)
-			) as PreviewFamiliesStore
+			) as PreviewFamiliesStore,
+			images: Object.fromEntries(previewImagesInfo.map(getImageStoreEntry)) as ImagesStore
 		};
 	}
 	async create(pagename: string, section: SectionInsert) {
