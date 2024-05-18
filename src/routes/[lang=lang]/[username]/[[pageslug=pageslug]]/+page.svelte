@@ -15,6 +15,8 @@
 	function closeCreator() {
 		creatorShown = false;
 	}
+
+	$inspect(data);
 </script>
 
 {#each items as section, index (section.meta.id)}

@@ -14,7 +14,7 @@
 <PreviewFoundation>
 	{#snippet main()}
 		<span class="preview">
-			<Typography>Custom: {data.title_translation}</Typography>
+			<Typography size="small-short">Custom: {JSON.stringify(data, null, 2)}</Typography>
 		</span>
 	{/snippet}
 </PreviewFoundation>

@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/public';
+import type { User } from 'lucia';
 
 export const SECTIONS_PER_LOAD = 3;
 export const POSTS_PER_SECTION = 10;
@@ -50,3 +51,9 @@ export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
 		path,
 		maxAge: 60 * 60 * 24 * 365 // a year,
 	}) as const;
+
+type UserKeys = keyof User;
+
+export const imageSourceToEndpointKeyInUser = {
+	imagekit: 'imagekit_url_endpoint'
+} as const satisfies Record<string, UserKeys>;
