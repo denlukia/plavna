@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Tokens } from 'marked';
 	import type { Snippet } from 'svelte';
-	import Link from '$lib/design-system/components/Link.svelte';
+	import Link from '$lib/design/components/Link.svelte';
 
 	import Tag from './Tag.svelte';
 

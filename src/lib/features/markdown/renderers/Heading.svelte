@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Tokens } from 'marked';
 	import { setContext, type Snippet } from 'svelte';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import { depthToTypographySize } from './heading-depth';
 	import type { HeadingContext } from './types';

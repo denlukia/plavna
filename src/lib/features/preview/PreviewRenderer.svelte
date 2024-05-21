@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	import { getRecordTranslation } from '../i18n/utils';
-	import { getImageSrc } from '../image/utils';
+	import { prepareImage } from '../image/utils';
 	import type { SectionProp } from '../section/types';
 	import type { PreviewDataProp } from './types';
 
@@ -42,9 +42,9 @@
 			publish_time: meta.publish_time,
 			tags: tags.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations)),
 
-			img_1_src: getImageSrc(meta.preview_image_1_id, $page.data.user, images, recordsTranslations),
-			img_2_src: getImageSrc(meta.preview_image_2_id, $page.data.user, images, recordsTranslations),
-			screenshot_src: getImageSrc(
+			img_1: prepareImage(meta.preview_image_1_id, $page.data.user, images, recordsTranslations),
+			img_2: prepareImage(meta.preview_image_2_id, $page.data.user, images, recordsTranslations),
+			screenshot: prepareImage(
 				meta.preview_screenshot_image_id,
 				$page.data.user,
 				images,

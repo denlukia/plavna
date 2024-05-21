@@ -3,8 +3,8 @@
 
 	import Em from './renderers/Em.svelte';
 	import Heading from './renderers/Heading.svelte';
-	import Image from './renderers/Image.svelte';
 	import LinkOrTagSwitcher from './renderers/LinkOrTagSwitcher.svelte';
+	import MarkdownImage from './renderers/MarkdownImage.svelte';
 	import Paragraph from './renderers/Paragraph.svelte';
 	import Strong from './renderers/Strong.svelte';
 
@@ -19,7 +19,7 @@
 	{source}
 	renderers={{
 		paragraph: Paragraph,
-		image: Image,
+		image: MarkdownImage,
 		heading: Heading,
 		strong: Strong,
 		em: Em,

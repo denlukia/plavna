@@ -18,4 +18,4 @@ export type ImagesUpdateParams = {
 	initialImage: ImageUpdate;
 };
 
-export type ImagesStore = Record<ImageSelect['id'], Omit<ImageSelect, 'id'>>;
+export type ImagesDict = Record<ImageSelect['id'], Omit<ImageSelect, 'id'>>;

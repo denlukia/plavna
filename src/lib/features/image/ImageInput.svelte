@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
 	import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
-	import Image from '$lib/features/image/Image.svelte';
+	import ImageById from '$lib/features/image/ImageById.svelte';
 
 	import type { ImageSelect } from './parsers';
 
@@ -62,7 +62,7 @@
 
 <div class="image-input">
 	{#if image}
-		<Image {image} {lang} />
+		<ImageById id={image.id} />
 	{/if}
 	{lang || ''}
 	<input

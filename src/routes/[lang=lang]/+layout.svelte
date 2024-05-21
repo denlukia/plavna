@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Lights from '$lib/design-system/components/Lights.svelte';
+	import Lights from '$lib/design/components/Lights.svelte';
 
 	import '$lib/styles/index.css';
 	// TODO: Dynamize based on server data
-	import '$lib/design-system/themes/color/milk.css';
-	import '$lib/design-system/themes/style/modern/index.css';
-	import '$lib/design-system/themes/typography/plavna/index.css';
+	import '$lib/design/themes/color/milk.css';
+	import '$lib/design/themes/style/modern/index.css';
+	import '$lib/design/themes/typography/plavna/index.css';
 
-	import Grid from '$lib/design-system/components/Grid.svelte';
+	import Grid from '$lib/design/components/Grid.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
 
 	let { data, children } = $props();

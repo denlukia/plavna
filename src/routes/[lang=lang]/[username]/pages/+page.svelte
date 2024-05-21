@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Popup from '$lib/design-system/components/Popup/Popup.svelte';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Popup from '$lib/design/components/Popup/Popup.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageEditor from '$lib/features/page/PageEditor.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';

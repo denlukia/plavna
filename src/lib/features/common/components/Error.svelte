@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { type SystemTranslationKey } from '$lib/features/i18n/types';
 

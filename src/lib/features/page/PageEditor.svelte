@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design-system/components/Button.svelte';
-	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Button from '$lib/design/components/Button.svelte';
+	import Input from '$lib/design/components/Input/Input.svelte';
+	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import Error from '../common/components/Error.svelte';
 	import Translation from '../i18n/Translation.svelte';

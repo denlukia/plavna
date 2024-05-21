@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/design-system/components/Button.svelte';
+	import Button from '$lib/design/components/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import type { SectionProp } from './types';
