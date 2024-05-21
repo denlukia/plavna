@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Image from '$lib/design/components/Image.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import { prepareImage } from '$lib/features/image/utils';
 
 	import type { PreviewDataProp } from '../../types';
 
