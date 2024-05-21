@@ -2,7 +2,7 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { expoOut } from 'svelte/easing';
-	import { fly, getFlyConf } from '$lib/design-system/transitions/fly';
+	import { fly, getFlyConf } from '$lib/design/transitions/fly';
 
 	import Layers from '../ActiveElementFX/Layers.svelte';
 	import type { InputProps } from './types';

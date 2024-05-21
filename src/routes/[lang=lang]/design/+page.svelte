@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design-system/components/Button.svelte';
-	import Checkbox from '$lib/design-system/components/Checkbox.svelte';
-	import Input from '$lib/design-system/components/Input/Input.svelte';
-	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
-	import Popup from '$lib/design-system/components/Popup/Popup.svelte';
-	import Select from '$lib/design-system/components/Popup/Select.svelte';
-	import Spacer from '$lib/design-system/components/Spacer.svelte';
-	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
-	import TabItem from '$lib/design-system/components/Tabs/TabItem.svelte';
-	import Tabs from '$lib/design-system/components/Tabs/Tabs.svelte';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Button from '$lib/design/components/Button.svelte';
+	import Checkbox from '$lib/design/components/Checkbox.svelte';
+	import Input from '$lib/design/components/Input/Input.svelte';
+	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Popup from '$lib/design/components/Popup/Popup.svelte';
+	import Select from '$lib/design/components/Popup/Select.svelte';
+	import Spacer from '$lib/design/components/Spacer.svelte';
+	import Switch from '$lib/design/components/Switch/Switch.svelte';
+	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
+	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	let { data } = $props();
 

@@ -13,9 +13,8 @@ export type PreviewFamilyId = ExtractId<(typeof previewFamilies)[number]>;
 type PossibleNameTranslationIds = (typeof previewFamilies)[number]['name_translation_key'];
 type CheckTranslationKey = PossibleNameTranslationIds extends SystemTranslationKey ? true : false;
 
-type CustomFamilyId = Extract<PreviewFamilyId, 'custom'>;
 type PreviewComponentTypes = 'Static' | 'Editor' | 'Preview';
-type ComponentsStore = {
+type ComponentsDict = {
 	components: Record<PreviewComponentTypes, ConstructorOfATypedSvelteComponent | null>;
 };
 
@@ -24,8 +23,8 @@ assert<TypeEqualityGuard<CheckPreviewFamilyIds, true>>();
 // Will be red if previewFamilies contains name_translation_key with not existing TranslationKey
 assert<TypeEqualityGuard<CheckTranslationKey, true>>();
 
-export type PreviewFamiliesStore = Record<PreviewFamilyId, ComponentsStore> & {
-	custom?: ComponentsStore & {
+export type PreviewFamiliesDict = Record<PreviewFamilyId, ComponentsDict> & {
+	custom?: ComponentsDict & {
 		templates: Record<PreviewTemplateSelect['id'], PreviewTemplateSelect['url']>;
 	};
 };

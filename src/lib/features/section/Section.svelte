@@ -4,7 +4,7 @@
 
 	import type { RecordsTranslations } from '../i18n/types';
 	import { enrichPreviewFamilies } from '../preview/enricher';
-	import type { PreviewFamiliesStore } from '../preview/families/types';
+	import type { PreviewFamiliesDict } from '../preview/families/types';
 	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
@@ -19,7 +19,7 @@
 	type Props = {
 		section: SectionProp;
 		recordsTranslations: RecordsTranslations;
-		previewFamilies: PreviewFamiliesStore;
+		previewFamilies: PreviewFamiliesDict;
 	};
 
 	let {

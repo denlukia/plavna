@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';

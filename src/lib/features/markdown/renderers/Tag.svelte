@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getContext, type Snippet } from 'svelte';
 	import type { ChangeEventHandler } from 'svelte/elements';
-	import LabeledInput from '$lib/design-system/components/Label/LabeledInput.svelte';
-	import Switch from '$lib/design-system/components/Switch/Switch.svelte';
-	import Typography from '$lib/design-system/components/Typography/Typography.svelte';
+	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Switch from '$lib/design/components/Switch/Switch.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { SectionContext } from '$lib/features/section/types';
 
 	import { depthToTypographySize } from './heading-depth';

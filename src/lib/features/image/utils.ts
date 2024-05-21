@@ -1,6 +1,7 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { User } from 'lucia';
 import { imageSourceToEndpointKeyInUser } from '$lib/collections/constants';
+import type { PreparedImage } from '$lib/design/types';
 
 import type {
 	ArticlePreviewImageFileFieldsAll,
@@ -9,7 +10,7 @@ import type {
 import type { RecordsTranslations } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
 import type { ImageSelect } from './parsers';
-import type { ImagesStore } from './types';
+import type { ImagesDict } from './types';
 
 export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAll) {
 	const parts = field.split('.');
@@ -19,12 +20,12 @@ export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAl
 	};
 }
 
-export function getImageSrc(
+export function prepareImage(
 	imageId: ImageSelect['id'] | null,
 	user: User | null,
-	images: ImagesStore | undefined,
+	images: ImagesDict | undefined,
 	recordsTranslations: RecordsTranslations | undefined
-) {
+): PreparedImage | null {
 	if (!images || !recordsTranslations || !user || !imageId) {
 		return null;
 	}
@@ -65,5 +66,11 @@ export function getImageSrc(
 		path = path.slice(1);
 	}
 
-	return `${endpoint}${path}`;
+	return {
+		src: `${endpoint}${path}`,
+		alt: '', // TODO: Store alt in DB
+		background: image.background,
+		height: image.height,
+		width: image.width
+	};
 }

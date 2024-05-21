@@ -14,8 +14,8 @@ import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
-import type { ImagesStore } from '../image/types';
-import type { PreviewFamiliesStore } from '../preview/families/types';
+import type { ImagesDict } from '../image/types';
+import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
 import { sections, sectionsToTags } from '../section/schema';
@@ -140,13 +140,13 @@ export class PageService {
 					result.custom = { ...acc.custom, ...previewFamilies.custom };
 				}
 				return result;
-			}, {} as PreviewFamiliesStore),
+			}, {} as PreviewFamiliesDict),
 			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.recordsTranslations };
 			}, {} as RecordsTranslations),
 			images: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.images };
-			}, {} as ImagesStore)
+			}, {} as ImagesDict)
 		};
 	}
 }

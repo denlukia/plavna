@@ -19,11 +19,11 @@ import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslations } from '../i18n/types';
 import type { ImageSelect } from '../image/parsers';
 import { images } from '../image/schema';
-import type { ImagesStore } from '../image/types';
+import type { ImagesDict } from '../image/types';
 import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import { pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
-import type { PreviewFamiliesStore } from '../preview/families/types';
+import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
@@ -313,18 +313,16 @@ export class SectionService {
 			}
 		};
 
-		const previewStoreComponentsTemplate = {
+		const previewDictEntryTemplate = {
 			components: { Static: null, Editor: null, Preview: null }
 		};
 
-		const getPreviewStoreEntry = (
-			previewFamilyId: NonNullable<ArticleSelect['preview_family']>
-		) => {
+		const getPreviewDictEntry = (previewFamilyId: NonNullable<ArticleSelect['preview_family']>) => {
 			if (previewFamilyId === 'custom') {
 				return [
 					previewFamilyId,
 					{
-						...previewStoreComponentsTemplate,
+						...previewDictEntryTemplate,
 						...Object.fromEntries(
 							previewTypesInfo.filter(getNullAndDupFilter('id')).map((p) => {
 								return [p.id, p.url];
@@ -333,10 +331,10 @@ export class SectionService {
 					}
 				];
 			}
-			return [previewFamilyId, previewStoreComponentsTemplate];
+			return [previewFamilyId, previewDictEntryTemplate];
 		};
 
-		const getImageStoreEntry = ({
+		const getImageDictEntry = ({
 			id,
 			path,
 			path_translation_key,
@@ -366,10 +364,10 @@ export class SectionService {
 			} as RecordsTranslations,
 			previewFamilies: Object.fromEntries(
 				dedupeArray(articlesInfo.map((a) => a.preview_family).filter(isNonNullable)).map(
-					getPreviewStoreEntry
+					getPreviewDictEntry
 				)
-			) as PreviewFamiliesStore,
-			images: Object.fromEntries(previewImagesInfo.map(getImageStoreEntry)) as ImagesStore
+			) as PreviewFamiliesDict,
+			images: Object.fromEntries(previewImagesInfo.map(getImageDictEntry)) as ImagesDict
 		};
 	}
 	async create(pagename: string, section: SectionInsert) {

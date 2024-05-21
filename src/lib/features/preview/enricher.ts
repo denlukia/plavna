@@ -1,5 +1,5 @@
 import { ERRORS } from '../../collections/errors';
-import type { PreviewFamiliesStore, PreviewFamilyId } from './families/types';
+import type { PreviewFamiliesDict, PreviewFamilyId } from './families/types';
 
 export async function getPreviewComponent(folder: string, type: 'Static' | 'Editor' | 'Dynamic') {
 	const previewComponents = import.meta.glob('$lib/features/preview/families/*/*.svelte');
@@ -17,7 +17,7 @@ export async function getPreviewComponent(folder: string, type: 'Static' | 'Edit
 	}
 }
 
-export async function enrichPreviewFamilies(previewFamilies: PreviewFamiliesStore) {
+export async function enrichPreviewFamilies(previewFamilies: PreviewFamiliesDict) {
 	for (const previewFamily in previewFamilies) {
 		const previewFamilyTyped = previewFamily as PreviewFamilyId;
 
