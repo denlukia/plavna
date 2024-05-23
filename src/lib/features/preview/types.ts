@@ -15,3 +15,5 @@ export type PreviewDataProp = {
 	img_2: Optional<PreparedImage>;
 	screenshot?: Optional<PreparedImage>;
 };
+
+export const dynamicPreviewActivationConditions = ['hover', 'click'] as const;

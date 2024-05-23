@@ -4,20 +4,26 @@
 	import { getRecordTranslation } from '../i18n/utils';
 	import { prepareImage } from '../image/utils';
 	import type { SectionProp } from '../section/types';
+	import { getPreviewComponent } from './enricher';
 	import type { PreviewDataProp } from './types';
 
 	type Props = {
 		article: SectionProp['articles'][number];
 	};
-
 	let { article }: Props = $props();
 
 	let { meta, tags } = $derived(article);
-
 	let familyId = $derived(article.meta.preview_family);
-	let staticComponent = $derived.by(() => {
-		const previewFamilies = $page.data.previewFamilies;
+	let previewFamilies = $derived($page.data.previewFamilies);
+	let recordsTranslations = $derived($page.data.recordsTranslations);
+	let images = $derived($page.data.images || {});
 
+	let staticComponent = $derived(getComponentFromDict('Static'));
+	let dynamicComponent: ConstructorOfATypedSvelteComponent | null = $state(null);
+	let dynamicComponentShown = $state(false);
+	let loadDynamicButtonShown = $state(false);
+
+	function getComponentFromDict(type: 'Static' | 'Dynamic') {
 		if (!previewFamilies) return null;
 		if (!familyId) return null;
 		if (!(familyId in previewFamilies)) return null;
@@ -25,11 +31,8 @@
 		const previewFamilyObj = previewFamilies[familyId];
 		if (!previewFamilyObj) return null;
 
-		return previewFamilyObj.components['Static'];
-	});
-
-	let recordsTranslations = $derived($page.data.recordsTranslations);
-	let images = $derived($page.data.images || {});
+		return previewFamilyObj.components[type];
+	}
 
 	function getPreviewData(): PreviewDataProp {
 		return {
@@ -52,10 +55,56 @@
 			)
 		};
 	}
+
+	function onMouseEnterLeave(type: 'enter' | 'leave') {
+		const showCondition = article.meta.preview_interactions_show_on;
+		if (showCondition === 'hover') {
+			dynamicComponentShown = type === 'enter' ? true : false;
+		} else if (showCondition === 'click') {
+			loadDynamicButtonShown = type === 'enter' ? true : false;
+		}
+	}
+
+	$effect(() => {
+		if (dynamicComponentShown && familyId) {
+			getPreviewComponent(familyId, 'Dynamic')
+				.then((component) => {
+					if (component) {
+						dynamicComponent = component;
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
+	});
 </script>
 
-{#if staticComponent}
-	<svelte:component this={staticComponent} data={getPreviewData()} />
-{:else}
-	Static component not found
-{/if}
+<!-- TODO: Edit title to represent loading on button click, add aria description -->
+<span
+	class="preview-renderer"
+	role="button"
+	tabindex="0"
+	onmouseenter={() => onMouseEnterLeave('enter')}
+	onmouseleave={() => onMouseEnterLeave('leave')}
+>
+	{#if dynamicComponentShown}
+		{#if dynamicComponent}
+			<svelte:component this={dynamicComponent} data={getPreviewData()} />
+		{:else}
+			Dynamic component not found
+		{/if}
+	{:else if staticComponent}
+		<svelte:component this={staticComponent} data={getPreviewData()} />
+	{:else}
+		Static component not found
+	{/if}
+</span>
+
+<style>
+	.preview-renderer {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+</style>

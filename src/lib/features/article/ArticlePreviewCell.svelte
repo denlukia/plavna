@@ -73,6 +73,5 @@
 		left: calc(var(--size-cell-overflow) * -1);
 		right: calc(var(--size-cell-overflow) * -1);
 		bottom: calc(var(--size-cell-overflow) * -1);
-		pointer-events: none;
 	}
 </style>

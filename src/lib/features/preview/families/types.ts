@@ -13,7 +13,7 @@ export type PreviewFamilyId = ExtractId<(typeof previewFamilies)[number]>;
 type PossibleNameTranslationIds = (typeof previewFamilies)[number]['name_translation_key'];
 type CheckTranslationKey = PossibleNameTranslationIds extends SystemTranslationKey ? true : false;
 
-type PreviewComponentTypes = 'Static' | 'Editor' | 'Preview';
+type PreviewComponentTypes = 'Static' | 'Dynamic' | 'Editor';
 type ComponentsDict = {
 	components: Record<PreviewComponentTypes, ConstructorOfATypedSvelteComponent | null>;
 };
