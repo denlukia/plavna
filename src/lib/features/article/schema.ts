@@ -6,6 +6,7 @@ import { translations } from '../i18n/schema';
 import { images } from '../image/schema';
 import { previewFamiliesIds } from '../preview/families';
 import { previewTemplates } from '../preview/schema';
+import { dynamicPreviewActivationConditions } from '../preview/types';
 import { tagsToArticles } from '../tag/schema';
 
 export const articles = sqliteTable(
@@ -32,8 +33,8 @@ export const articles = sqliteTable(
 			onUpdate: 'cascade'
 		}),
 		preview_interactions_show_on: text('preview_interactions_show_on', {
-			enum: ['hover', 'click']
-		}),
+			enum: dynamicPreviewActivationConditions
+		}).default('hover'),
 		preview_prop_1: text('preview_prop_1'),
 		preview_prop_2: text('preview_prop_2'),
 		preview_translation_1_key: integer('preview_translation_1_key')
