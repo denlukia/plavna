@@ -39,7 +39,7 @@ export const EN = {
 			only_one_default_slug: 'Only one default page can exist'
 		}
 	},
-	page: {
+	page_actor: {
 		section: {
 			editor_title: 'Section',
 			create: 'Create',
@@ -47,7 +47,13 @@ export const EN = {
 			edit: 'Edit',
 			delete: 'Delete',
 			cancel: 'Cancel',
-			description: 'Description'
+			description: 'Description',
+			no_articles: 'You have not created any articles with selected tags'
+		}
+	},
+	page: {
+		section: {
+			no_articles: 'Author has not created any articles with selected tags'
 		}
 	},
 	article_editor: {

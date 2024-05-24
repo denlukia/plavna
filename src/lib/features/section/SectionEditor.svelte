@@ -35,7 +35,7 @@
 
 <div class="section-editor">
 	<Typography size="heading-1">
-		<Translation key="page.section.editor_title" />
+		<Translation key="page_actor.section.editor_title" />
 	</Typography>
 	<form use:enhance action="?/{'section_id' in $form ? 'update' : 'create'}_section" method="POST">
 		{#if 'section_id' in $form}
@@ -43,17 +43,17 @@
 		{/if}
 		<div class="inputs">
 			<LabeledInput style="width: 100%;">
-				<Label><Translation key="page.section.description" /></Label>
+				<Label><Translation key="page_actor.section.description" /></Label>
 				<Input type="textarea" translations={form} style="width: 100%;" rows={3} />
 			</LabeledInput>
 		</div>
 
 		<div class="actions">
 			<Button type="secondary" onclick={onCancel}>
-				<Translation key="page.section.cancel" />
+				<Translation key="page_actor.section.cancel" />
 			</Button>
 			<Button>
-				<Translation key={`page.section.${'section_id' in $form ? 'update' : 'create'}`} />
+				<Translation key={`page_actor.section.${'section_id' in $form ? 'update' : 'create'}`} />
 			</Button>
 		</div>
 	</form>

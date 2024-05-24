@@ -17,6 +17,6 @@
 <form action="?/delete_section" method="POST" use:enhance>
 	<input name="section_id" type="hidden" bind:value={$form.section_id} />
 	<Button type="destructive">
-		<Translation key="page.section.delete" />
+		<Translation key="page_actor.section.delete" />
 	</Button>
 </form>

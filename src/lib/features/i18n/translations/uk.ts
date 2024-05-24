@@ -43,7 +43,7 @@ export const UK = {
 			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
 		}
 	},
-	page: {
+	page_actor: {
 		section: {
 			editor_title: 'Секція',
 			create: 'Створити',
@@ -51,7 +51,13 @@ export const UK = {
 			edit: 'Редагувати',
 			delete: 'Видалити',
 			cancel: 'Відмінити',
-			description: 'Опис'
+			description: 'Опис',
+			no_articles: 'Ви ще не створили статей з обраними тегами'
+		}
+	},
+	page: {
+		section: {
+			no_articles: 'Автор ще не створив статей з обраними тегами'
 		}
 	},
 	article_editor: {

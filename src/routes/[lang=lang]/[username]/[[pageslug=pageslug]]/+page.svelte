@@ -35,7 +35,7 @@
 			/>
 		{:else}
 			<Button onclick={() => (creatorShown = true)}>
-				<Translation key="page.section.create" />
+				<Translation key="page_actor.section.create" />
 			</Button>
 		{/if}
 	</div>
