@@ -44,7 +44,8 @@ export const load = async ({ params, parent, locals: { pageService }, cookies })
 		...page,
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('page', params.lang)
+			// TODO: only page if user isn't actor
+			...getSystemTranslationsSlice(['page', 'page_actor'], params.lang)
 		}
 	};
 };

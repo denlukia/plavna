@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { setContext } from 'svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
+	import Translation from '../i18n/Translation.svelte';
 	import type { RecordsTranslations } from '../i18n/types';
 	import { enrichPreviewFamilies } from '../preview/enricher';
 	import type { PreviewFamiliesDict } from '../preview/families/types';
@@ -87,7 +89,16 @@
 		{/if}
 	</div>
 
-	<ArticlesList {section} />
+	{#if section.articles.length > 0}
+		<ArticlesList {section} />
+	{:else}
+		<div class="empty">
+			<!-- TODO: Show other translation if page is not of actor -->
+			<Typography>
+				<Translation key="page_actor.section.no_articles" />
+			</Typography>
+		</div>
+	{/if}
 </section>
 
 <style>
@@ -97,5 +108,10 @@
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
+	}
+	.empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

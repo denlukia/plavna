@@ -18,7 +18,7 @@
 	{#if showEditButton}
 		<div class="actions-wrapper">
 			<Button size="small" type="secondary" onclick={onEditorOpen}>
-				<Translation key="page.section.edit" />
+				<Translation key="page_actor.section.edit" />
 			</Button>
 		</div>
 	{/if}
