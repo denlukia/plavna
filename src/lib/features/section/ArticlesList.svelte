@@ -23,7 +23,6 @@
 		flex-direction: column;
 		flex-wrap: wrap;
 		align-items: flex-start;
-		margin-top: var(--size-section-articles-margin-top);
 
 		--max-height-base: calc(var(--max-rows) * var(--size-cell-height));
 		--max-height-gaps: calc(var(--max-rows) * var(--size-cell-gap));

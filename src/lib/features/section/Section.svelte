@@ -45,6 +45,14 @@
 	const sectionContext: SectionContext = $state({
 		activeTags: section.activeTags,
 		onTagSwitch: async (tagId, checked) => {
+			// Optimistic update
+			if (checked) {
+				section.activeTags.push({ id: tagId });
+			} else {
+				section.activeTags = section.activeTags.filter(({ id }) => id !== tagId);
+			}
+
+			// Getting new articles list
 			const body: SectionReconfigRequest = { sectionId: section.meta.id, tagId, checked };
 			try {
 				const response = await fetch($page.url, {
@@ -76,7 +84,7 @@
 </script>
 
 <section class="section">
-	<div class="description">
+	<div class="description" class:disabled={sectionContext.activeTags.length === 0}>
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
 				mainForm={section.forms.updating}
@@ -89,29 +97,43 @@
 		{/if}
 	</div>
 
-	{#if section.articles.length > 0}
-		<ArticlesList {section} />
-	{:else}
-		<div class="empty">
-			<!-- TODO: Show other translation if page is not of actor -->
-			<Typography>
-				<Translation key="page_actor.section.no_articles" />
-			</Typography>
-		</div>
-	{/if}
+	<div class="articles-list-wrapper">
+		{#if section.articles.length > 0}
+			<ArticlesList {section} />
+		{:else if sectionContext.activeTags.length > 0}
+			<div class="empty">
+				<!-- TODO: Show other translation if page is not of actor -->
+				<Typography>
+					<Translation key="page_actor.section.no_articles" />
+				</Typography>
+			</div>
+		{/if}
+	</div>
 </section>
 
 <style>
 	.description {
 		max-width: var(--size-section-max-width);
+		transition: var(--transition-section-description);
+	}
+	.description.disabled {
+		opacity: var(--opacity-section-description-disabled);
 	}
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
 	}
+	.articles-list-wrapper {
+		margin-top: var(--size-section-articles-list-margin-top);
+	}
 	.empty {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background: var(--color-section-empty-bg);
+		border-radius: var(--size-section-empty-border-radius);
+		padding-block: var(--size-section-empty-padding-block);
+		padding-inline: var(--size-section-empty-padding-inline);
+		color: var(--color-section-empty-text);
 	}
 </style>
