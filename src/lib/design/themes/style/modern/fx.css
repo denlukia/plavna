@@ -111,4 +111,8 @@
 	--shadow-link-hovered: 0 1px 0px var(--color-link-hovered-shadow);
 	--transition-link: all 300ms var(--smooth-ease-out);
 	--transition-link-hovered: all 100ms var(--smooth-ease-out);
+
+	/* --- Section --- */
+	--transition-section-description: all 600ms var(--smooth-ease-out);
+	--opacity-section-description-disabled: 0.3;
 }

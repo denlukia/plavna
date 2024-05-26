@@ -180,9 +180,11 @@
 	/* --- Section --- */
 	--size-section-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-3xl);
-	--size-section-articles-margin-top: var(--size-xl);
+	--size-section-articles-list-margin-top: var(--size-xl);
+	--size-section-empty-padding-block: var(--size-l);
+	--size-section-empty-padding-inline: var(--size-m-to-l);
+	--size-section-empty-border-radius: var(--size-s);
 
-	/* --- Section Editor --- */
 	--size-section-editor-padding-inline: var(--size-m-to-l);
 	--size-section-editor-padding-top: var(--size-none);
 	--size-section-editor-padding-bottom: var(--size-m-to-l);
