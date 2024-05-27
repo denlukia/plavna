@@ -12,7 +12,7 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -44,11 +44,11 @@ type GetOneConfig = { username: string } & (
 );
 
 export class SectionService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 
-	constructor(userService: UserService, translationService: TranslationService) {
-		this.userService = userService;
+	constructor(actorService: ActorService, translationService: TranslationService) {
+		this.actorService = actorService;
 		this.translationService = translationService;
 	}
 
@@ -57,7 +57,7 @@ export class SectionService {
 			'pageId' in config ? eq(sections.page_id, config.pageId) : eq(sections.id, config.sectionId);
 		const offset = 'offset' in config ? config.offset : 0;
 
-		const user = await this.userService.get();
+		const actor = await this.actorService.get();
 
 		// 1. Sections query
 		const sectionInfo = await db
@@ -159,16 +159,16 @@ export class SectionService {
 
 		// 4. Tags
 		const tagsQuery =
-			user?.username === config.username
-				? db.select(getTableColumns(tags)).from(tags).where(eq(tags.user_id, user?.id))
+			actor?.username === config.username
+				? db.select(getTableColumns(tags)).from(tags).where(eq(tags.user_id, actor?.id))
 				: db
 						.select(getTableColumns(tags))
 						.from(tagsArticlesQueryAliased)
 						.innerJoin(tags, eq(tags.id, tagsArticlesQueryAliased.tag_id))
 						.groupBy(tags.id);
 		const tagsQueryForTranslations =
-			user?.username === config.username
-				? db.select({ id: tags.name_translation_key }).from(tags).where(eq(tags.user_id, user?.id))
+			actor?.username === config.username
+				? db.select({ id: tags.name_translation_key }).from(tags).where(eq(tags.user_id, actor?.id))
 				: db
 						.select({ id: tags.name_translation_key })
 						.from(articlesQueryAliased)
@@ -291,7 +291,7 @@ export class SectionService {
 			return { meta: article, tags };
 		};
 
-		const canAddForms = user?.username === config.username;
+		const canAddForms = actor?.username === config.username;
 
 		type SectionInfo = typeof sectionInfo;
 		type DescriptionTranslationInfo = typeof descriptionTranslationInfo;
@@ -371,7 +371,7 @@ export class SectionService {
 		};
 	}
 	async create(pagename: string, section: SectionInsert) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
 
 		supportedLangs.forEach((lang) => {
@@ -384,7 +384,7 @@ export class SectionService {
 		});
 
 		await db.transaction(async (trx) => {
-			const translationForRecord = { ...section, user_id: user.id };
+			const translationForRecord = { ...section, user_id: actor.id };
 			const [createdTranslation] = await this.translationService.create(
 				[translationForRecord],
 				'disallow-empty',
@@ -393,7 +393,7 @@ export class SectionService {
 			const page = await trx
 				.select({ page_id: pages.id })
 				.from(pages)
-				.where(and(eq(pages.slug, pagename), eq(pages.user_id, user.id)))
+				.where(and(eq(pages.slug, pagename), eq(pages.user_id, actor.id)))
 				.get();
 			if (!page) {
 				error(403, ERRORS.NO_SUCH_PAGE_TO_CREATE_POST_ON);
@@ -401,7 +401,7 @@ export class SectionService {
 			const { page_id } = page;
 			const { section_id } = await trx
 				.insert(sections)
-				.values({ user_id: user.id, page_id, title_translation_key: createdTranslation.key })
+				.values({ user_id: actor.id, page_id, title_translation_key: createdTranslation.key })
 				.returning({ section_id: sections.id })
 				.get();
 
@@ -411,7 +411,7 @@ export class SectionService {
 				const existingForUser = await trx
 					.select({ tag_id: tags.id })
 					.from(tags)
-					.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
+					.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, actor.id)))
 					.all();
 				if (existingForUser.length !== foundUnique.length) {
 					error(403, ERRORS.SOME_TAGS_DONT_EXIST);
@@ -425,7 +425,7 @@ export class SectionService {
 		});
 	}
 	async update(sectionUpdate: SectionUpdate) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const { section_id, ...langsTranslations } = sectionUpdate;
 		const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
 
@@ -444,7 +444,7 @@ export class SectionService {
 			const existingForUser = await db
 				.select({ tag_id: tags.id })
 				.from(tags)
-				.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, user.id)))
+				.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, actor.id)))
 				.all();
 			if (existingForUser.length !== foundUnique.length) {
 				error(403, ERRORS.SOME_TAGS_DONT_EXIST);
@@ -456,7 +456,7 @@ export class SectionService {
 			.select({ key: translations.key })
 			.from(sections)
 			.innerJoin(translations, eq(sections.title_translation_key, translations.key))
-			.where(and(eq(sections.id, section_id), eq(sections.user_id, user.id)))
+			.where(and(eq(sections.id, section_id), eq(sections.user_id, actor.id)))
 			.get();
 		if (!translation) {
 			error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);
@@ -476,13 +476,13 @@ export class SectionService {
 	}
 	// TODO: Remake all delete params to just id
 	async delete(sectionDelete: SectionDelete) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 
 		await db.transaction(async (trx) => {
 			const translation = await trx
 				.select({ title_translation_key: sections.title_translation_key })
 				.from(sections)
-				.where(and(eq(sections.id, sectionDelete.section_id), eq(sections.user_id, user.id)))
+				.where(and(eq(sections.id, sectionDelete.section_id), eq(sections.user_id, actor.id)))
 				.get();
 			if (!translation) {
 				error(403, ERRORS.TRANSLATION_FOR_SECTION_NOT_FOUND);

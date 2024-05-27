@@ -9,7 +9,7 @@ import { images } from '../image/schema';
 import type { ImageProviderUpdate, User } from './parsers';
 import { users } from './schema';
 
-export class UserService {
+export class ActorService {
 	private userObj: LuciaUser | null;
 
 	constructor(user: LuciaUser | null) {

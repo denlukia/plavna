@@ -9,9 +9,17 @@
 		block?: boolean;
 		resetPaddingBlock?: boolean;
 		tone?: 'default' | 'additional' | 'danger';
+		bold?: boolean;
 	};
 
-	let { size = 'body', tone = 'default', children, block, resetPaddingBlock }: Props = $props();
+	let {
+		size = 'body',
+		tone = 'default',
+		children,
+		block,
+		resetPaddingBlock,
+		bold
+	}: Props = $props();
 
 	let outline = $state(false);
 
@@ -26,6 +34,7 @@
 <svelte:element
 	this={block ? 'p' : 'span'}
 	class="text global-text-{size} tone-{tone}"
+	class:global-text-strong={bold}
 	class:outline
 	class:reset-padding-block={resetPaddingBlock}
 >

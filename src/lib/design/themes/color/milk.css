@@ -136,6 +136,8 @@
 
 	/* --- Section --- */
 	--color-section-editor-bg: var(--warm-300-transparent-100);
-	--color-section-empty-bg: var(--warm-300-transparent-100);
-	--color-section-empty-text: var(--warm-200-transparent-600);
+
+	/* --- Info Block --- */
+	--color-info-block-default-bg: var(--warm-300-transparent-100);
+	--color-info-block-default-text: var(--warm-100);
 }

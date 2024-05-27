@@ -11,7 +11,7 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { users } from '../auth/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
@@ -54,16 +54,16 @@ import {
 import { articles } from './schema';
 
 export class ArticleService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 	private readonly imageService: ImageService;
 
 	constructor(
-		userService: UserService,
+		actorService: ActorService,
 		translationService: TranslationService,
 		imageService: ImageService
 	) {
-		this.userService = userService;
+		this.actorService = actorService;
 		this.translationService = translationService;
 		this.imageService = imageService;
 	}
@@ -81,10 +81,10 @@ export class ArticleService {
 		}
 	}
 	async createFromSlug(slug: ArticleInsert['slug']) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db.transaction(async (trx) => {
 			const newTranslation = {
-				user_id: user.id
+				user_id: actor.id
 			};
 			const [
 				{ key: title_translation_key },
@@ -99,7 +99,7 @@ export class ArticleService {
 
 			let source = null;
 			try {
-				source = (await new ServerImageHandler().setProviderAndUploader(user)).provider?.type;
+				source = (await new ServerImageHandler().setProviderAndUploader(actor)).provider?.type;
 			} catch {
 				console.log('Error setting image uploader from user');
 			}
@@ -111,7 +111,7 @@ export class ArticleService {
 			const article = await trx
 				.insert(articles)
 				.values({
-					user_id: user.id,
+					user_id: actor.id,
 					slug: slug,
 					title_translation_key: Number(title_translation_key),
 					content_translation_key: Number(content_translation_key),
@@ -128,7 +128,7 @@ export class ArticleService {
 		});
 	}
 	async loadEditor(username: User['username'], slug: ArticleSelect['slug']) {
-		const user = await this.userService.checkOrThrow(null, username);
+		const actor = await this.actorService.checkOrThrow(null, username);
 
 		let exisingId = await this.getIdIfExists(slug);
 		if (exisingId === null) {
@@ -154,7 +154,7 @@ export class ArticleService {
 				articleImagesTable
 			})
 			.from(articles)
-			.leftJoin(previewTemplates, eq(previewTemplates.user_id, user.id))
+			.leftJoin(previewTemplates, eq(previewTemplates.user_id, actor.id))
 			.leftJoin(
 				images,
 				or(
@@ -165,16 +165,16 @@ export class ArticleService {
 			)
 			.leftJoin(
 				commonImagesTable,
-				and(eq(commonImagesTable.user_id, user.id), eq(commonImagesTable.is_account_common, true))
+				and(eq(commonImagesTable.user_id, actor.id), eq(commonImagesTable.is_account_common, true))
 			)
 			.leftJoin(
 				articleImagesTable,
 				and(
-					eq(articleImagesTable.user_id, user.id),
+					eq(articleImagesTable.user_id, actor.id),
 					eq(articleImagesTable.owning_article_id, exisingId)
 				)
 			)
-			.leftJoin(tags, eq(tags.user_id, user.id))
+			.leftJoin(tags, eq(tags.user_id, actor.id))
 			.leftJoin(translations, eq(translations.key, images.path_translation_key))
 			.leftJoin(
 				translForPreviewTemplates,
@@ -306,7 +306,7 @@ export class ArticleService {
 			previewTemplateCreationForm: await superValidate(zod(previewTemplateCreationFormSchema)),
 			tagInfos,
 			tagCreationForm: await superValidate(zod(translationInsertSchema)),
-			imageProviderForm: await superValidate(user, zod(imageProviderUpdateFormSchema)),
+			imageProviderForm: await superValidate(actor, zod(imageProviderUpdateFormSchema)),
 			images: imagesArr,
 			commonImages,
 			articleImages,
@@ -331,37 +331,37 @@ export class ArticleService {
 		};
 	}
 	async updateSlug(slug: string, article: ArticleSlugUpdate) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.update(articles)
 			.set(article)
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
 			.returning({ slug: articles.slug })
 			.get();
 	}
 	async publish(slug: string) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.update(articles)
 			.set({ publish_time: new Date() })
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
 			.returning({ slug: articles.slug })
 			.get();
 	}
 	async hide(slug: string) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.update(articles)
 			.set({ publish_time: null })
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
 			.returning({ slug: articles.slug })
 			.get();
 	}
 	async delete(slug: string) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const articleDeleted = await db
 			.delete(articles)
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
 			.returning({ id: articles.id })
 			.get();
 		if (!articleDeleted) throw new Error('Article not found');
@@ -374,13 +374,13 @@ export class ArticleService {
 		keysForDeletion: string[]
 	) {
 		// Common for 1. and 3.
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		let source,
 			providerData = null;
 
 		// TODO: Remake all such places to not call Image Handler if not uploading images
 		try {
-			let provider = (await new ServerImageHandler().setProviderAndUploader(user)).provider;
+			let provider = (await new ServerImageHandler().setProviderAndUploader(actor)).provider;
 			if (provider) {
 				source = provider.type;
 				providerData = provider.data;
@@ -396,7 +396,7 @@ export class ArticleService {
 			preview.preview_family = 'custom';
 		}
 
-		const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, user.id));
+		const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, actor.id));
 		const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
 		const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
@@ -423,7 +423,7 @@ export class ArticleService {
 					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
 					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
 					if (imageHandler && !keysForDeletion.find((k) => k === `delete_${fieldName}`)) {
-						await imageHandler.setProviderAndUploader(user);
+						await imageHandler.setProviderAndUploader(actor);
 						const record = await imageHandler.upload({
 							imageId: articleRecord[fieldNameWithIdPrefix],
 							lang
@@ -584,9 +584,9 @@ export class ArticleService {
 		return Promise.all(promisesToWaitFor);
 	}
 	async getOne(username: string, slug: string) {
-		const userPromise = await this.userService.get();
+		const actor = await this.actorService.get();
 		const titleTranslationAlias = alias(translations, 'title_translation');
-		const queryPromise = db
+		const query = await db
 			.select({
 				articles: articles,
 				titleTranslationAlias,
@@ -632,12 +632,10 @@ export class ArticleService {
 			)
 			.all();
 
-		const [query, user] = await Promise.all([queryPromise, userPromise]);
-
 		if (!query.length) {
 			error(404);
 		}
-		if ((!user || user.username !== username) && query[0].articles.publish_time === null) {
+		if ((!actor || actor.username !== username) && query[0].articles.publish_time === null) {
 			error(404);
 		}
 		return {

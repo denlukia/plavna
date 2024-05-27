@@ -6,7 +6,7 @@ import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 
 export type ImageAnyParams = {
 	lang: SupportedLang | null;
-	user: User;
+	actor: User;
 	trx?: TransactionContext;
 };
 export type ImageCreationParams = {

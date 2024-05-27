@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { setContext } from 'svelte';
+	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
@@ -31,6 +32,7 @@
 	}: Props = $props();
 
 	let editorOpened = $state(false);
+	let abortController: AbortController | null = $state(null);
 
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
 		return Boolean(section.forms);
@@ -45,20 +47,24 @@
 	const sectionContext: SectionContext = $state({
 		activeTags: section.activeTags,
 		onTagSwitch: async (tagId, checked) => {
-			// Optimistic update
-			if (checked) {
-				section.activeTags.push({ id: tagId });
-			} else {
-				section.activeTags = section.activeTags.filter(({ id }) => id !== tagId);
-			}
+			// Optimistic update (causes blink of empty articles block)
+			// if (checked) {
+			// 	section.activeTags.push({ id: tagId });
+			// } else {
+			// 	section.activeTags = section.activeTags.filter(({ id }) => id !== tagId);
+			// }
 
 			// Getting new articles list
 			const body: SectionReconfigRequest = { sectionId: section.meta.id, tagId, checked };
 			try {
+				abortController?.abort();
+				abortController = new AbortController();
 				const response = await fetch($page.url, {
 					method: 'POST',
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
+					signal: abortController?.signal
 				});
+				abortController = null;
 				if (response.ok) {
 					const result: SectionFetchReturn = await response.json();
 
@@ -77,7 +83,8 @@
 	});
 
 	$effect(() => {
-		sectionContext.activeTags = section.activeTags;
+		// Fixes ownership errors
+		sectionContext.activeTags = Array.from(section.activeTags);
 	});
 
 	setContext('section', sectionContext);
@@ -101,12 +108,12 @@
 		{#if section.articles.length > 0}
 			<ArticlesList {section} />
 		{:else if sectionContext.activeTags.length > 0}
-			<div class="empty">
+			<InfoBlock>
 				<!-- TODO: Show other translation if page is not of actor -->
 				<Typography>
 					<Translation key="page_actor.section.no_articles" />
 				</Typography>
-			</div>
+			</InfoBlock>
 		{/if}
 	</div>
 </section>
@@ -125,15 +132,5 @@
 	}
 	.articles-list-wrapper {
 		margin-top: var(--size-section-articles-list-margin-top);
-	}
-	.empty {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--color-section-empty-bg);
-		border-radius: var(--size-section-empty-border-radius);
-		padding-block: var(--size-section-empty-padding-block);
-		padding-inline: var(--size-section-empty-padding-inline);
-		color: var(--color-section-empty-text);
 	}
 </style>

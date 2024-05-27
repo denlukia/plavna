@@ -2,50 +2,50 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
 import { articles } from '../article/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
 import type { TagDelete, TagUpdate } from './parsers';
 import { tags, tagsToArticles } from './schema';
 
 export class TagService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 
-	constructor(userService: UserService, translationService: TranslationService) {
-		this.userService = userService;
+	constructor(actorService: ActorService, translationService: TranslationService) {
+		this.actorService = actorService;
 		this.translationService = translationService;
 	}
 
 	async create(translation: TranslationInsert) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db.transaction(async (trx) => {
 			const [{ key }] = await this.translationService.create([translation], 'disallow-empty', trx);
 			return trx
 				.insert(tags)
-				.values({ name_translation_key: key, user_id: user.id })
+				.values({ name_translation_key: key, user_id: actor.id })
 				.returning()
 				.get();
 		});
 	}
 	async delete(tag: TagDelete) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.delete(tags)
-			.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))
+			.where(and(eq(tags.id, tag.id), eq(tags.user_id, actor.id)))
 			.run();
 	}
 	async switchChecked(tag: TagUpdate, slug: string) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const currentlyChecked = tag.checked;
 		const articleSql = sql`${db
 			.select({ id: articles.id })
 			.from(articles)
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, user.id)))}`;
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))}`;
 		const tagSql = sql`${db
 			.select({ id: tags.id })
 			.from(tags)
-			.where(and(eq(tags.id, tag.id), eq(tags.user_id, user.id)))}`;
+			.where(and(eq(tags.id, tag.id), eq(tags.user_id, actor.id)))}`;
 
 		if (currentlyChecked) {
 			await db

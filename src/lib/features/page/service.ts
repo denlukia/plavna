@@ -9,7 +9,7 @@ import { db } from '$lib/services/db';
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
 import { users } from '../auth/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -34,45 +34,45 @@ import {
 import { pages } from './schema';
 
 export class PageService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 	private readonly sectionService: SectionService;
 
 	constructor(
-		userService: UserService,
+		actorService: ActorService,
 		translationService: TranslationService,
 		sectionService: SectionService
 	) {
-		this.userService = userService;
+		this.actorService = actorService;
 		this.translationService = translationService;
 		this.sectionService = sectionService;
 	}
 
 	async create(page: PageCreateForm) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.insert(pages)
-			.values({ ...page, user_id: user.id })
+			.values({ ...page, user_id: actor.id })
 			.run();
 	}
 	async update(page: PageUpdateForm) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.update(pages)
 			.set(page)
-			.where(and(eq(pages.id, page.id), eq(pages.user_id, user.id)))
+			.where(and(eq(pages.id, page.id), eq(pages.user_id, actor.id)))
 			.run();
 	}
 	async delete(id: PageSelect['id']) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		return db
 			.delete(pages)
-			.where(and(eq(pages.id, id), eq(pages.user_id, user.id)))
+			.where(and(eq(pages.id, id), eq(pages.user_id, actor.id)))
 			.run();
 	}
 	async getMyAsForms(username: string) {
-		const user = await this.userService.checkOrThrow(null, username);
-		const query = await db.select().from(pages).where(eq(pages.user_id, user.id)).all();
+		const actor = await this.actorService.checkOrThrow(null, username);
+		const query = await db.select().from(pages).where(eq(pages.user_id, actor.id)).all();
 		const pageItems = await Promise.all(
 			query.map(async (page) => {
 				return {
@@ -98,15 +98,37 @@ export class PageService {
 		pageslug: string,
 		readerPageConfig: ReaderPageConfig | null
 	) {
-		const user = await this.userService.get();
+		const actor = await this.actorService.get();
 
 		// 0. Utilitary queries
 		const userIdSq = db.select({ id: users.id }).from(users).where(eq(users.username, username));
-		const pageInfo = await db
+		const lang = this.translationService.currentLang;
+
+		const pagePromise = db
 			.select()
 			.from(pages)
 			.where(and(eq(pages.slug, pageslug), eq(pages.user_id, userIdSq)))
 			.get();
+		let tagsAndTheirTranslationsPromise = db
+			.select({
+				tag: { id: tags.id, name_translation_key: translations.key },
+				translation: { key: translations.key, [lang]: translations[lang] }
+			})
+			.from(tags)
+			.innerJoin(translations, eq(tags.name_translation_key, translations.key))
+			.where(and(eq(userIdSq, actor?.id || ''), eq(tags.user_id, userIdSq)))
+			.all();
+
+		const [pageInfo, tagsAndTheirTranslationsInfo] = await Promise.all([
+			pagePromise,
+			tagsAndTheirTranslationsPromise
+		]);
+		const tagsTranslationsAsObject = Object.fromEntries(
+			tagsAndTheirTranslationsInfo.map(({ translation: { key, [lang]: translation } }) => [
+				key,
+				translation
+			])
+		) as RecordsTranslations;
 
 		if (!pageInfo) {
 			error(404);
@@ -124,7 +146,7 @@ export class PageService {
 
 		const sectionsNonEmpty = sectionsResponses.filter(isNonNullable);
 
-		const canAddForms = user?.username === username;
+		const canAddForms = actor?.username === username;
 
 		return {
 			sections: {
@@ -143,10 +165,11 @@ export class PageService {
 			}, {} as PreviewFamiliesDict),
 			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.recordsTranslations };
-			}, {} as RecordsTranslations),
+			}, tagsTranslationsAsObject as RecordsTranslations),
 			images: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.images };
-			}, {} as ImagesDict)
+			}, {} as ImagesDict),
+			tags: tagsAndTheirTranslationsInfo.map((t) => t.tag)
 		};
 	}
 }

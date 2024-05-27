@@ -5,7 +5,7 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { articles } from '../article/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageSelect } from '../image/parsers';
@@ -19,46 +19,46 @@ import type {
 import { previewTemplates } from './schema';
 
 export class PreviewService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 	private readonly imageService: ImageService;
 
 	constructor(
-		userService: UserService,
+		actorService: ActorService,
 		translationService: TranslationService,
 		imageService: ImageService
 	) {
-		this.userService = userService;
+		this.actorService = actorService;
 		this.translationService = translationService;
 		this.imageService = imageService;
 	}
 
 	// TODO: Show image input only if account has Image Provider keys
 	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler | null) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const { url, ...translation } = template;
 		await db.transaction(async (trx) => {
 			const [{ key }] = await this.translationService.create([translation], 'disallow-empty', trx);
 			let imageId: ImageSelect['id'] | null = null;
 			if (imageHandler) {
-				const source = (await imageHandler.setProviderAndUploader(user)).provider?.type;
+				const source = (await imageHandler.setProviderAndUploader(actor)).provider?.type;
 				({ id: imageId } = await this.imageService.create({ source }, trx));
 				const { record } = await imageHandler.upload({ imageId, lang: null });
 				await this.imageService.update(record, null, trx);
 			}
 			await trx
 				.insert(previewTemplates)
-				.values({ user_id: user.id, url, name_translation_key: key, image_id: imageId })
+				.values({ user_id: actor.id, url, name_translation_key: key, image_id: imageId })
 				.run();
 		});
 	}
 	async update(template: PreviewTemplateEditing, imageHandler: ServerImageHandler | null) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const { url, template_id, ...translation } = template;
 		await db.transaction(async (trx) => {
 			const whereCondition = and(
 				eq(previewTemplates.id, template_id),
-				eq(previewTemplates.user_id, user.id)
+				eq(previewTemplates.user_id, actor.id)
 			);
 
 			// 1. Update name translation and URL
@@ -83,7 +83,7 @@ export class PreviewService {
 					.innerJoin(images, eq(images.id, previewTemplates.image_id))
 					.where(whereCondition)
 					.get();
-				const source = (await imageHandler.setProviderAndUploader(user)).provider?.type;
+				const source = (await imageHandler.setProviderAndUploader(actor)).provider?.type;
 
 				let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 				if (!imageId) {
@@ -96,11 +96,11 @@ export class PreviewService {
 		});
 	}
 	async delete(template: PreviewTemplateDeletion) {
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		await db.transaction(async (trx) => {
 			const whereCondition = and(
 				eq(previewTemplates.id, template.id),
-				eq(previewTemplates.user_id, user.id)
+				eq(previewTemplates.user_id, actor.id)
 			);
 			const recordResult = await trx
 				.select({ translation_key: translations.key, images })

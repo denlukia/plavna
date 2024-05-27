@@ -7,9 +7,9 @@ import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, locals, cookies }) => {
 	const body: ImageProcessed = await request.json();
-	const { userService, imageService } = locals;
+	const { actorService, imageService } = locals;
 
-	const user = await userService.get();
+	const user = await actorService.get();
 	const accessCookie = cookies.get(SCREENSHOTTER_ACCESS_COOKIE_NAME);
 
 	if (accessCookie !== env.SCREENSHOTTER_ACCESS_TOKEN && !user) {

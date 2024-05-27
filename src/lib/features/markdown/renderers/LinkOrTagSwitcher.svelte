@@ -3,7 +3,7 @@
 	import type { Snippet } from 'svelte';
 	import Link from '$lib/design/components/Link.svelte';
 
-	import Tag from './Tag.svelte';
+	import Tag from './TagSwitcher.svelte';
 
 	type Props = Omit<Tokens.Link, 'type'> & {
 		children: Snippet;

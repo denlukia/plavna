@@ -48,6 +48,9 @@ export const EN = {
 			delete: 'Delete',
 			cancel: 'Cancel',
 			description: 'Description',
+			available_tags: 'Available tags',
+			gotta_create_tags:
+				'Create at least one tag during article creation to reference it in section',
 			no_articles: 'You have not created any articles with selected tags'
 		}
 	},
