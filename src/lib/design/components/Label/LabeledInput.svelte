@@ -11,7 +11,7 @@
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control -->
-<label class="global-reset-line-height {type}" {...attributes}>
+<label class="labeled-input global-reset-line-height {type}" {...attributes}>
 	{@render children()}
 </label>
 
@@ -20,7 +20,7 @@
 		display: inline-flex;
 
 		/* For Text */
-		--text-padding-inline: var(--size-labeled-text-padding-inline);
+		--label-padding-inline: var(--size-labeled-text-padding-inline);
 
 		/* For Input */
 		--input-margin-top: var(--size-labeled-input-margin-top);
@@ -48,5 +48,9 @@
 
 		/* For Text */
 		--text-padding-inline: var(--size-labeled-switch-with-bg-text-padding-inline);
+	}
+
+	.labeled-input + :global(.labeled-input) {
+		margin-top: var(--size-labeled-inputs-gap);
 	}
 </style>

@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 import type { Session, User } from 'lucia';
 import type { ArticleService } from '$lib/features/article/service';
-import type { UserService } from '$lib/features/auth/service';
+import type { ActorService } from '$lib/features/auth/service';
 import type { TranslationSelect } from '$lib/features/i18n/parsers';
 import type { TranslationService } from '$lib/features/i18n/service';
 import type { RecordsTranslations, SystemTranslationDict } from '$lib/features/i18n/types';
@@ -15,6 +15,7 @@ import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
 import type { TagSelect } from '$lib/features/tag/parsers';
 import type { TagService } from '$lib/features/tag/service';
+import type { TagsListForPage } from '$lib/features/tag/types';
 
 declare global {
 	namespace App {
@@ -23,7 +24,7 @@ declare global {
 			user: User | null;
 			session: Session | null;
 			// plavna: Plavna;
-			userService: UserService;
+			actorService: ActorService;
 			translationService: TranslationService;
 			pageService: PageService;
 			sectionService: SectionService;
@@ -40,6 +41,7 @@ declare global {
 			recordsTranslations?: RecordsTranslations;
 			previewFamilies?: PreviewFamiliesDict;
 			images?: ImagesDict;
+			tags?: TagsListForPage;
 		}
 	}
 }

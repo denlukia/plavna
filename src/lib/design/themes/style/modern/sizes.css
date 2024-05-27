@@ -62,6 +62,7 @@
 	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
 	--size-labeled-checkbox-margin-top: var(--size-s);
 	--size-labeled-checkbox-margin-bottom: var(--size-s);
+	--size-labeled-inputs-gap: var(--size-m);
 
 	/* --- Input --- */
 	--size-input-min-width: 100px;
@@ -181,12 +182,14 @@
 	--size-section-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-3xl);
 	--size-section-articles-list-margin-top: var(--size-xl);
-	--size-section-empty-padding-block: var(--size-l);
-	--size-section-empty-padding-inline: var(--size-m-to-l);
-	--size-section-empty-border-radius: var(--size-s);
 
 	--size-section-editor-padding-inline: var(--size-m-to-l);
 	--size-section-editor-padding-top: var(--size-none);
 	--size-section-editor-padding-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
+
+	/* --- Info Block --- */
+	--size-info-block-padding-block: var(--size-m);
+	--size-info-block-padding-inline: var(--size-m);
+	--size-info-block-border-radius: var(--size-m);
 }

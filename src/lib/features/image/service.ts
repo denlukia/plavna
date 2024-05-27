@@ -5,7 +5,7 @@ import type { User } from 'lucia';
 import { db } from '$lib/services/db';
 
 import { users } from '../auth/schema';
-import type { UserService } from '../auth/service';
+import type { ActorService } from '../auth/service';
 import type { TransactionContext } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
@@ -15,11 +15,11 @@ import { images } from './schema';
 import type { ImageAnyParams, ImageCreationParams, ImagesUpdateParams } from './types';
 
 export class ImageService {
-	private readonly userService: UserService;
+	private readonly actorService: ActorService;
 	private readonly translationService: TranslationService;
 
-	constructor(userService: UserService, translationService: TranslationService) {
-		this.userService = userService;
+	constructor(actorService: ActorService, translationService: TranslationService) {
+		this.actorService = actorService;
 		this.translationService = translationService;
 	}
 
@@ -27,7 +27,7 @@ export class ImageService {
 		initialImage,
 		mode,
 		lang,
-		user,
+		actor,
 		trx
 	}: ImageAnyParams & (ImageCreationParams | ImagesUpdateParams)) => {
 		const chosenDBInstance = trx || db;
@@ -40,7 +40,7 @@ export class ImageService {
 		if (mode === 'create') {
 			finalImage = await chosenDBInstance
 				.insert(images)
-				.values({ ...initialImage, user_id: user.id })
+				.values({ ...initialImage, user_id: actor.id })
 				.returning()
 				.get();
 		}
@@ -55,7 +55,7 @@ export class ImageService {
 				.select({ key: translations.key })
 				.from(images)
 				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(and(eq(images.id, id), eq(images.user_id, user.id)))
+				.where(and(eq(images.id, id), eq(images.user_id, actor.id)))
 				.get();
 			if (!imageQuery) error(403);
 			if (imageQuery.key) {
@@ -94,20 +94,20 @@ export class ImageService {
 
 	async create(newImage: ImageInsert, trx?: TransactionContext) {
 		const chosenDBInstance = trx || db;
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 
 		const processedImage = await this.runEffects({
 			mode: 'create',
 			initialImage: newImage,
 			lang: null,
-			user,
+			actor: actor,
 			trx
 		});
 
 		return chosenDBInstance
 			.update(images)
 			.set(processedImage)
-			.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
+			.where(and(eq(images.user_id, actor.id), eq(images.id, processedImage.id)))
 			.returning()
 			.get();
 	}
@@ -119,11 +119,11 @@ export class ImageService {
 	) {
 		const chosenDBInstance = trx || db;
 
-		let user: User;
+		let actor: User;
 		if (type === 'from-screenshotter') {
-			user = await this.userService.setFromImageIdOrThrow(newImage.id);
+			actor = await this.actorService.setFromImageIdOrThrow(newImage.id);
 		} else {
-			user = await this.userService.getOrThrow();
+			actor = await this.actorService.getOrThrow();
 		}
 
 		// TODO: Delete old image from provider
@@ -132,27 +132,27 @@ export class ImageService {
 			mode: 'update',
 			initialImage: newImage,
 			lang,
-			user,
+			actor: actor,
 			trx
 		});
 
 		return chosenDBInstance
 			.update(images)
 			.set(processedImage)
-			.where(and(eq(images.user_id, user.id), eq(images.id, processedImage.id)))
+			.where(and(eq(images.user_id, actor.id), eq(images.id, processedImage.id)))
 			.returning()
 			.get();
 	}
 	async delete(imageId: ImageSelect['id'], lang?: SupportedLang | null, trx?: TransactionContext) {
 		const chosenDBInstance = trx || db;
-		const user = await this.userService.getOrThrow();
+		const actor = await this.actorService.getOrThrow();
 		const mode =
 			typeof lang === 'string'
 				? 'translation-deletion'
 				: lang === null
 					? 'default-deletion'
 					: 'whole-deletion';
-		const whereCondition = and(eq(images.user_id, user.id), eq(images.id, imageId));
+		const whereCondition = and(eq(images.user_id, actor.id), eq(images.id, imageId));
 
 		const translation = await chosenDBInstance
 			.select({ translations })

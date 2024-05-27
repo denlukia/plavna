@@ -28,6 +28,4 @@
 		--max-height-gaps: calc(var(--max-rows) * var(--size-cell-gap));
 		max-height: calc(var(--max-height-base) + var(--max-height-gaps));
 	}
-	.empty {
-	}
 </style>

@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/features/article/service';
-import { UserService } from '$lib/features/auth/service';
+import { ActorService } from '$lib/features/auth/service';
 import { TranslationService } from '$lib/features/i18n/service';
 import { ImageService } from '$lib/features/image/service';
 import { PageService } from '$lib/features/page/service';
@@ -39,24 +39,24 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// 2. Adding our Services
-	locals.userService = new UserService(locals.user);
-	locals.translationService = new TranslationService(locals.userService, params.lang);
+	locals.actorService = new ActorService(locals.user);
+	locals.translationService = new TranslationService(locals.actorService, params.lang);
 
-	locals.sectionService = new SectionService(locals.userService, locals.translationService);
+	locals.sectionService = new SectionService(locals.actorService, locals.translationService);
 	locals.pageService = new PageService(
-		locals.userService,
+		locals.actorService,
 		locals.translationService,
 		locals.sectionService
 	);
-	locals.tagService = new TagService(locals.userService, locals.translationService);
-	locals.imageService = new ImageService(locals.userService, locals.translationService);
+	locals.tagService = new TagService(locals.actorService, locals.translationService);
+	locals.imageService = new ImageService(locals.actorService, locals.translationService);
 	locals.articleService = new ArticleService(
-		locals.userService,
+		locals.actorService,
 		locals.translationService,
 		locals.imageService
 	);
 	locals.previewService = new PreviewService(
-		locals.userService,
+		locals.actorService,
 		locals.translationService,
 		locals.imageService
 	);

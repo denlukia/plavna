@@ -178,17 +178,17 @@ async function update_image_provider(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageProviderUpdateFormSchema));
 	if (!form.valid) return fail(400, { form });
 
-	const { userService } = event.locals;
+	const { actorService } = event.locals;
 	try {
-		await userService.updateImageProvider(form.data);
+		await actorService.updateImageProvider(form.data);
 	} catch {
 		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
 	}
 }
 async function delete_image_provider(event: RequestEvent) {
-	const { userService } = event.locals;
+	const { actorService } = event.locals;
 
-	await userService.updateImageProvider({
+	await actorService.updateImageProvider({
 		imagekit_private_key: '',
 		imagekit_public_key: '',
 		imagekit_url_endpoint: ''
