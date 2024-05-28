@@ -40,7 +40,7 @@
 
 	let tags = $derived($page.data.tags || []);
 	let tagsInText = $derived.by(() => {
-		let lang = $page.params.lang as SupportedLang;
+		let lang = descriptionInput.currentLang;
 		let text = $translationForm[lang];
 		if (!text) {
 			return [];
@@ -119,11 +119,21 @@
 
 			$translationForm[lang] = newMd;
 		} else {
-			const textBefore = text.slice(0, descriptionInput.selectionStart);
-			const textAfter = text.slice(descriptionInput.selectionEnd);
+			let textBefore = text.slice(0, descriptionInput.selectionStart);
+			textBefore = textBefore.trimEnd();
+			if (textBefore.length > 0) {
+				textBefore += ' ';
+			}
+
+			let textAfter = text.slice(descriptionInput.selectionEnd);
+			textAfter = textAfter.trimStart();
+			if (textAfter.length > 0) {
+				textAfter = ' ' + textAfter;
+			}
+
 			const tagTemplate = `[${getSystemTranslation('page_actor.section.tag_name', $page.data.systemTranslations)}](tag:${tagId})`;
 
-			$translationForm[lang] = `${textBefore} ${tagTemplate} ${textAfter}`;
+			$translationForm[lang] = `${textBefore}${tagTemplate}${textAfter}`;
 		}
 	}
 </script>
