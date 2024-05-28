@@ -64,7 +64,10 @@ function getSlice(keySet: string[], slice: SystemTranslationDict): SystemTransla
 	}
 }
 
-export function getSystemTranslation(key: string, systemTranslations: SystemTranslationDict) {
+export function getSystemTranslation(
+	key: SystemTranslationKey,
+	systemTranslations: SystemTranslationDict
+) {
 	const keyset = key.split('.');
 	let slice: SystemTranslationDict | string = { ...systemTranslations };
 

@@ -17,7 +17,7 @@
 	<Translation recordKey={section.meta.title_translation_key} markdown />
 	{#if showEditButton}
 		<div class="actions-wrapper">
-			<Button size="small" type="secondary" onclick={onEditorOpen}>
+			<Button size="small" kind="secondary" onclick={onEditorOpen}>
 				<Translation key="page_actor.section.edit" />
 			</Button>
 		</div>

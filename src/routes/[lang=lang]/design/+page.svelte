@@ -58,23 +58,23 @@
 	</div>
 	<div class="group">
 		<Button>Testy</Button>
-		<Button type="secondary">Testy</Button>
-		<Button type="prominent">Testy</Button>
-		<Button type="destructive">Testy</Button>
+		<Button kind="secondary">Testy</Button>
+		<Button kind="prominent">Testy</Button>
+		<Button kind="destructive">Testy</Button>
 		<Button href="/">Link</Button>
 	</div>
 	<div class="group">
 		<Button size="small">Testy</Button>
-		<Button size="small" type="secondary">Testy</Button>
-		<Button size="small" type="prominent">Testy</Button>
-		<Button size="small" type="destructive">Testy</Button>
+		<Button size="small" kind="secondary">Testy</Button>
+		<Button size="small" kind="prominent">Testy</Button>
+		<Button size="small" kind="destructive">Testy</Button>
 	</div>
 	<div class="group">
 		<LabeledInput>
 			<Typography size="small-short">Тест</Typography>
 			<Typography size="small-short" tone="additional">Тест</Typography>
 			<Input type="password" placeholder="Тест" />
-			<Input translations={translationForm} />
+			<Input translationsForm={translationForm} />
 		</LabeledInput>
 	</div>
 	<div class="group">

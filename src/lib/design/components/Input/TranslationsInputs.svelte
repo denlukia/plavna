@@ -8,29 +8,29 @@
 	import type { InputProps } from './types';
 
 	type Props = InputProps & {
-		currentLanguage: SupportedLang;
-		translations: NonNullable<InputProps['translations']>;
+		currentLang: SupportedLang;
+		translationsForm: NonNullable<InputProps['translationsForm']>;
 	};
 
-	let { translations, translationsPrefix = '', currentLanguage, ...attributes }: Props = $props();
+	let { translationsForm, translationsPrefix = '', currentLang, ...attributes }: Props = $props();
 </script>
 
 <Layers>
 	<!-- TODO: Directional transitions based on lang index -->
 	{#each supportedLangs as lang}
-		{#if lang !== currentLanguage}
+		{#if lang !== currentLang}
 			{#if attributes.type === 'textarea'}
 				<textarea
 					{...attributes}
 					hidden
 					name="{translationsPrefix}{lang}"
-					bind:value={$translations[lang]}
+					bind:value={$translationsForm[lang]}
 				></textarea>
 			{:else}
 				<input
 					type="hidden"
 					name="{translationsPrefix}{lang}"
-					bind:value={$translations[lang]}
+					bind:value={$translationsForm[lang]}
 					{...attributes}
 				/>
 			{/if}
@@ -38,25 +38,25 @@
 	{/each}
 
 	{#if attributes.type === 'textarea'}
-		{#key currentLanguage}
+		{#key currentLang}
 			<textarea
 				in:fly={getFlyConf(expoOut, 'bottom')}
 				out:fly={getFlyConf(expoOut, 'top')}
 				class="global-reset-input global-text-body"
-				name="{translationsPrefix}{currentLanguage}"
-				bind:value={$translations[currentLanguage]}
+				name="{translationsPrefix}{currentLang}"
+				bind:value={$translationsForm[currentLang]}
 				{...attributes}
 			></textarea>
 		{/key}
 	{:else}
-		{#key currentLanguage}
+		{#key currentLang}
 			<input
 				type="text"
 				in:fly={getFlyConf(expoOut, 'bottom')}
 				out:fly={getFlyConf(expoOut, 'top')}
 				class="global-reset-input global-text-body"
-				name="{translationsPrefix}{currentLanguage}"
-				bind:value={$translations[currentLanguage]}
+				name="{translationsPrefix}{currentLang}"
+				bind:value={$translationsForm[currentLang]}
 				{...attributes}
 			/>
 		{/key}
