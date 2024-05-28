@@ -35,7 +35,7 @@
 			{#each supportedLangs as language}
 				<Button
 					href={generateLangURL($page.url.pathname, language)}
-					type={language === $page.params.lang ? 'primary' : 'secondary'}
+					kind={language === $page.params.lang ? 'primary' : 'secondary'}
 				>
 					{language.toUpperCase()}
 				</Button>

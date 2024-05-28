@@ -16,7 +16,10 @@
 
 	let {
 		value = $bindable(),
-		translations,
+		selectionStart = $bindable(0),
+		selectionEnd = $bindable(0),
+		currentLang = $bindable($page.params.lang as SupportedLang),
+		translationsForm,
 		translationsPrefix,
 		style,
 		...attributes
@@ -32,9 +35,7 @@
 	let pswdVisible = $state(false);
 
 	let hasLeading = $derived(attributes.type === 'color');
-	let hasTrailing = $derived(attributes.type === 'password' || translations);
-
-	let currentLanguage = $state($page.params.lang as SupportedLang);
+	let hasTrailing = $derived(attributes.type === 'password' || translationsForm);
 
 	function togglePswdVisibility() {
 		pswdVisible = !pswdVisible;
@@ -47,6 +48,10 @@
 			pswdIconCurrentFrame.set(eyeOpenedFrame);
 		}
 	});
+
+	function onselectionchange() {
+		// TODO: implement
+	}
 </script>
 
 <!-- TODO: What would the correct role be? -->
@@ -65,20 +70,31 @@
 				class:no-left-padding={hasLeading}
 				class:textarea-wrapper={attributes.type === 'textarea'}
 			>
-				{#if translations}
+				{#if translationsForm}
 					<TranslationsInputs
 						{translationsPrefix}
-						{translations}
-						{currentLanguage}
+						{translationsForm}
+						{currentLang}
 						{...attributes}
+						{onselectionchange}
 					/>
 				{:else if attributes.type === 'password'}
-					<PasswordInput {pswdVisible} {...attributes} bind:value />
+					<PasswordInput {pswdVisible} {...attributes} bind:value {onselectionchange} />
 				{:else if attributes.type === 'textarea'}
-					<textarea bind:value {...attributes} class="global-reset-input global-text-body">
+					<textarea
+						bind:value
+						{...attributes}
+						class="global-reset-input global-text-body"
+						{onselectionchange}
+					>
 					</textarea>
 				{:else}
-					<input bind:value {...attributes} class="global-reset-input global-text-body" />
+					<input
+						bind:value
+						{...attributes}
+						class="global-reset-input global-text-body"
+						{onselectionchange}
+					/>
 				{/if}
 			</span>
 			{#if hasTrailing}
@@ -90,8 +106,8 @@
 							</IconWrapper>
 						</ButtonInInput>
 					{/if}
-					{#if translations}
-						<LangSelector bind:value={currentLanguage} />
+					{#if translationsForm}
+						<LangSelector bind:value={currentLang} />
 					{/if}
 				</span>
 			{/if}

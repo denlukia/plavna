@@ -42,7 +42,7 @@
 	{/snippet}
 	{#snippet content()}
 		{#each pages as { href, translation, routeId }}
-			<Button {href} type={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
+			<Button {href} kind={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
 				<Translation key={translation} />
 			</Button>
 		{/each}
@@ -50,7 +50,7 @@
 </Popup>
 
 <Button
-	type="prominent"
+	kind="prominent"
 	href={generateCreateArticleURL($page.params.lang, user.username)}
 	dataSvelteKitPreloadData="off"
 >

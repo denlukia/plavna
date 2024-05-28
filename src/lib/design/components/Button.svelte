@@ -1,44 +1,55 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes, MouseEventHandler } from 'svelte/elements';
+	import type {
+		HTMLAnchorAttributes,
+		HTMLButtonAttributes,
+		MouseEventHandler
+	} from 'svelte/elements';
 	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
 	import { createPressWatcher } from '../reactivity/press-watcher.svelte';
 	import ActiveElementFX from './ActiveElementFX/ActiveElementFX.svelte';
 	import Typography from './Typography/Typography.svelte';
 
-	type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+	// type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+	type AnchorAttrs = HTMLAnchorAttributes & {
+		href: string;
+	};
+	type ButtonAttrs = HTMLButtonAttributes & {
+		href?: never;
+	};
 
-	type Props = {
+	type Props = (AnchorAttrs | ButtonAttrs) & {
 		children: Snippet;
-		type?: 'primary' | 'secondary' | 'prominent' | 'destructive';
+		kind?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
 		dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];
 		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 		href?: string;
-		onclick?: UniversalMouseEventHandler;
 		active?: boolean;
 		imitatePressingOnClick?: boolean;
 		formaction?: string;
 	};
 	let {
 		children,
-		type = 'primary',
+		kind = 'primary',
 		size = 'body',
 		href,
 		dataSvelteKitPreloadData,
 		dataSvelteKitReload,
-		onclick: onclickProp,
+		onclick,
 		active = false,
 		imitatePressingOnClick = true,
-		formaction
+		...attrs
 	}: Props = $props();
 
 	const { pressed, onclick: onclickWatcher, ...events } = $derived(createPressWatcher());
 
-	function onclick(event: UniversalMouseEventHandler['arguments'][0]) {
+	function onclickWrapper(event: Parameters<NonNullable<Props['onclick']>>[0]) {
 		imitatePressingOnClick && onclickWatcher();
-		if (onclickProp) onclickProp(event);
+
+		// @ts-expect-error TODO: Improve typing
+		if (onclick) onclick(event);
 	}
 </script>
 
@@ -47,13 +58,13 @@
 	role={href ? 'link' : 'button'}
 	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
-	class={`button type-${type} size-${size} 
+	class={`button kind-${kind} size-${size} 
 	 global-reset-line-height
 	${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed={active || pressed}
+	onclick={onclickWrapper}
 	{...events}
-	{formaction}
-	{onclick}
+	{...attrs}
 	{href}
 >
 	<ActiveElementFX>
@@ -85,60 +96,60 @@
 	}
 
 	/* Type Dependent */
-	.type-primary {
+	.kind-primary {
 		background: var(--color-button-primary-bg);
 		color: var(--color-button-primary-text);
 		box-shadow: var(--shadow-button-primary);
 		border: var(--border-button-primary);
 		--color-layer-flashlight-pointer: var(--color-button-primary-layer-flashlight-hover);
 	}
-	.type-secondary {
+	.kind-secondary {
 		background: var(--color-button-secondary-bg);
 		color: var(--color-button-secondary-text);
 		box-shadow: var(--shadow-button-secondary);
 		border: var(--border-button-secondary);
 		--color-layer-flashlight-pointer: var(--color-button-secondary-layer-flashlight-hover);
 	}
-	.type-prominent {
+	.kind-prominent {
 		background: var(--color-button-prominent-bg);
 		color: var(--color-button-prominent-text);
 		box-shadow: var(--shadow-button-prominent);
 		border: var(--border-button-prominent);
 		--color-layer-flashlight-pointer: var(--color-button-prominent-layer-flashlight-hover);
 	}
-	.type-destructive {
+	.kind-destructive {
 		background: var(--color-button-destructive-bg);
 		color: var(--color-button-destructive-text);
 		box-shadow: var(--shadow-button-destructive);
 		border: var(--border-button-destructive);
 		--color-layer-flashlight-pointer: var(--color-button-destructive-layer-flashlight-hover);
 	}
-	.type-primary:not(.pressed):hover {
+	.kind-primary:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-primary);
 	}
-	.type-secondary:not(.pressed):hover {
+	.kind-secondary:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-secondary);
 	}
-	.type-prominent:not(.pressed):hover {
+	.kind-prominent:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-prominent);
 	}
 	.type-destructive:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-destructive);
 	}
-	.type-primary:active,
-	.type-primary.pressed {
+	.kind-primary:active,
+	.kind-primary.pressed {
 		box-shadow: var(--shadow-button-active-primary);
 	}
-	.type-secondary:active,
-	.type-secondary.pressed {
+	.kind-secondary:active,
+	.kind-secondary.pressed {
 		box-shadow: var(--shadow-button-active-secondary);
 	}
-	.type-prominent:active,
-	.type-prominent.pressed {
+	.kind-prominent:active,
+	.kind-prominent.pressed {
 		box-shadow: var(--shadow-button-active-prominent);
 	}
-	.type-destructive:active,
-	.type-destructive.pressed {
+	.kind-destructive:active,
+	.kind-destructive.pressed {
 		box-shadow: var(--shadow-button-active-destructive);
 	}
 

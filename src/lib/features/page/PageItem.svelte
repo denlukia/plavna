@@ -75,7 +75,7 @@
 		</Popup>
 		<form class="deletion-form" method="POST" action="?/delete" use:enhance>
 			<input type="hidden" name="id" value={$form.id} />
-			<Button type="destructive"><Translation key="pages_list.delete_page" /></Button>
+			<Button kind="destructive"><Translation key="pages_list.delete_page" /></Button>
 		</form>
 	</div>
 </div>

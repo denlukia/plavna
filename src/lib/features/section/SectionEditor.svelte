@@ -1,5 +1,7 @@
 <script lang="ts">
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
+	import { lexer, type Token, type TokensList } from 'marked';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button.svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
@@ -9,6 +11,7 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
+	import { getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
 	import SectionDeletion from './SectionDeletion.svelte';
@@ -27,7 +30,7 @@
 		onSuccessfullUpdate
 	}: Props = $props();
 
-	let { form, enhance } = superForm(mainFormData, {
+	let { form: translationForm, enhance } = superForm(mainFormData, {
 		onUpdate: (e) => {
 			if (e.result.type === 'success') {
 				onSuccessfullUpdate?.();
@@ -36,10 +39,92 @@
 	});
 
 	let tags = $derived($page.data.tags || []);
-	let tagsInText = $derived([1]);
+	let tagsInText = $derived.by(() => {
+		let lang = $page.params.lang as SupportedLang;
+		let text = $translationForm[lang];
+		if (!text) {
+			return [];
+		}
+		let tokens = lexer(text);
+
+		return findAllTagsInTokens(tokens);
+	});
+
+	let descriptionInput = $state({
+		currentLang: $page.params.lang as SupportedLang,
+		selectionStart: 0,
+		selectionEnd: 0
+	});
+
+	function findAllTagsInTokens(tokens: Token[]): TagSelect['id'][] {
+		const tags: TagSelect['id'][] = [];
+		for (let token of tokens) {
+			const isLinkToken = token.type === 'link' && token.href.startsWith('tag:');
+			if (isLinkToken) {
+				tags.push(Number(token.href.split('tag:')[1]));
+			}
+			if ('tokens' in token && token.tokens) {
+				tags.push(...findAllTagsInTokens(token.tokens));
+			}
+		}
+		const deduped = Array.from(new Set(tags));
+		return deduped;
+	}
+
+	function deleteTagsIfPresent(tokens: Token[], tagId: TagSelect['id']) {
+		let deletedAtLeastOneTag = false;
+		const newTokens = tokens.filter((token) => {
+			if (token.type === 'link') {
+				if (token.href.startsWith(`tag:${tagId}`)) {
+					deletedAtLeastOneTag = true;
+					return false;
+				}
+			}
+
+			if ('tokens' in token && token.tokens) {
+				let result = deleteTagsIfPresent(token.tokens, tagId);
+
+				token.tokens = result.newTokens;
+				deletedAtLeastOneTag = deletedAtLeastOneTag || result.deletedAtLeastOneTag;
+			}
+
+			return true;
+		});
+		return { newTokens, deletedAtLeastOneTag };
+	}
+
+	function tokensToMarkdown(tokens: Token[]): string {
+		return tokens
+			.map((token) => {
+				if ('tokens' in token && token.tokens && token.type !== 'link') {
+					return tokensToMarkdown(token.tokens);
+				} else {
+					return token.raw;
+				}
+			})
+			.join('');
+	}
 
 	function switchTagInText(tagId: TagSelect['id']) {
-		//
+		const lang = descriptionInput.currentLang;
+		const text = $translationForm[lang] || '';
+
+		const tokensList = lexer(text);
+		const { newTokens, deletedAtLeastOneTag } = deleteTagsIfPresent(tokensList, tagId);
+
+		if (deletedAtLeastOneTag) {
+			const newMd = tokensToMarkdown(newTokens);
+
+			console.log(newTokens, newMd);
+
+			$translationForm[lang] = newMd;
+		} else {
+			const textBefore = text.slice(0, descriptionInput.selectionStart);
+			const textAfter = text.slice(descriptionInput.selectionEnd);
+			const tagTemplate = `[${getSystemTranslation('page_actor.section.tag_name', $page.data.systemTranslations)}](tag:${tagId})`;
+
+			$translationForm[lang] = `${textBefore} ${tagTemplate} ${textAfter}`;
+		}
 	}
 </script>
 
@@ -47,14 +132,26 @@
 	<Typography size="heading-1">
 		<Translation key="page_actor.section.editor_title" />
 	</Typography>
-	<form use:enhance action="?/{'section_id' in $form ? 'update' : 'create'}_section" method="POST">
-		{#if 'section_id' in $form}
-			<input name="section_id" type="hidden" bind:value={$form.section_id} />
+	<form
+		use:enhance
+		action="?/{'section_id' in $translationForm ? 'update' : 'create'}_section"
+		method="POST"
+	>
+		{#if 'section_id' in $translationForm}
+			<input name="section_id" type="hidden" bind:value={$translationForm.section_id} />
 		{/if}
 		<div class="inputs">
 			<LabeledInput style="width: 100%;">
 				<Label><Translation key="page_actor.section.description" /></Label>
-				<Input type="textarea" translations={form} style="width: 100%;" rows={3} />
+				<Input
+					type="textarea"
+					translationsForm={translationForm}
+					bind:currentLang={descriptionInput.currentLang as SupportedLang}
+					bind:selectionStart={descriptionInput.selectionStart}
+					bind:selectionEnd={descriptionInput.selectionEnd}
+					style="width: 100%;"
+					rows={3}
+				/>
 			</LabeledInput>
 
 			<LabeledInput style="width: 100%;">
@@ -64,8 +161,9 @@
 						{#each tags as tag}
 							<Button
 								size="small"
-								type={tagsInText.includes(tag.id) ? 'primary' : 'secondary'}
-								on:click={() => switchTagInText(tag.id)}
+								type="button"
+								kind={tagsInText.includes(tag.id) ? 'primary' : 'secondary'}
+								onclick={() => switchTagInText(tag.id)}
 							>
 								<Translation recordKey={tag.name_translation_key} />
 								<span class="tag-id">
@@ -87,11 +185,13 @@
 		</div>
 
 		<div class="actions">
-			<Button type="secondary" onclick={onCancel}>
+			<Button kind="secondary" onclick={onCancel}>
 				<Translation key="page_actor.section.cancel" />
 			</Button>
 			<Button>
-				<Translation key={`page_actor.section.${'section_id' in $form ? 'update' : 'create'}`} />
+				<Translation
+					key={`page_actor.section.${'section_id' in $translationForm ? 'update' : 'create'}`}
+				/>
 			</Button>
 		</div>
 	</form>
@@ -116,7 +216,7 @@
 		display: flex;
 		justify-content: flex-end;
 		gap: var(--size-m);
-		margin-top: var(--size-l);
+		margin-top: var(--size-xl);
 	}
 	.deletion-form-wrapper {
 		position: absolute;
