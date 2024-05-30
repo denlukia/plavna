@@ -49,8 +49,9 @@
 		}
 	});
 
-	function onselectionchange() {
-		// TODO: implement
+	function onselect(e: Event) {
+		const target = e.target as HTMLInputElement;
+		({ selectionStart, selectionEnd } = target);
 	}
 </script>
 
@@ -76,16 +77,16 @@
 						{translationsForm}
 						{currentLang}
 						{...attributes}
-						{onselectionchange}
+						{onselect}
 					/>
 				{:else if attributes.type === 'password'}
-					<PasswordInput {pswdVisible} {...attributes} bind:value {onselectionchange} />
+					<PasswordInput {pswdVisible} {...attributes} bind:value {onselect} />
 				{:else if attributes.type === 'textarea'}
 					<textarea
 						bind:value
 						{...attributes}
 						class="global-reset-input global-text-body"
-						{onselectionchange}
+						{onselect}
 					>
 					</textarea>
 				{:else}
@@ -93,7 +94,7 @@
 						bind:value
 						{...attributes}
 						class="global-reset-input global-text-body"
-						{onselectionchange}
+						{onselect}
 					/>
 				{/if}
 			</span>
