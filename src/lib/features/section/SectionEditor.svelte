@@ -115,8 +115,6 @@
 		if (deletedAtLeastOneTag) {
 			const newMd = tokensToMarkdown(newTokens);
 
-			console.log(newTokens, newMd);
-
 			$translationForm[lang] = newMd;
 		} else {
 			let textBefore = text.slice(0, descriptionInput.selectionStart);

@@ -6,8 +6,8 @@ import type { TranslationInsert } from '$lib/features/i18n/parsers';
 type CommonInputProps = {
 	translationsForm?: SuperForm<TranslationInsert>['form'];
 	translationsPrefix?: string;
-	selectionStart?: number;
-	selectionEnd?: number;
+	selectionStart?: number | null;
+	selectionEnd?: number | null;
 	currentLang?: SupportedLang;
 };
 
