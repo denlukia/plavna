@@ -43,20 +43,20 @@
 	let translation = $derived.by(getTranslation);
 
 	// 2. We create a state from that initial value...
-	let nonNullTranslation: typeof translation = $state(translation);
+	let nonUndefinedTranslation: typeof translation = $state(translation);
 
 	// 3. ...and update it only when translation is not null
 	$effect(() => {
-		if (translation) nonNullTranslation = translation;
+		if (translation !== undefined) nonUndefinedTranslation = translation;
 	});
 </script>
 
 <!-- TODO: add typography renderers for markdown  -->
-{#if nonNullTranslation}
+{#if nonUndefinedTranslation}
 	{#if markdown}
-		<Markdown source={nonNullTranslation} />
+		<Markdown source={nonUndefinedTranslation} />
 	{:else}
-		{nonNullTranslation}
+		{nonUndefinedTranslation}
 	{/if}
 {:else}
 	...

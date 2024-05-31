@@ -10,8 +10,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { users } from '../auth/schema';
-import type { ActorService } from '../auth/service';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';

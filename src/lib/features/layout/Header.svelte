@@ -9,10 +9,10 @@
 	import AuthorBlock from './AuthorBlock.svelte';
 
 	type Props = {
-		user: User | null;
+		actor: User | null;
 	};
 
-	let { user }: Props = $props();
+	let { actor }: Props = $props();
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
 		let destinationURL = currentURL.replace(`/${$page.params.lang}`, '');
@@ -43,8 +43,8 @@
 		{/snippet}
 	</Popup>
 
-	{#if user}
-		<AuthorBlock {user} />
+	{#if actor}
+		<AuthorBlock {actor} />
 	{/if}
 </header>
 

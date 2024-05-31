@@ -12,7 +12,7 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
-import type { ActorService } from '../auth/service';
+import type { ActorService } from '../user/service';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -53,18 +53,20 @@ export class SectionService {
 	}
 
 	async getOne(config: GetOneConfig) {
-		const whereCondition =
+		const actor = await this.actorService.get();
+
+		const whereCondition1 = actor?.username === config.username ? undefined : isNotNull(translations[this.translationService.currentLang]);
+		const whereCondition2 =
 			'pageId' in config ? eq(sections.page_id, config.pageId) : eq(sections.id, config.sectionId);
 		const offset = 'offset' in config ? config.offset : 0;
 
-		const actor = await this.actorService.get();
 
 		// 1. Sections query
 		const sectionInfo = await db
 			.select(getTableColumns(sections))
 			.from(sections)
 			.innerJoin(translations, eq(translations.key, sections.title_translation_key))
-			.where(and(whereCondition, isNotNull(translations[this.translationService.currentLang])))
+			.where(and(whereCondition1, whereCondition2))
 			.limit(1)
 			.offset(offset)
 			.get();

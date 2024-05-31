@@ -4,8 +4,8 @@ import { and, eq, getTableColumns } from 'drizzle-orm';
 import type { User } from 'lucia';
 import { db } from '$lib/services/db';
 
-import { users } from '../auth/schema';
-import type { ActorService } from '../auth/service';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import type { TransactionContext } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
 import { translations } from '../i18n/schema';

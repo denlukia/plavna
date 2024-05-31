@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
-	import type { ImageProviderUpdate } from '$lib/features/auth/parsers';
+	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
 
 	type Props = {
 		providerForm: SuperValidated<ImageProviderUpdate>;

@@ -5,7 +5,7 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { articles } from '../article/schema';
-import type { ActorService } from '../auth/service';
+import type { ActorService } from '../user/service';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageSelect } from '../image/parsers';

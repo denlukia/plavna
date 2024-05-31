@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import Typography from './Typography/Typography.svelte';
+
 	type Props = {
 		children: Snippet;
 	};
@@ -9,7 +11,11 @@
 </script>
 
 <div class="info-block">
-	{@render children()}
+	<div class="text">
+		<Typography size="body-short">
+			{@render children()}
+		</Typography>
+	</div>
 </div>
 
 <style>
@@ -22,5 +28,9 @@
 		padding-block: var(--size-info-block-padding-block);
 		padding-inline: var(--size-info-block-padding-inline);
 		color: var(--color-info-block-default-text);
+	}
+	.text {
+		max-width: calc(var(--size-cell-width) * 2 + var(--size-cell-gap));
+		text-align: center;
 	}
 </style>

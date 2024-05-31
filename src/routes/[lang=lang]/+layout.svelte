@@ -23,7 +23,7 @@
 		<Lights />
 	</div>
 	<div class="content-wrapper">
-		<Header user={data.user} />
+		<Header actor={data.actor} />
 		{@render children()}
 	</div>
 	<!-- <div class="grid-wrapper"> -->

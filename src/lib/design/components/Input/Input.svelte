@@ -37,6 +37,8 @@
 	let hasLeading = $derived(attributes.type === 'color');
 	let hasTrailing = $derived(attributes.type === 'password' || translationsForm);
 
+	let inputwrapperRef: HTMLSpanElement | null = $state(null);
+
 	function togglePswdVisibility() {
 		pswdVisible = !pswdVisible;
 	}
@@ -49,11 +51,20 @@
 		}
 	});
 
-	function onselect(e: Event) {
-		const target = e.target as HTMLInputElement;
-		({ selectionStart, selectionEnd } = target);
+	function onselectionchange(e: Event) {
+		const target = e.target as Document;
+		const activeElement = target.activeElement;
+
+		if (
+			activeElement instanceof HTMLInputElement ||
+			(activeElement instanceof HTMLTextAreaElement && inputwrapperRef?.contains(activeElement))
+		) {
+			({ selectionStart, selectionEnd } = activeElement);
+		}
 	}
 </script>
+
+<svelte:document {onselectionchange} />
 
 <!-- TODO: What would the correct role be? -->
 <span class="input-and-affixes" {...events} role="presentation" {style}>
@@ -70,6 +81,7 @@
 				class:no-right-padding={hasTrailing}
 				class:no-left-padding={hasLeading}
 				class:textarea-wrapper={attributes.type === 'textarea'}
+				bind:this={inputwrapperRef}
 			>
 				{#if translationsForm}
 					<TranslationsInputs
@@ -77,25 +89,14 @@
 						{translationsForm}
 						{currentLang}
 						{...attributes}
-						{onselect}
 					/>
 				{:else if attributes.type === 'password'}
-					<PasswordInput {pswdVisible} {...attributes} bind:value {onselect} />
+					<PasswordInput {pswdVisible} {...attributes} bind:value />
 				{:else if attributes.type === 'textarea'}
-					<textarea
-						bind:value
-						{...attributes}
-						class="global-reset-input global-text-body"
-						{onselect}
-					>
+					<textarea bind:value class="global-reset-input global-text-body" {...attributes}>
 					</textarea>
 				{:else}
-					<input
-						bind:value
-						{...attributes}
-						class="global-reset-input global-text-body"
-						{onselect}
-					/>
+					<input bind:value class="global-reset-input global-text-body" {...attributes} />
 				{/if}
 			</span>
 			{#if hasTrailing}

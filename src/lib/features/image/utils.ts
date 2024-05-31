@@ -22,11 +22,11 @@ export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAl
 
 export function prepareImage(
 	imageId: ImageSelect['id'] | null,
-	user: User | null,
+	actor: User | null,
 	images: ImagesDict | undefined,
 	recordsTranslations: RecordsTranslations | undefined
 ): PreparedImage | null {
-	if (!images || !recordsTranslations || !user || !imageId) {
+	if (!images || !recordsTranslations || !actor || !imageId) {
 		return null;
 	}
 
@@ -51,7 +51,7 @@ export function prepareImage(
 	}
 
 	let endpointKey = imageSourceToEndpointKeyInUser[image.source];
-	let endpoint = user[endpointKey];
+	let endpoint = actor[endpointKey];
 	if (!endpoint) {
 		return null;
 	}
