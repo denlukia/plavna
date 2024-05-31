@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/features/article/service';
-import { ActorService } from '$lib/features/auth/service';
+import { ActorService } from '$lib/features/user/service';
 import { TranslationService } from '$lib/features/i18n/service';
 import { ImageService } from '$lib/features/image/service';
 import { PageService } from '$lib/features/page/service';
@@ -13,14 +13,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
 	locals.session = null;
-	locals.user = null;
+	locals.actor = null;
 
 	// 1. Handling auth with Lucia
 	const sessionId = cookies.get(lucia.sessionCookieName);
 	if (sessionId) {
 		const { session, user } = await lucia.validateSession(sessionId);
 		locals.session = session;
-		locals.user = user;
+		locals.actor = user;
 
 		if (session && session.fresh) {
 			const sessionCookie = lucia.createSessionCookie(session.id);
@@ -39,7 +39,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// 2. Adding our Services
-	locals.actorService = new ActorService(locals.user);
+	locals.actorService = new ActorService(locals.actor);
 	locals.translationService = new TranslationService(locals.actorService, params.lang);
 
 	locals.sectionService = new SectionService(locals.actorService, locals.translationService);

@@ -8,8 +8,8 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
-import { users } from '../auth/schema';
-import type { ActorService } from '../auth/service';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';

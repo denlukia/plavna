@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { param } from 'drizzle-orm';
 	import { setContext } from 'svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -83,7 +84,6 @@
 	});
 
 	$effect(() => {
-		// Fixes ownership errors
 		sectionContext.activeTags = Array.from(section.activeTags);
 	});
 
@@ -91,7 +91,7 @@
 </script>
 
 <section class="section">
-	<div class="description" class:disabled={sectionContext.activeTags.length === 0}>
+	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
 				mainForm={section.forms.updating}
@@ -109,10 +109,11 @@
 			<ArticlesList {section} />
 		{:else if sectionContext.activeTags.length > 0}
 			<InfoBlock>
-				<!-- TODO: Show other translation if page is not of actor -->
-				<Typography>
+				{#if $page.params.username === $page.data.actor?.username}
 					<Translation key="page_actor.section.no_articles" />
-				</Typography>
+				{:else}
+					<Translation key="page.section.no_articles" />
+				{/if}
 			</InfoBlock>
 		{/if}
 	</div>
@@ -123,9 +124,7 @@
 		max-width: var(--size-section-max-width);
 		transition: var(--transition-section-description);
 	}
-	.description.disabled {
-		opacity: var(--opacity-section-description-disabled);
-	}
+
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);

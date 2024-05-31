@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$lib/design/components/Button.svelte';
+	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
+	import { getRecordTranslation } from '../i18n/utils';
 	import type { SectionProp } from './types';
 
 	type Props = {
@@ -11,10 +14,21 @@
 	};
 
 	let { section, onEditorOpen, showEditButton }: Props = $props();
+
+	let transitionKey = $derived(section.meta.title_translation_key);
+	let descriptionTranslation = $derived(
+		getRecordTranslation(transitionKey, $page.data.recordsTranslations)
+	);
 </script>
 
 <div class="description-viewer">
-	<Translation recordKey={section.meta.title_translation_key} markdown />
+	{#if descriptionTranslation}
+		<Translation recordKey={transitionKey} markdown />
+	{:else}
+		<InfoBlock>
+			<Translation key="page_actor.section.section_invisible" />
+		</InfoBlock>
+	{/if}
 	{#if showEditButton}
 		<div class="actions-wrapper">
 			<Button size="small" kind="secondary" onclick={onEditorOpen}>

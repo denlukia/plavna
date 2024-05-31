@@ -8,8 +8,10 @@ import {
 	sectionInsertSchema,
 	sectionUpdateSchema
 } from '$lib/features/section/parsers';
+import { get } from 'http';
+import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 
-export const load = async ({ params, parent, locals: { pageService }, cookies }) => {
+export const load = async ({ params, parent, locals: { pageService,actor }, cookies }) => {
 	const { username } = params;
 
 	function getUnprefixedPageSlug(prefixed: string | undefined) {
@@ -40,12 +42,14 @@ export const load = async ({ params, parent, locals: { pageService }, cookies })
 	);
 	const { systemTranslations } = await parent();
 
+	const additionalTranslationsSlices: SystemTranslationSliceKey[] = actor ? ['page', 'page_actor'] : ['page'];
+
 	return {
 		...page,
 		systemTranslations: {
 			...systemTranslations,
 			// TODO: only page if user isn't actor
-			...getSystemTranslationsSlice(['page', 'page_actor'], params.lang)
+			...getSystemTranslationsSlice(additionalTranslationsSlices, params.lang)
 		}
 	};
 };

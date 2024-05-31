@@ -4,8 +4,8 @@ import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
-import type { User } from '$lib/features/auth/parsers';
-import { sessions, users } from '$lib/features/auth/schema';
+import type { User } from '$lib/features/user/parsers';
+import { sessions, users } from '$lib/features/user/schema';
 
 import { db } from './db';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { ArticleSelect } from '$lib/features/article/parsers';
-	import type { ImageProviderUpdate } from '$lib/features/auth/parsers';
+	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
 
 	import type { ImagesCollection } from '../parsers';
 	import ImageCollection from './ImageCollection.svelte';

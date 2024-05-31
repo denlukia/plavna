@@ -7,15 +7,15 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	type Props = {
-		user: User;
+		actor: User;
 	};
 
-	let { user }: Props = $props();
+	let { actor }: Props = $props();
 
 	const pages = $derived([
 		{
 			routeId: '/[lang=lang]/[username]/pages',
-			href: `/${$page.params.lang}/${user.username}/pages`,
+			href: `/${$page.params.lang}/${actor.username}/pages`,
 			translation: 'layout.my_pages'
 		} as const
 	]);
@@ -51,7 +51,7 @@
 
 <Button
 	kind="prominent"
-	href={generateCreateArticleURL($page.params.lang, user.username)}
+	href={generateCreateArticleURL($page.params.lang, actor.username)}
 	dataSvelteKitPreloadData="off"
 >
 	New article

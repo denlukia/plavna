@@ -71,51 +71,28 @@
 		return deduped;
 	}
 
-	function deleteTagsIfPresent(tokens: Token[], tagId: TagSelect['id']) {
-		let deletedAtLeastOneTag = false;
-		const newTokens = tokens.filter((token) => {
-			if (token.type === 'link') {
-				if (token.href.startsWith(`tag:${tagId}`)) {
-					deletedAtLeastOneTag = true;
-					return false;
-				}
+	function deleteTagsIfPresent(text: string, tagId: TagSelect['id']) {
+		const mdLinkRegex = /(?:\[(.*?)\])\(tag:(\d*)\)/gm;
+
+		const matches = text.matchAll(mdLinkRegex);
+
+		for (let match of matches) {
+			if (match[2] === tagId.toString()) {
+				return text.replace(match[0], '');
 			}
+		}
 
-			if ('tokens' in token && token.tokens) {
-				let result = deleteTagsIfPresent(token.tokens, tagId);
-
-				token.tokens = result.newTokens;
-				deletedAtLeastOneTag = deletedAtLeastOneTag || result.deletedAtLeastOneTag;
-			}
-
-			return true;
-		});
-		return { newTokens, deletedAtLeastOneTag };
-	}
-
-	function tokensToMarkdown(tokens: Token[]): string {
-		return tokens
-			.map((token) => {
-				if ('tokens' in token && token.tokens && token.type !== 'link') {
-					return tokensToMarkdown(token.tokens);
-				} else {
-					return token.raw;
-				}
-			})
-			.join('');
+		return text;
 	}
 
 	function switchTagInText(tagId: TagSelect['id']) {
 		const lang = descriptionInput.currentLang;
 		const text = $translationForm[lang] || '';
 
-		const tokensList = lexer(text);
-		const { newTokens, deletedAtLeastOneTag } = deleteTagsIfPresent(tokensList, tagId);
+		const newText = deleteTagsIfPresent(text, tagId);
 
-		if (deletedAtLeastOneTag) {
-			const newMd = tokensToMarkdown(newTokens);
-
-			$translationForm[lang] = newMd;
+		if (newText !== text) {
+			$translationForm[lang] = newText;
 		} else {
 			let textBefore = text.slice(0, descriptionInput.selectionStart);
 			textBefore = textBefore.trimEnd();
@@ -183,9 +160,7 @@
 				{:else}
 					<div class="info-block-wrapper">
 						<InfoBlock>
-							<Typography size="small">
-								<Translation key="page_actor.section.gotta_create_tags" />
-							</Typography>
+							<Translation key="page_actor.section.gotta_create_tags" />
 						</InfoBlock>
 					</div>
 				{/if}
