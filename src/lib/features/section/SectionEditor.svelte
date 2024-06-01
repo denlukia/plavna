@@ -168,7 +168,7 @@
 		</div>
 
 		<div class="actions">
-			<Button kind="secondary" onclick={onCancel}>
+			<Button type="button" kind="secondary" onclick={onCancel}>
 				<Translation key="page_actor.section.cancel" />
 			</Button>
 			<Button>
