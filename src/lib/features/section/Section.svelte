@@ -45,6 +45,7 @@
 
 	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
 
+	// Maybe derived ?
 	const sectionContext: SectionContext = $state({
 		activeTags: section.activeTags,
 		onTagSwitch: async (tagId, checked) => {
