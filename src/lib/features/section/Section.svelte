@@ -47,6 +47,7 @@
 
 	// Maybe derived ?
 	const sectionContext: SectionContext = $state({
+		id: section.meta.id,
 		activeTags: section.activeTags,
 		onTagSwitch: async (tagId, checked) => {
 			// Optimistic update (causes blink of empty articles block)
@@ -57,7 +58,11 @@
 			// }
 
 			// Getting new articles list
-			const body: SectionReconfigRequest = { sectionId: section.meta.id, tagId, checked };
+			const body: SectionReconfigRequest = {
+				sectionId: section.meta.id,
+				tagId,
+				newChecked: checked
+			};
 			try {
 				abortController?.abort();
 				abortController = new AbortController();

@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { getContext, type Snippet } from 'svelte';
-	import type { ChangeEventHandler } from 'svelte/elements';
+	import { page } from '$app/stores';
+	import { getContext, onMount, type Snippet } from 'svelte';
+	import { SECTION_RECONFIG_PARAM_NAME } from '$lib/collections/constants';
 	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import type { SectionContext } from '$lib/features/section/types';
+	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
 
 	import { depthToTypographySize } from './heading-depth';
 	import type { HeadingContext } from './types';
@@ -24,6 +25,27 @@
 	);
 	let checked = $state(initialState);
 
+	let showAsLink = $state(true);
+	let sectionId = $derived(sectionContext?.id);
+	let reconfigRequest: SectionReconfigRequest | null = $derived(
+		sectionId
+			? {
+					newChecked: !checked,
+					tagId,
+					sectionId
+				}
+			: null
+	);
+	let reconfigRequestLink = $derived.by(() => {
+		const url = new URL($page.url.href);
+		url.searchParams.set(SECTION_RECONFIG_PARAM_NAME, JSON.stringify(reconfigRequest));
+		return url.toString();
+	});
+
+	onMount(() => {
+		showAsLink = false;
+	});
+
 	$effect(() => {
 		checked = initialState;
 	});
@@ -34,7 +56,7 @@
 	}
 </script>
 
-<LabeledInput type="switch-with-bg">
+<LabeledInput type="switch-with-bg" href={showAsLink ? reconfigRequestLink : undefined}>
 	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 		{@render children()}
 	</Typography>
