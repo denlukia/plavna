@@ -11,6 +11,7 @@ export type SectionPropWithAuthorship = SectionProp & {
 export type OnTagSwitchFunction = (tagId: TagSelect['id'], checked: boolean) => void;
 
 export type SectionContext = {
+	id: SectionSelect['id'];
 	activeTags: Array<ActiveTag>;
 	onTagSwitch?: OnTagSwitchFunction;
 };
@@ -18,5 +19,5 @@ export type SectionContext = {
 export type SectionReconfigRequest = {
 	sectionId: SectionSelect['id'];
 	tagId: TagSelect['id'];
-	checked: boolean;
+	newChecked: boolean;
 };

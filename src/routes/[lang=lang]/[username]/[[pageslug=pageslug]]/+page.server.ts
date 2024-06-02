@@ -1,48 +1,61 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import {
+	GET_PAGE_CONFIG_COOKIE_OPTIONS,
+	PAGE_CONFIG_COOKIE_NAME,
+	SECTION_RECONFIG_PARAM_NAME
+} from '$lib/collections/constants';
+import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { findReaderPageConfigInCookies } from '$lib/features/page/utils';
+import {
+	getReaderPageConfigFromCookies,
+	updateTagInReaderPageConfig
+} from '$lib/features/page/utils';
 import {
 	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionUpdateSchema
 } from '$lib/features/section/parsers';
-import { get } from 'http';
-import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
+import type { SectionReconfigRequest } from '$lib/features/section/types';
 
-export const load = async ({ params, parent, locals: { pageService,actor }, cookies }) => {
+export const load = async ({ params, parent, locals: { pageService, actor }, cookies, url }) => {
 	const { username } = params;
-
-	function getUnprefixedPageSlug(prefixed: string | undefined) {
-		let pageslug = '';
-		if (!prefixed) return pageslug;
-
-		const prefix = 'page-';
-		const hasPrefix = prefixed.startsWith(prefix);
-
-		if (hasPrefix) {
-			pageslug = prefixed.slice(prefix.length) || '';
-			if (!pageslug) {
-				error(404);
-			}
-		}
-
-		return pageslug;
-	}
 
 	const pageslug = getUnprefixedPageSlug(params.pageslug);
 
-	const readerPageConfig = findReaderPageConfigInCookies(cookies);
+	// 1. Update reader page config if present in query
+	let readerPageConfig = getReaderPageConfigFromCookies(cookies);
 
+	const reconfigRequestString = url.searchParams.get(SECTION_RECONFIG_PARAM_NAME);
+	const reconfigRequest = reconfigRequestString
+		? (JSON.parse(reconfigRequestString) as SectionReconfigRequest)
+		: undefined;
+
+	// If we had reader page config – set new cookie and redirect
+	if (reconfigRequest) {
+		readerPageConfig = updateTagInReaderPageConfig(readerPageConfig, reconfigRequest);
+		cookies.set(
+			PAGE_CONFIG_COOKIE_NAME,
+			JSON.stringify(readerPageConfig),
+			GET_PAGE_CONFIG_COOKIE_OPTIONS(url.pathname)
+		);
+
+		redirect(302, url.pathname);
+	}
+
+	// 2. Get main data
 	const page = await pageService.getOneWithSectionsAndArticles(
 		username,
 		pageslug,
 		readerPageConfig
 	);
-	const { systemTranslations } = await parent();
 
-	const additionalTranslationsSlices: SystemTranslationSliceKey[] = actor ? ['page', 'page_actor'] : ['page'];
+	// 3. Add system translations
+	const { systemTranslations } = await parent();
+	const additionalTranslationsSlices: SystemTranslationSliceKey[] = actor
+		? ['page', 'page_actor']
+		: ['page'];
 
 	return {
 		...page,
@@ -82,3 +95,20 @@ export const actions = {
 		return { form };
 	}
 };
+
+function getUnprefixedPageSlug(prefixed: string | undefined) {
+	let pageslug = '';
+	if (!prefixed) return pageslug;
+
+	const prefix = 'page-';
+	const hasPrefix = prefixed.startsWith(prefix);
+
+	if (hasPrefix) {
+		pageslug = prefixed.slice(prefix.length) || '';
+		if (!pageslug) {
+			error(404);
+		}
+	}
+
+	return pageslug;
+}

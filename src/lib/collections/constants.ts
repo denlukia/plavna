@@ -46,6 +46,8 @@ export const HOST = dev ? `${env.PUBLIC_HOST}:${env.PUBLIC_PORT}` : `${env.PUBLI
 // };
 export const PAGE_CONFIG_COOKIE_NAME = 'page-config';
 
+export const SECTION_RECONFIG_PARAM_NAME = 'section-reconfig';
+
 export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
 	({
 		path,

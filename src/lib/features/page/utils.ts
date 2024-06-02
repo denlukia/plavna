@@ -2,6 +2,7 @@ import type { Cookies } from '@sveltejs/kit';
 import { PAGE_CONFIG_COOKIE_NAME } from '$lib/collections/constants';
 
 import type { SectionSelect } from '../section/parsers';
+import type { SectionReconfigRequest } from '../section/types';
 import type { TagSelect } from '../tag/parsers';
 import type { ReaderPageConfig } from './parsers';
 
@@ -12,7 +13,7 @@ export function findExcludedTagsInReaderPageConfig(
 	return readerPageConfig?.[sectionId]?.excludedTags || [];
 }
 
-export function findReaderPageConfigInCookies(cookies: Cookies): ReaderPageConfig | null {
+export function getReaderPageConfigFromCookies(cookies: Cookies): ReaderPageConfig | null {
 	const cookie = cookies.get(PAGE_CONFIG_COOKIE_NAME);
 	const parsed = cookie ? JSON.parse(cookie) : null;
 	if (typeof parsed === 'object') {
@@ -24,9 +25,7 @@ export function findReaderPageConfigInCookies(cookies: Cookies): ReaderPageConfi
 
 export function updateTagInReaderPageConfig(
 	readerPageConfig: ReaderPageConfig | null,
-	sectionId: SectionSelect['id'],
-	tagId: TagSelect['id'],
-	checked: boolean
+	{ sectionId, tagId, newChecked }: SectionReconfigRequest
 ) {
 	let section = { excludedTags: [] as Array<TagSelect['id']> };
 	if (readerPageConfig && sectionId in readerPageConfig) {
@@ -35,7 +34,7 @@ export function updateTagInReaderPageConfig(
 		readerPageConfig = { ...readerPageConfig, [sectionId]: section };
 	}
 
-	if (checked) {
+	if (newChecked) {
 		section = {
 			...section,
 			excludedTags: section.excludedTags.filter((tag) => tag !== tagId)

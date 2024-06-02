@@ -5,18 +5,24 @@
 	type Props = HTMLLabelAttributes & {
 		children: Snippet;
 		type?: 'horizontal' | 'vertical' | 'switch-with-bg';
+		href?: string;
 	};
 
-	let { children, type = 'vertical', ...attributes }: Props = $props();
+	let { children, type = 'vertical', href, ...attributes }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control -->
-<label class="labeled-input global-reset-line-height {type}" {...attributes}>
+<svelte:element
+	this={href ? 'a' : 'label'}
+	class="labeled-input global-reset-line-height global-reset-link {type}"
+	{href}
+	{...attributes}
+>
 	{@render children()}
-</label>
+</svelte:element>
 
 <style>
-	label {
+	.labeled-input {
 		display: inline-flex;
 
 		/* For Text */
