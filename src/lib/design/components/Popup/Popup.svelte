@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 
 	import { clickOutside } from '../../actions/click-outside';
-	import Button from '../Button.svelte';
+	import Button from '../Button/Button.svelte';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
 

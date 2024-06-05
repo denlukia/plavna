@@ -53,7 +53,8 @@ export const EN = {
 				'Create at least one tag during article creation to reference it in section',
 			tag_name: 'Tag name',
 			no_articles: 'You have not labeled any articles with selected tags',
-			section_invisible: 'In current language this section is only visible to you,\n because doesn\'t have description translation for this language',
+			section_invisible:
+				"In current language this section is only visible to you,<br> because it doesn't have description translation"
 		}
 	},
 	page: {

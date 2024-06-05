@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { param } from 'drizzle-orm';
 	import { setContext } from 'svelte';
-	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
+	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import Translation from '../i18n/Translation.svelte';

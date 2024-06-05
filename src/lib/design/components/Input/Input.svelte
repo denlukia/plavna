@@ -1,54 +1,44 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
+	import { expoOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
+	import { fly, getFlyConf } from '$lib/design/transitions/fly';
 
-	import Eye from '../../icons/Eye.svelte';
-	import IconWrapper from '../../icons/IconWrapper.svelte';
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
-	import ButtonInInput from './ButtonInInput.svelte';
-	import LangSelector from './LangSelector.svelte';
-	import PasswordInput from './PasswordInput.svelte';
-	import TranslationsInputs from './TranslationsInputs.svelte';
 	import type { InputProps } from './types';
 
 	let {
 		value = $bindable(),
 		selectionStart = $bindable(0),
 		selectionEnd = $bindable(0),
-		currentLang = $bindable($page.params.lang as SupportedLang),
-		translationsForm,
-		translationsPrefix,
 		style,
+		leading,
+		trailing,
+		animateOnTypeChange,
+		animateOnValueChange,
 		...attributes
 	}: InputProps = $props();
 
-	const eyeClosedFrame = 0;
-	const eyeOpenedFrame = 7;
-	const pswdIconCurrentFrame = tweened(eyeOpenedFrame, {
-		duration: 250
-	});
-
 	let { mouse, ...events } = createMouseWatcher();
-	let pswdVisible = $state(false);
-
-	let hasLeading = $derived(attributes.type === 'color');
-	let hasTrailing = $derived(attributes.type === 'password' || translationsForm);
 
 	let inputwrapperRef: HTMLSpanElement | null = $state(null);
 
-	function togglePswdVisibility() {
-		pswdVisible = !pswdVisible;
-	}
-
-	$effect(() => {
-		if (pswdVisible) {
-			pswdIconCurrentFrame.set(eyeClosedFrame);
-		} else {
-			pswdIconCurrentFrame.set(eyeOpenedFrame);
+	// We want to change the key (and thus trigger transitions)
+	// only when animateOnTypeChange or animateOnValueChange are true
+	// they are supposed to be set to true only for short moments, and immediately back to false
+	// for example when we change a value but it's a result of lang change
+	// so we don't have an animation for every value change
+	let key = $derived.by(() => {
+		if (animateOnTypeChange) {
+			return String(attributes.type);
 		}
+		if (animateOnValueChange) {
+			return String(value);
+		}
+		return String(Math.random());
 	});
 
 	function onselectionchange(e: Event) {
@@ -62,6 +52,11 @@
 			({ selectionStart, selectionEnd } = activeElement);
 		}
 	}
+
+	function onchange(e: Event) {
+		const target = e.target as HTMLInputElement;
+		({ value } = target);
+	}
 </script>
 
 <svelte:document {onselectionchange} />
@@ -71,46 +66,53 @@
 	<Layers overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
-			{#if attributes.type === 'color'}
-				<span class="picker-wrapper">
-					<input bind:value type="color" class="global-reset-input color-picker" />
+			<!-- 1. Leading -->
+			{#if leading}
+				<span class="buttons-wrapper">
+					{@render leading()}
 				</span>
 			{/if}
+
+			<!-- 2. Input -->
 			<span
 				class="input-wrapper global-fix-overflow"
-				class:no-right-padding={hasTrailing}
-				class:no-left-padding={hasLeading}
+				class:no-trailing-padding={trailing}
+				class:no-leading-padding={leading}
 				class:textarea-wrapper={attributes.type === 'textarea'}
 				bind:this={inputwrapperRef}
 			>
-				{#if translationsForm}
-					<TranslationsInputs
-						{translationsPrefix}
-						{translationsForm}
-						{currentLang}
-						{...attributes}
-					/>
-				{:else if attributes.type === 'password'}
-					<PasswordInput {pswdVisible} {...attributes} bind:value />
-				{:else if attributes.type === 'textarea'}
-					<textarea bind:value class="global-reset-input global-text-body" {...attributes}>
-					</textarea>
-				{:else}
-					<input bind:value class="global-reset-input global-text-body" {...attributes} />
-				{/if}
+				<Layers>
+					<!-- ISSUE: DRY-ing this into svelte:element seems to break #key -->
+					{#if attributes.type === 'textarea'}
+						{#key key}
+							<textarea
+								in:fly={getFlyConf(expoOut, 'bottom')}
+								out:fly={getFlyConf(expoOut, 'top')}
+								class="global-reset-input global-text-body"
+								{value}
+								{onchange}
+								{...attributes}
+							></textarea>
+						{/key}
+					{:else}
+						{#key key}
+							<input
+								in:fly={getFlyConf(expoOut, 'bottom')}
+								out:fly={getFlyConf(expoOut, 'top')}
+								class="global-reset-input global-text-body"
+								{value}
+								{onchange}
+								{...attributes}
+							/>
+						{/key}
+					{/if}
+				</Layers>
 			</span>
-			{#if hasTrailing}
+
+			<!-- 3. Trailing -->
+			{#if trailing}
 				<span class="buttons-wrapper">
-					{#if attributes.type === 'password'}
-						<ButtonInInput onclick={togglePswdVisibility}>
-							<IconWrapper currentFrame={$pswdIconCurrentFrame} frames={8} frameSize={20}>
-								<Eye />
-							</IconWrapper>
-						</ButtonInInput>
-					{/if}
-					{#if translationsForm}
-						<LangSelector bind:value={currentLang} />
-					{/if}
+					{@render trailing()}
 				</span>
 			{/if}
 		</span>
@@ -179,22 +181,17 @@
 		line-height: 0;
 		transform: translate(0, 0);
 	}
-	.no-right-padding {
-		padding-right: 0;
+	.no-trailing-padding {
+		padding-inline-end: 0;
 	}
-	.no-left-padding {
-		padding-left: 0;
+	.no-leading-padding {
+		padding-inline-start: 0;
 	}
 
 	.layer-content {
 		display: flex;
 	}
 
-	.picker-wrapper {
-		display: flex;
-		flex-shrink: 0;
-		padding: var(--size-input-color-picker-wrapper-padding);
-	}
 	.buttons-wrapper {
 		display: flex;
 		align-items: flex-start;
@@ -204,18 +201,6 @@
 
 	.textarea-wrapper {
 		padding-inline-end: var(--size-input-textarea-wrapper-padding-inline-end);
-	}
-
-	.color-picker {
-		width: var(--size-input-color-picker);
-		height: var(--size-input-color-picker);
-		border: var(--border-input-color-picker);
-		border-radius: var(--size-input-color-picker-radius);
-		padding: 0;
-		box-shadow: var(--shadow-input-color-picker);
-	}
-	.color-picker::-webkit-color-swatch-wrapper {
-		padding: 0;
 	}
 
 	input::placeholder {

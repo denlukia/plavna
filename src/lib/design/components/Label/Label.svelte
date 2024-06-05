@@ -1,17 +1,19 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import type { TextTones } from '../Typography/types';
 	import Typography from '../Typography/Typography.svelte';
 
 	type Props = {
 		children: Snippet;
+		tone?: TextTones;
 	};
 
-	let { children }: Props = $props();
+	let { children, tone }: Props = $props();
 </script>
 
 <span class="label">
-	<Typography size="small-short" bold>
+	<Typography size="small-short" {tone} bold>
 		{@render children()}
 	</Typography>
 </span>

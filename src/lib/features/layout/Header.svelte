@@ -2,7 +2,7 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
-	import Button from '$lib/design/components/Button.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 
 	import { defaultLang } from '../i18n/utils';

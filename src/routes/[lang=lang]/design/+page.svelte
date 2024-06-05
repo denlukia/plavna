@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button.svelte';
-	import Checkbox from '$lib/design/components/Checkbox.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
+	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
+	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
+	import TranslationsInput from '$lib/design/components/Input/TranslationsInput.svelte';
+	import Label from '$lib/design/components/Label/Label.svelte';
 	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
-	import Spacer from '$lib/design/components/Spacer.svelte';
+	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
@@ -71,10 +74,16 @@
 	</div>
 	<div class="group">
 		<LabeledInput>
-			<Typography size="small-short">Тест</Typography>
-			<Typography size="small-short" tone="additional">Тест</Typography>
+			<Label>Тест</Label>
 			<Input type="password" placeholder="Тест" />
-			<Input translationsForm={translationForm} />
+		</LabeledInput>
+		<LabeledInput>
+			<Label tone="additional">Тест</Label>
+			<PasswordInput type="password" placeholder="Тест" />
+		</LabeledInput>
+		<LabeledInput>
+			<Label>Тест</Label>
+			<TranslationsInput form={translationForm} />
 		</LabeledInput>
 	</div>
 	<div class="group">
@@ -120,7 +129,7 @@
 	.group {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--size-m);
+		gap: var(--size-labeled-inputs-gap);
 		margin-bottom: var(--size-m);
 		align-items: flex-start;
 	}

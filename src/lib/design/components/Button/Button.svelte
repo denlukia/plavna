@@ -7,9 +7,9 @@
 	} from 'svelte/elements';
 	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
-	import { createPressWatcher } from '../reactivity/press-watcher.svelte';
-	import ActiveElementFX from './ActiveElementFX/ActiveElementFX.svelte';
-	import Typography from './Typography/Typography.svelte';
+	import { createPressWatcher } from '../../reactivity/press-watcher.svelte';
+	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
+	import Typography from '../Typography/Typography.svelte';
 
 	// type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
 	type AnchorAttrs = HTMLAnchorAttributes & {

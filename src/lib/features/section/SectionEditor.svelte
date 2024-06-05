@@ -3,8 +3,8 @@
 	import { page } from '$app/stores';
 	import { lexer, type Token, type TokensList } from 'marked';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button.svelte';
-	import InfoBlock from '$lib/design/components/InfoBlock.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
+	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';

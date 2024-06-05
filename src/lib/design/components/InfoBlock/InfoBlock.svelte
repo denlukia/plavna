@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import Typography from './Typography/Typography.svelte';
+	import Typography from '../Typography/Typography.svelte';
 
 	type Props = {
 		children: Snippet;

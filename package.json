@@ -52,6 +52,7 @@
 		"@denlukia/plavna-common": "link:../plavna-common",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"arctic": "^1.9.0",
+		"runed": "^0.9.1",
 		"three": "^0.165.0"
 	}
 }

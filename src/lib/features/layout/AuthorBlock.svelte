@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
-	import Button from '$lib/design/components/Button.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import { generatePath } from '$lib/features/common/links.js';
 	import Translation from '$lib/features/i18n/Translation.svelte';
