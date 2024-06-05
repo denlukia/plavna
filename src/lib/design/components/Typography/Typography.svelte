@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import type { TextSizes } from './types';
+	import type { TextSizes, TextTones } from './types';
 
 	type Props = {
 		size?: TextSizes;
 		children: Snippet;
 		block?: boolean;
 		resetPaddingBlock?: boolean;
-		tone?: 'default' | 'additional' | 'danger';
+		tone?: TextTones;
 		bold?: boolean;
 	};
 

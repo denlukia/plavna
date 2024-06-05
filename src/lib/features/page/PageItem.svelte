@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { HOST } from '$lib/collections/constants';
-	import Button from '$lib/design/components/Button.svelte';
-	import Link from '$lib/design/components/Link.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
+	import Link from '$lib/design/components/Link/Link.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';

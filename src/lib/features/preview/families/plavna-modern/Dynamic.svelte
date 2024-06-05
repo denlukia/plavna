@@ -1,5 +1,5 @@
 <script>
-	import PreviewFoundation from '$lib/design/components/PreviewFoundation.svelte';
+	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 </script>
 
 <PreviewFoundation>

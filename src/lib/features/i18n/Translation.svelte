@@ -56,7 +56,7 @@
 	{#if markdown}
 		<Markdown source={nonUndefinedTranslation} />
 	{:else}
-		{nonUndefinedTranslation}
+		{@html nonUndefinedTranslation}
 	{/if}
 {:else}
 	...

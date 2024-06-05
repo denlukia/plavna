@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from '$lib/design/components/Button.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

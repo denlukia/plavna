@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button.svelte';
+	import Button from '$lib/design/components/Button/Button.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
+	import Label from '$lib/design/components/Label/Label.svelte';
 	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import Error from '../common/components/Error.svelte';
 	import Translation from '../i18n/Translation.svelte';
@@ -32,7 +32,7 @@
 	{/if}
 
 	<LabeledInput>
-		<Typography size="small-short"><Translation key="pages_list.slug" /></Typography>
+		<Label><Translation key="pages_list.slug" /></Label>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
 	</LabeledInput>

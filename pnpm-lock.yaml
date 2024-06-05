@@ -17,6 +17,9 @@ importers:
       arctic:
         specifier: ^1.9.0
         version: 1.9.0
+      runed:
+        specifier: ^0.9.1
+        version: 0.9.1(svelte@5.0.0-next.148)
       three:
         specifier: ^0.165.0
         version: 0.165.0
@@ -2152,6 +2155,11 @@ packages:
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
+
+  runed@0.9.1:
+    resolution: {integrity: sha512-hru7m5uHm1p3bizt66CbcjpN6feMKchS6jO5S5fxi1yR6CK/7mxSysyYff9CbYq4QqDtqLfqsuwONi+JO7NSjA==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
@@ -4349,6 +4357,11 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
+
+  runed@0.9.1(svelte@5.0.0-next.148):
+    dependencies:
+      nanoid: 5.0.7
+      svelte: 5.0.0-next.148
 
   sade@1.8.1:
     dependencies:

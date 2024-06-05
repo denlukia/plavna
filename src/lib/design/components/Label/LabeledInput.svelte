@@ -55,8 +55,4 @@
 		/* For Text */
 		--text-padding-inline: var(--size-labeled-switch-with-bg-text-padding-inline);
 	}
-
-	.labeled-input + :global(.labeled-input) {
-		margin-top: var(--size-labeled-inputs-gap);
-	}
 </style>

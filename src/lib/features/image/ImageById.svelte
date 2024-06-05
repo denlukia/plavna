@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Image from '$lib/design/components/Image.svelte';
+	import Image from '$lib/design/components/Image/Image.svelte';
 
 	import type { ImageSelect } from './parsers';
 	import { prepareImage } from './utils';

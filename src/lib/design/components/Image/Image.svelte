@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PreparedImage } from '../types';
+	import type { PreparedImage } from '../../types';
 
 	type Props = {
 		preparedImage: PreparedImage;

@@ -8,3 +8,5 @@ export type TextSizes =
 	| 'small'
 	| 'small-short'
 	| 'set-with-variables';
+
+export type TextTones = 'default' | 'additional' | 'danger';
