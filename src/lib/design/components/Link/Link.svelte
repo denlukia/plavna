@@ -6,10 +6,10 @@
 		children: Snippet;
 	};
 
-	let { children, ...other }: Props = $props();
+	let { children, ...attributes }: Props = $props();
 </script>
 
-<a class="link global-reset-link" {...other}>
+<a class="link global-reset-link" {...attributes}>
 	{@render children()}
 </a>
 

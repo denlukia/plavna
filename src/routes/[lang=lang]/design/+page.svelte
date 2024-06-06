@@ -82,17 +82,13 @@
 			<Label tone="additional">Тест пароля</Label>
 			<PasswordInput type="password" placeholder="Тест" />
 		</LabeledInput>
-		<LabeledInput>
+		<!-- <LabeledInput>
 			<Label>Тест перекладів</Label>
 			<TranslationsInput superform={translationForm} />
-		</LabeledInput>
+		</LabeledInput> -->
 		<LabeledInput>
 			<Label>Тест автозбереження</Label>
-			<AutosavedInput
-				superform={translationForm}
-				enhance={translationsEnhance}
-				action="?/update_translation"
-			/>
+			<AutosavedInput superformData={translationFormData} action="?/update_translation" />
 		</LabeledInput>
 	</div>
 	<div class="group">

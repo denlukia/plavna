@@ -22,7 +22,7 @@
 		...attributes
 	}: InputProps = $props();
 
-	let { mouse, ...events } = createMouseWatcher();
+	let { mouse, ...mouseWatcherEvents } = createMouseWatcher();
 
 	let inputwrapperRef: HTMLSpanElement | null = $state(null);
 
@@ -52,17 +52,12 @@
 			({ selectionStart, selectionEnd } = activeElement);
 		}
 	}
-
-	function onchange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		({ value } = target);
-	}
 </script>
 
 <svelte:document {onselectionchange} />
 
 <!-- TODO: What would the correct role be? -->
-<span class="input-and-affixes" {...events} role="presentation" {style}>
+<span class="input-and-affixes" {...mouseWatcherEvents} role="presentation" {style}>
 	<Layers overflow="hidden">
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
@@ -90,7 +85,6 @@
 								out:fly={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
 								{value}
-								{onchange}
 								{...attributes}
 							></textarea>
 						{/key}
@@ -101,7 +95,6 @@
 								out:fly={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
 								{value}
-								{onchange}
 								{...attributes}
 							/>
 						{/key}
@@ -197,6 +190,7 @@
 		align-items: flex-start;
 		flex-shrink: 0;
 		padding: var(--size-input-to-button-padding);
+		gap: var(--size-input-buttons-gap);
 	}
 
 	.textarea-wrapper {

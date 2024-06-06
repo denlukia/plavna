@@ -10,7 +10,7 @@
 		value?: string;
 	};
 
-	let { children, isInInput = false, value = $bindable(), ...other }: Props = $props();
+	let { children, isInInput = false, value = $bindable(), ...attributes }: Props = $props();
 </script>
 
 <TriggerStyler isLabel {isInInput}>
@@ -20,7 +20,7 @@
 			global-reset-select 
 			global-disable-default-outline 
 			${isInInput ? 'global-dropdown-in-input-paddings' : 'global-dropdown-paddings'}`}
-		{...other}
+		{...attributes}
 	>
 		{@render children()}
 	</select>

@@ -3,7 +3,7 @@
 	import Eye from '$lib/design/icons/Eye.svelte';
 	import IconWrapper from '$lib/design/icons/IconWrapper.svelte';
 
-	import ButtonInInput from './ButtonInInput.svelte';
+	import Button from '../Button/Button.svelte';
 	import Input from './Input.svelte';
 	import type { InputProps } from './types';
 
@@ -13,7 +13,7 @@
 		duration: 250
 	});
 
-	let { type, ...other }: InputProps = $props();
+	let { type, ...attributes }: InputProps = $props();
 
 	let animateOnTypeChange = $state(false);
 
@@ -34,12 +34,14 @@
 	}
 </script>
 
-<Input type={pswdVisible ? 'text' : 'password'} {...other} animateOnTypeChange>
-	{#snippet trailing()}
-		<ButtonInInput onclick={togglePswdVisibility}>
-			<IconWrapper currentFrame={$pswdIconCurrentFrame} frames={8} frameSize={20}>
-				<Eye />
-			</IconWrapper>
-		</ButtonInInput>
-	{/snippet}
-</Input>
+{#snippet leadingIcon()}
+	<IconWrapper currentFrame={$pswdIconCurrentFrame} frames={8} frameSize={20} size="small">
+		<Eye />
+	</IconWrapper>
+{/snippet}
+
+{#snippet trailing()}
+	<Button isInInput onclick={togglePswdVisibility} {leadingIcon} />
+{/snippet}
+
+<Input type={pswdVisible ? 'text' : 'password'} {trailing} {...attributes} animateOnTypeChange />

@@ -2,10 +2,10 @@
 	import Input from './Input.svelte';
 	import type { InputProps } from './types';
 
-	let { value = $bindable(), ...other }: InputProps = $props();
+	let { value = $bindable(), ...attributes }: InputProps = $props();
 </script>
 
-<Input type="color" {...other} bind:value>
+<Input type="color" {...attributes} bind:value>
 	{#snippet leading()}
 		<span class="picker-wrapper">
 			<input bind:value type="color" class="global-reset-input color-picker" />
@@ -19,7 +19,7 @@
 		flex-shrink: 0;
 		padding: var(--size-input-color-picker-wrapper-padding);
 	}
-  .color-picker {
+	.color-picker {
 		width: var(--size-input-color-picker);
 		height: var(--size-input-color-picker);
 		border: var(--border-input-color-picker);

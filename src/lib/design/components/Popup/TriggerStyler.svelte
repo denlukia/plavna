@@ -72,6 +72,7 @@
 		border-radius: var(--size-dropdown-border-radius);
 
 		--color-layer-flashlight-pointer: var(--color-dropdown-layer-flashlight-hover);
+		--layers-border-radius: var(--size-dropdown-border-radius);
 	}
 	.type-default:hover {
 		box-shadow: var(--shadow-dropdown-hover);
@@ -89,6 +90,7 @@
 		box-shadow: var(--shadow-button-in-input);
 
 		--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
+		--layers-border-radius: var(--size-button-in-input-border-radius);
 	}
 	.type-in-input:hover {
 		box-shadow: var(--shadow-button-in-input-hover);

@@ -1,43 +1,61 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
-	import type { SuperForm } from 'sveltekit-superforms';
-	import ButtonInInput from '$lib/design/components/Input/ButtonInInput.svelte';
+	import { superForm, type SuperForm, type SuperValidated } from 'sveltekit-superforms';
+	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { InputProps } from '../../../design/components/Input/types';
 	import TranslationsInput from '../../i18n/Input/TranslationsInput.svelte';
+	import { debounce } from '../utils';
 
 	let {
 		action,
-		superform,
-		enhance,
-		value = $bindable(),
-		...other
+		superformData,
+		...attributes
 	}: InputProps & {
 		action: string;
-		superform: SuperForm<any>['form'];
-		enhance: SuperForm<any>['enhance'];
-		prefix?: string | null;
-		currentLang?: SupportedLang;
+		superformData: SuperValidated<any>;
 	} = $props();
 
-	let saveButtonElement: HTMLButtonElement | null = $state(null);
+	let saveButtonRef: HTMLButtonElement | null = $state(null);
 
-	superform.subscribe(() => {
-		onValueChange();
-	});
+	let { form, enhance, errors } = superForm(superformData);
 
-	$effect(() => {
-		onValueChange();
-	});
+	let firstInputName = $derived(Object.keys($form)[0]);
 
-	function onValueChange() {}
+	function submit() {
+		console.log('submit');
+		saveButtonRef?.click();
+	}
+
+	function oninput(e: Event, lang?: SupportedLang) {
+		const target = e.target as HTMLInputElement;
+		if (lang && lang in form) {
+			form.set({ [lang]: target.value });
+		} else {
+			form.set({ [firstInputName]: target.value });
+		}
+		submit();
+	}
+
+	const debouncedOninput = debounce(oninput, 1000);
 </script>
 
+{#snippet trailing()}
+	<Button isInInput bind:ref={saveButtonRef}>Save</Button>
+{/snippet}
+
 <form {action} use:enhance method="POST">
-	<svelte:component this={superform ? TranslationsInput : Input} {superform} {...other}>
-		{#snippet trailing()}
-			<ButtonInInput bind:element={saveButtonElement}>Save</ButtonInInput>
-		{/snippet}
-	</svelte:component>
+	{#if 'key' in $form}
+		<TranslationsInput superform={form} {...attributes} {trailing} oninput={debouncedOninput}
+		></TranslationsInput>
+	{:else}
+		<Input
+			bind:value={$form[firstInputName]}
+			name={firstInputName}
+			oninput={debouncedOninput}
+			{...attributes}
+			{trailing}
+		></Input>
+	{/if}
 </form>
