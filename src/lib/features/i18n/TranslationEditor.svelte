@@ -2,8 +2,8 @@
 	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	import TranslationInput from '../../features/i18n/TranslationInput.svelte';
 	import type { TranslationUpdate } from './parsers';
+	import TranslationInput from './TranslationInputOld.svelte';
 
 	export let formObj: SuperValidated<TranslationUpdate>;
 

@@ -11,3 +11,9 @@ export const load = (async () => {
 		translationFormData
 	};
 }) satisfies PageServerLoad;
+
+export const actions = {
+	update_translation: async () => {
+		// It's a mock action
+	}
+};

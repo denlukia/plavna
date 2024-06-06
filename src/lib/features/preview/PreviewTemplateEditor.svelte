@@ -2,7 +2,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
 
-	import TranslationInput from '../i18n/TranslationInput.svelte';
+	import TranslationInput from '../i18n/TranslationInputOld.svelte';
 	import LanguagedImagesInput from '../image/LanguagedImagesInput.svelte';
 	import type { ImageSelect } from '../image/parsers';
 	import type { PreviewTemplateEditingForm } from './parsers';
