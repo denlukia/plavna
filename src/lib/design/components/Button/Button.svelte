@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
-	import type {
-		HTMLAnchorAttributes,
-		HTMLButtonAttributes,
-		MouseEventHandler
-	} from 'svelte/elements';
+	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
 	import { createPressWatcher } from '../../reactivity/press-watcher.svelte';
@@ -20,7 +16,7 @@
 	};
 
 	type Props = (AnchorAttrs | ButtonAttrs) & {
-		children: Snippet;
+		children?: Snippet;
 		kind?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 		size?: 'body' | 'small';
 		dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];
@@ -28,7 +24,10 @@
 		href?: string;
 		active?: boolean;
 		imitatePressingOnClick?: boolean;
-		formaction?: string;
+		isInInput?: boolean;
+		ref?: HTMLAnchorElement | HTMLButtonElement | null;
+		leadingIcon?: Snippet;
+		trailingIcon?: Snippet;
 	};
 	let {
 		children,
@@ -38,12 +37,18 @@
 		dataSvelteKitPreloadData,
 		dataSvelteKitReload,
 		onclick,
-		active = false,
+		active,
 		imitatePressingOnClick = true,
+		isInInput,
+		ref = $bindable(null),
+		leadingIcon,
+		trailingIcon,
 		...attrs
 	}: Props = $props();
 
 	const { pressed, onclick: onclickWatcher, ...events } = $derived(createPressWatcher());
+
+	let finalSize = $derived(isInInput ? 'small' : size);
 
 	function onclickWrapper(event: Parameters<NonNullable<Props['onclick']>>[0]) {
 		imitatePressingOnClick && onclickWatcher();
@@ -55,13 +60,14 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
+	bind:this={ref}
 	role={href ? 'link' : 'button'}
 	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
-	class={`button kind-${kind} size-${size} 
-	 global-reset-line-height
-	${href ? 'global-link-rest' : 'global-button-rest'}`}
+	class={`button kind-${kind} size-${finalSize} 
+		global-reset-line-height ${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed={active || pressed}
+	class:in-input={isInInput}
 	onclick={onclickWrapper}
 	{...events}
 	{...attrs}
@@ -69,7 +75,19 @@
 >
 	<ActiveElementFX>
 		<span class="content">
-			<Typography size={`${size}-short`}><Strong>{@render children()}</Strong></Typography>
+			{#if leadingIcon}
+				{@render leadingIcon()}
+			{/if}
+			{#if children}
+				<Typography size={`${finalSize}-short`}>
+					<Strong>
+						{@render children()}
+					</Strong>
+				</Typography>
+			{/if}
+			{#if trailingIcon}
+				{@render trailingIcon()}
+			{/if}
 		</span>
 	</ActiveElementFX>
 </svelte:element>
@@ -172,5 +190,30 @@
 		padding-inline: var(--size-button-small-padding-inline);
 		padding-top: var(--size-button-small-padding-top);
 		padding-bottom: var(--size-button-small-padding-bottom);
+	}
+
+	/* For Button in Input */
+	.in-input {
+		border-radius: var(--size-button-in-input-border-radius);
+		background-color: var(--color-button-in-input-bg);
+		box-shadow: var(--shadow-button-in-input);
+		height: var(--size-button-in-input-height);
+		transition: var(--transition-button-in-input);
+
+		--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
+		--layers-border-radius: var(--size-button-in-input-border-radius);
+	}
+	.in-input .content {
+		padding-inline: var(--size-button-in-input-padding-inline);
+		padding-top: var(--size-button-in-input-padding-top);
+		padding-bottom: var(--size-button-in-input-padding-bottom);
+	}
+	.in-input:hover {
+		transform: var(--transform-button-in-input-hover);
+		box-shadow: var(--shadow-button-in-input-hover);
+	}
+	.in-input:active {
+		transform: var(--transform-button-in-input-active);
+		box-shadow: var(--shadow-button-in-input-active);
 	}
 </style>
