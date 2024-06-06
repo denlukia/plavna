@@ -1,24 +1,27 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
-	type Props = {
+	type Props = HTMLButtonAttributes & {
 		children: Snippet;
-		onclick?: () => void;
+		element?: HTMLButtonElement | null;
 	};
 
-	let { children, onclick = () => {} }: Props = $props();
+	let { children, onclick = () => {}, element = $bindable(), ...props }: Props = $props();
 
 	let { mouse, ...events } = createMouseWatcher();
 </script>
 
 <button
 	class="button global-reset-button global-button-in-input global-fix-overflow"
+	bind:this={element}
 	{...events}
+	{...props}
 	{onclick}
 >
 	<Layers overflow="hidden">

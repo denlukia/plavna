@@ -154,7 +154,6 @@
 }
 
 /* Button in Input */
-
 .global-button-in-input {
 	border-radius: var(--size-button-in-input-border-radius);
 	background-color: var(--color-button-in-input-bg);
@@ -164,12 +163,10 @@
 
 	--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
 }
-
 .global-button-in-input:hover {
 	transform: var(--transform-button-in-input-hover);
 	box-shadow: var(--shadow-button-in-input-hover);
 }
-
 .global-button-in-input:active {
 	transform: var(--transform-button-in-input-active);
 	box-shadow: var(--shadow-button-in-input-active);

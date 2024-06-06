@@ -18,9 +18,3 @@ type Input = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' | 'ema
 type Textarea = HTMLTextareaAttributes & { type: 'textarea' };
 
 export type InputProps = (Input | Textarea) & CommonInputProps;
-
-export type TranslationsInputProps = InputProps & {
-	form: SuperForm<TranslationInsert>['form'];
-	prefix?: string;
-	currentLang?: SupportedLang;
-};

@@ -5,7 +5,6 @@
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
-	import TranslationsInput from '$lib/design/components/Input/TranslationsInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
@@ -15,6 +14,8 @@
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
+	import TranslationsInput from '$lib/features/i18n/Input/TranslationsInput.svelte';
 
 	let { data } = $props();
 
@@ -30,7 +31,7 @@
 	const tabs = ['Test 1', 'Many Pelmeni'];
 	let activeTabIndex = $state(0);
 
-	const { form: translationForm } = superForm(translationFormData);
+	const { form: translationForm, enhance: translationsEnhance } = superForm(translationFormData);
 
 	// Popup
 	let active = $state(false);
@@ -74,16 +75,24 @@
 	</div>
 	<div class="group">
 		<LabeledInput>
-			<Label>Тест</Label>
-			<Input type="password" placeholder="Тест" />
+			<Label>Тест звичайного інпуту</Label>
+			<Input type="text" placeholder="Тест" />
 		</LabeledInput>
 		<LabeledInput>
-			<Label tone="additional">Тест</Label>
+			<Label tone="additional">Тест пароля</Label>
 			<PasswordInput type="password" placeholder="Тест" />
 		</LabeledInput>
 		<LabeledInput>
-			<Label>Тест</Label>
-			<TranslationsInput form={translationForm} />
+			<Label>Тест перекладів</Label>
+			<TranslationsInput superform={translationForm} />
+		</LabeledInput>
+		<LabeledInput>
+			<Label>Тест автозбереження</Label>
+			<AutosavedInput
+				superform={translationForm}
+				enhance={translationsEnhance}
+				action="?/update_translation"
+			/>
 		</LabeledInput>
 	</div>
 	<div class="group">
