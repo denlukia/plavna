@@ -2,7 +2,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
 
-	import TranslationInput from '../i18n/TranslationInputOld.svelte';
+	import TranslationInputOld from '../i18n/TranslationInputOld.svelte';
 	import LanguagedImagesInput from '../image/LanguagedImagesInput.svelte';
 	import type { ImageSelect } from '../image/parsers';
 	import type { PreviewTemplateEditingForm } from './parsers';
@@ -16,7 +16,7 @@
 
 <fieldset>
 	<form use:enhance method="POST" action="?/update_preview_template" enctype="multipart/form-data">
-		<TranslationInput {form} />
+		<TranslationInputOld {form} />
 		<input name="template_id" type="hidden" bind:value={$form.template_id} />
 		<input name="url" bind:value={$form.url} />
 

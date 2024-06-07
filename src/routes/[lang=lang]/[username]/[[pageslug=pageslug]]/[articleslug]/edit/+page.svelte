@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { superForm } from 'sveltekit-superforms';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import PreviewEditorsList from '$lib/features/article/editor/PreviewEditorsList.svelte';
+	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 	import TranslationEditor from '$lib/features/i18n/TranslationEditor.svelte';
 	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
 	import TagCreator from '$lib/features/tag/TagCreator.svelte';
@@ -9,19 +11,25 @@
 
 	let { data } = $props();
 
-	const { form: slugFrom, errors: slugErrors, enhance: slugEnhance } = superForm(data.slugForm);
-
 	let { meta: article, translationForms } = data;
 </script>
 
-Редагування тайтла:
-<TranslationEditor formObj={translationForms[article.title_translation_key]} />
-Редагування слага:
-<form use:slugEnhance method="POST" action="?/update_slug">
-	<input name="slug" type="text" bind:value={$slugFrom.slug} />
-	<button>Save</button>
-</form>
-Публікація, ховання, видалення:
+<Typography size="heading-1">
+	<Translation key="article_editor.heading" />
+</Typography>
+
+<AutosavedInput
+	superformData={translationForms[article.title_translation_key]}
+	action="?/update_translation"
+/>
+
+<AutosavedInput superformData={data.slugForm} action="?/update_slug" />
+
+<AutosavedInput
+	superformData={translationForms[article.description_translation_key]}
+	action="?/update_translation"
+/>
+
 <form use:enhance method="POST">
 	<button formaction="?/publish">Publish</button>
 	<button formaction="?/hide">Hide</button>

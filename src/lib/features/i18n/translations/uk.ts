@@ -66,6 +66,7 @@ export const UK = {
 		}
 	},
 	article_editor: {
+		heading: 'Редагування статті',
 		preview_plavna_modern: 'Плавна Сучасне',
 		preview_custom: 'Кастомне превью'
 	}

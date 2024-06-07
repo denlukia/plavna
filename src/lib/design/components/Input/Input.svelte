@@ -33,7 +33,7 @@
 	// so we don't have an animation for every value change
 	let key = $derived.by(() => {
 		if (animateOnTypeChange) {
-			return String(attributes.type);
+			return String('type' in attributes ? attributes.type : 'text');
 		}
 		if (animateOnValueChange) {
 			return String(value);
@@ -73,12 +73,12 @@
 				class="input-wrapper global-fix-overflow"
 				class:no-trailing-padding={trailing}
 				class:no-leading-padding={leading}
-				class:textarea-wrapper={attributes.type === 'textarea'}
+				class:textarea-wrapper={attributes.element === 'textarea'}
 				bind:this={inputwrapperRef}
 			>
 				<Layers>
 					<!-- ISSUE: DRY-ing this into svelte:element seems to break #key -->
-					{#if attributes.type === 'textarea'}
+					{#if attributes.element === 'textarea'}
 						{#key key}
 							<textarea
 								in:fly={getFlyConf(expoOut, 'bottom')}

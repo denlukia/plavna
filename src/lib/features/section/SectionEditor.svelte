@@ -11,6 +11,7 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
+	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
@@ -128,9 +129,9 @@
 		<div class="inputs">
 			<LabeledInput style="width: 100%;">
 				<Label><Translation key="page_actor.section.description" /></Label>
-				<Input
-					type="textarea"
-					translationsForm={translationForm}
+				<TranslationsInput
+					element="textarea"
+					superform={translationForm}
 					bind:currentLang={descriptionInput.currentLang as SupportedLang}
 					bind:selectionStart={descriptionInput.selectionStart}
 					bind:selectionEnd={descriptionInput.selectionEnd}
