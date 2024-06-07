@@ -3,7 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import type { TranslationUpdate } from './parsers';
-	import TranslationInput from './TranslationInputOld.svelte';
+	import TranslationInputOld from './TranslationInputOld.svelte';
 
 	export let formObj: SuperValidated<TranslationUpdate>;
 
@@ -12,7 +12,7 @@
 </script>
 
 <form use:enhance action="?/update_translation" class="translation-input" method="POST">
-	<TranslationInput {form} />
+	<TranslationInputOld {form} />
 	<button type="submit">Save</button>
 </form>
 

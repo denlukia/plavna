@@ -38,6 +38,7 @@
 			onclick={() => (currentLang = lang)}
 			href={browser ? undefined : generatePath($page.route.id || '', { '[lang]': lang })}
 		>
+			<!-- TODO Uses old GeneratePath syntax -->
 			{lang}
 		</svelte:element>
 	{/each}

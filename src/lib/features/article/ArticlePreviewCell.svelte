@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Page } from '@sveltejs/kit';
 	import { page } from '$app/stores';
 	import { generatePath } from '$lib/features/common/links';
 
@@ -14,23 +13,15 @@
 
 	let { meta, tags } = $derived(article);
 
-	function getRouteId(params: Page['params']) {
-		if ('pagename' in params) {
-			return '/[[lang=lang]]/[username]/page-[pagename]/[slug]';
-		} else {
-			return '/[[lang=lang]]/[username]/[slug]';
-		}
-	}
+	let params = $derived($page.params);
 </script>
 
 <a
 	class="article global-reset-link"
 	style="--rows-taken:{meta.preview_rows}; --cols-taken:{meta.preview_columns}"
-	href={generatePath(getRouteId($page.params), {
-		'[[lang=lang]]': $page.params.lang,
-		'[username]': $page.params.username,
-		'[pagename]': $page.params.pagename,
-		'[slug]': meta.slug
+	href={generatePath(`/[lang]/[username]/[pageslug]/[articleslug]`, params, {
+		pageslug: params.pageslug || '',
+		articleslug: meta.slug
 	})}
 >
 	<span class="height-sizer">

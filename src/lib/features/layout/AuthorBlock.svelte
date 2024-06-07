@@ -21,13 +21,6 @@
 	]);
 
 	const currentPage = $derived(pages.find((page) => $page.route.id === page.routeId));
-
-	function generateCreateArticleURL(lang: string, username: string) {
-		return generatePath('/[lang]/[username]/new', {
-			'[lang]': lang,
-			'[username]': username
-		});
-	}
 </script>
 
 <Popup list>
@@ -51,7 +44,7 @@
 
 <Button
 	kind="prominent"
-	href={generateCreateArticleURL($page.params.lang, actor.username)}
+	href={generatePath('/[lang]/[username]/new', $page.params, { username: actor.username })}
 	dataSvelteKitPreloadData="off"
 >
 	New article

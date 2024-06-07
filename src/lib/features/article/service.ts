@@ -185,8 +185,9 @@ export class ArticleService {
 			.leftJoin(
 				translForForms,
 				or(
-					eq(translForForms.key, articles.content_translation_key),
 					eq(translForForms.key, articles.title_translation_key),
+					eq(translForForms.key, articles.description_translation_key),
+					eq(translForForms.key, articles.content_translation_key),
 					eq(translForForms.key, tags.name_translation_key),
 					eq(translForForms.key, articles.preview_translation_1_key),
 					eq(translForForms.key, articles.preview_translation_2_key)

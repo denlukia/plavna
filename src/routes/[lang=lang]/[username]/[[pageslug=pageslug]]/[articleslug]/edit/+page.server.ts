@@ -65,33 +65,28 @@ async function update_slug(event: RequestEvent) {
 	const { articleService } = event.locals;
 	const result = await articleService.updateSlug(articleslug, form.data);
 
-	const replacementsObject: Record<string, string | undefined> = {
-		'[[lang=lang]]': event.params.lang,
-		'[username]': event.params.username,
-		'[articleslug]': result.slug
-	};
-	if ('pageslug' in event.params) {
-		replacementsObject['[pageslug]'] = event.params.pageslug;
-	}
-	redirect(302, generatePath(event.route.id, replacementsObject));
+	let params = event.params;
+
+	redirect(
+		302,
+		generatePath(`/[lang]/[username]/[pageslug]/[articleslug]/edit`, params, {
+			pageslug: params.pageslug || '',
+			articleslug: result.slug
+		})
+	);
 }
 
 async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'delete') {
-	const { articleslug } = event.params;
+	const params = event.params;
+	const { articleslug } = params;
 	const { articleService } = event.locals;
 	await articleService[type](articleslug);
 
 	if (type === 'delete') {
-		let destinationRouteId = '/[[lang=lang]]/[username]';
-		const replacementsObject: Record<string, string | undefined> = {
-			'[[lang=lang]]': event.params.lang,
-			'[username]': event.params.username
-		};
-		if ('pageslug' in event.params) {
-			destinationRouteId = '/[[lang=lang]]/[username]/page-[pageslug]';
-			replacementsObject['[pageslug]'] = event.params.pageslug;
-		}
-		redirect(302, generatePath(destinationRouteId, replacementsObject));
+		redirect(
+			302,
+			generatePath('/[lang]/[username]/[pageslug]', params, { pageslug: params.pageslug || '' })
+		);
 	}
 }
 

@@ -3,7 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import type { TranslationInsert } from '../i18n/parsers';
-	import TranslationInput from '../i18n/TranslationInputOld.svelte';
+	import TranslationInputOld from '../i18n/TranslationInputOld.svelte';
 
 	export let superFormObj: SuperValidated<TranslationInsert>;
 
@@ -14,7 +14,7 @@
 <fieldset>
 	Створення тегу
 	<form use:enhance action="?/create_tag" method="POST">
-		<TranslationInput {form} />
+		<TranslationInputOld {form} />
 		<button type="submit">Save</button>
 	</form>
 </fieldset>

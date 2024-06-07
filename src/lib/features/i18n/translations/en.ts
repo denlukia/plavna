@@ -63,6 +63,7 @@ export const EN = {
 		}
 	},
 	article_editor: {
+		heading: 'Article Editing',
 		preview_plavna_modern: 'Plavna Modern',
 		preview_custom: 'Custom Preview'
 	}

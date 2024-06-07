@@ -17,6 +17,8 @@
 		currentLang = $bindable($page.params.lang as SupportedLang),
 		trailing,
 		oninput: oninputProp,
+		selectionStart = $bindable(0),
+		selectionEnd = $bindable(0),
 		...attributes
 	}: InputOrTextareaProps & {
 		superform: SuperForm<TranslationInsert>['form'];
@@ -64,6 +66,8 @@
 <!-- Visible lang -->
 <Input
 	bind:value
+	bind:selectionStart
+	bind:selectionEnd
 	{oninput}
 	name={getName(currentLang)}
 	trailing={trailingWithLangSelector}

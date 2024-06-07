@@ -11,7 +11,7 @@ type CommonInputProps = {
 	trailing?: Snippet;
 };
 
-export type InputProps = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' | 'email' };
-export type TextareaProps = HTMLTextareaAttributes & { type: 'textarea' };
+export type InputProps = HTMLInputAttributes & { element?: 'input' };
+export type TextareaProps = HTMLTextareaAttributes & { element: 'textarea' };
 
 export type InputOrTextareaProps = (InputProps | TextareaProps) & CommonInputProps;
