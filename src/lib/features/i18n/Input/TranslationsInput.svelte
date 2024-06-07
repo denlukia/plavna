@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
-	import type { InputProps } from '$lib/design/components/Input/types';
+	import type { InputOrTextareaProps } from '$lib/design/components/Input/types';
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { TranslationInsert } from '../parsers';
@@ -18,7 +18,7 @@
 		trailing,
 		oninput: oninputProp,
 		...attributes
-	}: InputProps & {
+	}: InputOrTextareaProps & {
 		superform: SuperForm<TranslationInsert>['form'];
 		prefix?: string | null;
 		currentLang?: SupportedLang;

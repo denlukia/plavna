@@ -10,8 +10,6 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { users } from '../user/schema';
-import type { ActorService } from '../user/service';
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
@@ -41,6 +39,8 @@ import {
 } from '../screenshot/utils';
 import { tagUpdateSchema } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import {
 	articleSelectSchema,
 	articleSlugUpdateSchema,
@@ -88,11 +88,12 @@ export class ArticleService {
 			};
 			const [
 				{ key: title_translation_key },
+				{ key: description_translation_key },
 				{ key: content_translation_key },
 				{ key: preview_translation_1_key },
 				{ key: preview_translation_2_key }
 			] = await this.translationService.create(
-				new Array(4).fill(newTranslation),
+				new Array(5).fill(newTranslation),
 				'allow-empty',
 				trx
 			);
@@ -114,6 +115,7 @@ export class ArticleService {
 					user_id: actor.id,
 					slug: slug,
 					title_translation_key: Number(title_translation_key),
+					description_translation_key: Number(description_translation_key),
 					content_translation_key: Number(content_translation_key),
 					preview_family: 'plavna-modern',
 					preview_translation_1_key,

@@ -4,7 +4,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Input from '../../../design/components/Input/Input.svelte';
-	import type { InputProps } from '../../../design/components/Input/types';
+	import type { InputOrTextareaProps } from '../../../design/components/Input/types';
 	import TranslationsInput from '../../i18n/Input/TranslationsInput.svelte';
 	import { debounce } from '../utils';
 
@@ -12,7 +12,7 @@
 		action,
 		superformData,
 		...attributes
-	}: InputProps & {
+	}: InputOrTextareaProps & {
 		action: string;
 		superformData: SuperValidated<any>;
 	} = $props();
@@ -39,6 +39,10 @@
 	}
 
 	const debouncedOninput = debounce(oninput, 1000);
+
+	// TODO: Show "Saved" or "Error:..." label after submit
+
+	// TODO: Hide "Save" button when JS activates, don't show it for the first 3 seconds
 </script>
 
 {#snippet trailing()}

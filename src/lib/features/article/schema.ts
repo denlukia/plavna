@@ -20,6 +20,9 @@ export const articles = sqliteTable(
 		title_translation_key: integer('title_translation_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		description_translation_key: integer('description_translation_key')
+			.notNull()
+			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		content_translation_key: integer('content_translation_key')
 			.notNull()
 			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),

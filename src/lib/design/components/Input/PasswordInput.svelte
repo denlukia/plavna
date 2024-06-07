@@ -5,7 +5,7 @@
 
 	import Button from '../Button/Button.svelte';
 	import Input from './Input.svelte';
-	import type { InputProps } from './types';
+	import type { InputOrTextareaProps, InputProps } from './types';
 
 	const eyeClosedFrame = 0;
 	const eyeOpenedFrame = 7;
@@ -41,7 +41,7 @@
 {/snippet}
 
 {#snippet trailing()}
-	<Button isInInput onclick={togglePswdVisibility} {leadingIcon} />
+	<Button type="button" isInInput onclick={togglePswdVisibility} {leadingIcon} />
 {/snippet}
 
 <Input type={pswdVisible ? 'text' : 'password'} {trailing} {...attributes} animateOnTypeChange />

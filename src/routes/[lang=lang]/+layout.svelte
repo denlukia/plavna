@@ -7,7 +7,7 @@
 	import '$lib/design/themes/style/modern/index.css';
 	import '$lib/design/themes/typography/plavna/index.css';
 
-	import Grid from '$lib/design/components/Grid/Grid.svelte';
+	import GridVisualizer from '$lib/design/components/Grid/GridVisualizer.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
 
 	let { data, children } = $props();
@@ -27,7 +27,7 @@
 		{@render children()}
 	</div>
 	<!-- <div class="grid-wrapper"> -->
-	<Grid />
+	<GridVisualizer />
 	<!-- </div> -->
 	<!-- <Greetings /> -->
 </div>
