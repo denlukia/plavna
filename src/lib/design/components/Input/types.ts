@@ -1,8 +1,5 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { Snippet } from 'svelte';
 import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
-import type { SuperForm } from 'sveltekit-superforms';
-import type { TranslationInsert } from '$lib/features/i18n/parsers';
 
 type CommonInputProps = {
 	selectionStart?: number | null;
@@ -14,7 +11,7 @@ type CommonInputProps = {
 	trailing?: Snippet;
 };
 
-type Input = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' | 'email' };
-type Textarea = HTMLTextareaAttributes & { type: 'textarea' };
+export type InputProps = HTMLInputAttributes & { type?: 'password' | 'text' | 'color' | 'email' };
+export type TextareaProps = HTMLTextareaAttributes & { type: 'textarea' };
 
-export type InputProps = (Input | Textarea) & CommonInputProps;
+export type InputOrTextareaProps = (InputProps | TextareaProps) & CommonInputProps;

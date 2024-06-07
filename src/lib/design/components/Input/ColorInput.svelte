@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Input from './Input.svelte';
-	import type { InputProps } from './types';
+	import type { InputOrTextareaProps } from './types';
 
-	let { value = $bindable(), ...attributes }: InputProps = $props();
+	let { value = $bindable(), ...attributes }: InputOrTextareaProps = $props();
 </script>
 
 <Input type="color" {...attributes} bind:value>

@@ -8,7 +8,7 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
-	import type { InputProps } from './types';
+	import type { InputOrTextareaProps } from './types';
 
 	let {
 		value = $bindable(),
@@ -20,7 +20,7 @@
 		animateOnTypeChange,
 		animateOnValueChange,
 		...attributes
-	}: InputProps = $props();
+	}: InputOrTextareaProps = $props();
 
 	let { mouse, ...mouseWatcherEvents } = createMouseWatcher();
 
