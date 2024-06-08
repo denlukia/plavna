@@ -77,15 +77,3 @@ export const articles = sqliteTable(
 		};
 	}
 );
-
-export const articlesRelations = relations(articles, ({ one, many }) => ({
-	title_translation: one(translations, {
-		fields: [articles.title_translation_key],
-		references: [translations.key]
-	}),
-	content_translation: one(translations, {
-		fields: [articles.content_translation_key],
-		references: [translations.key]
-	}),
-	tagsArticles: many(tagsToArticles)
-}));

@@ -130,12 +130,12 @@
 			<LabeledInput style="width: 100%;">
 				<Label><Translation key="page_actor.section.description" /></Label>
 				<TranslationsInput
-					element="textarea"
 					superform={translationForm}
 					bind:currentLang={descriptionInput.currentLang as SupportedLang}
 					bind:selectionStart={descriptionInput.selectionStart}
 					bind:selectionEnd={descriptionInput.selectionEnd}
 					style="width: 100%;"
+					element="textarea"
 					rows={3}
 				/>
 			</LabeledInput>

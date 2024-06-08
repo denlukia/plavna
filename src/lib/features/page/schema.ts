@@ -1,8 +1,8 @@
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
-import { users } from '../user/schema';
 import { sections } from '../section/schema';
+import { users } from '../user/schema';
 
 export const pages = sqliteTable(
 	'pages',
@@ -19,6 +19,3 @@ export const pages = sqliteTable(
 		};
 	}
 );
-export const pagesRelations = relations(pages, ({ many }) => ({
-	sections: many(sections)
-}));

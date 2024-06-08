@@ -1,8 +1,8 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
 import { pages } from '$lib/features/page/schema';
+import { users } from '$lib/features/user/schema';
 
 import { translations } from '../i18n/schema';
 import { tags } from '../tag/schema';
@@ -19,18 +19,6 @@ export const sections = sqliteTable('sections', {
 		.notNull()
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
-
-export const sectionsRelations = relations(sections, ({ one, many }) => ({
-	page: one(pages, {
-		fields: [sections.page_id],
-		references: [pages.id]
-	}),
-	title_translation: one(translations, {
-		fields: [sections.title_translation_key],
-		references: [translations.key]
-	}),
-	sectionsToTags: many(sectionsToTags)
-}));
 
 export const sectionsToTags = sqliteTable(
 	'sections_to_tags',
@@ -49,14 +37,3 @@ export const sectionsToTags = sqliteTable(
 		};
 	}
 );
-
-export const sectionsToTagsRelations = relations(sectionsToTags, ({ one }) => ({
-	section: one(sections, {
-		fields: [sectionsToTags.section_id],
-		references: [sections.id]
-	}),
-	tag: one(tags, {
-		fields: [sectionsToTags.tag_id],
-		references: [tags.id]
-	})
-}));

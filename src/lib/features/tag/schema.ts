@@ -16,15 +16,6 @@ export const tags = sqliteTable('tags', {
 		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
-export const tagsRelations = relations(tags, ({ one, many }) => ({
-	name_translation: one(translations, {
-		fields: [tags.name_translation_key],
-		references: [translations.key]
-	}),
-	sectionsToTags: many(sectionsToTags),
-	tagsToArticles: many(tagsToArticles)
-}));
-
 export const tagsToArticles = sqliteTable(
 	'tags_to_articles',
 	{
@@ -41,14 +32,3 @@ export const tagsToArticles = sqliteTable(
 		};
 	}
 );
-
-export const tagsToArticlesRelations = relations(tagsToArticles, ({ one }) => ({
-	tags: one(tags, {
-		fields: [tagsToArticles.tag_id],
-		references: [tags.id]
-	}),
-	articles: one(articles, {
-		fields: [tagsToArticles.article_id],
-		references: [articles.id]
-	})
-}));
