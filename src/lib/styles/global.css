@@ -156,3 +156,11 @@
 .global-disable-default-outline:focus {
 	outline: none;
 }
+
+.global-grid-container {
+	display: flex;
+}
+.global-grid-container > * {
+	margin-block-end: var(--size-cell-gap);
+	margin-inline-end: var(--size-cell-gap);
+}

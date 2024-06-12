@@ -5,7 +5,7 @@
 	let { value = $bindable(), ...attributes }: InputOrTextareaProps = $props();
 </script>
 
-<Input type="color" {...attributes} bind:value>
+<Input type="color" bind:value {...attributes}>
 	{#snippet leading()}
 		<span class="picker-wrapper">
 			<input bind:value type="color" class="global-reset-input color-picker" />

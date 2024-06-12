@@ -37,6 +37,10 @@
 		animateOnValueChange = false;
 	});
 
+	$effect(() => {
+		value = $superform[currentLang];
+	});
+
 	function oninput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		$superform[currentLang] = target.value;

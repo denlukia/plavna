@@ -140,7 +140,7 @@
 				/>
 			</LabeledInput>
 
-			<LabeledInput style="width: 100%;">
+			<LabeledInput style="width: 100%;" as="span">
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
 				{#if tags.length > 0}
 					<div class="tags-list">
