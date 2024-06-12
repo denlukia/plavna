@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { param } from 'drizzle-orm';
 	import { setContext } from 'svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
+	import ArticlesList from '../article/ArticlesList.svelte';
 	import Translation from '../i18n/Translation.svelte';
 	import type { RecordsTranslations } from '../i18n/types';
 	import { enrichPreviewFamilies } from '../preview/enricher';
 	import type { PreviewFamiliesDict } from '../preview/families/types';
-	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
 	import type { SectionService } from './service';

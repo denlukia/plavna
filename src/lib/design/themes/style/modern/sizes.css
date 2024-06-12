@@ -65,8 +65,6 @@
 	--size-labeled-inputs-gap: var(--size-m);
 
 	/* --- Input --- */
-	--size-input-min-width: 100px;
-	--size-input-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-none);
 	--size-input-padding-bottom: var(--size-s);

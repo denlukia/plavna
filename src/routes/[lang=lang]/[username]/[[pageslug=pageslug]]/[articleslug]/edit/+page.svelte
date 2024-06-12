@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import PreviewEditorsList from '$lib/features/article/editor/PreviewEditorsList.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
@@ -18,17 +19,25 @@
 	<Translation key="article_editor.heading" />
 </Typography>
 
-<AutosavedInput
-	superformData={translationForms[article.title_translation_key]}
-	action="?/update_translation"
-/>
+<div class="global-grid-container">
+	<GridCell>
+		<AutosavedInput
+			superformData={translationForms[article.title_translation_key]}
+			action="?/update_translation"
+		/>
+	</GridCell>
 
-<AutosavedInput superformData={data.slugForm} action="?/update_slug" />
+	<GridCell>
+		<AutosavedInput superformData={data.slugForm} action="?/update_slug" />
+	</GridCell>
 
-<AutosavedInput
-	superformData={translationForms[article.description_translation_key]}
-	action="?/update_translation"
-/>
+	<GridCell>
+		<AutosavedInput
+			superformData={translationForms[article.description_translation_key]}
+			action="?/update_translation"
+		/>
+	</GridCell>
+</div>
 
 <form use:enhance method="POST">
 	<button formaction="?/publish">Publish</button>

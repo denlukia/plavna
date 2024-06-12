@@ -116,8 +116,7 @@
 	/* General */
 	.input-and-affixes {
 		display: inline-block;
-		min-width: var(--size-input-min-width);
-		max-width: var(--size-input-max-width);
+		width: 100%;
 		background-color: var(--color-input-bg);
 		box-shadow: var(--shadow-input);
 		border-radius: var(--size-input-border-radius);
