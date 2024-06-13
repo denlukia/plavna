@@ -1,13 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	type Props = {
+	type Props = HTMLAttributes<HTMLSpanElement> & {
 		rowspan?: number;
 		colspan?: number;
 		children?: Snippet;
 	};
 
-	let { colspan = 1, rowspan = 0, children }: Props = $props();
+	let { colspan = 1, rowspan = 0, children, ...attributes }: Props = $props();
 </script>
 
 {#snippet content()}
@@ -17,6 +18,7 @@
 {/snippet}
 
 <span class="cell global-reset-link" style="--rows-taken:{rowspan}; --cols-taken:{colspan}">
+	<!-- Either we're drawing a grid (e.g of articles) -->
 	{#if rowspan}
 		<span class="height-sizer">
 			<span class="content">
@@ -24,7 +26,10 @@
 			</span>
 		</span>
 	{:else}
-		{@render content()}
+		<!-- Or we're drawing a columned flex container with possible subgrids -->
+		<span class="subgrid-wrapper" style="--current-grid-cols-total:{colspan}" {...attributes}>
+			{@render content()}
+		</span>
 	{/if}
 </span>
 
@@ -32,14 +37,26 @@
 	.cell {
 		display: block;
 
-		--max-width-base: calc(var(--cols-taken) * var(--size-cell-width));
-		--max-width-gaps: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
-		max-width: calc(var(--max-width-base) + var(--max-width-gaps));
+		/* --max-width-base: calc(var(--cols-taken) * var(--size-cell-width));
+		--max-width-gaps-to-subtract: calc((var(--current-grid-cols-total) - 1) * var(--size-cell-gap));
+		--max-width-gaps-to-add: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
+		max-width: calc(
+			var(--max-width-base) - var(--max-width-gaps-to-subtract) + var(--max-width-gaps-to-add)
+		); */
 
-		--width-base: calc(var(--cols-taken) / var(--count-cols-total) * 100%);
-		--width-gaps: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
-		--width-layout-paddings: var(--size-main-layout-padding-inline) * 2;
-		width: var(--width-base);
+		--width-base: calc(var(--cols-taken) / var(--current-grid-cols-total) * 100%);
+		--width-gaps-to-subtract: calc(
+			(var(--current-grid-cols-total) - var(--cols-taken)) / var(--current-grid-cols-total) *
+				var(--size-cell-gap)
+		);
+		width: calc(var(--width-base) - var(--width-gaps-to-subtract));
+	}
+	.subgrid-wrapper {
+		width: 100%;
+		display: flex;
+		flex-direction: var(--flex-direction);
+		flex-wrap: wrap;
+		gap: var(--size-cell-gap);
 	}
 	.height-sizer {
 		display: block;

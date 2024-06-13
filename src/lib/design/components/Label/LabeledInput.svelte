@@ -25,6 +25,7 @@
 <style>
 	.labeled-input {
 		display: inline-flex;
+		width: 100%;
 
 		/* For Text */
 		--label-padding-inline: var(--size-labeled-text-padding-inline);
@@ -45,6 +46,7 @@
 	}
 
 	.switch-with-bg {
+		width: auto;
 		padding-inline: var(--size-labeled-switch-with-bg-padding-inline);
 		background: var(--color-labeled-switch-with-bg-bg);
 		border-radius: var(--size-labeled-switch-with-bg-border-radius);

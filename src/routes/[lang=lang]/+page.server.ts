@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 export const actions: Actions = {
 	default: async (event) => {
 		if (!event.locals.session) {
-			return fail(401);
+			fail(401);
 		}
 		await lucia.invalidateSession(event.locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();

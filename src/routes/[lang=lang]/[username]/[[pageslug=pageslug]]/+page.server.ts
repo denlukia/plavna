@@ -70,7 +70,7 @@ export const load = async ({ params, parent, locals: { pageService, actor }, coo
 export const actions = {
 	create_section: async ({ request, params, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionInsertSchema));
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		const pageslug = params.pageslug ?? '';
 
@@ -80,7 +80,7 @@ export const actions = {
 	},
 	update_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionUpdateSchema));
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		await sectionService.update(form.data);
 
@@ -88,7 +88,7 @@ export const actions = {
 	},
 	delete_section: async ({ request, locals: { sectionService } }) => {
 		const form = await superValidate(request, zod(sectionDeleteSchema));
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		await sectionService.delete(form.data);
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
+	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 
 	import type { SectionProp } from '../section/types';
 	import ArticlePreviewCell from './ArticlePreviewCell.svelte';
@@ -11,21 +12,11 @@
 	let { section }: Props = $props();
 </script>
 
-<div class="articles-list global-grid-container" style="--max-rows: {MAX_ROWS_IN_SECTION}">
+<GridContainer direction="column" maxRows={MAX_ROWS_IN_SECTION}>
 	{#each section.articles as article (article.meta.id)}
 		<ArticlePreviewCell {article} />
 	{/each}
-</div>
+</GridContainer>
 
 <style>
-	.articles-list > :global(*) {
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-		align-items: flex-start;
-
-		--max-height-base: calc(var(--max-rows) * var(--size-cell-height));
-		--max-height-gaps: calc(var(--max-rows) * var(--size-cell-gap));
-		max-height: calc(var(--max-height-base) + var(--max-height-gaps));
-	}
 </style>
