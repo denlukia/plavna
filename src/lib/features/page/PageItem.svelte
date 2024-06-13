@@ -7,7 +7,7 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import PageEditor from '$lib/features/page/PageEditor.svelte';
+	import PageEditor from '$lib/features/page/PageItemEditor.svelte';
 
 	import { generatePath } from '../common/links';
 	import { defaultLang } from '../i18n/utils';

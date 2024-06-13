@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import { onMount } from 'svelte';
 	import { superForm, type SuperForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 
@@ -18,35 +19,39 @@
 	} = $props();
 
 	let saveButtonRef: HTMLButtonElement | null = $state(null);
+	let showSaveButton = $state(true);
 
-	let { form, enhance, errors } = superForm(superformData);
+	let { form, enhance, errors } = superForm(superformData, {
+		resetForm: false,
+		invalidateAll: false
+	});
 
 	let firstInputName = $derived(Object.keys($form)[0]);
 
-	function submit() {
-		console.log('submit');
-		saveButtonRef?.click();
-	}
-
 	function oninput(e: Event, lang?: SupportedLang) {
 		const target = e.target as HTMLInputElement;
-		if (lang && lang in form) {
-			form.set({ [lang]: target.value });
+		if (lang && lang in $form) {
+			form.update((v) => ({ ...v, [lang]: target.value }));
 		} else {
-			form.set({ [firstInputName]: target.value });
+			form.update((v) => ({ ...v, [firstInputName]: target.value }));
 		}
-		submit();
+
+		saveButtonRef?.click();
 	}
 
 	const debouncedOninput = debounce(oninput, 1000);
 
-	// TODO: Show "Saved" or "Error:..." label after submit
-
-	// TODO: Hide "Save" button when JS activates, don't show it for the first 3 seconds
+	onMount(() => {
+		showSaveButton = false;
+	});
 </script>
 
 {#snippet trailing()}
-	<Button isInInput bind:ref={saveButtonRef}>Save</Button>
+	<span class="save-button-wrapper" class:global-visually-hidden={!showSaveButton}>
+		<span class="inner">
+			<Button isInInput bind:ref={saveButtonRef}>Save</Button>
+		</span>
+	</span>
 {/snippet}
 
 <form {action} use:enhance method="POST">
@@ -63,3 +68,39 @@
 		></Input>
 	{/if}
 </form>
+
+<style>
+	.save-button-wrapper {
+		display: grid;
+		grid-template-columns: 0fr;
+		opacity: 0;
+		margin-inline-start: calc(var(--size-input-buttons-gap) * -1);
+		animation: 500ms 3s reveal forwards ease-out;
+	}
+	.inner {
+		overflow: hidden;
+		animation: 500ms 3s reveal-inner forwards ease-out;
+	}
+
+	@keyframes reveal {
+		80% {
+			opacity: 0;
+			grid-template-columns: 1fr;
+			margin-inline-start: 0;
+		}
+		100% {
+			opacity: 1;
+			grid-template-columns: 1fr;
+			margin-inline-start: 0;
+		}
+	}
+
+	@keyframes reveal-inner {
+		80% {
+			overflow: hidden;
+		}
+		100% {
+			overflow: visible;
+		}
+	}
+</style>

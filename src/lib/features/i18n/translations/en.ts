@@ -64,6 +64,9 @@ export const EN = {
 	},
 	article_editor: {
 		heading: 'Article Editing',
+		title: 'Title',
+		short_description: 'Short description',
+		slug: 'Slug',
 		preview_plavna_modern: 'Plavna Modern',
 		preview_custom: 'Custom Preview'
 	}

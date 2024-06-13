@@ -560,7 +560,7 @@ export class ArticleService {
 							})
 							.filter(isNonNullable);
 						if (queueRecordsForInsert.length === 0) {
-							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+							fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}
 					} else {
 						queueRecordsForInsert = [

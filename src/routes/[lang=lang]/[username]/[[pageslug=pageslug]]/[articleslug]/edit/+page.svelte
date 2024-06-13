@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
+	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
+	import Label from '$lib/design/components/Label/Label.svelte';
+	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import PreviewEditorsList from '$lib/features/article/editor/PreviewEditorsList.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
@@ -19,25 +22,37 @@
 	<Translation key="article_editor.heading" />
 </Typography>
 
-<div class="global-grid-container">
-	<GridCell>
-		<AutosavedInput
-			superformData={translationForms[article.title_translation_key]}
-			action="?/update_translation"
-		/>
+<GridContainer>
+	<GridCell colspan={3}>
+		<GridCell colspan={2}>
+			<LabeledInput>
+				<Label><Translation key="article_editor.title" /></Label>
+				<AutosavedInput
+					superformData={translationForms[article.title_translation_key]}
+					action="?/update_translation"
+				/>
+			</LabeledInput>
+		</GridCell>
+
+		<GridCell>
+			<LabeledInput>
+				<Label><Translation key="article_editor.slug" /></Label>
+				<AutosavedInput superformData={data.slugForm} action="?/update_slug" />
+			</LabeledInput>
+		</GridCell>
 	</GridCell>
 
-	<GridCell>
-		<AutosavedInput superformData={data.slugForm} action="?/update_slug" />
+	<GridCell colspan={3}>
+		<LabeledInput>
+			<Label><Translation key="article_editor.short_description" /></Label>
+			<AutosavedInput
+				element="textarea"
+				superformData={translationForms[article.description_translation_key]}
+				action="?/update_translation"
+			/>
+		</LabeledInput>
 	</GridCell>
-
-	<GridCell>
-		<AutosavedInput
-			superformData={translationForms[article.description_translation_key]}
-			action="?/update_translation"
-		/>
-	</GridCell>
-</div>
+</GridContainer>
 
 <form use:enhance method="POST">
 	<button formaction="?/publish">Publish</button>

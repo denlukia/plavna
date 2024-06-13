@@ -31,13 +31,13 @@ function failWithSlugError(form: SuperValidated<PageCreationForm>) {
 			slug ? 'pages_list.errors.slug_in_use' : 'pages_list.errors.only_one_default_slug'
 		)
 	);
-	return fail(400, { form });
+	fail(400, { form });
 }
 
 export const actions = {
 	create: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageCreationFormSchema));
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		try {
 			await pageService.create(form.data);
@@ -50,7 +50,7 @@ export const actions = {
 	update: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
 
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		try {
 			await pageService.update(form.data);
@@ -62,12 +62,12 @@ export const actions = {
 	},
 	delete: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) fail(400, { form });
 
 		try {
 			await pageService.delete(form.data.id);
 		} catch (e) {
-			return fail(400, { form });
+			fail(400, { form });
 		}
 
 		return { form };
