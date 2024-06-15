@@ -9,11 +9,12 @@
 	type Props = {
 		children: Snippet;
 		list?: boolean;
+		popupForm?: boolean;
 	};
 
 	const animationDuration = 500;
 
-	let { children, list }: Props = $props();
+	let { children, list, popupForm }: Props = $props();
 </script>
 
 <div
@@ -29,6 +30,7 @@
 	<div
 		class="box"
 		class:list
+		class:popup-form={popupForm}
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
 			easing: expoOut,
@@ -70,6 +72,10 @@
 	}
 	.list {
 		gap: var(--size-box-gap);
+	}
+	.popup-form {
+		align-items: stretch;
+		padding-top: calc(var(--size-box-padding-top) / 2);
 	}
 	/* We use global cause we'd like Tail component to be raw SVG code from Figma */
 	.tail-wrapper > :global(svg) {

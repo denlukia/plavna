@@ -66,6 +66,12 @@ export const UK = {
 		}
 	},
 	article_editor: {
+		tags: {
+			form_title: 'Тег',
+			edit_name: 'Редагувати назву',
+			or: 'або',
+			delete: 'Видалити'
+		},
 		heading: 'Редагування статті',
 		title: 'Заголовок',
 		short_description: 'Короткий опис',

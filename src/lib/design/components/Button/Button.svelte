@@ -1,34 +1,11 @@
 <script lang="ts">
-	import { type Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import Strong from '$lib/features/markdown/renderers/Strong.svelte';
 
 	import { createPressWatcher } from '../../reactivity/press-watcher.svelte';
 	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
 	import Typography from '../Typography/Typography.svelte';
+	import type { ButtonProps } from './types';
 
-	// type UniversalMouseEventHandler = MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
-	type AnchorAttrs = HTMLAnchorAttributes & {
-		href: string;
-	};
-	type ButtonAttrs = HTMLButtonAttributes & {
-		href?: never;
-	};
-
-	type Props = (AnchorAttrs | ButtonAttrs) & {
-		children?: Snippet;
-		kind?: 'primary' | 'secondary' | 'prominent' | 'destructive';
-		size?: 'body' | 'small';
-		dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];
-		dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
-		href?: string;
-		active?: boolean;
-		imitatePressingOnClick?: boolean;
-		isInInput?: boolean;
-		ref?: HTMLAnchorElement | HTMLButtonElement | null;
-		leadingIcon?: Snippet;
-		trailingIcon?: Snippet;
-	};
 	let {
 		children,
 		kind = 'primary',
@@ -44,13 +21,13 @@
 		leadingIcon,
 		trailingIcon,
 		...attrs
-	}: Props = $props();
+	}: ButtonProps = $props();
 
 	const { pressed, onclick: onclickWatcher, ...events } = $derived(createPressWatcher());
 
 	let finalSize = $derived(isInInput ? 'small' : size);
 
-	function onclickWrapper(event: Parameters<NonNullable<Props['onclick']>>[0]) {
+	function onclickWrapper(event: Parameters<NonNullable<ButtonProps['onclick']>>[0]) {
 		imitatePressingOnClick && onclickWatcher();
 
 		// @ts-expect-error TODO: Improve typing

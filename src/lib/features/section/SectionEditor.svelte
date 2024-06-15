@@ -14,6 +14,7 @@
 	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
+	import TagsList from '../tag/SectionTagsList.svelte';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
 	import SectionDeletion from './SectionDeletion.svelte';
 
@@ -143,21 +144,7 @@
 			<LabeledInput style="width: 100%;" as="span">
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
 				{#if tags.length > 0}
-					<div class="tags-list">
-						{#each tags as tag}
-							<Button
-								size="small"
-								type="button"
-								kind={tagsInText.includes(tag.id) ? 'primary' : 'secondary'}
-								onclick={() => switchTagInText(tag.id)}
-							>
-								<Translation recordKey={tag.name_translation_key} />
-								<span class="tag-id">
-									ID:{tag.id}
-								</span>
-							</Button>
-						{/each}
-					</div>
+					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
 				{:else}
 					<div class="info-block-wrapper">
 						<InfoBlock>

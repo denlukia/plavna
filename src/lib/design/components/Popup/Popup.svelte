@@ -3,6 +3,7 @@
 
 	import { clickOutside } from '../../actions/click-outside';
 	import Button from '../Button/Button.svelte';
+	import type { ButtonProps } from '../Button/types';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
 
@@ -12,9 +13,17 @@
 		list?: boolean;
 		label: Snippet;
 		content: Snippet;
+		buttonProps?: ButtonProps;
 	};
 
-	let { triggerType = 'dropdown', list, active = $bindable(), label, content }: Props = $props();
+	let {
+		triggerType = 'dropdown',
+		list,
+		active = $bindable(),
+		label,
+		content,
+		buttonProps
+	}: Props = $props();
 
 	function onclick() {
 		active = !active;
@@ -26,7 +35,9 @@
 
 <span class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
 	{#if triggerType === 'button'}
-		<Button {onclick} {active} imitatePressingOnClick={false}>{@render label()}</Button>
+		<Button {onclick} {active} imitatePressingOnClick={false} {...buttonProps}
+			>{@render label()}</Button
+		>
 	{:else}
 		<TriggerStyler {active}>
 			<button class="global-reset-button global-dropdown-paddings" {onclick}>
@@ -37,7 +48,7 @@
 
 	{#if active}
 		<div class="popup-positioner">
-			<Box {list}>
+			<Box {list} popupForm={!list}>
 				{@render content()}
 			</Box>
 		</div>

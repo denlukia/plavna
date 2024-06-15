@@ -63,6 +63,12 @@ export const EN = {
 		}
 	},
 	article_editor: {
+		tags: {
+			form_title: 'Tag',
+			edit_name: 'Edit name',
+			or: 'or',
+			delete: 'Delete'
+		},
 		heading: 'Article Editing',
 		title: 'Title',
 		short_description: 'Short description',
