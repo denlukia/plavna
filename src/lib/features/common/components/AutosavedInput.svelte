@@ -11,17 +11,17 @@
 
 	let {
 		action,
-		superformData,
+		superValidated,
 		...attributes
 	}: InputOrTextareaProps & {
 		action: string;
-		superformData: SuperValidated<any>;
+		superValidated: SuperValidated<any>;
 	} = $props();
 
 	let saveButtonRef: HTMLButtonElement | null = $state(null);
 	let showSaveButton = $state(true);
 
-	let { form, enhance, errors } = superForm(superformData, {
+	let { form, enhance, errors } = superForm(superValidated, {
 		resetForm: false,
 		invalidateAll: false
 	});

@@ -191,4 +191,9 @@
 	--size-info-block-padding-block: var(--size-m);
 	--size-info-block-padding-inline: var(--size-m);
 	--size-info-block-border-radius: var(--size-m);
+
+	/* --- Tag --- */
+	--size-tag-border-radius: var(--size-full);
+	--size-tag-padding-inline: var(--size-m);
+	--size-tag-padding-block: var(--size-s);
 }

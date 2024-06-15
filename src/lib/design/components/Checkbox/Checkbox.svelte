@@ -8,7 +8,7 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
-	let { type, checked, ...attributes }: HTMLInputAttributes = $props();
+	let { type, checked = $bindable(), ...attributes }: HTMLInputAttributes = $props();
 
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;

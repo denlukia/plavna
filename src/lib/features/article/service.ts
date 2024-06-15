@@ -37,7 +37,7 @@ import {
 	composeURLForScreenshot,
 	getMaybeTranslatedImagePath
 } from '../screenshot/utils';
-import { tagUpdateSchema } from '../tag/parsers';
+import { tagDeleteSchema, tagUpdateSchema } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
 import { users } from '../user/schema';
 import type { ActorService } from '../user/service';
@@ -237,6 +237,9 @@ export class ArticleService {
 					zod(tagUpdateSchema),
 					{ id: 'is-checked-' + tag.id }
 				),
+				deletionForm: await superValidate(tag, zod(tagDeleteSchema), {
+					id: 'tag-delete-' + tag.id
+				}),
 				name_translation_key: tag.name_translation_key
 			}))
 		);

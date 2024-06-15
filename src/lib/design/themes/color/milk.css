@@ -140,4 +140,8 @@
 	/* --- Info Block --- */
 	--color-info-block-default-bg: var(--warm-300-transparent-100);
 	--color-info-block-default-text: var(--warm-100);
+
+	/* --- Tag --- */
+	--color-tag-bg: var(--warm-300-transparent-100);
+	--color-tag-layer-flashlight-hover: var(--neutral-1000-transparent-500);
 }

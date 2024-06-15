@@ -88,7 +88,7 @@
 		</LabeledInput> -->
 		<LabeledInput>
 			<Label>Тест автозбереження</Label>
-			<AutosavedInput superformData={translationFormData} action="?/update_translation" />
+			<AutosavedInput superValidated={translationFormData} action="?/update_translation" />
 		</LabeledInput>
 	</div>
 	<div class="group">

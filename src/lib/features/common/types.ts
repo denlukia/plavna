@@ -26,3 +26,8 @@ export type TransactionContext = SQLiteTransaction<
 	typeof import('$lib/collections/main-schema'),
 	ExtractTablesWithRelations<typeof import('$lib/collections/main-schema')>
 >;
+
+type ExtractMethodNames<T> = {
+	[K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+}[keyof T];
+export type ExtractMethods<T> = Pick<T, ExtractMethodNames<T>>;
