@@ -4,7 +4,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
+	import Label from '$lib/design/components/Label/Label.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
+	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 
@@ -30,7 +32,7 @@
 		<label class="checked-form" for="update-tag">
 			<input name="id" type="hidden" bind:value={$form.id} />
 			<div class="events-none">
-				<Checkbox name="checked" bind:checked={$form.checked} />
+				<Checkbox size="small" name="checked" bind:checked={$form.checked} />
 			</div>
 			<Typography size="small">
 				<Translation formObj={translationSuperValidated} />
@@ -42,20 +44,33 @@
 	</form>
 
 	<div class="editing-forms">
-		<Popup triggerType="button" buttonProps={{ size: 'small' }}>
+		<Popup triggerType="button" buttonProps={{ placement: 'in-tag' }}>
 			{#snippet label()}:{/snippet}
 			{#snippet content()}
-				<Typography size="heading-2">
-					<Translation key="article_editor.tags.form_title" />
-				</Typography>
-				<AutosavedInput superValidated={translationSuperValidated} action="?/update_translation" />
-				<Typography size="small">
-					<Translation key="article_editor.tags.or" />
-				</Typography>
-				<form use:enhance method="POST" action="?/delete_tag">
+				<div class="global-text-align-center">
+					<Typography size="heading-2">
+						<Translation key="article_editor.tags.editing_form_title" />
+					</Typography>
+				</div>
+				<Spacer />
+				<div class="global-labeled-input-wrapper">
+					<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
+					<AutosavedInput
+						superValidated={translationSuperValidated}
+						action="?/update_translation"
+					/>
+				</div>
+				<Spacer />
+				<div class="global-text-align-center">
+					<Typography size="small">
+						<Translation key="article_editor.tags.or" />
+					</Typography>
+				</div>
+				<Spacer />
+				<form class="global-display-contents" use:enhance method="POST" action="?/delete_tag">
 					<input name="id" type="hidden" bind:value={$form.id} />
 					<Button kind="destructive">
-						<Translation key="article_editor.tags.or" />
+						<Translation key="article_editor.tags.delete" />
 					</Button>
 				</form>
 			{/snippet}

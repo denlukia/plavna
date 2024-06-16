@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { SECTION_RECONFIG_PARAM_NAME } from '$lib/collections/constants';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
@@ -56,9 +55,29 @@
 	}
 </script>
 
-<LabeledInput type="switch-with-bg" href={showAsLink ? reconfigRequestLink : undefined}>
+<svelte:element
+	this={showAsLink ? 'a' : 'label'}
+	class="global-labeled-input-wrapper switch-with-bg"
+	href={showAsLink ? reconfigRequestLink : undefined}
+>
 	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 		{@render children()}
 	</Typography>
 	<Switch bind:checked onchange={onSwitchChange} />
-</LabeledInput>
+</svelte:element>
+
+<style>
+	.switch-with-bg {
+		width: auto;
+		padding-inline: var(--size-labeled-switch-with-bg-padding-inline);
+		background: var(--color-labeled-switch-with-bg-bg);
+		border-radius: var(--size-labeled-switch-with-bg-border-radius);
+		/* overflow: hidden; */
+
+		/* For Switch */
+		--switch-margin-top: var(--size-labeled-switch-with-bg-margin-top);
+
+		/* For Text */
+		--text-padding-inline: var(--size-labeled-switch-with-bg-text-padding-inline);
+	}
+</style>

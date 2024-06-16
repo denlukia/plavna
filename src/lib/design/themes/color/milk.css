@@ -61,6 +61,18 @@
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-250);
 	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
 
+	/* --- Button in Input */
+	--color-button-in-input-bg: var(--warm-950);
+	--color-button-in-input-shadow-1: var(--neutral-1000-transparent-500);
+	--color-button-in-input-shadow-2: var(--warm-300-transparent-400);
+	--color-button-in-input-layer-flashlight-hover: var(--neutral-1000);
+
+	/* -- Button in Tag */
+	--color-button-in-tag-bg: var(--warm-950);
+	--color-button-in-tag-shadow-1: var(--neutral-1000-transparent-500);
+	--color-button-in-tag-shadow-2: var(--warm-300-transparent-400);
+	--color-button-in-tag-layer-flashlight-hover: var(--neutral-1000);
+
 	/* --- Labeled --- */
 	--color-labeled-switch-with-bg-bg: var(--warm-300-transparent-200);
 
@@ -74,12 +86,6 @@
 	--color-input-placeholder: var(--warm-300-transparent-500);
 
 	--color-input-invalid-bg: var(--red-300-transparent-100);
-
-	/* --- Button in Input */
-	--color-button-in-input-bg: var(--warm-950);
-	--color-button-in-input-shadow-1: var(--neutral-1000-transparent-500);
-	--color-button-in-input-shadow-2: var(--warm-300-transparent-400);
-	--color-button-in-input-layer-flashlight-hover: var(--neutral-1000);
 
 	/* --- Dropdown --- */
 	--color-dropdown-bg: var(--neutral-1000);

@@ -6,11 +6,12 @@
 	import type { ButtonProps } from '../Button/types';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
+	import type { PopupKind } from './types';
 
 	type Props = {
 		triggerType?: 'button' | 'dropdown';
 		active?: boolean;
-		list?: boolean;
+		kind?: PopupKind;
 		label: Snippet;
 		content: Snippet;
 		buttonProps?: ButtonProps;
@@ -18,7 +19,7 @@
 
 	let {
 		triggerType = 'dropdown',
-		list,
+		kind = 'form',
 		active = $bindable(),
 		label,
 		content,
@@ -35,9 +36,9 @@
 
 <span class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
 	{#if triggerType === 'button'}
-		<Button {onclick} {active} imitatePressingOnClick={false} {...buttonProps}
-			>{@render label()}</Button
-		>
+		<Button {onclick} {active} imitatePressingOnClick={false} {...buttonProps}>
+			{@render label()}
+		</Button>
 	{:else}
 		<TriggerStyler {active}>
 			<button class="global-reset-button global-dropdown-paddings" {onclick}>
@@ -48,7 +49,7 @@
 
 	{#if active}
 		<div class="popup-positioner">
-			<Box {list} popupForm={!list}>
+			<Box {kind}>
 				{@render content()}
 			</Box>
 		</div>

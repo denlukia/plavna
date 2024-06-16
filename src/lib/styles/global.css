@@ -168,3 +168,31 @@
 	white-space: nowrap;
 	border: 0;
 }
+
+.global-labeled-input-wrapper {
+	display: inline-flex;
+	flex-direction: column;
+	width: 100%;
+
+	/* For Text */
+	--label-padding-inline: var(--size-labeled-text-padding-inline);
+
+	/* For Input */
+	--input-margin-top: var(--size-labeled-input-margin-top);
+	--input-margin-bottom: var(--size-labeled-input-margin-bottom);
+
+	/* For Input Last Child */
+	--input-last-child-margin-bottom: 0;
+
+	/* For Checkbox */
+	--checkbox-margin-top: var(--size-labeled-checkbox-margin-top);
+	--checkbox-margin-bottom: var(--size-labeled-checkbox-margin-bottom);
+}
+
+.global-text-align-center {
+	text-align: center;
+}
+
+.global-display-contents {
+	display: contents;
+}

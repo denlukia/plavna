@@ -3,7 +3,6 @@
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import PreviewEditorsList from '$lib/features/article/editor/PreviewEditorsList.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
@@ -24,31 +23,31 @@
 <GridContainer>
 	<GridCell colspan={3}>
 		<GridCell colspan={2}>
-			<LabeledInput>
+			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="article_editor.title" /></Label>
 				<AutosavedInput
 					superValidated={translationForms[article.title_translation_key]}
 					action="?/update_translation"
 				/>
-			</LabeledInput>
+			</div>
 		</GridCell>
 
 		<GridCell>
-			<LabeledInput>
+			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="article_editor.slug" /></Label>
 				<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-			</LabeledInput>
+			</div>
 		</GridCell>
 
 		<GridCell colspan={3}>
-			<LabeledInput>
+			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="article_editor.short_description" /></Label>
 				<AutosavedInput
 					element="textarea"
 					superValidated={translationForms[article.description_translation_key]}
 					action="?/update_translation"
 				/>
-			</LabeledInput>
+			</div>
 		</GridCell>
 	</GridCell>
 

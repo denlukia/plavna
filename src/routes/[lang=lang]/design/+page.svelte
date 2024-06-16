@@ -6,16 +6,14 @@
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
-	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
-	import TranslationsInput from '$lib/features/i18n/Input/TranslationsInput.svelte';
+	import TagSwitcher from '$lib/features/markdown/renderers/TagSwitcher.svelte';
 
 	let { data } = $props();
 
@@ -74,39 +72,32 @@
 		<Button size="small" kind="destructive">Testy</Button>
 	</div>
 	<div class="group">
-		<LabeledInput>
+		<div class="global-labeled-input-wrapper">
 			<Label>Тест звичайного інпуту</Label>
 			<Input type="text" placeholder="Тест" />
-		</LabeledInput>
-		<LabeledInput>
+		</div>
+		<div class="global-labeled-input-wrapper">
 			<Label tone="additional">Тест пароля</Label>
 			<PasswordInput type="password" placeholder="Тест" />
-		</LabeledInput>
-		<!-- <LabeledInput>
+		</div>
+		<!-- <div class="global-labeled-input-wrapper">
 			<Label>Тест перекладів</Label>
 			<TranslationsInput superform={translationForm} />
-		</LabeledInput> -->
-		<LabeledInput>
+		</div> -->
+		<div class="global-labeled-input-wrapper">
 			<Label>Тест автозбереження</Label>
 			<AutosavedInput superValidated={translationFormData} action="?/update_translation" />
-		</LabeledInput>
+		</div>
 	</div>
 	<div class="group">
 		<Select>
 			<option>Test</option>
 		</Select>
-		<LabeledInput type="horizontal">
-			<Switch />
-			<Typography>Тест</Typography>
-		</LabeledInput>
-		<LabeledInput type="switch-with-bg">
-			<Typography size="heading-2">Тест</Typography>
-			<Switch />
-		</LabeledInput>
-		<LabeledInput type="horizontal">
+		<TagSwitcher tagId={1}>Ім'я тега</TagSwitcher>
+		<div class="global-labeled-input-wrapper">
 			<Checkbox />
 			<Typography>Тест</Typography>
-		</LabeledInput>
+		</div>
 		<Tabs>
 			{#each tabs as tab, index}
 				<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>

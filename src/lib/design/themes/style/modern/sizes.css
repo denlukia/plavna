@@ -64,6 +64,23 @@
 	--size-labeled-checkbox-margin-bottom: var(--size-s);
 	--size-labeled-inputs-gap: var(--size-m);
 
+	/* --- Button in Input --- */
+	--size-input-to-button-padding: var(--size-xs);
+	--size-button-in-input-border-radius: calc(
+		var(--size-input-border-radius) - var(--size-input-to-button-padding)
+	);
+	--size-button-in-input-height: 100%;
+	--size-button-in-input-padding-inline: var(--size-m);
+	--size-button-in-input-padding-top: var(--size-s-to-m);
+	--size-button-in-input-padding-bottom: var(--size-s-to-m);
+
+	/* --- Button in Tag --- */
+	--size-button-in-tag-border-radius: var(--size-m);
+	--size-button-in-tag-height: unset;
+	--size-button-in-tag-padding-inline: var(--size-s);
+	--size-button-in-tag-padding-top: var(--size-none);
+	--size-button-in-tag-padding-bottom: var(--size-xs);
+
 	/* --- Input --- */
 	--size-input-padding-inline: var(--size-m);
 	--size-input-padding-top: var(--size-none);
@@ -75,16 +92,6 @@
 	--size-input-color-picker: var(--size-l-to-xl);
 	--size-input-color-picker-radius: var(--size-full);
 	--size-input-buttons-gap: var(--size-xs);
-
-	/* --- Button in Input --- */
-	--size-input-to-button-padding: var(--size-xs);
-	--size-button-in-input-border-radius: calc(
-		var(--size-input-border-radius) - var(--size-input-to-button-padding)
-	);
-	--size-button-in-input-height: 100%;
-	--size-button-in-input-padding-inline: var(--size-m);
-	--size-button-in-input-padding-top: var(--size-s-to-m);
-	--size-button-in-input-padding-bottom: var(--size-s-to-m);
 
 	/* --- Icon --- */
 	--size-icon-body-big-size-unitless: 24;
@@ -141,8 +148,11 @@
 	--size-switch-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */
-	--size-checkbox: var(--size-l-to-xl);
-	--size-checkbox-border-radius: 6px;
+	--size-checkbox-default: var(--size-l-to-xl);
+	--size-checkbox-default-border-radius: 6px;
+
+	--size-checkbox-small: var(--size-l);
+	--size-checkbox-small-border-radius: 5px;
 
 	/* --- Tabs --- */
 	--size-tabs-heading-2-border-radius: var(--size-full);
@@ -194,6 +204,6 @@
 
 	/* --- Tag --- */
 	--size-tag-border-radius: var(--size-full);
-	--size-tag-padding-inline: var(--size-m);
-	--size-tag-padding-block: var(--size-s);
+	--size-tag-padding-inline: var(--size-s-to-m);
+	--size-tag-padding-block: var(--size-xs);
 }

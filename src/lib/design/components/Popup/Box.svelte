@@ -5,16 +5,16 @@
 
 	import { rotateAndScale } from '../../transitions/rotate-and-scale';
 	import Tail from './Tail.svelte';
+	import type { PopupKind } from './types';
 
 	type Props = {
 		children: Snippet;
-		list?: boolean;
-		popupForm?: boolean;
+		kind: PopupKind;
 	};
 
 	const animationDuration = 500;
 
-	let { children, list, popupForm }: Props = $props();
+	let { children, kind = 'form' }: Props = $props();
 </script>
 
 <div
@@ -28,9 +28,7 @@
 		<Tail />
 	</div>
 	<div
-		class="box"
-		class:list
-		class:popup-form={popupForm}
+		class={`box kind-${kind}`}
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
 			easing: expoOut,
@@ -70,10 +68,10 @@
 		margin-bottom: -0.5px;
 		transform-origin: bottom center;
 	}
-	.list {
+	.kind-list {
 		gap: var(--size-box-gap);
 	}
-	.popup-form {
+	.kind-form {
 		align-items: stretch;
 		padding-top: calc(var(--size-box-padding-top) / 2);
 	}

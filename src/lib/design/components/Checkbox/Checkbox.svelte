@@ -8,7 +8,9 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
-	let { type, checked = $bindable(), ...attributes }: HTMLInputAttributes = $props();
+	type Props = HTMLInputAttributes & { size?: 'default' | 'small' };
+
+	let { type, size = 'default', checked = $bindable(), ...attributes }: Props = $props();
 
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;
@@ -35,9 +37,9 @@
 	});
 </script>
 
-<label class="checkbox" {...events}>
-	<input type="checkbox" bind:checked {...attributes} />
-	<span class="checkbox-visualizer">
+<label class="checkbox-label" {...events}>
+	<input class="global-visually-hidden" type="checkbox" bind:checked {...attributes} />
+	<span class="checkbox-visualizer size-{size}">
 		<div class="checkmark-positioner">
 			<LayerShift {mouse}>
 				<IconWrapper
@@ -54,15 +56,9 @@
 </label>
 
 <style>
-	.checkbox {
-		position: relative;
-
+	.checkbox-label {
 		margin-top: var(--checkbox-margin-top);
 		margin-bottom: var(--checkbox-margin-bottom);
-	}
-	input {
-		appearance: none;
-		position: absolute;
 	}
 
 	.checkbox-visualizer {
@@ -70,10 +66,18 @@
 		display: inline-block;
 		background: var(--color-checkbox-bg);
 		box-shadow: var(--shadow-checkbox);
-		border-radius: var(--size-checkbox-border-radius);
-		width: var(--size-checkbox);
-		height: var(--size-checkbox);
+
 		transition: var(--transition-checkbox);
+	}
+	.size-default {
+		width: var(--size-checkbox-default);
+		height: var(--size-checkbox-default);
+		border-radius: var(--size-checkbox-default-border-radius);
+	}
+	.size-small {
+		width: var(--size-checkbox-small);
+		height: var(--size-checkbox-small);
+		border-radius: var(--size-checkbox-small-border-radius);
 	}
 
 	input:checked + .checkbox-visualizer {

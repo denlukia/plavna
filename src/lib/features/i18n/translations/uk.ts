@@ -67,10 +67,14 @@ export const UK = {
 	},
 	article_editor: {
 		tags: {
-			form_title: 'Тег',
-			edit_name: 'Редагувати назву',
+			list_label: 'Теги статті',
+			editing_form_title: 'Тег',
+			name_label: 'Назва',
+			edit_name_label: 'Редагувати назву',
 			or: 'або',
-			delete: 'Видалити'
+			delete: 'Видалити',
+			new_tag: 'Новий тег',
+			create: 'Створити'
 		},
 		heading: 'Редагування статті',
 		title: 'Заголовок',
