@@ -71,7 +71,7 @@
 				<PageEditor formObj={editingForm} {onSuccessfullUpdate} />
 			{/snippet}
 		</Popup>
-		<form class="deletion-form" method="POST" action="?/delete" use:enhance>
+		<form class="global-display-contents" method="POST" action="?/delete" use:enhance>
 			<input type="hidden" name="id" value={$form.id} />
 			<Button kind="destructive"><Translation key="pages_list.delete_page" /></Button>
 		</form>
@@ -100,9 +100,7 @@
 		align-items: center;
 		gap: var(--size-s);
 	}
-	.deletion-form {
-		display: contents;
-	}
+
 	.link-wrapper {
 		margin-top: calc(-1 * var(--size-m));
 	}

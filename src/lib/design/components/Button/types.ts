@@ -13,6 +13,7 @@ export type ButtonProps = (AnchorAttrs | ButtonAttrs) & {
 	children?: Snippet;
 	kind?: 'primary' | 'secondary' | 'prominent' | 'destructive';
 	size?: 'body' | 'small';
+	placement?: 'default' | 'in-input' | 'in-tag';
 	dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];
 	dataSvelteKitReload?: HTMLAnchorAttributes['data-sveltekit-reload'];
 	href?: string;

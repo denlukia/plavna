@@ -9,14 +9,14 @@
 	let {
 		children,
 		kind = 'primary',
-		size = 'body',
+		size: sizeProp = 'body',
 		href,
 		dataSvelteKitPreloadData,
 		dataSvelteKitReload,
 		onclick,
 		active,
 		imitatePressingOnClick = true,
-		isInInput,
+		placement = 'default',
 		ref = $bindable(null),
 		leadingIcon,
 		trailingIcon,
@@ -25,7 +25,7 @@
 
 	const { pressed, onclick: onclickWatcher, ...events } = $derived(createPressWatcher());
 
-	let finalSize = $derived(isInInput ? 'small' : size);
+	let size = $derived(placement === 'default' ? sizeProp : 'small');
 
 	function onclickWrapper(event: Parameters<NonNullable<ButtonProps['onclick']>>[0]) {
 		imitatePressingOnClick && onclickWatcher();
@@ -41,10 +41,9 @@
 	role={href ? 'link' : 'button'}
 	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
-	class={`button kind-${kind} size-${finalSize} 
+	class={`button kind-${kind} size-${size} placement-${placement}
 		global-reset-line-height ${href ? 'global-link-rest' : 'global-button-rest'}`}
 	class:pressed={active || pressed}
-	class:in-input={isInInput}
 	onclick={onclickWrapper}
 	{...events}
 	{...attrs}
@@ -56,7 +55,7 @@
 				{@render leadingIcon()}
 			{/if}
 			{#if children}
-				<Typography size={`${finalSize}-short`}>
+				<Typography size={`${size}-short`}>
 					<Strong>
 						{@render children()}
 					</Strong>
@@ -170,7 +169,7 @@
 	}
 
 	/* For Button in Input */
-	.in-input {
+	.placement-in-input {
 		border-radius: var(--size-button-in-input-border-radius);
 		background-color: var(--color-button-in-input-bg);
 		box-shadow: var(--shadow-button-in-input);
@@ -180,17 +179,42 @@
 		--color-layer-flashlight-pointer: var(--color-button-in-input-layer-flashlight-hover);
 		--layers-border-radius: var(--size-button-in-input-border-radius);
 	}
-	.in-input .content {
+	.placement-in-input .content {
 		padding-inline: var(--size-button-in-input-padding-inline);
 		padding-top: var(--size-button-in-input-padding-top);
 		padding-bottom: var(--size-button-in-input-padding-bottom);
 	}
-	.in-input:hover {
+	.placement-in-input:hover {
 		transform: var(--transform-button-in-input-hover);
 		box-shadow: var(--shadow-button-in-input-hover);
 	}
-	.in-input:active {
+	.placement-in-input:active {
 		transform: var(--transform-button-in-input-active);
 		box-shadow: var(--shadow-button-in-input-active);
+	}
+
+	/* For Button in Tag */
+	.placement-in-tag {
+		border-radius: var(--size-button-in-tag-border-radius);
+		background-color: var(--color-button-in-tag-bg);
+		box-shadow: var(--shadow-button-in-tag);
+		height: var(--size-button-in-tag-height);
+		transition: var(--transition-button-in-tag);
+
+		--color-layer-flashlight-pointer: var(--color-button-in-tag-layer-flashlight-hover);
+		--layers-border-radius: var(--size-button-in-tag-border-radius);
+	}
+	.placement-in-tag .content {
+		padding-inline: var(--size-button-in-tag-padding-inline);
+		padding-top: var(--size-button-in-tag-padding-top);
+		padding-bottom: var(--size-button-in-tag-padding-bottom);
+	}
+	.placement-in-tag:hover {
+		transform: var(--transform-button-in-tag-hover);
+		box-shadow: var(--shadow-button-in-tag-hover);
+	}
+	.placement-in-tag:active {
+		transform: var(--transform-button-in-tag-active);
+		box-shadow: var(--shadow-button-in-tag-active);
 	}
 </style>

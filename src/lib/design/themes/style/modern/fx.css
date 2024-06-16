@@ -27,15 +27,6 @@
 
 	--transform-button-active: translateY(1px);
 
-	/* --- Labeled --- */
-	--transition-labeled-input: all 400ms var(--smooth-ease-out);
-
-	/* --- Input --- */
-	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
-	--border-input-color-picker: 3px solid var(--color-input-color-picker-border);
-	--shadow-input-color-picker: 0 2px 2px var(--color-input-color-picker-shadow);
-	--transition-input: all 250ms var(--smooth-ease-out);
-
 	/* --- Button in Input */
 	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
 		0 1px 1px var(--color-button-in-input-shadow-2);
@@ -46,6 +37,26 @@
 		0 2px 4px var(--color-button-in-input-shadow-2);
 
 	--transform-button-in-input-active: translateY(0.5px);
+
+	/* --- Button in Tag */
+	--shadow-button-in-tag: inset 0 1px 1px var(--color-button-in-tag-shadow-1),
+		0 1px 1px var(--color-button-in-tag-shadow-2);
+	--transition-button-in-tag: all 250ms var(--smooth-ease-out);
+
+	--transform-button-in-tag-hover: translateY(-0.5px);
+	--shadow-button-in-tag-hover: inset 0 1px 1px var(--color-button-in-tag-shadow-1),
+		0 2px 4px var(--color-button-in-tag-shadow-2);
+
+	--transform-button-in-tag-active: translateY(0.5px);
+
+	/* --- Labeled --- */
+	--transition-labeled-input: all 400ms var(--smooth-ease-out);
+
+	/* --- Input --- */
+	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
+	--border-input-color-picker: 3px solid var(--color-input-color-picker-border);
+	--shadow-input-color-picker: 0 2px 2px var(--color-input-color-picker-shadow);
+	--transition-input: all 250ms var(--smooth-ease-out);
 
 	/* --- Dropdown --- */
 	--shadow-dropdown: 0 1px 1px var(--color-dropdown-shadow-1),

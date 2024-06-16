@@ -64,10 +64,14 @@ export const EN = {
 	},
 	article_editor: {
 		tags: {
-			form_title: 'Tag',
-			edit_name: 'Edit name',
+			list_label: "Article's tags",
+			editing_form_title: 'Tag',
+			name_label: 'Name',
+			edit_name_label: 'Edit name',
 			or: 'or',
-			delete: 'Delete'
+			delete: 'Delete',
+			new_tag: 'New Tag',
+			create: 'Create'
 		},
 		heading: 'Article Editing',
 		title: 'Title',

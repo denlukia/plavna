@@ -3,7 +3,6 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 
 	import Error from '../common/components/Error.svelte';
 	import Translation from '../i18n/Translation.svelte';
@@ -31,11 +30,11 @@
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
 
-	<LabeledInput>
+	<div class="global-labeled-input-wrapper">
 		<Label><Translation key="pages_list.slug" /></Label>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
-	</LabeledInput>
+	</div>
 
 	{#if $form.id}
 		<Button formaction="?/update">

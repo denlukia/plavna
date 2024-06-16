@@ -23,7 +23,7 @@
 	const currentPage = $derived(pages.find((page) => $page.route.id === page.routeId));
 </script>
 
-<Popup list>
+<Popup kind="list">
 	{#snippet label()}
 		<span class="label-wrapper">
 			{#if currentPage}
