@@ -15,21 +15,33 @@
 	import type { TagDelete, TagUpdate } from './parsers';
 
 	type Props = {
-		checkedForm: SuperValidated<TagUpdate>;
-		deletionForm: SuperValidated<TagDelete>;
+		checkedSuperValidated: SuperValidated<TagUpdate>;
+		deletionSuperValidated: SuperValidated<TagDelete>;
 		translationKey: TranslationSelect['key'];
 	};
 
-	let { checkedForm, translationKey }: Props = $props();
+	let { checkedSuperValidated, deletionSuperValidated, translationKey }: Props = $props();
 
-	let { enhance, errors, form } = superForm(checkedForm);
+	let { enhance, errors, form } = superForm(checkedSuperValidated, {
+		invalidateAll: false,
+		resetForm: false,
+		applyAction: true,
+		onSubmit: () => {
+			$form.checked = !$form.checked;
+		}
+	});
+	let { form: deletionForm, enhance: deletionEnhance } = superForm(deletionSuperValidated);
 
 	let translationSuperValidated = $derived($page.data.translationForms[translationKey]);
+
+	// So we can push submit by pressing anywhere in the form
+	// and thus switch tags as usual even without JS
+	let submitButtonId = $derived(`switch-tag-${$form.id}-button`);
 </script>
 
 <div class="tag">
 	<form use:enhance method="POST" action="?/switch_tag">
-		<label class="checked-form" for="update-tag">
+		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
 			<div class="events-none">
 				<Checkbox size="small" name="checked" bind:checked={$form.checked} />
@@ -37,7 +49,7 @@
 			<Typography size="small">
 				<Translation formObj={translationSuperValidated} />
 			</Typography>
-			<button class="global-visually-hidden" id="update-tag">
+			<button class="global-visually-hidden" id={submitButtonId}>
 				{$form.checked ? 'Uncheck' : 'Check'}
 			</button>
 		</label>
@@ -67,8 +79,13 @@
 					</Typography>
 				</div>
 				<Spacer />
-				<form class="global-display-contents" use:enhance method="POST" action="?/delete_tag">
-					<input name="id" type="hidden" bind:value={$form.id} />
+				<form
+					class="global-display-contents"
+					use:deletionEnhance
+					method="POST"
+					action="?/delete_tag"
+				>
+					<input name="id" type="hidden" bind:value={$deletionForm.id} />
 					<Button kind="destructive">
 						<Translation key="article_editor.tags.delete" />
 					</Button>

@@ -232,12 +232,12 @@ export class ArticleService {
 			.filter(getNullAndDupFilter('key'));
 		const tagInfos = await Promise.all(
 			allTags.map(async (tag) => ({
-				checkedForm: await superValidate(
+				checkedSuperValidated: await superValidate(
 					{ ...tag, checked: !!articleTags.find((t) => t.tag_id === tag.id) },
 					zod(tagUpdateSchema),
-					{ id: 'is-checked-' + tag.id }
+					{ id: 'tag-checked-' + tag.id }
 				),
-				deletionForm: await superValidate(tag, zod(tagDeleteSchema), {
+				deletionSuperValidated: await superValidate(tag, zod(tagDeleteSchema), {
 					id: 'tag-delete-' + tag.id
 				}),
 				name_translation_key: tag.name_translation_key
@@ -311,7 +311,7 @@ export class ArticleService {
 			previewTemplates: previewTemplatesResults,
 			previewTemplateCreationForm: await superValidate(zod(previewTemplateCreationFormSchema)),
 			tagInfos,
-			tagCreationForm: await superValidate(zod(translationInsertSchema)),
+			tagCreationSuperValidated: await superValidate(zod(translationInsertSchema)),
 			imageProviderForm: await superValidate(actor, zod(imageProviderUpdateFormSchema)),
 			images: imagesArr,
 			commonImages,

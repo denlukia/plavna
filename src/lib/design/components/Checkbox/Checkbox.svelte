@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { linear } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { tweened } from 'svelte/motion';
 
@@ -15,9 +16,11 @@
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;
 	const uncheckedEndingFrame = 23;
+	const animationDuration = 170;
 
 	const checkMarkCurrentFrame = tweened(checked ? checkedFrame : uncheckedStartingFrame, {
-		duration: 250
+		duration: animationDuration,
+		easing: linear
 	});
 
 	let { mouse, ...events } = createMouseWatcher();

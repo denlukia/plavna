@@ -11,13 +11,24 @@
 	import type { TranslationInsert } from '../i18n/parsers';
 	import Translation from '../i18n/Translation.svelte';
 
-	export let superFormObj: SuperValidated<TranslationInsert>;
+	type Props = {
+		superValidated: SuperValidated<TranslationInsert>;
+	};
+	let { superValidated }: Props = $props();
 
-	$: superFormStores = superForm(superFormObj);
-	$: ({ form, enhance } = superFormStores);
+	let { form, enhance } = superForm(superValidated, {
+		onResult: (e) => {
+			console.log('GOT RESULT', e);
+			if (e.result.type === 'success') {
+				active = false;
+			}
+		}
+	});
+
+	let active = $state(false);
 </script>
 
-<Popup triggerType="button" buttonProps={{ size: 'small' }}>
+<Popup triggerType="button" buttonProps={{ size: 'small' }} bind:active>
 	{#snippet label()}
 		<Translation key="article_editor.tags.create" />
 	{/snippet}

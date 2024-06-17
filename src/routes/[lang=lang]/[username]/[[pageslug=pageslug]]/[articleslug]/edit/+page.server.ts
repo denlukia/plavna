@@ -38,7 +38,14 @@ async function switch_tag(event: RequestEvent) {
 
 	const { articleslug } = event.params;
 	const { tagService } = event.locals;
-	await tagService.switchChecked(form.data, articleslug);
+	try {
+		await tagService.switchChecked(form.data, articleslug);
+		form.data.checked = !form.data.checked;
+	} catch (err) {
+		console.log('Tag switching error: ', err);
+	}
+
+	return { form };
 }
 
 async function create_tag(event: RequestEvent) {
@@ -47,6 +54,8 @@ async function create_tag(event: RequestEvent) {
 
 	const { tagService } = event.locals;
 	await tagService.create(form.data);
+
+	return { form };
 }
 
 async function delete_tag(event: RequestEvent) {
@@ -55,17 +64,18 @@ async function delete_tag(event: RequestEvent) {
 
 	const { tagService } = event.locals;
 	await tagService.delete(form.data);
+
+	return { form };
 }
 
 async function update_slug(event: RequestEvent) {
-	const { articleslug } = event.params;
+	const params = event.params;
+	const { articleslug } = params;
 	const form = await superValidate(event.request, zod(articleSlugUpdateSchema));
 	if (!form.valid) fail(400, { form });
 
 	const { articleService } = event.locals;
 	const result = await articleService.updateSlug(articleslug, form.data);
-
-	let params = event.params;
 
 	redirect(
 		302,

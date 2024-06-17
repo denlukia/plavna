@@ -15,6 +15,7 @@ export async function update_translation(event: RequestEvent) {
 	}
 
 	const detokenizedData = detokenizeEmptyStrings(form.data);
+	form.data = detokenizedData;
 	const onlyNonNull = removeNullValues(detokenizedData);
 
 	const { translationService } = event.locals;

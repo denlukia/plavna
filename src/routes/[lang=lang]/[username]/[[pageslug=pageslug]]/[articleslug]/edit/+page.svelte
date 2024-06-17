@@ -9,11 +9,11 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import TranslationEditor from '$lib/features/i18n/TranslationEditor.svelte';
 	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
-	import TagsList from '$lib/features/tag/ArticleTagsList.svelte';
+	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
 	let { data } = $props();
 
-	let { meta: article, translationForms, tagInfos, tagCreationForm } = data;
+	let { meta: article, translationForms, tagInfos, tagCreationSuperValidated } = $derived(data);
 </script>
 
 <Typography size="heading-1">
@@ -52,7 +52,7 @@
 	</GridCell>
 
 	<GridCell colspan={2}>
-		<TagsList tags={tagInfos} {tagCreationForm} />
+		<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
 	</GridCell>
 </GridContainer>
 
