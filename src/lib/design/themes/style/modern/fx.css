@@ -105,7 +105,7 @@
 		0 8px 10px var(--color-checkbox-shadow-1);
 	--tranform-checkbox-hover: translateY(-1px);
 	--tranform-checkbox-active: translateY(1px);
-	--transition-checkbox: all 400ms var(--smooth-ease-out);
+	--transition-checkbox: all 200ms var(--smooth-ease-out);
 
 	/* --- Tabs --- */
 	--shadow-tabs: inset 0 2px 4px var(--color-tabs-shadow-1), 0 1px 1px var(--color-tabs-shadow-2);

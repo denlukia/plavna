@@ -49,7 +49,7 @@
 {#snippet trailing()}
 	<span class="save-button-wrapper" class:global-visually-hidden={!showSaveButton}>
 		<span class="inner">
-			<Button isInInput bind:ref={saveButtonRef}>Save</Button>
+			<Button placement="in-input" bind:ref={saveButtonRef}>Save</Button>
 		</span>
 	</span>
 {/snippet}

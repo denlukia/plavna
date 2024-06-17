@@ -11,18 +11,22 @@
 
 	type Props = {
 		tags: ArticleEditorData['tagInfos'];
-		tagCreationForm: ArticleEditorData['tagCreationForm'];
+		tagCreationSuperValidated: ArticleEditorData['tagCreationSuperValidated'];
 	};
 
-	let { tags, tagCreationForm }: Props = $props();
+	let { tags, tagCreationSuperValidated }: Props = $props();
 </script>
 
 <div class="available-tags global-labeled-input-wrapper">
 	<Label><Translation key="article_editor.tags.list_label" /></Label>
 	<div class="tags-list">
-		<ArticleTagCreator superFormObj={tagCreationForm} />
-		{#each tags as { checkedForm, deletionForm, name_translation_key }}
-			<ArticleTag {checkedForm} {deletionForm} translationKey={name_translation_key} />
+		<ArticleTagCreator superValidated={tagCreationSuperValidated} />
+		{#each tags as { checkedSuperValidated, deletionSuperValidated, name_translation_key }}
+			<ArticleTag
+				{checkedSuperValidated}
+				{deletionSuperValidated}
+				translationKey={name_translation_key}
+			/>
 		{/each}
 	</div>
 </div>
