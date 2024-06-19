@@ -14,6 +14,7 @@ import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { TranslationFormsDict } from '../i18n/types';
 import { getSystemTranslation } from '../i18n/utils';
 import {
 	imageCreationFormSchema,
@@ -333,7 +334,7 @@ export class ArticleService {
 						];
 					})
 				)
-			)
+			) as TranslationFormsDict
 		};
 	}
 	async updateSlug(slug: string, article: ArticleSlugUpdate) {

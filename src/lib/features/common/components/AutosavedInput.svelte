@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { onMount } from 'svelte';
-	import { superForm, type SuperForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Input from '../../../design/components/Input/Input.svelte';
@@ -9,21 +9,26 @@
 	import TranslationsInput from '../../i18n/Input/TranslationsInput.svelte';
 	import { debounce } from '../utils';
 
-	let {
-		action,
-		superValidated,
-		...attributes
-	}: InputOrTextareaProps & {
+	type Props = InputOrTextareaProps & {
 		action: string;
+		onSuccessfullUpdate?: (form: any) => void;
 		superValidated: SuperValidated<any>;
-	} = $props();
+	};
+
+	let { action, superValidated, onSuccessfullUpdate, ...attributes }: Props = $props();
 
 	let saveButtonRef: HTMLButtonElement | null = $state(null);
 	let showSaveButton = $state(true);
 
 	let { form, enhance, errors } = superForm(superValidated, {
 		resetForm: false,
-		invalidateAll: false
+		invalidateAll: false,
+		onUpdate: (e) => {
+			if (e.result.type === 'success') {
+				const form = e.result.data.form;
+				onSuccessfullUpdate?.(form);
+			}
+		}
 	});
 
 	let firstInputName = $derived(Object.keys($form)[0]);
@@ -39,7 +44,9 @@
 		saveButtonRef?.click();
 	}
 
-	const debouncedOninput = debounce(oninput, 1000);
+	const WAIT_BEFORE_AUTOSAVE_MS = 700;
+
+	const debouncedOninput = debounce(oninput, WAIT_BEFORE_AUTOSAVE_MS);
 
 	onMount(() => {
 		showSaveButton = false;
@@ -56,8 +63,7 @@
 
 <form {action} use:enhance method="POST">
 	{#if 'key' in $form}
-		<TranslationsInput superform={form} {...attributes} {trailing} oninput={debouncedOninput}
-		></TranslationsInput>
+		<TranslationsInput superform={form} {...attributes} {trailing} oninput={debouncedOninput} />
 	{:else}
 		<Input
 			bind:value={$form[firstInputName]}

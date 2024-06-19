@@ -28,3 +28,15 @@
 		</Button>
 	{/each}
 </div>
+
+<style>
+	.tags-list {
+		display: flex;
+		margin-top: var(--size-s);
+		gap: var(--size-s);
+	}
+	.tag-id {
+		margin-inline-start: var(--size-xs);
+		opacity: 0.4;
+	}
+</style>
