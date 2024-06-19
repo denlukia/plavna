@@ -68,6 +68,7 @@
 
 <style>
 	.switch-with-bg {
+		flex-direction: row;
 		width: auto;
 		padding-inline: var(--size-labeled-switch-with-bg-padding-inline);
 		background: var(--color-labeled-switch-with-bg-bg);

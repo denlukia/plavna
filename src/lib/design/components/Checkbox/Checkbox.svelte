@@ -9,9 +9,9 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
-	type Props = HTMLInputAttributes & { size?: 'default' | 'small' };
+	type Props = HTMLInputAttributes & { checkboxSize?: 'default' | 'small' };
 
-	let { type, size = 'default', checked = $bindable(), ...attributes }: Props = $props();
+	let { type, checkboxSize = 'default', checked = $bindable(), ...attributes }: Props = $props();
 
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;
@@ -42,7 +42,7 @@
 
 <label class="checkbox-label" {...events}>
 	<input class="global-visually-hidden" type="checkbox" bind:checked {...attributes} />
-	<span class="checkbox-visualizer size-{size}">
+	<span class="checkbox-visualizer size-{checkboxSize}">
 		<div class="checkmark-positioner">
 			<LayerShift {mouse}>
 				<IconWrapper

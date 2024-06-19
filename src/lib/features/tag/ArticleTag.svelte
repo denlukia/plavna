@@ -32,7 +32,7 @@
 	});
 	let { form: deletionForm, enhance: deletionEnhance } = superForm(deletionSuperValidated);
 
-	let translationSuperValidated = $derived($page.data.translationForms[translationKey]);
+	let translationSuperValidated = $state($page.data.translationForms?.[translationKey]);
 
 	// So we can push submit by pressing anywhere in the form
 	// and thus switch tags as usual even without JS
@@ -44,10 +44,10 @@
 		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
 			<div class="events-none">
-				<Checkbox size="small" name="checked" bind:checked={$form.checked} />
+				<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 			</div>
 			<Typography size="small">
-				<Translation formObj={translationSuperValidated} />
+				<Translation superValidated={translationSuperValidated} />
 			</Typography>
 			<button class="global-visually-hidden" id={submitButtonId}>
 				{$form.checked ? 'Uncheck' : 'Check'}
@@ -67,10 +67,15 @@
 				<Spacer />
 				<div class="global-labeled-input-wrapper">
 					<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
-					<AutosavedInput
-						superValidated={translationSuperValidated}
-						action="?/update_translation"
-					/>
+					{#if translationSuperValidated}
+						<AutosavedInput
+							superValidated={translationSuperValidated}
+							action="?/update_translation"
+							onSuccessfullUpdate={(data) => {
+								translationSuperValidated = { ...translationSuperValidated, ...data };
+							}}
+						/>
+					{/if}
 				</div>
 				<Spacer />
 				<div class="global-text-align-center">

@@ -1,4 +1,6 @@
-import type { TranslationSelect } from './parsers';
+import type { SuperValidated } from 'sveltekit-superforms';
+
+import type { TranslationSelect, TranslationUpdate } from './parsers';
 import type { EN } from './translations/en';
 
 export type SystemTranslationDict = {
@@ -24,4 +26,9 @@ type NestedKeyOfObjectValuesOf<T extends SystemTranslationDict> = {
 export type SystemTranslationKey = NestedKeyOfStringValuesOf<typeof EN>;
 export type SystemTranslationSliceKey = NestedKeyOfObjectValuesOf<typeof EN>;
 
-export type RecordsTranslations = Record<TranslationSelect['key'], string>;
+export type RecordsTranslationsDict = Record<TranslationSelect['key'], string>;
+
+export type TranslationFormsDict = Record<
+	TranslationSelect['key'],
+	SuperValidated<TranslationUpdate>
+>;

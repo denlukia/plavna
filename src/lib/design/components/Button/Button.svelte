@@ -184,7 +184,7 @@
 		padding-top: var(--size-button-in-input-padding-top);
 		padding-bottom: var(--size-button-in-input-padding-bottom);
 	}
-	.placement-in-input:hover {
+	.placement-in-input:not(.pressed):hover {
 		transform: var(--transform-button-in-input-hover);
 		box-shadow: var(--shadow-button-in-input-hover);
 	}
@@ -209,7 +209,7 @@
 		padding-top: var(--size-button-in-tag-padding-top);
 		padding-bottom: var(--size-button-in-tag-padding-bottom);
 	}
-	.placement-in-tag:hover {
+	.placement-in-tag:not(.pressed):hover {
 		transform: var(--transform-button-in-tag-hover);
 		box-shadow: var(--shadow-button-in-tag-hover);
 	}

@@ -5,7 +5,7 @@
 
 	import ArticlesList from '../article/ArticlesList.svelte';
 	import Translation from '../i18n/Translation.svelte';
-	import type { RecordsTranslations } from '../i18n/types';
+	import type { RecordsTranslationsDict } from '../i18n/types';
 	import { enrichPreviewFamilies } from '../preview/enricher';
 	import type { PreviewFamiliesDict } from '../preview/families/types';
 	import DescriptionViewer from './DescriptionViewer.svelte';
@@ -20,7 +20,7 @@
 
 	type Props = {
 		section: SectionProp;
-		recordsTranslations: RecordsTranslations;
+		recordsTranslations: RecordsTranslationsDict;
 		previewFamilies: PreviewFamiliesDict;
 	};
 

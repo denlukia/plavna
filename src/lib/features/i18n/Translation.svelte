@@ -9,28 +9,28 @@
 	import type { TranslationSelect, TranslationUpdate } from './parsers';
 
 	type FormTranslation = {
-		formObj: SuperValidated<TranslationUpdate>;
+		superValidated: SuperValidated<TranslationUpdate>;
 		recordKey?: null;
 		key?: null;
 	};
 	type RecordTranslation = {
 		recordKey: TranslationSelect['key'];
 		key?: null;
-		formObj?: null;
+		superValidated?: null;
 	};
 	type SystemTranslation = {
 		key: SystemTranslationKey | undefined;
-		formObj?: null;
+		superValidated?: null;
 		recordKey?: null;
 	};
 	type Props = {
 		markdown?: boolean;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let { formObj, key, recordKey, markdown = false }: Props = $props();
+	let { superValidated, key, recordKey, markdown = false }: Props = $props();
 
 	function getTranslation() {
-		if (formObj) return formObj.data[$page.params.lang as SupportedLang];
+		if (superValidated) return superValidated.data[$page.params.lang as SupportedLang];
 		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);
 		if (typeof recordKey === 'number')
 			return getRecordTranslation(recordKey, $page.data.recordsTranslations);

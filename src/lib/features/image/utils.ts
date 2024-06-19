@@ -7,7 +7,7 @@ import type {
 	ArticlePreviewImageFileFieldsAll,
 	ArticlePreviewImageIdsFields
 } from '../article/parsers';
-import type { RecordsTranslations } from '../i18n/types';
+import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
 import type { ImageSelect } from './parsers';
 import type { ImagesDict } from './types';
@@ -24,7 +24,7 @@ export function prepareImage(
 	imageId: ImageSelect['id'] | null,
 	actor: User | null,
 	images: ImagesDict | undefined,
-	recordsTranslations: RecordsTranslations | undefined
+	recordsTranslations: RecordsTranslationsDict | undefined
 ): PreparedImage | null {
 	if (!images || !recordsTranslations || !actor || !imageId) {
 		return null;

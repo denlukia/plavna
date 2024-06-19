@@ -8,12 +8,10 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
-import { users } from '../user/schema';
-import type { ActorService } from '../user/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslations } from '../i18n/types';
+import type { RecordsTranslationsDict } from '../i18n/types';
 import type { ImagesDict } from '../image/types';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
@@ -22,6 +20,8 @@ import { sections, sectionsToTags } from '../section/schema';
 import type { SectionService } from '../section/service';
 import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import {
 	pageCreationFormSchema,
 	pageDeletionFormSchema,
@@ -128,7 +128,7 @@ export class PageService {
 				key,
 				translation
 			])
-		) as RecordsTranslations;
+		) as RecordsTranslationsDict;
 
 		if (!pageInfo) {
 			error(404);
@@ -165,7 +165,7 @@ export class PageService {
 			}, {} as PreviewFamiliesDict),
 			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.recordsTranslations };
-			}, tagsTranslationsAsObject as RecordsTranslations),
+			}, tagsTranslationsAsObject as RecordsTranslationsDict),
 			images: sectionsNonEmpty.reduce((acc, s) => {
 				return { ...acc, ...s.images };
 			}, {} as ImagesDict),

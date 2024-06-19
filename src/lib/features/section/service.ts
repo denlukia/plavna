@@ -12,11 +12,10 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
-import type { ActorService } from '../user/service';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslations } from '../i18n/types';
+import type { RecordsTranslationsDict } from '../i18n/types';
 import type { ImageSelect } from '../image/parsers';
 import { images } from '../image/schema';
 import type { ImagesDict } from '../image/types';
@@ -27,6 +26,7 @@ import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
+import type { ActorService } from '../user/service';
 import {
 	sectionDeleteSchema,
 	sectionUpdateSchema,
@@ -55,11 +55,13 @@ export class SectionService {
 	async getOne(config: GetOneConfig) {
 		const actor = await this.actorService.get();
 
-		const whereCondition1 = actor?.username === config.username ? undefined : isNotNull(translations[this.translationService.currentLang]);
+		const whereCondition1 =
+			actor?.username === config.username
+				? undefined
+				: isNotNull(translations[this.translationService.currentLang]);
 		const whereCondition2 =
 			'pageId' in config ? eq(sections.page_id, config.pageId) : eq(sections.id, config.sectionId);
 		const offset = 'offset' in config ? config.offset : 0;
-
 
 		// 1. Sections query
 		const sectionInfo = await db
@@ -363,7 +365,7 @@ export class SectionService {
 						return [t.key, t[this.translationService.currentLang]];
 					})
 				)
-			} as RecordsTranslations,
+			} as RecordsTranslationsDict,
 			previewFamilies: Object.fromEntries(
 				dedupeArray(articlesInfo.map((a) => a.preview_family).filter(isNonNullable)).map(
 					getPreviewDictEntry

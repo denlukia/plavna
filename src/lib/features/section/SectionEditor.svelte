@@ -140,7 +140,7 @@
 			</div>
 
 			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="page_actor.section.article_tags" /></Label>
+				<Label><Translation key="page_actor.section.available_tags" /></Label>
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
 				{:else}
@@ -195,19 +195,12 @@
 
 	.inputs {
 		margin-top: var(--size-l);
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-m);
 	}
 
-	.tags-list {
-		display: flex;
-		margin-top: var(--size-s);
-		gap: var(--size-s);
-	}
 	.info-block-wrapper {
 		margin-top: var(--size-s);
-	}
-
-	.tag-id {
-		margin-inline-start: var(--size-xs);
-		opacity: 0.4;
 	}
 </style>
