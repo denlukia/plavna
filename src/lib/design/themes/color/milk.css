@@ -150,4 +150,9 @@
 	/* --- Tag --- */
 	--color-tag-bg: var(--warm-300-transparent-100);
 	--color-tag-layer-flashlight-hover: var(--neutral-1000-transparent-500);
+
+	/* --- Article Editor Main Actions --- */
+	--color-article-actions-bg: var(--warm-950);
+	--color-article-actions-shadow-1: var(--warm-300-transparent-300);
+	--color-article-actions-shadow-2: var(--warm-300-transparent-500);
 }

@@ -80,7 +80,6 @@ async function update_slug(event: RequestEvent) {
 	redirect(
 		302,
 		generatePath(`/[lang]/[username]/[pageslug]/[articleslug]/edit`, params, {
-			pageslug: params.pageslug || '',
 			articleslug: result.slug
 		})
 	);
@@ -93,10 +92,7 @@ async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'del
 	await articleService[type](articleslug);
 
 	if (type === 'delete') {
-		redirect(
-			302,
-			generatePath('/[lang]/[username]/[pageslug]', params, { pageslug: params.pageslug || '' })
-		);
+		redirect(302, generatePath('/[lang]/[username]/[pageslug]', params));
 	}
 }
 

@@ -76,6 +76,17 @@ export const UK = {
 			new_tag: 'Новий тег',
 			create: 'Створити'
 		},
+		actions: {
+			publish: 'Опублікувати',
+			hide: 'Приховати',
+			delete: 'Видалити',
+			view: 'Переглянути'
+		},
+		previews: {
+			create_new: 'Створити нове',
+			update: 'Оновити',
+			delete: 'Видалити'
+		},
 		heading: 'Редагування статті',
 		title: 'Заголовок',
 		short_description: 'Короткий опис',

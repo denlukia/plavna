@@ -21,7 +21,6 @@
 	<a
 		class="article global-reset-link"
 		href={generatePath(`/[lang]/[username]/[pageslug]/[articleslug]`, params, {
-			pageslug: params.pageslug || '',
 			articleslug: meta.slug
 		})}
 	>

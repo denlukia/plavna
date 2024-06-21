@@ -206,4 +206,11 @@
 	--size-tag-border-radius: var(--size-full);
 	--size-tag-padding-inline: var(--size-s-to-m);
 	--size-tag-padding-block: var(--size-xs);
+
+	/* --- Article Editor Main Actions --- */
+	--size-article-actions-border-radius: var(--size-full);
+	--size-article-actions-padding-inline: var(--size-m);
+	--size-article-actions-padding-block: var(--size-m);
+	--size-article-actions-bottom: var(--size-l);
+	--size-article-actions-gap: var(--size-m);
 }

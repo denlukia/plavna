@@ -1,3 +1,4 @@
+import type { MaybePromise } from '@sveltejs/kit';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -71,10 +72,7 @@ export type PreviewTemplateImageFieldsZod = typeof previewTemplateImageFieldsSch
 export type PreviewComponents = Record<
 	PreviewFamilyId,
 	{
-		editor?:
-			| ConstructorOfATypedSvelteComponent
-			| Promise<ConstructorOfATypedSvelteComponent | Error>
-			| Error;
+		editor?: MaybePromise<ConstructorOfATypedSvelteComponent | null>;
 		static?: ConstructorOfATypedSvelteComponent;
 		dynamic?: ConstructorOfATypedSvelteComponent;
 	}
