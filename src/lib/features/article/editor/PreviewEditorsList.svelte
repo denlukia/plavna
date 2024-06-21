@@ -3,17 +3,19 @@
 	import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
-	import type { PreviewTemplateSelect } from '$lib/features/preview/parsers';
 
 	import type { PageData } from '../../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
 	import Translation from '../../i18n/Translation.svelte';
-	import PreviewTemplateCreator from '../../preview/PreviewTemplateCreator.svelte';
 	import PreviewTemplateEditor from '../../preview/PreviewTemplateEditor.svelte';
 	import type { ArticleSelect } from '../parsers';
 
-	export let data: PageData;
+	type Props = {
+		data: PageData;
+	};
 
-	$: ({
+	let { data }: Props = $props();
+
+	let {
 		previewFamilies,
 		previewTemplates,
 		previewComponents,
@@ -22,17 +24,43 @@
 		translationForms,
 		meta,
 		images
-	} = data);
+	} = $derived(data);
 
 	type PreviewForms = typeof previewForms;
 
-	$: previewFamilyFromParam = $page.url.searchParams.get(PREVIEW_FAMILY_PARAM);
-	$: initialPreviewFamily = previewFamilyFromParam
-		? Number(previewFamilyFromParam)
-		: meta.preview_family;
+	let currentPreview = $derived.by(getInitialCurrentPreview);
+	let currentPreviewFamily = $derived(currentPreview.family);
+	let currentEditorComponent = $derived.by(getCurrentEditorComponent);
 
-	let overridenPreviewFamily: null | PreviewTemplateSelect['id'] = null;
-	$: finalPreviewFamily = overridenPreviewFamily ?? initialPreviewFamily;
+	function getInitialCurrentPreview() {
+		let familyFromParam = $state($page.url.searchParams.get(PREVIEW_FAMILY_PARAM));
+		if (!familyFromParam) {
+			return {
+				family: meta.preview_family,
+				templateId: meta.preview_template_id
+			};
+		}
+		let familyIsNumber = !isNaN(Number(familyFromParam));
+		if (familyIsNumber) {
+			return {
+				family: 'custom' as const,
+				templateId: Number(familyFromParam)
+			};
+		} else {
+			// TODO: Validation of param
+			return {
+				family: familyFromParam as PreviewFamilyId,
+				templateId: null
+			};
+		}
+	}
+
+	function getCurrentEditorComponent() {
+		if (!currentPreview.family) {
+			return null;
+		}
+		return previewComponents[currentPreview.family].editor;
+	}
 
 	function getPreviewSpecificLink(previewFamilyId: PreviewFamilyId, currentURL: URL) {
 		let url = new URL(currentURL);
@@ -50,91 +78,64 @@
 		)?.propsForm;
 	}
 
-	function onPreviewClick(familyId: PreviewFamilyId) {
+	function onPreviewClick(e: Event, familyId: PreviewFamilyId) {
+		e.preventDefault();
 		previewComponents[familyId].editor = getPreviewComponent(familyId, 'Editor');
 	}
 </script>
 
-<ul>
+<ul class="previews-list">
+	<li>
+		<PreviewTemplateEditor type="creating" superValidatedMain={previewTemplateCreationForm} />
+	</li>
 	{#each previewFamilies as family}
 		{#if family.id !== 'custom'}
-			{@const component = previewComponents[family.id].editor}
 			<li>
-				<b><Translation key={family.name_translation_key} /></b>
-				{#if component}
-					{#await component}
-						Loading...
-					{:then component}
-						{#if component instanceof Error}
-							Couldn't load
-						{:else}
-							<svelte:component
-								this={component}
-								updateForm={getFormForPreview(previewForms, family.id, null)}
-								images={{
-									preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
-									preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
-								}}
-								translationForms={{
-									preview_translation_1: translationForms[meta.preview_translation_1_key],
-									preview_translation_2: translationForms[meta.preview_translation_2_key]
-								}}
-							/>
-						{/if}
-					{/await}
-				{:else}
-					<a
-						href={getPreviewSpecificLink(family.id, $page.url)}
-						on:click={(e) => {
-							e.preventDefault();
-							onPreviewClick(family.id);
-						}}>Load this editor</a
-					>
-				{/if}
+				<Translation key={family.name_translation_key} />
 			</li>
 		{/if}
 	{/each}
 	{#each previewTemplates as template}
-		{@const component = previewComponents.custom.editor}
 		<li>
-			<PreviewTemplateEditor
+			<!-- <PreviewTemplateEditor
 				formObj={template.form}
 				image={images.find((image) => image.id === template.meta.image_id)}
-			/>
-			{#if component}
-				{#await component}
-					Loading...
-				{:then component}
-					{#if component instanceof Error}
-						Couldn't load
-					{:else}
-						<svelte:component
-							this={component}
-							updateForm={getFormForPreview(previewForms, 'custom', template.meta.id)}
-							images={{
-								preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
-								preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
-							}}
-							translationForms={{
-								preview_translation_1: translationForms[meta.preview_translation_1_key],
-								preview_translation_2: translationForms[meta.preview_translation_2_key]
-							}}
-							templateId={template.meta.id}
-						/>
-					{/if}
-				{/await}
-			{:else}
-				<a
-					href={getPreviewSpecificLink('custom', $page.url)}
-					on:click={(e) => {
-						e.preventDefault();
-						onPreviewClick('custom');
-					}}>Load this editor</a
-				>
-			{/if}
+			/> -->
 		</li>
 	{/each}
-	<li>
-		<PreviewTemplateCreator formObj={previewTemplateCreationForm} />
-	</li>
 </ul>
+
+{#if currentPreviewFamily}
+	<!-- {#if currentEditorComponent}
+		{#await currentEditorComponent}
+			Loading...
+		{:then currentEditorComponent}
+			<svelte:component
+				this={currentEditorComponent}
+				updateForm={getFormForPreview(previewForms, currentPreviewFamily, null)}
+				images={{
+					preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
+					preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
+				}}
+				translationForms={{
+					preview_translation_1: translationForms[meta.preview_translation_1_key],
+					preview_translation_2: translationForms[meta.preview_translation_2_key]
+				}}
+			/>
+		{:catch}
+			Couldn't load
+		{/await}
+	{:else}
+		<a
+			href={getPreviewSpecificLink(currentPreviewFamily, $page.url)}
+			onclick={(e) => onPreviewClick(e, currentPreviewFamily)}>Load this editor</a
+		>
+	{/if} -->
+{/if}
+
+<style>
+	.previews-list {
+		list-style: none;
+		padding: 0;
+	}
+</style>

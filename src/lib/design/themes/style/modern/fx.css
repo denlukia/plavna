@@ -126,4 +126,8 @@
 	/* --- Section --- */
 	--transition-section-description: all 600ms var(--smooth-ease-out);
 	--opacity-section-description-disabled: 0.3;
+
+	/* --- Article Editor Main Actions --- */
+	--shadow-article-actions: 0 4px 20px var(--color-article-actions-shadow-1),
+		0 4px 120px var(--color-article-actions-shadow-2);
 }

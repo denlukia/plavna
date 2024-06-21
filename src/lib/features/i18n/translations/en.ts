@@ -73,6 +73,17 @@ export const EN = {
 			new_tag: 'New Tag',
 			create: 'Create'
 		},
+		actions: {
+			publish: 'Publish',
+			hide: 'Hide',
+			delete: 'Delete',
+			view: 'View'
+		},
+		previews: {
+			create_new: 'Create new',
+			update: 'Update',
+			delete: 'Delete'
+		},
 		heading: 'Article Editing',
 		title: 'Title',
 		short_description: 'Short description',
