@@ -5,12 +5,12 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { articles } from '../article/schema';
-import type { ActorService } from '../user/service';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageSelect } from '../image/parsers';
 import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
+import type { ActorService } from '../user/service';
 import type {
 	PreviewTemplateCreation,
 	PreviewTemplateDeletion,
@@ -106,7 +106,7 @@ export class PreviewService {
 				.select({ translation_key: translations.key, images })
 				.from(previewTemplates)
 				.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
-				.innerJoin(images, eq(images.id, previewTemplates.image_id))
+				.leftJoin(images, eq(images.id, previewTemplates.image_id))
 				.where(whereCondition)
 				.get();
 			if (recordResult?.translation_key) {
@@ -118,7 +118,7 @@ export class PreviewService {
 			} else {
 				error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 			}
-			if (recordResult) {
+			if (recordResult.images) {
 				if (recordResult.images.path) {
 					// TODO: Folder deletion
 				}

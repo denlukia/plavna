@@ -196,3 +196,10 @@
 .global-display-contents {
 	display: contents;
 }
+
+.global-form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: var(--size-m);
+}

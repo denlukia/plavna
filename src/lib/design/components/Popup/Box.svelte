@@ -73,7 +73,7 @@
 	}
 	.kind-form {
 		align-items: stretch;
-		padding-top: calc(var(--size-box-padding-top) / 2);
+		padding-top: var(--size-box-form-padding-top);
 	}
 	/* We use global cause we'd like Tail component to be raw SVG code from Figma */
 	.tail-wrapper > :global(svg) {

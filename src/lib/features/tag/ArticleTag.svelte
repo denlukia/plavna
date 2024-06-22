@@ -59,42 +59,44 @@
 		<Popup triggerType="button" buttonProps={{ placement: 'in-tag' }}>
 			{#snippet label()}:{/snippet}
 			{#snippet content()}
-				<div class="global-text-align-center">
-					<Typography size="heading-2">
-						<Translation key="article_editor.tags.editing_form_title" />
-					</Typography>
+				<div class="global-form">
+					<div class="global-text-align-center">
+						<Typography size="heading-2">
+							<Translation key="article_editor.tags.editing_form_title" />
+						</Typography>
+					</div>
+
+					<div class="global-labeled-input-wrapper">
+						<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
+						{#if translationSuperValidated}
+							<AutosavedInput
+								superValidated={translationSuperValidated}
+								action="?/update_translation"
+								onSuccessfullUpdate={(data) => {
+									translationSuperValidated = { ...translationSuperValidated, ...data };
+								}}
+							/>
+						{/if}
+					</div>
+
+					<div class="global-text-align-center">
+						<Typography size="small">
+							<Translation key="layout.or" />
+						</Typography>
+					</div>
+
+					<form
+						class="global-display-contents"
+						use:deletionEnhance
+						method="POST"
+						action="?/delete_tag"
+					>
+						<input name="id" type="hidden" bind:value={$deletionForm.id} />
+						<Button kind="destructive">
+							<Translation key="article_editor.tags.delete" />
+						</Button>
+					</form>
 				</div>
-				<Spacer />
-				<div class="global-labeled-input-wrapper">
-					<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
-					{#if translationSuperValidated}
-						<AutosavedInput
-							superValidated={translationSuperValidated}
-							action="?/update_translation"
-							onSuccessfullUpdate={(data) => {
-								translationSuperValidated = { ...translationSuperValidated, ...data };
-							}}
-						/>
-					{/if}
-				</div>
-				<Spacer />
-				<div class="global-text-align-center">
-					<Typography size="small">
-						<Translation key="article_editor.tags.or" />
-					</Typography>
-				</div>
-				<Spacer />
-				<form
-					class="global-display-contents"
-					use:deletionEnhance
-					method="POST"
-					action="?/delete_tag"
-				>
-					<input name="id" type="hidden" bind:value={$deletionForm.id} />
-					<Button kind="destructive">
-						<Translation key="article_editor.tags.delete" />
-					</Button>
-				</form>
 			{/snippet}
 		</Popup>
 	</div>

@@ -184,6 +184,7 @@
 	--size-box-border-radius: var(--size-xl);
 	--size-box-padding-top: var(--size-m-to-l);
 	--size-box-padding-bottom: var(--size-m-to-l);
+	--size-box-form-padding-top: var(--size-m);
 	--size-box-padding-inline: var(--size-m-to-l);
 	--size-box-gap: var(--size-s);
 

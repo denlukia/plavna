@@ -6,7 +6,9 @@ export const UK = {
 	layout: {
 		language: 'Мова',
 		my_pages: 'Мої сторінки',
-		my: 'Мої'
+		my: 'Мої',
+		no_translation: 'Перкл. відсутній',
+		or: 'або'
 	},
 	auth: {
 		signup: 'Реєстрація',
@@ -71,7 +73,6 @@ export const UK = {
 			editing_form_title: 'Тег',
 			name_label: 'Назва',
 			edit_name_label: 'Редагувати назву',
-			or: 'або',
 			delete: 'Видалити',
 			new_tag: 'Новий тег',
 			create: 'Створити'
@@ -83,9 +84,16 @@ export const UK = {
 			view: 'Переглянути'
 		},
 		previews: {
-			create_new: 'Створити нове',
+			add: "Додати власне прев'ю",
+			new_form_title: "Нове власне прев'ю",
+			editing_form_title: "Редагування власного прев'ю",
+			create: 'Створити',
 			update: 'Оновити',
-			delete: 'Видалити'
+			delete: 'Видалити',
+			url: 'Адреса',
+			url_placeholder: 'https://example.com',
+			name: 'Назва',
+			image: 'Зображення'
 		},
 		heading: 'Редагування статті',
 		title: 'Заголовок',

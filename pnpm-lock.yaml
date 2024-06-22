@@ -106,11 +106,11 @@ importers:
         specifier: ^2.6.2
         version: 2.6.2
       typescript:
-        specifier: 5.5.0-beta
-        version: 5.5.0-beta
+        specifier: 5.5.2
+        version: 5.5.2
       typescript-eslint:
         specifier: ^7.11.0
-        version: 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
+        version: 7.11.0(eslint@9.3.0)(typescript@5.5.2)
       vite:
         specifier: ^5.2.12
         version: 5.2.12(@types/node@20.12.13)
@@ -1863,8 +1863,8 @@ packages:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
 
-  lilconfig@3.1.1:
-    resolution: {integrity: sha512-O18pf7nyvHTckunPWCV1XUNXU1piu01y2b7ATJ0ppkUkk8ocqVWBrYjJBCwHDjD/ZWcfyrA0P4gKhzWGi5EINQ==}
+  lilconfig@3.1.2:
+    resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
     engines: {node: '>=14'}
 
   locate-character@3.0.0:
@@ -2398,13 +2398,8 @@ packages:
       typescript:
         optional: true
 
-  typescript@5.4.5:
-    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
-  typescript@5.5.0-beta:
-    resolution: {integrity: sha512-FRg3e/aQg3olEG3ff8YjHOERsO4IM0m4qGrsE4UMvILaq4TdDZ6gQX4+2Rq9SjTpfSe/ebwiHcsjm/7FfWWQ6Q==}
+  typescript@5.5.2:
+    resolution: {integrity: sha512-NcRtPEOsPFFWjobJEtfihkLCZCXZt/os3zf8nTxjVH3RvTSxjrCamJpbExGvYOF+tFHc3pA65qpdwPbzjohhew==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2501,8 +2496,8 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
 
-  yaml@2.4.4:
-    resolution: {integrity: sha512-wle6DEiBMLgJAdEPZ+E8BPFauoWbwPujfuGJJFErxYiU4txXItppe8YqeFPAaWnW5CxduQ995X6b5e1NqrmxtA==}
+  yaml@2.4.5:
+    resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -3338,34 +3333,34 @@ snapshots:
     dependencies:
       '@types/node': 20.12.13
 
-  '@typescript-eslint/eslint-plugin@7.11.0(@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta))(eslint@9.3.0)(typescript@5.5.0-beta)':
+  '@typescript-eslint/eslint-plugin@7.11.0(@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.2))(eslint@9.3.0)(typescript@5.5.2)':
     dependencies:
       '@eslint-community/regexpp': 4.10.0
-      '@typescript-eslint/parser': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
+      '@typescript-eslint/parser': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
       '@typescript-eslint/scope-manager': 7.11.0
-      '@typescript-eslint/type-utils': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
-      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
+      '@typescript-eslint/type-utils': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
+      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
       '@typescript-eslint/visitor-keys': 7.11.0
       eslint: 9.3.0
       graphemer: 1.4.0
       ignore: 5.3.1
       natural-compare: 1.4.0
-      ts-api-utils: 1.3.0(typescript@5.5.0-beta)
+      ts-api-utils: 1.3.0(typescript@5.5.2)
     optionalDependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)':
+  '@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.2)':
     dependencies:
       '@typescript-eslint/scope-manager': 7.11.0
       '@typescript-eslint/types': 7.11.0
-      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.0-beta)
+      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.2)
       '@typescript-eslint/visitor-keys': 7.11.0
       debug: 4.3.5
       eslint: 9.3.0
     optionalDependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
     transitivePeerDependencies:
       - supports-color
 
@@ -3374,21 +3369,21 @@ snapshots:
       '@typescript-eslint/types': 7.11.0
       '@typescript-eslint/visitor-keys': 7.11.0
 
-  '@typescript-eslint/type-utils@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)':
+  '@typescript-eslint/type-utils@7.11.0(eslint@9.3.0)(typescript@5.5.2)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.0-beta)
-      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
+      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.2)
+      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
       debug: 4.3.5
       eslint: 9.3.0
-      ts-api-utils: 1.3.0(typescript@5.5.0-beta)
+      ts-api-utils: 1.3.0(typescript@5.5.2)
     optionalDependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@7.11.0': {}
 
-  '@typescript-eslint/typescript-estree@7.11.0(typescript@5.5.0-beta)':
+  '@typescript-eslint/typescript-estree@7.11.0(typescript@5.5.2)':
     dependencies:
       '@typescript-eslint/types': 7.11.0
       '@typescript-eslint/visitor-keys': 7.11.0
@@ -3397,18 +3392,18 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.4
       semver: 7.6.2
-      ts-api-utils: 1.3.0(typescript@5.5.0-beta)
+      ts-api-utils: 1.3.0(typescript@5.5.2)
     optionalDependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)':
+  '@typescript-eslint/utils@7.11.0(eslint@9.3.0)(typescript@5.5.2)':
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.3.0)
       '@typescript-eslint/scope-manager': 7.11.0
       '@typescript-eslint/types': 7.11.0
-      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.0-beta)
+      '@typescript-eslint/typescript-estree': 7.11.0(typescript@5.5.2)
       eslint: 9.3.0
     transitivePeerDependencies:
       - supports-color
@@ -4089,7 +4084,7 @@ snapshots:
 
   lilconfig@2.1.0: {}
 
-  lilconfig@3.1.1:
+  lilconfig@3.1.2:
     optional: true
 
   locate-character@3.0.0: {}
@@ -4241,8 +4236,8 @@ snapshots:
 
   postcss-load-config@5.1.0(postcss@8.4.38):
     dependencies:
-      lilconfig: 3.1.1
-      yaml: 2.4.4
+      lilconfig: 3.1.2
+      yaml: 2.4.5
     optionalDependencies:
       postcss: 8.4.38
     optional: true
@@ -4456,8 +4451,8 @@ snapshots:
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.152
-      svelte-preprocess: 5.1.4(@babel/core@7.24.6)(postcss-load-config@5.1.0(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.152)(typescript@5.4.5)
-      typescript: 5.4.5
+      svelte-preprocess: 5.1.4(@babel/core@7.24.6)(postcss-load-config@5.1.0(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.152)(typescript@5.5.2)
+      typescript: 5.5.2
     transitivePeerDependencies:
       - '@babel/core'
       - coffeescript
@@ -4489,7 +4484,7 @@ snapshots:
       marked: 5.1.2
       svelte: 5.0.0-next.152
 
-  svelte-preprocess@5.1.4(@babel/core@7.24.6)(postcss-load-config@5.1.0(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.152)(typescript@5.4.5):
+  svelte-preprocess@5.1.4(@babel/core@7.24.6)(postcss-load-config@5.1.0(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.152)(typescript@5.5.2):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -4501,7 +4496,7 @@ snapshots:
       '@babel/core': 7.24.6
       postcss: 8.4.38
       postcss-load-config: 5.1.0(postcss@8.4.38)
-      typescript: 5.4.5
+      typescript: 5.5.2
 
   svelte@5.0.0-next.152:
     dependencies:
@@ -4587,9 +4582,9 @@ snapshots:
   ts-algebra@2.0.0:
     optional: true
 
-  ts-api-utils@1.3.0(typescript@5.5.0-beta):
+  ts-api-utils@1.3.0(typescript@5.5.2):
     dependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
 
   ts-deepmerge@7.0.0: {}
 
@@ -4609,20 +4604,18 @@ snapshots:
   type-fest@2.19.0:
     optional: true
 
-  typescript-eslint@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta):
+  typescript-eslint@7.11.0(eslint@9.3.0)(typescript@5.5.2):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 7.11.0(@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.0-beta))(eslint@9.3.0)(typescript@5.5.0-beta)
-      '@typescript-eslint/parser': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
-      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.0-beta)
+      '@typescript-eslint/eslint-plugin': 7.11.0(@typescript-eslint/parser@7.11.0(eslint@9.3.0)(typescript@5.5.2))(eslint@9.3.0)(typescript@5.5.2)
+      '@typescript-eslint/parser': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
+      '@typescript-eslint/utils': 7.11.0(eslint@9.3.0)(typescript@5.5.2)
       eslint: 9.3.0
     optionalDependencies:
-      typescript: 5.5.0-beta
+      typescript: 5.5.2
     transitivePeerDependencies:
       - supports-color
 
-  typescript@5.4.5: {}
-
-  typescript@5.5.0-beta: {}
+  typescript@5.5.2: {}
 
   undici-types@5.26.5: {}
 
@@ -4673,7 +4666,7 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.4.4:
+  yaml@2.4.5:
     optional: true
 
   yocto-queue@0.1.0: {}

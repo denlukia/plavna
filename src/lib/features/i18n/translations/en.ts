@@ -2,7 +2,9 @@ export const EN = {
 	layout: {
 		language: 'Language',
 		my_pages: 'My pages',
-		my: 'My'
+		my: 'My',
+		no_translation: 'No translation',
+		or: 'or'
 	},
 	auth: {
 		signup: 'Sign up',
@@ -68,7 +70,6 @@ export const EN = {
 			editing_form_title: 'Tag',
 			name_label: 'Name',
 			edit_name_label: 'Edit name',
-			or: 'or',
 			delete: 'Delete',
 			new_tag: 'New Tag',
 			create: 'Create'
@@ -80,9 +81,16 @@ export const EN = {
 			view: 'View'
 		},
 		previews: {
-			create_new: 'Create new',
+			add: 'Add Custom Preview',
+			new_form_title: 'New Custom Preview',
+			editing_form_title: 'Custom Preview Editing',
+			create: 'Create',
 			update: 'Update',
-			delete: 'Delete'
+			delete: 'Delete',
+			url: 'Address',
+			url_placeholder: 'https://example.com',
+			name: 'Name',
+			image: 'Image'
 		},
 		heading: 'Article Editing',
 		title: 'Title',

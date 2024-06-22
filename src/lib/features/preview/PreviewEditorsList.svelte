@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
+	import type { ArticleSelect } from '$lib/features/article/parsers';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 
-	import type { PageData } from '../../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
-	import Translation from '../../i18n/Translation.svelte';
-	import PreviewTemplateEditor from '../../preview/PreviewTemplateEditor.svelte';
-	import type { ArticleSelect } from '../parsers';
+	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
+	import PreviewTemplateEditor from './PreviewTemplateEditor.svelte';
 
 	type Props = {
 		data: PageData;
@@ -85,22 +85,24 @@
 </script>
 
 <ul class="previews-list">
-	<li>
+	<li class="preview-family">
 		<PreviewTemplateEditor type="creating" superValidatedMain={previewTemplateCreationForm} />
 	</li>
 	{#each previewFamilies as family}
 		{#if family.id !== 'custom'}
-			<li>
+			<li class="preview-family">
 				<Translation key={family.name_translation_key} />
 			</li>
 		{/if}
 	{/each}
 	{#each previewTemplates as template}
-		<li>
-			<!-- <PreviewTemplateEditor
-				formObj={template.form}
+		<li class="preview-family">
+			<PreviewTemplateEditor
+				type="editing"
+				superValidatedMain={template.superValidatedMain}
+				superValidatedDeletion={template.superValidatedDeletion}
 				image={images.find((image) => image.id === template.meta.image_id)}
-			/> -->
+			/>
 		</li>
 	{/each}
 </ul>
@@ -137,5 +139,7 @@
 	.previews-list {
 		list-style: none;
 		padding: 0;
+	}
+	.preview-family {
 	}
 </style>

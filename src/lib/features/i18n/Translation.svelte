@@ -29,6 +29,10 @@
 
 	let { superValidated, key, recordKey, markdown = false }: Props = $props();
 
+	let noTranslationText = $derived(
+		getSystemTranslation('layout.no_translation', $page.data.systemTranslations) || '...'
+	);
+
 	function getTranslation() {
 		if (superValidated) return superValidated.data[$page.params.lang as SupportedLang];
 		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);
@@ -59,5 +63,11 @@
 		{@html nonUndefinedTranslation}
 	{/if}
 {:else}
-	...
+	<span class="no-translation">{noTranslationText}</span>
 {/if}
+
+<style>
+	.no-translation {
+		opacity: 0.4;
+	}
+</style>
