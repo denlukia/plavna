@@ -33,18 +33,16 @@
 		<Translation key="article_editor.tags.create" />
 	{/snippet}
 	{#snippet content()}
-		<form class="global-display-contents" use:enhance action="?/create_tag" method="POST">
+		<form class="global-form" use:enhance action="?/create_tag" method="POST">
 			<div class="global-text-align-center">
 				<Typography size="heading-2">
 					<Translation key="article_editor.tags.new_tag" />
 				</Typography>
 			</div>
-			<Spacer />
 			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="article_editor.tags.name_label" /></Label>
 				<TranslationsInput superform={form} />
 			</div>
-			<Spacer size="l" />
 			<Button>
 				<Translation key="article_editor.tags.create" />
 			</Button>

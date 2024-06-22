@@ -22,6 +22,7 @@ export function fly(
 		easing,
 		css: (t: number, u: number) => `
 			transform: translate(${(1 - t) * Number(x_value)}${x_unit}, ${(1 - t) * Number(y_value)}${y_unit});
+			filter: blur(${(1 - t) * 0.3}em);
 			opacity: ${target_opacity - od * u}`
 	};
 }

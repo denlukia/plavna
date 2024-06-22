@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
-	import { page } from '$app/stores';
 	import { expoOut } from 'svelte/easing';
-	import { tweened } from 'svelte/motion';
 	import { fly, getFlyConf } from '$lib/design/transitions/fly';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';

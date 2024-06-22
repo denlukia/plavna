@@ -28,6 +28,7 @@ import { previewFamilies } from '../preview/families';
 import {
 	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
+	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema
 } from '../preview/parsers';
 import { previewTemplates } from '../preview/schema';
@@ -217,9 +218,13 @@ export class ArticleService {
 
 					return {
 						meta: template,
-						form: await superValidate(
+						superValidatedMain: await superValidate(
 							{ ...template, template_id: template.id, ...foundTranslation },
 							zod(previewTemplateEditingFormSchema)
+						),
+						superValidatedDeletion: await superValidate(
+							template,
+							zod(previewTemplateDeletionFormSchema)
 						)
 					};
 				})

@@ -6,12 +6,12 @@
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import PreviewEditorsList from '$lib/features/article/editor/PreviewEditorsList.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import TranslationEditor from '$lib/features/i18n/TranslationEditor.svelte';
 	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
+	import PreviewEditorsList from '$lib/features/preview/PreviewEditorsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
 	let { data } = $props();
