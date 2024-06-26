@@ -11,7 +11,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import TranslationEditor from '$lib/features/i18n/TranslationEditor.svelte';
 	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
-	import PreviewEditorsList from '$lib/features/preview/PreviewEditorsList.svelte';
+	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
 	let { data } = $props();
@@ -28,42 +28,6 @@
 <Typography size="heading-1">
 	<Translation key="article_editor.heading" />
 </Typography>
-
-<GridContainer>
-	<GridCell colspan={3}>
-		<GridCell colspan={2}>
-			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="article_editor.title" /></Label>
-				<AutosavedInput
-					superValidated={translationForms[article.title_translation_key]}
-					action="?/update_translation"
-				/>
-			</div>
-		</GridCell>
-
-		<GridCell>
-			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="article_editor.slug" /></Label>
-				<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-			</div>
-		</GridCell>
-
-		<GridCell colspan={3}>
-			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="article_editor.short_description" /></Label>
-				<AutosavedInput
-					element="textarea"
-					superValidated={translationForms[article.description_translation_key]}
-					action="?/update_translation"
-				/>
-			</div>
-		</GridCell>
-	</GridCell>
-
-	<GridCell colspan={2}>
-		<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
-	</GridCell>
-</GridContainer>
 
 <form class="main-actions" use:enhance method="POST">
 	<Button formaction="?/delete" kind="destructive">
@@ -82,16 +46,83 @@
 	</Button>
 </form>
 
-<PreviewEditorsList {data} />
+<section class="floor">
+	<GridContainer>
+		<GridCell colspan={3}>
+			<GridCell colspan={2}>
+				<div class="global-labeled-input-wrapper">
+					<Label><Translation key="article_editor.title" /></Label>
+					<AutosavedInput
+						superValidated={translationForms[article.title_translation_key]}
+						action="?/update_translation"
+					/>
+				</div>
+			</GridCell>
 
-Додавання фото:
-<ImagesCollectionsList
-	providerForm={data.imageProviderForm}
-	articleId={article.id}
-	collections={{ common: data.commonImages, article: data.articleImages }}
-/>
-Контент статті:
-<TranslationEditor formObj={translationForms[article.content_translation_key]} />
+			<GridCell>
+				<div class="global-labeled-input-wrapper">
+					<Label><Translation key="article_editor.slug" /></Label>
+					<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
+				</div>
+			</GridCell>
+
+			<GridCell colspan={3}>
+				<div class="global-labeled-input-wrapper">
+					<Label><Translation key="article_editor.short_description" /></Label>
+					<AutosavedInput
+						element="textarea"
+						superValidated={translationForms[article.description_translation_key]}
+						action="?/update_translation"
+					/>
+				</div>
+			</GridCell>
+		</GridCell>
+
+		<GridCell colspan={2} customClass="article-editor-shifted-cell article-tags-list-cell">
+			<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
+		</GridCell>
+	</GridContainer>
+</section>
+
+<section class="floor">
+	<GridContainer>
+		<GridCell colspan={3}>
+			<div class="global-labeled-input-wrapper">
+				<Label><Translation key="article_editor.previews.section_label" /></Label>
+
+				<GridCell colspan={3}>
+					<PreviewEditorsList {data} />
+				</GridCell>
+			</div>
+		</GridCell>
+		<GridCell colspan={2} customClass="article-editor-shifted-cell">
+			<div class="global-labeled-input-wrapper">
+				<Label><Translation key="article_editor.previews.section_label" /></Label>
+				<ImagesCollectionsList
+					providerForm={data.imageProviderForm}
+					articleId={article.id}
+					collections={{ common: data.commonImages, article: data.articleImages }}
+				/>
+			</div>
+		</GridCell>
+	</GridContainer>
+</section>
+
+<section class="floor">
+	<GridContainer>
+		<GridCell colspan={3}>
+			<div class="global-labeled-input-wrapper">
+				<Label><Translation key="article_editor.content" /></Label>
+				<AutosavedInput
+					rows={8}
+					action="?/update_translation"
+					element="textarea"
+					superValidated={translationForms[article.content_translation_key]}
+				/>
+			</div>
+		</GridCell>
+	</GridContainer>
+</section>
 
 <style>
 	.main-actions {
@@ -107,5 +138,17 @@
 		display: flex;
 		justify-content: center;
 		gap: var(--size-article-actions-gap);
+	}
+
+	.floor {
+		margin-top: var(--size-2xl);
+	}
+
+	:global(.article-editor-shifted-cell) {
+		padding-inline-start: var(--size-l);
+	}
+
+	:global(.article-tags-list-cell) {
+		align-self: stretch;
 	}
 </style>

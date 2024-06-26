@@ -46,7 +46,7 @@
 			<div class="events-none">
 				<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 			</div>
-			<Typography size="small">
+			<Typography size="body-short">
 				<Translation superValidated={translationSuperValidated} />
 			</Typography>
 			<button class="global-visually-hidden" id={submitButtonId}>

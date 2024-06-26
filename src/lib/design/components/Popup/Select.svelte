@@ -16,10 +16,10 @@
 <TriggerStyler isLabel {isInInput}>
 	<select
 		bind:value
-		class={`
-			global-reset-select 
-			global-disable-default-outline 
-			${isInInput ? 'global-dropdown-in-input-paddings' : 'global-dropdown-paddings'}`}
+		class="
+			global-reset-select
+			global-disable-default-outline
+			{isInInput ? 'global-dropdown-in-input-paddings' : 'global-dropdown-paddings'}"
 		{...attributes}
 	>
 		{@render children()}

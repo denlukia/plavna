@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tweened } from 'svelte/motion';
+	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Eye from '$lib/design/icons/Eye.svelte';
-	import IconWrapper from '$lib/design/icons/IconWrapper.svelte';
 
 	import Button from '../Button/Button.svelte';
 	import Input from './Input.svelte';
@@ -34,14 +34,14 @@
 	}
 </script>
 
-{#snippet leadingIcon()}
+{#snippet leading()}
 	<IconWrapper currentFrame={$pswdIconCurrentFrame} frames={8} frameSize={20} size="small">
 		<Eye />
 	</IconWrapper>
 {/snippet}
 
 {#snippet trailing()}
-	<Button type="button" isInInput onclick={togglePswdVisibility} {leadingIcon} />
+	<Button type="button" isInInput onclick={togglePswdVisibility} {leading} />
 {/snippet}
 
 <Input type={pswdVisible ? 'text' : 'password'} {trailing} {...attributes} animateOnTypeChange />

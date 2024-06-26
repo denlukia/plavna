@@ -2,8 +2,8 @@
 	import type { Snippet } from 'svelte';
 
 	import ArrowDown from '../../icons/ArrowDown.svelte';
-	import IconWrapper from '../../icons/IconWrapper.svelte';
 	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
+	import IconWrapper from '../IconWrapper/IconWrapper.svelte';
 
 	type Props = {
 		isInInput?: boolean;
@@ -15,19 +15,19 @@
 </script>
 
 <span
-	class={`
+	class="
 		dropdown-trigger
-		${isInInput ? 'type-in-input' : 'type-default'}`}
+		{isInInput ? 'type-in-input' : 'type-default'}"
 	class:active
 >
 	<ActiveElementFX>
 		<span
-			class={`
+			class="
 					dropdown
-					global-disable-default-outline 	
+					global-disable-default-outline
 					global-text-strong
-					global-text-${isInInput ? 'small-short' : 'body-short'}
-					global-reset-select`}
+					global-text-{isInInput ? 'small-short' : 'body-short'}
+					global-reset-select"
 		>
 			{@render children()}
 		</span>

@@ -52,10 +52,11 @@
 	--size-button-small-padding-bottom: var(--size-s);
 	--size-button-small-border-radius: var(--size-full);
 
+	--size-button-content-gap: var(--size-m);
+
 	/* --- Labeled --- */
 	--size-labeled-text-padding-inline: var(--size-m);
-	--size-labeled-input-margin-top: var(--size-s);
-	--size-labeled-input-margin-bottom: var(--size-s);
+	--size-labeled-input-wrapper-gap: var(--size-s);
 	--size-labeled-switch-with-bg-border-radius: var(--size-full);
 	--size-labeled-switch-with-bg-margin-top: var(--size-xs);
 	--size-labeled-switch-with-bg-padding-inline: var(--size-xs);
@@ -77,7 +78,7 @@
 	/* --- Button in Tag --- */
 	--size-button-in-tag-border-radius: var(--size-m);
 	--size-button-in-tag-height: unset;
-	--size-button-in-tag-padding-inline: var(--size-s);
+	--size-button-in-tag-padding-inline: var(--size-m);
 	--size-button-in-tag-padding-top: var(--size-none);
 	--size-button-in-tag-padding-bottom: var(--size-xs);
 
@@ -204,14 +205,24 @@
 	--size-info-block-border-radius: var(--size-m);
 
 	/* --- Tag --- */
+	--size-tag-section-margin-inline-start: var(--size-l);
 	--size-tag-border-radius: var(--size-full);
-	--size-tag-padding-inline: var(--size-s-to-m);
-	--size-tag-padding-block: var(--size-xs);
+	--size-tag-padding-inline: var(--size-m-to-l);
+	--size-tag-padding-block: var(--size-s) var(--size-s);
 
-	/* --- Article Editor Main Actions --- */
+	/* --- Article Editor --- */
 	--size-article-actions-border-radius: var(--size-full);
 	--size-article-actions-padding-inline: var(--size-m);
 	--size-article-actions-padding-block: var(--size-m);
 	--size-article-actions-bottom: var(--size-l);
 	--size-article-actions-gap: var(--size-m);
+
+	--size-article-previewfam-border-radius: var(--size-xl);
+	--size-article-previewlist-gap: var(--size-m);
+	--size-article-previewfam-padding-block: var(--size-l);
+	--size-article-previewfam-padding-inline: var(--size-l);
+
+	--size-article-preview-editor-border-radius: var(--size-xl);
+	--size-article-preview-editor-padding-inline: var(--size-l);
+	--size-article-preview-editor-padding-block: var(--size-l);
 }

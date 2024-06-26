@@ -28,7 +28,7 @@
 		<Tail />
 	</div>
 	<div
-		class={`box kind-${kind}`}
+		class="box kind-{kind}"
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
 			easing: expoOut,

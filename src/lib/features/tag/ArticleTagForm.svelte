@@ -4,7 +4,6 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
@@ -28,7 +27,7 @@
 	let active = $state(false);
 </script>
 
-<Popup triggerType="button" buttonProps={{ size: 'small' }} bind:active>
+<Popup triggerType="button" bind:active>
 	{#snippet label()}
 		<Translation key="article_editor.tags.create" />
 	{/snippet}

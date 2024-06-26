@@ -5,7 +5,7 @@
 
 	import Translation from '../i18n/Translation.svelte';
 	import ArticleTag from './ArticleTag.svelte';
-	import ArticleTagCreator from './ArticleTagCreator.svelte';
+	import ArticleTagCreator from './ArticleTagForm.svelte';
 
 	type ArticleEditorData = Awaited<ReturnType<ExtractMethods<ArticleService>['loadEditor']>>;
 
@@ -33,13 +33,13 @@
 
 <style>
 	.available-tags {
-		padding-inline-start: var(--size-xl);
+		min-height: 100%;
 	}
 	.tags-list {
 		display: flex;
 		align-items: flex-start;
 		flex-wrap: wrap;
 		gap: var(--size-s);
-		margin-top: var(--size-s);
+		height: 100%;
 	}
 </style>
