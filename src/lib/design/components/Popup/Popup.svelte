@@ -34,7 +34,7 @@
 	}
 </script>
 
-<span class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
+<div class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
 	{#if triggerType === 'button'}
 		<Button {onclick} {active} imitatePressingOnClick={false} {...buttonProps}>
 			{@render label()}
@@ -54,7 +54,7 @@
 			</Box>
 		</div>
 	{/if}
-</span>
+</div>
 
 <style>
 	.popup-group {

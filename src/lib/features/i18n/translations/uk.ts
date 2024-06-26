@@ -7,7 +7,7 @@ export const UK = {
 		language: 'Мова',
 		my_pages: 'Мої сторінки',
 		my: 'Мої',
-		no_translation: 'Перкл. відсутній',
+		no_translation: 'Без перкладу',
 		or: 'або'
 	},
 	auth: {
@@ -69,7 +69,7 @@ export const UK = {
 	},
 	article_editor: {
 		tags: {
-			list_label: 'Теги статті',
+			list_label: 'Теги',
 			editing_form_title: 'Тег',
 			name_label: 'Назва',
 			edit_name_label: 'Редагувати назву',
@@ -84,9 +84,10 @@ export const UK = {
 			view: 'Переглянути'
 		},
 		previews: {
-			add: "Додати власне прев'ю",
-			new_form_title: "Нове власне прев'ю",
-			editing_form_title: "Редагування власного прев'ю",
+			section_label: 'Превʼю',
+			add: 'Додати власне',
+			new_form_title: 'Нове власне превʼю',
+			editing_form_title: 'Редагування власного превʼю',
 			create: 'Створити',
 			update: 'Оновити',
 			delete: 'Видалити',
@@ -100,7 +101,9 @@ export const UK = {
 		short_description: 'Короткий опис',
 		slug: 'Адреса',
 		preview_plavna_modern: 'Плавна Сучасне',
-		preview_custom: 'Кастомне превью'
+		preview_custom: 'Кастомне превью',
+		content: 'Контент',
+		images: 'Зображення'
 	}
 };
 

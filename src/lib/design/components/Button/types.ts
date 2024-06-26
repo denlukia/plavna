@@ -21,6 +21,8 @@ export type ButtonProps = (AnchorAttrs | ButtonAttrs) & {
 	imitatePressingOnClick?: boolean;
 	isInInput?: boolean;
 	ref?: HTMLAnchorElement | HTMLButtonElement | null;
-	leadingIcon?: Snippet;
-	trailingIcon?: Snippet;
+	leading?: Snippet;
+	trailing?: Snippet;
+	customClass?: string;
+	contentCustomClass?: string;
 };

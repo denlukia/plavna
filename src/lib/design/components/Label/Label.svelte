@@ -12,7 +12,7 @@
 	let { children, tone }: Props = $props();
 </script>
 
-<span class="label">
+<span class="label global-reset-line-height">
 	<Typography size="small-short" {tone} bold>
 		{@render children()}
 	</Typography>

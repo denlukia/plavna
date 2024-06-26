@@ -66,7 +66,7 @@ export const EN = {
 	},
 	article_editor: {
 		tags: {
-			list_label: "Article's tags",
+			list_label: 'Tags',
 			editing_form_title: 'Tag',
 			name_label: 'Name',
 			edit_name_label: 'Edit name',
@@ -81,7 +81,8 @@ export const EN = {
 			view: 'View'
 		},
 		previews: {
-			add: 'Add Custom Preview',
+			section_label: 'Previews',
+			add: 'Add Custom',
 			new_form_title: 'New Custom Preview',
 			editing_form_title: 'Custom Preview Editing',
 			create: 'Create',
@@ -97,7 +98,9 @@ export const EN = {
 		short_description: 'Short description',
 		slug: 'Slug',
 		preview_plavna_modern: 'Plavna Modern',
-		preview_custom: 'Custom Preview'
+		preview_custom: 'Custom Preview',
+		content: 'Content',
+		images: 'Images'
 	}
 };
 

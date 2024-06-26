@@ -9,7 +9,7 @@
 	import type { TranslationSelect, TranslationUpdate } from './parsers';
 
 	type FormTranslation = {
-		superValidated: SuperValidated<TranslationUpdate>;
+		superValidated: SuperValidated<Omit<TranslationUpdate, 'key'>>;
 		recordKey?: null;
 		key?: null;
 	};

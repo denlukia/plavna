@@ -14,15 +14,15 @@
 </script>
 
 <span
-	class={`icon-frame`}
-	style={`
-		width: var(--size-icon-${size}-size);
-		height: var(--size-icon-${size}-size);
-		--svg-width: calc(var(--size-icon-${size}-size) * ${frames});
-		--svg-height: var(--size-icon-${size}-size);
-		--svg-stroke-width: calc(${frameSize} / var(--size-icon-${size}-size-unitless) * var(--size-icon-${size}-stroke-width));
-		--shift: calc(${Math.floor(currentFrame)} * var(--size-icon-${size}-size-unitless) * -1px);
-		`}
+	class="icon-frame"
+	style="
+		width: var(--size-icon-{size}-size);
+		height: var(--size-icon-{size}-size);
+		--svg-width: calc(var(--size-icon-{size}-size) * {frames});
+		--svg-height: var(--size-icon-{size}-size);
+		--svg-stroke-width: calc({frameSize} / var(--size-icon-{size}-size-unitless) * var(--size-icon-{size}-stroke-width));
+		--shift: calc({Math.floor(currentFrame)} * var(--size-icon-{size}-size-unitless) * -1px);
+		"
 >
 	{@render children()}
 </span>

@@ -75,7 +75,7 @@
 	/>
 	<label>
 		Delete {languagedName}
-		<input type="checkbox" name={`delete_${languagedName}`} />
+		<input type="checkbox" name="delete_{languagedName}" />
 	</label>
 
 	{#if processing}

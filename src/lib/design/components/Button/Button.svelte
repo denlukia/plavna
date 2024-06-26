@@ -18,8 +18,10 @@
 		imitatePressingOnClick = true,
 		placement = 'default',
 		ref = $bindable(null),
-		leadingIcon,
-		trailingIcon,
+		leading,
+		trailing,
+		customClass = '',
+		contentCustomClass = '',
 		...attrs
 	}: ButtonProps = $props();
 
@@ -41,8 +43,8 @@
 	role={href ? 'link' : 'button'}
 	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
-	class={`button kind-${kind} size-${size} placement-${placement}
-		global-reset-line-height ${href ? 'global-link-rest' : 'global-button-rest'}`}
+	class="button kind-{kind} size-{size} placement-{placement} {customClass}
+		global-reset-line-height {href ? 'global-link-rest' : 'global-button-rest'}"
 	class:pressed={active || pressed}
 	onclick={onclickWrapper}
 	{...events}
@@ -50,19 +52,19 @@
 	{href}
 >
 	<ActiveElementFX>
-		<span class="content">
-			{#if leadingIcon}
-				{@render leadingIcon()}
+		<span class="content {contentCustomClass}">
+			{#if leading}
+				{@render leading()}
 			{/if}
 			{#if children}
-				<Typography size={`${size}-short`}>
+				<Typography size="{size}-short">
 					<Strong>
 						{@render children()}
 					</Strong>
 				</Typography>
 			{/if}
-			{#if trailingIcon}
-				{@render trailingIcon()}
+			{#if trailing}
+				{@render trailing()}
 			{/if}
 		</span>
 	</ActiveElementFX>
@@ -73,11 +75,12 @@
 	.button {
 		padding: 0;
 		transition: var(--transition-button);
-		display: inline-block;
+		display: block;
 	}
 
 	.content {
-		display: inline-block;
+		display: inline-flex;
+		gap: var(--size-button-content-gap);
 	}
 
 	.button:not(.pressed):hover {

@@ -173,13 +173,10 @@
 	display: inline-flex;
 	flex-direction: column;
 	width: 100%;
+	gap: var(--size-labeled-input-wrapper-gap);
 
 	/* For Text */
 	--label-padding-inline: var(--size-labeled-text-padding-inline);
-
-	/* For Input */
-	--input-margin-top: var(--size-labeled-input-margin-top);
-	--input-margin-bottom: var(--size-labeled-input-margin-bottom);
 
 	/* For Input Last Child */
 	--input-last-child-margin-bottom: 0;

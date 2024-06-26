@@ -26,7 +26,7 @@
 	<input name="preview_family" type="hidden" value="plavna-modern" />
 	<input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<LanguagedImagesInput
+	<!-- <LanguagedImagesInput
 		name="preview_image_1"
 		image={images.preview_image_1}
 		{errors}
@@ -39,6 +39,6 @@
 		{errors}
 		withLanguages
 		clientUpload
-	/>
+	/> -->
 	<button>Update preview</button>
 </form>

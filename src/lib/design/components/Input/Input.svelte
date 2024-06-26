@@ -118,9 +118,6 @@
 		box-shadow: var(--shadow-input);
 		border-radius: var(--size-input-border-radius);
 
-		margin-top: var(--input-margin-top);
-		margin-bottom: var(--input-margin-bottom);
-
 		transition: var(--transition-input);
 
 		/* For Layers */

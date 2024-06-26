@@ -6,9 +6,10 @@
 		rowspan?: number;
 		colspan?: number;
 		children?: Snippet;
+		customClass?: string;
 	};
 
-	let { colspan = 1, rowspan = 0, children, ...attributes }: Props = $props();
+	let { colspan = 1, rowspan = 0, children, customClass = '', ...attributes }: Props = $props();
 </script>
 
 {#snippet content()}
@@ -17,7 +18,10 @@
 	{/if}
 {/snippet}
 
-<span class="cell global-reset-link" style="--rows-taken:{rowspan}; --cols-taken:{colspan}">
+<span
+	class="cell global-reset-link {customClass}"
+	style="--rows-taken:{rowspan}; --cols-taken:{colspan}"
+>
 	<!-- Either we're drawing a grid (e.g of articles) -->
 	{#if rowspan}
 		<span class="height-sizer">
@@ -50,9 +54,11 @@
 				var(--size-cell-gap)
 		);
 		width: calc(var(--width-base) - var(--width-gaps-to-subtract));
+		align-items: stretch;
 	}
 	.subgrid-wrapper {
 		width: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: var(--flex-direction);
 		flex-wrap: wrap;

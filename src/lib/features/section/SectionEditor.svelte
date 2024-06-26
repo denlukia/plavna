@@ -159,7 +159,7 @@
 			</Button>
 			<Button>
 				<Translation
-					key={`page_actor.section.${'section_id' in $translationForm ? 'update' : 'create'}`}
+					key="page_actor.section.{'section_id' in $translationForm ? 'update' : 'create'}"
 				/>
 			</Button>
 		</div>

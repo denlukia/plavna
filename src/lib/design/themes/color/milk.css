@@ -53,7 +53,7 @@
 	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
 	--color-button-prominent-shadow-1: var(--neutral-0-transparent-100);
 	--color-button-prominent-shadow-2: var(--neutral-0-transparent-100);
-	--color-button-destructive-shadow-1: var(--red-300-transparent-100);
+	--color-button-destructive-shadow-1: var(--red-300-transparent-200);
 	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
 
 	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-100);
@@ -83,7 +83,7 @@
 	--color-input-layer-flashlight-hover: var(--neutral-1000-transparent-500);
 	--color-input-color-picker-border: var(--neutral-1000);
 	--color-input-color-picker-shadow: var(--neutral-0-transparent-100);
-	--color-input-placeholder: var(--warm-300-transparent-500);
+	--color-input-placeholder: var(--warm-300-transparent-400);
 
 	--color-input-invalid-bg: var(--red-300-transparent-100);
 
@@ -151,8 +151,11 @@
 	--color-tag-bg: var(--warm-300-transparent-100);
 	--color-tag-layer-flashlight-hover: var(--neutral-1000-transparent-500);
 
-	/* --- Article Editor Main Actions --- */
+	/* --- Article Editor --- */
 	--color-article-actions-bg: var(--warm-950);
 	--color-article-actions-shadow-1: var(--warm-300-transparent-300);
 	--color-article-actions-shadow-2: var(--warm-300-transparent-500);
+
+	--color-article-previewfam-bg: var(--warm-300-transparent-100);
+	--color-article-preview-editor-bg: var(--warm-300-transparent-100);
 }

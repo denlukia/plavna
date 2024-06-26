@@ -5,9 +5,9 @@
 	import { tweened } from 'svelte/motion';
 
 	import CheckMark from '../../icons/CheckMark.svelte';
-	import IconWrapper from '../../icons/IconWrapper.svelte';
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
+	import IconWrapper from '../IconWrapper/IconWrapper.svelte';
 
 	type Props = HTMLInputAttributes & { checkboxSize?: 'default' | 'small' };
 
