@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { untrack } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
@@ -25,19 +26,32 @@
 		previewFamilies,
 		previewTemplates,
 		previewComponents,
-		previewTemplateCreationForm,
-		previewForms,
+		previewTemplateCreationSuperValidated,
+		previewEditorSuperValidated,
 		translationForms,
 		meta,
 		images
 	} = $derived(data);
 
-	type PreviewForms = typeof previewForms;
-
 	let currentPreviewObject = $state(getInitialCurrentPreview());
+	let currentPreviewTemplateMeta = $derived.by(getCurrentPreviewTemplate);
 	let currentEditorComponent = $derived.by(getCurrentEditorComponent);
 
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
+
+	function getCurrentPreviewTemplate() {
+		if (!currentPreviewObject.family || typeof currentPreviewObject.template !== 'number') {
+			return;
+		}
+		const found = previewTemplates.find(
+			(template) => template.meta.id === currentPreviewObject.template
+		);
+		if (!found) {
+			return;
+		}
+		const { id, name_translation_key } = found.meta;
+		return { id, name_translation_key };
+	}
 
 	function getInitialCurrentPreview() {
 		let familyFromParam = $state($page.url.searchParams.get(PREVIEW_FAMILY_PARAM));
@@ -63,10 +77,19 @@
 	}
 
 	function getCurrentEditorComponent() {
-		if (!currentPreviewObject.family) {
-			return null;
-		}
-		return previewComponents[currentPreviewObject.family].editor;
+		currentPreviewObject;
+		return untrack(() => {
+			if (!currentPreviewObject.family) {
+				return null;
+			}
+			if (!('Editor' in previewComponents[currentPreviewObject.family])) {
+				previewComponents[currentPreviewObject.family].editor = getPreviewComponent(
+					currentPreviewObject.family,
+					'Editor'
+				);
+			}
+			return previewComponents[currentPreviewObject.family].editor;
+		});
 	}
 
 	function getPreviewSpecificLink(currentURL: URL, previewObject: PreviewObject) {
@@ -80,23 +103,16 @@
 		return url.pathname + url.search;
 	}
 
-	function getFormForPreview(previewForms: PreviewForms, previewObject: PreviewObject) {
-		return previewForms.find(
-			(formObj) =>
-				formObj.familyId === previewObject.family && formObj.templateId === previewObject.template
-		)?.propsForm;
-	}
-
 	function onPreviewClick(e: Event, previewObject: PreviewObject) {
 		e.preventDefault();
 		if (!previewObject.family) {
 			return;
 		}
 		currentPreviewObject = previewObject;
-		previewComponents[previewObject.family].editor = getPreviewComponent(
-			previewObject.family,
-			'Editor'
-		);
+	}
+
+	function onPreviewPreviewRequest() {
+		// TODO
 	}
 </script>
 
@@ -140,7 +156,10 @@
 				<Translation key="article_editor.previews.add" />
 			{/snippet}
 			{#snippet content()}
-				<PreviewTemplateEditor type="creating" superValidatedMain={previewTemplateCreationForm} />
+				<PreviewTemplateEditor
+					type="creating"
+					superValidatedMain={previewTemplateCreationSuperValidated}
+				/>
 			{/snippet}
 		</Popup>
 
@@ -196,15 +215,17 @@
 			{:then currentEditorComponent}
 				<svelte:component
 					this={currentEditorComponent}
-					updateForm={getFormForPreview(previewForms, currentPreviewObject)}
+					mainSuperValidated={previewEditorSuperValidated}
 					images={{
 						preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
 						preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
 					}}
-					translationForms={{
-						preview_translation_1: translationForms[meta.preview_translation_1_key],
-						preview_translation_2: translationForms[meta.preview_translation_2_key]
+					translationsSuperValidated={{
+						translation_1: translationForms[meta.preview_translation_1_key],
+						translation_2: translationForms[meta.preview_translation_2_key]
 					}}
+					templateMeta={currentPreviewTemplateMeta}
+					{onPreviewPreviewRequest}
 				/>
 			{:catch}
 				Couldn't load

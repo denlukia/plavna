@@ -43,16 +43,20 @@
 	<form use:enhance method="POST" action="?/switch_tag">
 		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
-			<div class="events-none">
-				<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
+			<div class="global-labeled-input-wrapper checkbox">
+				<div class="events-none">
+					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
+				</div>
+				{#if translationSuperValidated}
+					<Typography size="body-short">
+						<Translation superValidated={translationSuperValidated} />
+					</Typography>
+				{/if}
 			</div>
-			<Typography size="body-short">
-				<Translation superValidated={translationSuperValidated} />
-			</Typography>
-			<button class="global-visually-hidden" id={submitButtonId}>
-				{$form.checked ? 'Uncheck' : 'Check'}
-			</button>
 		</label>
+		<button class="global-visually-hidden" id={submitButtonId}>
+			{$form.checked ? 'Uncheck' : 'Check'}
+		</button>
 	</form>
 
 	<div class="editing-forms">
@@ -112,7 +116,6 @@
 	.checked-form {
 		display: flex;
 		align-items: center;
-		gap: var(--size-m);
 
 		padding-inline: var(--size-tag-padding-inline);
 		padding-block: var(--size-tag-padding-block);

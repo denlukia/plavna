@@ -91,14 +91,21 @@ export const EN = {
 			url: 'Address',
 			url_placeholder: 'https://example.com',
 			name: 'Name',
-			image: 'Image'
+			image: 'Image',
+			create_localized_screenshots: 'Create Localized Screenshots',
+			families: {
+				plavna_modern: {
+					name: 'Plavna Modern'
+				},
+				custom: {
+					name: 'Custom'
+				}
+			}
 		},
 		heading: 'Article Editing',
 		title: 'Title',
 		short_description: 'Short description',
 		slug: 'Slug',
-		preview_plavna_modern: 'Plavna Modern',
-		preview_custom: 'Custom Preview',
 		content: 'Content',
 		images: 'Images'
 	}

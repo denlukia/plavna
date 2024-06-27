@@ -180,6 +180,10 @@
 
 	/* For Input Last Child */
 	--input-last-child-margin-bottom: 0;
+}
+.global-labeled-input-wrapper.checkbox {
+	flex-direction: row;
+	gap: var(--size-labeled-input-checkbox-wrapper-gap);
 
 	/* For Checkbox */
 	--checkbox-margin-top: var(--size-labeled-checkbox-margin-top);

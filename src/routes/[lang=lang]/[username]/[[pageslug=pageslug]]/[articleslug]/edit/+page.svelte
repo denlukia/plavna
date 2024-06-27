@@ -9,7 +9,6 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import TranslationEditor from '$lib/features/i18n/TranslationEditor.svelte';
 	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
@@ -46,7 +45,7 @@
 	</Button>
 </form>
 
-<section class="floor">
+<section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
 			<GridCell colspan={2}>
@@ -70,7 +69,7 @@
 				<div class="global-labeled-input-wrapper">
 					<Label><Translation key="article_editor.short_description" /></Label>
 					<AutosavedInput
-						element="textarea"
+						textarea
 						superValidated={translationForms[article.description_translation_key]}
 						action="?/update_translation"
 					/>
@@ -84,7 +83,7 @@
 	</GridContainer>
 </section>
 
-<section class="floor">
+<section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
 			<div class="global-labeled-input-wrapper">
@@ -97,7 +96,7 @@
 		</GridCell>
 		<GridCell colspan={2} customClass="article-editor-shifted-cell">
 			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="article_editor.previews.section_label" /></Label>
+				<Label><Translation key="article_editor.images" /></Label>
 				<ImagesCollectionsList
 					providerForm={data.imageProviderForm}
 					articleId={article.id}
@@ -108,7 +107,7 @@
 	</GridContainer>
 </section>
 
-<section class="floor">
+<section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
 			<div class="global-labeled-input-wrapper">
@@ -116,7 +115,7 @@
 				<AutosavedInput
 					rows={8}
 					action="?/update_translation"
-					element="textarea"
+					textarea
 					superValidated={translationForms[article.content_translation_key]}
 				/>
 			</div>
@@ -140,7 +139,7 @@
 		gap: var(--size-article-actions-gap);
 	}
 
-	.floor {
+	.row {
 		margin-top: var(--size-2xl);
 	}
 

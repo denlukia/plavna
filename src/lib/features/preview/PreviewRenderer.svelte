@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { Component } from 'svelte';
 
 	import { getRecordTranslation } from '../i18n/utils';
 	import { prepareImage } from '../image/utils';
@@ -19,7 +20,7 @@
 	let images = $derived($page.data.images || {});
 
 	let staticComponent = $derived(getComponentFromDict('Static'));
-	let dynamicComponent: ConstructorOfATypedSvelteComponent | null = $state(null);
+	let dynamicComponent: Component<any> | null = $state(null);
 	let dynamicComponentShown = $state(false);
 	let loadDynamicButtonShown = $state(false);
 

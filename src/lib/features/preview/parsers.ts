@@ -1,12 +1,13 @@
 import type { MaybePromise } from '@sveltejs/kit';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import type { Component } from 'svelte';
 import { z } from 'zod';
 
 import { articleInsertSchema, type articleSelectSchema } from '../article/parsers';
 import { generateLanguagedFields } from '../common/parsers-utils';
 import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
-import type { PreviewFamilyId } from './families/types';
+import type { PreviewEditorComponent, PreviewFamilyId } from './families/types';
 import { previewTemplates } from './schema';
 
 // Previews
@@ -72,8 +73,8 @@ export type PreviewTemplateImageFieldsZod = typeof previewTemplateImageFieldsSch
 export type PreviewComponents = Record<
 	PreviewFamilyId,
 	{
-		editor?: MaybePromise<ConstructorOfATypedSvelteComponent | null>;
-		static?: ConstructorOfATypedSvelteComponent;
-		dynamic?: ConstructorOfATypedSvelteComponent;
+		editor?: MaybePromise<PreviewEditorComponent | null>;
+		static?: Component;
+		dynamic?: Component;
 	}
 >;
