@@ -60,6 +60,7 @@
 
 <style>
 	.checkbox-label {
+		display: inline-block;
 		margin-top: var(--checkbox-margin-top);
 		margin-bottom: var(--checkbox-margin-bottom);
 	}

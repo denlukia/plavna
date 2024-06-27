@@ -57,6 +57,7 @@
 	/* --- Labeled --- */
 	--size-labeled-text-padding-inline: var(--size-m);
 	--size-labeled-input-wrapper-gap: var(--size-s);
+	--size-labeled-input-checkbox-wrapper-gap: var(--size-s-to-m);
 	--size-labeled-switch-with-bg-border-radius: var(--size-full);
 	--size-labeled-switch-with-bg-margin-top: var(--size-xs);
 	--size-labeled-switch-with-bg-padding-inline: var(--size-xs);

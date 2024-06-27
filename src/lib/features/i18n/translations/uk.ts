@@ -94,14 +94,22 @@ export const UK = {
 			url: 'Адреса',
 			url_placeholder: 'https://example.com',
 			name: 'Назва',
-			image: 'Зображення'
+			image: 'Зображення',
+			create_localized_screenshots: 'Створити локалізовані скріншоти',
+			families: {
+				plavna_modern: {
+					name: 'Плавне сучасне'
+				},
+				custom: {
+					name: 'Власне'
+				}
+			}
 		},
 		heading: 'Редагування статті',
 		title: 'Заголовок',
 		short_description: 'Короткий опис',
 		slug: 'Адреса',
-		preview_plavna_modern: 'Плавна Сучасне',
-		preview_custom: 'Кастомне превью',
+
 		content: 'Контент',
 		images: 'Зображення'
 	}

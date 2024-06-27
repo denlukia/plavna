@@ -141,7 +141,6 @@ export class ArticleService {
 		}
 
 		const translForForms = alias(translations, 'translForForms');
-		const translForPreviewTemplates = alias(translations, 'translForPreviewTemplates');
 		const commonImagesTable = alias(images, 'commonImages');
 		const articleImagesTable = alias(images, 'articleImages');
 		const results = await db
@@ -151,7 +150,6 @@ export class ArticleService {
 				tags,
 				translations,
 				translForForms,
-				translForPreviewTemplates,
 				previewTemplates,
 				images,
 				commonImagesTable,
@@ -179,10 +177,12 @@ export class ArticleService {
 				)
 			)
 			.leftJoin(tags, eq(tags.user_id, actor.id))
-			.leftJoin(translations, eq(translations.key, images.path_translation_key))
 			.leftJoin(
-				translForPreviewTemplates,
-				eq(translForPreviewTemplates.key, previewTemplates.name_translation_key)
+				translations,
+				or(
+					eq(translations.key, images.path_translation_key),
+					eq(translations.key, previewTemplates.name_translation_key)
+				)
 			)
 			.leftJoin(
 				translForForms,
@@ -192,7 +192,8 @@ export class ArticleService {
 					eq(translForForms.key, articles.content_translation_key),
 					eq(translForForms.key, tags.name_translation_key),
 					eq(translForForms.key, articles.preview_translation_1_key),
-					eq(translForForms.key, articles.preview_translation_2_key)
+					eq(translForForms.key, articles.preview_translation_2_key),
+					eq(translForForms.key, previewTemplates.name_translation_key)
 				)
 			)
 			.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
@@ -203,16 +204,16 @@ export class ArticleService {
 		const translationsArr = results
 			.map((rows) => rows.translations)
 			.filter(getNullAndDupFilter('key'));
-		const translationsForPreviewTemplates = results
-			.map((rows) => rows.translForPreviewTemplates)
-			.filter(getNullAndDupFilter('key'));
 		const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('id'));
+		const translationsForForms = results
+			.map((rows) => rows.translForForms)
+			.filter(getNullAndDupFilter('key'));
 		const previewTemplatesResults = await Promise.all(
 			results
 				.map((rows) => rows.previewTemplates)
 				.filter(getNullAndDupFilter('id'))
 				.map(async (template) => {
-					const foundTranslation = translationsForPreviewTemplates.find(
+					const foundTranslation = translationsForForms.find(
 						(translation) => translation.key === template.name_translation_key
 					);
 
@@ -233,9 +234,7 @@ export class ArticleService {
 		const articleTags = results
 			.map((rows) => rows.tagsArticles)
 			.filter(getNullAndDupFilter('tag_id'));
-		const translationsForForms = results
-			.map((rows) => rows.translForForms)
-			.filter(getNullAndDupFilter('key'));
+
 		const tagInfos = await Promise.all(
 			allTags.map(async (tag) => ({
 				checkedSuperValidated: await superValidate(
@@ -249,33 +248,7 @@ export class ArticleService {
 				name_translation_key: tag.name_translation_key
 			}))
 		);
-		const previewForms = await Promise.all(
-			[...previewFamilies, ...previewTemplatesResults].map(async (familyOrTemplate) => {
-				const emptyForm = await superValidate(zod(articlePreviewUpdateSchema));
-				const filledForm = await superValidate(articleResult, zod(articlePreviewUpdateSchema));
-				if ('meta' in familyOrTemplate) {
-					return {
-						familyId: 'custom',
-						templateId: familyOrTemplate.meta.id,
-						propsForm:
-							articleResult.preview_family === 'custom' &&
-							articleResult.preview_template_id === familyOrTemplate.meta.id
-								? filledForm
-								: emptyForm
-					};
-				} else {
-					return {
-						familyId: familyOrTemplate.id,
-						templateId: null,
-						propsForm:
-							articleResult.preview_family === familyOrTemplate.id &&
-							articleResult.preview_template_id === null
-								? filledForm
-								: emptyForm
-					};
-				}
-			})
-		);
+
 		const commonImages = {
 			creation: await superValidate(zod(imageCreationFormSchema), {
 				id: 'common-image-creation'
@@ -312,10 +285,15 @@ export class ArticleService {
 		return {
 			meta: articleSelectSchema.parse(articleResult),
 			slugForm: await superValidate(articleResult, zod(articleSlugUpdateSchema)),
-			previewForms,
-			previewFamilies,
+			previewEditorSuperValidated: await superValidate(
+				articleResult,
+				zod(articlePreviewUpdateSchema)
+			),
+			previewFamilies: previewFamilies,
 			previewTemplates: previewTemplatesResults,
-			previewTemplateCreationForm: await superValidate(zod(previewTemplateCreationFormSchema)),
+			previewTemplateCreationSuperValidated: await superValidate(
+				zod(previewTemplateCreationFormSchema)
+			),
 			tagInfos,
 			tagCreationSuperValidated: await superValidate(zod(translationInsertSchema)),
 			imageProviderForm: await superValidate(actor, zod(imageProviderUpdateFormSchema)),

@@ -17,7 +17,7 @@
 
 	let { action, superValidated, onSuccessfullUpdate, ...attributes }: Props = $props();
 
-	let saveButtonRef: HTMLButtonElement | null = $state(null);
+	let formRef: HTMLButtonElement | null = $state(null);
 	let showSaveButton = $state(true);
 
 	let { form, enhance, errors } = superForm(superValidated, {
@@ -41,7 +41,7 @@
 			form.update((v) => ({ ...v, [firstInputName]: target.value }));
 		}
 
-		saveButtonRef?.click();
+		formRef?.click();
 	}
 
 	const WAIT_BEFORE_AUTOSAVE_MS = 700;
@@ -56,7 +56,7 @@
 {#snippet trailing()}
 	<span class="save-button-wrapper" class:global-visually-hidden={!showSaveButton}>
 		<span class="inner">
-			<Button placement="in-input" bind:ref={saveButtonRef}>Save</Button>
+			<Button placement="in-input" bind:ref={formRef}>Save</Button>
 		</span>
 	</span>
 {/snippet}

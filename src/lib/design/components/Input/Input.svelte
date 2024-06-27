@@ -70,12 +70,12 @@
 				class="input-wrapper global-fix-overflow"
 				class:no-trailing-padding={trailing}
 				class:no-leading-padding={leading}
-				class:textarea-wrapper={attributes.element === 'textarea'}
+				class:textarea-wrapper={attributes.textarea}
 				bind:this={inputwrapperRef}
 			>
 				<Layers>
 					<!-- ISSUE: DRY-ing this into svelte:element seems to break #key -->
-					{#if attributes.element === 'textarea'}
+					{#if attributes.textarea}
 						{#key key}
 							<textarea
 								in:fly={getFlyConf(expoOut, 'bottom')}

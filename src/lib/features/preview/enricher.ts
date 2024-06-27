@@ -1,3 +1,5 @@
+import type { Component } from 'svelte';
+
 import type { PreviewFamiliesDict, PreviewFamilyId } from './families/types';
 
 export async function getPreviewComponent(folder: string, type: 'Static' | 'Editor' | 'Dynamic') {
@@ -10,7 +12,7 @@ export async function getPreviewComponent(folder: string, type: 'Static' | 'Edit
 
 	const module = await previewComponents[moduleKey]();
 	if (module !== null && typeof module === 'object' && 'default' in module) {
-		return module.default as ConstructorOfATypedSvelteComponent;
+		return module.default as Component;
 	} else {
 		return null;
 	}
