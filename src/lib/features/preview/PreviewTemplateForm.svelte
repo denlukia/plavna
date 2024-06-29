@@ -5,14 +5,13 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
+	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
-	import LanguagedImagesInput from '../image/LanguagedImagesInput.svelte';
+	import LanguagedImageInput from '../image/LanguagedImageInput.svelte';
 	import type { ImageSelect } from '../image/parsers';
 	import type {
 		PreviewTemplateCreationForm,
@@ -72,11 +71,11 @@
 		</div>
 		<div class="global-labeled-input-wrapper">
 			<Label><Translation key="article_editor.previews.name" /></Label>
-			<TranslationsInput superform={form} />
+			<LanguagedInput superform={form} />
 		</div>
 		<div class="global-labeled-input-wrapper">
 			<Label><Translation key="article_editor.previews.image" /></Label>
-			<LanguagedImagesInput name="image" {errors} {image} />
+			<LanguagedImageInput name="image" {errors} {image} />
 		</div>
 		<Spacer />
 		<Button>

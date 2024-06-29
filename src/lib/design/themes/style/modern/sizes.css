@@ -90,7 +90,7 @@
 	--size-input-border-radius: 10px;
 	--size-input-textarea-wrapper-padding-inline-end: var(--size-s);
 	--size-input-textarea-padding-inline-end: var(--size-s);
-	--size-input-color-picker-wrapper-padding: var(--size-s-to-m);
+	--size-input-color-picker-wrapper-padding: var(--size-s);
 	--size-input-color-picker: var(--size-l-to-xl);
 	--size-input-color-picker-radius: var(--size-full);
 	--size-input-buttons-gap: var(--size-xs);

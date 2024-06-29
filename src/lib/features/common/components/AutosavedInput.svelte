@@ -6,7 +6,7 @@
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { InputOrTextareaProps } from '../../../design/components/Input/types';
-	import TranslationsInput from '../../i18n/Input/TranslationsInput.svelte';
+	import LanguagedInput from '../../i18n/Input/LanguagedInput.svelte';
 	import { debounce } from '../utils';
 
 	type Props = InputOrTextareaProps & {
@@ -63,7 +63,7 @@
 
 <form {action} use:enhance method="POST">
 	{#if 'key' in $form}
-		<TranslationsInput superform={form} {...attributes} {trailing} oninput={debouncedOninput} />
+		<LanguagedInput superform={form} {...attributes} {trailing} oninput={debouncedOninput} />
 	{:else}
 		<Input
 			bind:value={$form[firstInputName]}

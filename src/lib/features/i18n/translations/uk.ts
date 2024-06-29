@@ -96,9 +96,14 @@ export const UK = {
 			name: 'Назва',
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
+			preview: 'Переглянути',
 			families: {
 				plavna_modern: {
-					name: 'Плавне сучасне'
+					name: 'Плавна й сучасна',
+					text_bg_color: 'Колір фону тексту',
+					text_color: 'Колір тексту',
+					image: 'Зображення',
+					image_depth: 'Мапа глибини зображення'
 				},
 				custom: {
 					name: 'Власне'

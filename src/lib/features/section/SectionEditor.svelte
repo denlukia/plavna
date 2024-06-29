@@ -10,7 +10,7 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
+	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
 	import TagsList from '../tag/SectionTagsList.svelte';
@@ -129,7 +129,7 @@
 		<div class="inputs">
 			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="page_actor.section.description" /></Label>
-				<TranslationsInput
+				<LanguagedInput
 					superform={translationForm}
 					bind:currentLang={descriptionInput.currentLang as SupportedLang}
 					bind:selectionStart={descriptionInput.selectionStart}

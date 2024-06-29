@@ -93,9 +93,14 @@ export const EN = {
 			name: 'Name',
 			image: 'Image',
 			create_localized_screenshots: 'Create Localized Screenshots',
+			preview: 'Preview',
 			families: {
 				plavna_modern: {
-					name: 'Plavna Modern'
+					name: 'Plavna Modern',
+					text_bg_color: 'Text background color',
+					text_color: 'Text color',
+					image: 'Image',
+					image_depth: 'Image depth map'
 				},
 				custom: {
 					name: 'Custom'

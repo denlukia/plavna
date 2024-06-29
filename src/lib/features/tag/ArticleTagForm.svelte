@@ -6,7 +6,7 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
-	import TranslationsInput from '../i18n/Input/TranslationsInput.svelte';
+	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import type { TranslationInsert } from '../i18n/parsers';
 	import Translation from '../i18n/Translation.svelte';
 
@@ -40,7 +40,7 @@
 			</div>
 			<div class="global-labeled-input-wrapper">
 				<Label><Translation key="article_editor.tags.name_label" /></Label>
-				<TranslationsInput superform={form} />
+				<LanguagedInput superform={form} />
 			</div>
 			<Button>
 				<Translation key="article_editor.tags.create" />

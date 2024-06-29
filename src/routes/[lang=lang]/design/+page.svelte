@@ -82,7 +82,7 @@
 		</div>
 		<!-- <div class="global-labeled-input-wrapper">
 			<Label>Тест перекладів</Label>
-			<TranslationsInput superform={translationForm} />
+			<LanguagedInput superform={translationForm} />
 		</div> -->
 		<div class="global-labeled-input-wrapper">
 			<Label>Тест автозбереження</Label>
