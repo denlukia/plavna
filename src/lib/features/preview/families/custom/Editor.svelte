@@ -6,7 +6,7 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import LanguagedImagesInput from '$lib/features/image/LanguagedImagesInput.svelte';
+	import LanguagedImageInput from '$lib/features/image/LanguagedImageInput.svelte';
 
 	import { commonPreviewEditorFormAttributes } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
@@ -15,16 +15,13 @@
 		mainSuperValidated,
 		images,
 		translationsSuperValidated,
-		templateMeta
+		templateMeta,
+		onPreviewPreviewRequest
 	}: CustomPreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
 
-<Typography size="heading-2">
-	<Translation key="article_editor.previews.families.custom.name" />:
-	<Translation recordKey={templateMeta.name_translation_key} />
-</Typography>
 <AutosavedInput
 	superValidated={translationsSuperValidated.translation_1}
 	action="?/update_translation"
@@ -37,14 +34,14 @@
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
 	<Input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<LanguagedImagesInput
+	<LanguagedImageInput
 		name="preview_image_1"
 		image={images.preview_image_1}
 		{errors}
 		withLanguages
 		clientUpload
 	/>
-	<LanguagedImagesInput
+	<LanguagedImageInput
 		name="preview_image_2"
 		image={images.preview_image_2}
 		{errors}
@@ -62,5 +59,8 @@
 		</Typography>
 	</div>
 
+	<Button type="button" onclick={onPreviewPreviewRequest}>
+		<Translation key="article_editor.previews.preview" />
+	</Button>
 	<Button><Translation key="article_editor.previews.update" /></Button>
 </form>

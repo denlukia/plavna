@@ -81,7 +81,7 @@
 								in:fly={getFlyConf(expoOut, 'bottom')}
 								out:fly={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
-								{value}
+								bind:value
 								{...attributes}
 							></textarea>
 						{/key}
@@ -91,7 +91,7 @@
 								in:fly={getFlyConf(expoOut, 'bottom')}
 								out:fly={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
-								{value}
+								bind:value
 								{...attributes}
 							/>
 						{/key}
@@ -135,7 +135,7 @@
 		animation: error 300ms var(--smooth-ease-out);
 	}
 
-	/* We use global to stylize possible textare inside TranslationsInputs */
+	/* We use global to stylize possible textare inside LanguagedInputs */
 	.input-and-affixes :global {
 		textarea {
 			min-height: calc(

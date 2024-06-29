@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 
-	import LanguagedImagesInput from '../LanguagedImagesInput.svelte';
+	import LanguagedImageInput from '../LanguagedImageInput.svelte';
 	import type { ImageCollectionItem } from '../parsers';
 
 	export let image: ImageCollectionItem;
@@ -11,7 +11,7 @@
 </script>
 
 <form method="post" action="?/update_image" use:enhance>
-	<LanguagedImagesInput name="image" image={meta} {errors} clientUpload withLanguages />
+	<LanguagedImageInput name="image" image={meta} {errors} clientUpload withLanguages />
 	<input name="id" type="hidden" bind:value={$form.id} />
 	<button>Update image</button>
 </form>

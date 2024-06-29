@@ -12,7 +12,6 @@
 	export let image: ImageSelect | null = null;
 	export let lang: SupportedLang | null = null;
 	export let clientUpload: boolean = false;
-	export let errors: string | string[] | undefined | null = null;
 
 	const dispatch = createEventDispatcher();
 	let processing = false;
@@ -41,7 +40,7 @@
 		try {
 			imageHandler = await new ClientImageHandler().setImageFromEntry(file, IMG_VALIDATION_CONFIG);
 		} catch (err: any) {
-			errors = err;
+			clientUploadErrors = err;
 			dispatch('processing-finished');
 			return;
 		}
@@ -80,9 +79,6 @@
 
 	{#if processing}
 		Processing...
-	{/if}
-	{#if errors}
-		Errors: {errors}
 	{/if}
 	{#if clientUploadErrors}
 		{clientUploadErrors}

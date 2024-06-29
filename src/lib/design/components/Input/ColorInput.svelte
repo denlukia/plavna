@@ -3,15 +3,17 @@
 	import type { InputOrTextareaProps } from './types';
 
 	let { value = $bindable(), ...attributes }: InputOrTextareaProps = $props();
+
+	$inspect(value);
 </script>
 
-<Input type="color" bind:value {...attributes}>
-	{#snippet leading()}
-		<span class="picker-wrapper">
-			<input bind:value type="color" class="global-reset-input color-picker" />
-		</span>
-	{/snippet}
-</Input>
+{#snippet leading()}
+	<span class="picker-wrapper">
+		<input bind:value type="color" class="global-reset-input color-picker" />
+	</span>
+{/snippet}
+
+<Input bind:value {leading} {...attributes}></Input>
 
 <style>
 	.picker-wrapper {
