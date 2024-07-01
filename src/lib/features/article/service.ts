@@ -7,6 +7,7 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { nullable } from 'zod';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
@@ -25,6 +26,7 @@ import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import { decomposeImageField } from '../image/utils';
 import { previewFamilies } from '../preview/families';
+import type { PreviewFamiliesDict } from '../preview/families/types';
 import {
 	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
@@ -289,7 +291,16 @@ export class ArticleService {
 				articleResult,
 				zod(articlePreviewUpdateSchema)
 			),
-			previewFamilies: previewFamilies,
+			previewFamilies: previewFamilies.reduce(
+				(acc, curr) => ({
+					...acc,
+					[curr.id]: {
+						components: { static: null, editor: null, dynamic: null },
+						name_translation_key: curr.name_translation_key
+					}
+				}),
+				{} as PreviewFamiliesDict
+			),
 			previewTemplates: previewTemplatesResults,
 			previewTemplateCreationSuperValidated: await superValidate(
 				zod(previewTemplateCreationFormSchema)

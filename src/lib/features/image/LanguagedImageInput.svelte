@@ -12,15 +12,15 @@
 
 <div class="languaged-image-input">
 	<ImageInput {name} {image} {clientUpload} />
-	{#if withLanguages}
+	<!-- {#if withLanguages}
 		{#each supportedLangs as lang}
 			<ImageInput {name} {lang} {image} {clientUpload} />
 		{/each}
-	{/if}
+	{/if} -->
 </div>
 
 <style>
 	.languaged-image-input {
-		background: lightpink;
+		/* background: lightpink; */
 	}
 </style>

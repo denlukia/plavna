@@ -68,6 +68,12 @@ export const UK = {
 		}
 	},
 	article_editor: {
+		heading: 'Редагування статті',
+		title: 'Заголовок',
+		short_description: 'Короткий опис',
+		slug: 'Адреса',
+		content: 'Контент',
+		images: 'Зображення',
 		tags: {
 			list_label: 'Теги',
 			editing_form_title: 'Тег',
@@ -97,10 +103,11 @@ export const UK = {
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
+			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати',
 			families: {
 				plavna_modern: {
 					name: 'Плавна й сучасна',
-					text_bg_color: 'Колір фону тексту',
+					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
 					image: 'Зображення',
 					image_depth: 'Мапа глибини зображення'
@@ -109,14 +116,7 @@ export const UK = {
 					name: 'Власне'
 				}
 			}
-		},
-		heading: 'Редагування статті',
-		title: 'Заголовок',
-		short_description: 'Короткий опис',
-		slug: 'Адреса',
-
-		content: 'Контент',
-		images: 'Зображення'
+		}
 	}
 };
 

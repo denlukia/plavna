@@ -226,4 +226,10 @@
 	--size-article-preview-editor-border-radius: var(--size-xl);
 	--size-article-preview-editor-padding-inline: var(--size-l);
 	--size-article-preview-editor-padding-block: var(--size-l);
+
+	/* --- Image Input --- */
+	--size-image-input-height: 10rem;
+	--size-image-input-border-radius: var(--size-m);
+	--size-image-input-border-width: var(--size-s);
+	--size-image-input-padding-inline: var(--size-l);
 }

@@ -25,7 +25,6 @@
 	let {
 		previewFamilies,
 		previewTemplates,
-		previewComponents,
 		previewTemplateCreationSuperValidated,
 		previewEditorSuperValidated,
 		translationForms,
@@ -82,13 +81,11 @@
 			if (!currentPreviewObject.family) {
 				return null;
 			}
-			if (!('Editor' in previewComponents[currentPreviewObject.family])) {
-				previewComponents[currentPreviewObject.family].editor = getPreviewComponent(
-					currentPreviewObject.family,
-					'Editor'
-				);
+			let component = previewFamilies[currentPreviewObject.family].components.editor;
+			if (!component) {
+				component = getPreviewComponent(currentPreviewObject.family, 'editor');
 			}
-			return previewComponents[currentPreviewObject.family].editor;
+			return (previewFamilies[currentPreviewObject.family].components.editor = component);
 		});
 	}
 
@@ -164,11 +161,11 @@
 		</Popup>
 
 		<ul class="previews-list">
-			{#each previewFamilies as family}
-				{#if family.id !== 'custom'}
+			{#each Object.entries(previewFamilies) as [familyId, { name_translation_key }]}
+				{#if familyId !== 'custom'}
 					{@render previewFamilyButton(
-						{ family: family.id, template: null },
-						family.name_translation_key,
+						{ family: familyId as PreviewFamilyId, template: null },
+						name_translation_key,
 						undefined
 					)}
 				{/if}

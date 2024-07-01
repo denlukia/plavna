@@ -318,7 +318,7 @@ export class SectionService {
 		};
 
 		const previewDictEntryTemplate = {
-			components: { Static: null, Editor: null, Preview: null }
+			components: { static: null, editor: null, Preview: null }
 		};
 
 		const getPreviewDictEntry = (previewFamilyId: NonNullable<ArticleSelect['preview_family']>) => {

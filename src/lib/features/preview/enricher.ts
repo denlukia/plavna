@@ -1,10 +1,11 @@
 import type { Component } from 'svelte';
 
-import type { PreviewFamiliesDict, PreviewFamilyId } from './families/types';
+import type { PreviewComponentType, PreviewFamiliesDict, PreviewFamilyId } from './families/types';
 
-export async function getPreviewComponent(folder: string, type: 'Static' | 'Editor' | 'Dynamic') {
+export async function getPreviewComponent(folder: string, type: PreviewComponentType) {
 	const previewComponents = import.meta.glob('$lib/features/preview/families/*/*.svelte');
-	const moduleSearchString = `${folder}/${type}.svelte`;
+	const typeCapitalized = type.charAt(0).toUpperCase() + type.slice(1);
+	const moduleSearchString = `${folder}/${typeCapitalized}.svelte`;
 	const moduleKey = Object.keys(previewComponents).find((key) => key.includes(moduleSearchString));
 	if (moduleKey === undefined) {
 		return null;
@@ -18,16 +19,21 @@ export async function getPreviewComponent(folder: string, type: 'Static' | 'Edit
 	}
 }
 
-export async function enrichPreviewFamilies(previewFamilies: PreviewFamiliesDict) {
+export async function enrichPreviewFamilies(
+	previewFamilies: PreviewFamiliesDict,
+	type: PreviewComponentType,
+	filter?: (familyId: PreviewFamilyId) => boolean
+) {
 	for (const previewFamily in previewFamilies) {
 		const previewFamilyTyped = previewFamily as PreviewFamilyId;
+		if (filter && !filter(previewFamilyTyped)) continue;
 
-		const component = await getPreviewComponent(previewFamily, 'Static');
+		const component = await getPreviewComponent(previewFamily, type);
 		if (!component) continue;
 
 		previewFamilies[previewFamilyTyped].components = {
 			...previewFamilies[previewFamilyTyped].components,
-			Static: component
+			[type]: component
 		};
 	}
 	return previewFamilies;
