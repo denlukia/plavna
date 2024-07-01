@@ -65,6 +65,12 @@ export const EN = {
 		}
 	},
 	article_editor: {
+		heading: 'Article Editing',
+		title: 'Title',
+		short_description: 'Short description',
+		slug: 'Slug',
+		content: 'Content',
+		images: 'Images',
 		tags: {
 			list_label: 'Tags',
 			editing_form_title: 'Tag',
@@ -94,6 +100,7 @@ export const EN = {
 			image: 'Image',
 			create_localized_screenshots: 'Create Localized Screenshots',
 			preview: 'Preview',
+			image_dropzone: "Drag'n'drop image here or click to upload",
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',
@@ -106,13 +113,7 @@ export const EN = {
 					name: 'Custom'
 				}
 			}
-		},
-		heading: 'Article Editing',
-		title: 'Title',
-		short_description: 'Short description',
-		slug: 'Slug',
-		content: 'Content',
-		images: 'Images'
+		}
 	}
 };
 

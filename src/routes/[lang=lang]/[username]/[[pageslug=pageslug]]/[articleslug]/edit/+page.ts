@@ -1,25 +1,13 @@
-import { PREVIEW_FAMILY_PARAM } from '$lib/collections/constants';
-import { getPreviewComponent } from '$lib/features/preview/enricher';
-import type { PreviewComponents } from '$lib/features/preview/parsers';
+import { enrichPreviewFamilies } from '$lib/features/preview/enricher';
 
-export const load = async ({ data, url }) => {
-	const previewComponents = data.previewFamilies.reduce(
-		(acc, family) => ({ ...acc, [family.id]: {} }),
-		{} as PreviewComponents
+export const load = async ({ data }) => {
+	const { previewFamilies, ...pageData } = structuredClone(data);
+
+	const enriched = await enrichPreviewFamilies(
+		previewFamilies,
+		'editor',
+		(familyId) => familyId === pageData.meta.preview_family
 	);
 
-	const previewFamilyId = url.searchParams.get(PREVIEW_FAMILY_PARAM) ?? data.meta.preview_family;
-	const previewFamilyIndex = data.previewFamilies.findIndex(
-		(family) => family.id === previewFamilyId
-	);
-
-	if (previewFamilyIndex !== -1) {
-		const previewFamily = data.previewFamilies[previewFamilyIndex];
-		previewComponents[previewFamily.id].editor = await getPreviewComponent(
-			previewFamily.id,
-			'Editor'
-		);
-	}
-
-	return { ...data, previewComponents };
+	return { ...pageData, previewFamilies: enriched };
 };

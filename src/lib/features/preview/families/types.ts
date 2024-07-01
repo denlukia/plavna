@@ -1,4 +1,5 @@
 import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import type { MaybePromise } from '@sveltejs/kit';
 import type { Component } from 'svelte';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { ArticlePreviewUpdate } from '$lib/features/article/parsers';
@@ -8,8 +9,8 @@ import type { ImageSelect } from '$lib/features/image/parsers';
 
 import { previewFamilies, previewFamiliesIds } from '.';
 import type { PreviewTemplateSelect } from '../parsers';
-import type CutsomEditor from './custom/Editor.svelte';
-import type PlavnaModernEditor from './plavna-modern/Editor.svelte';
+import type CutsomEditor from './custom/editor.svelte';
+import type PlavnaModernEditor from './plavna-modern/editor.svelte';
 
 export type PreviewFamily = (typeof previewFamilies)[number];
 type ExtractPreviewFamilyIds = (typeof previewFamiliesIds)[number];
@@ -21,24 +22,20 @@ type PossibleNameTranslationIds = (typeof previewFamilies)[number]['name_transla
 type CheckTranslationKey = PossibleNameTranslationIds extends SystemTranslationKey ? true : false;
 
 export type PreviewEditorComponent = Component<PlavnaModernEditor | CutsomEditor>;
-type ComponentsDict = {
-	components: {
-		Static?: Component | null;
-		Dynamic?: Component | null;
-		Editor?: PreviewEditorComponent | null;
-	};
-};
+export type PreviewComponentType = 'editor' | 'static' | 'dynamic';
 
 // Will be red if previewFamiliesIds contains not all previewFamilies ids
 assert<TypeEqualityGuard<CheckPreviewFamilyIds, true>>();
 // Will be red if previewFamilies contains name_translation_key with not existing TranslationKey
 assert<TypeEqualityGuard<CheckTranslationKey, true>>();
 
-export type PreviewFamiliesDict = Record<PreviewFamilyId, ComponentsDict> & {
-	custom?: ComponentsDict & {
-		templates: Record<PreviewTemplateSelect['id'], PreviewTemplateSelect['url']>;
-	};
-};
+export type PreviewFamiliesDict = Record<
+	PreviewFamilyId,
+	{
+		components: Record<PreviewComponentType, MaybePromise<Component | null>>;
+		name_translation_key: PossibleNameTranslationIds;
+	}
+>;
 
 export type PreviewEditorProps = {
 	mainSuperValidated: SuperValidated<ArticlePreviewUpdate>;
@@ -50,7 +47,6 @@ export type PreviewEditorProps = {
 		translation_1: SuperValidated<TranslationUpdate>;
 		translation_2: SuperValidated<TranslationUpdate>;
 	};
-	onPreviewPreviewRequest?: () => void; // Yep, we're requesting a preview of the preview component
 };
 
 export type CustomPreviewEditorProps = PreviewEditorProps & {

@@ -9,7 +9,7 @@
 	--warm-300-transparent-300: hsla(30, 100%, 30%, 15%);
 	--warm-300-transparent-400: hsla(30, 100%, 30%, 20%);
 	--warm-300-transparent-500: hsla(30, 100%, 30%, 33%);
-	--warm-200-transparent-600: hsla(30, 100%, 30%, 50%);
+	--warm-300-transparent-600: hsla(30, 70%, 30%, 60%);
 
 	--neutral-0: hsl(0, 0%, 0%);
 	--neutral-0-transparent-100: hsla(0, 0%, 0%, 10%);
@@ -158,4 +158,12 @@
 
 	--color-article-previewfam-bg: var(--warm-300-transparent-100);
 	--color-article-preview-editor-bg: var(--warm-300-transparent-100);
+
+	/* --- Image Input --- */
+	--color-imga-input: var(--warm-300-transparent-600);
+	--color-image-input-bg: var(--warm-300-transparent-100);
+	--color-image-input-shadow-1: var(--warm-300-transparent-200);
+	--color-image-input-shadow-2: var(--warm-300-transparent-200);
+	--color-image-input-layer-flashlight-hover: var(--warm-300-transparent-200);
+	--color-image-input-border: var(--warm-300-transparent-200);
 }

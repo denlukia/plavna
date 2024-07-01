@@ -15,8 +15,7 @@
 		mainSuperValidated,
 		images,
 		translationsSuperValidated,
-		templateMeta,
-		onPreviewPreviewRequest
+		templateMeta
 	}: CustomPreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
@@ -59,8 +58,5 @@
 		</Typography>
 	</div>
 
-	<Button type="button" onclick={onPreviewPreviewRequest}>
-		<Translation key="article_editor.previews.preview" />
-	</Button>
 	<Button><Translation key="article_editor.previews.update" /></Button>
 </form>

@@ -6,6 +6,7 @@
 	import { prepareImage } from '../image/utils';
 	import type { SectionProp } from '../section/types';
 	import { getPreviewComponent } from './enricher';
+	import type { PreviewComponentType } from './families/types';
 	import type { PreviewDataProp } from './types';
 
 	type Props = {
@@ -19,12 +20,12 @@
 	let recordsTranslations = $derived($page.data.recordsTranslations);
 	let images = $derived($page.data.images || {});
 
-	let staticComponent = $derived(getComponentFromDict('Static'));
+	let staticComponent = $derived(getComponentFromDict('static'));
 	let dynamicComponent: Component<any> | null = $state(null);
 	let dynamicComponentShown = $state(false);
 	let loadDynamicButtonShown = $state(false);
 
-	function getComponentFromDict(type: 'Static' | 'Dynamic') {
+	function getComponentFromDict(type: PreviewComponentType) {
 		if (!previewFamilies) return null;
 		if (!familyId) return null;
 		if (!(familyId in previewFamilies)) return null;
@@ -68,7 +69,7 @@
 
 	$effect(() => {
 		if (dynamicComponentShown && familyId) {
-			getPreviewComponent(familyId, 'Dynamic')
+			getPreviewComponent(familyId, 'dynamic')
 				.then((component) => {
 					if (component) {
 						dynamicComponent = component;
@@ -98,7 +99,7 @@
 	{:else if staticComponent}
 		<svelte:component this={staticComponent} data={getPreviewData()} />
 	{:else}
-		Static component not found
+		static component not found
 	{/if}
 </span>
 

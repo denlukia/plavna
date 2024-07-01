@@ -2,7 +2,6 @@
 	import { superForm } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
-	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
