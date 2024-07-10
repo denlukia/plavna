@@ -15,7 +15,7 @@ import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
 import type { TagService } from '$lib/features/tag/service';
 import type { TagsListForPage } from '$lib/features/tag/types';
-import type { SafeUserData } from '$lib/features/user/parsers';
+import type { User } from '$lib/features/user/parsers';
 import type { ActorService } from '$lib/features/user/service';
 
 declare global {
@@ -36,7 +36,7 @@ declare global {
 
 		interface PageData {
 			actor: User | null;
-			user: SafeUserData | null;
+			user: User | null;
 			systemTranslations: SystemTranslationDict;
 			recordsTranslations?: RecordsTranslationsDict;
 			translationForms?: TranslationFormsDict;

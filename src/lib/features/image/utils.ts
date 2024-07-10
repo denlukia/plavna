@@ -1,5 +1,4 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import type { User } from 'lucia';
 import { imageSourceToEndpointKeyInUser } from '$lib/collections/constants';
 import type { PreparedImage } from '$lib/design/types';
 
@@ -9,6 +8,7 @@ import type {
 } from '../article/parsers';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
+import type { User } from '../user/parsers';
 import type { ImageSelect } from './parsers';
 import type { ImagesDict } from './types';
 
@@ -22,15 +22,16 @@ export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAl
 
 export function prepareImage(
 	imageId: ImageSelect['id'] | null,
-	actor: User | null,
+	user: User | null,
 	images: ImagesDict | undefined,
 	recordsTranslations: RecordsTranslationsDict | undefined
 ): PreparedImage | null {
-	if (!images || !recordsTranslations || !actor || !imageId) {
+	if (!images || !user || !imageId) {
 		return null;
 	}
 
 	const image = images[imageId];
+
 	if (!image || !image.source) {
 		return null;
 	}
@@ -38,7 +39,7 @@ export function prepareImage(
 	let path: string | null = null;
 	const translationKey = image.path_translation_key;
 	if (translationKey) {
-		let translation = getRecordTranslation(translationKey, recordsTranslations);
+		const translation = getRecordTranslation(translationKey, recordsTranslations);
 		if (translation) {
 			path = translation;
 		}
@@ -50,8 +51,8 @@ export function prepareImage(
 		return null;
 	}
 
-	let endpointKey = imageSourceToEndpointKeyInUser[image.source];
-	let endpoint = actor[endpointKey];
+	const endpointKey = imageSourceToEndpointKeyInUser[image.source];
+	let endpoint = user[endpointKey];
 	if (!endpoint) {
 		return null;
 	}
@@ -73,4 +74,12 @@ export function prepareImage(
 		height: image.height,
 		width: image.width
 	};
+}
+
+export function getLanguagedName(name: string, lang?: SupportedLang | null) {
+	return lang ? `${name}.${lang}` : name;
+}
+
+export function getLangFromLanguagedName(languagedName: string) {
+	return languagedName.includes('.') ? languagedName.split('.')[1] : null;
 }

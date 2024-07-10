@@ -100,7 +100,7 @@ export const EN = {
 			image: 'Image',
 			create_localized_screenshots: 'Create Localized Screenshots',
 			preview: 'Preview',
-			image_dropzone: "Drag'n'drop image here or click to upload",
+			image_dropzone: "Drag'n'drop image here or click to choose from folder",
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',

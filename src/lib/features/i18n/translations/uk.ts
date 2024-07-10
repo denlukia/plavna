@@ -103,10 +103,10 @@ export const UK = {
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
-			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати',
+			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати з папки',
 			families: {
 				plavna_modern: {
-					name: 'Плавна й сучасна',
+					name: 'Плавне й сучасне',
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
 					image: 'Зображення',

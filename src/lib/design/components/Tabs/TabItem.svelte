@@ -31,7 +31,7 @@
 	{...attributes}
 	{...events}
 >
-	<Layers overflow="hidden">
+	<Layers>
 		<LayerShift mouse={{ ...mouse, hovered: !active && mouse.hovered }}>
 			<Typography size="set-with-variables">
 				{@render children()}

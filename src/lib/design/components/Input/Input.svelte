@@ -55,7 +55,7 @@
 
 <!-- TODO: What would the correct role be? -->
 <span class="input-and-affixes" {...mouseWatcherEvents} role="presentation" {style}>
-	<Layers overflow="hidden">
+	<Layers>
 		<LayerFlashlight {mouse} />
 		<span class="layer-content">
 			<!-- 1. Leading -->

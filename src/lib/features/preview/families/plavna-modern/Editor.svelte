@@ -5,12 +5,14 @@
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import LanguagedImageInput from '$lib/features/image/LanguagedImageInput.svelte';
+	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
 
 	import { commonPreviewEditorFormAttributes } from '..';
 	import type { PreviewEditorProps } from '../types';
 
 	let { mainSuperValidated, images }: PreviewEditorProps = $props();
+
+	$inspect(images);
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
@@ -40,8 +42,7 @@
 				</Label>
 				<LanguagedImageInput
 					name="preview_image_1"
-					image={images.preview_image_1}
-					withLanguages
+					imageId={images.preview_image_1_id}
 					clientUpload
 				/>
 			</div>
@@ -53,8 +54,7 @@
 				</Label>
 				<LanguagedImageInput
 					name="preview_image_2"
-					image={images.preview_image_2}
-					withLanguages
+					imageId={images.preview_image_2_id}
 					clientUpload
 				/>
 			</div>

@@ -13,6 +13,7 @@
 	--size-3xl: 40px;
 	--size-3xl-to-4xl: 44px;
 	--size-4xl: 48px;
+	--size-6xl: 128px;
 	--size-full: 999px;
 
 	/* ------ Semantic ------ */
@@ -228,8 +229,8 @@
 	--size-article-preview-editor-padding-block: var(--size-l);
 
 	/* --- Image Input --- */
-	--size-image-input-height: 10rem;
+	--size-image-input-height: var(--size-6xl);
 	--size-image-input-border-radius: var(--size-m);
 	--size-image-input-border-width: var(--size-s);
-	--size-image-input-padding-inline: var(--size-l);
+	--size-image-input-padding: var(--size-l) var(--size-l);
 }

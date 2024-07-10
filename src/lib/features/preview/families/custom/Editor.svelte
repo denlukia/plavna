@@ -6,7 +6,7 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import LanguagedImageInput from '$lib/features/image/LanguagedImageInput.svelte';
+	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
 
 	import { commonPreviewEditorFormAttributes } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
@@ -33,20 +33,8 @@
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
 	<Input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<LanguagedImageInput
-		name="preview_image_1"
-		image={images.preview_image_1}
-		{errors}
-		withLanguages
-		clientUpload
-	/>
-	<LanguagedImageInput
-		name="preview_image_2"
-		image={images.preview_image_2}
-		{errors}
-		withLanguages
-		clientUpload
-	/>
+	<LanguagedImageInput name="preview_image_1" imageId={images.preview_image_1_id} clientUpload />
+	<LanguagedImageInput name="preview_image_2" imageId={images.preview_image_2_id} clientUpload />
 	<div class="global-labeled-input-wrapper checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"
