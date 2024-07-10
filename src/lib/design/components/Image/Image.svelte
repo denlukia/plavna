@@ -8,4 +8,4 @@
 	let { preparedImage }: Props = $props();
 </script>
 
-<img src={preparedImage.src} alt={preparedImage.alt} />
+<img class="image" src={preparedImage.src} alt={preparedImage.alt} />

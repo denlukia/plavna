@@ -7,7 +7,7 @@
 		stretch?: boolean;
 		overflow?: string;
 	};
-	let { children, stretch = false, overflow, ...attributes }: Props = $props();
+	let { children, stretch = false, overflow = 'hidden', ...attributes }: Props = $props();
 </script>
 
 <span
@@ -36,5 +36,6 @@
 	.stretch > :global(*) {
 		height: 100%;
 		width: 100%;
+		overflow: hidden;
 	}
 </style>

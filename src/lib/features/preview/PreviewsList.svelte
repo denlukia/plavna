@@ -194,7 +194,7 @@
 									type="editing"
 									superValidatedMain={template.superValidatedMain}
 									superValidatedDeletion={template.superValidatedDeletion}
-									image={images.find((image) => image.id === template.meta.image_id)}
+									imageId={template.meta.image_id}
 								/>
 							{/snippet}
 						</Popup>
@@ -214,8 +214,8 @@
 					this={currentEditorComponent}
 					mainSuperValidated={previewEditorSuperValidated}
 					images={{
-						preview_image_1: images.find((image) => image.id === meta.preview_image_1_id),
-						preview_image_2: images.find((image) => image.id === meta.preview_image_2_id)
+						preview_image_1_id: meta.preview_image_1_id,
+						preview_image_2_id: meta.preview_image_2_id
 					}}
 					translationsSuperValidated={{
 						translation_1: translationForms[meta.preview_translation_1_key],

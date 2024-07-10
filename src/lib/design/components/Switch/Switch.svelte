@@ -13,7 +13,7 @@
 <label class="switch global-reset-line-height">
 	<input bind:checked {...attributes} type="checkbox" />
 	<span class="switch-visualizer global-" {...events}>
-		<Layers overflow="hidden">
+		<Layers>
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
 				<span class="layer-handle global-fix-overflow">

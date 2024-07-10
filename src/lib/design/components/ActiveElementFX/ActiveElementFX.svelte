@@ -14,7 +14,7 @@
 	let { mouse, ...events } = createMouseWatcher();
 </script>
 
-<Layers {...events} overflow="hidden" stretch>
+<Layers stretch {...events}>
 	<LayerFlashlight {mouse} />
 	<LayerShift {mouse}>
 		{@render children()}

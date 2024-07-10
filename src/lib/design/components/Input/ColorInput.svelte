@@ -3,8 +3,6 @@
 	import type { InputOrTextareaProps } from './types';
 
 	let { value = $bindable(), ...attributes }: InputOrTextareaProps = $props();
-
-	$inspect(value);
 </script>
 
 {#snippet leading()}

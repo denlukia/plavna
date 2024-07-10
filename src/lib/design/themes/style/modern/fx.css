@@ -134,6 +134,5 @@
 	/* --- Image Input ---  */
 
 	--border-image-input: var(--size-image-input-border-width) dashed var(--color-image-input-border);
-	--shadow-image-input: 0 4px 20px var(--color-image-input-shadow-1),
-		0 4px 120px var(--color-image-input-shadow-2);
+	--shadow-image-input: var(--shadow-input);
 }

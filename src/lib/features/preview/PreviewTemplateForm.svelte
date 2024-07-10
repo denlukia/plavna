@@ -11,7 +11,7 @@
 
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
-	import LanguagedImageInput from '../image/LanguagedImageInput.svelte';
+	import LanguagedImageInput from '../image/ImageInput/LanguagedImageInput.svelte';
 	import type { ImageSelect } from '../image/parsers';
 	import type {
 		PreviewTemplateCreationForm,
@@ -23,13 +23,13 @@
 		type: 'creating' | 'editing';
 		superValidatedMain: SuperValidated<PreviewTemplateCreationForm | PreviewTemplateEditingForm>;
 		superValidatedDeletion?: SuperValidated<PreviewTemplateDeletionForm>;
-		image?: ImageSelect | undefined;
+		imageId?: ImageSelect['id'] | null;
 	};
 
 	let {
 		superValidatedMain,
 		superValidatedDeletion: superValidateDeletion,
-		image,
+		imageId,
 		type
 	}: Props = $props();
 
@@ -75,7 +75,7 @@
 		</div>
 		<div class="global-labeled-input-wrapper">
 			<Label><Translation key="article_editor.previews.image" /></Label>
-			<LanguagedImageInput name="image" {errors} {image} />
+			<LanguagedImageInput name="image" {imageId} />
 		</div>
 		<Spacer />
 		<Button>

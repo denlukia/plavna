@@ -4,7 +4,7 @@ import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
-import type { User } from '$lib/features/user/parsers';
+import type { Actor } from '$lib/features/user/parsers';
 import { sessions, users } from '$lib/features/user/schema';
 
 import { db } from './db';
@@ -33,6 +33,6 @@ export function getGitHubProvider(lang: SupportedLang) {
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof lucia;
-		DatabaseUserAttributes: User;
+		DatabaseUserAttributes: Actor;
 	}
 }

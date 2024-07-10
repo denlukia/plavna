@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
-
+	import type { ImageSelect } from '../parsers';
 	import ImageInput from './ImageInput.svelte';
-	import type { ImageSelect } from './parsers';
 
-	export let name: string;
-	export let withLanguages = false;
-	export let image: ImageSelect | null = null;
-	export let clientUpload: boolean = false;
+	type Props = {
+		name: string;
+		imageId?: ImageSelect['id'] | null;
+		processing?: boolean;
+		clientUpload?: boolean;
+	};
+
+	let { name, imageId, processing = $bindable(false), clientUpload = false }: Props = $props();
 </script>
 
 <div class="languaged-image-input">
-	<ImageInput {name} {image} {clientUpload} />
+	<ImageInput {name} {imageId} {clientUpload} {processing} />
 	<!-- {#if withLanguages}
 		{#each supportedLangs as lang}
 			<ImageInput {name} {lang} {image} {clientUpload} />

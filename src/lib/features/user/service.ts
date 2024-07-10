@@ -6,10 +6,8 @@ import { db } from '$lib/services/db';
 
 import type { ImageSelect } from '../image/parsers';
 import { images } from '../image/schema';
-import type { ImageProviderUpdate, User } from './parsers';
+import type { Actor, ImageProviderUpdate } from './parsers';
 import { users } from './schema';
-
-
 
 export class ActorService {
 	private actorObj: LuciaUser | null;
@@ -26,7 +24,7 @@ export class ActorService {
 		if (actor === null) error(403);
 		return actor;
 	}
-	async checkOrThrow(id: User['id'] | null, username?: User['username']) {
+	async checkOrThrow(id: Actor['id'] | null, username?: Actor['username']) {
 		const actor = await this.get();
 		if (actor === null) error(403);
 		if (id && actor?.id !== id) error(403);
