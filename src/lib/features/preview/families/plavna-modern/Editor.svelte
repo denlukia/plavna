@@ -12,8 +12,6 @@
 
 	let { mainSuperValidated, images }: PreviewEditorProps = $props();
 
-	$inspect(images);
-
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
 

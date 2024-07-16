@@ -68,7 +68,7 @@
 		<ImageById id={imageId} />
 	</div>
 	<div class="image-actions">
-		<Button onclick={onDelete} kind="destructive">Delete</Button>
+		<Button onclick={onDelete} size="small" kind="translucent-destructive">Delete</Button>
 	</div>
 {:else}
 	<label class="no-image drop-zone">

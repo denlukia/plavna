@@ -15,19 +15,18 @@
 	};
 </script>
 
-<fieldset>
-	<div>
-		Image provider:
-		<ImageProviderForm {providerForm} />
-	</div>
+<div class="images-block">
+	<ImageProviderForm {providerForm} />
 
-	<div>
-		Common images:
-		<ImageCollection collection={collections.common} isAccountCommon />
-	</div>
+	<!-- <ImageCollection collection={collections.common} isAccountCommon /> -->
+</div>
 
-	<div>
-		Article images:
-		<ImageCollection collection={collections.article} {articleId} />
-	</div>
-</fieldset>
+<style>
+	.images-block {
+		background-color: var(--color-article-editor-images-block-bg);
+		padding-inline: var(--size-article-editor-images-block-padding-inline);
+		padding-block-start: var(--size-article-editor-images-block-padding-block-start);
+		padding-block-end: var(--size-article-editor-images-block-padding-block-end);
+		border-radius: var(--size-article-editor-images-block-border-radius);
+	}
+</style>

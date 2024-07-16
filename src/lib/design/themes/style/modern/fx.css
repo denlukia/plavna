@@ -14,6 +14,11 @@
 		0 5px 10px var(--color-button-prominent-shadow-2);
 	--shadow-button-destructive: 0 0px 2px var(--color-button-destructive-shadow-1),
 		0 5px 10px var(--color-button-destructive-shadow-2);
+	--shadow-button-translucent: 0 0px 2px var(--color-button-translucent-shadow-1),
+		0 5px 10px var(--color-button-translucent-shadow-2);
+	--shadow-button-translucent-destructive: 0 0px 2px
+			var(--color-button-translucent-destructive-shadow-1),
+		0 5px 10px var(--color-button-translucent-destructive-shadow-2);
 
 	--transform-button-hover: translateY(-1px);
 	--transition-button: all 250ms var(--smooth-ease-out);
@@ -24,8 +29,16 @@
 		0 8px 10px var(--color-button-prominent-shadow-2);
 	--shadow-button-hover-destructive: 0 2px 4px var(--color-button-destructive-shadow-1),
 		0 8px 10px var(--color-button-destructive-shadow-2);
+	--shadow-button-hover-translucent: 0 2px 4px var(--color-button-translucent-shadow-1),
+		0 8px 10px var(--color-button-translucent-shadow-2);
+	--shadow-button-hover-translucent-destructive: 0 2px 4px
+			var(--color-button-translucent-destructive-shadow-1),
+		0 8px 10px var(--color-button-translucent-destructive-shadow-2);
 
 	--transform-button-active: translateY(1px);
+
+	--backdrop-filter-button-translucent: blur(5px);
+	--backdrop-filter-button-translucent-destructive: blur(5px);
 
 	/* --- Button in Input */
 	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),

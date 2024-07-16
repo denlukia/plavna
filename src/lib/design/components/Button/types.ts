@@ -11,7 +11,13 @@ type ButtonAttrs = HTMLButtonAttributes & {
 
 export type ButtonProps = (AnchorAttrs | ButtonAttrs) & {
 	children?: Snippet;
-	kind?: 'primary' | 'secondary' | 'prominent' | 'destructive';
+	kind?:
+		| 'primary'
+		| 'secondary'
+		| 'prominent'
+		| 'destructive'
+		| 'translucent'
+		| 'translucent-destructive';
 	size?: 'body' | 'small';
 	placement?: 'default' | 'in-input' | 'in-tag';
 	dataSvelteKitPreloadData?: HTMLAnchorAttributes['data-sveltekit-preload-data'];

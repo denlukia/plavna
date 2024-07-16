@@ -59,6 +59,7 @@
 <style>
 	.popup-group {
 		position: relative;
+		width: fit-content;
 	}
 	.popup-positioner {
 		position: absolute;

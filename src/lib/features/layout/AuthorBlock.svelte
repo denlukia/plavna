@@ -20,7 +20,8 @@
 		} as const
 	]);
 
-	const currentPage = $derived(pages.find((page) => $page.route.id === page.routeId));
+	let currentPageRouteId = $derived($page.route.id);
+	let currentPage = $derived(pages.find((page) => currentPageRouteId === page.routeId));
 </script>
 
 <Popup kind="list">
