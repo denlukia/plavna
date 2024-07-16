@@ -121,6 +121,28 @@
 		border: var(--border-button-destructive);
 		--color-layer-flashlight-pointer: var(--color-button-destructive-layer-flashlight-hover);
 	}
+	.kind-translucent {
+		background: var(--color-button-translucent-bg);
+		color: var(--color-button-translucent-text);
+		box-shadow: var(--shadow-button-translucent);
+		border: var(--border-button-translucent);
+		backdrop-filter: var(--backdrop-filter-button-translucent);
+		-webkit-backdrop-filter: var(--backdrop-filter-button-translucent);
+
+		--color-layer-flashlight-pointer: var(--color-button-translucent-layer-flashlight-hover);
+	}
+	.kind-translucent-destructive {
+		background: var(--color-button-translucent-destructive-bg);
+		color: var(--color-button-translucent-destructive-text);
+		box-shadow: var(--shadow-button-translucent-destructive);
+		border: var(--border-button-translucent-destructive);
+		backdrop-filter: var(--backdrop-filter-button-translucent-destructive);
+		-webkit-backdrop-filter: var(--backdrop-filter-button-translucent-destructive);
+
+		--color-layer-flashlight-pointer: var(
+			--color-button-translucent-destructive-layer-flashlight-hover
+		);
+	}
 	.kind-primary:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-primary);
 	}
@@ -130,8 +152,14 @@
 	.kind-prominent:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-prominent);
 	}
-	.type-destructive:not(.pressed):hover {
+	.kind-destructive:not(.pressed):hover {
 		box-shadow: var(--shadow-button-hover-destructive);
+	}
+	.kind-translucent:not(.pressed):hover {
+		box-shadow: var(--shadow-button-hover-translucent);
+	}
+	.kind-translucent-destructive:not(.pressed):hover {
+		box-shadow: var(--shadow-button-hover-translucent-destructive);
 	}
 	.kind-primary:active,
 	.kind-primary.pressed {
@@ -148,6 +176,14 @@
 	.kind-destructive:active,
 	.kind-destructive.pressed {
 		box-shadow: var(--shadow-button-active-destructive);
+	}
+	.kind-translucent:active,
+	.kind-translucent.pressed {
+		box-shadow: var(--shadow-button-active-translucent);
+	}
+	.kind-translucent-destructive:active,
+	.kind-translucent-destructive.pressed {
+		box-shadow: var(--shadow-button-active-translucent-destructive);
 	}
 
 	/* Size Dependent */

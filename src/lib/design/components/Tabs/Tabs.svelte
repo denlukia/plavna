@@ -224,13 +224,13 @@
 		--active-tab-item-border-radius: var(--size-tab-item-active-small-border-radius);
 
 		/* For Text component inside TabItems */
-		--text-font-family: var(--text-small-short-font-family);
-		--text-padding-top: var(--text-small-short-padding-top);
-		--text-padding-bottom: var(--text-small-short-padding-bottom);
-		--text-font-size: var(--text-small-short-font-size);
-		--text-font-weight: var(--text-small-short-font-weight);
-		--text-line-height: var(--text-small-short-line-height);
-		--text-letter-spacing: var(--text-small-short-letter-spacing);
+		--text-font-family: var(--text-small-font-family);
+		--text-padding-top: var(--text-small-padding-top);
+		--text-padding-bottom: var(--text-small-padding-bottom);
+		--text-font-size: var(--text-small-font-size);
+		--text-font-weight: var(--text-small-font-weight);
+		--text-line-height: var(--text-small-line-height);
+		--text-letter-spacing: var(--text-small-letter-spacing);
 	}
 
 	.tabs.global-text-small .active-tab-pill {

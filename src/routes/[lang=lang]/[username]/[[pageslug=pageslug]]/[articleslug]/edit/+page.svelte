@@ -9,7 +9,7 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import ImagesCollectionsList from '$lib/features/image/ImagesCollections/ImagesCollectionsList.svelte';
+	import ImagesCollectionsList from '$lib/features/image/ImagesBlock/ImagesBlock.svelte';
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
@@ -96,7 +96,7 @@
 		</GridCell>
 		<GridCell colspan={2} customClass="article-editor-shifted-cell">
 			<div class="global-labeled-input-wrapper">
-				<Label><Translation key="article_editor.images" /></Label>
+				<Label><Translation key="article_editor.images.label" /></Label>
 				<ImagesCollectionsList
 					providerForm={data.imageProviderForm}
 					articleId={article.id}

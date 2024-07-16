@@ -70,7 +70,14 @@ export const EN = {
 		short_description: 'Short description',
 		slug: 'Slug',
 		content: 'Content',
-		images: 'Images',
+		images: {
+			label: 'Images',
+			image_provider: 'Provider',
+			provider_explanation:
+				'I could split 5GB of image storage between all users, but I choose to let users create own 5GB storages and let Plavna upload to them. You can create a free ImageKit account and provide credentials here.',
+			fill_in_provider: 'Fill in provider'
+		},
+
 		tags: {
 			list_label: 'Tags',
 			editing_form_title: 'Tag',
@@ -101,6 +108,10 @@ export const EN = {
 			create_localized_screenshots: 'Create Localized Screenshots',
 			preview: 'Preview',
 			image_dropzone: "Drag'n'drop image here or click to choose from folder",
+			tabs: {
+				preview: 'Preview',
+				editing: 'Editing'
+			},
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',

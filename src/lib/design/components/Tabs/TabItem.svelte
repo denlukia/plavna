@@ -33,7 +33,7 @@
 >
 	<Layers>
 		<LayerShift mouse={{ ...mouse, hovered: !active && mouse.hovered }}>
-			<Typography size="set-with-variables">
+			<Typography size="set-with-variables" bold>
 				{@render children()}
 			</Typography>
 		</LayerShift>

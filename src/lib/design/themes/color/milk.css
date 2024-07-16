@@ -24,6 +24,7 @@
 	--red-300-transparent-100: hsla(0, 100%, 30%, 10%);
 	--red-300-transparent-200: hsla(0, 100%, 30%, 20%);
 	--red-300-transparent-500: hsla(0, 100%, 30%, 50%);
+	--red-200-transparent-500: hsla(0, 100%, 20%, 50%);
 
 	--cold-200: hsl(200, 70%, 30%);
 	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
@@ -43,11 +44,15 @@
 	--color-button-secondary-bg: var(--warm-300-transparent-200);
 	--color-button-prominent-bg: var(--neutral-0);
 	--color-button-destructive-bg: var(--red-900);
+	--color-button-translucent-bg: var(--warm-300-transparent-300);
+	--color-button-translucent-destructive-bg: var(--red-200-transparent-500);
 
 	--color-button-primary-text: var(--neutral-0);
 	--color-button-secondary-text: var(--neutral-0);
 	--color-button-prominent-text: var(--neutral-1000);
 	--color-button-destructive-text: var(--red-200);
+	--color-button-translucent-text: var(--neutral-0);
+	--color-button-translucent-destructive-text: var(--red-900);
 
 	--color-button-primary-shadow-1: var(--warm-300-transparent-100);
 	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
@@ -55,11 +60,17 @@
 	--color-button-prominent-shadow-2: var(--neutral-0-transparent-100);
 	--color-button-destructive-shadow-1: var(--red-300-transparent-200);
 	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
+	--color-button-translucent-shadow-1: var(--warm-300-transparent-100);
+	--color-button-translucent-shadow-2: var(--warm-300-transparent-100);
+	--color-button-translucent-destructive-shadow-1: var(--red-300-transparent-200);
+	--color-button-translucent-destructive-shadow-2: var(--red-300-transparent-100);
 
 	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-100);
 	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-500);
 	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-250);
 	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
+	--color-button-translucent-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-button-translucent-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
 
 	/* --- Button in Input */
 	--color-button-in-input-bg: var(--warm-950);
@@ -158,6 +169,8 @@
 
 	--color-article-previewfam-bg: var(--warm-300-transparent-100);
 	--color-article-preview-editor-bg: var(--warm-300-transparent-100);
+
+	--color-article-editor-images-block-bg: var(--warm-300-transparent-100);
 
 	/* --- Image Input --- */
 	--color-imga-input: var(--warm-300-transparent-600);

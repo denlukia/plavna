@@ -73,7 +73,13 @@ export const UK = {
 		short_description: 'Короткий опис',
 		slug: 'Адреса',
 		content: 'Контент',
-		images: 'Зображення',
+		images: {
+			label: 'Зображення',
+			image_provider: 'Провайдер',
+			provider_explanation:
+				'Я міг розділити 5GB сховища зображень між всіма користувачами, але вирішив дозволити користувачам створювати власні сховища зображень на 5GB і давати Плавній завантажувати у них. Ви можете створити безкоштовний акаунт ImageKit і надати його дані тут',
+			fill_in_provider: 'Заповнити провайдера'
+		},
 		tags: {
 			list_label: 'Теги',
 			editing_form_title: 'Тег',
@@ -104,6 +110,10 @@ export const UK = {
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
 			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати з папки',
+			tabs: {
+				preview: 'Перегляд',
+				editing: 'Редагування'
+			},
 			families: {
 				plavna_modern: {
 					name: 'Плавне й сучасне',

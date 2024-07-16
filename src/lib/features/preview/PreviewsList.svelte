@@ -7,6 +7,9 @@
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
+	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
+	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
@@ -32,11 +35,26 @@
 		images
 	} = $derived(data);
 
+	let mode = $state('edit');
 	let currentPreviewObject = $state(getInitialCurrentPreview());
 	let currentPreviewTemplateMeta = $derived.by(getCurrentPreviewTemplate);
+	let currentPreviewTranslationProps = $derived.by(getCurrentPreviewTranslationProps);
 	let currentEditorComponent = $derived.by(getCurrentEditorComponent);
 
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
+
+	function getCurrentPreviewTranslationProps() {
+		if (currentPreviewTemplateMeta) {
+			return {
+				recordKey: currentPreviewTemplateMeta.name_translation_key
+			};
+		} else if (currentPreviewObject.family) {
+			return {
+				key: previewFamilies[currentPreviewObject.family]
+					.name_translation_key as SystemTranslationKey
+			};
+		}
+	}
 
 	function getCurrentPreviewTemplate() {
 		if (!currentPreviewObject.family || typeof currentPreviewObject.template !== 'number') {
@@ -113,7 +131,11 @@
 	}
 </script>
 
-{#snippet previewFamilyButton(previewObject: PreviewObject, translationKey: SystemTranslationKey | undefined, superValidated: SuperValidated<any> | undefined)}
+{#snippet previewFamilyButton(
+	previewObject: PreviewObject,
+	translationKey: SystemTranslationKey | undefined,
+	superValidated: SuperValidated<any> | undefined
+)}
 	<Button
 		kind={currentPreviewObject.family === previewObject.family ? 'primary' : 'secondary'}
 		customClass="preview-family-button {currentPreviewObject.family === previewObject.family
@@ -206,6 +228,22 @@
 </GridCell>
 <GridCell colspan={2}>
 	<div class="preview-editor-wrapper">
+		<header class="preview-editor-header">
+			<Typography size="heading-2">
+				{#if currentPreviewTranslationProps}
+					<Translation {...currentPreviewTranslationProps} />
+				{/if}
+			</Typography>
+
+			<Tabs size="small">
+				<TabItem active={mode === 'preview'} onclick={() => (mode = 'preview')}>
+					<Translation key="article_editor.previews.tabs.preview" />
+				</TabItem>
+				<TabItem active={mode === 'edit'} onclick={() => (mode = 'edit')}>
+					<Translation key="article_editor.previews.tabs.editing" />
+				</TabItem>
+			</Tabs>
+		</header>
 		{#if currentEditorComponent}
 			{#await currentEditorComponent}
 				Loading...
@@ -282,6 +320,14 @@
 		background: var(--color-article-preview-editor-bg);
 		border-radius: var(--size-article-preview-editor-border-radius);
 		padding-inline: var(--size-article-preview-editor-padding-inline);
-		padding-block: var(--size-article-preview-editor-padding-block);
+		padding-block-start: var(--size-article-preview-editor-padding-block-start);
+		padding-block-end: var(--size-article-preview-editor-padding-block-end);
+	}
+
+	.preview-editor-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		margin-bottom: var(--size-l);
 	}
 </style>
