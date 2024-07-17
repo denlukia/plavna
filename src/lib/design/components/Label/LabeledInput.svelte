@@ -4,23 +4,21 @@
 
 	type Props = HTMLLabelAttributes & {
 		children: Snippet;
+		customClass?: string;
 		as?: 'label' | 'span' | 'div';
-		type?: 'horizontal' | 'vertical' | 'switch-with-bg';
+		kind?: 'for-checkbox' | 'for-switch';
 		href?: string;
 	};
 
-	let { children, as = 'label', type = 'vertical', href, ...attributes }: Props = $props();
+	let { children, as = 'label', customClass = '', href, kind, ...attributes }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y_label_has_associated_control -->
 <svelte:element
 	this={href ? 'a' : as}
-	class="labeled-input global-reset-line-height global-reset-link {type}"
+	class="global-labeled-input-wrapper {customClass} {kind || ''} {href ? 'global-reset-link' : ''}"
 	{href}
 	{...attributes}
 >
 	{@render children()}
 </svelte:element>
-
-<style>
-</style>

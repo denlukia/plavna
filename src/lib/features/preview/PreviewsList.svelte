@@ -38,23 +38,9 @@
 	let mode = $state('edit');
 	let currentPreviewObject = $state(getInitialCurrentPreview());
 	let currentPreviewTemplateMeta = $derived.by(getCurrentPreviewTemplate);
-	let currentPreviewTranslationProps = $derived.by(getCurrentPreviewTranslationProps);
 	let currentEditorComponent = $derived.by(getCurrentEditorComponent);
 
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
-
-	function getCurrentPreviewTranslationProps() {
-		if (currentPreviewTemplateMeta) {
-			return {
-				recordKey: currentPreviewTemplateMeta.name_translation_key
-			};
-		} else if (currentPreviewObject.family) {
-			return {
-				key: previewFamilies[currentPreviewObject.family]
-					.name_translation_key as SystemTranslationKey
-			};
-		}
-	}
 
 	function getCurrentPreviewTemplate() {
 		if (!currentPreviewObject.family || typeof currentPreviewObject.template !== 'number') {
@@ -163,6 +149,7 @@
 	<div class="preview-editors-scroller">
 		<Popup
 			triggerType="button"
+			customClass="preview-family-popup"
 			buttonProps={{
 				kind: 'secondary',
 				size: 'body',
@@ -230,19 +217,11 @@
 	<div class="preview-editor-wrapper">
 		<header class="preview-editor-header">
 			<Typography size="heading-2">
-				{#if currentPreviewTranslationProps}
-					<Translation {...currentPreviewTranslationProps} />
-				{/if}
+				<Translation key="article_editor.previews.editor_title" />
 			</Typography>
-
-			<Tabs size="small">
-				<TabItem active={mode === 'preview'} onclick={() => (mode = 'preview')}>
-					<Translation key="article_editor.previews.tabs.preview" />
-				</TabItem>
-				<TabItem active={mode === 'edit'} onclick={() => (mode = 'edit')}>
-					<Translation key="article_editor.previews.tabs.editing" />
-				</TabItem>
-			</Tabs>
+			<Button size="small" kind="secondary">
+				<Translation key="article_editor.previews.to_preview_the_preview" />
+			</Button>
 		</header>
 		{#if currentEditorComponent}
 			{#await currentEditorComponent}
@@ -277,6 +256,9 @@
 		width: 100%;
 	}
 	.preview-editors-scroller :global {
+		.preview-family-popup {
+			width: 100%;
+		}
 		.preview-family-button {
 			justify-content: flex-start;
 			width: 100%;

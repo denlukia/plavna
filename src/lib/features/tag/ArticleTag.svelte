@@ -5,6 +5,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
+	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -43,7 +44,7 @@
 	<form use:enhance method="POST" action="?/switch_tag">
 		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
-			<div class="global-labeled-input-wrapper checkbox">
+			<LabeledInput kind="for-checkbox">
 				<div class="events-none">
 					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 				</div>
@@ -52,7 +53,7 @@
 						<Translation superValidated={translationSuperValidated} />
 					</Typography>
 				{/if}
-			</div>
+			</LabeledInput>
 		</label>
 		<button class="global-visually-hidden" id={submitButtonId}>
 			{$form.checked ? 'Uncheck' : 'Check'}
@@ -63,14 +64,14 @@
 		<Popup triggerType="button" buttonProps={{ placement: 'in-tag' }}>
 			{#snippet label()}:{/snippet}
 			{#snippet content()}
-				<div class="global-form">
+				<FormWrapper>
 					<div class="global-text-align-center">
 						<Typography size="heading-2">
-							<Translation key="article_editor.tags.editing_form_title" />
+							<Translation key="article_editor.tags.template_editing_form_title" />
 						</Typography>
 					</div>
 
-					<div class="global-labeled-input-wrapper">
+					<LabeledInput>
 						<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
 						{#if translationSuperValidated}
 							<AutosavedInput
@@ -81,7 +82,7 @@
 								}}
 							/>
 						{/if}
-					</div>
+					</LabeledInput>
 
 					<div class="global-text-align-center">
 						<Typography size="small">
@@ -89,18 +90,13 @@
 						</Typography>
 					</div>
 
-					<form
-						class="global-display-contents"
-						use:deletionEnhance
-						method="POST"
-						action="?/delete_tag"
-					>
+					<form use:deletionEnhance method="POST" action="?/delete_tag">
 						<input name="id" type="hidden" bind:value={$deletionForm.id} />
 						<Button kind="destructive">
 							<Translation key="article_editor.tags.delete" />
 						</Button>
 					</form>
-				</div>
+				</FormWrapper>
 			{/snippet}
 		</Popup>
 	</div>

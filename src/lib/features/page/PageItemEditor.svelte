@@ -30,11 +30,11 @@
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
 
-	<div class="global-labeled-input-wrapper">
+	<LabeledInput>
 		<Label><Translation key="pages_list.slug" /></Label>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />
-	</div>
+	</LabeledInput>
 
 	{#if $form.id}
 		<Button formaction="?/update">

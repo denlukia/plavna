@@ -35,7 +35,7 @@
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
 	<LanguagedImageInput name="preview_image_1" imageId={images.preview_image_1_id} clientUpload />
 	<LanguagedImageInput name="preview_image_2" imageId={images.preview_image_2_id} clientUpload />
-	<div class="global-labeled-input-wrapper checkbox">
+	<LabeledInput kind="for-checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"
 			type="checkbox"
@@ -44,7 +44,7 @@
 		<Typography size="body">
 			<Translation key="article_editor.previews.create_localized_screenshots" />
 		</Typography>
-	</div>
+	</LabeledInput>
 
-	<Button><Translation key="article_editor.previews.update" /></Button>
+	<Button><Translation key="article_editor.previews.set_and_update" /></Button>
 </form>
