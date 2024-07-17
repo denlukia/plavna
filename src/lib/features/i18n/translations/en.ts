@@ -72,15 +72,15 @@ export const EN = {
 		content: 'Content',
 		images: {
 			label: 'Images',
-			image_provider: 'Provider',
+			image_provider: 'Image Provider',
 			provider_explanation:
-				'I could split 5GB of image storage between all users, but I choose to let users create own 5GB storages and let Plavna upload to them. You can create a free ImageKit account and provide credentials here.',
-			fill_in_provider: 'Fill in provider'
+				"I choose to let users create own 5GB storages and let Plavna upload to them, instead of splitting one 5GB storage between everyone. You can create a free ImageKit account and provide it's credentials here.",
+			fill_in_provider: 'Fill in'
 		},
 
 		tags: {
 			list_label: 'Tags',
-			editing_form_title: 'Tag',
+			template_editing_form_title: 'Tag',
 			name_label: 'Name',
 			edit_name_label: 'Edit name',
 			delete: 'Delete',
@@ -94,12 +94,14 @@ export const EN = {
 			view: 'View'
 		},
 		previews: {
+			editor_title: 'Preview Settings',
 			section_label: 'Previews',
 			add: 'Add Custom',
-			new_form_title: 'New Custom Preview',
-			editing_form_title: 'Custom Preview Editing',
+			template_new_form_title: 'New Custom Preview',
+			template_editing_form_title: 'Custom Preview Editing',
 			create: 'Create',
 			update: 'Update',
+			set_and_update: 'Set and Update',
 			delete: 'Delete',
 			url: 'Address',
 			url_placeholder: 'https://example.com',
@@ -108,10 +110,7 @@ export const EN = {
 			create_localized_screenshots: 'Create Localized Screenshots',
 			preview: 'Preview',
 			image_dropzone: "Drag'n'drop image here or click to choose from folder",
-			tabs: {
-				preview: 'Preview',
-				editing: 'Editing'
-			},
+			to_preview_the_preview: 'Preview the Preview',
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',

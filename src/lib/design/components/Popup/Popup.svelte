@@ -12,6 +12,7 @@
 		triggerType?: 'button' | 'dropdown';
 		active?: boolean;
 		kind?: PopupKind;
+		customClass?: string;
 		label: Snippet;
 		content: Snippet;
 		buttonProps?: ButtonProps;
@@ -20,6 +21,7 @@
 	let {
 		triggerType = 'dropdown',
 		kind = 'form',
+		customClass = '',
 		active = $bindable(),
 		label,
 		content,
@@ -34,7 +36,7 @@
 	}
 </script>
 
-<div class="popup-group global-reset-line-height" use:clickOutside={onclickoutside}>
+<div class="popup-group global-reset-line-height {customClass}" use:clickOutside={onclickoutside}>
 	{#if triggerType === 'button'}
 		<Button {onclick} {active} imitatePressingOnClick={false} {...buttonProps}>
 			{@render label()}

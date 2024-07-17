@@ -75,14 +75,14 @@ export const UK = {
 		content: 'Контент',
 		images: {
 			label: 'Зображення',
-			image_provider: 'Провайдер',
+			image_provider: 'Провайдер зображень',
 			provider_explanation:
-				'Я міг розділити 5GB сховища зображень між всіма користувачами, але вирішив дозволити користувачам створювати власні сховища зображень на 5GB і давати Плавній завантажувати у них. Ви можете створити безкоштовний акаунт ImageKit і надати його дані тут',
-			fill_in_provider: 'Заповнити провайдера'
+				'Я вирішив дозволити користувачам створювати власні сховища на 5 ГБ і дозволяти Plavna завантажувати у них, замість того, щоб ділити одне сховище на 5 ГБ на всіх. Ви можете створити безкоштовний обліковий запис ImageKit і надати його дані тут.',
+			fill_in_provider: 'Заповнити'
 		},
 		tags: {
 			list_label: 'Теги',
-			editing_form_title: 'Тег',
+			template_editing_form_title: 'Тег',
 			name_label: 'Назва',
 			edit_name_label: 'Редагувати назву',
 			delete: 'Видалити',
@@ -96,12 +96,14 @@ export const UK = {
 			view: 'Переглянути'
 		},
 		previews: {
+			editor_title: 'Налаштування превʼю',
 			section_label: 'Превʼю',
 			add: 'Додати власне',
-			new_form_title: 'Нове власне превʼю',
-			editing_form_title: 'Редагування власного превʼю',
+			template_new_form_title: 'Нове власне превʼю',
+			template_editing_form_title: 'Редагування власного превʼю',
 			create: 'Створити',
 			update: 'Оновити',
+			set_and_update: 'Обрати й оновити',
 			delete: 'Видалити',
 			url: 'Адреса',
 			url_placeholder: 'https://example.com',
@@ -110,10 +112,7 @@ export const UK = {
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
 			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати з папки',
-			tabs: {
-				preview: 'Перегляд',
-				editing: 'Редагування'
-			},
+			to_preview_the_preview: 'Переглянути превʼю',
 			families: {
 				plavna_modern: {
 					name: 'Плавне й сучасне',
