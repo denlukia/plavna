@@ -20,25 +20,34 @@
 
 	let value: File | null = $state(null);
 	let errors: string | string[] | null = $state(null);
-	let ClientImageHandler: typeof ClientImageHandlerType | null = null;
+	let imageHandler: ClientImageHandlerType | null = null;
+
+	async function getImageHandler() {
+		let { ClientImageHandler } = await import('@denlukia/plavna-common/client');
+		return new ClientImageHandler();
+	}
+
+	// TODO Dry this up
 
 	async function onImageChange(e: Event) {
-		// 1. Load image uploader module and prepare info
+		// 0. Check file presence
 		const target = e.target as HTMLInputElement;
 		const file = target.files?.[0];
 		if (!file) return;
+
 		processing = true;
-		if (!ClientImageHandler) {
-			({ ClientImageHandler } = await import('@denlukia/plavna-common/client'));
-		}
+
+		// 1. Perform basic checks, and initialize image uploader (if needed)
 		const actor = $page.data.actor;
 		if (!actor) throw Error('User not found');
 		if (!imageId) throw Error('Image not found');
+		if (!imageHandler) imageHandler = await getImageHandler();
+		if (!imageHandler.provider)
+			await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
 
 		// 2. Validate image
-		let imageHandler: ClientImageHandlerType;
 		try {
-			imageHandler = await new ClientImageHandler().setImageFromEntry(file, IMG_VALIDATION_CONFIG);
+			await imageHandler.setImageFromEntry(file, IMG_VALIDATION_CONFIG);
 		} catch (err: any) {
 			errors = err;
 			processing = false;
@@ -46,11 +55,10 @@
 		}
 
 		// 3. Process and upload image
-		await imageHandler.setProviderAndUploader(actor, '/api/imagekit-auth-params');
 		const report = await imageHandler.upload({ imageId, lang: getLangFromLanguagedName(name) });
 
 		// 4. Report image upload
-		await fetch('/api/report-img-upload', {
+		await fetch('/api/images/report/upload', {
 			method: 'POST',
 			body: JSON.stringify(report)
 		});
@@ -58,8 +66,23 @@
 		processing = false;
 	}
 
-	function onDelete() {
-		// TODO
+	async function onDelete() {
+		// 1. Perform basic checks, and initialize image uploader (if needed)
+		const actor = $page.data.actor;
+		if (!actor) throw Error('User not found');
+		if (!imageId) throw Error('Image not found');
+		if (!imageHandler) imageHandler = await getImageHandler();
+		if (!imageHandler.provider)
+			await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
+
+		// 2. Delete image TODO: Implement
+		const report = await imageHandler.delete({ imageId, lang: getLangFromLanguagedName(name) });
+
+		// 3. Report image deletion
+		await fetch('/api/images/report/deletion', {
+			method: 'POST',
+			body: JSON.stringify(report)
+		});
 	}
 </script>
 
@@ -68,7 +91,7 @@
 		<ImageById id={imageId} />
 	</div>
 	<div class="image-actions">
-		<Button onclick={onDelete} size="small" kind="translucent-destructive">Delete</Button>
+		<Button onclick={onDelete} size="small" kind="translucent">Delete</Button>
 	</div>
 {:else}
 	<label class="no-image drop-zone">
@@ -106,5 +129,15 @@
 		justify-content: center;
 		align-items: flex-end;
 		padding: var(--size-image-input-padding);
+
+		animation: fade-in 500ms backwards;
+	}
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

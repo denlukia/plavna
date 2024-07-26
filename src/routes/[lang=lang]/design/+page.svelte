@@ -6,7 +6,7 @@
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
@@ -73,32 +73,32 @@
 		<Button size="small" kind="destructive">Testy</Button>
 	</div>
 	<div class="group">
-		<LabeledInput>
+		<Labeled>
 			<Label>Тест звичайного інпуту</Label>
 			<Input type="text" placeholder="Тест" />
-		</LabeledInput>
-		<LabeledInput>
+		</Labeled>
+		<Labeled>
 			<Label tone="additional">Тест пароля</Label>
 			<PasswordInput type="password" placeholder="Тест" />
-		</LabeledInput>
-		<!-- <LabeledInput>
+		</Labeled>
+		<!-- <Labeled>
 			<Label>Тест перекладів</Label>
 			<LanguagedInput superform={translationForm} />
-		</LabeledInput> -->
-		<LabeledInput>
+		</Labeled> -->
+		<Labeled>
 			<Label>Тест автозбереження</Label>
 			<AutosavedInput superValidated={translationFormData} action="?/update_translation" />
-		</LabeledInput>
+		</Labeled>
 	</div>
 	<div class="group">
 		<Select>
 			<option>Test</option>
 		</Select>
 		<TagSwitcher tagId={1}>Ім'я тега</TagSwitcher>
-		<LabeledInput>
+		<Labeled>
 			<Checkbox />
 			<Typography>Тест</Typography>
-		</LabeledInput>
+		</Labeled>
 		<Tabs>
 			{#each tabs as tab, index}
 				<TabItem onclick={() => (activeTabIndex = index)} active={index === activeTabIndex}>

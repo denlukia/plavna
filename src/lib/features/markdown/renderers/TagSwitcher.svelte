@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { SECTION_RECONFIG_PARAM_NAME } from '$lib/collections/constants';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
@@ -56,9 +56,9 @@
 	}
 </script>
 
-<LabeledInput href={showAsLink ? reconfigRequestLink : undefined}>
+<Labeled href={showAsLink ? reconfigRequestLink : undefined}>
 	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 		{@render children()}
 	</Typography>
 	<Switch bind:checked onchange={onSwitchChange} />
-</LabeledInput>
+</Labeled>

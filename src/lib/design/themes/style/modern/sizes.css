@@ -63,8 +63,10 @@
 	--size-labeled-switch-with-bg-margin-top: var(--size-xs);
 	--size-labeled-switch-with-bg-padding-inline: var(--size-xs);
 	--size-labeled-switch-with-bg-text-padding-inline: var(--size-s);
-	--size-labeled-checkbox-margin-top: var(--size-s);
-	--size-labeled-checkbox-margin-bottom: var(--size-s);
+	--size-labeled-checkbox-body-margin-top: var(--size-s);
+	--size-labeled-checkbox-body-margin-bottom: var(--size-s);
+	--size-labeled-checkbox-small-margin-top: 0;
+	--size-labeled-checkbox-small-margin-bottom: var(--size-xs);
 	--size-labeled-inputs-gap: var(--size-m);
 
 	/* --- Button in Input --- */
@@ -239,4 +241,7 @@
 	--size-image-input-border-radius: var(--size-m);
 	--size-image-input-border-width: var(--size-s);
 	--size-image-input-padding: var(--size-l) var(--size-l);
+	--size-image-input-checkbox-wrapper-border-radius: var(--size-full);
+	--size-image-input-checkbox-wrapper-padding-inline: var(--size-m);
+	--size-image-input-checkbox-wrapper-padding-block: var(--size-xs);
 }

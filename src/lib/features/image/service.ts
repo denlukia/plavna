@@ -1,15 +1,14 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { error } from '@sveltejs/kit';
-import { and, eq, getTableColumns } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { User } from 'lucia';
 import { db } from '$lib/services/db';
 
-import { users } from '../user/schema';
-import type { ActorService } from '../user/service';
 import type { TransactionContext } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { ActorService } from '../user/service';
 import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 import { images } from './schema';
 import type { ImageAnyParams, ImageCreationParams, ImagesUpdateParams } from './types';

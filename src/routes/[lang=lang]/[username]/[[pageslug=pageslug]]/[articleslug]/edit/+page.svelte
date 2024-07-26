@@ -5,7 +5,7 @@
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
@@ -50,31 +50,31 @@
 	<GridContainer>
 		<GridCell colspan={3}>
 			<GridCell colspan={2}>
-				<LabeledInput>
+				<Labeled>
 					<Label><Translation key="article_editor.title" /></Label>
 					<AutosavedInput
 						superValidated={translationForms[article.title_translation_key]}
 						action="?/update_translation"
 					/>
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 
 			<GridCell>
-				<LabeledInput>
+				<Labeled>
 					<Label><Translation key="article_editor.slug" /></Label>
 					<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 
 			<GridCell colspan={3}>
-				<LabeledInput>
+				<Labeled>
 					<Label><Translation key="article_editor.short_description" /></Label>
 					<AutosavedInput
 						textarea
 						superValidated={translationForms[article.description_translation_key]}
 						action="?/update_translation"
 					/>
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 		</GridCell>
 
@@ -87,23 +87,23 @@
 <section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
-			<LabeledInput>
+			<Labeled as="div">
 				<Label><Translation key="article_editor.previews.section_label" /></Label>
 
 				<GridCell colspan={3}>
 					<PreviewEditorsList {data} />
 				</GridCell>
-			</LabeledInput>
+			</Labeled>
 		</GridCell>
 		<GridCell colspan={2} customClass="article-editor-shifted-cell">
-			<LabeledInput>
+			<Labeled as="div">
 				<Label><Translation key="article_editor.images.label" /></Label>
 				<ImagesCollectionsList
 					providerForm={data.imageProviderForm}
 					articleId={article.id}
 					collections={{ common: data.commonImages, article: data.articleImages }}
 				/>
-			</LabeledInput>
+			</Labeled>
 		</GridCell>
 	</GridContainer>
 </section>
@@ -111,7 +111,7 @@
 <section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
-			<LabeledInput>
+			<Labeled>
 				<Label><Translation key="article_editor.content" /></Label>
 				<AutosavedInput
 					rows={8}
@@ -119,7 +119,7 @@
 					textarea
 					superValidated={translationForms[article.content_translation_key]}
 				/>
-			</LabeledInput>
+			</Labeled>
 		</GridCell>
 	</GridContainer>
 </section>
