@@ -182,12 +182,19 @@
 	--input-last-child-margin-bottom: 0;
 }
 .global-labeled-input-wrapper.for-checkbox {
+	align-items: flex-end;
 	flex-direction: row;
 	gap: var(--size-labeled-input-checkbox-wrapper-gap);
 
 	/* For Checkbox */
-	--checkbox-margin-top: var(--size-labeled-checkbox-margin-top);
-	--checkbox-margin-bottom: var(--size-labeled-checkbox-margin-bottom);
+}
+.global-labeled-input-wrapper.for-checkbox.size-body {
+	--checkbox-margin-top: var(--size-labeled-checkbox-body-margin-top);
+	--checkbox-margin-bottom: var(--size-labeled-checkbox-body-margin-bottom);
+}
+.global-labeled-input-wrapper.for-checkbox.size-small {
+	--checkbox-margin-top: var(--size-labeled-checkbox-small-margin-top);
+	--checkbox-margin-bottom: var(--size-labeled-checkbox-small-margin-bottom);
 }
 .global-labeled-input-wrapper.for-switch {
 	flex-direction: row;

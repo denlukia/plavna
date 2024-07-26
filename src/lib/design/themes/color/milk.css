@@ -20,6 +20,7 @@
 
 	--red-200: hsl(0, 100%, 20%);
 	--red-900: hsl(0, 100%, 94%);
+	--red-800-transparent-500: hsl(0, 100%, 80%, 50%);
 	--red-300-transparent-50: hsla(0, 100%, 30%, 4%);
 	--red-300-transparent-100: hsla(0, 100%, 30%, 10%);
 	--red-300-transparent-200: hsla(0, 100%, 30%, 20%);
@@ -44,15 +45,15 @@
 	--color-button-secondary-bg: var(--warm-300-transparent-200);
 	--color-button-prominent-bg: var(--neutral-0);
 	--color-button-destructive-bg: var(--red-900);
-	--color-button-translucent-bg: var(--warm-300-transparent-300);
+	--color-button-translucent-bg: var(--neutral-0-transparent-400);
 	--color-button-translucent-destructive-bg: var(--red-200-transparent-500);
 
 	--color-button-primary-text: var(--neutral-0);
 	--color-button-secondary-text: var(--neutral-0);
 	--color-button-prominent-text: var(--neutral-1000);
 	--color-button-destructive-text: var(--red-200);
-	--color-button-translucent-text: var(--neutral-0);
-	--color-button-translucent-destructive-text: var(--red-900);
+	--color-button-translucent-text: var(--neutral-1000);
+	--color-button-translucent-destructive-text: var(--neutral-1000);
 
 	--color-button-primary-shadow-1: var(--warm-300-transparent-100);
 	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
@@ -60,10 +61,10 @@
 	--color-button-prominent-shadow-2: var(--neutral-0-transparent-100);
 	--color-button-destructive-shadow-1: var(--red-300-transparent-200);
 	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
-	--color-button-translucent-shadow-1: var(--warm-300-transparent-100);
+	/* --color-button-translucent-shadow-1: var(--warm-300-transparent-100);
 	--color-button-translucent-shadow-2: var(--warm-300-transparent-100);
 	--color-button-translucent-destructive-shadow-1: var(--red-300-transparent-200);
-	--color-button-translucent-destructive-shadow-2: var(--red-300-transparent-100);
+	--color-button-translucent-destructive-shadow-2: var(--red-300-transparent-100); */
 
 	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-100);
 	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-500);
@@ -128,6 +129,7 @@
 	--color-checkbox-shadow-2: var(--neutral-1000);
 	--color-checkbox-checked-bg: var(--neutral-1000);
 	--color-checkbox-checked-shadow-1: var(--warm-300-transparent-200);
+	--color-checkbox-lighter-bg: var(--neutral-1000-transparent-250);
 
 	/* --- Tabs --- */
 	--color-tabs-bg: var(--warm-300-transparent-100);
@@ -173,9 +175,11 @@
 	--color-article-editor-images-block-bg: var(--warm-300-transparent-100);
 
 	/* --- Image Input --- */
-	--color-imga-input: var(--warm-300-transparent-600);
+	--color-image-input: var(--warm-300-transparent-600);
 	--color-image-input-bg: var(--warm-300-transparent-100);
 	--color-image-input-shadow-1: var(--warm-300-transparent-200);
 	--color-image-input-layer-flashlight-hover: var(--warm-300-transparent-200);
 	--color-image-input-border: var(--warm-300-transparent-200);
+	--color-image-input-checkbox-wrapper-bg: var(--neutral-0-transparent-400);
+	--color-image-input-checkbox-wrapper-text: var(--neutral-1000);
 }

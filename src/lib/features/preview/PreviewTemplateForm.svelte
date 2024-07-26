@@ -6,7 +6,7 @@
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -61,7 +61,7 @@
 				/>
 			</Typography>
 		</div>
-		<LabeledInput>
+		<Labeled>
 			<Label><Translation key="article_editor.previews.url" /></Label>
 			<Input
 				name="url"
@@ -71,15 +71,15 @@
 					$page.data.systemTranslations
 				)}
 			/>
-		</LabeledInput>
-		<LabeledInput>
+		</Labeled>
+		<Labeled>
 			<Label><Translation key="article_editor.previews.name" /></Label>
 			<LanguagedInput superform={form} />
-		</LabeledInput>
-		<LabeledInput>
+		</Labeled>
+		<Labeled>
 			<Label><Translation key="article_editor.previews.image" /></Label>
 			<LanguagedImageInput name="image" {imageId} />
-		</LabeledInput>
+		</Labeled>
 		<Spacer />
 		<Button>
 			<Translation key="article_editor.previews.{type === 'creating' ? 'create' : 'update'}" />

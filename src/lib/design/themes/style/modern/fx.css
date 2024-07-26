@@ -14,11 +14,11 @@
 		0 5px 10px var(--color-button-prominent-shadow-2);
 	--shadow-button-destructive: 0 0px 2px var(--color-button-destructive-shadow-1),
 		0 5px 10px var(--color-button-destructive-shadow-2);
-	--shadow-button-translucent: 0 0px 2px var(--color-button-translucent-shadow-1),
-		0 5px 10px var(--color-button-translucent-shadow-2);
-	--shadow-button-translucent-destructive: 0 0px 2px
+	/* --shadow-button-translucent: 0 0px 2px var(--color-button-translucent-shadow-1),
+		0 5px 10px var(--color-button-translucent-shadow-2); */
+	/* --shadow-button-translucent-destructive: 0 0px 2px
 			var(--color-button-translucent-destructive-shadow-1),
-		0 5px 10px var(--color-button-translucent-destructive-shadow-2);
+		0 5px 10px var(--color-button-translucent-destructive-shadow-2); */
 
 	--transform-button-hover: translateY(-1px);
 	--transition-button: all 250ms var(--smooth-ease-out);
@@ -145,7 +145,7 @@
 		0 4px 120px var(--color-article-actions-shadow-2);
 
 	/* --- Image Input ---  */
-
 	--border-image-input: var(--size-image-input-border-width) dashed var(--color-image-input-border);
 	--shadow-image-input: var(--shadow-input);
+	--backdrop-filter-image-input-checkbox-wrapper: blur(5px);
 }

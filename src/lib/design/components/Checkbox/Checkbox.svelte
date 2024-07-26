@@ -9,9 +9,15 @@
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 	import IconWrapper from '../IconWrapper/IconWrapper.svelte';
 
-	type Props = HTMLInputAttributes & { checkboxSize?: 'default' | 'small' };
+	type Props = HTMLInputAttributes & { checkboxSize?: 'default' | 'small'; lighter?: boolean };
 
-	let { type, checkboxSize = 'default', checked = $bindable(), ...attributes }: Props = $props();
+	let {
+		type,
+		lighter = false,
+		checkboxSize = 'default',
+		checked = $bindable(),
+		...attributes
+	}: Props = $props();
 
 	const uncheckedStartingFrame = 0;
 	const checkedFrame = 12;
@@ -40,7 +46,7 @@
 	});
 </script>
 
-<label class="checkbox-label" {...events}>
+<label class="checkbox-label" class:lighter {...events}>
 	<input class="global-visually-hidden" type="checkbox" bind:checked {...attributes} />
 	<span class="checkbox-visualizer size-{checkboxSize}">
 		<div class="checkmark-positioner">
@@ -96,6 +102,10 @@
 
 	input:checked + .checkbox-visualizer:active {
 		transform: var(--transform-checkbox-checked-active);
+	}
+
+	.lighter .checkbox-visualizer {
+		background: var(--color-checkbox-lighter-bg);
 	}
 
 	.checkmark-positioner {

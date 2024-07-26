@@ -4,7 +4,8 @@ export const EN = {
 		my_pages: 'My pages',
 		my: 'My',
 		no_translation: 'No translation',
-		or: 'or'
+		or: 'or',
+		save: 'Save'
 	},
 	auth: {
 		signup: 'Sign up',
@@ -103,6 +104,7 @@ export const EN = {
 			update: 'Update',
 			set_and_update: 'Set and Update',
 			delete: 'Delete',
+			mark_deletion: 'Delete on Update',
 			url: 'Address',
 			url_placeholder: 'https://example.com',
 			name: 'Name',

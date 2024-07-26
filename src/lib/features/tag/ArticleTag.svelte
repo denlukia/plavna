@@ -4,8 +4,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
+	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -44,7 +45,7 @@
 	<form use:enhance method="POST" action="?/switch_tag">
 		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
-			<LabeledInput kind="for-checkbox">
+			<Labeled kind="for-checkbox">
 				<div class="events-none">
 					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 				</div>
@@ -53,7 +54,7 @@
 						<Translation superValidated={translationSuperValidated} />
 					</Typography>
 				{/if}
-			</LabeledInput>
+			</Labeled>
 		</label>
 		<button class="global-visually-hidden" id={submitButtonId}>
 			{$form.checked ? 'Uncheck' : 'Check'}
@@ -71,7 +72,7 @@
 						</Typography>
 					</div>
 
-					<LabeledInput>
+					<Labeled>
 						<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
 						{#if translationSuperValidated}
 							<AutosavedInput
@@ -82,7 +83,7 @@
 								}}
 							/>
 						{/if}
-					</LabeledInput>
+					</Labeled>
 
 					<div class="global-text-align-center">
 						<Typography size="small">

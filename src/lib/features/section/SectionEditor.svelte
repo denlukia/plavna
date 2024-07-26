@@ -7,7 +7,7 @@
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
@@ -128,7 +128,7 @@
 			<input name="section_id" type="hidden" bind:value={$translationForm.section_id} />
 		{/if}
 		<div class="inputs">
-			<LabeledInput>
+			<Labeled>
 				<Label><Translation key="page_actor.section.description" /></Label>
 				<LanguagedInput
 					superform={translationForm}
@@ -138,9 +138,9 @@
 					element="textarea"
 					rows={3}
 				/>
-			</LabeledInput>
+			</Labeled>
 
-			<LabeledInput>
+			<Labeled>
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
@@ -151,7 +151,7 @@
 						</InfoBlock>
 					</div>
 				{/if}
-			</LabeledInput>
+			</Labeled>
 		</div>
 
 		<div class="actions">

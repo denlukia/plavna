@@ -5,7 +5,7 @@
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
@@ -20,25 +20,26 @@
 
 <FormWrapper>
 	<form use:enhance {...commonPreviewEditorFormAttributes}>
+		<input name="preview_family" type="hidden" value="plavna-modern" />
 		<GridCell colspan={2}>
 			<GridCell>
-				<LabeledInput>
+				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_color" />
 					</Label>
 					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 			<GridCell>
-				<LabeledInput>
+				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_bg_color" />
 					</Label>
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 			<GridCell>
-				<LabeledInput>
+				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.image" />
 					</Label>
@@ -47,10 +48,10 @@
 						imageId={images.preview_image_1_id}
 						clientUpload
 					/>
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 			<GridCell>
-				<LabeledInput>
+				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.image_depth" />
 					</Label>
@@ -59,7 +60,7 @@
 						imageId={images.preview_image_2_id}
 						clientUpload
 					/>
-				</LabeledInput>
+				</Labeled>
 			</GridCell>
 		</GridCell>
 		<Spacer />

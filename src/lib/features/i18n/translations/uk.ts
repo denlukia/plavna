@@ -8,7 +8,8 @@ export const UK = {
 		my_pages: 'Мої сторінки',
 		my: 'Мої',
 		no_translation: 'Без перкладу',
-		or: 'або'
+		or: 'або',
+		save: 'Зберегти'
 	},
 	auth: {
 		signup: 'Реєстрація',
@@ -96,15 +97,16 @@ export const UK = {
 			view: 'Переглянути'
 		},
 		previews: {
-			editor_title: 'Налаштування превʼю',
-			section_label: 'Превʼю',
-			add: 'Додати власне',
-			template_new_form_title: 'Нове власне превʼю',
-			template_editing_form_title: 'Редагування власного превʼю',
+			editor_title: 'Налашт. передогляду',
+			section_label: 'Передогляд',
+			add: 'Додати власний',
+			template_new_form_title: 'Новий власний передогляд',
+			template_editing_form_title: 'Редагування власного передогляду',
 			create: 'Створити',
 			update: 'Оновити',
 			set_and_update: 'Обрати й оновити',
 			delete: 'Видалити',
+			mark_deletion: 'Видалити при оновленні',
 			url: 'Адреса',
 			url_placeholder: 'https://example.com',
 			name: 'Назва',
@@ -112,10 +114,10 @@ export const UK = {
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
 			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати з папки',
-			to_preview_the_preview: 'Переглянути превʼю',
+			to_preview_the_preview: 'Переглянути',
 			families: {
 				plavna_modern: {
-					name: 'Плавне й сучасне',
+					name: 'Плавний і сучасний',
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
 					image: 'Зображення',

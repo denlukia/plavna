@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import type { ArticleService } from '$lib/features/article/service';
 	import type { ExtractMethods } from '$lib/features/common/types';
 
@@ -18,7 +18,7 @@
 	let { tags, tagCreationSuperValidated }: Props = $props();
 </script>
 
-<LabeledInput customClass="article-tags-list" as="div">
+<Labeled customClass="article-tags-list" as="div">
 	<Label><Translation key="article_editor.tags.list_label" /></Label>
 	<div class="tags-list">
 		<ArticleTagCreator superValidated={tagCreationSuperValidated} />
@@ -30,7 +30,7 @@
 			/>
 		{/each}
 	</div>
-</LabeledInput>
+</Labeled>
 
 <style>
 	:global(.article-tags-list) {

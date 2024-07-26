@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { InputOrTextareaProps } from '../../../design/components/Input/types';
@@ -56,7 +57,9 @@
 {#snippet trailing()}
 	<span class="save-button-wrapper" class:global-visually-hidden={!showSaveButton}>
 		<span class="inner">
-			<Button placement="in-input" bind:ref={formRef}>Save</Button>
+			<Button placement="in-input" bind:ref={formRef}>
+				<Translation key="layout.save" />
+			</Button>
 		</span>
 	</span>
 {/snippet}

@@ -4,7 +4,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
@@ -41,10 +41,10 @@
 						<Translation key="article_editor.tags.new_tag" />
 					</Typography>
 				</div>
-				<LabeledInput>
+				<Labeled>
 					<Label><Translation key="article_editor.tags.name_label" /></Label>
 					<LanguagedInput superform={form} />
-				</LabeledInput>
+				</Labeled>
 				<Button>
 					<Translation key="article_editor.tags.create" />
 				</Button>

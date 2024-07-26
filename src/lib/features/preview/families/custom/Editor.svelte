@@ -3,6 +3,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -35,7 +36,7 @@
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
 	<LanguagedImageInput name="preview_image_1" imageId={images.preview_image_1_id} clientUpload />
 	<LanguagedImageInput name="preview_image_2" imageId={images.preview_image_2_id} clientUpload />
-	<LabeledInput kind="for-checkbox">
+	<Labeled kind="for-checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"
 			type="checkbox"
@@ -44,7 +45,7 @@
 		<Typography size="body">
 			<Translation key="article_editor.previews.create_localized_screenshots" />
 		</Typography>
-	</LabeledInput>
+	</Labeled>
 
 	<Button><Translation key="article_editor.previews.set_and_update" /></Button>
 </form>

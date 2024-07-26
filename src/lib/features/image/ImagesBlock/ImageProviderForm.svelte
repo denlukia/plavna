@@ -5,7 +5,7 @@
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
-	import LabeledInput from '$lib/design/components/Label/LabeledInput.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -34,7 +34,7 @@
 	{#snippet content()}
 		<FormWrapper>
 			<form use:enhance method="POST" action="?/update_image_provider">
-				<LabeledInput>
+				<Labeled>
 					<Label><Translation key="" /></Label>
 					<Input
 						type="text"
@@ -42,8 +42,8 @@
 						bind:value={$form.imagekit_public_key}
 						placeholder="imagekit_public_key"
 					/>
-				</LabeledInput>
-				<LabeledInput>
+				</Labeled>
+				<Labeled>
 					<Label><Translation key="" /></Label>
 					<Input
 						type="text"
@@ -51,8 +51,8 @@
 						bind:value={$form.imagekit_private_key}
 						placeholder="imagekit_private_key"
 					/>
-				</LabeledInput>
-				<LabeledInput>
+				</Labeled>
+				<Labeled>
 					<Label><Translation key="" /></Label>
 					<Input
 						type="text"
@@ -60,7 +60,7 @@
 						bind:value={$form.imagekit_url_endpoint}
 						placeholder="imagekit_url_endpoint"
 					/>
-				</LabeledInput>
+				</Labeled>
 				<Spacer />
 				<Button>Update</Button>
 			</form>

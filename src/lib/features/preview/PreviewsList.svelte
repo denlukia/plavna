@@ -299,6 +299,7 @@
 	}
 
 	.preview-editor-wrapper {
+		width: 100%;
 		background: var(--color-article-preview-editor-bg);
 		border-radius: var(--size-article-preview-editor-border-radius);
 		padding-inline: var(--size-article-preview-editor-padding-inline);
