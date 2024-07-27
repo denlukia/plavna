@@ -104,8 +104,25 @@
 		transform: var(--transform-checkbox-checked-active);
 	}
 
+	/* Lighter Version (for Dark BG) */
+
 	.lighter .checkbox-visualizer {
 		background: var(--color-checkbox-lighter-bg);
+		box-shadow: var(--shadow-checkbox-lighter);
+	}
+
+	.lighter input:checked + .checkbox-visualizer {
+		background: var(--color-checkbox-lighter-checked-bg);
+		box-shadow: var(--shadow-checkbox-lighter-checked);
+	}
+
+	.lighter input:checked + .checkbox-visualizer {
+		background: var(--color-checkbox-lighter-checked-bg);
+		box-shadow: var(--shadow-checkbox-lighter-checked);
+	}
+
+	.lighter input:checked + .checkbox-visualizer:hover {
+		box-shadow: var(--shadow-checkbox-lighter-checked-hover);
 	}
 
 	.checkmark-positioner {
