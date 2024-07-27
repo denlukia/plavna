@@ -129,7 +129,12 @@
 	--color-checkbox-shadow-2: var(--neutral-1000);
 	--color-checkbox-checked-bg: var(--neutral-1000);
 	--color-checkbox-checked-shadow-1: var(--warm-300-transparent-200);
+
 	--color-checkbox-lighter-bg: var(--neutral-1000-transparent-250);
+	--color-checkbox-lighter-shadow-1: var(--warm-300-transparent-200);
+	--color-checkbox-lighter-shadow-2: var(--neutral-1000);
+	--color-checkbox-lighter-checked-bg: var(--neutral-1000);
+	--color-checkbox-lighter-checked-shadow-1: var(--warm-300-transparent-200);
 
 	/* --- Tabs --- */
 	--color-tabs-bg: var(--warm-300-transparent-100);

@@ -119,6 +119,14 @@
 	--tranform-checkbox-hover: translateY(-1px);
 	--tranform-checkbox-active: translateY(1px);
 	--transition-checkbox: all 100ms var(--smooth-ease-out);
+	--shadow-checkbox-lighter: inset 0 2px 4px var(--color-checkbox-lighter-shadow-1),
+		0 0.5px 1px var(--color-checkbox-lighter-shadow-2), 0 0 0 transparent;
+	--shadow-checkbox-lighter-checked: inset 0 0 0 transparent,
+		0 0px 2px var(--color-checkbox-lighter-shadow-1),
+		0 5px 10px var(--color-checkbox-lighter-shadow-1);
+	--shadow-checkbox-lighter-checked-hover: inset 0 0 0 transparent,
+		0 2px 4px var(--color-checkbox-lighter-shadow-1),
+		0 8px 10px var(--color-checkbox-lighter-shadow-1);
 
 	/* --- Tabs --- */
 	--shadow-tabs: inset 0 2px 4px var(--color-tabs-shadow-1), 0 1px 1px var(--color-tabs-shadow-2);
