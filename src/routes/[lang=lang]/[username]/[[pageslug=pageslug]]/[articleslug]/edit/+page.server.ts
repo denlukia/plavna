@@ -182,18 +182,19 @@ async function update_image_provider(event: RequestEvent) {
 	const { actorService } = event.locals;
 	try {
 		await actorService.updateImageProvider(form.data);
+		return { form };
 	} catch {
 		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
 	}
 }
 async function delete_image_provider(event: RequestEvent) {
+	const form = await superValidate(zod(imageProviderUpdateFormSchema));
+
 	const { actorService } = event.locals;
 
-	await actorService.updateImageProvider({
-		imagekit_private_key: '',
-		imagekit_public_key: '',
-		imagekit_url_endpoint: ''
-	});
+	await actorService.deleteImageProvider();
+
+	return { form };
 }
 
 async function create_image(event: RequestEvent) {
@@ -223,7 +224,7 @@ async function delete_image(event: RequestEvent) {
 	if (!form.valid) fail(400, { form });
 
 	const { imageService } = event.locals;
-	await imageService.delete(form.data.id);
+	await imageService.delete(form.data.id, 'with-record');
 }
 
 export const actions = {

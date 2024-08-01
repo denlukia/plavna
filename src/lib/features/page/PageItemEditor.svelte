@@ -30,7 +30,7 @@
 		<input type="hidden" name="id" bind:value={$form.id} />
 	{/if}
 
-	<Labeled>
+	<Labeled as="label">
 		<Label><Translation key="pages_list.slug" /></Label>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
 		<Error errors={$errors.slug} />

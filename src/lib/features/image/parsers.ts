@@ -4,8 +4,8 @@ import type { SuperValidated } from 'sveltekit-superforms';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
-import { users } from '../user/schema';
 import { generateLanguagedFields } from '../common/parsers-utils';
+import { users } from '../user/schema';
 import { images } from './schema';
 
 // Images
@@ -43,8 +43,11 @@ export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({
 	imagekit_public_key: true,
 	imagekit_url_endpoint: true
 });
-// Images
+export type ImageProviderSuperValidated = SuperValidated<
+	z.infer<typeof imageProviderUpdateFormSchema>
+>;
 
+// Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
 export type ImageInsert = z.infer<typeof imageInsertSchema>;
 export type ImageUpdate = z.infer<typeof imageUpdateSchema>;

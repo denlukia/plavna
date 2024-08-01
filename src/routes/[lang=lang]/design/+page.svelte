@@ -73,19 +73,19 @@
 		<Button size="small" kind="destructive">Testy</Button>
 	</div>
 	<div class="group">
-		<Labeled>
+		<Labeled as="label">
 			<Label>Тест звичайного інпуту</Label>
 			<Input type="text" placeholder="Тест" />
 		</Labeled>
-		<Labeled>
+		<Labeled as="label">
 			<Label tone="additional">Тест пароля</Label>
 			<PasswordInput type="password" placeholder="Тест" />
 		</Labeled>
-		<!-- <Labeled>
+		<!-- <Labeled as="label">
 			<Label>Тест перекладів</Label>
 			<LanguagedInput superform={translationForm} />
 		</Labeled> -->
-		<Labeled>
+		<Labeled as="label">
 			<Label>Тест автозбереження</Label>
 			<AutosavedInput superValidated={translationFormData} action="?/update_translation" />
 		</Labeled>
@@ -95,7 +95,7 @@
 			<option>Test</option>
 		</Select>
 		<TagSwitcher tagId={1}>Ім'я тега</TagSwitcher>
-		<Labeled>
+		<Labeled as="label">
 			<Checkbox />
 			<Typography>Тест</Typography>
 		</Labeled>

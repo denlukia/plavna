@@ -18,7 +18,7 @@
 	let { tags, tagCreationSuperValidated }: Props = $props();
 </script>
 
-<Labeled customClass="article-tags-list" as="div">
+<Labeled as="div" customClass="article-tags-list">
 	<Label><Translation key="article_editor.tags.list_label" /></Label>
 	<div class="tags-list">
 		<ArticleTagCreator superValidated={tagCreationSuperValidated} />

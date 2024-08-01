@@ -17,6 +17,7 @@ import type { TagService } from '$lib/features/tag/service';
 import type { TagsListForPage } from '$lib/features/tag/types';
 import type { User } from '$lib/features/user/parsers';
 import type { ActorService } from '$lib/features/user/service';
+import type { ImageProviderSuperValidated } from '$lib/features/image/parsers';
 
 declare global {
 	namespace App {
@@ -38,11 +39,16 @@ declare global {
 			actor: User | null;
 			user: User | null;
 			systemTranslations: SystemTranslationDict;
+			imageProvider: {
+				hasValidCredentialsSet: boolean;
+				superValidated: ImageProviderSuperValidated;
+			};
 			recordsTranslations?: RecordsTranslationsDict;
 			translationForms?: TranslationFormsDict;
 			previewFamilies?: PreviewFamiliesDict;
 			images?: ImagesDict;
 			tags?: TagsListForPage;
+			
 		}
 	}
 }

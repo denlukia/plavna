@@ -56,7 +56,7 @@
 	}
 </script>
 
-<Labeled href={showAsLink ? reconfigRequestLink : undefined}>
+<Labeled as="label" href={showAsLink ? reconfigRequestLink : undefined}>
 	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
 		{@render children()}
 	</Typography>

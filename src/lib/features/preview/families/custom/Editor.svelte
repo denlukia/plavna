@@ -36,7 +36,7 @@
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
 	<LanguagedImageInput name="preview_image_1" imageId={images.preview_image_1_id} clientUpload />
 	<LanguagedImageInput name="preview_image_2" imageId={images.preview_image_2_id} clientUpload />
-	<Labeled kind="for-checkbox">
+	<Labeled as="label" kind="for-checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"
 			type="checkbox"

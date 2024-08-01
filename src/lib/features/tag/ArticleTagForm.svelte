@@ -41,7 +41,7 @@
 						<Translation key="article_editor.tags.new_tag" />
 					</Typography>
 				</div>
-				<Labeled>
+				<Labeled as="label">
 					<Label><Translation key="article_editor.tags.name_label" /></Label>
 					<LanguagedInput superform={form} />
 				</Labeled>

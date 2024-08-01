@@ -45,7 +45,7 @@
 	<form use:enhance method="POST" action="?/switch_tag">
 		<label class="checked-form" for={submitButtonId}>
 			<input name="id" type="hidden" bind:value={$form.id} />
-			<Labeled kind="for-checkbox">
+			<Labeled as="label" kind="for-checkbox">
 				<div class="events-none">
 					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 				</div>
@@ -72,7 +72,7 @@
 						</Typography>
 					</div>
 
-					<Labeled>
+					<Labeled as="label">
 						<Label><Translation key="article_editor.tags.edit_name_label" /></Label>
 						{#if translationSuperValidated}
 							<AutosavedInput

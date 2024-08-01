@@ -10,7 +10,7 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import ImagesCollectionsList from '$lib/features/image/ImagesBlock/ImagesBlock.svelte';
+	import ImagesCollectionsList from '$lib/features/image/ImagesBlock/ImagesCollections.svelte';
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
@@ -50,7 +50,7 @@
 	<GridContainer>
 		<GridCell colspan={3}>
 			<GridCell colspan={2}>
-				<Labeled>
+				<Labeled as="label">
 					<Label><Translation key="article_editor.title" /></Label>
 					<AutosavedInput
 						superValidated={translationForms[article.title_translation_key]}
@@ -60,14 +60,14 @@
 			</GridCell>
 
 			<GridCell>
-				<Labeled>
+				<Labeled as="label">
 					<Label><Translation key="article_editor.slug" /></Label>
 					<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
 				</Labeled>
 			</GridCell>
 
 			<GridCell colspan={3}>
-				<Labeled>
+				<Labeled as="label">
 					<Label><Translation key="article_editor.short_description" /></Label>
 					<AutosavedInput
 						textarea
@@ -99,7 +99,7 @@
 			<Labeled as="div">
 				<Label><Translation key="article_editor.images.label" /></Label>
 				<ImagesCollectionsList
-					providerForm={data.imageProviderForm}
+					imageProvider={data.imageProvider}
 					articleId={article.id}
 					collections={{ common: data.commonImages, article: data.articleImages }}
 				/>
@@ -111,7 +111,7 @@
 <section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
-			<Labeled>
+			<Labeled as="label">
 				<Label><Translation key="article_editor.content" /></Label>
 				<AutosavedInput
 					rows={8}

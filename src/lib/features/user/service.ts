@@ -36,6 +36,13 @@ export class ActorService {
 		await new ServerImageHandler().setProviderAndUploader(providerData);
 		return db.update(users).set(providerData).where(eq(users.id, actor.id));
 	}
+	async deleteImageProvider() {
+		const actor = await this.getOrThrow();
+		return db
+			.update(users)
+			.set({ imagekit_url_endpoint: null, imagekit_public_key: null, imagekit_private_key: null })
+			.where(eq(users.id, actor.id));
+	}
 	async setFromImageIdOrThrow(imageId: ImageSelect['id']) {
 		const result = await db
 			.select(getTableColumns(users))

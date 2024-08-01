@@ -74,9 +74,17 @@ export const EN = {
 		images: {
 			label: 'Images',
 			image_provider: 'Image Provider',
+			provider_warning: 'Fill in the image provider to upload images',
 			provider_explanation:
-				"I choose to let users create own 5GB storages and let Plavna upload to them, instead of splitting one 5GB storage between everyone. You can create a free ImageKit account and provide it's credentials here.",
-			fill_in_provider: 'Fill in'
+				"To upload images, create your own storage and share it's credentials with Plavna, it will only upload to it's own folder. You will have 5GB of space (instead of splitting 5GB among all users) and control over the images even if Plavna disappears. Currently, only ImageKit is supported.",
+			fill_in_provider: 'Fill in',
+			imagekit: {
+				url_endpoint: 'URL Endpoint',
+				public_key: 'Public Key',
+				private_key: 'Private Key'
+			},
+			update: 'Update',
+			delete: 'Delete'
 		},
 
 		tags: {

@@ -142,15 +142,15 @@ export class ImageService {
 			.returning()
 			.get();
 	}
-	async delete(imageId: ImageSelect['id'], lang?: SupportedLang | null, trx?: TransactionContext) {
+	async delete(
+		imageId: ImageSelect['id'],
+		mode: 'path-only' | 'with-record',
+		lang?: SupportedLang | null,
+		trx?: TransactionContext
+	) {
 		const chosenDBInstance = trx || db;
 		const actor = await this.actorService.getOrThrow();
-		const mode =
-			typeof lang === 'string'
-				? 'translation-deletion'
-				: lang === null
-					? 'default-deletion'
-					: 'whole-deletion';
+
 		const whereCondition = and(eq(images.user_id, actor.id), eq(images.id, imageId));
 
 		const translation = await chosenDBInstance
@@ -162,16 +162,18 @@ export class ImageService {
 
 		// TODO: Delete image from provider
 
-		if (mode === 'translation-deletion') {
-			if (translation) {
-				if (typeof lang !== 'string') error(403);
-				await this.translationService.update(
-					{ [lang]: null, key: translation.translations.key },
-					trx
-				);
+		if (mode === 'path-only') {
+			if (lang) {
+				if (translation) {
+					if (typeof lang !== 'string') error(403);
+					await this.translationService.update(
+						{ [lang]: null, key: translation.translations.key },
+						trx
+					);
+				}
+			} else {
+				await chosenDBInstance.update(images).set({ path: null }).where(whereCondition).run();
 			}
-		} else if (mode === 'default-deletion') {
-			await chosenDBInstance.update(images).set({ path: null }).where(whereCondition).run();
 		} else {
 			if (translation) {
 				await this.translationService.delete({ key: translation.translations.key }, trx);

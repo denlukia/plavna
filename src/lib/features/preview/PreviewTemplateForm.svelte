@@ -61,7 +61,7 @@
 				/>
 			</Typography>
 		</div>
-		<Labeled>
+		<Labeled as="label">
 			<Label><Translation key="article_editor.previews.url" /></Label>
 			<Input
 				name="url"
@@ -72,11 +72,11 @@
 				)}
 			/>
 		</Labeled>
-		<Labeled>
+		<Labeled as="label">
 			<Label><Translation key="article_editor.previews.name" /></Label>
 			<LanguagedInput superform={form} />
 		</Labeled>
-		<Labeled>
+		<Labeled as="label">
 			<Label><Translation key="article_editor.previews.image" /></Label>
 			<LanguagedImageInput name="image" {imageId} />
 		</Labeled>
