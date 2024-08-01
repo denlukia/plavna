@@ -306,7 +306,7 @@ export class ArticleService {
 			),
 			tagInfos,
 			tagCreationSuperValidated: await superValidate(zod(translationInsertSchema)),
-			imageProviderForm: await superValidate(actor, zod(imageProviderUpdateFormSchema)),
+
 			images: imagesArr.reduce(
 				(acc, { id, ...curr }) => ({
 					...acc,
@@ -371,7 +371,7 @@ export class ArticleService {
 			.returning({ id: articles.id })
 			.get();
 		if (!articleDeleted) throw new Error('Article not found');
-		await this.imageService.delete(articleDeleted.id);
+		await this.imageService.delete(articleDeleted.id, 'with-record');
 	}
 	async updatePreview(
 		slug: string,
@@ -442,7 +442,7 @@ export class ArticleService {
 				const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
 				const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
 
-				return this.imageService.delete(articleRecord[fieldNameWithIdPrefix], lang);
+				return this.imageService.delete(articleRecord[fieldNameWithIdPrefix], 'path-only', lang);
 			});
 			await Promise.all([...deletionPromises, ...uploadPromises]);
 		}

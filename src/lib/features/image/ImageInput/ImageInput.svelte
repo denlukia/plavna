@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 	import LayerFlashlight from '$lib/design/components/ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import { createMouseWatcher } from '$lib/design/reactivity/mouse-watcher.svelte';
 
+	import ImageProviderWarning from '../ImagesBlock/ImageProviderWarning.svelte';
 	import type { ImageSelect } from '../parsers';
 	import ImageInputClient from './ImageInputClient.svelte';
 	import ImageInputServer from './ImageInputServer.svelte';
@@ -18,17 +20,25 @@
 	let { name, imageId, processing = $bindable(false), clientUpload = false }: Props = $props();
 
 	let { mouse, ...events } = createMouseWatcher();
+
+	let imageProvider = $page.data.imageProvider;
 </script>
 
 <div class="image-input" {...events}>
-	<Layers stretch>
-		<LayerFlashlight {mouse} />
-		<div class="global-pointer-events-none dashes"></div>
-		{#if browser && clientUpload}
-			<ImageInputClient {name} {imageId} {processing} />
+	<Layers stretch overflow="visible">
+		{#if imageProvider.hasValidCredentialsSet}
+			<LayerFlashlight {mouse} />
+			{#if browser && clientUpload}
+				<ImageInputClient {name} {imageId} {processing} />
+			{:else}
+				<ImageInputServer {name} {imageId} />
+			{/if}
 		{:else}
-			<ImageInputServer {name} {imageId} />
+			<div class="warning-layer">
+				<ImageProviderWarning superValidated={imageProvider.superValidated} />
+			</div>
 		{/if}
+		<div class="global-pointer-events-none dashes"></div>
 	</Layers>
 </div>
 
@@ -49,5 +59,9 @@
 	.dashes {
 		border: var(--border-image-input);
 		border-radius: var(--size-image-input-border-radius);
+	}
+
+	.warning-layer {
+		padding: var(--size-image-input-padding);
 	}
 </style>

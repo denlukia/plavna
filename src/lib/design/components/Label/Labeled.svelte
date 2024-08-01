@@ -13,7 +13,7 @@
 
 	let {
 		children,
-		as = 'label',
+		as = 'div',
 		size = 'body',
 		customClass = '',
 		href,

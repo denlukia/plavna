@@ -8,6 +8,7 @@
 
 	import Translation from '../../i18n/Translation.svelte';
 	import type { ImageSelect } from '../parsers';
+	import type { ImageDeletionRequest } from '../types';
 	import { getLangFromLanguagedName } from '../utils';
 
 	type Props = {
@@ -58,7 +59,7 @@
 		const report = await imageHandler.upload({ imageId, lang: getLangFromLanguagedName(name) });
 
 		// 4. Report image upload
-		await fetch('/api/images/report/upload', {
+		await fetch('/api/images/report-upload', {
 			method: 'POST',
 			body: JSON.stringify(report)
 		});
@@ -75,11 +76,15 @@
 		if (!imageHandler.provider)
 			await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
 
-		// 2. Delete image TODO: Implement
-		const report = await imageHandler.delete({ imageId, lang: getLangFromLanguagedName(name) });
+		// 2. Delete image from provider TODO
 
-		// 3. Report image deletion
-		await fetch('/api/images/report/deletion', {
+		const deletionRequest: ImageDeletionRequest = {
+			id: imageId,
+			lang: getLangFromLanguagedName(name)
+		};
+
+		// 3. Delete image path in DB
+		await fetch('/api/images/delete-path', {
 			method: 'POST',
 			body: JSON.stringify(report)
 		});

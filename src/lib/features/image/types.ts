@@ -4,6 +4,10 @@ import type { User } from 'lucia';
 import type { TransactionContext } from '../common/types';
 import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 
+export type ImageDeletionRequest = {
+	id: ImageSelect['id'];
+	lang: SupportedLang | null;
+};
 export type ImageAnyParams = {
 	lang: SupportedLang | null;
 	actor: User;

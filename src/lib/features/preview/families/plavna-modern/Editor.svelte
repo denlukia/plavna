@@ -23,7 +23,7 @@
 		<input name="preview_family" type="hidden" value="plavna-modern" />
 		<GridCell colspan={2}>
 			<GridCell>
-				<Labeled>
+				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_color" />
 					</Label>
@@ -31,7 +31,7 @@
 				</Labeled>
 			</GridCell>
 			<GridCell>
-				<Labeled>
+				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_bg_color" />
 					</Label>

@@ -22,7 +22,7 @@
 	</div>
 	<div class="image-actions">
 		<div class="checkbox-wrapper">
-			<Labeled kind="for-checkbox" size="small">
+			<Labeled as="label" kind="for-checkbox" size="small">
 				<Checkbox name="delete_{name}" checkboxSize="small" lighter />
 				<Typography size="small">
 					<Translation key="article_editor.previews.mark_deletion" />

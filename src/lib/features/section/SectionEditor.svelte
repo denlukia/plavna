@@ -128,7 +128,7 @@
 			<input name="section_id" type="hidden" bind:value={$translationForm.section_id} />
 		{/if}
 		<div class="inputs">
-			<Labeled>
+			<Labeled as="label">
 				<Label><Translation key="page_actor.section.description" /></Label>
 				<LanguagedInput
 					superform={translationForm}
@@ -140,7 +140,7 @@
 				/>
 			</Labeled>
 
-			<Labeled>
+			<Labeled as="label">
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />

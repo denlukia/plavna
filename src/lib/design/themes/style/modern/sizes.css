@@ -232,9 +232,7 @@
 	--size-article-preview-editor-padding-block-end: var(--size-l);
 
 	--size-article-editor-images-block-border-radius: var(--size-xl);
-	--size-article-editor-images-block-padding-inline: var(--size-l);
-	--size-article-editor-images-block-padding-block-start: var(--size-m);
-	--size-article-editor-images-block-padding-block-end: var(--size-l);
+	--size-article-editor-images-block-padding: var(--size-l);
 
 	/* --- Image Input --- */
 	--size-image-input-height: var(--size-6xl);
