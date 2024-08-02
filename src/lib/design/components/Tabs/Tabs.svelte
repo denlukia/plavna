@@ -99,17 +99,19 @@
 >
 	<Layers>
 		<LayerFlashlight {mouse} />
-		{#if pillActive}
-			{#key pillPos}
-				<div
-					out:send={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
-					in:receive={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
-					class="active-tab-pill"
-					class:skip-transition={pillSkipTransition}
-					style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
-				></div>
-			{/key}
-		{/if}
+		<div class="pill-wrapper">
+			{#if pillActive}
+				{#key pillPos}
+					<div
+						out:send={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
+						in:receive={{ key: 'pill', duration: pillSkipTransition ? 0 : pillAnimDuration }}
+						class="active-tab-pill"
+						class:skip-transition={pillSkipTransition}
+						style="left: {pillPos.left}px; top: {pillPos.top}px; right: {pillPos.right}px; bottom: {pillPos.bottom}px"
+					></div>
+				{/key}
+			{/if}
+		</div>
 		<span class="tab-items-wrapper" bind:this={ref}>
 			{@render children()}
 		</span>
@@ -133,6 +135,10 @@
 
 	.tab-items-wrapper {
 		display: flex;
+	}
+
+	.pill-wrapper {
+		position: relative;
 	}
 
 	.tabs.pill-active {

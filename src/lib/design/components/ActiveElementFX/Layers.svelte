@@ -29,12 +29,13 @@
 	/* We choose :global here to let any components be a layer */
 	.layers > :global(*) {
 		grid-area: a;
+		max-width: 100%;
+		max-height: 100%;
 	}
 	.stretch {
 		height: 100%;
 	}
 	.stretch > :global(*) {
 		height: 100%;
-		width: 100%;
 	}
 </style>

@@ -87,7 +87,9 @@ export const UK = {
 				private_key: 'Приватний ключ'
 			},
 			update: 'Оновити',
-			delete: 'Видалити'
+			delete: 'Видалити',
+			account_common: 'Спільні на аккаунт',
+			article_specific: 'Цієї статті'
 		},
 		tags: {
 			list_label: 'Теги',

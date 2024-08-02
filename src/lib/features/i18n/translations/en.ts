@@ -84,7 +84,9 @@ export const EN = {
 				private_key: 'Private Key'
 			},
 			update: 'Update',
-			delete: 'Delete'
+			delete: 'Delete',
+			account_common: 'Account common',
+			article_specific: 'Article specific'
 		},
 
 		tags: {

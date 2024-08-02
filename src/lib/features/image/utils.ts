@@ -68,6 +68,7 @@ export function prepareImage(
 	}
 
 	return {
+		id: imageId,
 		src: `${endpoint}${path}`,
 		alt: '', // TODO: Store alt in DB
 		background: image.background,
@@ -81,5 +82,5 @@ export function getLanguagedName(name: string, lang?: SupportedLang | null) {
 }
 
 export function getLangFromLanguagedName(languagedName: string) {
-	return languagedName.includes('.') ? languagedName.split('.')[1] : null;
+	return languagedName.includes('.') ? (languagedName.split('.')[1] as SupportedLang) : null;
 }
