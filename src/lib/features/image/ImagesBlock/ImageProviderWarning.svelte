@@ -46,7 +46,6 @@
 								type="text"
 								name="imagekit_url_endpoint"
 								bind:value={$form.imagekit_url_endpoint}
-								placeholder="imagekit_url_endpoint"
 							/>
 						</Labeled>
 						<Labeled as="label">
@@ -55,7 +54,6 @@
 								type="text"
 								name="imagekit_public_key"
 								bind:value={$form.imagekit_public_key}
-								placeholder="imagekit_public_key"
 							/>
 						</Labeled>
 						<Labeled as="label">
@@ -64,7 +62,6 @@
 								type="text"
 								name="imagekit_private_key"
 								bind:value={$form.imagekit_private_key}
-								placeholder="imagekit_private_key"
 							/>
 						</Labeled>
 
@@ -93,9 +90,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-4);
-		align-items: flex-start;
-		justify-content: flex-start;
+		align-items: center;
+		justify-content: center;
 		height: 100%;
+		text-align: center;
 	}
 	.popup-wrapper {
 		text-align: initial;

@@ -8,7 +8,6 @@
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { TranslationInsert } from '../parsers';
-	import { getSystemTranslation } from '../utils';
 	import LangSelector from './LangSelector.svelte';
 
 	let {
@@ -31,10 +30,6 @@
 
 	let value = $state($superform[currentLang]);
 	let animateOnValueChange = $state(false);
-
-	let finalPlaceholder = $derived(
-		placeholder || getSystemTranslation('layout.no_translation', $page.data.systemTranslations)
-	);
 
 	$effect(() => {
 		currentLang;
@@ -82,6 +77,6 @@
 	name={getName(currentLang)}
 	trailing={trailingWithLangSelector}
 	{animateOnValueChange}
-	placeholder={finalPlaceholder}
+	{placeholder}
 	{...attributes}
 ></Input>

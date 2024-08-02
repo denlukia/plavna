@@ -87,23 +87,14 @@
 <section class="row">
 	<GridContainer>
 		<GridCell colspan={3}>
-			<Labeled as="div">
-				<Label><Translation key="article_editor.previews.section_label" /></Label>
-
-				<GridCell colspan={3}>
-					<PreviewEditorsList {data} />
-				</GridCell>
-			</Labeled>
+			<PreviewEditorsList {data} />
 		</GridCell>
 		<GridCell colspan={2} customClass="article-editor-shifted-cell">
-			<Labeled as="div">
-				<Label><Translation key="article_editor.images.label" /></Label>
-				<ImagesCollectionsList
-					imageProvider={data.imageProvider}
-					articleId={article.id}
-					collections={{ common: data.commonImages, article: data.articleImages }}
-				/>
-			</Labeled>
+			<ImagesCollectionsList
+				imageProvider={data.imageProvider}
+				articleId={article.id}
+				collections={{ common: data.commonImages, article: data.articleImages }}
+			/>
 		</GridCell>
 	</GridContainer>
 </section>
