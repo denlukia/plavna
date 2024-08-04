@@ -3,7 +3,7 @@
 	import type { Component } from 'svelte';
 
 	import { getRecordTranslation } from '../i18n/utils';
-	import { prepareImage } from '../image/utils';
+	import { getImagePathAndMeta } from '../image/utils';
 	import type { SectionProp } from '../section/types';
 	import { getPreviewComponent } from './enricher';
 	import type { PreviewComponentType } from './families/types';
@@ -47,9 +47,19 @@
 			publish_time: meta.publish_time,
 			tags: tags.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations)),
 
-			img_1: prepareImage(meta.preview_image_1_id, $page.data.actor, images, recordsTranslations),
-			img_2: prepareImage(meta.preview_image_2_id, $page.data.actor, images, recordsTranslations),
-			screenshot: prepareImage(
+			img_1: getImagePathAndMeta(
+				meta.preview_image_1_id,
+				$page.data.actor,
+				images,
+				recordsTranslations
+			),
+			img_2: getImagePathAndMeta(
+				meta.preview_image_2_id,
+				$page.data.actor,
+				images,
+				recordsTranslations
+			),
+			screenshot: getImagePathAndMeta(
 				meta.preview_screenshot_image_id,
 				$page.data.actor,
 				images,

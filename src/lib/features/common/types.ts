@@ -1,6 +1,7 @@
 import type { ResultSet } from '@libsql/client';
 import type { ExtractTablesWithRelations } from 'drizzle-orm';
 import type { SQLiteTransaction } from 'drizzle-orm/sqlite-core';
+import type { Database } from '$lib/services/db';
 
 export type UnionIncludesAll<T, U> = Exclude<U, T> extends never ? true : false;
 
@@ -20,12 +21,14 @@ type RequiredNotNull<T> = {
 
 export type PartialNonNull<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;
 
-export type TransactionContext = SQLiteTransaction<
-	'async',
-	ResultSet,
-	typeof import('$lib/collections/main-schema'),
-	ExtractTablesWithRelations<typeof import('$lib/collections/main-schema')>
->;
+export type TransactionOrDB =
+	| SQLiteTransaction<
+			'async',
+			ResultSet,
+			typeof import('$lib/collections/main-schema'),
+			ExtractTablesWithRelations<typeof import('$lib/collections/main-schema')>
+	  >
+	| Database;
 
 type ExtractMethodNames<T> = {
 	[K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;

@@ -5,9 +5,9 @@ import type { User } from 'lucia';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
+import type { TransactionOrDB } from '../common/types';
+import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
 import type { ActorService } from '../user/service';
-import type { TransactionContext } from '../common/types';
-import { hasNonEmptyProperties } from '../common/utils';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
 import { translations } from './schema';
 import { defaultLang, isSupportedLang } from './utils';
@@ -32,45 +32,44 @@ export class TranslationService {
 	async create(
 		newTranslations: TranslationInsertBase[],
 		mode: 'allow-empty' | 'disallow-empty' = 'allow-empty',
-		trx?: TransactionContext
+		trx: TransactionOrDB = db,
+		actor?: User
 	) {
+		if (!actor) {
+			actor = await this.actorService.getOrThrow();
+		}
+
 		if (mode === 'disallow-empty') {
 			newTranslations.forEach((translation) => {
-				if (!hasNonEmptyProperties(translation, ['user_id', 'key'])) {
+				if (!hasNonEmptyPropsBeyondSpecified(translation, ['user_id', 'key'])) {
 					error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
 				}
 			});
 		}
 
-		const actor = await this.actorService.getOrThrow();
 		newTranslations = newTranslations.map((translation) => ({
 			...translation,
 			user_id: actor.id
 		}));
 
-		const chosenDBInstance = trx || db;
-		return chosenDBInstance
-			.insert(translations)
-			.values(newTranslations)
-			.returning({ key: translations.key })
-			.all();
+		return trx.insert(translations).values(newTranslations).returning().all();
 	}
-	async update(translation: TranslationUpdate, trx?: TransactionContext, actor?: User) {
+	async update(translation: TranslationUpdate, trx: TransactionOrDB = db, actor?: User) {
 		if (!actor) {
 			actor = await this.actorService.getOrThrow();
 		}
-		const chosenDBInstance = trx || db;
 
-		return chosenDBInstance
+		return trx
 			.update(translations)
 			.set(translation)
 			.where(and(eq(translations.key, translation.key), eq(translations.user_id, actor.id)))
-			.run();
+			.returning()
+			.get();
 	}
-	async delete(translation: TranslationDelete, trx?: TransactionContext) {
+	async delete(translation: TranslationDelete, trx: TransactionOrDB = db) {
 		const actor = await this.actorService.getOrThrow();
-		const chosenDBInstance = trx || db;
-		return chosenDBInstance
+
+		return trx
 			.delete(translations)
 			.where(and(eq(translations.key, translation.key), eq(translations.user_id, actor.id)))
 			.run();

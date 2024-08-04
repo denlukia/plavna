@@ -22,6 +22,13 @@
       "when": 1717709569170,
       "tag": "0002_purple_jackal",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1722780966255,
+      "tag": "0003_left_agent_brand",
+      "breakpoints": true
     }
   ]
 }

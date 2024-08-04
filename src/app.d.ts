@@ -5,7 +5,8 @@ import type { TranslationService } from '$lib/features/i18n/service';
 import type {
 	RecordsTranslationsDict,
 	SystemTranslationDict,
-	TranslationFormsDict
+	TranslationFormsDict,
+	ImageInputsTranslationsDict
 } from '$lib/features/i18n/types';
 import type { ImageService } from '$lib/features/image/service';
 import type { ImagesDict } from '$lib/features/image/types';
@@ -18,6 +19,7 @@ import type { TagsListForPage } from '$lib/features/tag/types';
 import type { User } from '$lib/features/user/parsers';
 import type { ActorService } from '$lib/features/user/service';
 import type { ImageProviderSuperValidated } from '$lib/features/image/parsers';
+
 
 declare global {
 	namespace App {
@@ -44,6 +46,7 @@ declare global {
 				superValidated: ImageProviderSuperValidated;
 			};
 			recordsTranslations?: RecordsTranslationsDict;
+			imageInputsTranslations?: ImageInputsTranslationsDict;
 			translationForms?: TranslationFormsDict;
 			previewFamilies?: PreviewFamiliesDict;
 			images?: ImagesDict;

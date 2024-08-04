@@ -6,10 +6,9 @@
 	type Props = {
 		name: string;
 		onImageChange?: (e: Event) => Promise<void>;
-		value?: File | null;
 	};
 
-	let { name, onImageChange, value = $bindable() }: Props = $props();
+	let { name, onImageChange }: Props = $props();
 </script>
 
 <label class="drop-zone">
@@ -23,7 +22,6 @@
 			maxlength="1"
 			accept={IMG_VALIDATION_CONFIG.formats.join(',')}
 			onchange={onImageChange}
-			bind:value
 			{name}
 		/>
 	</Typography>

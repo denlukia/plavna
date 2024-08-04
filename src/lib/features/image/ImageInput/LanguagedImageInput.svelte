@@ -4,7 +4,7 @@
 
 	type Props = {
 		name: string;
-		imageId?: ImageSelect['id'] | null;
+		imageId: ImageSelect['id'];
 		processing?: boolean;
 		clientUpload?: boolean;
 	};

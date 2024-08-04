@@ -1,17 +1,13 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { User } from 'lucia';
 
-import type { TransactionContext } from '../common/types';
+import type { TransactionOrDB } from '../common/types';
 import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 
-export type ImageDeletionRequest = {
-	id: ImageSelect['id'];
-	lang: SupportedLang | null;
-};
 export type ImageAnyParams = {
 	lang: SupportedLang | null;
 	actor: User;
-	trx?: TransactionContext;
+	trx: TransactionOrDB;
 };
 export type ImageCreationParams = {
 	mode: 'create';
@@ -22,4 +18,6 @@ export type ImagesUpdateParams = {
 	initialImage: ImageUpdate;
 };
 
-export type ImagesDict = Record<ImageSelect['id'], Omit<ImageSelect, 'id'>>;
+export type ImagesDictValue = Omit<ImageSelect, 'id'>;
+
+export type ImagesDict = Record<ImageSelect['id'], ImagesDictValue>;

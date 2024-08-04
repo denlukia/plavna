@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { PreparedImage } from '../../types';
+	import type { ImagePathAndMeta } from '../../types';
 
 	type Props = {
-		preparedImage: PreparedImage;
+		pathAndMeta: ImagePathAndMeta;
 	};
 
-	let { preparedImage }: Props = $props();
+	let { pathAndMeta }: Props = $props();
 </script>
 
-<img class="image" src={preparedImage.src} alt={preparedImage.alt} />
+<img class="image" src={pathAndMeta.src} alt={pathAndMeta.alt} />

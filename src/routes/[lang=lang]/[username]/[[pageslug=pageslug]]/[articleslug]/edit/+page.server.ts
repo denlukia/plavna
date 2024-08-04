@@ -203,7 +203,7 @@ async function create_image(event: RequestEvent) {
 
 	const { imageService } = event.locals;
 
-	await imageService.create({
+	await imageService.createRecord({
 		owning_article_id: form.data.article_id,
 		is_account_common: form.data.is_account_common
 	});
@@ -224,7 +224,7 @@ async function delete_image(event: RequestEvent) {
 	if (!form.valid) fail(400, { form });
 
 	const { imageService } = event.locals;
-	await imageService.delete(form.data.id, 'with-record');
+	await imageService.deleteRecord(form.data.id, 'with-record');
 }
 
 export const actions = {

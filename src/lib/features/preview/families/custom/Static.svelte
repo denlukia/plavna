@@ -18,7 +18,7 @@
 		<span class="preview">
 			<!-- <Typography size="small-short">Custom: {JSON.stringify(data, null, 2)}</Typography> -->
 			{#if screenshot}
-				<Image preparedImage={screenshot} />
+				<Image pathAndMeta={screenshot} />
 			{/if}
 		</span>
 	{/snippet}
