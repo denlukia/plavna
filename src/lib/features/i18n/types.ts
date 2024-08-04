@@ -28,6 +28,13 @@ export type SystemTranslationSliceKey = NestedKeyOfObjectValuesOf<typeof EN>;
 
 export type RecordsTranslationsDict = Record<TranslationSelect['key'], string>;
 
+export type ImageInputsTranslationsDictValue = Omit<TranslationSelect, 'key' | 'user_id'>;
+
+export type ImageInputsTranslationsDict = Record<
+	TranslationSelect['key'],
+	ImageInputsTranslationsDictValue
+>;
+
 export type TranslationFormsDict = Record<
 	TranslationSelect['key'],
 	SuperValidated<TranslationUpdate>

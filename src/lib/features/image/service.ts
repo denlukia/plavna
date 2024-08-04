@@ -4,14 +4,13 @@ import { and, eq } from 'drizzle-orm';
 import type { User } from 'lucia';
 import { db } from '$lib/services/db';
 
-import type { TransactionContext } from '../common/types';
+import type { TransactionOrDB } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ActorService } from '../user/service';
 import type { ImageInsert, ImageSelect, ImageUpdate } from './parsers';
 import { images } from './schema';
-import type { ImageAnyParams, ImageCreationParams, ImagesUpdateParams } from './types';
 
 export class ImageService {
 	private readonly actorService: ActorService;
@@ -22,163 +21,80 @@ export class ImageService {
 		this.translationService = translationService;
 	}
 
-	private readonly runEffects = async ({
-		initialImage,
-		mode,
-		lang,
-		actor,
-		trx
-	}: ImageAnyParams & (ImageCreationParams | ImagesUpdateParams)) => {
-		const chosenDBInstance = trx || db;
-		const initialImageId = initialImage?.id;
-		let finalImage: ImageUpdate | null = initialImageId
-			? { ...initialImage, id: initialImageId }
-			: null;
-
-		// 0. Create image if needed
-		if (mode === 'create') {
-			finalImage = await chosenDBInstance
-				.insert(images)
-				.values({ ...initialImage, user_id: actor.id })
-				.returning()
-				.get();
-		}
-		if (!finalImage) error(403);
-		const { path, id } = finalImage;
-
-		// 1. Get respective translation if updating
-		let translation: { key: TranslationSelect['key'] } | null = null;
-		if (mode === 'update') {
-			if (!id) error(403);
-			const imageQuery = await db
-				.select({ key: translations.key })
-				.from(images)
-				.leftJoin(translations, eq(translations.key, images.path_translation_key))
-				.where(and(eq(images.id, id), eq(images.user_id, actor.id)))
-				.get();
-			if (!imageQuery) error(403);
-			if (imageQuery.key) {
-				translation = { key: imageQuery.key };
-			}
-		}
-
-		// 2. Create translation if image didn't have one or we're creating an image
-		if (translation) {
-			if (lang) {
-				await this.translationService.update({ [lang]: path, key: translation.key }, trx);
-			} else {
-				await this.translationService.delete({ key: translation.key }, trx);
-			}
-		} else {
-			if (lang) {
-				[translation] = await this.translationService.create([{ [lang]: path }], undefined, trx);
-			}
-		}
-
-		// 3. Update image record with respecive changes
-		type ImageUpdateWithTranslation = ImageUpdate & {
-			path_translation_key?: TranslationSelect['key'];
-		};
-		const updateObject: ImageUpdateWithTranslation = finalImage;
-		if (translation) {
-			updateObject.path_translation_key = translation.key;
-		}
-		if (lang) {
-			updateObject.path = null;
-		} else {
-			updateObject.path = path;
-		}
-		return updateObject;
-	};
-
-	async create(newImage: ImageInsert, trx?: TransactionContext) {
-		const chosenDBInstance = trx || db;
+	async createRecord(newImage: ImageInsert, trx: TransactionOrDB = db) {
 		const actor = await this.actorService.getOrThrow();
 
-		const processedImage = await this.runEffects({
-			mode: 'create',
-			initialImage: newImage,
-			lang: null,
-			actor: actor,
-			trx
-		});
-
-		return chosenDBInstance
-			.update(images)
-			.set(processedImage)
-			.where(and(eq(images.user_id, actor.id), eq(images.id, processedImage.id)))
+		return trx
+			.insert(images)
+			.values({ ...newImage, user_id: actor.id })
 			.returning()
 			.get();
 	}
-	async update(
-		newImage: ImageUpdate,
-		lang: SupportedLang | null,
-		trx?: TransactionContext,
-		type?: 'from-screenshotter'
-	) {
-		const chosenDBInstance = trx || db;
+	async updatePath(newImage: ImageUpdate, lang: SupportedLang | null, trx: TransactionOrDB = db) {
+		const actor = await this.actorService.getOrThrow();
 
-		let actor: User;
-		if (type === 'from-screenshotter') {
-			actor = await this.actorService.setFromImageIdOrThrow(newImage.id);
+		const currentImage = await trx
+			.select()
+			.from(images)
+			.where(and(eq(images.user_id, actor.id), eq(images.id, newImage.id)))
+			.get();
+
+		if (!currentImage) {
+			error(403);
+		}
+		const { path_translation_key } = currentImage;
+		let finalTranslation: TranslationSelect | null = null;
+
+		if (lang) {
+			if (path_translation_key !== null) {
+				finalTranslation = await this.translationService.update(
+					{ key: path_translation_key, [lang]: newImage.path },
+					trx,
+					actor
+				);
+			} else {
+				[finalTranslation] = await this.translationService.create(
+					[{ [lang]: newImage.path }],
+					'disallow-empty',
+					trx,
+					actor
+				);
+			}
 		} else {
-			actor = await this.actorService.getOrThrow();
+			if (path_translation_key) {
+				await this.translationService.delete({ key: path_translation_key }, trx);
+			}
 		}
 
 		// TODO: Delete old image from provider
 
-		const processedImage = await this.runEffects({
-			mode: 'update',
-			initialImage: newImage,
-			lang,
-			actor: actor,
-			trx
-		});
-
-		return chosenDBInstance
+		const updateObj = lang ? { path_translation_key } : { path: newImage.path || null };
+		const finalImage = await trx
 			.update(images)
-			.set(processedImage)
-			.where(and(eq(images.user_id, actor.id), eq(images.id, processedImage.id)))
+			.set(updateObj)
+			.where(and(eq(images.user_id, actor.id), eq(images.id, currentImage.id)))
 			.returning()
 			.get();
+
+		return { image: finalImage, translation: finalTranslation };
 	}
-	async delete(
-		imageId: ImageSelect['id'],
-		mode: 'path-only' | 'with-record',
-		lang?: SupportedLang | null,
-		trx?: TransactionContext
-	) {
-		const chosenDBInstance = trx || db;
+	async deleteRecord(imageId: ImageSelect['id'], trx: TransactionOrDB = db) {
 		const actor = await this.actorService.getOrThrow();
 
 		const whereCondition = and(eq(images.user_id, actor.id), eq(images.id, imageId));
 
-		const translation = await chosenDBInstance
+		const translation = await trx
 			.select({ translations })
 			.from(images)
 			.innerJoin(translations, eq(translations.key, images.path_translation_key))
 			.where(whereCondition)
 			.get();
 
-		// TODO: Delete image from provider
+		// TODO: Delete all images from provider
 
-		if (mode === 'path-only') {
-			if (lang) {
-				if (translation) {
-					if (typeof lang !== 'string') error(403);
-					await this.translationService.update(
-						{ [lang]: null, key: translation.translations.key },
-						trx
-					);
-				}
-			} else {
-				await chosenDBInstance.update(images).set({ path: null }).where(whereCondition).run();
-			}
-		} else {
-			if (translation) {
-				await this.translationService.delete({ key: translation.translations.key }, trx);
-			}
-			await chosenDBInstance.delete(images).where(whereCondition).run();
+		if (translation) {
+			await this.translationService.delete({ key: translation.translations.key }, trx);
 		}
+		await trx.delete(images).where(whereCondition).run();
 	}
 }

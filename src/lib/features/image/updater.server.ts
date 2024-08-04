@@ -31,13 +31,13 @@ export async function updateImages({
 		const lang = (key.split('.')[1] || null) as SupportedLang | null;
 		const markedForDeletion = key.startsWith('delete') && data[key] === true;
 		if (markedForDeletion) {
-			await imageService.delete(data.id, lang);
+			await imageService.deleteRecord(data.id, lang);
 		} else if (fileIsValid) {
 			const report = await imagesHandlers[key].upload({
 				imageId: data.id,
 				lang: lang
 			});
-			await imageService.update(report.record, lang);
+			await imageService.updatePath(report.record, lang);
 		}
 	});
 	await Promise.all(imageHandledPromises);

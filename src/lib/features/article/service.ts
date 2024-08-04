@@ -108,8 +108,8 @@ export class ArticleService {
 				console.log('Error setting image uploader from user');
 			}
 			const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
-				this.imageService.create({ source }, trx),
-				this.imageService.create({ source }, trx)
+				this.imageService.createRecord({ source }, trx),
+				this.imageService.createRecord({ source }, trx)
 			]);
 
 			const article = await trx
@@ -142,6 +142,7 @@ export class ArticleService {
 		}
 
 		const translForForms = alias(translations, 'translForForms');
+		const translForImageInputs = alias(translations, 'translForImageInputs');
 		const commonImagesTable = alias(images, 'commonImages');
 		const articleImagesTable = alias(images, 'articleImages');
 		const results = await db
@@ -151,6 +152,7 @@ export class ArticleService {
 				tags,
 				translations,
 				translForForms,
+				translForImageInputs,
 				previewTemplates,
 				images,
 				commonImagesTable,
@@ -178,13 +180,8 @@ export class ArticleService {
 				)
 			)
 			.leftJoin(tags, eq(tags.user_id, actor.id))
-			.leftJoin(
-				translations,
-				or(
-					eq(translations.key, images.path_translation_key),
-					eq(translations.key, previewTemplates.name_translation_key)
-				)
-			)
+			.leftJoin(translations, or(eq(translations.key, previewTemplates.name_translation_key)))
+			.leftJoin(translForImageInputs, eq(translForImageInputs.key, images.path_translation_key))
 			.leftJoin(
 				translForForms,
 				or(
@@ -208,6 +205,9 @@ export class ArticleService {
 		const imagesArr = results.map((rows) => rows.images).filter(getNullAndDupFilter('id'));
 		const translationsForForms = results
 			.map((rows) => rows.translForForms)
+			.filter(getNullAndDupFilter('key'));
+		const translationsForImageInputs = results
+			.map((rows) => rows.translForImageInputs)
 			.filter(getNullAndDupFilter('key'));
 		const previewTemplatesResults = await Promise.all(
 			results
@@ -306,13 +306,17 @@ export class ArticleService {
 			),
 			tagInfos,
 			tagCreationSuperValidated: await superValidate(zod(translationInsertSchema)),
-
 			images: imagesArr.reduce(
 				(acc, { id, ...curr }) => ({
 					...acc,
 					[id]: curr
 				}),
 				{} as ImagesDict
+			),
+			imageInputsTranslations: Object.fromEntries(
+				translationsForImageInputs.map(({ key, ...translation }) => {
+					return [key, translation];
+				})
 			),
 			commonImages,
 			articleImages,
@@ -371,7 +375,7 @@ export class ArticleService {
 			.returning({ id: articles.id })
 			.get();
 		if (!articleDeleted) throw new Error('Article not found');
-		await this.imageService.delete(articleDeleted.id, 'with-record');
+		await this.imageService.deleteRecord(articleDeleted.id, 'with-record');
 	}
 	async updatePreview(
 		slug: string,
@@ -434,7 +438,7 @@ export class ArticleService {
 							imageId: articleRecord[fieldNameWithIdPrefix],
 							lang
 						});
-						await this.imageService.update(record.record, lang);
+						await this.imageService.updatePath(record.record, lang);
 					}
 				}
 			);
@@ -442,7 +446,11 @@ export class ArticleService {
 				const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
 				const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
 
-				return this.imageService.delete(articleRecord[fieldNameWithIdPrefix], 'path-only', lang);
+				return this.imageService.deleteRecord(
+					articleRecord[fieldNameWithIdPrefix],
+					'path-only',
+					lang
+				);
 			});
 			await Promise.all([...deletionPromises, ...uploadPromises]);
 		}
@@ -534,7 +542,7 @@ export class ArticleService {
 
 				// Creating screenshot image record if needed
 				if (!preview_screenshot_image_id) {
-					const newImageRecord = await this.imageService.create({ source });
+					const newImageRecord = await this.imageService.createRecord({ source });
 					preview_screenshot_image_id = newImageRecord.id;
 					await db
 						.update(articles)

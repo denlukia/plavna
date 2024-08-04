@@ -1,6 +1,6 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { imageSourceToEndpointKeyInUser } from '$lib/collections/constants';
-import type { PreparedImage } from '$lib/design/types';
+import type { ImagePathAndMeta } from '$lib/design/types';
 
 import type {
 	ArticlePreviewImageFileFieldsAll,
@@ -20,38 +20,10 @@ export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAl
 	};
 }
 
-export function prepareImage(
-	imageId: ImageSelect['id'] | null,
-	user: User | null,
-	images: ImagesDict | undefined,
-	recordsTranslations: RecordsTranslationsDict | undefined
-): PreparedImage | null {
-	if (!images || !user || !imageId) {
-		return null;
-	}
+export function computeSrc(source: ImageSelect['source'], user: User | null, path: string | null) {
+	if (!path || !source || !user) return null;
 
-	const image = images[imageId];
-
-	if (!image || !image.source) {
-		return null;
-	}
-
-	let path: string | null = null;
-	const translationKey = image.path_translation_key;
-	if (translationKey) {
-		const translation = getRecordTranslation(translationKey, recordsTranslations);
-		if (translation) {
-			path = translation;
-		}
-	}
-	if (!path) {
-		path = image.path;
-	}
-	if (!path) {
-		return null;
-	}
-
-	const endpointKey = imageSourceToEndpointKeyInUser[image.source];
+	const endpointKey = imageSourceToEndpointKeyInUser[source];
 	let endpoint = user[endpointKey];
 	if (!endpoint) {
 		return null;
@@ -67,13 +39,40 @@ export function prepareImage(
 		path = path.slice(1);
 	}
 
+	return `${endpoint}${path}`;
+}
+
+export function getImagePathAndMeta(
+	imageId: ImageSelect['id'] | null,
+	user: User | null,
+	images: ImagesDict | undefined,
+	recordsTranslations: RecordsTranslationsDict | undefined
+): ImagePathAndMeta | null {
+	const image = imageId !== null && images && images[imageId];
+	if (!image) {
+		return null;
+	}
+
+	let path: string | null = image.path;
+	const translationKey = image.path_translation_key;
+	if (translationKey) {
+		path = getRecordTranslation(translationKey, recordsTranslations) || null;
+	}
+
+	const src = computeSrc(image.source, user, path);
+	if (!src) {
+		return null;
+	}
+
+	const { alt, background, height, width } = image;
+
 	return {
 		id: imageId,
-		src: `${endpoint}${path}`,
-		alt: '', // TODO: Store alt in DB
-		background: image.background,
-		height: image.height,
-		width: image.width
+		src,
+		alt,
+		background,
+		height,
+		width
 	};
 }
 

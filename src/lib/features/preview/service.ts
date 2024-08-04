@@ -42,9 +42,9 @@ export class PreviewService {
 			let imageId: ImageSelect['id'] | null = null;
 			if (imageHandler) {
 				const source = (await imageHandler.setProviderAndUploader(actor)).provider?.type;
-				({ id: imageId } = await this.imageService.create({ source }, trx));
+				({ id: imageId } = await this.imageService.createRecord({ source }, trx));
 				const { record } = await imageHandler.upload({ imageId, lang: null });
-				await this.imageService.update(record, null, trx);
+				await this.imageService.updatePath(record, null, trx);
 			}
 			await trx
 				.insert(previewTemplates)
@@ -87,11 +87,11 @@ export class PreviewService {
 
 				let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 				if (!imageId) {
-					({ id: imageId } = await this.imageService.create({ source }, trx));
+					({ id: imageId } = await this.imageService.createRecord({ source }, trx));
 					await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
 				}
 				const { record } = await imageHandler.upload({ imageId, lang: null });
-				await this.imageService.update(record, null, trx);
+				await this.imageService.updatePath(record, null, trx);
 			}
 		});
 	}
@@ -122,7 +122,7 @@ export class PreviewService {
 				if (recordResult.images.path) {
 					// TODO: Folder deletion
 				}
-				await this.imageService.delete(recordResult.images.id, 'with-record', undefined, trx);
+				await this.imageService.deleteRecord(recordResult.images.id, 'with-record', undefined, trx);
 			}
 			await trx.delete(previewTemplates).where(whereCondition).run();
 		});

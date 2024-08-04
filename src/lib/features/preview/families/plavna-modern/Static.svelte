@@ -2,7 +2,7 @@
 	import Image from '$lib/design/components/Image/Image.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import { prepareImage } from '$lib/features/image/utils';
+	import { getImagePathAndMeta } from '$lib/features/image/utils';
 
 	import type { PreviewDataProp } from '../../types';
 

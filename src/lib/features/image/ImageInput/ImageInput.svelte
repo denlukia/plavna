@@ -1,50 +1,92 @@
 <script lang="ts">
+	import path from 'path';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import LayerFlashlight from '$lib/design/components/ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import Image from '$lib/design/components/Image/Image.svelte';
 	import { createMouseWatcher } from '$lib/design/reactivity/mouse-watcher.svelte';
+	import type { ImagePathAndMeta } from '$lib/design/types';
 
 	import ImageProviderWarning from '../ImagesBlock/ImageProviderWarning.svelte';
 	import type { ImageSelect } from '../parsers';
-	import { prepareImage } from '../utils';
+	import { computeSrc } from '../utils';
 	import ImageInputClient from './ImageInputClient.svelte';
 	import ImageInputServer from './ImageInputServer.svelte';
 
 	type Props = {
 		name: string;
-		imageId?: ImageSelect['id'] | null;
+		imageId: ImageSelect['id'];
+		lang: SupportedLang | null;
 		processing?: boolean;
 		clientUpload?: boolean;
 	};
 
-	let { name, imageId, processing = $bindable(false), clientUpload = false }: Props = $props();
+	let {
+		name,
+		imageId,
+		lang,
+		processing = $bindable(false),
+		clientUpload = false
+	}: Props = $props();
 
 	let { mouse, ...events } = createMouseWatcher();
 
 	let imageProvider = $page.data.imageProvider;
-	let preparedImage = $derived(
-		typeof imageId === 'number'
-			? prepareImage(imageId, $page.data.user, $page.data.images, $page.data.recordsTranslations)
-			: null
-	);
+	let image = $state($page.data.images?.[imageId]);
+	let translation = $state($page.data.imageInputsTranslations?.[imageId] || null);
+	let pathAndMeta = $derived.by(getPathAndMeta);
+	let isPathPresent = $derived(Boolean(pathAndMeta));
+
+	function getPathAndMeta(): ImagePathAndMeta | null {
+		if (!image) {
+			return null;
+		}
+
+		const { alt, width, height, background } = image;
+		let { path } = image;
+
+		const translationKey = image.path_translation_key;
+		if (lang && translationKey) {
+			path = translation?.[lang] || null;
+		}
+
+		const src = computeSrc(image.source, $page.data.user, path);
+		if (!src) return null;
+
+		return {
+			id: imageId,
+			src,
+			alt,
+			width,
+			height,
+			background
+		};
+	}
 </script>
 
 <div class="image-input" {...events}>
 	<Layers stretch overflow="visible">
 		{#if imageProvider.hasValidCredentialsSet}
-			{#if imageId && preparedImage}
+			{#if imageId && pathAndMeta}
 				<div class="image">
-					<Image {preparedImage} />
+					<Image {pathAndMeta} />
 				</div>
 			{:else}
 				<LayerFlashlight {mouse} />
 			{/if}
-			{#if browser && clientUpload}
-				<ImageInputClient {name} {preparedImage} {processing} />
+			{#if browser && clientUpload && image}
+				<ImageInputClient
+					{imageId}
+					{name}
+					{isPathPresent}
+					{processing}
+					bind:image
+					bind:translation
+				/>
 			{:else}
-				<ImageInputServer {name} {preparedImage} />
+				<ImageInputServer {name} {isPathPresent} />
 			{/if}
 		{:else}
 			<div class="warning-layer">

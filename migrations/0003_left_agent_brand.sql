@@ -1,0 +1,1 @@
+ALTER TABLE `images` ADD `alt` text;

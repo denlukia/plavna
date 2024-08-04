@@ -2,20 +2,19 @@
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import type { PreparedImage } from '$lib/design/types';
 
 	import Translation from '../../i18n/Translation.svelte';
 	import DropZone from './DropZone.svelte';
 
 	type Props = {
 		name: string;
-		preparedImage: PreparedImage | null;
+		isPathPresent: boolean;
 	};
 
-	let { name, preparedImage }: Props = $props();
+	let { name, isPathPresent }: Props = $props();
 </script>
 
-{#if preparedImage}
+{#if isPathPresent}
 	<div class="image-actions">
 		<div class="checkbox-wrapper">
 			<Labeled as="label" kind="for-checkbox" size="small">

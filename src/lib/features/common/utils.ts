@@ -116,7 +116,7 @@ export function nonNullValueInEntry<T>(entry: [string, T]): entry is [string, No
 	return entry[1] !== null;
 }
 
-export function hasNonEmptyProperties<T extends Record<string, any>>(
+export function hasNonEmptyPropsBeyondSpecified<T extends Record<string, any>>(
 	obj: T,
 	properties: (keyof T)[]
 ) {

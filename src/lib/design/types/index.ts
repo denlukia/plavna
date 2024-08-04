@@ -1,9 +1,9 @@
 import type { ImageSelect } from '$lib/features/image/parsers';
 
-export type PreparedImage = {
+export type ImagePathAndMeta = {
 	id: ImageSelect['id'];
 	src: string;
-	alt: string;
+	alt: string | null;
 	width: number | null;
 	height: number | null;
 	background: string | null;

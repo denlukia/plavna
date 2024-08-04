@@ -1,4 +1,4 @@
-import type { PreparedImage } from '$lib/design/types';
+import type { ImagePathAndMeta } from '$lib/design/types';
 
 type Optional<T> = T | null | undefined;
 
@@ -11,9 +11,9 @@ export type PreviewDataProp = {
 	translation_2: Optional<string>;
 	publish_time: Date | null;
 	tags: Array<Optional<string>>;
-	img_1: Optional<PreparedImage>;
-	img_2: Optional<PreparedImage>;
-	screenshot?: Optional<PreparedImage>;
+	img_1: Optional<ImagePathAndMeta>;
+	img_2: Optional<ImagePathAndMeta>;
+	screenshot?: Optional<ImagePathAndMeta>;
 };
 
 export const dynamicPreviewActivationConditions = ['hover', 'click'] as const;
