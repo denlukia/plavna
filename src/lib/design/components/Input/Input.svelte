@@ -73,7 +73,7 @@
 				class:textarea-wrapper={attributes.textarea}
 				bind:this={inputwrapperRef}
 			>
-				<Layers>
+				<Layers overflow="visible">
 					<!-- ISSUE: DRY-ing this into svelte:element seems to break #key -->
 					{#if attributes.textarea}
 						{#key key}
