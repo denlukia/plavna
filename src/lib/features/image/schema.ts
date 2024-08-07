@@ -23,6 +23,5 @@ export const images = sqliteTable('images', {
 	}),
 	background: text('background'),
 	width: integer('width'),
-	height: integer('height'),
-	alt: text('alt')
+	height: integer('height')
 });
