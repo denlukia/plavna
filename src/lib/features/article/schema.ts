@@ -7,7 +7,6 @@ import { images } from '../image/schema';
 import { previewFamiliesIds } from '../preview/families';
 import { previewTemplates } from '../preview/schema';
 import { dynamicPreviewActivationConditions } from '../preview/types';
-import { tagsToArticles } from '../tag/schema';
 
 export const articles = sqliteTable(
 	'articles',

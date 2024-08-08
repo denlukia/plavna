@@ -89,7 +89,8 @@ export const UK = {
 			update: 'Оновити',
 			delete: 'Видалити',
 			account_common: 'Спільні на аккаунт',
-			article_specific: 'Цієї статті'
+			article_specific: 'Цієї статті',
+			new: 'Нове'
 		},
 		tags: {
 			list_label: 'Теги',
@@ -98,6 +99,7 @@ export const UK = {
 			edit_name_label: 'Редагувати назву',
 			delete: 'Видалити',
 			new_tag: 'Новий тег',
+			new: 'Новий',
 			create: 'Створити'
 		},
 		actions: {
@@ -109,9 +111,9 @@ export const UK = {
 		previews: {
 			editor_title: 'Налашт. передогляду',
 			section_label: 'Передогляд',
-			add: 'Додати власний',
-			template_new_form_title: 'Новий власний передогляд',
-			template_editing_form_title: 'Редагування власного передогляду',
+			new: 'Новий передогляд',
+			template_new_form_title: 'Новий передогляд',
+			template_editing_form_title: 'Редагування передогляду',
 			create: 'Створити',
 			update: 'Оновити',
 			set_and_update: 'Обрати й оновити',
@@ -131,7 +133,9 @@ export const UK = {
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
 					image: 'Зображення',
-					image_depth: 'Мапа глибини зображення'
+					image_depth: 'Мапа глибини зображення',
+					cols: 'Займати стовпців у сітці',
+					rows: 'Займати рядків у сітці'
 				},
 				custom: {
 					name: 'Власне'

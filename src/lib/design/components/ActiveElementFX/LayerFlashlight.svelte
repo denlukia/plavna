@@ -16,6 +16,7 @@
 		pointer-events: none;
 		opacity: 0;
 		transition: var(--transition-layer-flashlight);
+		transform: translate3d(0, 0, 0);
 	}
 	.layer-flashlight.hovered {
 		opacity: 1;

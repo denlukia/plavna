@@ -159,7 +159,7 @@
 			}}
 		>
 			{#snippet label()}
-				<Translation key="article_editor.previews.add" />
+				<Translation key="article_editor.previews.new" />
 			{/snippet}
 			{#snippet content()}
 				<PreviewTemplateEditor

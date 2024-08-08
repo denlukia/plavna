@@ -31,7 +31,7 @@
 
 <Popup triggerType="button" bind:active>
 	{#snippet label()}
-		<Translation key="article_editor.tags.create" />
+		<Translation key="article_editor.tags.new" />
 	{/snippet}
 	{#snippet content()}
 		<FormWrapper>

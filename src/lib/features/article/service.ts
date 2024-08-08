@@ -375,7 +375,7 @@ export class ArticleService {
 			.returning({ id: articles.id })
 			.get();
 		if (!articleDeleted) throw new Error('Article not found');
-		await this.imageService.deleteRecord(articleDeleted.id, 'with-record');
+		await this.imageService.deleteRecord(articleDeleted.id);
 	}
 	async updatePreview(
 		slug: string,
@@ -446,6 +446,7 @@ export class ArticleService {
 				const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
 				const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
 
+				// TODO: Replace with path update maybe?
 				return this.imageService.deleteRecord(
 					articleRecord[fieldNameWithIdPrefix],
 					'path-only',

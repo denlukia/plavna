@@ -27,7 +27,7 @@
 
 	let { superValidated, hasValidCredentialsSet } = imageProvider;
 
-	let commonShown = $state(true);
+	let commonShown = $state(false);
 	let collection = $derived(commonShown ? collections.common : collections.article);
 </script>
 
@@ -37,11 +37,11 @@
 			<Translation key="article_editor.images.label" />
 		</Typography>
 		<Tabs size="small">
-			<TabItem active={commonShown} onclick={() => (commonShown = true)}>
-				<Translation key="article_editor.images.account_common" />
-			</TabItem>
 			<TabItem active={!commonShown} onclick={() => (commonShown = false)}>
 				<Translation key="article_editor.images.article_specific" />
+			</TabItem>
+			<TabItem active={commonShown} onclick={() => (commonShown = true)}>
+				<Translation key="article_editor.images.account_common" />
 			</TabItem>
 		</Tabs>
 	</header>
@@ -50,8 +50,7 @@
 		<ImageProviderWarning {superValidated} />
 	{:else}
 		<ImageCreationForm
-			{articleId}
-			isAccountCommon={commonShown}
+			articleId={commonShown ? null : articleId}
 			superValidated={collection.creation}
 		/>
 		{#each collection.items as image}

@@ -86,7 +86,8 @@ export const EN = {
 			update: 'Update',
 			delete: 'Delete',
 			account_common: 'Account common',
-			article_specific: 'Article specific'
+			article_specific: 'Article specific',
+			new: 'New'
 		},
 
 		tags: {
@@ -96,6 +97,7 @@ export const EN = {
 			edit_name_label: 'Edit name',
 			delete: 'Delete',
 			new_tag: 'New Tag',
+			new: 'New',
 			create: 'Create'
 		},
 		actions: {
@@ -107,9 +109,9 @@ export const EN = {
 		previews: {
 			editor_title: 'Preview Settings',
 			section_label: 'Previews',
-			add: 'Add Custom',
-			template_new_form_title: 'New Custom Preview',
-			template_editing_form_title: 'Custom Preview Editing',
+			new: 'New preview',
+			template_new_form_title: 'New Preview',
+			template_editing_form_title: 'Preview Editing',
 			create: 'Create',
 			update: 'Update',
 			set_and_update: 'Set and Update',
@@ -129,7 +131,9 @@ export const EN = {
 					text_bg_color: 'Text background color',
 					text_color: 'Text color',
 					image: 'Image',
-					image_depth: 'Image depth map'
+					image_depth: 'Image depth map',
+					cols: 'Take columns in grid',
+					rows: 'Take rows in grid'
 				},
 				custom: {
 					name: 'Custom'
