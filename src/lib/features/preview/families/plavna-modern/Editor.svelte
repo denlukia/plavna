@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
+	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
+	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
@@ -36,6 +38,36 @@
 						<Translation key="article_editor.previews.families.plavna_modern.text_bg_color" />
 					</Label>
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
+				</Labeled>
+			</GridCell>
+			<GridCell>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.plavna_modern.cols" />
+					</Label>
+					<Input
+						type="number"
+						min="1"
+						placeholder="1"
+						max={MAX_COLS_IN_SECTION}
+						name="preview_columns"
+						bind:value={$form.preview_columns}
+					/>
+				</Labeled>
+			</GridCell>
+			<GridCell>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.plavna_modern.rows" />
+					</Label>
+					<Input
+						type="number"
+						min="1"
+						placeholder="1"
+						max={MAX_ROWS_IN_SECTION}
+						name="preview_rows"
+						bind:value={$form.preview_rows}
+					/>
 				</Labeled>
 			</GridCell>
 			<GridCell>

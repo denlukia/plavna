@@ -31,6 +31,8 @@
 	.icon-frame {
 		display: inline-block;
 		overflow: hidden;
+		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
 	/* We choose :global here to let icon components be zero-styled */

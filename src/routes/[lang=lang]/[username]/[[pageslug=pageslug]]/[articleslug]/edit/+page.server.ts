@@ -203,9 +203,11 @@ async function create_image(event: RequestEvent) {
 
 	const { imageService } = event.locals;
 
+	const { article_id } = form.data;
+
 	await imageService.createRecord({
-		owning_article_id: form.data.article_id,
-		is_account_common: form.data.is_account_common
+		owning_article_id: article_id,
+		is_account_common: typeof article_id !== 'number'
 	});
 }
 
@@ -224,7 +226,7 @@ async function delete_image(event: RequestEvent) {
 	if (!form.valid) fail(400, { form });
 
 	const { imageService } = event.locals;
-	await imageService.deleteRecord(form.data.id, 'with-record');
+	await imageService.deleteRecord(form.data.id);
 }
 
 export const actions = {

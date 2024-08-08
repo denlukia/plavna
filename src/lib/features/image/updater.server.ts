@@ -31,6 +31,7 @@ export async function updateImages({
 		const lang = (key.split('.')[1] || null) as SupportedLang | null;
 		const markedForDeletion = key.startsWith('delete') && data[key] === true;
 		if (markedForDeletion) {
+			// TODO: Replace with path update maybe?
 			await imageService.deleteRecord(data.id, lang);
 		} else if (fileIsValid) {
 			const report = await imagesHandlers[key].upload({
