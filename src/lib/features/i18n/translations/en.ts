@@ -33,7 +33,7 @@ export const EN = {
 		main_page: 'Default',
 		delete_page: 'Delete',
 		edit_page: 'Edit',
-		create_new_page: 'Create',
+		new: 'New',
 
 		errors: {
 			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
@@ -85,8 +85,8 @@ export const EN = {
 			},
 			update: 'Update',
 			delete: 'Delete',
-			account_common: 'Account common',
-			article_specific: 'Article specific',
+			account_common: 'Сommon',
+			article_specific: 'Article',
 			new: 'New'
 		},
 
@@ -128,12 +128,12 @@ export const EN = {
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',
-					text_bg_color: 'Text background color',
+					text_bg_color: 'Text bg color',
 					text_color: 'Text color',
 					image: 'Image',
 					image_depth: 'Image depth map',
-					cols: 'Take columns in grid',
-					rows: 'Take rows in grid'
+					cols: 'Cols',
+					rows: 'Rows'
 				},
 				custom: {
 					name: 'Custom'

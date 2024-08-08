@@ -37,7 +37,7 @@ export const UK = {
 		main_page: 'Основна',
 		delete_page: 'Видалити',
 		edit_page: 'Змінити',
-		create_new_page: 'Створити нову',
+		new: 'Нова',
 
 		errors: {
 			disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
@@ -88,8 +88,8 @@ export const UK = {
 			},
 			update: 'Оновити',
 			delete: 'Видалити',
-			account_common: 'Спільні на аккаунт',
-			article_specific: 'Цієї статті',
+			account_common: 'Спільні',
+			article_specific: 'Статті',
 			new: 'Нове'
 		},
 		tags: {
@@ -111,7 +111,7 @@ export const UK = {
 		previews: {
 			editor_title: 'Налашт. передогляду',
 			section_label: 'Передогляд',
-			new: 'Новий передогляд',
+			new: 'Новий',
 			template_new_form_title: 'Новий передогляд',
 			template_editing_form_title: 'Редагування передогляду',
 			create: 'Створити',
@@ -134,8 +134,8 @@ export const UK = {
 					text_color: 'Колір тексту',
 					image: 'Зображення',
 					image_depth: 'Мапа глибини зображення',
-					cols: 'Займати стовпців у сітці',
-					rows: 'Займати рядків у сітці'
+					cols: 'Cтовпців',
+					rows: 'Рядків'
 				},
 				custom: {
 					name: 'Власне'

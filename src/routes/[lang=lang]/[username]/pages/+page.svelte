@@ -23,7 +23,7 @@
 	<div class="new-page-wrapper">
 		<Popup triggerType="button" bind:active>
 			{#snippet label()}
-				<Translation key="pages_list.create_new_page" />
+				<Translation key="pages_list.new" />
 			{/snippet}
 			{#snippet content()}
 				<PageEditor formObj={data.creationForm} {onSuccessfullUpdate} />

@@ -63,6 +63,7 @@
 		flex-direction: var(--flex-direction);
 		flex-wrap: wrap;
 		gap: var(--size-cell-gap);
+		align-content: flex-start;
 	}
 	.height-sizer {
 		display: block;
