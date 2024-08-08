@@ -46,74 +46,54 @@
 	</Button>
 </form>
 
-<section class="row">
-	<GridContainer>
-		<GridCell colspan={3}>
-			<GridCell colspan={2}>
-				<Labeled as="label">
-					<Label><Translation key="article_editor.title" /></Label>
-					<AutosavedInput
-						superValidated={translationForms[article.title_translation_key]}
-						action="?/update_translation"
-					/>
-				</Labeled>
-			</GridCell>
-
-			<GridCell>
-				<Labeled as="label">
-					<Label><Translation key="article_editor.slug" /></Label>
-					<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-				</Labeled>
-			</GridCell>
-
-			<GridCell colspan={3}>
-				<Labeled as="label">
-					<Label><Translation key="article_editor.short_description" /></Label>
-					<AutosavedInput
-						textarea
-						superValidated={translationForms[article.description_translation_key]}
-						action="?/update_translation"
-					/>
-				</Labeled>
-			</GridCell>
-		</GridCell>
-
-		<GridCell colspan={2} customClass="article-editor-shifted-cell article-tags-list-cell">
-			<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
-		</GridCell>
-	</GridContainer>
-</section>
-
-<section class="row">
-	<GridContainer>
-		<GridCell colspan={3}>
-			<PreviewEditorsList {data} />
-		</GridCell>
-		<GridCell colspan={2} customClass="article-editor-shifted-cell">
-			<ImagesCollectionsList
-				imageProvider={data.imageProvider}
-				articleId={article.id}
-				collections={{ common: data.commonImages, article: data.articleImages }}
-			/>
-		</GridCell>
-	</GridContainer>
-</section>
-
-<section class="row">
+<div class="page-editor">
 	<GridContainer>
 		<GridCell colspan={3}>
 			<Labeled as="label">
+				<Label><Translation key="article_editor.title" /></Label>
+				<AutosavedInput
+					superValidated={translationForms[article.title_translation_key]}
+					action="?/update_translation"
+				/>
+			</Labeled>
+			<Labeled as="label">
 				<Label><Translation key="article_editor.content" /></Label>
 				<AutosavedInput
-					rows={8}
+					rows={20}
 					action="?/update_translation"
 					textarea
 					superValidated={translationForms[article.content_translation_key]}
 				/>
 			</Labeled>
 		</GridCell>
+
+		<GridCell colspan={2} customClass="article-editor-shifted-cell article-tags-list-cell">
+			<Labeled as="label">
+				<Label><Translation key="article_editor.slug" /></Label>
+				<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
+			</Labeled>
+			<Labeled as="label">
+				<Label><Translation key="article_editor.short_description" /></Label>
+				<AutosavedInput
+					textarea
+					superValidated={translationForms[article.description_translation_key]}
+					action="?/update_translation"
+				/>
+			</Labeled>
+			<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
+			<section class="row">
+				<PreviewEditorsList {data} />
+			</section>
+			<section class="row">
+				<ImagesCollectionsList
+					imageProvider={data.imageProvider}
+					articleId={article.id}
+					collections={{ common: data.commonImages, article: data.articleImages }}
+				/>
+			</section>
+		</GridCell>
 	</GridContainer>
-</section>
+</div>
 
 <style>
 	.main-actions {
@@ -132,8 +112,13 @@
 		gap: var(--size-article-actions-gap);
 	}
 
+	.page-editor {
+		margin-top: var(--size-l);
+	}
+
 	.row {
-		margin-top: var(--size-2xl);
+		width: 100%;
+		margin-top: var(--size-m);
 	}
 
 	:global(.article-editor-shifted-cell) {

@@ -33,14 +33,10 @@
 </Labeled>
 
 <style>
-	:global(.article-tags-list) {
-		min-height: 100%;
-	}
 	.tags-list {
 		display: flex;
 		align-items: flex-start;
 		flex-wrap: wrap;
 		gap: var(--size-s);
-		height: 100%;
 	}
 </style>

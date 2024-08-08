@@ -16,7 +16,9 @@ const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSch
 	preview_template_id: true,
 	preview_prop_1: true,
 	preview_prop_2: true,
-	preview_create_localized_screenshots: true
+	preview_create_localized_screenshots: true,
+	preview_columns: true,
+	preview_rows: true
 };
 export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
 	preview_image_1_id: true,

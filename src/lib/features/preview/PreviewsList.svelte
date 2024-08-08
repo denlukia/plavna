@@ -145,8 +145,16 @@
 	</IconWrapper>
 {/snippet}
 
-<GridCell colspan={1}>
-	<div class="preview-editors-scroller">
+<div class="previews-list">
+	<header class="preview-editor-header">
+		<Typography size="heading-2">
+			<Translation key="article_editor.previews.section_label" />
+		</Typography>
+		<Button size="small" kind="secondary">
+			<Translation key="article_editor.previews.to_preview_the_preview" />
+		</Button>
+	</header>
+	<div class="scroller">
 		<Popup
 			triggerType="button"
 			customClass="preview-family-popup"
@@ -169,7 +177,7 @@
 			{/snippet}
 		</Popup>
 
-		<ul class="previews-list">
+		<ul class="list">
 			{#each Object.entries(previewFamilies) as [familyId, { name_translation_key }]}
 				{#if familyId !== 'custom'}
 					{@render previewFamilyButton(
@@ -212,56 +220,53 @@
 			{/each}
 		</ul>
 	</div>
-</GridCell>
-<GridCell colspan={2}>
-	<div class="preview-editor-wrapper">
-		<header class="preview-editor-header">
-			<Typography size="heading-2">
-				<Translation key="article_editor.previews.editor_title" />
-			</Typography>
-			<Button size="small" kind="secondary">
-				<Translation key="article_editor.previews.to_preview_the_preview" />
-			</Button>
-		</header>
-		{#if currentEditorComponent}
-			{#await currentEditorComponent}
-				Loading...
-			{:then currentEditorComponent}
-				<svelte:component
-					this={currentEditorComponent}
-					mainSuperValidated={previewEditorSuperValidated}
-					images={{
-						preview_image_1_id: meta.preview_image_1_id,
-						preview_image_2_id: meta.preview_image_2_id
-					}}
-					translationsSuperValidated={{
-						translation_1: translationForms[meta.preview_translation_1_key],
-						translation_2: translationForms[meta.preview_translation_2_key]
-					}}
-					templateMeta={currentPreviewTemplateMeta}
-					{onPreviewPreviewRequest}
-				/>
-			{:catch}
-				Couldn't load
-			{/await}
-		{/if}
-	</div>
-</GridCell>
+	{#if currentEditorComponent}
+		{#await currentEditorComponent}
+			Loading...
+		{:then currentEditorComponent}
+			<svelte:component
+				this={currentEditorComponent}
+				mainSuperValidated={previewEditorSuperValidated}
+				images={{
+					preview_image_1_id: meta.preview_image_1_id,
+					preview_image_2_id: meta.preview_image_2_id
+				}}
+				translationsSuperValidated={{
+					translation_1: translationForms[meta.preview_translation_1_key],
+					translation_2: translationForms[meta.preview_translation_2_key]
+				}}
+				templateMeta={currentPreviewTemplateMeta}
+				{onPreviewPreviewRequest}
+			/>
+		{:catch}
+			Couldn't load
+		{/await}
+	{/if}
+</div>
 
 <style>
-	.preview-editors-scroller {
+	.previews-list {
+		width: 100%;
+		background: var(--color-article-preview-editor-bg);
+		border-radius: var(--size-article-preview-editor-border-radius);
+		padding-inline: var(--size-article-preview-editor-padding-inline);
+		padding-block-start: var(--size-article-preview-editor-padding-block-start);
+		padding-block-end: var(--size-article-preview-editor-padding-block-end);
+	}
+	
+	.scroller {
 		display: flex;
-		flex-direction: column;
 		gap: var(--size-article-previewlist-gap);
 		width: 100%;
+		padding-bottom: var(--size-l);
 	}
-	.preview-editors-scroller :global {
-		.preview-family-popup {
-			width: 100%;
+	.scroller :global {
+		* {
+			flex-shrink: 1;
 		}
+
 		.preview-family-button {
 			justify-content: flex-start;
-			width: 100%;
 			border-radius: var(--size-article-previewfam-border-radius);
 
 			--layers-border-radius: var(--size-article-previewfam-border-radius);
@@ -274,7 +279,6 @@
 			padding-block: var(--size-article-previewfam-padding-block);
 			padding-inline: var(--size-article-previewfam-padding-inline);
 
-			width: 100%;
 			text-align: start;
 		}
 		.preview-family-button-content.editor {
@@ -282,7 +286,7 @@
 		}
 	}
 
-	.previews-list {
+	.list {
 		display: contents;
 		list-style: none;
 		padding: 0;
@@ -296,15 +300,6 @@
 		position: absolute;
 		top: var(--size-l);
 		right: var(--size-l);
-	}
-
-	.preview-editor-wrapper {
-		width: 100%;
-		background: var(--color-article-preview-editor-bg);
-		border-radius: var(--size-article-preview-editor-border-radius);
-		padding-inline: var(--size-article-preview-editor-padding-inline);
-		padding-block-start: var(--size-article-preview-editor-padding-block-start);
-		padding-block-end: var(--size-article-preview-editor-padding-block-end);
 	}
 
 	.preview-editor-header {

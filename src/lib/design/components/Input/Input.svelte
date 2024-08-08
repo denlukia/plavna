@@ -143,10 +143,10 @@
 					var(--text-body-padding-bottom)
 			);
 			min-width: calc(var(--size-cell-width) - var(--size-3xl));
-			max-height: calc(
+			/* max-height: calc(
 				var(--text-body-padding-top) + var(--text-body-line-height) * 10 +
 					var(--text-body-padding-bottom)
-			);
+			); */
 			resize: vertical;
 			padding-inline-end: var(--size-input-textarea-padding-inline-end);
 			overflow-y: scroll;

@@ -122,7 +122,7 @@ export class PreviewService {
 				if (recordResult.images.path) {
 					// TODO: Folder deletion
 				}
-				await this.imageService.deleteRecord(recordResult.images.id, 'with-record', undefined, trx);
+				await this.imageService.deleteRecord(recordResult.images.id, trx);
 			}
 			await trx.delete(previewTemplates).where(whereCondition).run();
 		});
