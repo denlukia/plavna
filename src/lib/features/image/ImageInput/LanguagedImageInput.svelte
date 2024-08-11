@@ -1,5 +1,14 @@
 <script lang="ts">
+	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import { expoOut } from 'svelte/easing';
+	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
+	import Select from '$lib/design/components/Popup/Select.svelte';
+	import { fly, getFlyConf } from '$lib/design/transitions/fly';
+	import Translation from '$lib/features/i18n/Translation.svelte';
+
 	import type { ImageSelect } from '../parsers';
+	import { getLanguagedName } from '../utils';
 	import ImageInput from './ImageInput.svelte';
 
 	type Props = {
@@ -9,20 +18,47 @@
 		clientUpload?: boolean;
 	};
 
-	let { name, imageId, processing = $bindable(false), clientUpload = false }: Props = $props();
+	let {
+		name: nonprefixedName,
+		imageId,
+		processing = $bindable(false),
+		clientUpload = false
+	}: Props = $props();
+
+	let lang: SupportedLang | null = $state(null);
+	let name = $derived(getLanguagedName(nonprefixedName, lang));
 </script>
 
 <div class="languaged-image-input">
-	<ImageInput {name} {imageId} {clientUpload} {processing} />
-	<!-- {#if withLanguages}
-		{#each supportedLangs as lang}
-			<ImageInput {name} {lang} {image} {clientUpload} />
-		{/each}
-	{/if} -->
+	<Layers overflow="visible">
+		{#key lang}
+			<div
+				class="animation-wrapper"
+				in:fly={getFlyConf(expoOut, 'bottom')}
+				out:fly={getFlyConf(expoOut, 'top')}
+			>
+				<ImageInput {name} {imageId} {clientUpload} {processing} {lang} />
+			</div>
+		{/key}
+	</Layers>
+	<div class="select-positioner">
+		<Select bind:value={lang} isInInput>
+			<option value={null}><Translation key="article_editor.images.main" /></option>
+			{#each supportedLangs as lang}
+				<option value={lang}>{lang.toUpperCase()}</option>
+			{/each}
+		</Select>
+	</div>
 </div>
 
 <style>
 	.languaged-image-input {
-		/* background: lightpink; */
+		position: relative;
+	}
+	.select-positioner {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: var(--size-input-to-button-padding);
 	}
 </style>

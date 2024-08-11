@@ -93,7 +93,6 @@
 				<ImageProviderWarning superValidated={imageProvider.superValidated} />
 			</div>
 		{/if}
-		<div class="global-pointer-events-none dashes"></div>
 		<div class="global-pointer-events-none shadow"></div>
 	</Layers>
 </div>
@@ -103,7 +102,6 @@
 		height: var(--size-image-input-height);
 		background: var(--color-image-input-bg);
 		border-radius: var(--size-image-input-border-radius);
-		overflow: hidden;
 
 		/* For Layers */
 		--layers-border-radius: var(--size-image-input-border-radius);
@@ -112,13 +110,9 @@
 		--color-layer-flashlight-pointer: var(--color-input-layer-flashlight-hover);
 	}
 
-	.dashes {
-		border: var(--border-image-input);
-		border-radius: var(--size-image-input-border-radius);
-	}
-
 	.shadow {
-		box-shadow: var(--shadow-image-input);
+		box-shadow: var(--shadow-input);
+		border-radius: var(--size-image-input-border-radius);
 	}
 
 	.image {

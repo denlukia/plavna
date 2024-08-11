@@ -87,7 +87,8 @@ export const EN = {
 			delete: 'Delete',
 			account_common: 'Сommon',
 			article_specific: 'Article',
-			new: 'New'
+			new: 'New',
+			main: 'Main'
 		},
 
 		tags: {
@@ -109,7 +110,7 @@ export const EN = {
 		previews: {
 			editor_title: 'Preview Settings',
 			section_label: 'Previews',
-			new: 'New preview',
+			new: 'New',
 			template_new_form_title: 'New Preview',
 			template_editing_form_title: 'Preview Editing',
 			create: 'Create',
@@ -123,8 +124,8 @@ export const EN = {
 			image: 'Image',
 			create_localized_screenshots: 'Create Localized Screenshots',
 			preview: 'Preview',
-			image_dropzone: "Drag'n'drop image here or click to choose from folder",
-			to_preview_the_preview: 'Preview the Preview',
+			image_dropzone: 'Drop image here or click to choose from folder',
+			to_preview_the_preview: 'Preview',
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',

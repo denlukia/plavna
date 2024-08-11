@@ -15,7 +15,6 @@
 	<Typography size="small">
 		<Translation key="article_editor.previews.image_dropzone" />
 		<br />
-		<br />
 		<input
 			class="file-input"
 			type="file"
@@ -31,16 +30,17 @@
 	.drop-zone {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+		justify-content: flex-end;
+		align-items: flex-start;
 		height: 100%;
 		line-height: normal;
 		padding: var(--size-image-input-padding);
 		color: var(--color-image-input);
 	}
 	.file-input {
+		margin-top: var(--size-s-to-m);
 		width: 100%;
-		margin-inline-start: -7px;
+		margin-inline-start: -8px;
 	}
 	.file-input::file-selector-button {
 		width: 1px;
