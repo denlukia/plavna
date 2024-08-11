@@ -7,7 +7,7 @@
 	type Props = HTMLAttributes<HTMLSelectElement> & {
 		children: Snippet;
 		isInInput?: boolean;
-		value?: string;
+		value?: string | null;
 	};
 
 	let { children, isInInput = false, value = $bindable(), ...attributes }: Props = $props();

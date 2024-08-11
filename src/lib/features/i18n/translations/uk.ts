@@ -90,7 +90,8 @@ export const UK = {
 			delete: 'Видалити',
 			account_common: 'Спільні',
 			article_specific: 'Статті',
-			new: 'Нове'
+			new: 'Нове',
+			main: 'Основне'
 		},
 		tags: {
 			list_label: 'Теги',
