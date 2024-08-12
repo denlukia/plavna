@@ -93,7 +93,6 @@
 				<ImageProviderWarning superValidated={imageProvider.superValidated} />
 			</div>
 		{/if}
-		<div class="global-pointer-events-none shadow"></div>
 	</Layers>
 </div>
 
@@ -102,17 +101,14 @@
 		height: var(--size-image-input-height);
 		background: var(--color-image-input-bg);
 		border-radius: var(--size-image-input-border-radius);
+		box-shadow: var(--shadow-input);
+		overflow: hidden;
 
 		/* For Layers */
 		--layers-border-radius: var(--size-image-input-border-radius);
 
 		/* For Layer Flashlight */
 		--color-layer-flashlight-pointer: var(--color-input-layer-flashlight-hover);
-	}
-
-	.shadow {
-		box-shadow: var(--shadow-input);
-		border-radius: var(--size-image-input-border-radius);
 	}
 
 	.image {
