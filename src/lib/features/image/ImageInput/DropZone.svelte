@@ -40,7 +40,13 @@
 	.file-input {
 		margin-top: var(--size-s-to-m);
 		width: 100%;
-		margin-inline-start: -8px;
+		margin-inline-start: -2px;
+	}
+	/* Better margin resets for Safari */
+	@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+		.file-input {
+			margin-inline-start: -8px;
+		}
 	}
 	.file-input::file-selector-button {
 		width: 1px;

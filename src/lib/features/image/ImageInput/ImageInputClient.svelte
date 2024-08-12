@@ -53,8 +53,7 @@
 		if (!actor) throw Error('Actor not found');
 
 		if (!imageHandler) imageHandler = await getImageHandler();
-		if (!imageHandler.provider)
-			await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
+		await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
 
 		// 2. Validate image
 		try {
