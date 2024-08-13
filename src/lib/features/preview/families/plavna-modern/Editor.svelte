@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
@@ -11,6 +12,7 @@
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
+	import { getImageById } from '$lib/features/image/utils';
 
 	import { commonPreviewEditorFormAttributes } from '..';
 	import type { PreviewEditorProps } from '../types';
@@ -77,7 +79,7 @@
 					</Label>
 					<LanguagedImageInput
 						name="preview_image_1"
-						imageId={images.preview_image_1_id}
+						bind:image={images.preview_image_1}
 						clientUpload
 					/>
 				</Labeled>
@@ -89,7 +91,7 @@
 					</Label>
 					<LanguagedImageInput
 						name="preview_image_2"
-						imageId={images.preview_image_2_id}
+						bind:image={images.preview_image_2}
 						clientUpload
 					/>
 				</Labeled>

@@ -12,7 +12,8 @@ import { images } from './schema';
 export const imageFileField = z.optional(z.string());
 
 export const imageSelectSchema = createSelectSchema(images);
-export const imageInsertSchema = createInsertSchema(images).omit({
+export const imageInsertSchema = createInsertSchema(images);
+export const imageInsertFormSchema = createInsertSchema(images).omit({
 	user_id: true,
 	path_translation_key: true
 });
@@ -49,7 +50,7 @@ export type ImageProviderSuperValidated = SuperValidated<
 
 // Images
 export type ImageSelect = z.infer<typeof imageSelectSchema>;
-export type ImageInsert = z.infer<typeof imageInsertSchema>;
+export type ImageInsertForm = z.infer<typeof imageInsertFormSchema>;
 export type ImageUpdate = z.infer<typeof imageUpdateSchema>;
 export type ImageUpdateForm = z.infer<typeof imageUpdateFormSchema>;
 export type ImageUpdateFormZod = typeof imageUpdateFormSchema;

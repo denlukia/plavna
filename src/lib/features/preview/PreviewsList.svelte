@@ -17,7 +17,8 @@
 
 	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
 	import type { SystemTranslationKey } from '../i18n/types';
-	import PreviewTemplateEditor from './PreviewTemplateForm.svelte';
+	import { getImageById } from '../image/utils';
+	import PreviewTemplateForm from './PreviewTemplateForm.svelte';
 
 	type Props = {
 		data: PageData;
@@ -35,10 +36,12 @@
 		images
 	} = $derived(data);
 
-	let mode = $state('edit');
 	let currentPreviewObject = $state(getInitialCurrentPreview());
 	let currentPreviewTemplateMeta = $derived.by(getCurrentPreviewTemplate);
-	let currentEditorComponent = $derived.by(getCurrentEditorComponent);
+	let EditorComponent = $derived.by(getCurrentEditorComponent);
+
+	let preview_image_1 = $state(getImageById(meta.preview_image_1_id, images));
+	let preview_image_2 = $state(getImageById(meta.preview_image_2_id, images));
 
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
 
@@ -170,7 +173,7 @@
 				<Translation key="article_editor.previews.new" />
 			{/snippet}
 			{#snippet content()}
-				<PreviewTemplateEditor
+				<PreviewTemplateForm
 					type="creating"
 					superValidatedMain={previewTemplateCreationSuperValidated}
 				/>
@@ -207,7 +210,7 @@
 								:
 							{/snippet}
 							{#snippet content()}
-								<PreviewTemplateEditor
+								<PreviewTemplateForm
 									type="editing"
 									superValidatedMain={template.superValidatedMain}
 									superValidatedDeletion={template.superValidatedDeletion}
@@ -220,16 +223,15 @@
 			{/each}
 		</ul>
 	</div>
-	{#if currentEditorComponent}
-		{#await currentEditorComponent}
+	{#if EditorComponent}
+		{#await EditorComponent}
 			Loading...
-		{:then currentEditorComponent}
-			<svelte:component
-				this={currentEditorComponent}
+		{:then EditorComponent}
+			<EditorComponent
 				mainSuperValidated={previewEditorSuperValidated}
 				images={{
-					preview_image_1_id: meta.preview_image_1_id,
-					preview_image_2_id: meta.preview_image_2_id
+					preview_image_1,
+					preview_image_2
 				}}
 				translationsSuperValidated={{
 					translation_1: translationForms[meta.preview_translation_1_key],
@@ -253,7 +255,7 @@
 		padding-block-start: var(--size-article-preview-editor-padding-block-start);
 		padding-block-end: var(--size-article-preview-editor-padding-block-end);
 	}
-	
+
 	.scroller {
 		display: flex;
 		gap: var(--size-article-previewlist-gap);

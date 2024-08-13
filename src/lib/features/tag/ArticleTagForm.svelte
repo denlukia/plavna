@@ -19,7 +19,6 @@
 
 	let { form, enhance } = superForm(superValidated, {
 		onResult: (e) => {
-			console.log('GOT RESULT', e);
 			if (e.result.type === 'success') {
 				active = false;
 			}

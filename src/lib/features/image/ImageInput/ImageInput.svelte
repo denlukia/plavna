@@ -8,6 +8,7 @@
 	import Image from '$lib/design/components/Image/Image.svelte';
 	import { createMouseWatcher } from '$lib/design/reactivity/mouse-watcher.svelte';
 	import type { ImagePathAndMeta } from '$lib/design/types';
+	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
 	import ImageProviderWarning from '../ImagesBlock/ImageProviderWarning.svelte';
 	import type { ImageSelect } from '../parsers';
@@ -17,7 +18,8 @@
 
 	type Props = {
 		name: string;
-		imageId: ImageSelect['id'];
+		image: ImageSelect | null;
+		translation: ImageInputsTranslationsDictValue | null;
 		lang: SupportedLang | null;
 		processing?: boolean;
 		clientUpload?: boolean;
@@ -25,8 +27,9 @@
 
 	let {
 		name,
-		imageId,
 		lang,
+		image = $bindable(),
+		translation = $bindable(),
 		processing = $bindable(false),
 		clientUpload = false
 	}: Props = $props();
@@ -34,8 +37,7 @@
 	let { mouse, ...events } = createMouseWatcher();
 
 	let imageProvider = $page.data.imageProvider;
-	let image = $state($page.data.images?.[imageId]);
-	let translation = $state($page.data.imageInputsTranslations?.[imageId] || null);
+
 	let pathAndMeta = $derived.by(getPathAndMeta);
 	let isPathPresent = $derived(Boolean(pathAndMeta));
 
@@ -44,11 +46,10 @@
 			return null;
 		}
 
-		const { alt, width, height, background } = image;
+		const { width, height, background } = image;
 		let { path } = image;
 
-		const translationKey = image.path_translation_key;
-		if (lang && translationKey) {
+		if (lang) {
 			path = translation?.[lang] || null;
 		}
 
@@ -56,9 +57,9 @@
 		if (!src) return null;
 
 		return {
-			id: imageId,
+			id: image.id,
+			alt: null,
 			src,
-			alt,
 			width,
 			height,
 			background
@@ -69,7 +70,7 @@
 <div class="image-input" {...events}>
 	<Layers stretch overflow="visible">
 		{#if imageProvider.hasValidCredentialsSet}
-			{#if imageId && pathAndMeta}
+			{#if image && image.id && pathAndMeta}
 				<div class="image">
 					<Image {pathAndMeta} />
 				</div>
@@ -77,14 +78,7 @@
 				<LayerFlashlight {mouse} />
 			{/if}
 			{#if browser && clientUpload && image}
-				<ImageInputClient
-					{imageId}
-					{name}
-					{isPathPresent}
-					{processing}
-					bind:image
-					bind:translation
-				/>
+				<ImageInputClient {name} {isPathPresent} {processing} bind:image bind:translation />
 			{:else}
 				<ImageInputServer {name} {isPathPresent} />
 			{/if}
@@ -98,6 +92,7 @@
 
 <style>
 	.image-input {
+		width: 100%;
 		height: var(--size-image-input-height);
 		background: var(--color-image-input-bg);
 		border-radius: var(--size-image-input-border-radius);

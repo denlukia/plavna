@@ -80,7 +80,9 @@
 					action="?/update_translation"
 				/>
 			</Labeled>
-			<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
+			<section class="row">
+				<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
+			</section>
 			<section class="row">
 				<PreviewEditorsList {data} />
 			</section>
@@ -114,6 +116,7 @@
 
 	.page-editor {
 		margin-top: var(--size-l);
+		margin-bottom: var(--size-4xl);
 	}
 
 	.row {

@@ -86,9 +86,14 @@ export const EN = {
 			update: 'Update',
 			delete: 'Delete',
 			account_common: 'Сommon',
-			article_specific: 'Article',
+			article_specific: 'Of this article',
 			new: 'New',
-			main: 'Main'
+			main: 'Main',
+			delete_whole: 'Delete',
+			clear_translation: 'Delete translation',
+			update_translation: 'Update',
+			mark_for_deletion: 'Delete on Update',
+			copy_code: 'Copy code'
 		},
 
 		tags: {
@@ -117,7 +122,6 @@ export const EN = {
 			update: 'Update',
 			set_and_update: 'Set and Update',
 			delete: 'Delete',
-			mark_deletion: 'Delete on Update',
 			url: 'Address',
 			url_placeholder: 'https://example.com',
 			name: 'Name',
