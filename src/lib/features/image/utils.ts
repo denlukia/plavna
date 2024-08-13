@@ -64,12 +64,12 @@ export function getImagePathAndMeta(
 		return null;
 	}
 
-	const { alt, background, height, width } = image;
+	const { background, height, width } = image;
 
 	return {
 		id: imageId,
 		src,
-		alt,
+		alt: null,
 		background,
 		height,
 		width
@@ -82,4 +82,18 @@ export function getLanguagedName(name: string, lang?: SupportedLang | null) {
 
 export function getLangFromLanguagedName(languagedName: string) {
 	return languagedName.includes('.') ? (languagedName.split('.')[1] as SupportedLang) : null;
+}
+
+export function getImageById(
+	id: ImageSelect['id'] | null | undefined,
+	images: ImagesDict | undefined
+) {
+	if (!id) {
+		return null;
+	}
+	const base = images?.[id];
+	if (!base) {
+		return null;
+	}
+	return { id, ...base };
 }

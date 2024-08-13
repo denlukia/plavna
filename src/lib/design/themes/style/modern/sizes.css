@@ -13,6 +13,7 @@
 	--size-3xl: 40px;
 	--size-3xl-to-4xl: 44px;
 	--size-4xl: 48px;
+	--size-4xl: 80px;
 	--size-6xl: 128px;
 	--size-full: 999px;
 
@@ -209,9 +210,10 @@
 	--size-info-block-border-radius: var(--size-m);
 
 	/* --- Tag --- */
-	--size-tag-section-margin-inline-start: var(--size-l);
+	--size-tags-list-padding: var(--size-m) var(--size-m-to-l) var(--size-none) var(--size-l);
+	--size-tags-list-border-radius: var(--size-xl);
 	--size-tag-border-radius: var(--size-full);
-	--size-tag-padding-inline: var(--size-m-to-l);
+	--size-tag-padding-inline: var(--size-m);
 	--size-tag-padding-block: var(--size-s) var(--size-s);
 
 	/* --- Article Editor --- */
@@ -232,7 +234,7 @@
 	--size-article-preview-editor-padding-block-end: var(--size-l);
 
 	--size-article-editor-images-block-border-radius: var(--size-xl);
-	--size-article-editor-images-block-padding: var(--size-m) var(--size-m-to-l) var(--size-l)
+	--size-article-editor-images-block-padding: var(--size-m) var(--size-m-to-l) var(--size-none)
 		var(--size-l);
 
 	/* --- Image Input --- */

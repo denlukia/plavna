@@ -89,9 +89,14 @@ export const UK = {
 			update: 'Оновити',
 			delete: 'Видалити',
 			account_common: 'Спільні',
-			article_specific: 'Статті',
+			article_specific: 'Цієї статті',
 			new: 'Нове',
-			main: 'Основне'
+			main: 'Основне',
+			delete_whole: 'Видалити',
+			clear_translation: 'Видалити переклад',
+			update_translation: 'Оновити переклад',
+			mark_for_deletion: 'Видалити при оновленні',
+			copy_code: 'Копіювати код'
 		},
 		tags: {
 			list_label: 'Теги',
@@ -119,14 +124,13 @@ export const UK = {
 			update: 'Оновити',
 			set_and_update: 'Обрати й оновити',
 			delete: 'Видалити',
-			mark_deletion: 'Видалити при оновленні',
 			url: 'Адреса',
 			url_placeholder: 'https://example.com',
 			name: 'Назва',
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			preview: 'Переглянути',
-			image_dropzone: 'Перетягніть зображення або натисніть, щоб вибрати з папки',
+			image_dropzone: 'Перетягніть зображ. або натисніть, щоб вибрати',
 			to_preview_the_preview: 'Переглянути',
 			families: {
 				plavna_modern: {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import { page } from '$app/stores';
 	import { expoOut } from 'svelte/easing';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
@@ -13,20 +14,26 @@
 
 	type Props = {
 		name: string;
-		imageId: ImageSelect['id'];
+		image: ImageSelect | null;
 		processing?: boolean;
 		clientUpload?: boolean;
 	};
 
 	let {
 		name: nonprefixedName,
-		imageId,
+		image = $bindable(),
 		processing = $bindable(false),
 		clientUpload = false
 	}: Props = $props();
 
 	let lang: SupportedLang | null = $state(null);
 	let name = $derived(getLanguagedName(nonprefixedName, lang));
+
+	let translation = $state(
+		image?.path_translation_key
+			? $page.data.imageInputsTranslations?.[image.path_translation_key] || null
+			: null
+	);
 </script>
 
 <div class="languaged-image-input">
@@ -37,7 +44,7 @@
 				in:fly={getFlyConf(expoOut, 'bottom')}
 				out:fly={getFlyConf(expoOut, 'top')}
 			>
-				<ImageInput {name} {imageId} {clientUpload} {processing} {lang} />
+				<ImageInput bind:image bind:translation {name} {clientUpload} {processing} {lang} />
 			</div>
 		{/key}
 	</Layers>

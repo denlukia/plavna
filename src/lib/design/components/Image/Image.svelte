@@ -8,4 +8,15 @@
 	let { pathAndMeta }: Props = $props();
 </script>
 
-<img class="image" src={pathAndMeta.src} alt={pathAndMeta.alt} />
+<img
+	class="image"
+	style="--bg: {pathAndMeta.background}"
+	src={pathAndMeta.src}
+	alt={pathAndMeta.alt}
+/>
+
+<style>
+	.image {
+		background: var(--bg);
+	}
+</style>

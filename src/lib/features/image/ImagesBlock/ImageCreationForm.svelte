@@ -22,7 +22,7 @@
 	{#if articleId}
 		<input type="hidden" name="article_id" value={articleId} />
 	{/if}
-	<Spacer />
+
 	<Button>
 		<Translation key="article_editor.images.new" />
 	</Button>

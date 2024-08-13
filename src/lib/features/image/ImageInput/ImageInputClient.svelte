@@ -4,18 +4,17 @@
 	import { page } from '$app/stores';
 	import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
+	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
 	import type { ImageSelect } from '../parsers';
 	import type { ImageService } from '../service';
-	import type { ImagesDictValue } from '../types';
 	import { getLangFromLanguagedName } from '../utils';
 	import DropZone from './DropZone.svelte';
 
 	type Props = {
 		name: string;
-		imageId: ImageSelect['id'];
-		image: ImagesDictValue;
+		image: ImageSelect;
 		translation: ImageInputsTranslationsDictValue | null;
 		isPathPresent: boolean;
 		processing: boolean;
@@ -24,7 +23,6 @@
 	let {
 		name,
 		isPathPresent,
-		imageId,
 		image = $bindable(),
 		translation = $bindable(),
 		processing = $bindable()
@@ -67,7 +65,7 @@
 		const lang = getLangFromLanguagedName(name);
 
 		// 3. Process and upload image
-		const pathUpdate = await imageHandler.upload({ imageId, lang });
+		const pathUpdate = await imageHandler.upload({ imageId: image.id, lang });
 
 		// 4. Report image upload
 		const response = await fetch('/api/images/update-path', {
@@ -99,7 +97,7 @@
 
 		const lang = getLangFromLanguagedName(name);
 
-		const pathUpdate: ImagePathUpdateOrDeletion = { record: { id: imageId }, lang };
+		const pathUpdate: ImagePathUpdateOrDeletion = { record: { id: image.id }, lang };
 
 		// 3. Delete image path in DB
 		const response = await fetch('/api/images/update-path', {
@@ -121,8 +119,7 @@
 	function updateLocalsFromResponse(update: Awaited<ReturnType<ImageService['updatePath']>>) {
 		const { image: newImage, translation: newTranslation } = update;
 
-		const { id: imageId, ...imageOther } = newImage;
-		image = imageOther;
+		image = newImage;
 
 		if (newTranslation) {
 			const { key: translationKey, ...translationOther } = newTranslation;
@@ -133,7 +130,9 @@
 
 {#if isPathPresent}
 	<div class="image-actions">
-		<Button type="button" onclick={onDelete} size="small" kind="translucent">Delete</Button>
+		<Button type="button" onclick={onDelete} size="small" kind="translucent">
+			<Translation key="article_editor.images.clear_translation" />
+		</Button>
 	</div>
 {:else}
 	<DropZone {name} {onImageChange} />

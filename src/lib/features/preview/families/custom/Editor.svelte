@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
@@ -8,6 +9,7 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
+	import { getImageById } from '$lib/features/image/utils';
 
 	import { commonPreviewEditorFormAttributes } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
@@ -34,8 +36,8 @@
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
 	<Input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<LanguagedImageInput name="preview_image_1" imageId={images.preview_image_1_id} clientUpload />
-	<LanguagedImageInput name="preview_image_2" imageId={images.preview_image_2_id} clientUpload />
+	<LanguagedImageInput name="preview_image_1" bind:image={images.preview_image_1} clientUpload />
+	<LanguagedImageInput name="preview_image_2" bind:image={images.preview_image_2} clientUpload />
 	<Labeled as="label" kind="for-checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"

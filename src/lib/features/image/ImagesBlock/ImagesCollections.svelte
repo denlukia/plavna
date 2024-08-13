@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
+	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -33,9 +35,17 @@
 
 <div class="images-block">
 	<header class="header">
-		<Typography size="heading-2">
-			<Translation key="article_editor.images.label" />
-		</Typography>
+		<div class="leading">
+			<Typography size="heading-2">
+				<Translation key="article_editor.images.label" />
+			</Typography>
+			<div class="creation-form-margin">
+				<ImageCreationForm
+					articleId={commonShown ? null : articleId}
+					superValidated={collection.creation}
+				/>
+			</div>
+		</div>
 		<Tabs size="small">
 			<TabItem active={!commonShown} onclick={() => (commonShown = false)}>
 				<Translation key="article_editor.images.article_specific" />
@@ -49,13 +59,15 @@
 	{#if !hasValidCredentialsSet}
 		<ImageProviderWarning {superValidated} />
 	{:else}
-		<ImageCreationForm
-			articleId={commonShown ? null : articleId}
-			superValidated={collection.creation}
-		/>
-		{#each collection.items as image}
-			<ImageUpdateForm {image} />
-		{/each}
+		<div class="list-wrapper">
+			{#each collection.items as image (image.meta.id)}
+				<GridCell colspan={1}>
+					<div class="image-form-wrapper">
+						<ImageUpdateForm {image} />
+					</div>
+				</GridCell>
+			{/each}
+		</div>
 	{/if}
 </div>
 
@@ -66,9 +78,29 @@
 		border-radius: var(--size-article-editor-images-block-border-radius);
 		width: 100%;
 	}
+
 	.header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
+		padding-bottom: var(--size-m-to-l);
+	}
+	.leading {
+		display: flex;
+		align-items: flex-end;
+		gap: var(--size-m-to-l);
+	}
+	.creation-form-margin {
+		margin-bottom: calc(var(--size-xs) * -1);
+	}
+
+	.list-wrapper {
+		display: flex;
+		gap: var(--size-m);
+		align-items: stretch;
+		flex-wrap: wrap;
+	}
+	.image-form-wrapper {
+		margin-bottom: var(--size-xl);
 	}
 </style>

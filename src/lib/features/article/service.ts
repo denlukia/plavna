@@ -181,7 +181,14 @@ export class ArticleService {
 			)
 			.leftJoin(tags, eq(tags.user_id, actor.id))
 			.leftJoin(translations, or(eq(translations.key, previewTemplates.name_translation_key)))
-			.leftJoin(translForImageInputs, eq(translForImageInputs.key, images.path_translation_key))
+			.leftJoin(
+				translForImageInputs,
+				or(
+					eq(translForImageInputs.key, images.path_translation_key),
+					eq(translForImageInputs.key, commonImagesTable.path_translation_key),
+					eq(translForImageInputs.key, articleImagesTable.path_translation_key)
+				)
+			)
 			.leftJoin(
 				translForForms,
 				or(

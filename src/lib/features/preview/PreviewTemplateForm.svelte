@@ -15,6 +15,7 @@
 	import { getSystemTranslation } from '../i18n/utils';
 	import LanguagedImageInput from '../image/ImageInput/LanguagedImageInput.svelte';
 	import type { ImageSelect } from '../image/parsers';
+	import { getImageById } from '../image/utils';
 	import type {
 		PreviewTemplateCreationForm,
 		PreviewTemplateDeletionForm,
@@ -40,6 +41,8 @@
 	let { form: deletionForm = null, enhance: deletionEnhance = null } = superValidateDeletion
 		? superForm(superValidateDeletion)
 		: {};
+
+	let image = $state(getImageById(imageId, $page.data.images));
 </script>
 
 <FormWrapper>
@@ -78,7 +81,7 @@
 		</Labeled>
 		<Labeled as="label">
 			<Label><Translation key="article_editor.previews.image" /></Label>
-			<LanguagedImageInput name="image" {imageId} />
+			<LanguagedImageInput name="image" bind:image />
 		</Labeled>
 		<Spacer />
 		<Button>

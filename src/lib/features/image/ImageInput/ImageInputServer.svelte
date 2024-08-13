@@ -20,7 +20,7 @@
 			<Labeled as="label" kind="for-checkbox" size="small">
 				<Checkbox name="delete_{name}" checkboxSize="small" lighter />
 				<Typography size="small">
-					<Translation key="article_editor.previews.mark_deletion" />
+					<Translation key="article_editor.images.mark_for_deletion" />
 				</Typography>
 			</Labeled>
 		</div>
