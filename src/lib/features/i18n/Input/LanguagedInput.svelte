@@ -30,13 +30,16 @@
 
 	let value = $state($superform[currentLang]);
 	let animateOnValueChange = $state(false);
+	let skippedOnce = $state(false);
 
 	$effect(() => {
 		currentLang;
-		animateOnValueChange = true;
+		animateOnValueChange = untrack(() => skippedOnce) ? true : false;
+		skippedOnce = true;
 		value = untrack(() => $superform[currentLang]);
 		animateOnValueChange = false;
 	});
+	$inspect(animateOnValueChange);
 
 	$effect(() => {
 		value = $superform[currentLang];

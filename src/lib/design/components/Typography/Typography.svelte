@@ -4,20 +4,20 @@
 	import type { TextSizes, TextTones } from './types';
 
 	type Props = {
-		size?: TextSizes;
 		children: Snippet;
-		block?: boolean;
-		resetPaddingBlock?: boolean;
+		size?: TextSizes;
+		resetPadding?: boolean;
 		tone?: TextTones;
 		bold?: boolean;
+		as?: string;
 	};
 
 	let {
 		size = 'body',
 		tone = 'default',
+		as = 'span',
 		children,
-		block,
-		resetPaddingBlock,
+		resetPadding,
 		bold
 	}: Props = $props();
 
@@ -32,11 +32,11 @@
 
 <svelte:window {onkeypress} />
 <svelte:element
-	this={block ? 'p' : 'span'}
+	this={as}
 	class="text global-text-{size} tone-{tone}"
 	class:global-text-strong={bold}
 	class:outline
-	class:reset-padding-block={resetPaddingBlock}
+	class:reset-padding={resetPadding}
 >
 	{@render children()}
 </svelte:element>
@@ -44,7 +44,7 @@
 <style>
 	.text {
 		margin: 0;
-		display: inline-block;
+		/* display: inline-block; */
 		padding-inline: var(--text-padding-inline);
 	}
 	.outline {
@@ -59,7 +59,7 @@
 		color: var(--color-text-danger);
 	}
 
-	.reset-padding-block {
+	.reset-padding {
 		padding-block: 0;
 	}
 </style>

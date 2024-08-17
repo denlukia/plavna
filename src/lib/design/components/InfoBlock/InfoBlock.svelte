@@ -12,7 +12,7 @@
 
 <div class="info-block">
 	<div class="text">
-		<Typography size="body-short">
+		<Typography size="small-short">
 			{@render children()}
 		</Typography>
 	</div>

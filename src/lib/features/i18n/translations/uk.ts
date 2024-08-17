@@ -5,7 +5,7 @@ import type { EN } from './en';
 export const UK = {
 	layout: {
 		language: 'Мова',
-		my_pages: 'Мої сторінки',
+		my_pages: 'Cторінки',
 		my: 'Мої',
 		no_translation: 'Без перкладу',
 		or: 'або',
@@ -49,7 +49,7 @@ export const UK = {
 	page_actor: {
 		section: {
 			editor_title: 'Секція',
-			create: 'Створити',
+			create: 'Нова секція',
 			update: 'Оновити',
 			edit: 'Редагувати',
 			delete: 'Видалити',
@@ -129,9 +129,8 @@ export const UK = {
 			name: 'Назва',
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
-			preview: 'Переглянути',
 			image_dropzone: 'Перетягніть зображ. або натисніть, щоб вибрати',
-			to_preview_the_preview: 'Переглянути',
+			to_preview_the_preview: 'Подивитись як виглядатиме',
 			families: {
 				plavna_modern: {
 					name: 'Плавний і сучасний',

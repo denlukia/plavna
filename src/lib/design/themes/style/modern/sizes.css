@@ -100,12 +100,18 @@
 	--size-input-buttons-gap: var(--size-xs);
 
 	/* --- Icon --- */
+	--size-icon-heading-2-size-unitless: 28;
+	--size-icon-heading-2-size: calc(var(--size-icon-heading-2-size-unitless) * 1px);
+	--size-icon-heading-2-stroke-width: 3.25px;
+
 	--size-icon-body-big-size-unitless: 24;
 	--size-icon-body-big-size: calc(var(--size-icon-body-big-size-unitless) * 1px);
 	--size-icon-body-big-stroke-width: 1.5px;
+
 	--size-icon-body-size-unitless: 20;
 	--size-icon-body-size: calc(var(--size-icon-body-size-unitless) * 1px);
 	--size-icon-body-stroke-width: 1.6px;
+
 	--size-icon-small-size-unitless: 16;
 	--size-icon-small-size: calc(var(--size-icon-small-size-unitless) * 1px);
 	--size-icon-small-stroke-width: 1.25px;

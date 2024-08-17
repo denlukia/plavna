@@ -12,6 +12,7 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
+import type { TransactionOrDB } from '../common/types';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -36,7 +37,8 @@ import {
 	type SectionUpdate
 } from './parsers';
 import { sections, sectionsToTags } from './schema';
-import { findTagIdsInLinks } from './utils';
+import type { TagIdWithLang } from './types';
+import { findTagIdsInLinks, findTagsInSectionTranslations, findTagsInText } from './utils';
 
 type GetOneConfig = { username: string } & (
 	| { pageId: PageSelect['id']; offset: number }
@@ -50,6 +52,24 @@ export class SectionService {
 	constructor(actorService: ActorService, translationService: TranslationService) {
 		this.actorService = actorService;
 		this.translationService = translationService;
+	}
+
+	private async validateTagsOwnership(tagsForCheck: TagIdWithLang[], trx: TransactionOrDB = db) {
+		const actor = await this.actorService.get();
+		if (!actor) return;
+
+		const tagIds = tagsForCheck.map((tag) => tag.tag_id);
+
+		const existingForUser = await trx
+			.select({ tag_id: tags.id })
+			.from(tags)
+			.where(and(inArray(tags.id, tagIds), eq(tags.user_id, actor.id)))
+			.all();
+		console.log(existingForUser, tagsForCheck);
+
+		if (existingForUser.length !== tagsForCheck.length) {
+			error(403, ERRORS.SOME_TAGS_DONT_EXIST);
+		}
 	}
 
 	async getOne(config: GetOneConfig) {
@@ -376,16 +396,11 @@ export class SectionService {
 	}
 	async create(pagename: string, section: SectionInsert) {
 		const actor = await this.actorService.getOrThrow();
-		const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
+		const uniqueTags = findTagsInSectionTranslations(section);
 
-		supportedLangs.forEach((lang) => {
-			const translationText = section[lang];
-			if (isNonNullable(translationText)) {
-				const tokens = marked.lexer(translationText);
-				const thisLangTags = findTagIdsInLinks(tokens);
-				foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
-			}
-		});
+		if (uniqueTags.length) {
+			await this.validateTagsOwnership(uniqueTags);
+		}
 
 		await db.transaction(async (trx) => {
 			const translationForRecord = { ...section, user_id: actor.id };
@@ -409,21 +424,10 @@ export class SectionService {
 				.returning({ section_id: sections.id })
 				.get();
 
-			if (foundTags.length) {
-				// Tag ownership check
-				const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
-				const existingForUser = await trx
-					.select({ tag_id: tags.id })
-					.from(tags)
-					.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, actor.id)))
-					.all();
-				if (existingForUser.length !== foundUnique.length) {
-					error(403, ERRORS.SOME_TAGS_DONT_EXIST);
-				}
-
+			if (uniqueTags.length) {
 				await trx
 					.insert(sectionsToTags)
-					.values(foundTags.map((tag) => ({ ...tag, section_id })))
+					.values(uniqueTags.map((tag) => ({ ...tag, section_id })))
 					.run();
 			}
 		});
@@ -431,28 +435,10 @@ export class SectionService {
 	async update(sectionUpdate: SectionUpdate) {
 		const actor = await this.actorService.getOrThrow();
 		const { section_id, ...langsTranslations } = sectionUpdate;
-		const foundTags = [] as { tag_id: TagUpdate['id']; lang: SupportedLang }[];
+		const uniqueTags = findTagsInSectionTranslations(langsTranslations);
 
-		supportedLangs.forEach((lang) => {
-			const translationText = langsTranslations[lang];
-			if (isNonNullable(translationText)) {
-				const tokens = marked.lexer(translationText);
-				const thisLangTags = findTagIdsInLinks(tokens);
-				foundTags.push(...thisLangTags.map((tag_id) => ({ tag_id, lang })));
-			}
-		});
-
-		// Tag ownership check
-		if (foundTags.length) {
-			const foundUnique = [...new Set(foundTags.map((tag) => tag.tag_id))];
-			const existingForUser = await db
-				.select({ tag_id: tags.id })
-				.from(tags)
-				.where(and(inArray(tags.id, foundUnique), eq(tags.user_id, actor.id)))
-				.all();
-			if (existingForUser.length !== foundUnique.length) {
-				error(403, ERRORS.SOME_TAGS_DONT_EXIST);
-			}
+		if (uniqueTags.length) {
+			await this.validateTagsOwnership(uniqueTags);
 		}
 
 		// Getting translation id
@@ -470,10 +456,10 @@ export class SectionService {
 			await this.translationService.update({ ...langsTranslations, key: translation.key }, trx);
 
 			await trx.delete(sectionsToTags).where(eq(sectionsToTags.section_id, section_id)).run();
-			if (foundTags.length) {
+			if (uniqueTags.length) {
 				await trx
 					.insert(sectionsToTags)
-					.values(foundTags.map((tag) => ({ ...tag, section_id })))
+					.values(uniqueTags.map((tag) => ({ ...tag, section_id })))
 					.run();
 			}
 		});

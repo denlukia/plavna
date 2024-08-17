@@ -1,5 +1,7 @@
 <script lang="ts">
-	import Button from '$lib/design/components/Button/Button.svelte';
+	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import Plus from '$lib/design/icons/Plus.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
@@ -26,24 +28,48 @@
 {/each}
 
 {#if creationForm}
-	<div class="section-creator">
-		{#if creatorShown}
+	{#if creatorShown}
+		<div class="section-editor-wrapper">
 			<SectionEditor
 				mainForm={creationForm}
 				onCancel={closeCreator}
 				onSuccessfullUpdate={closeCreator}
 			/>
-		{:else}
-			<Button onclick={() => (creatorShown = true)}>
+		</div>
+	{:else}
+		<button
+			class="global-reset-button section-creation-button"
+			onclick={() => (creatorShown = true)}
+		>
+			<IconWrapper size="heading-2">
+				<Plus />
+			</IconWrapper>
+			<Typography size="heading-2">
 				<Translation key="page_actor.section.create" />
-			</Button>
-		{/if}
-	</div>
+			</Typography>
+		</button>
+	{/if}
 {/if}
 
 <style>
-	.section-creator {
-		width: var(--size-section-width);
+	.section-editor-wrapper {
 		max-width: var(--size-section-max-width);
+	}
+	.section-creation-button {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		padding: var(--size-l);
+		gap: var(--size-m);
+		padding-bottom: var(--size-4xl);
+		/* color: var(--warm-300-transparent-500); */
+		background: linear-gradient(to bottom, var(--warm-300-transparent-100), transparent);
+		transition: all 400ms;
+	}
+	.section-creation-button:hover {
+		/* color: var(--color-text); */
+		background: linear-gradient(to bottom, var(--warm-300-transparent-200), transparent);
+		transition: all 100ms;
 	}
 </style>

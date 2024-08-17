@@ -41,8 +41,8 @@
 		{#key lang}
 			<div
 				class="animation-wrapper"
-				in:fly={getFlyConf(expoOut, 'bottom')}
-				out:fly={getFlyConf(expoOut, 'top')}
+				in:fly|local={getFlyConf(expoOut, 'bottom')}
+				out:fly|local={getFlyConf(expoOut, 'top')}
 			>
 				<ImageInput bind:image bind:translation {name} {clientUpload} {processing} {lang} />
 			</div>
