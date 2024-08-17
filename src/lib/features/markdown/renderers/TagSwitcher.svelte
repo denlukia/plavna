@@ -56,9 +56,26 @@
 	}
 </script>
 
-<Labeled as="label" href={showAsLink ? reconfigRequestLink : undefined}>
-	<Typography size={depthToTypographySize(headingContext?.depth)} resetPaddingBlock>
+<svelte:element
+	this={showAsLink ? 'a' : 'label'}
+	class="tag-switcher"
+	class:global-reset-link={showAsLink}
+	href={showAsLink ? reconfigRequestLink : undefined}
+>
+	<Typography size={depthToTypographySize(headingContext?.depth)} resetPadding>
 		{@render children()}
 	</Typography>
-	<Switch bind:checked onchange={onSwitchChange} />
-</Labeled>
+	<span class="switch-positioner">
+		<Switch bind:checked onchange={onSwitchChange} />
+	</span>
+</svelte:element>
+
+<style>
+	.tag-switcher {
+		/* display: inline-flex; */
+	}
+	.switch-positioner {
+		display: inline-block;
+		transform: translateY(var(--size-s));
+	}
+</style>

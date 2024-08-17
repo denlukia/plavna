@@ -135,7 +135,7 @@
 					bind:currentLang={descriptionInput.currentLang as SupportedLang}
 					bind:selectionStart={descriptionInput.selectionStart}
 					bind:selectionEnd={descriptionInput.selectionEnd}
-					element="textarea"
+					textarea
 					rows={3}
 				/>
 			</Labeled>

@@ -45,7 +45,7 @@
 	.actions-wrapper {
 		position: absolute;
 		left: 0;
-		top: var(--size-s);
-		transform: translateY(-100%);
+		top: calc(var(--size-xl) * -1);
+		/* transform: translateY(-100%); */
 	}
 </style>

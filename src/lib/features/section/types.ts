@@ -1,4 +1,6 @@
-import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
+import type { SupportedLang } from '@denlukia/plavna-common/types';
+
+import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
 import type { SectionSelect } from './parsers';
 import type { SectionService } from './service';
 
@@ -21,3 +23,4 @@ export type SectionReconfigRequest = {
 	tagId: TagSelect['id'];
 	newChecked: boolean;
 };
+export type TagIdWithLang = { tag_id: TagUpdate['id']; lang: SupportedLang };

@@ -78,8 +78,8 @@
 					{#if attributes.textarea}
 						{#key key}
 							<textarea
-								in:fly={getFlyConf(expoOut, 'bottom')}
-								out:fly={getFlyConf(expoOut, 'top')}
+								in:fly|local={getFlyConf(expoOut, 'bottom')}
+								out:fly|local={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
 								bind:value
 								{...attributes}
@@ -88,8 +88,8 @@
 					{:else}
 						{#key key}
 							<input
-								in:fly={getFlyConf(expoOut, 'bottom')}
-								out:fly={getFlyConf(expoOut, 'top')}
+								in:fly|local={getFlyConf(expoOut, 'bottom')}
+								out:fly|local={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
 								bind:value
 								{...attributes}

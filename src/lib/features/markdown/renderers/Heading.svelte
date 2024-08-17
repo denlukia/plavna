@@ -19,6 +19,6 @@
 	setContext('heading', headingContext);
 </script>
 
-<Typography {size}>
+<Typography {size} as="h{depth}">
 	{@render children()}
 </Typography>

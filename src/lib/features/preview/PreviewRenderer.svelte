@@ -20,9 +20,9 @@
 	let recordsTranslations = $derived($page.data.recordsTranslations);
 	let images = $derived($page.data.images || {});
 
-	let staticComponent = $derived(getComponentFromDict('static'));
-	let dynamicComponent: Component<any> | null = $state(null);
-	let dynamicComponentShown = $state(false);
+	let StaticPreview = $derived(getComponentFromDict('static'));
+	let DynamicPreview: Component<any> | null = $state(null);
+	let dynamicPreviewShown = $state(false);
 	let loadDynamicButtonShown = $state(false);
 
 	function getComponentFromDict(type: PreviewComponentType) {
@@ -71,18 +71,18 @@
 	function onMouseEnterLeave(type: 'enter' | 'leave') {
 		const showCondition = article.meta.preview_interactions_show_on;
 		if (showCondition === 'hover') {
-			dynamicComponentShown = type === 'enter' ? true : false;
+			dynamicPreviewShown = type === 'enter' ? true : false;
 		} else if (showCondition === 'click') {
 			loadDynamicButtonShown = type === 'enter' ? true : false;
 		}
 	}
 
 	$effect(() => {
-		if (dynamicComponentShown && familyId) {
+		if (dynamicPreviewShown && familyId) {
 			getPreviewComponent(familyId, 'dynamic')
 				.then((component) => {
 					if (component) {
-						dynamicComponent = component;
+						DynamicPreview = component;
 					}
 				})
 				.catch((error) => {
@@ -100,14 +100,14 @@
 	onmouseenter={() => onMouseEnterLeave('enter')}
 	onmouseleave={() => onMouseEnterLeave('leave')}
 >
-	{#if dynamicComponentShown}
-		{#if dynamicComponent}
-			<svelte:component this={dynamicComponent} data={getPreviewData()} />
+	{#if dynamicPreviewShown}
+		{#if DynamicPreview}
+			<DynamicPreview data={getPreviewData()} />
 		{:else}
 			Dynamic component not found
 		{/if}
-	{:else if staticComponent}
-		<svelte:component this={staticComponent} data={getPreviewData()} />
+	{:else if StaticPreview && !(StaticPreview instanceof Promise)}
+		<StaticPreview data={getPreviewData()} />
 	{:else}
 		static component not found
 	{/if}

@@ -1,7 +1,7 @@
 export const EN = {
 	layout: {
 		language: 'Language',
-		my_pages: 'My pages',
+		my_pages: 'Pages',
 		my: 'My',
 		no_translation: 'No translation',
 		or: 'or',
@@ -45,7 +45,7 @@ export const EN = {
 	page_actor: {
 		section: {
 			editor_title: 'Section',
-			create: 'Create',
+			create: 'New Section',
 			update: 'Update',
 			edit: 'Edit',
 			delete: 'Delete',
@@ -114,7 +114,7 @@ export const EN = {
 		},
 		previews: {
 			editor_title: 'Preview Settings',
-			section_label: 'Previews',
+			section_label: 'Preview',
 			new: 'New',
 			template_new_form_title: 'New Preview',
 			template_editing_form_title: 'Preview Editing',
@@ -127,9 +127,8 @@ export const EN = {
 			name: 'Name',
 			image: 'Image',
 			create_localized_screenshots: 'Create Localized Screenshots',
-			preview: 'Preview',
 			image_dropzone: 'Drop image here or click to choose from folder',
-			to_preview_the_preview: 'Preview',
+			to_preview_the_preview: "See how it'll look",
 			families: {
 				plavna_modern: {
 					name: 'Plavna Modern',
