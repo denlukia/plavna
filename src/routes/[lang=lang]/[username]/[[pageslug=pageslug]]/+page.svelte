@@ -58,18 +58,24 @@
 	.section-creation-button {
 		display: flex;
 		width: 100%;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		padding: var(--size-l);
 		gap: var(--size-m);
+		border-radius: var(--size-l);
 		padding-bottom: var(--size-4xl);
-		/* color: var(--warm-300-transparent-500); */
-		background: linear-gradient(to bottom, var(--warm-300-transparent-100), transparent);
-		transition: all 400ms;
+		--rotation: 179deg;
+		background: radial-gradient(
+			ellipse at top left,
+			var(--warm-300-transparent-200) 0%,
+			transparent 60%
+		);
 	}
 	.section-creation-button:hover {
-		/* color: var(--color-text); */
-		background: linear-gradient(to bottom, var(--warm-300-transparent-200), transparent);
-		transition: all 100ms;
+		background: radial-gradient(
+			ellipse at top left,
+			var(--warm-300-transparent-400) 0%,
+			transparent 60%
+		);
 	}
 </style>
