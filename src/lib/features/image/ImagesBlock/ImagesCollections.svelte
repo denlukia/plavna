@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
-	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
+	import Column from '$lib/design/components/Grid/Column.svelte';
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -61,11 +60,11 @@
 	{:else}
 		<div class="list-wrapper">
 			{#each collection.items as image (image.meta.id)}
-				<GridCell colspan={1}>
+				<Column cols={1}>
 					<div class="image-form-wrapper">
 						<ImageUpdateForm {image} />
 					</div>
-				</GridCell>
+				</Column>
 			{/each}
 		</div>
 	{/if}

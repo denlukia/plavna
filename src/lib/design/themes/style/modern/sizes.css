@@ -18,26 +18,28 @@
 	--size-full: 999px;
 
 	/* ------ Semantic ------ */
+
+	/* --- Main Layout */
+	--size-main-layout-margin-top: var(--size-3xl);
+
 	/* --- Grid --- */
-	--size-cell-width-unitless: 224;
-	--size-cell-width: calc(var(--size-cell-width-unitless) * 1px);
-
-	--size-cell-height-unitless: 112;
-	--size-cell-height: calc(var(--size-cell-height-unitless) * 1px);
-
-	--size-cell-gap-unitless: 8;
-	--size-cell-gap: calc(var(--size-cell-gap-unitless) * 1px);
-
-	--count-cols-total: 5;
+	--size-max-cell-width: 224px;
+	--size-max-cell-height: 112px;
+	--size-cell-aspect: 112 / 224;
+	--size-cols-total: 5;
+	--size-rows-total: 3;
+	--size-cell-gap: 8px;
 	--size-cell-overflow: var(--size-l);
 
-	/* --- Main Layout --- */
-	--size-main-layout-margin-top: var(--size-3xl);
-	--size-main-layout-padding-inline: var(--size-l);
-	--size-main-layout-max-width: calc(
-		var(--size-cell-width) * 5 + var(--size-cell-gap) * 4 + var(--size-main-layout-padding-inline) *
-			2
+	--size-main-grid-padding-inline: var(--size-l);
+	--size-main-grid-max-width: calc(var(--size-max-cell-width) * 5 + var(--size-cell-gap) * 4);
+	--size-main-grid-width: min(var(--size-main-grid-max-width), 100vw);
+
+	--size-cell-width: calc(
+		calc(var(--size-main-grid-width) - calc(var(--size-cols-total) - 1) * var(--size-cell-gap)) /
+			var(--size-cols-total)
 	);
+	--size-cell-height: calc(var(--size-cell-width) * var(--size-cell-aspect));
 
 	/* --- Layers --- */
 	--size-layer-flashlight-pointer: 90px;

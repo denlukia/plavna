@@ -2,8 +2,8 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Button from '$lib/design/components/Button/Button.svelte';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
-	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
+	import Column from '$lib/design/components/Grid/Column.svelte';
+	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -47,8 +47,8 @@
 </form>
 
 <div class="page-editor">
-	<GridContainer>
-		<GridCell colspan={3}>
+	<ColumnsContainer>
+		<Column cols={3}>
 			<Labeled as="label">
 				<Label><Translation key="article_editor.title" /></Label>
 				<AutosavedInput
@@ -65,9 +65,9 @@
 					superValidated={translationForms[article.content_translation_key]}
 				/>
 			</Labeled>
-		</GridCell>
+		</Column>
 
-		<GridCell colspan={2} customClass="article-editor-shifted-cell article-tags-list-cell">
+		<Column cols={2} customClass="article-editor-shifted-cell article-tags-list-cell">
 			<Labeled as="label">
 				<Label><Translation key="article_editor.slug" /></Label>
 				<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
@@ -93,8 +93,8 @@
 					collections={{ common: data.commonImages, article: data.articleImages }}
 				/>
 			</section>
-		</GridCell>
-	</GridContainer>
+		</Column>
+	</ColumnsContainer>
 </div>
 
 <style>

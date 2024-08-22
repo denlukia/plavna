@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 
 	import type { SectionProp } from '../section/types';
@@ -12,7 +11,7 @@
 	let { section }: Props = $props();
 </script>
 
-<GridContainer direction="column" maxRows={MAX_ROWS_IN_SECTION}>
+<GridContainer direction="column">
 	{#each section.articles as article (article.meta.id)}
 		<ArticlePreviewCell {article} />
 	{/each}
