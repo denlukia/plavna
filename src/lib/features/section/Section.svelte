@@ -43,7 +43,6 @@
 
 	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
 
-	// Maybe derived ?
 	const sectionContext: SectionContext = $state({
 		id: section.meta.id,
 		activeTags: section.activeTags,
@@ -74,21 +73,18 @@
 					const result: SectionFetchReturn = await response.json();
 
 					if (result) {
-						const enriched = await enrichPreviewFamilies(result.previewFamilies);
+						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'static');
 
 						recordsTranslations = { ...recordsTranslations, ...result.recordsTranslations };
 						previewFamilies = { ...previewFamilies, ...enriched };
 						section = result.section;
+						sectionContext.activeTags = Array.from(section.activeTags);
 					}
 				}
 			} catch (err) {
 				console.error(err);
 			}
 		}
-	});
-
-	$effect(() => {
-		sectionContext.activeTags = Array.from(section.activeTags);
 	});
 
 	setContext('section', sectionContext);

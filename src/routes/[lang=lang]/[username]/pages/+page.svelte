@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import CardsList from '$lib/features/common/components/CardsList.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';
 	import PageEditor from '$lib/features/page/PageItemEditor.svelte';
@@ -14,9 +15,9 @@
 	}
 </script>
 
-<Typography size="heading-1"><Translation key="layout.my_pages" /></Typography>
+<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
-<div class="pages">
+<CardsList>
 	{#each data.pageItems as pageItem (pageItem.id)}
 		<PageItem {pageItem} />
 	{/each}
@@ -30,16 +31,9 @@
 			{/snippet}
 		</Popup>
 	</div>
-</div>
+</CardsList>
 
 <style>
-	.pages {
-		margin-top: var(--size-3xl);
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--size-cell-gap);
-	}
 	.new-page-wrapper {
 		margin-left: var(--size-m);
 		display: flex;

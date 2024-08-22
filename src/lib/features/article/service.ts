@@ -14,7 +14,7 @@ import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { TranslationFormsDict } from '../i18n/types';
+import type { RecordsTranslationsDict, TranslationFormsDict } from '../i18n/types';
 import {
 	imageCreationFormSchema,
 	imageProviderUpdateFormSchema,
@@ -70,7 +70,40 @@ export class ArticleService {
 		this.translationService = translationService;
 		this.imageService = imageService;
 	}
+	async getMyAsForms(username: User['username']) {
+		const actor = await this.actorService.checkOrThrow(null, username);
 
+		const query = await db
+			.select({
+				id: articles.id,
+				slug: articles.slug,
+				publish_time: articles.publish_time,
+				title_translation: {
+					key: translations.key,
+					value: translations[this.translationService.currentLang]
+				}
+			})
+			.from(articles)
+			.leftJoin(translations, eq(articles.title_translation_key, translations.key))
+			.where(eq(articles.user_id, actor.id));
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const forms = query.map(({ title_translation, ...article }) => ({
+			title_translation_key: title_translation?.key,
+			...article
+		}));
+		const recordsTranslations = query.reduce((acc, { title_translation }) => {
+			if (title_translation && title_translation.value) {
+				acc[title_translation.key] = title_translation.value;
+			}
+			return acc;
+		}, {} as RecordsTranslationsDict);
+
+		return {
+			articles: forms,
+			recordsTranslations
+		};
+	}
 	async getIdIfExists(slug: ArticleSelect['slug']) {
 		const article = await db
 			.select({ id: articles.id })

@@ -3,6 +3,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
+	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 
 	import Error from '../common/components/Error.svelte';
 	import Translation from '../i18n/Translation.svelte';

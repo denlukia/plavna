@@ -1,9 +1,6 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { error } from '@sveltejs/kit';
 import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
-import { marked } from 'marked';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { POSTS_PER_SECTION } from '$lib/collections/constants';
@@ -25,7 +22,7 @@ import { pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
-import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
+import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
 import type { ActorService } from '../user/service';
 import {
@@ -38,7 +35,7 @@ import {
 } from './parsers';
 import { sections, sectionsToTags } from './schema';
 import type { TagIdWithLang } from './types';
-import { findTagIdsInLinks, findTagsInSectionTranslations, findTagsInText } from './utils';
+import { findTagsInSectionTranslations } from './utils';
 
 type GetOneConfig = { username: string } & (
 	| { pageId: PageSelect['id']; offset: number }
@@ -65,7 +62,6 @@ export class SectionService {
 			.from(tags)
 			.where(and(inArray(tags.id, tagIds), eq(tags.user_id, actor.id)))
 			.all();
-		console.log(existingForUser, tagsForCheck);
 
 		if (existingForUser.length !== tagsForCheck.length) {
 			error(403, ERRORS.SOME_TAGS_DONT_EXIST);
@@ -249,6 +245,7 @@ export class SectionService {
 			);
 
 		// 8. Other Translations query
+		// TODO: This is the most row-reads heavy query in analytics
 		const otherTranslationsQuery = db
 			.select({
 				key: translations.key,

@@ -38,26 +38,26 @@
 
 <div class="blocks">
 	<div class="group">
-		<Typography block size="heading-1">denis lukianenko</Typography>
-		<Typography block size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
-		<Typography block size="headline">Тестовий <br /> текст</Typography>
-		<Typography block size="headline-short">Тестовий <br /> текст</Typography>
-		<Typography block size="body"
+		<Typography size="heading-1">denis lukianenko</Typography>
+		<Typography size="heading-2">денис лукʼяненко<br />це фронтенд розробник</Typography>
+		<Typography size="headline">Тестовий <br /> текст</Typography>
+		<Typography size="headline-short">Тестовий <br /> текст</Typography>
+		<Typography size="body"
 			>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quas nesciunt ratione iste
 			<br />
 			eveniet. Dolorem officia suscipit veniam voluptas minima amet consequuntur neque nihil maiores
 			<br />
 			hic sed, laborum laboriosam quod.
 		</Typography>
-		<Typography block size="body-short">
+		<Typography size="body-short">
 			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque quas nesciunt ratione iste
 			<br />
 			eveniet. Dolorem officia suscipit veniam voluptas minima amet consequuntur neque nihil maiores
 			<br />
 			hic sed, laborum laboriosam quod.
 		</Typography>
-		<Typography block size="small">Тестовий <br /> текст</Typography>
-		<Typography block size="small-short">Тестовий <br /> текст</Typography>
+		<Typography size="small">Тестовий <br /> текст</Typography>
+		<Typography size="small-short">Тестовий <br /> текст</Typography>
 	</div>
 	<div class="group">
 		<Button>Testy</Button>

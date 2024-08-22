@@ -1,7 +1,7 @@
 export const EN = {
 	layout: {
 		language: 'Language',
-		my_pages: 'Pages',
+		my_items: { pages: 'Pages', articles: 'Articles' },
 		my: 'My',
 		no_translation: 'No translation',
 		or: 'or',
@@ -25,6 +25,7 @@ export const EN = {
 		to_sign_out: 'Sign out'
 	},
 	pages_list: {
+		title: 'My pages',
 		create: 'Create',
 		update: 'Update',
 		slug: 'Slug',
@@ -41,6 +42,13 @@ export const EN = {
 			slug_in_use: 'You already have a page with this slug',
 			only_one_default_slug: 'Only one default page can exist'
 		}
+	},
+	articles_list: {
+		title: 'My Articles',
+		edit: 'Edit',
+		delete: 'Delete',
+		hide: 'Hide',
+		publish: 'Publish'
 	},
 	page_actor: {
 		section: {

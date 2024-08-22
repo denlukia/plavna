@@ -39,7 +39,6 @@
 		value = untrack(() => $superform[currentLang]);
 		animateOnValueChange = false;
 	});
-	$inspect(animateOnValueChange);
 
 	$effect(() => {
 		value = $superform[currentLang];

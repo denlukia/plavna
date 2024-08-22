@@ -4,6 +4,7 @@ import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
+import { edit_article } from '$lib/features/article/actions';
 import { articleSlugUpdateSchema } from '$lib/features/article/parsers';
 import type {
 	ArticlePreviewImageFileFieldsAll,
@@ -83,17 +84,6 @@ async function update_slug(event: RequestEvent) {
 			articleslug: result.slug
 		})
 	);
-}
-
-async function edit_article(event: RequestEvent, type: 'publish' | 'hide' | 'delete') {
-	const params = event.params;
-	const { articleslug } = params;
-	const { articleService } = event.locals;
-	await articleService[type](articleslug);
-
-	if (type === 'delete') {
-		redirect(302, generatePath('/[lang]/[username]/[pageslug]', params));
-	}
 }
 
 async function update_preview(event: RequestEvent) {

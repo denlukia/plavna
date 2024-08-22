@@ -9,12 +9,12 @@
 	import type { TranslationSelect, TranslationUpdate } from './parsers';
 
 	type FormTranslation = {
-		superValidated: SuperValidated<Omit<TranslationUpdate, 'key'>>;
+		superValidated: SuperValidated<Omit<TranslationUpdate, 'key'>> | undefined;
 		recordKey?: null;
 		key?: null;
 	};
 	type RecordTranslation = {
-		recordKey: TranslationSelect['key'];
+		recordKey: TranslationSelect['key'] | undefined;
 		key?: null;
 		superValidated?: null;
 	};

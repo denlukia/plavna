@@ -1,5 +1,5 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { marked, type TokensList } from 'marked';
+import { marked, type Token, type TokensList } from 'marked';
 
 import type { TagSelect } from '../tag/parsers';
 import type { SectionInsert } from './parsers';
@@ -7,14 +7,15 @@ import type { TagIdWithLang } from './types';
 
 export function findTagIdsInLinks(tokens: TokensList) {
 	const tags: TagSelect['id'][] = [];
-	function parseTokensArray(tokens: TokensList) {
+	function parseTokensArray(tokens: Token[]) {
 		tokens.forEach((token) => {
 			if (token.type === 'link' && token.href.startsWith('tag:')) {
-				tags.push(Number(token.href.split('tag:')[1]));
+				const tagId = Number(token.href.split('tag:')[1]);
+
+				tags.push(tagId);
 			}
-			// @ts-ignore
-			if (token.tokens) {
-				// @ts-ignore
+
+			if ('tokens' in token && token.tokens) {
 				parseTokensArray(token.tokens);
 			}
 		});
@@ -23,23 +24,19 @@ export function findTagIdsInLinks(tokens: TokensList) {
 	return tags;
 }
 
-export function findTagsInText(text: string | undefined | null) {
-	if (!text) return [];
-	return findTagIdsInLinks(marked.lexer(text));
-}
-
 export function findTagsInSectionTranslations(translations: SectionInsert): TagIdWithLang[] {
-	const tags = [] as TagIdWithLang[];
+	const tagIds = [] as TagIdWithLang[];
+
 	supportedLangs.forEach((lang) => {
 		const translationText = translations[lang];
+		if (!translationText) return;
 
-		tags.concat(
-			findTagsInText(translationText).map((t) => ({
-				tag_id: t,
-				lang
-			}))
-		);
+		const tokens = marked.lexer(translationText);
+
+		const foundTagIds = findTagIdsInLinks(tokens);
+
+		tagIds.push(...foundTagIds.map((tid) => ({ tag_id: tid, lang })));
 	});
-	console.log(tags);
-	return tags;
+
+	return tagIds;
 }
