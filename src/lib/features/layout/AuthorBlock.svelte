@@ -14,9 +14,14 @@
 
 	const pages = $derived([
 		{
+			routeId: '/[lang=lang]/[username]/articles',
+			href: `/${$page.params.lang}/${actor.username}/articles`,
+			translation: 'layout.my_items.articles'
+		} as const,
+		{
 			routeId: '/[lang=lang]/[username]/pages',
 			href: `/${$page.params.lang}/${actor.username}/pages`,
-			translation: 'layout.my_pages'
+			translation: 'layout.my_items.pages'
 		} as const
 	]);
 
@@ -27,11 +32,7 @@
 <Popup kind="list">
 	{#snippet label()}
 		<span class="label-wrapper">
-			{#if currentPage}
-				<Translation key={currentPage.translation} />
-			{:else}
-				<Translation key="layout.my" />
-			{/if}
+			<Translation key="layout.my" />
 		</span>
 	{/snippet}
 	{#snippet content()}

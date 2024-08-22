@@ -1,25 +1,19 @@
 import { error } from '@sveltejs/kit';
-import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
-import { alias } from 'drizzle-orm/sqlite-core';
+import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { POSTS_PER_SECTION, SECTIONS_PER_LOAD } from '$lib/collections/constants';
+import { SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
-import type { ArticleSelect } from '../article/parsers';
-import { articles } from '../article/schema';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import type { ImagesDict } from '../image/types';
 import type { PreviewFamiliesDict } from '../preview/families/types';
-import { previewTemplates } from '../preview/schema';
-import { sectionDeleteSchema, sectionInsertSchema, sectionUpdateSchema } from '../section/parsers';
-import { sections, sectionsToTags } from '../section/schema';
+import { sectionInsertSchema } from '../section/parsers';
 import type { SectionService } from '../section/service';
-import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
-import { tags, tagsToArticles } from '../tag/schema';
+import { tags } from '../tag/schema';
 import { users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import {
@@ -109,7 +103,7 @@ export class PageService {
 			.from(pages)
 			.where(and(eq(pages.slug, pageslug), eq(pages.user_id, userIdSq)))
 			.get();
-		let tagsAndTheirTranslationsPromise = db
+		const tagsAndTheirTranslationsPromise = db
 			.select({
 				tag: { id: tags.id, name_translation_key: translations.key },
 				translation: { key: translations.key, [lang]: translations[lang] }
@@ -146,6 +140,7 @@ export class PageService {
 
 		const sectionsNonEmpty = sectionsResponses.filter(isNonNullable);
 
+		// TODO: Maybe replace such check with check by id
 		const canAddForms = actor?.username === username;
 
 		return {

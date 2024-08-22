@@ -5,7 +5,7 @@ import type { EN } from './en';
 export const UK = {
 	layout: {
 		language: 'Мова',
-		my_pages: 'Cторінки',
+		my_items: { pages: 'Cторінки', articles: 'Статті' },
 		my: 'Мої',
 		no_translation: 'Без перкладу',
 		or: 'або',
@@ -29,6 +29,7 @@ export const UK = {
 		to_sign_out: 'Вийти'
 	},
 	pages_list: {
+		title: 'Мої сторінки',
 		create: 'Створити',
 		update: 'Оновити',
 		slug: 'Адреса',
@@ -45,6 +46,13 @@ export const UK = {
 			slug_in_use: 'Така адреса сторінки у вас вже є',
 			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
 		}
+	},
+	articles_list: {
+		title: 'Мої статті',
+		edit: 'Редагувати',
+		delete: 'Видалити',
+		hide: 'Приховати',
+		publish: 'Опублікувати'
 	},
 	page_actor: {
 		section: {

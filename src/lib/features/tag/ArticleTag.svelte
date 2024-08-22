@@ -8,7 +8,6 @@
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 
@@ -35,29 +34,20 @@
 	let { form: deletionForm, enhance: deletionEnhance } = superForm(deletionSuperValidated);
 
 	let translationSuperValidated = $state($page.data.translationForms?.[translationKey]);
-
-	// So we can push submit by pressing anywhere in the form
-	// and thus switch tags as usual even without JS
-	let submitButtonId = $derived(`switch-tag-${$form.id}-button`);
 </script>
 
 <div class="tag">
 	<form use:enhance method="POST" action="?/switch_tag">
-		<label class="checked-form" for={submitButtonId}>
+		<button class="global-reset-button checked-form">
 			<input name="id" type="hidden" bind:value={$form.id} />
-			<Labeled as="label" kind="for-checkbox">
+			<Labeled kind="for-checkbox">
 				<div class="events-none">
 					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 				</div>
-				{#if translationSuperValidated}
-					<Typography size="body-short">
-						<Translation superValidated={translationSuperValidated} />
-					</Typography>
-				{/if}
+				<Typography size="body-short">
+					<Translation superValidated={translationSuperValidated} />
+				</Typography>
 			</Labeled>
-		</label>
-		<button class="global-visually-hidden" id={submitButtonId}>
-			{$form.checked ? 'Uncheck' : 'Check'}
 		</button>
 	</form>
 

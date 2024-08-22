@@ -4,7 +4,7 @@ import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
-	if (locals.user) {
+	if (locals.actor) {
 		redirect(302, `./`);
 	}
 

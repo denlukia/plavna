@@ -7,7 +7,7 @@
 
 	type Props = {
 		children: Snippet;
-		size?: 'body' | 'small' | 'body-big';
+		size?: 'body' | 'small' | 'body-big' | 'heading-2';
 	} & AnimationTypes;
 
 	let { children, size = 'body', currentFrame = 0, frames = 1, frameSize = 20 }: Props = $props();
