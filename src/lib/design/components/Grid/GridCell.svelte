@@ -3,13 +3,13 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	type Props = HTMLAttributes<HTMLSpanElement> & {
-		rowspan?: number;
-		colspan?: number;
+		rows: number;
+		cols: number;
 		children?: Snippet;
 		customClass?: string;
 	};
 
-	let { colspan = 1, rowspan = 0, children, customClass = '', ...attributes }: Props = $props();
+	let { cols = 1, rows = 1, children, customClass = '' }: Props = $props();
 </script>
 
 {#snippet content()}
@@ -18,64 +18,28 @@
 	{/if}
 {/snippet}
 
-<span
-	class="cell global-reset-link {customClass}"
-	style="--rows-taken:{rowspan}; --cols-taken:{colspan}"
->
-	<!-- Either we're drawing a grid (e.g of articles) -->
-	{#if rowspan}
-		<span class="height-sizer">
-			<span class="content">
-				{@render content()}
-			</span>
-		</span>
-	{:else}
-		<!-- Or we're drawing a columned flex container with possible subgrids -->
-		<span class="subgrid-wrapper" style="--current-grid-cols-total:{colspan}" {...attributes}>
-			{@render content()}
-		</span>
-	{/if}
+<span class="cell global-reset-link {customClass}" style="--rows:{rows}; --cols:{cols}">
+	<span class="content">
+		{@render content()}
+	</span>
 </span>
 
 <style>
 	.cell {
 		display: block;
 
-		/* --max-width-base: calc(var(--cols-taken) * var(--size-cell-width));
-		--max-width-gaps-to-subtract: calc((var(--current-grid-cols-total) - 1) * var(--size-cell-gap));
-		--max-width-gaps-to-add: calc((var(--cols-taken) - 1) * var(--size-cell-gap));
-		max-width: calc(
-			var(--max-width-base) - var(--max-width-gaps-to-subtract) + var(--max-width-gaps-to-add)
-		); */
+		--width-main: calc(var(--cols) * var(--size-cell-width));
+		--height-main: calc(var(--rows) * var(--size-cell-height));
+		--width-added-gaps: calc(calc(var(--cols) - 1) * var(--size-cell-gap));
+		--height-added-gaps: calc(calc(var(--rows) - 1) * var(--size-cell-gap));
 
-		--width-base: calc(var(--cols-taken) / var(--current-grid-cols-total) * 100%);
-		--width-gaps-to-subtract: calc(
-			(var(--current-grid-cols-total) - var(--cols-taken)) / var(--current-grid-cols-total) *
-				var(--size-cell-gap)
-		);
-		width: calc(var(--width-base) - var(--width-gaps-to-subtract));
+		width: calc(var(--width-main) + var(--width-added-gaps));
+		height: calc(var(--height-main) + var(--height-added-gaps));
+
+		position: relative;
 		align-items: stretch;
 	}
-	.subgrid-wrapper {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: var(--flex-direction);
-		flex-wrap: wrap;
-		gap: var(--size-cell-gap);
-		align-content: flex-start;
-	}
-	.height-sizer {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		--height-base: calc(var(--rows-taken) * var(--size-cell-height-unitless));
-		--height-gaps: calc((var(--rows-taken) - 1) * var(--size-cell-gap-unitless));
-		padding-top: calc(
-			(var(--height-base) + var(--height-gaps)) / var(--size-cell-width-unitless) * 100%
-		);
-	}
+
 	.content {
 		display: block;
 		position: absolute;

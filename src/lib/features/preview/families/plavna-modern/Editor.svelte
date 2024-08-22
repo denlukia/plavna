@@ -4,7 +4,7 @@
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
+	import GridCell from '$lib/design/components/Grid/Column.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
@@ -25,8 +25,8 @@
 <FormWrapper>
 	<form use:enhance {...commonPreviewEditorFormAttributes}>
 		<input name="preview_family" type="hidden" value="plavna-modern" />
-		<GridCell colspan={2}>
-			<GridCell colspan={0.6}>
+		<GridCell cols={2}>
+			<GridCell cols={0.6}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_color" />
@@ -34,7 +34,7 @@
 					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
 				</Labeled>
 			</GridCell>
-			<GridCell colspan={0.6}>
+			<GridCell cols={0.6}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.text_bg_color" />
@@ -42,7 +42,7 @@
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 				</Labeled>
 			</GridCell>
-			<GridCell colspan={0.4}>
+			<GridCell cols={0.4}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.cols" />
@@ -57,7 +57,7 @@
 					/>
 				</Labeled>
 			</GridCell>
-			<GridCell colspan={0.4}>
+			<GridCell cols={0.4}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.rows" />

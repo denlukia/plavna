@@ -9,12 +9,14 @@
 	};
 
 	let { children, maxRows, direction = 'row', ...attributes }: Props = $props();
+
+	let rowsTotalCSSVariable = maxRows ? `--size-rows-total: ${maxRows};` : '';
 </script>
 
 <div
 	class="grid-container"
 	{...attributes}
-	style="--max-rows: {maxRows}; --flex-direction: {direction};"
+	style="--flex-direction: {direction}; {rowsTotalCSSVariable}"
 >
 	{@render children()}
 </div>
@@ -25,13 +27,14 @@
 		flex-direction: var(--flex-direction);
 		flex-wrap: wrap;
 		align-items: flex-start;
+		align-content: flex-start;
 
 		gap: var(--size-cell-gap);
 
-		--max-height-base: calc(var(--max-rows) * var(--size-cell-height));
-		--max-height-gaps: calc(var(--max-rows) * var(--size-cell-gap));
+		--max-height-base: calc(var(--size-rows-total) * var(--size-cell-height));
+		--max-height-gaps: calc(var(--size-rows-total) * var(--size-cell-gap));
 		max-height: calc(var(--max-height-base) + var(--max-height-gaps));
 
-		--current-grid-cols-total: var(--count-cols-total);
+		--size-cols-total: var(--size-cols-total);
 	}
 </style>

@@ -4,7 +4,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
+	import GridCell from '$lib/design/components/Grid/Column.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';

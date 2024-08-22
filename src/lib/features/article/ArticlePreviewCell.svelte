@@ -17,7 +17,7 @@
 	let params = $derived($page.params);
 </script>
 
-<GridCell colspan={meta.preview_columns} rowspan={meta.preview_rows}>
+<GridCell cols={meta.preview_columns} rows={meta.preview_rows}>
 	<a
 		class="article global-reset-link"
 		href={generatePath(`/[lang]/[username]/[pageslug]/[articleslug]`, params, {
