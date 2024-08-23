@@ -10,7 +10,11 @@
 
 	let {
 		sections: { items, creationForm }
-	} = $derived(data);
+	} = $state(data);
+
+	$effect(() => {
+		({ items, creationForm } = data.sections);
+	});
 
 	let creatorShown = $state(false);
 

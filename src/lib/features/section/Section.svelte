@@ -78,13 +78,16 @@
 						recordsTranslations = { ...recordsTranslations, ...result.recordsTranslations };
 						previewFamilies = { ...previewFamilies, ...enriched };
 						section = result.section;
-						sectionContext.activeTags = Array.from(section.activeTags);
 					}
 				}
 			} catch (err) {
 				console.error(err);
 			}
 		}
+	});
+
+	$effect(() => {
+		sectionContext.activeTags = Array.from(section.activeTags);
 	});
 
 	setContext('section', sectionContext);
