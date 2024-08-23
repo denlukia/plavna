@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { Component } from 'svelte';
 
 	import { getRecordTranslation } from '../i18n/utils';
 	import { getImagePathAndMeta } from '../image/utils';
 	import type { SectionProp } from '../section/types';
-	import { getPreviewComponent } from './enricher';
 	import type { PreviewComponentType } from './families/types';
 	import type { PreviewDataProp } from './types';
 
@@ -20,10 +18,7 @@
 	let recordsTranslations = $derived($page.data.recordsTranslations);
 	let images = $derived($page.data.images || {});
 
-	let StaticPreview = $derived(getComponentFromDict('static'));
-	let DynamicPreview: Component<any> | null = $state(null);
-	let dynamicPreviewShown = $state(false);
-	let loadDynamicButtonShown = $state(false);
+	let PreviewComponent = $derived(getComponentFromDict('viewer'));
 
 	function getComponentFromDict(type: PreviewComponentType) {
 		if (!previewFamilies) return null;
@@ -67,47 +62,12 @@
 			)
 		};
 	}
-
-	function onMouseEnterLeave(type: 'enter' | 'leave') {
-		const showCondition = article.meta.preview_interactions_show_on;
-		if (showCondition === 'hover') {
-			dynamicPreviewShown = type === 'enter' ? true : false;
-		} else if (showCondition === 'click') {
-			loadDynamicButtonShown = type === 'enter' ? true : false;
-		}
-	}
-
-	$effect(() => {
-		if (dynamicPreviewShown && familyId) {
-			getPreviewComponent(familyId, 'dynamic')
-				.then((component) => {
-					if (component) {
-						DynamicPreview = component;
-					}
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		}
-	});
 </script>
 
 <!-- TODO: Edit title to represent loading on button click, add aria description -->
-<span
-	class="preview-renderer"
-	role="button"
-	tabindex="0"
-	onmouseenter={() => onMouseEnterLeave('enter')}
-	onmouseleave={() => onMouseEnterLeave('leave')}
->
-	{#if dynamicPreviewShown}
-		{#if DynamicPreview}
-			<DynamicPreview data={getPreviewData()} />
-		{:else}
-			Dynamic component not found
-		{/if}
-	{:else if StaticPreview && !(StaticPreview instanceof Promise)}
-		<StaticPreview data={getPreviewData()} />
+<span class="preview-renderer" role="button" tabindex="0">
+	{#if PreviewComponent && !(PreviewComponent instanceof Promise)}
+		<PreviewComponent data={getPreviewData()} />
 	{:else}
 		static component not found
 	{/if}

@@ -9,8 +9,6 @@ import type { ImageSelect } from '$lib/features/image/parsers';
 
 import { previewFamilies, previewFamiliesIds } from '.';
 import type { PreviewTemplateSelect } from '../parsers';
-import type CutsomEditor from './custom/editor.svelte';
-import type PlavnaModernEditor from './plavna-modern/editor.svelte';
 
 export type PreviewFamily = (typeof previewFamilies)[number];
 type ExtractPreviewFamilyIds = (typeof previewFamiliesIds)[number];
@@ -21,8 +19,7 @@ export type PreviewFamilyId = ExtractId<(typeof previewFamilies)[number]>;
 type PossibleNameTranslationIds = (typeof previewFamilies)[number]['name_translation_key'];
 type CheckTranslationKey = PossibleNameTranslationIds extends SystemTranslationKey ? true : false;
 
-export type PreviewEditorComponent = Component<PlavnaModernEditor | CutsomEditor>;
-export type PreviewComponentType = 'editor' | 'static' | 'dynamic';
+export type PreviewComponentType = 'editor' | 'viewer';
 
 // Will be red if previewFamiliesIds contains not all previewFamilies ids
 assert<TypeEqualityGuard<CheckPreviewFamilyIds, true>>();

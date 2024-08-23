@@ -1,5 +1,5 @@
 // routes/+page.server.ts
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import { lucia } from '$lib/services/auth';
 
@@ -17,15 +17,17 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 
 export const actions: Actions = {
 	default: async (event) => {
-		if (!event.locals.session) {
-			fail(401);
+		const session = event.locals.session;
+		if (session) {
+			await lucia.invalidateSession(session.id);
 		}
-		await lucia.invalidateSession(event.locals.session.id);
+
 		const sessionCookie = lucia.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
 			...sessionCookie.attributes
 		});
+
 		redirect(302, './login');
 	}
 };

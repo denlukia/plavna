@@ -73,7 +73,7 @@
 					const result: SectionFetchReturn = await response.json();
 
 					if (result) {
-						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'static');
+						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'viewer');
 
 						recordsTranslations = { ...recordsTranslations, ...result.recordsTranslations };
 						previewFamilies = { ...previewFamilies, ...enriched };
