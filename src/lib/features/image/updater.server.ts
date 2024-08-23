@@ -18,21 +18,24 @@ export async function updateImages({
 	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandler>;
 	const imageHandledPromises = imagesKeys.map(async (key) => {
 		let fileIsValid = true;
-		try {
-			imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
-				rawData.get(key),
-				IMG_VALIDATION_CONFIG
-			);
-		} catch {
-			fileIsValid = false;
+		const entry = rawData.get(key);
+
+		if (entry) {
+			try {
+				imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
+					entry,
+					IMG_VALIDATION_CONFIG
+				);
+			} catch {
+				fileIsValid = false;
+			}
 		}
 
 		// TODO: There were a check for file presence, now it throws, check if everything is ok
 		const lang = (key.split('.')[1] || null) as SupportedLang | null;
 		const markedForDeletion = key.startsWith('delete') && data[key] === true;
 		if (markedForDeletion) {
-			// TODO: Replace with path update maybe?
-			await imageService.deleteRecord(data.id, lang);
+			await imageService.updatePath({ id: data.id }, lang);
 		} else if (fileIsValid) {
 			const report = await imagesHandlers[key].upload({
 				imageId: data.id,

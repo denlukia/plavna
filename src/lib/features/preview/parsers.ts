@@ -7,7 +7,7 @@ import { articleInsertSchema, type articleSelectSchema } from '../article/parser
 import { generateLanguagedFields } from '../common/parsers-utils';
 import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
-import type { PreviewEditorComponent, PreviewFamilyId } from './families/types';
+import type { PreviewFamilyId } from './families/types';
 import { previewTemplates } from './schema';
 
 // Previews
@@ -75,7 +75,7 @@ export type PreviewTemplateImageFieldsZod = typeof previewTemplateImageFieldsSch
 export type PreviewComponents = Record<
 	PreviewFamilyId,
 	{
-		editor?: MaybePromise<PreviewEditorComponent | null>;
+		editor?: MaybePromise<Component | null>;
 		static?: Component;
 		dynamic?: Component;
 	}

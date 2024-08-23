@@ -15,11 +15,7 @@ import { translationInsertSchema, translationUpdateSchema } from '../i18n/parser
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslationsDict, TranslationFormsDict } from '../i18n/types';
-import {
-	imageCreationFormSchema,
-	imageProviderUpdateFormSchema,
-	imageUpdateFormSchema
-} from '../image/parsers';
+import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/parsers';
 import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
@@ -334,7 +330,7 @@ export class ArticleService {
 				(acc, curr) => ({
 					...acc,
 					[curr.id]: {
-						components: { static: null, editor: null, dynamic: null },
+						components: { viewer: null, editor: null },
 						name_translation_key: curr.name_translation_key
 					}
 				}),
@@ -486,12 +482,7 @@ export class ArticleService {
 				const keyDeprefixed = key.replace('delete_', '') as ArticlePreviewImageFileFieldNamesAll;
 				const { fieldNameWithIdPrefix, lang } = decomposeImageField(keyDeprefixed);
 
-				// TODO: Replace with path update maybe?
-				return this.imageService.deleteRecord(
-					articleRecord[fieldNameWithIdPrefix],
-					'path-only',
-					lang
-				);
+				return this.imageService.updatePath({ id: articleRecord[fieldNameWithIdPrefix] }, lang);
 			});
 			await Promise.all([...deletionPromises, ...uploadPromises]);
 		}

@@ -5,7 +5,7 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ data }) => {
 	const { previewFamilies, ...pageData } = structuredClone(data);
 
-	const enriched = await enrichPreviewFamilies(previewFamilies, 'static');
+	const enriched = await enrichPreviewFamilies(previewFamilies, 'viewer');
 
 	return { ...pageData, previewFamilies: enriched };
 };
