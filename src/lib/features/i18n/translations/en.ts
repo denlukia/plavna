@@ -63,14 +63,14 @@ export const EN = {
 			gotta_create_tags:
 				'Create at least one tag during article creation to reference it in section',
 			tag_name: 'Tag name',
-			no_articles: 'You have not labeled any articles with selected tags',
+			no_articles: 'You have not published any articles with selected tags',
 			section_invisible:
 				"In current language this section is only visible to you,<br> because it doesn't have description translation"
 		}
 	},
 	page: {
 		section: {
-			no_articles: 'Author has not labeled any articles with selected tags'
+			no_articles: 'Author has not published any articles with selected tags'
 		}
 	},
 	article_editor: {
