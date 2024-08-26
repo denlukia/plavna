@@ -32,7 +32,7 @@
 <style>
 	.tags-list {
 		display: flex;
-		margin-top: var(--size-s);
+		margin-top: var(--size-xs);
 		gap: var(--size-s);
 	}
 	.tag-id {

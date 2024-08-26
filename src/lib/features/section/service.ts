@@ -56,14 +56,15 @@ export class SectionService {
 		if (!actor) return;
 
 		const tagIds = tagsForCheck.map((tag) => tag.tag_id);
+		const tagIdsDeduped = dedupeArray(tagIds);
 
 		const existingForUser = await trx
 			.select({ tag_id: tags.id })
 			.from(tags)
-			.where(and(inArray(tags.id, tagIds), eq(tags.user_id, actor.id)))
+			.where(and(inArray(tags.id, tagIdsDeduped), eq(tags.user_id, actor.id)))
 			.all();
 
-		if (existingForUser.length !== tagsForCheck.length) {
+		if (existingForUser.length !== tagIdsDeduped.length) {
 			error(403, ERRORS.SOME_TAGS_DONT_EXIST);
 		}
 	}

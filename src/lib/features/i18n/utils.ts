@@ -1,7 +1,7 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
-import type { TranslationSelect } from './parsers';
+import type { TranslationSelect, TranslationUpdate } from './parsers';
 import { EN } from './translations/en';
 import { UK } from './translations/uk';
 import type {
@@ -95,4 +95,15 @@ export function getRecordTranslation(
 export const defaultLang: SupportedLang = 'en';
 export function isSupportedLang(lang: string): lang is SupportedLang {
 	return supportedLangs.includes(lang as SupportedLang);
+}
+
+export function replaceEmptyWithNull(translation: TranslationUpdate) {
+	return Object.fromEntries(
+		Object.entries(translation).map(([key, value]) => {
+			if (value === '') {
+				return [key, null];
+			}
+			return [key, value];
+		})
+	);
 }

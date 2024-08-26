@@ -19,6 +19,8 @@
 	setContext('heading', headingContext);
 </script>
 
-<Typography {size} as="h{depth}">
-	{@render children()}
-</Typography>
+<svelte:element this={`h${depth}`}>
+	<Typography {size}>
+		{@render children()}
+	</Typography>
+</svelte:element>

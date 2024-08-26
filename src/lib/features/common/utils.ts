@@ -93,7 +93,7 @@ export function tokenizeEmptyStrings(form: FormData) {
 	return formCopy;
 }
 
-export function detokenizeEmptyStrings<T extends Object>(obj: T): T {
+export function detokenizeEmptyStrings<T extends object>(obj: T): T {
 	return Object.fromEntries(
 		Object.entries(obj).map(([key, value]) => {
 			if (value === emptyStringToken) return [key, ''];
@@ -102,9 +102,9 @@ export function detokenizeEmptyStrings<T extends Object>(obj: T): T {
 	) as T;
 }
 
-export function removeNullValues<T extends Object>(obj: T) {
+export function removeNullValues<T extends object>(obj: T) {
 	return Object.fromEntries(
-		Object.entries(obj).filter(([key, value]) => value !== null)
+		Object.entries(obj).filter(([, value]) => value !== null)
 	) as RemoveNullValues<T>;
 }
 

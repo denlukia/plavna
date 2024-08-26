@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -9,15 +10,13 @@
 </script>
 
 <div class="cards">
-	{@render children()}
+	<ColumnsContainer>
+		{@render children()}
+	</ColumnsContainer>
 </div>
 
 <style>
 	.cards {
 		margin-top: var(--size-3xl);
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--size-cell-gap);
 	}
 </style>
