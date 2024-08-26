@@ -4,6 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { detokenizeEmptyStrings, removeNullValues, tokenizeEmptyStrings } from '../common/utils';
 import { translationUpdateSchema } from './parsers';
+import { replaceEmptyWithNull } from './utils';
 
 export async function update_translation(event: RequestEvent) {
 	const formData = await event.request.formData();
@@ -17,9 +18,10 @@ export async function update_translation(event: RequestEvent) {
 	const detokenizedData = detokenizeEmptyStrings(form.data);
 	form.data = detokenizedData;
 	const onlyNonNull = removeNullValues(detokenizedData);
+	const emptyAreNull = replaceEmptyWithNull(onlyNonNull);
 
 	const { translationService } = event.locals;
-	await translationService.update(onlyNonNull);
+	await translationService.update(emptyAreNull);
 
 	return { form };
 }

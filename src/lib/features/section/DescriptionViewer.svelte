@@ -25,9 +25,11 @@
 	{#if descriptionTranslation}
 		<Translation recordKey={transitionKey} markdown />
 	{:else}
-		<InfoBlock>
-			<Translation key="page_actor.section.section_invisible" />
-		</InfoBlock>
+		<div class="info-block-wrapper">
+			<InfoBlock>
+				<Translation key="page_actor.section.section_invisible" />
+			</InfoBlock>
+		</div>
 	{/if}
 	{#if showEditButton}
 		<div class="actions-wrapper">
@@ -42,10 +44,12 @@
 	.description-viewer {
 		position: relative;
 	}
+	.info-block-wrapper {
+		padding-top: var(--size-m);
+	}
 	.actions-wrapper {
 		position: absolute;
 		left: 0;
 		top: calc(var(--size-xl) * -1);
-		/* transform: translateY(-100%); */
 	}
 </style>

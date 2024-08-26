@@ -12,7 +12,7 @@
 
 <div class="info-block">
 	<div class="text">
-		<Typography>
+		<Typography size="body-short">
 			{@render children()}
 		</Typography>
 	</div>
@@ -25,8 +25,7 @@
 		justify-content: center;
 		background: var(--color-info-block-default-bg);
 		border-radius: var(--size-info-block-border-radius);
-		padding-block: var(--size-info-block-padding-block);
-		padding-inline: var(--size-info-block-padding-inline);
+		padding: var(--size-info-block-padding);
 		color: var(--color-info-block-default-text);
 	}
 	.text {

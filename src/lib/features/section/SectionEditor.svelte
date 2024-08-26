@@ -198,7 +198,7 @@
 		margin-top: var(--size-l);
 		display: flex;
 		flex-direction: column;
-		gap: var(--size-m);
+		gap: var(--size-l);
 	}
 
 	.info-block-wrapper {
