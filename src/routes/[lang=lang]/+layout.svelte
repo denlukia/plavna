@@ -5,7 +5,7 @@
 	// TODO: Dynamize based on server data
 	import '$lib/design/themes/color/milk.css';
 	import '$lib/design/themes/style/modern/index.css';
-	import '$lib/design/themes/typography/plavna/index.css';
+	import '$lib/design/themes/typography/inter/index.css';
 
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
 	import Header from '$lib/features/layout/Header.svelte';

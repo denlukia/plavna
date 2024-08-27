@@ -19,8 +19,17 @@
 	setContext('heading', headingContext);
 </script>
 
-<svelte:element this={`h${depth}`}>
+<svelte:element this={`h${depth}`} class="heading {depth === 1 ? 'heading-1' : ''}">
 	<Typography {size}>
 		{@render children()}
 	</Typography>
 </svelte:element>
+
+<style>
+	.heading {
+		line-height: 1;
+	}
+	.heading-1 {
+		margin-inline-start: -0.05em;
+	}
+</style>

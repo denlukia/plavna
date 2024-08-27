@@ -72,10 +72,10 @@
 
 <style>
 	.tag-switcher {
-		/* display: inline-flex; */
+		display: inline-flex;
+		gap: var(--size-s);
 	}
 	.switch-positioner {
-		display: inline-block;
 		transform: translateY(var(--size-s));
 	}
 </style>
