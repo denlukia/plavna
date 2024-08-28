@@ -2,13 +2,8 @@
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { SECTION_RECONFIG_PARAM_NAME } from '$lib/collections/constants';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
-
-	import { depthToTypographySize } from './heading-depth';
-	import type { HeadingContext } from './types';
 
 	type Props = {
 		tagId: number;
@@ -17,7 +12,6 @@
 
 	let { children, tagId }: Props = $props();
 
-	let headingContext: HeadingContext | undefined = getContext('heading');
 	let sectionContext: SectionContext | undefined = getContext('section');
 
 	const initialState = $derived(
@@ -62,9 +56,7 @@
 	class:global-reset-link={showAsLink}
 	href={showAsLink ? reconfigRequestLink : undefined}
 >
-	<Typography size={depthToTypographySize(headingContext?.depth)} resetPadding>
-		{@render children()}
-	</Typography>
+	{@render children()}
 	<span class="switch-positioner">
 		<Switch bind:checked onchange={onSwitchChange} />
 	</span>

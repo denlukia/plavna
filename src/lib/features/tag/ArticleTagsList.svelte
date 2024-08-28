@@ -49,7 +49,7 @@
 		background: var(--color-tags-list-bg);
 	}
 	.creator-margin {
-		margin-bottom: calc(var(--size-xs) * -1);
+		margin-bottom: var(--size-xs);
 	}
 	.header {
 		display: flex;
