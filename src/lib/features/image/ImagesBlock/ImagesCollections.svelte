@@ -81,8 +81,8 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
-		padding-bottom: var(--size-m-to-l);
+		align-items: center;
+		padding-bottom: var(--size-m);
 	}
 	.leading {
 		display: flex;
@@ -90,7 +90,7 @@
 		gap: var(--size-m-to-l);
 	}
 	.creation-form-margin {
-		margin-bottom: calc(var(--size-xs) * -1);
+		margin-bottom: var(--size-xs);
 	}
 
 	.list-wrapper {

@@ -83,7 +83,7 @@ export const UK = {
 		slug: 'Адреса',
 		content: 'Контент',
 		images: {
-			label: 'Зображення',
+			label: 'Зображ.',
 			image_provider: 'Провайдер зображень',
 			provider_warning: 'Заповніть інформацію провайдера зображень щоб вивантажувати зображення',
 			provider_explanation:

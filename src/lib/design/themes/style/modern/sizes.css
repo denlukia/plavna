@@ -104,7 +104,7 @@
 	/* --- Icon --- */
 	--size-icon-heading-2-size-unitless: 28;
 	--size-icon-heading-2-size: calc(var(--size-icon-heading-2-size-unitless) * 1px);
-	--size-icon-heading-2-stroke-width: 3.25px;
+	--size-icon-heading-2-stroke-width: 3.5px;
 
 	--size-icon-body-big-size-unitless: 24;
 	--size-icon-body-big-size: calc(var(--size-icon-body-big-size-unitless) * 1px);
@@ -207,9 +207,9 @@
 	--size-section-margin-bottom: var(--size-3xl);
 	--size-section-articles-list-margin-top: var(--size-xl);
 
-	--size-section-editor-padding-inline: var(--size-m-to-l);
-	--size-section-editor-padding-top: var(--size-none);
-	--size-section-editor-padding-bottom: var(--size-m-to-l);
+	--size-section-editor-padding: var(--size-s) var(--size-m-to-l) var(--size-m-to-l);
+	--size-section-editor-deletion-left: var(--size-m-to-l);
+	--size-section-editor-deletion-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
 
 	/* --- Info Block --- */

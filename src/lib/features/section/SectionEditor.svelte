@@ -174,9 +174,7 @@
 
 <style>
 	.section-editor {
-		padding-inline: var(--size-section-editor-padding-inline);
-		padding-top: var(--size-section-editor-padding-top);
-		padding-bottom: var(--size-section-editor-padding-bottom);
+		padding: var(--size-section-editor-padding);
 		border-radius: var(--size-section-editor-border-radius);
 		background: var(--color-section-editor-bg);
 		position: relative;
@@ -190,8 +188,8 @@
 	}
 	.deletion-form-wrapper {
 		position: absolute;
-		bottom: var(--size-section-editor-padding-bottom);
-		left: var(--size-section-editor-padding-inline);
+		bottom: var(--size-section-editor-deletion-bottom);
+		left: var(--size-section-editor-deletion-left);
 	}
 
 	.inputs {
