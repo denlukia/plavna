@@ -25,7 +25,7 @@ export const EN = {
 		to_sign_out: 'Sign out'
 	},
 	pages_list: {
-		title: 'My pages',
+		title: 'My Pages',
 		create: 'Create',
 		update: 'Update',
 		slug: 'Slug',
