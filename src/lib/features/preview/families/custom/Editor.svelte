@@ -11,7 +11,7 @@
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
 	import { getImageById } from '$lib/features/image/utils';
 
-	import { commonPreviewEditorFormAttributes } from '..';
+	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
 
 	let {
@@ -32,7 +32,7 @@
 	superValidated={translationsSuperValidated.translation_2}
 	action="?/update_translation"
 />
-<form use:enhance {...commonPreviewEditorFormAttributes}>
+<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
 	<Input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
@@ -48,6 +48,4 @@
 			<Translation key="article_editor.previews.create_localized_screenshots" />
 		</Typography>
 	</Labeled>
-
-	<Button><Translation key="article_editor.previews.set_and_update" /></Button>
 </form>

@@ -5,6 +5,7 @@
 	import type { ArticleService } from '$lib/features/article/service';
 	import type { ExtractMethods } from '$lib/features/common/types';
 
+	import SideBox from '../common/components/SideBox.svelte';
 	import Translation from '../i18n/Translation.svelte';
 	import ArticleTag from './ArticleTag.svelte';
 	import ArticleTagCreator from './ArticleTagForm.svelte';
@@ -19,44 +20,29 @@
 	let { tags, tagCreationSuperValidated }: Props = $props();
 </script>
 
-<div class="article-tags-list">
-	<header class="header">
+<SideBox>
+	{#snippet headerLeading()}
 		<Typography size="heading-2">
 			<Translation key="article_editor.tags.list_label" />
 		</Typography>
-		<div class="creator-margin">
-			<ArticleTagCreator superValidated={tagCreationSuperValidated} />
+		<ArticleTagCreator superValidated={tagCreationSuperValidated} />
+	{/snippet}
+	{#snippet content()}
+		<div class="tags-list">
+			{#each tags as { checkedSuperValidated, deletionSuperValidated, name_translation_key }}
+				<div class="tag-wrapper">
+					<ArticleTag
+						{checkedSuperValidated}
+						{deletionSuperValidated}
+						translationKey={name_translation_key}
+					/>
+				</div>
+			{/each}
 		</div>
-	</header>
-
-	<div class="tags-list">
-		{#each tags as { checkedSuperValidated, deletionSuperValidated, name_translation_key }}
-			<div class="tag-wrapper">
-				<ArticleTag
-					{checkedSuperValidated}
-					{deletionSuperValidated}
-					translationKey={name_translation_key}
-				/>
-			</div>
-		{/each}
-	</div>
-</div>
+	{/snippet}
+</SideBox>
 
 <style>
-	.article-tags-list {
-		padding: var(--size-tags-list-padding);
-		border-radius: var(--size-tags-list-border-radius);
-		background: var(--color-tags-list-bg);
-	}
-	.creator-margin {
-		margin-bottom: var(--size-xs);
-	}
-	.header {
-		display: flex;
-		gap: var(--size-m);
-		padding-bottom: var(--size-m-to-l);
-		align-items: flex-end;
-	}
 	.tags-list {
 		display: flex;
 		align-items: flex-start;
@@ -64,6 +50,6 @@
 		gap: var(--size-s);
 	}
 	.tag-wrapper {
-		padding-bottom: var(--size-l);
+		padding-bottom: var(--size-s);
 	}
 </style>

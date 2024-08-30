@@ -12,8 +12,9 @@ export const previewFamilies = [
 // It seems that we can't .map() here cause later zod's .enum() wants a literal
 export const previewFamiliesIds = ['plavna-modern', 'custom'] as const;
 
-export const commonPreviewEditorFormAttributes: HTMLFormAttributes = {
+export const PREVIEW_EDITOR_FORM_ATTRS: HTMLFormAttributes = {
 	method: 'POST',
 	action: '?/update_preview',
-	enctype: 'multipart/form-data'
+	enctype: 'multipart/form-data',
+	id: 'preview-editor-form'
 };

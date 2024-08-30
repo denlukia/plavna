@@ -1,15 +1,15 @@
 :root {
 	--text-main-font-family: 'InterVariable', -system-ui, sans-serif;
 	--text-font-optical-sizing: auto;
-	--text-main-font-weight: 400;
+	--text-main-font-weight: 500;
 	--text-strong-font-weight: 600;
 
 	--text-heading-1-font-family: var(--text-main-font-family);
 	--text-heading-1-padding-top: 0;
 	--text-heading-1-padding-bottom: 0;
-	--text-heading-1-size: 77px;
+	--text-heading-1-size: 64px;
 	--text-heading-1-weight: 700;
-	--text-heading-1-line-height: 72px;
+	--text-heading-1-line-height: 64px;
 	--text-heading-1-letter-spacing: -0.01em;
 
 	--text-heading-2-font-family: var(--text-main-font-family);
@@ -17,8 +17,8 @@
 	--text-heading-2-padding-bottom: 3px;
 	--text-heading-2-size: 30px;
 	--text-heading-2-weight: 700;
-	--text-heading-2-line-height: 32px;
-	--text-heading-2-letter-spacing: 0;
+	--text-heading-2-line-height: 28px;
+	--text-heading-2-letter-spacing: -0.01em;
 
 	--text-headline-font-family: var(--text-main-font-family);
 	--text-headline-padding-top: 3px;

@@ -7,9 +7,11 @@ export type PreviewDataProp = {
 	likes_count: number;
 	prop_1: string | null;
 	prop_2: string | null;
+	cols: number;
+	rows: number;
+	publish_time: Date | null;
 	translation_1: Optional<string>;
 	translation_2: Optional<string>;
-	publish_time: Date | null;
 	tags: Array<Optional<string>>;
 	img_1: Optional<ImagePathAndMeta>;
 	img_2: Optional<ImagePathAndMeta>;

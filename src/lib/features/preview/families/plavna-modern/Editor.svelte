@@ -1,20 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
-	import Button from '$lib/design/components/Button/Button.svelte';
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import GridCell from '$lib/design/components/Grid/Column.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
-	import { getImageById } from '$lib/features/image/utils';
 
-	import { commonPreviewEditorFormAttributes } from '..';
+	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { PreviewEditorProps } from '../types';
 
 	let { mainSuperValidated, images }: PreviewEditorProps = $props();
@@ -23,7 +19,7 @@
 </script>
 
 <FormWrapper>
-	<form use:enhance {...commonPreviewEditorFormAttributes}>
+	<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 		<input name="preview_family" type="hidden" value="plavna-modern" />
 		<GridCell cols={2}>
 			<GridCell cols={0.6}>
@@ -97,16 +93,5 @@
 				</Labeled>
 			</GridCell>
 		</GridCell>
-		<Spacer />
-		<div class="actions-row">
-			<Button><Translation key="article_editor.previews.set_and_update" /></Button>
-		</div>
 	</form>
 </FormWrapper>
-
-<style>
-	.actions-row {
-		display: flex;
-		justify-content: flex-end;
-	}
-</style>

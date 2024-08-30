@@ -1,6 +1,5 @@
 :root {
 	/* ------ Palette ------ */
-	--size-none: 0px;
 	--size-xs: 2px;
 	--size-s: 4px;
 	--size-s-to-m: 6px;
@@ -86,12 +85,12 @@
 	--size-button-in-tag-border-radius: var(--size-m);
 	--size-button-in-tag-height: unset;
 	--size-button-in-tag-padding-inline: var(--size-m);
-	--size-button-in-tag-padding-top: var(--size-none);
+	--size-button-in-tag-padding-top: 0;
 	--size-button-in-tag-padding-bottom: var(--size-xs);
 
 	/* --- Input --- */
 	--size-input-padding-inline: var(--size-m);
-	--size-input-padding-top: var(--size-none);
+	--size-input-padding-top: 0;
 	--size-input-padding-bottom: var(--size-s);
 	--size-input-border-radius: 10px;
 	--size-input-textarea-wrapper-padding-inline-end: var(--size-s);
@@ -178,7 +177,7 @@
 
 	/* --- Tab Item --- */
 	--size-tab-item-heading-2-padding-inline: var(--size-l);
-	--size-tab-item-heading-2-padding-top: var(--size-none);
+	--size-tab-item-heading-2-padding-top: 0;
 	--size-tab-item-heading-2-padding-bottom: var(--size-s);
 
 	--size-tab-item-body-padding-inline: var(--size-m-to-l);
@@ -186,8 +185,8 @@
 	--size-tab-item-body-padding-bottom: var(--size-xs);
 
 	--size-tab-item-small-padding-inline: var(--size-m);
-	--size-tab-item-small-padding-top: var(--size-none);
-	--size-tab-item-small-padding-bottom: var(--size-none);
+	--size-tab-item-small-padding-top: 0;
+	--size-tab-item-small-padding-bottom: 0;
 
 	/* -- Tab Item Active */
 	--size-tab-item-active-heading-2-border-radius: var(--size-full);
@@ -216,33 +215,41 @@
 	--size-info-block-padding: var(--size-m-to-l);
 	--size-info-block-border-radius: var(--size-l);
 
-	/* --- Tag --- */
-	--size-tags-list-padding: var(--size-m) var(--size-m-to-l) var(--size-none) var(--size-l);
-	--size-tags-list-border-radius: var(--size-xl);
-	--size-tag-border-radius: var(--size-full);
-	--size-tag-padding-inline: var(--size-m);
-	--size-tag-padding-block: var(--size-s) var(--size-s);
-
-	/* --- Article Editor --- */
+	/* --- Article Editor Start ------------------------------------------ */
+	/* Actions */
 	--size-article-actions-border-radius: var(--size-full);
 	--size-article-actions-padding-inline: var(--size-m);
 	--size-article-actions-padding-block: var(--size-m);
 	--size-article-actions-bottom: var(--size-l);
 	--size-article-actions-gap: var(--size-m);
 
+	/* Any SideBox */
+	--size-sidebox-header-padding: var(--size-m) 0 var(--size-m);
+	--size-sidebox-content-padding: 0;
+	--size-sidebox-border-radius: 0;
+	--size-sidebox-header-gap: var(--size-m);
+	--size-sidebox-border-width: 1px;
+
+	/* Tags List */
+	--size-tag-border-radius: var(--size-full);
+	--size-tag-padding-inline: var(--size-m);
+	--size-tag-padding-block: var(--size-s) var(--size-s);
+
+	/* Preview List */
+	--size-article-preview-editor-border-radius: var(--size-xl);
+	/* --size-article-preview-editor-padding-inline: var(--size-l); */
+	/* --size-article-preview-editor-padding-block-start: var(--size-m); */
+	/* --size-article-preview-editor-padding-block-end: var(--size-l); */
 	--size-article-previewfam-border-radius: var(--size-xl);
 	--size-article-previewlist-gap: var(--size-m);
 	--size-article-previewfam-padding-block: var(--size-l);
 	--size-article-previewfam-padding-inline: var(--size-l);
 
-	--size-article-preview-editor-border-radius: var(--size-xl);
-	--size-article-preview-editor-padding-inline: var(--size-l);
-	--size-article-preview-editor-padding-block-start: var(--size-m);
-	--size-article-preview-editor-padding-block-end: var(--size-l);
-
-	--size-article-editor-images-block-border-radius: var(--size-xl);
-	--size-article-editor-images-block-padding: var(--size-m) var(--size-m-to-l) var(--size-none)
-		var(--size-l);
+	/* Images List */
+	/* --size-article-editor-images-block-border-radius: var(--size-xl); */
+	/* --size-article-editor-images-block-padding: var(--size-m) var(--size-m-to-l) 0
+		var(--size-l); */
+	/* --- Article Editor End -------------------------------------------- */
 
 	/* --- Image Input --- */
 	--size-image-input-height: 110px;

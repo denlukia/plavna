@@ -151,6 +151,7 @@
 	/* --- Article Editor --- */
 	--shadow-article-actions: 0 4px 20px var(--color-article-actions-shadow-1),
 		0 4px 120px var(--color-article-actions-shadow-2);
+	--border-sidebox-top: var(--size-sidebox-border-width) solid var(--color-sidebox-border);
 
 	/* --- Image Input ---  */
 	--border-image-input: var(--size-image-input-border-width) dashed var(--color-image-input-border);

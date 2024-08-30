@@ -16,8 +16,10 @@
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 
 	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
+	import SideBox from '../common/components/SideBox.svelte';
 	import type { SystemTranslationKey } from '../i18n/types';
 	import { getImageById } from '../image/utils';
+	import { PREVIEW_EDITOR_FORM_ATTRS } from './families';
 	import PreviewTemplateForm from './PreviewTemplateForm.svelte';
 
 	type Props = {
@@ -148,114 +150,113 @@
 	</IconWrapper>
 {/snippet}
 
-<div class="previews-list">
-	<header class="preview-editor-header">
+<SideBox>
+	{#snippet headerLeading()}
 		<Typography size="heading-2">
 			<Translation key="article_editor.previews.section_label" />
 		</Typography>
-		<Button size="small" kind="secondary">
-			<Translation key="article_editor.previews.to_preview_the_preview" />
-		</Button>
-	</header>
-	<div class="scroller">
-		<Popup
-			triggerType="button"
-			customClass="preview-family-popup"
-			buttonProps={{
-				kind: 'secondary',
-				size: 'body',
-				customClass: 'preview-family-button inactive',
-				contentCustomClass: 'preview-family-button-content',
-				leading: leading
-			}}
-		>
-			{#snippet label()}
-				<Translation key="article_editor.previews.new" />
-			{/snippet}
-			{#snippet content()}
-				<PreviewTemplateForm
-					type="creating"
-					superValidatedMain={previewTemplateCreationSuperValidated}
-				/>
-			{/snippet}
-		</Popup>
+	{/snippet}
+	{#snippet content()}
+		<div class="scroller">
+			<Popup
+				triggerType="button"
+				customClass="preview-family-popup"
+				buttonProps={{
+					kind: 'secondary',
+					size: 'body',
+					customClass: 'preview-family-button inactive',
+					contentCustomClass: 'preview-family-button-content',
+					leading: leading
+				}}
+			>
+				{#snippet label()}
+					<Translation key="article_editor.previews.new" />
+				{/snippet}
+				{#snippet content()}
+					<PreviewTemplateForm
+						type="creating"
+						superValidatedMain={previewTemplateCreationSuperValidated}
+					/>
+				{/snippet}
+			</Popup>
 
-		<ul class="list">
-			{#each Object.entries(previewFamilies) as [familyId, { name_translation_key }]}
-				{#if familyId !== 'custom'}
-					{@render previewFamilyButton(
-						{ family: familyId as PreviewFamilyId, template: null },
-						name_translation_key,
-						undefined
-					)}
-				{/if}
-			{/each}
-			{#each previewTemplates as template}
-				<div class="preview-family-wrapper">
-					{@render previewFamilyButton(
-						{ family: 'custom', template: template.meta.id },
-						undefined,
-						template.superValidatedMain
-					)}
+			<ul class="list">
+				{#each Object.entries(previewFamilies) as [familyId, { name_translation_key }]}
+					{#if familyId !== 'custom'}
+						{@render previewFamilyButton(
+							{ family: familyId as PreviewFamilyId, template: null },
+							name_translation_key,
+							undefined
+						)}
+					{/if}
+				{/each}
+				{#each previewTemplates as template}
+					<div class="preview-family-wrapper">
+						{@render previewFamilyButton(
+							{ family: 'custom', template: template.meta.id },
+							undefined,
+							template.superValidatedMain
+						)}
 
-					<div class="editor-button-wrapper">
-						<Popup
-							triggerType="button"
-							buttonProps={{
-								kind: currentPreviewObject.template === template.meta.id ? 'secondary' : 'primary',
-								size: 'small'
-							}}
-						>
-							{#snippet label()}
-								:
-							{/snippet}
-							{#snippet content()}
-								<PreviewTemplateForm
-									type="editing"
-									superValidatedMain={template.superValidatedMain}
-									superValidatedDeletion={template.superValidatedDeletion}
-									imageId={template.meta.image_id}
-								/>
-							{/snippet}
-						</Popup>
+						<div class="editor-button-wrapper">
+							<Popup
+								triggerType="button"
+								buttonProps={{
+									kind:
+										currentPreviewObject.template === template.meta.id ? 'secondary' : 'primary',
+									size: 'small'
+								}}
+							>
+								{#snippet label()}
+									:
+								{/snippet}
+								{#snippet content()}
+									<PreviewTemplateForm
+										type="editing"
+										superValidatedMain={template.superValidatedMain}
+										superValidatedDeletion={template.superValidatedDeletion}
+										imageId={template.meta.image_id}
+									/>
+								{/snippet}
+							</Popup>
+						</div>
 					</div>
+				{/each}
+			</ul>
+		</div>
+		{#if EditorComponent}
+			{#await EditorComponent}
+				Loading...
+			{:then EditorComponent}
+				<EditorComponent
+					mainSuperValidated={previewEditorSuperValidated}
+					images={{
+						preview_image_1,
+						preview_image_2
+					}}
+					translationsSuperValidated={{
+						translation_1: translationForms[meta.preview_translation_1_key],
+						translation_2: translationForms[meta.preview_translation_2_key]
+					}}
+					templateMeta={currentPreviewTemplateMeta}
+					{onPreviewPreviewRequest}
+				/>
+				<div class="actions-row">
+					<Button kind="secondary">
+						<Translation key="article_editor.previews.to_preview_the_preview" />
+					</Button>
+					<Button form={PREVIEW_EDITOR_FORM_ATTRS.id}>
+						<Translation key="article_editor.previews.set_and_update" />
+					</Button>
 				</div>
-			{/each}
-		</ul>
-	</div>
-	{#if EditorComponent}
-		{#await EditorComponent}
-			Loading...
-		{:then EditorComponent}
-			<EditorComponent
-				mainSuperValidated={previewEditorSuperValidated}
-				images={{
-					preview_image_1,
-					preview_image_2
-				}}
-				translationsSuperValidated={{
-					translation_1: translationForms[meta.preview_translation_1_key],
-					translation_2: translationForms[meta.preview_translation_2_key]
-				}}
-				templateMeta={currentPreviewTemplateMeta}
-				{onPreviewPreviewRequest}
-			/>
-		{:catch}
-			Couldn't load
-		{/await}
-	{/if}
-</div>
+			{:catch}
+				Couldn't load
+			{/await}
+		{/if}
+	{/snippet}
+</SideBox>
 
 <style>
-	.previews-list {
-		width: 100%;
-		background: var(--color-article-preview-editor-bg);
-		border-radius: var(--size-article-preview-editor-border-radius);
-		padding-inline: var(--size-article-preview-editor-padding-inline);
-		padding-block-start: var(--size-article-preview-editor-padding-block-start);
-		padding-block-end: var(--size-article-preview-editor-padding-block-end);
-	}
-
 	.scroller {
 		display: flex;
 		gap: var(--size-article-previewlist-gap);
@@ -304,10 +305,10 @@
 		right: var(--size-l);
 	}
 
-	.preview-editor-header {
+	.actions-row {
+		margin-top: var(--size-l);
+		gap: var(--size-m);
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: var(--size-l);
+		justify-content: flex-end;
 	}
 </style>
