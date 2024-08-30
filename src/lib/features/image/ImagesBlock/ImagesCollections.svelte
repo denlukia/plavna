@@ -5,6 +5,7 @@
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { ArticleSelect } from '$lib/features/article/parsers';
+	import SideBox from '$lib/features/common/components/SideBox.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
 
@@ -32,19 +33,18 @@
 	let collection = $derived(commonShown ? collections.common : collections.article);
 </script>
 
-<div class="images-block">
-	<header class="header">
-		<div class="leading">
-			<Typography size="heading-2">
-				<Translation key="article_editor.images.label" />
-			</Typography>
-			<div class="creation-form-margin">
-				<ImageCreationForm
-					articleId={commonShown ? null : articleId}
-					superValidated={collection.creation}
-				/>
-			</div>
-		</div>
+<SideBox>
+	{#snippet headerLeading()}
+		<Typography size="heading-2">
+			<Translation key="article_editor.images.label" />
+		</Typography>
+
+		<ImageCreationForm
+			articleId={commonShown ? null : articleId}
+			superValidated={collection.creation}
+		/>
+	{/snippet}
+	{#snippet headerTrailing()}
 		<Tabs size="small">
 			<TabItem active={!commonShown} onclick={() => (commonShown = false)}>
 				<Translation key="article_editor.images.article_specific" />
@@ -53,44 +53,30 @@
 				<Translation key="article_editor.images.account_common" />
 			</TabItem>
 		</Tabs>
-	</header>
+	{/snippet}
 
-	{#if !hasValidCredentialsSet}
-		<ImageProviderWarning {superValidated} />
-	{:else}
-		<div class="list-wrapper">
-			{#each collection.items as image (image.meta.id)}
-				<Column cols={1}>
-					<div class="image-form-wrapper">
-						<ImageUpdateForm {image} />
-					</div>
-				</Column>
-			{/each}
-		</div>
-	{/if}
-</div>
+	{#snippet content()}
+		{#if !hasValidCredentialsSet}
+			<ImageProviderWarning {superValidated} />
+		{:else}
+			<div class="list-wrapper">
+				{#each collection.items as image (image.meta.id)}
+					<Column cols={1}>
+						<div class="image-form-wrapper">
+							<ImageUpdateForm {image} />
+						</div>
+					</Column>
+				{/each}
+			</div>
+		{/if}
+	{/snippet}
+</SideBox>
 
 <style>
-	.images-block {
-		background-color: var(--color-article-editor-images-block-bg);
-		padding: var(--size-article-editor-images-block-padding);
-		border-radius: var(--size-article-editor-images-block-border-radius);
-		width: 100%;
-	}
-
-	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding-bottom: var(--size-m);
-	}
 	.leading {
 		display: flex;
-		align-items: flex-end;
-		gap: var(--size-m-to-l);
-	}
-	.creation-form-margin {
-		margin-bottom: var(--size-xs);
+		align-items: center;
+		gap: var(--size-m);
 	}
 
 	.list-wrapper {

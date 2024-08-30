@@ -49,10 +49,25 @@
 <div class="page-editor">
 	<ColumnsContainer>
 		<Column cols={3}>
+			<Column cols={2}>
+				<Labeled as="label">
+					<Label><Translation key="article_editor.title" /></Label>
+					<AutosavedInput
+						superValidated={translationForms[article.title_translation_key]}
+						action="?/update_translation"
+					/>
+				</Labeled>
+			</Column>
+			<Column cols={1}>
+				<Labeled as="label">
+					<Label><Translation key="article_editor.slug" /></Label>
+					<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
+				</Labeled>
+			</Column>
 			<Labeled as="label">
-				<Label><Translation key="article_editor.title" /></Label>
+				<Label><Translation key="article_editor.short_description" /></Label>
 				<AutosavedInput
-					superValidated={translationForms[article.title_translation_key]}
+					superValidated={translationForms[article.description_translation_key]}
 					action="?/update_translation"
 				/>
 			</Labeled>
@@ -68,18 +83,6 @@
 		</Column>
 
 		<Column cols={2} customClass="article-editor-shifted-cell article-tags-list-cell">
-			<Labeled as="label">
-				<Label><Translation key="article_editor.slug" /></Label>
-				<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-			</Labeled>
-			<Labeled as="label">
-				<Label><Translation key="article_editor.short_description" /></Label>
-				<AutosavedInput
-					textarea
-					superValidated={translationForms[article.description_translation_key]}
-					action="?/update_translation"
-				/>
-			</Labeled>
 			<section class="row">
 				<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
 			</section>
@@ -121,7 +124,10 @@
 
 	.row {
 		width: 100%;
-		margin-top: var(--size-m);
+		margin-bottom: var(--size-2xl);
+	}
+	.row:first-child {
+		margin-top: var(--size-l);
 	}
 
 	:global(.article-editor-shifted-cell) {
