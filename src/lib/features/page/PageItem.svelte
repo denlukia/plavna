@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { PUBLIC_HOST } from '$env/static/public';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { HOST } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -44,7 +44,7 @@
 	}
 </script>
 
-<Card {link} linkText="{HOST}{link}">
+<Card {link} linkText="{PUBLIC_HOST}{link}">
 	{#snippet title()}
 		{#if slug}
 			{slugToTitle(slug)}

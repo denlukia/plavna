@@ -1,5 +1,5 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { marked, type Token, type TokensList } from 'marked';
+import { lexer, type Token, type TokensList } from 'marked';
 
 import type { TagSelect } from '../tag/parsers';
 import type { SectionInsert } from './parsers';
@@ -31,7 +31,7 @@ export function findTagsInSectionTranslations(translations: SectionInsert): TagI
 		const translationText = translations[lang];
 		if (!translationText) return;
 
-		const tokens = marked.lexer(translationText);
+		const tokens = lexer(translationText);
 
 		const foundTagIds = findTagIdsInLinks(tokens);
 

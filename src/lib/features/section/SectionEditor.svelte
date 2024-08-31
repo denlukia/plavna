@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
-	import { lexer, type Token, type TokensList } from 'marked';
+	import { lexer, type Token } from 'marked';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
-	import Input from '$lib/design/components/Input/Input.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';

@@ -36,7 +36,6 @@ export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const MAX_COLS_IN_SECTION = 3;
 export const MAX_ROWS_IN_SECTION = 3;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
-export const HOST = dev ? `${env.PUBLIC_HOST}:${env.PUBLIC_PORT}` : `${env.PUBLIC_HOST}`;
 
 // export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
 // 	let result = `page-config-${username}`;
