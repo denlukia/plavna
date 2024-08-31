@@ -138,7 +138,7 @@ export const UK = {
 			image: 'Зображення',
 			create_localized_screenshots: 'Створити локалізовані скріншоти',
 			image_dropzone: 'Перетягніть зображ. або натисніть, щоб вибрати',
-			to_preview_the_preview: 'Подивитись як виглядатиме',
+			to_preview_the_preview: 'Переглянути',
 			families: {
 				plavna_modern: {
 					name: 'Плавний і сучасний',

@@ -224,7 +224,7 @@
 	--size-article-actions-gap: var(--size-m);
 
 	/* Any SideBox */
-	--size-sidebox-header-padding: var(--size-m) 0 var(--size-m);
+	--size-sidebox-header-padding: var(--size-m) 0 var(--size-m-to-l);
 	--size-sidebox-content-padding: 0;
 	--size-sidebox-border-radius: 0;
 	--size-sidebox-header-gap: var(--size-m);
