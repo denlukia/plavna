@@ -1,7 +1,7 @@
 import { error } from 'console';
 import { redirect } from '@sveltejs/kit';
 
-import type { RequestEvent as ArticleRequestEvent } from '../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
+import type { RequestEvent as ArticleRequestEvent } from '../../../routes/[lang=lang]/[username]/[[prefixedpageslug=prefixedpageslug]]/[articleslug]/edit/$types';
 import type { RequestEvent as ArticlesListRequestEvent } from '../../../routes/[lang=lang]/[username]/articles/$types';
 import { generatePath } from '../common/links';
 
@@ -24,6 +24,6 @@ export async function edit_article(
 	}
 
 	if (type === 'delete') {
-		redirect(302, generatePath('/[lang]/[username]/[pageslug]', params));
+		redirect(302, generatePath('/[lang]/[username]/[prefixedpageslug]', params));
 	}
 }

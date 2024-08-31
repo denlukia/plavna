@@ -37,10 +37,10 @@ export const MAX_COLS_IN_SECTION = 3;
 export const MAX_ROWS_IN_SECTION = 3;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 
-// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
+// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, prefixedpageslug: string | undefined) => {
 // 	let result = `page-config-${username}`;
-// 	if (pageslug) {
-// 		result += `-${pageslug}`;
+// 	if (prefixedpageslug) {
+// 		result += `-${prefixedpageslug}`;
 // 	}
 // 	return result;
 // };

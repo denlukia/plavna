@@ -15,7 +15,7 @@
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 
-	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[pageslug=pageslug]]/[articleslug]/edit/$types';
+	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[prefixedpageslug=prefixedpageslug]]/[articleslug]/edit/$types';
 	import SideBox from '../common/components/SideBox.svelte';
 	import type { SystemTranslationKey } from '../i18n/types';
 	import { getImageById } from '../image/utils';

@@ -1,4 +1,4 @@
-import type { Cookies } from '@sveltejs/kit';
+import { error, type Cookies } from '@sveltejs/kit';
 import { PAGE_CONFIG_COOKIE_NAME } from '$lib/collections/constants';
 
 import type { SectionSelect } from '../section/parsers';
@@ -48,4 +48,20 @@ export function updateTagInReaderPageConfig(
 
 	readerPageConfig[sectionId] = section;
 	return readerPageConfig;
+}
+export function getUnprefixedPageSlug(prefixed: string | undefined) {
+	let prefixedpageslug = '';
+	if (!prefixed) return prefixedpageslug;
+
+	const prefix = 'page-';
+	const hasPrefix = prefixed.startsWith(prefix);
+
+	if (hasPrefix) {
+		prefixedpageslug = prefixed.slice(prefix.length) || '';
+		if (!prefixedpageslug) {
+			error(404);
+		}
+	}
+
+	return prefixedpageslug;
 }
