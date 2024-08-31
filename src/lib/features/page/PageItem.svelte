@@ -26,8 +26,8 @@
 	let { form, enhance } = superForm(deletionForm);
 
 	let link = $derived(
-		generatePath('/[lang]/[username]/[pageslug]', $page.params, {
-			pageslug: slug ? `page-${slug}` : ''
+		generatePath('/[lang]/[username]/[prefixedpageslug]', $page.params, {
+			prefixedpageslug: slug ? `page-${slug}` : ''
 		})
 	);
 

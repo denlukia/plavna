@@ -16,9 +16,9 @@ export function generatePath(
 		template = template.replace(`[${key}]`, replacement);
 	});
 
-	// Additionally replace [pageslug] with nothing if pageslug is empty
-	if (template.includes('[pageslug]') && !pageparams.pageslug) {
-		template = template.replace('[pageslug]', '');
+	// Additionally replace [prefixedpageslug] with nothing if prefixedpageslug is empty
+	if (template.includes('[prefixedpageslug]') && !pageparams.prefixedpageslug) {
+		template = template.replace('[prefixedpageslug]', '');
 	}
 
 	// --- Important to do this in the very end ---

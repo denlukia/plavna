@@ -1,4 +1,4 @@
-import { error, fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import {
@@ -10,6 +10,7 @@ import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	getReaderPageConfigFromCookies,
+	getUnprefixedPageSlug,
 	updateTagInReaderPageConfig
 } from '$lib/features/page/utils';
 import {
@@ -22,7 +23,7 @@ import type { SectionReconfigRequest } from '$lib/features/section/types';
 export const load = async ({ params, parent, locals: { pageService, actor }, cookies, url }) => {
 	const { username } = params;
 
-	const pageslug = getUnprefixedPageSlug(params.pageslug);
+	const pageslug = getUnprefixedPageSlug(params.prefixedpageslug);
 
 	// 1. Update reader page config if present in query
 	let readerPageConfig = getReaderPageConfigFromCookies(cookies);
@@ -72,7 +73,7 @@ export const actions = {
 		const form = await superValidate(request, zod(sectionInsertSchema));
 		if (!form.valid) fail(400, { form });
 
-		const pageslug = params.pageslug ?? '';
+		const pageslug = getUnprefixedPageSlug(params.prefixedpageslug);
 
 		await sectionService.create(pageslug, form.data);
 
@@ -95,20 +96,3 @@ export const actions = {
 		return { form };
 	}
 };
-
-function getUnprefixedPageSlug(prefixed: string | undefined) {
-	let pageslug = '';
-	if (!prefixed) return pageslug;
-
-	const prefix = 'page-';
-	const hasPrefix = prefixed.startsWith(prefix);
-
-	if (hasPrefix) {
-		pageslug = prefixed.slice(prefix.length) || '';
-		if (!pageslug) {
-			error(404);
-		}
-	}
-
-	return pageslug;
-}
