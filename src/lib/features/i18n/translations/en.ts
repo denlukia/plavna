@@ -7,21 +7,21 @@ export const EN = {
 		or: 'or',
 		save: 'Save'
 	},
-	auth: {
-		signup: 'Sign up',
-		login: 'Login',
-		email: 'Email',
-		password: 'Password'
-	},
-	login: {
-		to_login: 'Login',
-		sign_in_with_github: 'Sign in with GitHub'
-	},
-	signup: {
-		to_signup: 'Sign up'
-	},
+	// auth: {
+	// 	signup: 'Sign up',
+	// 	login: 'Login',
+	// 	email: 'Email',
+	// 	password: 'Password'
+	// },
+	// login: {
+	// 	to_login: 'Login'
+	// },
+	// signup: {
+	// 	to_signup: 'Sign up'
+	// },
 	main: {
 		landing: 'Landing',
+		sign_in_with_github: 'Sign in with GitHub',
 		to_sign_out: 'Sign out'
 	},
 	pages_list: {

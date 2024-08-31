@@ -1,15 +1,30 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	export let data;
 </script>
 
 <Typography size="heading-1"><Translation key="main.landing" /></Typography>
-{#if data.user}
-	<form use:enhance method="POST">
-		<Button><Translation key="main.to_sign_out" /></Button>
-	</form>
-{/if}
+
+<div class="actions">
+	{#if data.actor}
+		<form use:enhance method="POST">
+			<Button><Translation key="main.to_sign_out" /></Button>
+		</form>
+	{:else}
+		<Button href={generatePath('/[lang]/sign-in/github', $page.params)} dataSvelteKitReload>
+			<Translation key="main.sign_in_with_github" />
+		</Button>
+	{/if}
+</div>
+
+<style>
+	.actions {
+		margin: var(--size-l) 0;
+	}
+</style>

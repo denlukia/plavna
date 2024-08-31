@@ -2,6 +2,7 @@ import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
+import { PUBLIC_HOST } from '$env/static/public';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
 import type { Actor } from '$lib/features/user/parsers';
@@ -25,8 +26,8 @@ export const lucia = new Lucia(adapter, {
 });
 
 export function getGitHubProvider(lang: SupportedLang) {
-	const base = dev ? `http://localhost:5173` : `https://plvn.app`;
-	const redirectURI = `${base}/api/github-callback/${lang}`;
+	const protocol = dev ? `http://` : `https://`;
+	const redirectURI = `${protocol}${PUBLIC_HOST}/api/github-callback/${lang}`;
 	return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, { redirectURI });
 }
 

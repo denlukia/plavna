@@ -1,8 +1,9 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import type { RequestEvent } from '@sveltejs/kit';
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
+import { generatePath } from '$lib/features/common/links';
 import { users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
@@ -35,6 +36,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			.where(eq(users.github_id, githubUser.id))
 			.get();
 
+		const username = githubUser.login;
+
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
 			const sessionCookie = lucia.createSessionCookie(session.id);
@@ -48,7 +51,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			await db.insert(users).values({
 				id: userId,
 				github_id: githubUser.id,
-				username: githubUser.login
+				username
 			});
 
 			const session = await lucia.createSession(userId, {});
@@ -61,7 +64,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: `/${event.params.lang}/`
+				Location: generatePath('/[lang]/[username]/pages', event.params, {
+					username
+				})
 			}
 		});
 	} catch (e) {

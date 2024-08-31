@@ -80,7 +80,7 @@ async function update_slug(event: RequestEvent) {
 
 	redirect(
 		302,
-		generatePath(`/[lang]/[username]/[pageslug]/[articleslug]/edit`, params, {
+		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', params, {
 			articleslug: result.slug
 		})
 	);

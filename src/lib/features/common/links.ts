@@ -2,7 +2,7 @@ import { defaultLang } from '../i18n/utils';
 
 export function generatePath(
 	template: string,
-	pageparams: Record<string, string>,
+	pageparams: Record<string, string | undefined>,
 	additionalReplacements?: { [key: string]: string | undefined }
 ) {
 	Object.entries({ ...pageparams, ...additionalReplacements }).forEach(([key, value]) => {

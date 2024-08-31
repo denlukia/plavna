@@ -17,7 +17,7 @@
 	let { publish_time } = $derived(article);
 
 	let link = $derived(
-		generatePath(`/[lang]/[username]/[articleslug]`, $page.params, {
+		generatePath('/[lang]/[username]/[articleslug]', $page.params, {
 			articleslug: article.slug
 		})
 	);
