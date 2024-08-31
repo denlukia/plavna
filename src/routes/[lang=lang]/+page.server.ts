@@ -1,5 +1,3 @@
-// routes/+page.server.ts
-import { redirect } from '@sveltejs/kit';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import { lucia } from '$lib/services/auth';
 
@@ -27,7 +25,5 @@ export const actions: Actions = {
 			path: '.',
 			...sessionCookie.attributes
 		});
-
-		redirect(302, './login');
 	}
 };

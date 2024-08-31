@@ -75,7 +75,7 @@
 	.button {
 		padding: 0;
 		transition: var(--transition-button);
-		display: block;
+		display: inline-block;
 	}
 
 	.content {

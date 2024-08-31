@@ -7,9 +7,8 @@ import { getGitHubProvider } from '$lib/services/auth';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const state = generateState();
-	const url = await getGitHubProvider(event.params.lang as SupportedLang).createAuthorizationURL(
-		state
-	);
+	const provider = getGitHubProvider(event.params.lang as SupportedLang);
+	const url = await provider.createAuthorizationURL(state);
 
 	event.cookies.set('github_oauth_state', state, {
 		path: '/',

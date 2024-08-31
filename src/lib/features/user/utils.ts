@@ -9,6 +9,9 @@ export async function getSafeUserData(
 ): Promise<User | null> {
 	if (!username) return null;
 	const allData = await db.select().from(users).where(eq(users.username, username)).get();
+
+	if (!allData) return null;
+
 	const safeData = safeUserData.parse(allData);
 
 	return safeData;

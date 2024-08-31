@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 
+	import Translation from '../i18n/Translation.svelte';
 	import { defaultLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';
 

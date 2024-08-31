@@ -11,21 +11,21 @@ export const UK = {
 		or: 'або',
 		save: 'Зберегти'
 	},
-	auth: {
-		signup: 'Реєстрація',
-		login: 'Вхід',
-		email: 'Електронна пошта',
-		password: 'Пароль'
-	},
-	login: {
-		to_login: 'Увійти',
-		sign_in_with_github: 'Увійти з GitHub'
-	},
-	signup: {
-		to_signup: 'Зареєструватися'
-	},
+	// auth: {
+	// 	signup: 'Реєстрація',
+	// 	login: 'Вхід',
+	// 	email: 'Електронна пошта',
+	// 	password: 'Пароль'
+	// },
+	// login: {
+	// 	to_login: 'Увійти'
+	// },
+	// signup: {
+	// 	to_signup: 'Зареєструватися'
+	// },
 	main: {
 		landing: 'Лендинг',
+		sign_in_with_github: 'Увійти з GitHub',
 		to_sign_out: 'Вийти'
 	},
 	pages_list: {
