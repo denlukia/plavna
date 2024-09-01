@@ -64,6 +64,7 @@
 	.action-wrapper {
 		position: absolute;
 		bottom: calc(var(--size-m-to-l) * -1);
+		display: flex;
 	}
 	.action-wrapper.copy-code {
 		right: var(--size-m);

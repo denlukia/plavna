@@ -15,11 +15,11 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1(prettier@3.3.3)
       '@libsql/client':
-        specifier: ^0.9.0
-        version: 0.9.0
+        specifier: ^0.10.0
+        version: 0.10.0
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
-        version: 1.1.0(drizzle-orm@0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1))(lucia@3.2.0)
+        version: 1.1.0(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(lucia@3.2.0)
       '@sveltejs/adapter-vercel':
         specifier: ^5.4.3
         version: 5.4.3(@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
@@ -52,10 +52,10 @@ importers:
         version: 0.24.1
       drizzle-orm:
         specifier: ^0.33.0
-        version: 0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1)
+        version: 0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(zod@3.23.8)
       eslint:
         specifier: ^9.9.1
         version: 9.9.1
@@ -91,7 +91,7 @@ importers:
         version: 5.0.0-next.225
       svelte-check:
         specifier: ^3.8.6
-        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)
+        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)
       svelte-markdown:
         specifier: ^0.4.1
         version: 0.4.1(svelte@5.0.0-next.225)
@@ -850,11 +850,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@libsql/client@0.9.0':
-    resolution: {integrity: sha512-mT+91wtb8pxK9SWd566D5W2VUCemksUMqICRBtf0WXiS7XzNcQhWyrwYOnVrVmTSze/SCCsNNEKIkCRwk/pr2Q==}
+  '@libsql/client@0.10.0':
+    resolution: {integrity: sha512-2ERn08T4XOVx34yBtUPq0RDjAdd9TJ5qNH/izugr208ml2F94mk92qC64kXyDVQINodWJvp3kAdq6P4zTtCZ7g==}
 
-  '@libsql/core@0.9.0':
-    resolution: {integrity: sha512-rCsS/EC32K8ARjDQJGqauGZmkR6orOOY4I7898PyQ/mmltAkMwRgz5kjEmYRZ42o7mP0ayJfbw28qgv7SRFEgg==}
+  '@libsql/core@0.10.0':
+    resolution: {integrity: sha512-rqynAXGaiSpTsykOZdBtI1N4z4O+KZ6mt33K/aHeXAY0gSIfK/ctxuWa0Y1Bjo4FMz1idBTCXz4Ps5kITOvZZw==}
 
   '@libsql/darwin-arm64@0.3.19':
     resolution: {integrity: sha512-rmOqsLcDI65zzxlUOoEiPJLhqmbFsZF6p4UJQ2kMqB+Kc0Rt5/A1OAdOZ/Wo8fQfJWjR1IbkbpEINFioyKf+nQ==}
@@ -2285,15 +2285,21 @@ packages:
 
   libsql@0.3.19:
     resolution: {integrity: sha512-Aj5cQ5uk/6fHdmeW0TiXK42FqUlwx7ytmMLPSaUQPin5HKKKuUPD62MAbN4OEweGBBI7q1BekoEN4gPUEL6MZA==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   libsql@0.4.1:
     resolution: {integrity: sha512-qZlR9Yu1zMBeLChzkE/cKfoKV3Esp9cn9Vx5Zirn4AVhDWPcjYhKwbtJcMuHehgk3mH+fJr9qW+3vesBWbQpBg==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
+
+  lilconfig@3.1.2:
+    resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
+    engines: {node: '>=14'}
 
   locate-character@3.0.0:
     resolution: {integrity: sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==}
@@ -2570,6 +2576,24 @@ packages:
       postcss:
         optional: true
       ts-node:
+        optional: true
+
+  postcss-load-config@6.0.1:
+    resolution: {integrity: sha512-oPtTM4oerL+UXmx+93ytZVN82RrlY/wPUV8IeDxFrzIjXOLF1pN+EmKPLbubvKHT2HC20xXsCAH2Z+CKV6Oz/g==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      jiti: '>=1.21.0'
+      postcss: '>=8.0.9'
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      jiti:
+        optional: true
+      postcss:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
         optional: true
 
   postcss-safe-parser@6.0.0:
@@ -3646,9 +3670,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@libsql/client@0.9.0':
+  '@libsql/client@0.10.0':
     dependencies:
-      '@libsql/core': 0.9.0
+      '@libsql/core': 0.10.0
       '@libsql/hrana-client': 0.6.2
       js-base64: 3.7.7
       libsql: 0.4.1
@@ -3657,7 +3681,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@libsql/core@0.9.0':
+  '@libsql/core@0.10.0':
     dependencies:
       js-base64: 3.7.7
 
@@ -3723,9 +3747,9 @@ snapshots:
   '@libsql/win32-x64-msvc@0.4.1':
     optional: true
 
-  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1))(lucia@3.2.0)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(lucia@3.2.0)':
     dependencies:
-      drizzle-orm: 0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1)
+      drizzle-orm: 0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1)
       lucia: 3.2.0
 
   '@mapbox/node-pre-gyp@1.0.11':
@@ -4455,14 +4479,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1):
+  drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1):
     optionalDependencies:
-      '@libsql/client': 0.9.0
+      '@libsql/client': 0.10.0
       better-sqlite3: 11.2.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.33.0(@libsql/client@0.9.0)(better-sqlite3@11.2.1)
+      drizzle-orm: 0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1)
       zod: 3.23.8
 
   ecc-jsbn@0.1.2:
@@ -5079,6 +5103,9 @@ snapshots:
 
   lilconfig@2.1.0: {}
 
+  lilconfig@3.1.2:
+    optional: true
+
   locate-character@3.0.0: {}
 
   locate-path@6.0.0:
@@ -5308,6 +5335,13 @@ snapshots:
       yaml: 1.10.2
     optionalDependencies:
       postcss: 8.4.41
+
+  postcss-load-config@6.0.1(postcss@8.4.41):
+    dependencies:
+      lilconfig: 3.1.2
+    optionalDependencies:
+      postcss: 8.4.41
+    optional: true
 
   postcss-safe-parser@6.0.0(postcss@8.4.41):
     dependencies:
@@ -5583,14 +5617,14 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225):
+  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.225
-      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4)
+      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4)
       typescript: 5.5.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -5619,7 +5653,7 @@ snapshots:
       marked: 5.1.2
       svelte: 5.0.0-next.225
 
-  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4):
+  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -5630,7 +5664,7 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.25.2
       postcss: 8.4.41
-      postcss-load-config: 3.1.4(postcss@8.4.41)
+      postcss-load-config: 6.0.1(postcss@8.4.41)
       typescript: 5.5.4
 
   svelte@5.0.0-next.225:
