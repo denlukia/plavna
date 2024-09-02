@@ -41,6 +41,9 @@ importers:
       '@types/three':
         specifier: ^0.167.2
         version: 0.167.2
+      '@vercel/edge':
+        specifier: ^1.1.2
+        version: 1.1.2
       arctic:
         specifier: ^1.9.2
         version: 1.9.2
