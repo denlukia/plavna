@@ -30,7 +30,7 @@ import {
 } from '$lib/features/preview/parsers';
 import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/parsers';
 
-import type { Actions, RequestEvent } from '../../[articleslug=articleslug]/edit/$types';
+import type { Actions, RequestEvent } from '../../[articleslug]/edit/$types';
 
 async function switch_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(tagUpdateSchema));
@@ -79,7 +79,7 @@ async function update_slug(event: RequestEvent) {
 
 	redirect(
 		302,
-		generatePath('/[lang]/[username]/[prefixedpageslug]/[articleslug]/edit', params, {
+		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', params, {
 			articleslug: result.slug
 		})
 	);
@@ -226,7 +226,7 @@ async function delete_image(event: RequestEvent) {
 	await imageService.deleteRecord(form.data.id);
 }
 
-export const actions: Actions = {
+export const actions = {
 	update_translation,
 	switch_tag,
 	create_tag,
@@ -244,4 +244,4 @@ export const actions: Actions = {
 	create_image,
 	update_image,
 	delete_image
-};
+} satisfies Actions;

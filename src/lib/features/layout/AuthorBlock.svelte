@@ -14,22 +14,18 @@
 
 	let { actor }: Props = $props();
 
-	const lang = $derived(getLang($page.params.lang));
 	const pages = $derived([
 		{
-			routeId: '/[lang=lang]/[username]/articles',
-			href: `/${lang}/${actor.username}/articles`,
+			template: '/[lang]/[username]/articles',
 			translation: 'layout.my_items.articles'
 		} as const,
 		{
-			routeId: '/[lang=lang]/[username]/pages',
-			href: `/${lang}/${actor.username}/pages`,
+			template: '/[lang]/[username]/pages',
 			translation: 'layout.my_items.pages'
 		} as const
 	]);
 
-	let currentPageRouteId = $derived($page.route.id);
-	let currentPage = $derived(pages.find((page) => currentPageRouteId === page.routeId));
+	let currentPathname = $derived($page.url.pathname);
 </script>
 
 <Popup kind="list">
@@ -39,8 +35,11 @@
 		</span>
 	{/snippet}
 	{#snippet content()}
-		{#each pages as { href, translation, routeId }}
-			<Button {href} kind={currentPage?.routeId === routeId ? 'primary' : 'secondary'}>
+		{#each pages as { template, translation }}
+			<Button
+				href={generatePath(template, $page.params)}
+				kind={currentPathname === generatePath(template, $page.params) ? 'primary' : 'secondary'}
+			>
 				<Translation key={translation} />
 			</Button>
 		{/each}

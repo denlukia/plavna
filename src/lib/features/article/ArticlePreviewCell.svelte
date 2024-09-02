@@ -20,7 +20,7 @@
 <GridCell cols={meta.preview_columns} rows={meta.preview_rows}>
 	<a
 		class="article global-reset-link"
-		href={generatePath('/[lang]/[username]/[prefixedpageslug]/[articleslug]', params, {
+		href={generatePath('/[lang]/[username]/[pageslug]/[articleslug]', params, {
 			articleslug: meta.slug
 		})}
 	>

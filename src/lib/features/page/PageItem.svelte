@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { PAGE_SLUG_PREFIX } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -26,8 +27,8 @@
 	let { form, enhance } = superForm(deletionForm);
 
 	let link = $derived(
-		generatePath('/[lang]/[username]/[prefixedpageslug]', $page.params, {
-			prefixedpageslug: slug ? `page-${slug}` : ''
+		generatePath('/[lang]/[username]/[pageslug]', $page.params, {
+			pageslug: slug ? `${PAGE_SLUG_PREFIX}${slug}` : ''
 		})
 	);
 

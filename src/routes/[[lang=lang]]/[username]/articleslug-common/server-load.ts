@@ -1,10 +1,10 @@
-import type { PageServerLoad } from '../[articleslug=articleslug]/$types';
+import type { PageServerLoad } from '../[articleslug]/$types';
 
-export const load: PageServerLoad = async ({ params, locals: { articleService } }) => {
+export const load = (async ({ params, locals: { articleService } }) => {
 	const { translations, ...other } = await articleService.getOne(
 		params.username,
 		params.articleslug
 	);
 
 	return { ...other, recordsTranslations: translations };
-};
+}) satisfies PageServerLoad;
