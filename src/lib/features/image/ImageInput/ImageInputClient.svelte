@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/client';
+	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/images';
 	import type { ImagePathUpdateOrDeletion } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
-	import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
@@ -32,7 +32,7 @@
 	let imageHandler: ClientImageHandlerType | null = null;
 
 	async function getImageHandler() {
-		let { ClientImageHandler } = await import('@denlukia/plavna-common/client');
+		let { ClientImageHandler } = await import('@denlukia/plavna-common/images');
 		return new ClientImageHandler();
 	}
 
@@ -51,7 +51,7 @@
 		if (!actor) throw Error('Actor not found');
 
 		if (!imageHandler) imageHandler = await getImageHandler();
-		await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
+		await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 
 		// 2. Validate image
 		try {
@@ -93,7 +93,7 @@
 		// 2. Delete image from provider TODO
 		// if (!imageHandler) imageHandler = await getImageHandler();
 		// if (!imageHandler.provider)
-		// 	await imageHandler.setProviderAndUploader(actor, '/api/images/credentials');
+		// 	await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 
 		const lang = getLangFromLanguagedName(name);
 

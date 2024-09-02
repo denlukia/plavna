@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { selectProvider } from '@denlukia/plavna-common/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
@@ -11,11 +11,9 @@ export const load = async ({ params, locals }) => {
 
 	let hasValidCredentialsSet = false;
 	if (actor) {
-		try {
-			await new ServerImageHandler().setProviderAndUploader(actor);
+		const selectedProvider = selectProvider(actor);
+		if (selectedProvider) {
 			hasValidCredentialsSet = true;
-		} catch {
-			/**/
 		}
 	}
 

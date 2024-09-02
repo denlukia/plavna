@@ -4,7 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import {
 	GET_PAGE_CONFIG_COOKIE_OPTIONS,
 	PAGE_CONFIG_COOKIE_NAME,
-	SECTION_RECONFIG_PARAM_NAME
+	SECTION_RECONFIG_QUERY_PARAM_NAME
 } from '$lib/collections/constants';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
@@ -28,7 +28,7 @@ export const load = async ({ params, parent, locals: { pageService, actor }, coo
 	// 1. Update reader page config if present in query
 	let readerPageConfig = getReaderPageConfigFromCookies(cookies);
 
-	const reconfigRequestString = url.searchParams.get(SECTION_RECONFIG_PARAM_NAME);
+	const reconfigRequestString = url.searchParams.get(SECTION_RECONFIG_QUERY_PARAM_NAME);
 	const reconfigRequest = reconfigRequestString
 		? (JSON.parse(reconfigRequestString) as SectionReconfigRequest)
 		: undefined;

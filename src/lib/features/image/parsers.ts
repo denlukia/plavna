@@ -1,4 +1,4 @@
-import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { z } from 'zod';

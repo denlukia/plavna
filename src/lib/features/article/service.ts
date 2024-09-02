@@ -1,5 +1,5 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import type { ResultSet } from '@libsql/client';
 import { error } from '@sveltejs/kit';
 import { and, eq, isNotNull, or } from 'drizzle-orm';
@@ -7,6 +7,7 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
@@ -132,9 +133,11 @@ export class ArticleService {
 
 			let source = null;
 			try {
-				source = (await new ServerImageHandler().setProviderAndUploader(actor)).provider?.type;
+				const imageHandler = new ServerImageHandler();
+				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+				source = imageHandler.provider?.type;
 			} catch {
-				console.log('Error setting image uploader from user');
+				// TODO: Error
 			}
 			const [{ id: preview_image_1_id }, { id: preview_image_2_id }] = await Promise.all([
 				this.imageService.createRecord({ source }, trx),
@@ -426,7 +429,9 @@ export class ArticleService {
 
 		// TODO: Remake all such places to not call Image Handler if not uploading images
 		try {
-			const provider = (await new ServerImageHandler().setProviderAndUploader(actor)).provider;
+			const imageHandler = new ServerImageHandler();
+			await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+			const provider = imageHandler.provider;
 			if (provider) {
 				source = provider.type;
 				providerData = provider.data;
@@ -469,7 +474,7 @@ export class ArticleService {
 					const fieldNameTyped = fieldName as ArticlePreviewImageFileFieldNamesAll;
 					const { fieldNameWithIdPrefix, lang } = decomposeImageField(fieldNameTyped);
 					if (imageHandler && !keysForDeletion.find((k) => k === `delete_${fieldName}`)) {
-						await imageHandler.setProviderAndUploader(actor);
+						await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 						const record = await imageHandler.upload({
 							imageId: articleRecord[fieldNameWithIdPrefix],
 							lang

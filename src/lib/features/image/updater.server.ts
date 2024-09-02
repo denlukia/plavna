@@ -1,6 +1,7 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+import type { User } from 'lucia';
+import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 
 import type { ImageService } from './service';
 
@@ -8,26 +9,28 @@ export async function updateImages({
 	imagesKeys,
 	rawData,
 	data,
-	imageService
+	imageService,
+	actor
 }: {
 	imagesKeys: string[];
 	rawData: FormData;
 	data: { id: number; [key: string]: string | number | boolean | undefined };
 	imageService: ImageService;
+	actor: User;
 }) {
 	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandler>;
 	const imageHandledPromises = imagesKeys.map(async (key) => {
-		let fileIsValid = true;
+		let fileIsValid = false;
 		const entry = rawData.get(key);
 
 		if (entry) {
 			try {
-				imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
-					entry,
-					IMG_VALIDATION_CONFIG
-				);
+				const imageHandler = await new ServerImageHandler();
+				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+				imagesHandlers[key] = imageHandler;
+				fileIsValid = true;
 			} catch {
-				fileIsValid = false;
+				// TODO: Error for unsupported image
 			}
 		}
 
@@ -37,6 +40,7 @@ export async function updateImages({
 		if (markedForDeletion) {
 			await imageService.updatePath({ id: data.id }, lang);
 		} else if (fileIsValid) {
+			await imagesHandlers[key].setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 			const report = await imagesHandlers[key].upload({
 				imageId: data.id,
 				lang: lang
