@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@denlukia/adapter-vercel':
-        specifier: ^5.4.1
-        version: 5.4.1(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
+        specifier: ^5.4.2
+        version: 5.4.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
       '@denlukia/plavna-common':
         specifier: ^0.0.35
         version: 0.0.35(svelte@5.0.0-next.225)
@@ -210,8 +210,8 @@ packages:
     resolution: {integrity: sha512-zQ1ijeeCXVEh+aNL0RlmkPkG8HUiDcU2pzQQFjtbntgAczRASFzj4H+6+bV+dy1ntKR14I/DypeuRG1uma98iQ==}
     engines: {node: '>=6.9.0'}
 
-  '@denlukia/adapter-vercel@5.4.1':
-    resolution: {integrity: sha512-KKkRZEXdkbuTTmK3hv5XDdGgcaXNdWWNnGORYj6fRxllKMIyn+NE1MHJq5+WMwjDRtEmI8WW3rGjnyiHuvwFVg==, tarball: https://npm.pkg.github.com/download/@denlukia/adapter-vercel/5.4.1/a985286e431c68bab68725f91493a5585086c1df}
+  '@denlukia/adapter-vercel@5.4.2':
+    resolution: {integrity: sha512-qqLX/2LCUbOZX2ncP/CkfZtJ8DRD5OJsjWRNTiv86Ak0em0f3qMWHbdBvANHxKaA6CwosaTm6iZSO8ivJS3y7g==, tarball: https://npm.pkg.github.com/download/@denlukia/adapter-vercel/5.4.2/d37b8d9f1fc20cd7240593c0c89337527d97963f}
     peerDependencies:
       '@sveltejs/kit': ^2.4.0
 
@@ -3211,7 +3211,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@denlukia/adapter-vercel@5.4.1(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))':
+  '@denlukia/adapter-vercel@5.4.2(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))':
     dependencies:
       '@sveltejs/kit': 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
       '@vercel/edge': 1.1.2
