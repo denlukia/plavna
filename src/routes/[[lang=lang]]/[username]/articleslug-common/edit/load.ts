@@ -1,8 +1,8 @@
 import { enrichPreviewFamilies } from '$lib/features/preview/enricher';
 
-import type { PageLoad } from '../../[articleslug=articleslug]/edit/$types';
+import type { PageLoad } from '../../[articleslug]/edit/$types';
 
-export const load: PageLoad = async ({ data }) => {
+export const load = (async ({ data }) => {
 	const { previewFamilies, ...pageData } = structuredClone(data);
 
 	const enriched = await enrichPreviewFamilies(
@@ -12,4 +12,4 @@ export const load: PageLoad = async ({ data }) => {
 	);
 
 	return { ...pageData, previewFamilies: enriched };
-};
+}) satisfies PageLoad;

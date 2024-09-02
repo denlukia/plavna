@@ -27,7 +27,7 @@
 	let publishTime = $derived(article.publish_time);
 
 	let viewHref = $derived(
-		generatePath('/[lang]/[username]/[prefixedpageslug]/[articleslug]', $page.params)
+		generatePath('/[lang]/[username]/[pageslug]/[articleslug]', $page.params)
 	);
 </script>
 

@@ -6,7 +6,13 @@
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
 
-	let { data } = $props();
+	import type { PageData } from '../$types';
+
+	type Props = {
+		data: PageData;
+	};
+
+	let { data }: Props = $props();
 
 	let {
 		sections: { items, creationForm }

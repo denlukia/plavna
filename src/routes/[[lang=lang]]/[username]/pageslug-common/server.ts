@@ -9,9 +9,9 @@ import {
 } from '$lib/features/page/utils';
 import type { SectionReconfigRequest } from '$lib/features/section/types';
 
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '../$types';
 
-export const POST: RequestHandler = async ({ request, cookies, params, locals, url }) => {
+export const POST = (async ({ request, cookies, params, locals, url }) => {
 	const reconfigRequest: SectionReconfigRequest = await request.json();
 	const { sectionId } = reconfigRequest;
 
@@ -34,4 +34,4 @@ export const POST: RequestHandler = async ({ request, cookies, params, locals, u
 	);
 
 	return json(result);
-};
+}) satisfies RequestHandler;

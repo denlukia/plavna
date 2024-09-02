@@ -37,10 +37,10 @@ export const MAX_COLS_IN_SECTION = 3;
 export const MAX_ROWS_IN_SECTION = 3;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 
-// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, prefixedpageslug: string | undefined) => {
+// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
 // 	let result = `page-config-${username}`;
-// 	if (prefixedpageslug) {
-// 		result += `-${prefixedpageslug}`;
+// 	if (pageslug) {
+// 		result += `-${pageslug}`;
 // 	}
 // 	return result;
 // };
@@ -61,3 +61,5 @@ export const imageSourceToEndpointKeyInUser = {
 } as const satisfies Record<string, UserKeys>;
 
 export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;
+
+export const PAGE_SLUG_PREFIX = 'p-';

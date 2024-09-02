@@ -4,18 +4,15 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
-	import GridCell from '$lib/design/components/Grid/Column.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
-	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 
-	import type { PageData } from '../../../routes/[lang=lang]/[username]/[[prefixedpageslug=prefixedpageslug]]/[articleslug]/edit/$types';
+	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/p-[pageslug]/[articleslug]/edit/$types';
 	import SideBox from '../common/components/SideBox.svelte';
 	import type { SystemTranslationKey } from '../i18n/types';
 	import { getImageById } from '../image/utils';

@@ -1,6 +1,6 @@
-import type { PageLoad } from '../[articleslug=articleslug]/$types';
+import type { PageLoad } from '../[articleslug]/$types';
 
-export const load: PageLoad = async ({ data }) => {
+export const load = (async ({ data }) => {
 	data = structuredClone(data);
 	// let previewType = data.previewType;
 	// if (previewType !== null) {
@@ -8,4 +8,4 @@ export const load: PageLoad = async ({ data }) => {
 	// 	previewType.component_editor = await getPreviewComponent(previewType.url, 'viewer');
 	// }
 	return { ...data };
-};
+}) satisfies PageLoad;

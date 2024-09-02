@@ -1,8 +1,8 @@
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 
-import type { PageServerLoad } from '../../[articleslug=articleslug]/edit/$types';
+import type { PageServerLoad } from '../../[articleslug]/edit/$types';
 
-export const load: PageServerLoad = async ({ params, parent, locals: { articleService } }) => {
+export const load = (async ({ params, parent, locals: { articleService } }) => {
 	const { translations: newTranslations, ...other } = await articleService.loadEditor(
 		params.username,
 		params.articleslug
@@ -17,4 +17,4 @@ export const load: PageServerLoad = async ({ params, parent, locals: { articleSe
 		},
 		recordsTranslations: newTranslations
 	};
-};
+}) satisfies PageServerLoad;
