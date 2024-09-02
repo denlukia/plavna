@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
-	import { getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
+	import { getLang, getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
 
 	import Markdown from '../markdown/Markdown.svelte';
 	import type { TranslationSelect, TranslationUpdate } from './parsers';
@@ -34,7 +34,7 @@
 	);
 
 	function getTranslation() {
-		if (superValidated) return superValidated.data[$page.params.lang as SupportedLang];
+		if (superValidated) return superValidated.data[getLang($page.params.lang)];
 		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);
 		if (typeof recordKey === 'number')
 			return getRecordTranslation(recordKey, $page.data.recordsTranslations);

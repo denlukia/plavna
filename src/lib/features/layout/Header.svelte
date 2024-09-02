@@ -7,7 +7,7 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
-	import { defaultLang } from '../i18n/utils';
+	import { defaultLang, getLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';
 
 	type Props = {
@@ -17,7 +17,7 @@
 	let { actor }: Props = $props();
 
 	function generateLangURL(currentURL: string, newLanguage: string): string {
-		let destinationURL = currentURL.replace(`/${$page.params.lang}`, '');
+		let destinationURL = currentURL.replace(`/${getLang($page.params.lang)}`, '');
 
 		if (newLanguage !== defaultLang) {
 			destinationURL = `/${newLanguage}${destinationURL}`;
@@ -31,13 +31,13 @@
 <header>
 	<Popup kind="list">
 		{#snippet label()}
-			{$page.params.lang.toUpperCase()}
+			{getLang($page.params.lang).toUpperCase()}
 		{/snippet}
 		{#snippet content()}
 			{#each supportedLangs as language}
 				<Button
 					href={generateLangURL($page.url.pathname, language)}
-					kind={language === $page.params.lang ? 'primary' : 'secondary'}
+					kind={language === getLang($page.params.lang) ? 'primary' : 'secondary'}
 				>
 					{language.toUpperCase()}
 				</Button>

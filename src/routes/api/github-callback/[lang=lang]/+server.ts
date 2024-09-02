@@ -1,9 +1,9 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { type RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
 import { generatePath } from '$lib/features/common/links';
+import { getLang } from '$lib/features/i18n/utils';
 import { users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
@@ -20,9 +20,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	}
 
 	try {
-		const tokens = await getGitHubProvider(
-			event.params.lang as SupportedLang
-		).validateAuthorizationCode(code);
+		const tokens = await getGitHubProvider(getLang(event.params.lang)).validateAuthorizationCode(
+			code
+		);
 		const githubUserResponse = await fetch('https://api.github.com/user', {
 			headers: {
 				Authorization: `Bearer ${tokens.accessToken}`
