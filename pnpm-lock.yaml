@@ -7,11 +7,10 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@denlukia/adapter-vercel':
         specifier: link:src/lib/adapter-vercel
         version: link:src/lib/adapter-vercel
-    devDependencies:
       '@denlukia/plavna-common':
         specifier: ^0.0.35
         version: 0.0.35(svelte@5.0.0-next.225)
