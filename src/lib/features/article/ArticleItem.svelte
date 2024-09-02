@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { PUBLIC_VERCEL_URL } from '$env/static/public';
+	import { PUBLIC_HOST } from '$env/static/public';
 	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Card from '../common/components/Card.svelte';
@@ -23,7 +23,7 @@
 	);
 </script>
 
-<Card {link} linkText="{PUBLIC_VERCEL_URL}{link}">
+<Card {link} linkText="{PUBLIC_HOST}{link}">
 	{#snippet title()}
 		<Translation recordKey={article.title_translation_key} />
 	{/snippet}
