@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@sveltejs/adapter-vercel':
-        specifier: link:src/lib/adapter-vercel
-        version: link:src/lib/adapter-vercel
-      imagekit:
-        specifier: ^5.1.0
-        version: 5.1.0
     devDependencies:
       '@denlukia/plavna-common':
         specifier: ^0.0.35
@@ -27,6 +20,9 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
         version: 1.1.0(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(lucia@3.2.0)
+      '@sveltejs/adapter-vercel':
+        specifier: link:src/lib/adapter-vercel
+        version: link:src/lib/adapter-vercel
       '@sveltejs/kit':
         specifier: ^2.5.25
         version: 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
@@ -72,6 +68,9 @@ importers:
       globals:
         specifier: ^15.9.0
         version: 15.9.0
+      imagekit:
+        specifier: ^5.1.0
+        version: 5.1.0
       lucia:
         specifier: ^3.2.0
         version: 3.2.0
