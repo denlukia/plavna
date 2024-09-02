@@ -19,7 +19,7 @@ export default function middleware(request) {
 		// which by some code before middlewares get converted to ?%2Fcreate_todo
 		// we have to fix that
 		const fixedURLSstring = newURLSTring.replace('%2F', '/');
-		console.log('Fixed outgoing');
+		console.log('Fixed outgoing', fixedURLSstring);
 
 		return rewrite(fixedURLSstring);
 	} else {
