@@ -6,8 +6,6 @@
 	import { generatePath } from '$lib/features/common/links.js';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	import { getLang } from '../i18n/utils';
-
 	type Props = {
 		actor: User;
 	};
@@ -37,8 +35,10 @@
 	{#snippet content()}
 		{#each pages as { template, translation }}
 			<Button
-				href={generatePath(template, $page.params)}
-				kind={currentPathname === generatePath(template, $page.params) ? 'primary' : 'secondary'}
+				href={generatePath(template, $page.params, { username: actor.username })}
+				kind={currentPathname === generatePath(template, $page.params, { username: actor.username })
+					? 'primary'
+					: 'secondary'}
 			>
 				<Translation key={translation} />
 			</Button>
