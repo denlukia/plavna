@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { PUBLIC_HOST } from '$env/static/public';
+import { PUBLIC_VERCEL_URL } from '$env/static/public';
 import type { User } from 'lucia';
 
 export const SECTIONS_PER_LOAD = 3;
@@ -60,4 +60,4 @@ export const imageSourceToEndpointKeyInUser = {
 	imagekit: 'imagekit_url_endpoint'
 } as const satisfies Record<string, UserKeys>;
 
-export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;
+export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_VERCEL_URL}/api/images/credentials`;
