@@ -1,7 +1,6 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"moduleResolution": "Bundler",
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,
@@ -10,12 +9,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"isolatedModules": true,
-		"baseUrl": ".",
-		"paths": {
-			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"]
-		}
+		"moduleResolution": "bundler"
+		// "isolatedModules": true
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

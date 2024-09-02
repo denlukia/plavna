@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { env } from '$env/dynamic/public';
+import { PUBLIC_HOST } from '$env/static/public';
 import type { User } from 'lucia';
 
 export const SECTIONS_PER_LOAD = 3;
@@ -44,9 +44,9 @@ export const ARTISTIC_OVERFLOW_PADDING = 20;
 // 	}
 // 	return result;
 // };
-export const PAGE_CONFIG_COOKIE_NAME = 'page-config';
+export const PAGE_CONFIG_COOKIE_NAME = 'page_config';
 
-export const SECTION_RECONFIG_PARAM_NAME = 'section-reconfig';
+export const SECTION_RECONFIG_QUERY_PARAM_NAME = 'section_reconfig';
 
 export const GET_PAGE_CONFIG_COOKIE_OPTIONS = (path: string) =>
 	({
@@ -59,3 +59,5 @@ type UserKeys = keyof User;
 export const imageSourceToEndpointKeyInUser = {
 	imagekit: 'imagekit_url_endpoint'
 } as const satisfies Record<string, UserKeys>;
+
+export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;

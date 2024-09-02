@@ -1,7 +1,8 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 import { error } from '@sveltejs/kit';
 import { eq, getTableColumns } from 'drizzle-orm';
 import type { User as LuciaUser } from 'lucia';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
 import type { ImageSelect } from '../image/parsers';
@@ -33,7 +34,8 @@ export class ActorService {
 	}
 	async updateImageProvider(providerData: ImageProviderUpdate) {
 		const actor = await this.getOrThrow();
-		await new ServerImageHandler().setProviderAndUploader(providerData);
+		const imageHandler = new ServerImageHandler();
+		await imageHandler.setProviderAndUploader(providerData, IMAGE_CREDENTIALS_PATH);
 		return db.update(users).set(providerData).where(eq(users.id, actor.id));
 	}
 	async deleteImageProvider() {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
-	import { SECTION_RECONFIG_PARAM_NAME } from '$lib/collections/constants';
+	import { SECTION_RECONFIG_QUERY_PARAM_NAME } from '$lib/collections/constants';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
 
@@ -32,7 +32,7 @@
 	);
 	let reconfigRequestLink = $derived.by(() => {
 		const url = new URL($page.url.href);
-		url.searchParams.set(SECTION_RECONFIG_PARAM_NAME, JSON.stringify(reconfigRequest));
+		url.searchParams.set(SECTION_RECONFIG_QUERY_PARAM_NAME, JSON.stringify(reconfigRequest));
 		return url.toString();
 	});
 

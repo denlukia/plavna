@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -42,8 +42,8 @@ async function switch_tag(event: RequestEvent) {
 	try {
 		await tagService.switchChecked(form.data, articleslug);
 		form.data.checked = !form.data.checked;
-	} catch (err) {
-		console.log('Tag switching error: ', err);
+	} catch {
+		// TODO: Error
 	}
 
 	return { form };
@@ -105,11 +105,13 @@ async function update_preview(event: RequestEvent) {
 		const entry = formData.get(key);
 		if (entry) {
 			try {
-				imagesHandlers[key] = await new ServerImageHandler().setImageFromEntry(
-					entry,
-					IMG_VALIDATION_CONFIG
-				);
-			} catch (error) {}
+				const imageHandler = await new ServerImageHandler();
+				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+				imagesHandlers[key] = imageHandler;
+			} catch (error) {
+				// TODO: Error for unsupported image
+				fail(400, { form });
+			}
 		} else {
 			imagesHandlers[key] = null;
 		}
@@ -128,7 +130,8 @@ async function create_preview_template(event: RequestEvent) {
 	let imageHandler: ServerImageHandler | null = null;
 	if (entry) {
 		try {
-			imageHandler = await new ServerImageHandler().setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+			imageHandler = await new ServerImageHandler();
+			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch (error) {
 			// TODO: Error for unsupported image
 			fail(400, { form });
@@ -148,7 +151,8 @@ async function update_preview_template(event: RequestEvent) {
 	let imageHandler: ServerImageHandler | null = null;
 	if (entry) {
 		try {
-			imageHandler = await new ServerImageHandler().setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
+			imageHandler = await new ServerImageHandler();
+			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch (error) {
 			// TODO: Error for unsupported image
 			fail(400, { form });
@@ -206,9 +210,13 @@ async function update_image(event: RequestEvent) {
 	const form = await superValidate(formData, zod(imageUpdateFormSchema));
 	if (!form.valid) fail(400, { form });
 
-	const { imageService } = event.locals;
+	const { imageService, actorService } = event.locals;
+
+	const actor = await actorService.getOrThrow();
+
 	const imagesKeys = Object.keys(imageUpdateFileFields);
-	await updateImages({ imagesKeys, imageService, rawData: formData, data: form.data });
+
+	await updateImages({ imagesKeys, imageService, rawData: formData, data: form.data, actor });
 }
 
 async function delete_image(event: RequestEvent) {

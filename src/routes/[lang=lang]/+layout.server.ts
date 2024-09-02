@@ -1,6 +1,7 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/server';
+import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
 import { imageProviderUpdateFormSchema } from '$lib/features/image/parsers';
 import { getSafeUserData } from '$lib/features/user/utils.js';
@@ -12,10 +13,11 @@ export const load = async ({ params, locals }) => {
 	let hasValidCredentialsSet = false;
 	if (actor) {
 		try {
-			await new ServerImageHandler().setProviderAndUploader(actor);
+			const imageHandler = new ServerImageHandler();
+			await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 			hasValidCredentialsSet = true;
-		} catch {
-			/**/
+		} catch (e) {
+			console.log(e);
 		}
 	}
 

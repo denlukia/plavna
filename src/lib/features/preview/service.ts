@@ -1,6 +1,7 @@
-import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
@@ -41,7 +42,8 @@ export class PreviewService {
 			const [{ key }] = await this.translationService.create([translation], 'disallow-empty', trx);
 			let imageId: ImageSelect['id'] | null = null;
 			if (imageHandler) {
-				const source = (await imageHandler.setProviderAndUploader(actor)).provider?.type;
+				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+				const source = imageHandler.provider?.type;
 				({ id: imageId } = await this.imageService.createRecord({ source }, trx));
 				const { record } = await imageHandler.upload({ imageId, lang: null });
 				await this.imageService.updatePath(record, null, trx);
@@ -83,8 +85,8 @@ export class PreviewService {
 					.innerJoin(images, eq(images.id, previewTemplates.image_id))
 					.where(whereCondition)
 					.get();
-				const source = (await imageHandler.setProviderAndUploader(actor)).provider?.type;
-
+				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+				const source = imageHandler.provider?.type;
 				let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 				if (!imageId) {
 					({ id: imageId } = await this.imageService.createRecord({ source }, trx));

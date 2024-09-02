@@ -27,7 +27,13 @@
 </script>
 
 <div class="input-wrapper">
-	<form class="form" method="post" action="?/update_image" use:enhance>
+	<form
+		class="form"
+		method="post"
+		action="?/update_image"
+		enctype="multipart/form-data"
+		use:enhance
+	>
 		<LanguagedImageInput name="image" bind:image clientUpload />
 		<input name="id" type="hidden" bind:value={$form.id} />
 		{#if showUpdateButton}

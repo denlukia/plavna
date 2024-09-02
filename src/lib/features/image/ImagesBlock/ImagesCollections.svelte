@@ -73,12 +73,6 @@
 </SideBox>
 
 <style>
-	.leading {
-		display: flex;
-		align-items: center;
-		gap: var(--size-m);
-	}
-
 	.list-wrapper {
 		display: flex;
 		gap: var(--size-m);
@@ -86,6 +80,7 @@
 		flex-wrap: wrap;
 	}
 	.image-form-wrapper {
+		width: 100%;
 		margin-bottom: var(--size-xl);
 	}
 </style>

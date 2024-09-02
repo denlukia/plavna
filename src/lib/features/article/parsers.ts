@@ -1,4 +1,4 @@
-import type { ServerImageHandler } from '@denlukia/plavna-common/server';
+import type { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
