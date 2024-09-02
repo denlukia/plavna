@@ -7,11 +7,10 @@ settings:
 importers:
 
   .:
-    dependencies:
-      imagekit:
-        specifier: ^5.1.0
-        version: 5.1.0
     devDependencies:
+      '@denlukia/adapter-vercel':
+        specifier: ^5.4.1
+        version: 5.4.1(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
       '@denlukia/plavna-common':
         specifier: ^0.0.35
         version: 0.0.35(svelte@5.0.0-next.225)
@@ -24,9 +23,6 @@ importers:
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
         version: 1.1.0(drizzle-orm@0.33.0(@libsql/client@0.10.0)(better-sqlite3@11.2.1))(lucia@3.2.0)
-      '@sveltejs/adapter-vercel':
-        specifier: ^5.4.3
-        version: 5.4.3(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
       '@sveltejs/kit':
         specifier: ^2.5.25
         version: 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
@@ -45,6 +41,9 @@ importers:
       '@types/three':
         specifier: ^0.167.2
         version: 0.167.2
+      '@vercel/edge':
+        specifier: ^1.1.2
+        version: 1.1.2
       arctic:
         specifier: ^1.9.2
         version: 1.9.2
@@ -72,6 +71,9 @@ importers:
       globals:
         specifier: ^15.9.0
         version: 15.9.0
+      imagekit:
+        specifier: ^5.1.0
+        version: 5.1.0
       lucia:
         specifier: ^3.2.0
         version: 3.2.0
@@ -95,7 +97,7 @@ importers:
         version: 5.0.0-next.225
       svelte-check:
         specifier: ^3.8.6
-        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)
+        version: 3.8.6(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)
       svelte-markdown:
         specifier: ^0.4.1
         version: 0.4.1(svelte@5.0.0-next.225)
@@ -207,6 +209,11 @@ packages:
   '@babel/types@7.25.4':
     resolution: {integrity: sha512-zQ1ijeeCXVEh+aNL0RlmkPkG8HUiDcU2pzQQFjtbntgAczRASFzj4H+6+bV+dy1ntKR14I/DypeuRG1uma98iQ==}
     engines: {node: '>=6.9.0'}
+
+  '@denlukia/adapter-vercel@5.4.1':
+    resolution: {integrity: sha512-KKkRZEXdkbuTTmK3hv5XDdGgcaXNdWWNnGORYj6fRxllKMIyn+NE1MHJq5+WMwjDRtEmI8WW3rGjnyiHuvwFVg==, tarball: https://npm.pkg.github.com/download/@denlukia/adapter-vercel/5.4.1/a985286e431c68bab68725f91493a5585086c1df}
+    peerDependencies:
+      '@sveltejs/kit': ^2.4.0
 
   '@denlukia/plavna-common@0.0.35':
     resolution: {integrity: sha512-cqtSHAXHizsFUw1nacyOdpd+iZ4Qn2Cthg1WCzIdsOOCgPZ0X9NRv07ngDcCGgRBhFr5fM1WOY6btxckCqTQAw==, tarball: https://npm.pkg.github.com/download/@denlukia/plavna-common/0.0.35/79c1652b0bb58bd8278141dfad15c61178e7fd62}
@@ -1245,11 +1252,6 @@ packages:
   '@sodaru/yup-to-json-schema@2.0.1':
     resolution: {integrity: sha512-lWb0Wiz8KZ9ip/dY1eUqt7fhTPmL24p6Hmv5Fd9pzlzAdw/YNcWZr+tiCT4oZ4Zyxzi9+1X4zv82o7jYvcFxYA==}
 
-  '@sveltejs/adapter-vercel@5.4.3':
-    resolution: {integrity: sha512-srZBkMpeaa7lflO1ZGdKTW3jWHscE9rdAkyxgRlVMVyugjcPOZ3dcpEfpoM4wtVCbpEOdHniWqQR9yL+zs4ybA==}
-    peerDependencies:
-      '@sveltejs/kit': ^2.4.0
-
   '@sveltejs/kit@2.5.25':
     resolution: {integrity: sha512-5hBSEN8XEjDZ5+2bHkFh8Z0QyOk0C187cyb12aANe1c8aeKbfu5ZD5XaC2vEH4h0alJFDXPdUkXQBmeeXeMr1A==}
     engines: {node: '>=18.13'}
@@ -1372,6 +1374,9 @@ packages:
   '@typescript-eslint/visitor-keys@8.2.0':
     resolution: {integrity: sha512-sbgsPMW9yLvS7IhCi8IpuK1oBmtbWUNP+hBdwl/I9nzqVsszGnNGti5r9dUtF5RLivHUFFIdRvLiTsPhzSyJ3Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@vercel/edge@1.1.2':
+    resolution: {integrity: sha512-wt5SnhsMahWX8U9ZZhFUQoiXhMn/CUxA5xeMdZX1cwyOL1ZbDR3rNI8HRT9RSU73nDxeF6jlnqJyp/0Jy0VM2A==}
 
   '@vercel/nft@0.27.3':
     resolution: {integrity: sha512-oySTdDSzUAFDXpsSLk9Q943o+/Yu/+TCFxnehpFQEf/3khi2stMpTHPVNwFdvZq/Z4Ky93lE+MGHpXCRpMkSCA==}
@@ -2271,10 +2276,6 @@ packages:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
 
-  lilconfig@3.1.2:
-    resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
-    engines: {node: '>=14'}
-
   locate-character@3.0.0:
     resolution: {integrity: sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==}
 
@@ -2542,24 +2543,6 @@ packages:
       postcss:
         optional: true
       ts-node:
-        optional: true
-
-  postcss-load-config@6.0.1:
-    resolution: {integrity: sha512-oPtTM4oerL+UXmx+93ytZVN82RrlY/wPUV8IeDxFrzIjXOLF1pN+EmKPLbubvKHT2HC20xXsCAH2Z+CKV6Oz/g==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      jiti: '>=1.21.0'
-      postcss: '>=8.0.9'
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      jiti:
-        optional: true
-      postcss:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
         optional: true
 
   postcss-safe-parser@6.0.0:
@@ -3227,6 +3210,16 @@ snapshots:
       '@babel/helper-string-parser': 7.24.8
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
+
+  '@denlukia/adapter-vercel@5.4.1(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))':
+    dependencies:
+      '@sveltejs/kit': 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
+      '@vercel/edge': 1.1.2
+      '@vercel/nft': 0.27.3
+      esbuild: 0.21.5
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
 
   '@denlukia/plavna-common@0.0.35(svelte@5.0.0-next.225)':
     dependencies:
@@ -3933,15 +3926,6 @@ snapshots:
   '@sodaru/yup-to-json-schema@2.0.1':
     optional: true
 
-  '@sveltejs/adapter-vercel@5.4.3(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))':
-    dependencies:
-      '@sveltejs/kit': 2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
-      '@vercel/nft': 0.27.3
-      esbuild: 0.21.5
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
   '@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0))
@@ -4107,6 +4091,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.2.0
       eslint-visitor-keys: 3.4.3
+
+  '@vercel/edge@1.1.2': {}
 
   '@vercel/nft@0.27.3':
     dependencies:
@@ -5035,9 +5021,6 @@ snapshots:
 
   lilconfig@2.1.0: {}
 
-  lilconfig@3.1.2:
-    optional: true
-
   locate-character@3.0.0: {}
 
   locate-path@6.0.0:
@@ -5257,13 +5240,6 @@ snapshots:
       yaml: 1.10.2
     optionalDependencies:
       postcss: 8.4.41
-
-  postcss-load-config@6.0.1(postcss@8.4.41):
-    dependencies:
-      lilconfig: 3.1.2
-    optionalDependencies:
-      postcss: 8.4.41
-    optional: true
 
   postcss-safe-parser@6.0.0(postcss@8.4.41):
     dependencies:
@@ -5521,14 +5497,14 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225):
+  svelte-check@3.8.6(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.225
-      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4)
+      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4)
       typescript: 5.5.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -5557,7 +5533,7 @@ snapshots:
       marked: 5.1.2
       svelte: 5.0.0-next.225
 
-  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@6.0.1(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4):
+  svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss-load-config@3.1.4(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.225)(typescript@5.5.4):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -5568,7 +5544,7 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.25.2
       postcss: 8.4.41
-      postcss-load-config: 6.0.1(postcss@8.4.41)
+      postcss-load-config: 3.1.4(postcss@8.4.41)
       typescript: 5.5.4
 
   svelte@5.0.0-next.225:

@@ -15,17 +15,18 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
+		"@denlukia/adapter-vercel": "^5.4.1",
 		"@denlukia/plavna-common": "^0.0.35",
 		"@ianvs/prettier-plugin-sort-imports": "^4.3.1",
 		"@libsql/client": "^0.10.0",
 		"@lucia-auth/adapter-drizzle": "^1.1.0",
-		"@sveltejs/adapter-vercel": "^5.4.3",
 		"@sveltejs/kit": "^2.5.25",
 		"@sveltejs/vite-plugin-svelte": "4.0.0-next.6",
 		"@sveltejs/vite-plugin-svelte-inspector": "3.0.0-next.3",
 		"@types/eslint": "^9.6.0",
 		"@types/node": "^22.5.0",
 		"@types/three": "^0.167.2",
+		"@vercel/edge": "^1.1.2",
 		"arctic": "^1.9.2",
 		"better-sqlite3": "^11.2.1",
 		"drizzle-kit": "^0.24.1",
@@ -35,6 +36,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.43.0",
 		"globals": "^15.9.0",
+		"imagekit": "^5.1.0",
 		"lucia": "^3.2.0",
 		"marked": "7.0.5",
 		"nanoid": "^5.0.7",
@@ -53,8 +55,5 @@
 		"zod": "^3.23.8"
 	},
 	"type": "module",
-	"packageManager": "pnpm@9.7.1",
-	"dependencies": {
-		"imagekit": "^5.1.0"
-	}
+	"packageManager": "pnpm@9.7.1"
 }
