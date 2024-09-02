@@ -1,5 +1,6 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { redirect, type RequestEvent } from '@sveltejs/kit';
+import type { Config } from '@sveltejs/adapter-vercel';
+import { type RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
@@ -7,6 +8,8 @@ import { generatePath } from '$lib/features/common/links';
 import { users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
+
+export const config: Config = { runtime: 'edge', regions: ['fra1'] };
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');

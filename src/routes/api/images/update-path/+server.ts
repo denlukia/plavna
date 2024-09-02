@@ -1,7 +1,9 @@
 import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
 import type { ImagePathUpdateOrDeletion, SupportedLang } from '@denlukia/plavna-common/types';
-import { error, json } from '@sveltejs/kit';
+import { error, json, type Config } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+
+export const config: Config = { runtime: 'edge', regions: ['fra1'] };
 
 export const POST = async ({ request, locals, cookies }) => {
 	const body: ImagePathUpdateOrDeletion = await request.json();
