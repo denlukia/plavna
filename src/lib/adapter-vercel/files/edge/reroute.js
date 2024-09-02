@@ -10,10 +10,18 @@ export default function middleware(request) {
 	console.log('Incoming:', incoming);
 	const pathname = reroute({ url: new URL(incoming) });
 	if (pathname) {
-		const newUrl = new URL(incoming);
-		newUrl.pathname = pathname;
-		console.log('Rewritten:', JSON.stringify(newUrl));
-		return rewrite(newUrl);
+		const newURL = new URL(incoming);
+		newURL.pathname = pathname;
+
+		const newURLSTring = newURL.toString();
+
+		// SvelteKit has actions under query params like ?/create_todo
+		// which by some code before middlewares get converted to ?%2Fcreate_todo
+		// we have to fix that
+		const fixedURLSstring = newURLSTring.replace('%2F', '/');
+		console.log('Fixed outgoing');
+
+		return rewrite(fixedURLSstring);
 	} else {
 		return next(request);
 	}
