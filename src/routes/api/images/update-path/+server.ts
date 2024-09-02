@@ -1,6 +1,7 @@
 import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
 import type { ImagePathUpdateOrDeletion, SupportedLang } from '@denlukia/plavna-common/types';
-import { error, json, type Config } from '@sveltejs/kit';
+import type { Config } from '@sveltejs/adapter-vercel';
+import { error, json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 export const config: Config = { runtime: 'edge', regions: ['fra1'] };

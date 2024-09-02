@@ -1,11 +1,8 @@
 import { ACTOR_DATA_PARAM_NAME } from '@denlukia/plavna-common/constants';
 import type { ImageProviderRelatedActorData } from '@denlukia/plavna-common/types';
-import type { Config } from '@sveltejs/adapter-vercel';
 import { json } from '@sveltejs/kit';
 import ImageKit from 'imagekit';
 import { ERRORS } from '$lib/collections/errors';
-
-export const config: Config = { runtime: 'nodejs20.x', regions: ['fra1'] };
 
 export const GET = async ({ locals: { actorService }, url }) => {
 	let actorData: ImageProviderRelatedActorData | null = null;
