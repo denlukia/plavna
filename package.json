@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@denlukia/plavna-common": "^0.0.35",
+		"@denlukia/adapter-vercel": "^5.4.1",
 		"@ianvs/prettier-plugin-sort-imports": "^4.3.1",
 		"@libsql/client": "^0.10.0",
 		"@lucia-auth/adapter-drizzle": "^1.1.0",
@@ -34,6 +35,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.43.0",
 		"globals": "^15.9.0",
+		"imagekit": "^5.1.0",
 		"lucia": "^3.2.0",
 		"marked": "7.0.5",
 		"nanoid": "^5.0.7",
@@ -49,9 +51,7 @@
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^8.2.0",
 		"vite": "^5.4.2",
-		"zod": "^3.23.8",
-		"@sveltejs/adapter-vercel": "link:src/lib/adapter-vercel",
-		"imagekit": "^5.1.0"
+		"zod": "^3.23.8"
 	},
 	"type": "module",
 	"packageManager": "pnpm@9.7.1"
