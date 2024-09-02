@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
+import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { User } from 'lucia';
 import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/constants';

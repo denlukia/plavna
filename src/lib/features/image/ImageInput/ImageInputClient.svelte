@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/image-handler';
+	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/images';
 	import type { ImagePathUpdateOrDeletion } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
 	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
@@ -32,7 +32,7 @@
 	let imageHandler: ClientImageHandlerType | null = null;
 
 	async function getImageHandler() {
-		let { ClientImageHandler } = await import('@denlukia/plavna-common/image-handler');
+		let { ClientImageHandler } = await import('@denlukia/plavna-common/images');
 		return new ClientImageHandler();
 	}
 

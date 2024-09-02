@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
+import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

@@ -1,4 +1,4 @@
-import type { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
+import type { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
