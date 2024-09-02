@@ -1,5 +1,5 @@
 import { edit_article } from '$lib/features/article/actions';
-import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 
 import type { RequestEvent } from './$types';
 
@@ -11,7 +11,7 @@ export const load = async ({ locals: { articleService }, params, parent }) => {
 		...forms,
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('articles_list', params.lang)
+			...getSystemTranslationsSlice('articles_list', getLang(params.lang))
 		}
 	};
 };

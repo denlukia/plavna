@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate, type SuperValidated } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { checkTranslationKey, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { checkTranslationKey, getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	pageCreationFormSchema,
 	pageUpdatingFormSchema,
@@ -16,7 +16,7 @@ export const load = async ({ locals: { pageService }, params, parent }) => {
 		...forms,
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('pages_list', params.lang)
+			...getSystemTranslationsSlice('pages_list', getLang(params.lang))
 		}
 	};
 };

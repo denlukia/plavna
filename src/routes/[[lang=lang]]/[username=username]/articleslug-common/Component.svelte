@@ -1,7 +1,13 @@
 <script lang="ts">
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	let { data } = $props();
+	import type { PageData } from '../[articleslug=articleslug]/$types';
+
+	type Props = {
+		data: PageData;
+	};
+
+	let { data }:Props = $props();
 </script>
 
 <h1>

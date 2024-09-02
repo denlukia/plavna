@@ -11,7 +11,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
-	import { getSystemTranslation } from '../i18n/utils';
+	import { getLang, getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
 	import TagsList from '../tag/SectionTagsList.svelte';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
@@ -52,7 +52,7 @@
 	});
 
 	let descriptionInput = $state({
-		currentLang: $page.params.lang as SupportedLang,
+		currentLang: getLang($page.params.lang),
 		selectionStart: 0,
 		selectionEnd: 0
 	});

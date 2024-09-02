@@ -5,15 +5,14 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
 import { edit_article } from '$lib/features/article/actions';
-import { articleSlugUpdateSchema } from '$lib/features/article/parsers';
-import type {
-	ArticlePreviewImageFileFieldsAll,
-	ArticlePreviewImageHandlers
+import {
+	articleSlugUpdateSchema,
+	type ArticlePreviewImageFileFieldsAll,
+	type ArticlePreviewImageHandlers
 } from '$lib/features/article/parsers';
 import { generatePath } from '$lib/features/common/links';
 import { update_translation } from '$lib/features/i18n/actions';
 import { translationInsertSchema } from '$lib/features/i18n/parsers';
-import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	imageCreationFormSchema,
 	imageDeletionFormSchema,
@@ -31,7 +30,7 @@ import {
 } from '$lib/features/preview/parsers';
 import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/parsers';
 
-import type { RequestEvent } from './$types';
+import type { Actions, RequestEvent } from '../../[articleslug=articleslug]/edit/$types';
 
 async function switch_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(tagUpdateSchema));
@@ -108,7 +107,7 @@ async function update_preview(event: RequestEvent) {
 				const imageHandler = await new ServerImageHandler();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 				imagesHandlers[key] = imageHandler;
-			} catch (error) {
+			} catch {
 				// TODO: Error for unsupported image
 				fail(400, { form });
 			}
@@ -132,7 +131,7 @@ async function create_preview_template(event: RequestEvent) {
 		try {
 			imageHandler = await new ServerImageHandler();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
-		} catch (error) {
+		} catch {
 			// TODO: Error for unsupported image
 			fail(400, { form });
 		}
@@ -153,7 +152,7 @@ async function update_preview_template(event: RequestEvent) {
 		try {
 			imageHandler = await new ServerImageHandler();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
-		} catch (error) {
+		} catch {
 			// TODO: Error for unsupported image
 			fail(400, { form });
 		}
@@ -227,15 +226,15 @@ async function delete_image(event: RequestEvent) {
 	await imageService.deleteRecord(form.data.id);
 }
 
-export const actions = {
+export const actions: Actions = {
 	update_translation,
 	switch_tag,
 	create_tag,
 	delete_tag,
 	update_slug,
 	publish: (event) => edit_article(event, 'publish'),
-	hide: (event: RequestEvent) => edit_article(event, 'hide'),
-	delete: (event: RequestEvent) => edit_article(event, 'delete'),
+	hide: (event) => edit_article(event, 'hide'),
+	delete: (event) => edit_article(event, 'delete'),
 	update_preview,
 	create_preview_template,
 	update_preview_template,
@@ -245,21 +244,4 @@ export const actions = {
 	create_image,
 	update_image,
 	delete_image
-};
-
-export const load = async ({ params, parent, locals: { articleService } }) => {
-	const { translations: newTranslations, ...other } = await articleService.loadEditor(
-		params.username,
-		params.articleslug
-	);
-	const { systemTranslations } = await parent();
-
-	return {
-		...other,
-		systemTranslations: {
-			...systemTranslations,
-			...getSystemTranslationsSlice('article_editor', params.lang)
-		},
-		recordsTranslations: newTranslations
-	};
 };

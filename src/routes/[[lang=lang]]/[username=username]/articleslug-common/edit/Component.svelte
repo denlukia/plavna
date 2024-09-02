@@ -14,7 +14,13 @@
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
-	let { data } = $props();
+	import type { PageData } from '../../[articleslug=articleslug]/edit/$types';
+
+	type Props = {
+		data: PageData;
+	};
+
+	let { data }: Props = $props();
 
 	let { meta: article, translationForms, tagInfos, tagCreationSuperValidated } = $derived(data);
 

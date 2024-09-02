@@ -1,4 +1,4 @@
-import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import { lucia } from '$lib/services/auth';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 	return {
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('main', params.lang)
+			...getSystemTranslationsSlice('main', getLang(params.lang))
 		}
 	};
 };

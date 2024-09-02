@@ -10,22 +10,14 @@ import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
 import type { ActorService } from '../user/service';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
 import { translations } from './schema';
-import { defaultLang, isSupportedLang } from './utils';
 
 export class TranslationService {
 	private actorService: ActorService;
 
 	public currentLang: SupportedLang;
 
-	constructor(actorService: ActorService, langParam: string | undefined) {
-		if (!langParam) {
-			this.currentLang = defaultLang;
-		} else if (isSupportedLang(langParam)) {
-			this.currentLang = langParam;
-		} else {
-			error(404);
-		}
-
+	constructor(actorService: ActorService, langParam: SupportedLang) {
+		this.currentLang = langParam;
 		this.actorService = actorService;
 	}
 

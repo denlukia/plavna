@@ -6,21 +6,24 @@
 	import { generatePath } from '$lib/features/common/links.js';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
+	import { getLang } from '../i18n/utils';
+
 	type Props = {
 		actor: User;
 	};
 
 	let { actor }: Props = $props();
 
+	const lang = $derived(getLang($page.params.lang));
 	const pages = $derived([
 		{
 			routeId: '/[lang=lang]/[username]/articles',
-			href: `/${$page.params.lang}/${actor.username}/articles`,
+			href: `/${lang}/${actor.username}/articles`,
 			translation: 'layout.my_items.articles'
 		} as const,
 		{
 			routeId: '/[lang=lang]/[username]/pages',
-			href: `/${$page.params.lang}/${actor.username}/pages`,
+			href: `/${lang}/${actor.username}/pages`,
 			translation: 'layout.my_items.pages'
 		} as const
 	]);

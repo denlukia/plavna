@@ -8,13 +8,14 @@
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import type { TranslationInsert } from '../parsers';
+	import { getLang } from '../utils';
 	import LangSelector from './LangSelector.svelte';
 
 	let {
 		superform,
 		prefix,
 		name,
-		currentLang = $bindable($page.params.lang as SupportedLang),
+		currentLang = $bindable(getLang($page.params.lang)),
 		trailing,
 		oninput: oninputProp,
 		selectionStart = $bindable(0),

@@ -1,12 +1,13 @@
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/features/article/service';
-import { ActorService } from '$lib/features/user/service';
 import { TranslationService } from '$lib/features/i18n/service';
+import { getLang } from '$lib/features/i18n/utils';
 import { ImageService } from '$lib/features/image/service';
 import { PageService } from '$lib/features/page/service';
 import { PreviewService } from '$lib/features/preview/service';
 import { SectionService } from '$lib/features/section/service';
 import { TagService } from '$lib/features/tag/service';
+import { ActorService } from '$lib/features/user/service';
 import { lucia } from '$lib/services/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -40,7 +41,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// 2. Adding our Services
 	locals.actorService = new ActorService(locals.actor);
-	locals.translationService = new TranslationService(locals.actorService, params.lang);
+	locals.translationService = new TranslationService(locals.actorService, getLang(params.lang));
 
 	locals.sectionService = new SectionService(locals.actorService, locals.translationService);
 	locals.pageService = new PageService(

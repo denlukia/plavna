@@ -107,3 +107,13 @@ export function replaceEmptyWithNull(translation: TranslationUpdate) {
 		})
 	);
 }
+
+export function getLang(lang: string | undefined): SupportedLang {
+	// We can recieve string or undefined here because we rely on param matcher
+	// to filter unsupported lang codes before any other code runs
+	if (lang && isSupportedLang(lang)) {
+		return lang;
+	} else {
+		return defaultLang;
+	}
+}

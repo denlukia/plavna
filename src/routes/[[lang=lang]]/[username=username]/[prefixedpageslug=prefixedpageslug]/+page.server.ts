@@ -7,7 +7,7 @@ import {
 	SECTION_RECONFIG_QUERY_PARAM_NAME
 } from '$lib/collections/constants';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
-import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	getReaderPageConfigFromCookies,
 	getUnprefixedPageSlug,
@@ -63,7 +63,7 @@ export const load = async ({ params, parent, locals: { pageService, actor }, coo
 		systemTranslations: {
 			...systemTranslations,
 			// TODO: only page if user isn't actor
-			...getSystemTranslationsSlice(additionalTranslationsSlices, params.lang)
+			...getSystemTranslationsSlice(additionalTranslationsSlices, getLang(params.lang))
 		}
 	};
 };
