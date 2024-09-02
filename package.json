@@ -15,7 +15,7 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
-		"@denlukia/adapter-vercel": "^5.4.1",
+		"@denlukia/adapter-vercel": "^5.4.2",
 		"@denlukia/plavna-common": "^0.0.35",
 		"@ianvs/prettier-plugin-sort-imports": "^4.3.1",
 		"@libsql/client": "^0.10.0",
