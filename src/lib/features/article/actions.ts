@@ -1,5 +1,4 @@
-import { error } from 'console';
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 import type { RequestEvent as ArticleRequestEvent } from '../../../routes/[lang=lang]/[username]/[[prefixedpageslug=prefixedpageslug]]/[articleslug]/edit/$types';
 import type { RequestEvent as ArticlesListRequestEvent } from '../../../routes/[lang=lang]/[username]/articles/$types';
@@ -20,7 +19,7 @@ export async function edit_article(
 	} else if ('articleslug' in params && params.articleslug) {
 		await articleService[type](params.articleslug);
 	} else {
-		error(500);
+		return fail(500);
 	}
 
 	if (type === 'delete') {
