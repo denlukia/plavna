@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
