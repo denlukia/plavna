@@ -1,13 +1,19 @@
 <script lang="ts">
 	import Lights from '$lib/design/components/Lights/Lights.svelte';
 
-	import '$lib/styles/index.css';
 	// TODO: Dynamize based on server data
+
+	// Basic
+	import '$lib/styles/index.css';
+	// Color
 	import '$lib/design/themes/color/milk.css';
+	// Aesthetics
 	import '$lib/design/themes/style/modern/index.css';
+	// Fonts
 	import '$lib/design/themes/typography/inter/index.css';
 
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
+	import InterWOFF2 from '$lib/design/themes/typography/inter/InterVariable-subset.woff2';
 	import Header from '$lib/features/layout/Header.svelte';
 
 	let { data, children } = $props();
@@ -16,6 +22,8 @@
 <svelte:head>
 	<title>Plavna App</title>
 	<meta name="theme-color" content="#AB948A" />
+
+	<link rel="preload" href={InterWOFF2} as="font" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 
 <div class="main-layout">

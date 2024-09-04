@@ -5,8 +5,8 @@
 	font-display: swap;
 	src:
 		local('Inter Variable'),
-		url('/fonts/Inter Variable/InterVariable-subset.woff2') format('woff2'),
-		url('/fonts/Inter Variable/InterVariable-subset.woff') format('woff');
+		url('./InterVariable-subset.woff2') format('woff2'),
+		url('./InterVariable-subset.woff') format('woff');
 }
 @font-face {
 	font-family: 'Inter Variable';
@@ -15,6 +15,6 @@
 	font-display: swap;
 	src:
 		local('Inter Variable'),
-		url('/fonts/Inter Variable/InterVariable-Italic-subset.woff2') format('woff2'),
-		url('/fonts/Inter Variable/InterVariable-Italic-subset.woff') format('woff');
+		url('./InterVariable-Italic-subset.woff2') format('woff2'),
+		url('./InterVariable-Italic-subset.woff') format('woff');
 }
