@@ -1,8 +1,7 @@
 <script lang="ts">
-	import Image from '$lib/design/components/Image/Image.svelte';
+	import ContinuousCorners from '$lib/design/components/ContinuousCorners/ContinuousCorners.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import { getImagePathAndMeta } from '$lib/features/image/utils';
 
 	import type { PreviewDataProp } from '../../types';
 
@@ -15,9 +14,11 @@
 
 <PreviewFoundation>
 	{#snippet main()}
-		<span class="preview">
-			<Typography size="small-short">Modern: {JSON.stringify(data, null, 2)}</Typography>
-		</span>
+		<ContinuousCorners radius={55} style="height: 100%;">
+			<span class="preview">
+				<Typography size="small-short">Modern: {JSON.stringify(data, null, 2)}</Typography>
+			</span>
+		</ContinuousCorners>
 	{/snippet}
 </PreviewFoundation>
 
