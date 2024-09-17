@@ -3,14 +3,15 @@
 
 	type Props = {
 		pathAndMeta: ImagePathAndMeta;
+		style?: string;
 	};
 
-	let { pathAndMeta }: Props = $props();
+	let { pathAndMeta, style = '' }: Props = $props();
 </script>
 
 <img
 	class="image"
-	style="--bg: {pathAndMeta.background}"
+	style="--bg: {pathAndMeta.background}; {style}"
 	src={pathAndMeta.src}
 	alt={pathAndMeta.alt}
 />

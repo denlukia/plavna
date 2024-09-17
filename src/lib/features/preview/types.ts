@@ -4,6 +4,7 @@ type Optional<T> = T | null | undefined;
 
 export type PreviewDataProp = {
 	title_translation: Optional<string>;
+	description_translation: Optional<string>;
 	likes_count: number;
 	prop_1: string | null;
 	prop_2: string | null;

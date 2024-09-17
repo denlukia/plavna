@@ -13,8 +13,8 @@ importers:
         version: 5.4.3(@sveltejs/kit@2.5.25(@sveltejs/vite-plugin-svelte@4.0.0-next.6(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))(svelte@5.0.0-next.225)(vite@5.4.2(@types/node@22.5.0)))
     devDependencies:
       '@denlukia/plavna-common':
-        specifier: ^0.0.35
-        version: 0.0.35(svelte@5.0.0-next.225)
+        specifier: ^0.0.37
+        version: 0.0.37(svelte@5.0.0-next.225)
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.3.1
         version: 4.3.1(prettier@3.3.3)
@@ -208,8 +208,8 @@ packages:
     resolution: {integrity: sha512-zQ1ijeeCXVEh+aNL0RlmkPkG8HUiDcU2pzQQFjtbntgAczRASFzj4H+6+bV+dy1ntKR14I/DypeuRG1uma98iQ==}
     engines: {node: '>=6.9.0'}
 
-  '@denlukia/plavna-common@0.0.35':
-    resolution: {integrity: sha512-cqtSHAXHizsFUw1nacyOdpd+iZ4Qn2Cthg1WCzIdsOOCgPZ0X9NRv07ngDcCGgRBhFr5fM1WOY6btxckCqTQAw==, tarball: https://npm.pkg.github.com/download/@denlukia/plavna-common/0.0.35/79c1652b0bb58bd8278141dfad15c61178e7fd62}
+  '@denlukia/plavna-common@0.0.37':
+    resolution: {integrity: sha512-RY9Baz6TrmBaepsCN3y73pjW9SJPaM3dzPBfb65VqCLN+EuLM8SBkyiZ++4BgL63UINLRYncplj7iFGspZmF0g==, tarball: https://npm.pkg.github.com/download/@denlukia/plavna-common/0.0.37/9d8dfcf3ea5e3235ddbc6ae986701081d29f7669}
     peerDependencies:
       svelte: ^4.0.0
 
@@ -3206,7 +3206,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@denlukia/plavna-common@0.0.35(svelte@5.0.0-next.225)':
+  '@denlukia/plavna-common@0.0.37(svelte@5.0.0-next.225)':
     dependencies:
       extract-colors: 4.0.6
       get-pixels: 3.3.3
