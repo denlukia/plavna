@@ -34,6 +34,10 @@
 	function getPreviewData(): PreviewDataProp {
 		return {
 			title_translation: getRecordTranslation(meta.title_translation_key, recordsTranslations),
+			description_translation: getRecordTranslation(
+				meta.description_translation_key,
+				recordsTranslations
+			),
 			likes_count: meta.likes_count,
 			prop_1: meta.preview_prop_1,
 			prop_2: meta.preview_prop_2,

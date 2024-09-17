@@ -138,29 +138,25 @@ export class SectionService {
 			.groupBy(articles.id)
 			.limit(POSTS_PER_SECTION);
 
-		const articlesQueryForTranslations = db
-			.select({ id: articles.title_translation_key })
-			.from(tags)
-			.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
-			.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
-			.innerJoin(
-				translationForTag,
-				and(
-					eq(translationForTag.key, tags.name_translation_key),
-					isNotNull(translationForTag[this.translationService.currentLang])
-				)
-			)
-			.innerJoin(
-				translationForArticle,
-				and(
-					eq(translationForArticle.key, articles.title_translation_key),
-					isNotNull(translationForArticle[this.translationService.currentLang])
-				)
-			)
-			.where(and(isNotNull(articles.publish_time), tagsCondition))
-			.orderBy(desc(articles.publish_time))
-			.groupBy(articles.id)
-			.limit(POSTS_PER_SECTION);
+		const getBaselineOfArticlesQueryForTranslation = (
+			field: (typeof articles)['title_translation_key' | 'description_translation_key']
+		) =>
+			db
+				.select({ id: field })
+				.from(tags)
+				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
+				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
+				.where(and(isNotNull(articles.publish_time), tagsCondition))
+				.orderBy(desc(articles.publish_time))
+				.groupBy(articles.id)
+				.limit(POSTS_PER_SECTION);
+
+		const articlesQueryForTitleTranslations = getBaselineOfArticlesQueryForTranslation(
+			articles.title_translation_key
+		);
+		const articlesQueryForDescriptionTranslations = getBaselineOfArticlesQueryForTranslation(
+			articles.description_translation_key
+		);
 		const articlesQueryAliased = articlesQuery.as('articles_sq');
 
 		// 3. Tags articles query
@@ -256,7 +252,8 @@ export class SectionService {
 			.where(
 				and(
 					or(
-						inArray(translations.key, articlesQueryForTranslations),
+						inArray(translations.key, articlesQueryForTitleTranslations),
+						inArray(translations.key, articlesQueryForDescriptionTranslations),
 						inArray(translations.key, tagsQueryForTranslations),
 						inArray(translations.key, previewImagesQueryForTranslations)
 					),

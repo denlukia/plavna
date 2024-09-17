@@ -25,7 +25,7 @@ export function getPolygon(r: number, n: number) {
 		return polygonCache.get(key);
 	}
 
-	const resolution = 4 * Math.log(r) + 5;
+	const resolution = 2 * Math.log(r) + 5;
 	const cornerGraph = getCorner(r, r, n, resolution);
 
 	const cornerRelativePoints = [
