@@ -37,8 +37,8 @@
 
 	--transform-button-active: translateY(1px);
 
-	--backdrop-filter-button-translucent: blur(5px);
-	--backdrop-filter-button-translucent-destructive: blur(5px);
+	--backdrop-filter-button-translucent: blur(10px);
+	--backdrop-filter-button-translucent-destructive: blur(10px);
 
 	/* --- Button in Input */
 	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
