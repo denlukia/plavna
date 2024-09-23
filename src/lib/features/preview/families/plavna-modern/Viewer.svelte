@@ -31,6 +31,8 @@
 		likes_count
 	} = $derived(data);
 
+	let bgColor = $derived(img_1 ? img_1.background : backgroundColor);
+
 	let typographySize = $derived(getTypographySize(cols, rows));
 
 	function getTypographySize(cols: number, rows: number): TextSizes {
@@ -44,23 +46,16 @@
 	}
 </script>
 
-{#snippet chip(text: string)}
-	<div class="chip">
-		<Typography size="small-short">{text}</Typography>
+{#snippet chip(text: string, customClass = '')}
+	<div class="chip {customClass}">
+		<Typography size="small-short" bold>{text}</Typography>
 	</div>
-{/snippet}
-
-{#snippet likeButton()}
-	<Button kind="secondary">LIKE</Button>
 {/snippet}
 
 <PreviewFoundation>
 	{#snippet main()}
 		<ContinuousCorners radius={50} style="height: 100%;">
-			<div
-				class="preview"
-				style="--bg-color: {backgroundColor}; --text-color: {textColor}; --image-bg: {img_1?.background}"
-			>
+			<div class="preview" style="--bg-color: {bgColor}; --text-color: {textColor};">
 				<Layers stretch>
 					{#if img_1}
 						<div class="image">
@@ -69,21 +64,24 @@
 					{/if}
 					<div class="info">
 						<div class="top">
-							<div class="like"></div>
-							<div class="chips">
-								{#if publish_time}
-									{@render chip(publish_time.toLocaleDateString())}
+							{#if publish_time}
+								{@render chip(publish_time.toLocaleDateString(), 'date')}
+							{/if}
+							{#each tags.toReversed() as tag}
+								{#if tag}
+									{@render chip(tag)}
 								{/if}
-								{#each tags as tag}
-									{#if tag}
-										{@render chip(tag)}
-									{/if}
-								{/each}
-							</div>
+							{/each}
 						</div>
 						<div class="bottom">
-							<Typography size="headline-short">{description_translation}</Typography>
-							<Typography size={typographySize}>{title_translation}</Typography>
+							<ContinuousCorners radius={40} style="height: 100%;">
+								<div class="texts">
+									<div class="description">
+										<Typography size="headline-short">{description_translation}</Typography>
+									</div>
+									<Typography size={typographySize}>{title_translation}</Typography>
+								</div>
+							</ContinuousCorners>
 						</div>
 					</div>
 				</Layers>
@@ -109,32 +107,38 @@
 		height: 100%;
 		overflow: hidden;
 	}
-	.top,
-	.bottom {
+	.top {
 		padding: var(--size-l) var(--size-l) var(--size-m);
+	}
+	.bottom .texts {
+		padding: var(--size-m) var(--size-l) var(--size-m);
 	}
 	.top {
 		display: flex;
-		justify-content: space-between;
-	}
-	.chips {
-		display: flex;
+		flex-direction: row-reverse;
+		justify-content: flex-start;
+		flex-wrap: wrap-reverse;
 		gap: var(--size-s);
 	}
 	.chip {
 		display: flex;
-		padding: var(--size-xs) var(--size-m);
+		padding: var(--size-xs) var(--size-m-to-l);
+		background-color: var(--bg-color, var(--neutral-1000));
+		color: var(--text-color, var(--neutral-0));
 		border-radius: var(--size-full);
-		background-color: var(--neutral-0-transparent-400);
-		color: var(--neutral-1000);
-		--blur: blur(5px);
-		backdrop-filter: var(--blur);
-		-webkit-backdrop-filter: var(--blur);
+		box-shadow: inset 0 0 1.5px var(--text-color, var(--neutral-0));
 	}
+
 	.bottom {
 		display: flex;
-		flex-direction: column;
-		padding-top: 100px;
-		background: linear-gradient(transparent 0%, var(--image-bg) 70%);
+		justify-content: flex-start;
+		padding: var(--size-m);
+	}
+	.bottom .texts {
+		flex-shrink: 1;
+		background: var(--bg-color);
+	}
+	.description {
+		margin-bottom: calc(var(--size-s) * -1);
 	}
 </style>
