@@ -116,7 +116,9 @@
 
 <div class="section-editor">
 	<Typography size="heading-1">
-		<Translation key="page_actor.section.editor_title" />
+		<Translation
+			key="page_actor.section.{'section_id' in $translationForm ? 'editor' : 'creator'}_title"
+		/>
 	</Typography>
 	<form
 		use:enhance

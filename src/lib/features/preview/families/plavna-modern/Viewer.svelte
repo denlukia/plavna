@@ -31,9 +31,10 @@
 		likes_count
 	} = $derived(data);
 
-	let bgColor = $derived(img_1 ? img_1.background : backgroundColor);
+	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
 
 	let typographySize = $derived(getTypographySize(cols, rows));
+	let headingRadius = $derived(getHeadingRadius(typographySize));
 
 	function getTypographySize(cols: number, rows: number): TextSizes {
 		if (rows > 2 && cols > 2) {
@@ -42,6 +43,16 @@
 			return 'heading-2';
 		} else {
 			return 'headline';
+		}
+	}
+
+	function getHeadingRadius(size: TextSizes) {
+		if (size === 'heading-1') {
+			return 35;
+		} else if (size === 'heading-2') {
+			return 30;
+		} else {
+			return 25;
 		}
 	}
 </script>
@@ -64,21 +75,23 @@
 					{/if}
 					<div class="info">
 						<div class="top">
-							{#if publish_time}
-								{@render chip(publish_time.toLocaleDateString(), 'date')}
-							{/if}
 							{#each tags.toReversed() as tag}
 								{#if tag}
 									{@render chip(tag)}
 								{/if}
 							{/each}
+							{#if publish_time}
+								{@render chip(publish_time.toLocaleDateString(), 'date')}
+							{/if}
 						</div>
 						<div class="bottom">
-							<ContinuousCorners radius={40} style="height: 100%;">
-								<div class="texts">
-									<div class="description">
-										<Typography size="headline-short">{description_translation}</Typography>
-									</div>
+							<ContinuousCorners radius={headingRadius} style="height: 100%;">
+								<div class="texts {typographySize}">
+									{#if description_translation}
+										<div class="description">
+											<Typography size="headline-short">{description_translation}</Typography>
+										</div>
+									{/if}
 									<Typography size={typographySize}>{title_translation}</Typography>
 								</div>
 							</ContinuousCorners>
@@ -96,48 +109,58 @@
 		background: var(--bg-color);
 		color: var(--text-color);
 	}
+
 	.info {
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		filter: drop-shadow(0 0 30px var(--text-color));
 	}
+
 	.image {
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
 	}
+
 	.top {
-		padding: var(--size-l) var(--size-l) var(--size-m);
-	}
-	.bottom .texts {
-		padding: var(--size-m) var(--size-l) var(--size-m);
-	}
-	.top {
+		padding: var(--size-l);
 		display: flex;
 		flex-direction: row-reverse;
 		justify-content: flex-start;
 		flex-wrap: wrap-reverse;
 		gap: var(--size-s);
 	}
+
 	.chip {
 		display: flex;
-		padding: var(--size-xs) var(--size-m-to-l);
+		padding: var(--size-xs) var(--size-m);
 		background-color: var(--bg-color, var(--neutral-1000));
 		color: var(--text-color, var(--neutral-0));
 		border-radius: var(--size-full);
-		box-shadow: inset 0 0 1.5px var(--text-color, var(--neutral-0));
 	}
 
 	.bottom {
 		display: flex;
 		justify-content: flex-start;
-		padding: var(--size-m);
+		padding: var(--size-m-to-l);
 	}
-	.bottom .texts {
+
+	.texts {
 		flex-shrink: 1;
 		background: var(--bg-color);
 	}
+	.texts.heading-1 {
+		padding: var(--size-m) var(--size-l) var(--size-m);
+	}
+	.texts.heading-2 {
+		padding: var(--size-s) var(--size-m-to-l) var(--size-s);
+	}
+	.texts.headline {
+		padding: 0 var(--size-m) 0;
+	}
+
 	.description {
 		margin-bottom: calc(var(--size-s) * -1);
 	}

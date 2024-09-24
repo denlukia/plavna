@@ -24,9 +24,7 @@
 			articleslug: meta.slug
 		})}
 	>
-		<span class="preview-wrapper">
-			<PreviewRenderer {article} />
-		</span>
+		<PreviewRenderer {article} />
 	</a>
 </GridCell>
 
@@ -35,14 +33,5 @@
 		display: block;
 		width: 100%;
 		height: 100%;
-	}
-
-	.preview-wrapper {
-		position: absolute;
-
-		top: calc(var(--size-cell-overflow) * -1);
-		left: calc(var(--size-cell-overflow) * -1);
-		right: calc(var(--size-cell-overflow) * -1);
-		bottom: calc(var(--size-cell-overflow) * -1);
 	}
 </style>

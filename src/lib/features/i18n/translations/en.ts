@@ -53,7 +53,8 @@ export const EN = {
 	page_actor: {
 		section: {
 			editor_title: 'Section',
-			create: 'New Section',
+			creator_title: 'New section',
+			create: 'Create',
 			update: 'Update',
 			edit: 'Edit',
 			delete: 'Delete',
@@ -72,6 +73,9 @@ export const EN = {
 		section: {
 			no_articles: 'Author has not published any articles with selected tags'
 		}
+	},
+	article: {
+		edit: 'Edit'
 	},
 	article_editor: {
 		heading: 'Article Editing',

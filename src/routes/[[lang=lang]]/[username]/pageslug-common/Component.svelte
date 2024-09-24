@@ -55,7 +55,7 @@
 				<Plus />
 			</IconWrapper>
 			<Typography size="heading-2">
-				<Translation key="page_actor.section.create" />
+				<Translation key="page_actor.section.creator_title" />
 			</Typography>
 		</button>
 	{/if}
