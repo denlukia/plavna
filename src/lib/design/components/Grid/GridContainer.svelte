@@ -6,15 +6,22 @@
 		children: Snippet;
 		maxRows?: number;
 		direction?: 'row' | 'column';
+		withPaddingInline?: boolean;
 	};
 
-	let { children, maxRows, direction = 'row', ...attributes }: Props = $props();
+	let {
+		children,
+		maxRows,
+		direction = 'row',
+		withPaddingInline = false,
+		...attributes
+	}: Props = $props();
 
 	let rowsTotalCSSVariable = maxRows ? `--size-rows-total: ${maxRows};` : '';
 </script>
 
 <div
-	class="grid-container"
+	class="grid-container {withPaddingInline ? 'with-padding-inline' : ''}"
 	{...attributes}
 	style="--flex-direction: {direction}; {rowsTotalCSSVariable}"
 >
@@ -36,5 +43,17 @@
 		max-height: calc(var(--max-height-base) + var(--max-height-gaps));
 
 		--size-cols-total: var(--size-cols-total);
+	}
+
+	.with-padding-inline {
+		padding-inline: var(--size-main-grid-padding-inline);
+	}
+
+	.with-padding-inline::after {
+		content: '.';
+		visibility: hidden;
+		display: block;
+		width: calc(var(--size-main-grid-padding-inline) - var(--size-cell-gap));
+		height: 100%;
 	}
 </style>

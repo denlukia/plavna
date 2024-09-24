@@ -134,5 +134,9 @@
 	}
 	.articles-list-wrapper {
 		margin-top: var(--size-section-articles-list-margin-top);
+		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
+		overflow: auto;
+		padding-bottom: var(--size-l);
+		scrollbar-width: thin;
 	}
 </style>

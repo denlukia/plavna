@@ -11,7 +11,7 @@
 	let { section }: Props = $props();
 </script>
 
-<GridContainer direction="column">
+<GridContainer direction="column" withPaddingInline>
 	{#each section.articles as article (article.meta.id)}
 		<ArticlePreviewCell {article} />
 	{/each}
