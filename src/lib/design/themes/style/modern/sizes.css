@@ -33,7 +33,9 @@
 
 	--size-main-grid-padding-inline: var(--size-l);
 	--size-main-grid-max-width: calc(var(--size-max-cell-width) * 5 + var(--size-cell-gap) * 4);
-	--size-main-grid-width: min(var(--size-main-grid-max-width), 100vw);
+	--size-main-grid-width: calc(
+		min(var(--size-main-grid-max-width), 100vw) - 2 * var(--size-main-grid-padding-inline)
+	);
 
 	--size-cell-width: calc(
 		calc(var(--size-main-grid-width) - calc(var(--size-cols-total) - 1) * var(--size-cell-gap)) /
