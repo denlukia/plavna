@@ -92,13 +92,6 @@
 											<Typography size="headline-short">{description_translation}</Typography>
 										</div>
 									{/if}
-						</div>
-						<div class="bottom">
-							<ContinuousCorners radius={40} style="height: 100%;">
-								<div class="texts">
-									<div class="description">
-										<Typography size="headline-short">{description_translation}</Typography>
-									</div>
 									<Typography size={typographySize}>{title_translation}</Typography>
 								</div>
 							</ContinuousCorners>
