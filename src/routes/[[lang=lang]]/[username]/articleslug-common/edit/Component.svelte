@@ -14,7 +14,7 @@
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
-	import type { PageData } from '../../[articleslug=articleslug]/edit/$types';
+	import type { PageData } from '../../[articleslug]/edit/$types';
 
 	type Props = {
 		data: PageData;

@@ -57,7 +57,8 @@ export const UK = {
 	page_actor: {
 		section: {
 			editor_title: 'Секція',
-			create: 'Нова секція',
+			creator_title: 'Нова секція',
+			create: 'Створити',
 			update: 'Оновити',
 			edit: 'Редагувати',
 			delete: 'Видалити',
@@ -75,6 +76,9 @@ export const UK = {
 		section: {
 			no_articles: 'Автор ще не опублікував жодної стітті з обраними тегами'
 		}
+	},
+	article: {
+		edit: 'Редагувати'
 	},
 	article_editor: {
 		heading: 'Редагування статті',

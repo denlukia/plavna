@@ -50,6 +50,6 @@
 	.actions-wrapper {
 		position: absolute;
 		left: 0;
-		top: calc(var(--size-xl) * -1);
+		top: calc(var(--size-xl-to-2xl) * -1);
 	}
 </style>
