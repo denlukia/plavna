@@ -23,12 +23,11 @@
 	--size-main-layout-margin-top: var(--size-3xl);
 
 	/* --- Grid --- */
-	--size-max-cell-width: 224px;
-	--size-max-cell-height: 112px;
-	--size-cell-aspect: 112 / 224;
+	--size-max-cell-width: 240px;
+	--size-cell-aspect: 120 / 240;
 	--size-cols-total: 5;
 	--size-rows-total: 3;
-	--size-cell-gap: 8px;
+	--size-cell-gap: var(--size-m);
 	--size-cell-overflow: var(--size-l);
 
 	--size-main-grid-padding-inline: var(--size-l);
