@@ -39,7 +39,7 @@
 
 {#if creationForm}
 	{#if creatorShown}
-		<div class="section-editor-wrapper">
+		<div class="section-creator-wrapper">
 			<SectionEditor
 				mainForm={creationForm}
 				onCancel={closeCreator}
@@ -62,7 +62,11 @@
 {/if}
 
 <style>
-	.section-editor-wrapper {
+	.section-creator-wrapper,
+	.section-creation-button {
+		margin-bottom: var(--size-6xl);
+	}
+	.section-creator-wrapper {
 		max-width: var(--size-section-max-width);
 	}
 	.section-creation-button {
@@ -74,6 +78,7 @@
 		gap: var(--size-m);
 		border-radius: var(--size-l);
 		padding-bottom: var(--size-4xl);
+
 		--rotation: 179deg;
 		background: radial-gradient(
 			ellipse at top left,

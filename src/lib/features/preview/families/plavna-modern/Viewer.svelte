@@ -127,8 +127,7 @@
 	.top {
 		padding: var(--size-l);
 		display: flex;
-		flex-direction: row-reverse;
-		justify-content: flex-start;
+		justify-content: flex-end;
 		flex-wrap: wrap-reverse;
 		gap: var(--size-s);
 	}
