@@ -28,18 +28,18 @@
 		<Translation recordKey={article.title_translation_key} />
 	{/snippet}
 	{#snippet actions()}
-		<Button kind="secondary" href="{link}/edit">
-			<Translation key="articles_list.edit" />
-		</Button>
 		<form use:enhance method="POST">
 			<input type="hidden" name="articleslug" value={article.slug} />
 
 			<Button
 				formaction="?/{publish_time ? 'hide' : 'publish'}"
-				kind={publish_time ? 'primary' : 'prominent'}
+				kind={publish_time ? 'secondary' : 'prominent'}
 			>
 				<Translation key={publish_time ? 'articles_list.hide' : 'articles_list.publish'} />
 			</Button>
 		</form>
+		<Button kind="primary" href="{link}/edit">
+			<Translation key="articles_list.edit" />
+		</Button>
 	{/snippet}
 </Card>
