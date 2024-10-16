@@ -42,7 +42,7 @@
 		? superForm(superValidateDeletion)
 		: {};
 
-	let image = $state(getImageById(imageId, $page.data.images));
+	let image = $state(getImageById(imageId, $page.data.imagesState?.value));
 </script>
 
 <FormWrapper>

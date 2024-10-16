@@ -3,11 +3,20 @@
 	import type { InputOrTextareaProps } from './types';
 
 	let { value = $bindable(), ...attributes }: InputOrTextareaProps = $props();
+
+	function onColorInputChange(e: Event) {
+		value = (e.target as HTMLInputElement).value;
+	}
 </script>
 
 {#snippet leading()}
 	<span class="picker-wrapper">
-		<input bind:value type="color" class="global-reset-input color-picker {value ? '' : 'empty'}" />
+		<input
+			{value}
+			type="color"
+			onchange={onColorInputChange}
+			class="global-reset-input color-picker {value ? '' : 'empty'}"
+		/>
 	</span>
 {/snippet}
 
@@ -26,6 +35,9 @@
 		border-radius: var(--size-input-color-picker-radius);
 		padding: 0;
 		box-shadow: var(--shadow-input-color-picker);
+	}
+	.color-picker.empty {
+		color: transparent;
 	}
 	.color-picker.empty::-webkit-color-swatch-wrapper {
 		opacity: 0;

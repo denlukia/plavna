@@ -4,8 +4,7 @@ export default {
 	schema: './src/lib/collections/main-schema.ts',
 	out: './migrations',
 	breakpoints: true,
-	driver: 'turso',
-	dialect: 'sqlite',
+	dialect: 'turso',
 	dbCredentials: {
 		url: process.env.DATABASE_URL || '',
 		authToken: process.env.DATABASE_AUTH_TOKEN

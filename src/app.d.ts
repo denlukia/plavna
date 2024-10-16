@@ -3,7 +3,7 @@ import type { Session, User } from 'lucia';
 import type { ArticleService } from '$lib/features/article/service';
 import type { TranslationService } from '$lib/features/i18n/service';
 import type {
-	RecordsTranslationsDict,
+	// RecordsTranslationsDict,
 	SystemTranslationDict,
 	TranslationFormsDict,
 	ImageInputsTranslationsDict
@@ -11,7 +11,7 @@ import type {
 import type { ImageService } from '$lib/features/image/service';
 import type { ImagesDict } from '$lib/features/image/types';
 import type { PageService } from '$lib/features/page/service';
-import type { PreviewFamiliesDict } from '$lib/features/preview/families/types';
+// import type { PreviewFamiliesDict } from '$lib/features/preview/families/types';
 import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
 import type { TagService } from '$lib/features/tag/service';
@@ -19,6 +19,9 @@ import type { TagsListForPage } from '$lib/features/tag/types';
 import type { User } from '$lib/features/user/parsers';
 import type { ActorService } from '$lib/features/user/service';
 import type { ImageProviderSuperValidated } from '$lib/features/image/parsers';
+import type { RecordsTranslationsState } from '$lib/features/i18n/state.svelte';
+import type { PreviewFamiliesState } from '$lib/features/preview/families/state.svelte';
+import type { ImagesState } from '$lib/features/image/state.svelte';
 
 
 declare global {
@@ -41,17 +44,18 @@ declare global {
 			actor: User | null;
 			user: User | null;
 			systemTranslations: SystemTranslationDict;
+			imageInputsTranslations?: ImageInputsTranslationsDict;
+			translationForms?: TranslationFormsDict;
+			tags?: TagsListForPage;
 			imageProvider: {
 				hasValidCredentialsSet: boolean;
 				superValidated: ImageProviderSuperValidated;
 			};
-			recordsTranslations?: RecordsTranslationsDict;
-			imageInputsTranslations?: ImageInputsTranslationsDict;
-			translationForms?: TranslationFormsDict;
-			previewFamilies?: PreviewFamiliesDict;
-			images?: ImagesDict;
-			tags?: TagsListForPage;
 			
+			// Global states with manual mutation support
+			recordsTranslationsState?: RecordsTranslationsState;
+			previewFamiliesState?: PreviewFamiliesState;
+			imagesState?: ImagesState;
 		}
 	}
 }

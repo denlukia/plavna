@@ -36,7 +36,7 @@
 		if (superValidated) return superValidated.data[getLang($page.params.lang)];
 		if (typeof key === 'string') return getSystemTranslation(key, $page.data.systemTranslations);
 		if (typeof recordKey === 'number')
-			return getRecordTranslation(recordKey, $page.data.recordsTranslations);
+			return getRecordTranslation(recordKey, $page.data.recordsTranslationsState?.value);
 	}
 
 	// At new page loads translations for outroing page are erased

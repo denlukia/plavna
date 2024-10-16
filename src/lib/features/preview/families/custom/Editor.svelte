@@ -16,7 +16,7 @@
 
 	let {
 		mainSuperValidated,
-		images,
+		images = bindable(),
 		translationsSuperValidated,
 		templateMeta
 	}: CustomPreviewEditorProps = $props();

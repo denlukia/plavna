@@ -17,7 +17,7 @@
 
 	let transitionKey = $derived(section.meta.title_translation_key);
 	let descriptionTranslation = $derived(
-		getRecordTranslation(transitionKey, $page.data.recordsTranslations)
+		getRecordTranslation(transitionKey, $page.data.recordsTranslationsState?.value)
 	);
 </script>
 

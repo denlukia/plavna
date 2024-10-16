@@ -227,14 +227,10 @@
 			{:then EditorComponent}
 				<EditorComponent
 					mainSuperValidated={previewEditorSuperValidated}
-					images={{
-						preview_image_1,
-						preview_image_2
-					}}
-					translationsSuperValidated={{
-						translation_1: translationForms[meta.preview_translation_1_key],
-						translation_2: translationForms[meta.preview_translation_2_key]
-					}}
+					bind:preview_image_1
+					bind:preview_image_2
+					translation_1={translationForms[meta.preview_translation_1_key]}
+					translation_2={translationForms[meta.preview_translation_2_key]}
 					templateMeta={currentPreviewTemplateMeta}
 					{onPreviewPreviewRequest}
 				/>

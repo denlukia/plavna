@@ -13,7 +13,11 @@
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { PreviewEditorProps } from '../types';
 
-	let { mainSuperValidated, images }: PreviewEditorProps = $props();
+	let {
+		mainSuperValidated,
+		preview_image_1 = $bindable(),
+		preview_image_2 = $bindable()
+	}: PreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
@@ -73,11 +77,7 @@
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.image" />
 					</Label>
-					<LanguagedImageInput
-						name="preview_image_1"
-						bind:image={images.preview_image_1}
-						clientUpload
-					/>
+					<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
 				</Labeled>
 			</GridCell>
 			<GridCell>
@@ -85,11 +85,7 @@
 					<Label>
 						<Translation key="article_editor.previews.families.plavna_modern.image_depth" />
 					</Label>
-					<LanguagedImageInput
-						name="preview_image_2"
-						bind:image={images.preview_image_2}
-						clientUpload
-					/>
+					<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
 				</Labeled>
 			</GridCell>
 		</GridCell>

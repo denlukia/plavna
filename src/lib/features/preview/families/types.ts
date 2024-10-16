@@ -36,14 +36,10 @@ export type PreviewFamiliesDict = Record<
 
 export type PreviewEditorProps = {
 	mainSuperValidated: SuperValidated<ArticlePreviewUpdate>;
-	images: {
-		preview_image_1: ImageSelect;
-		preview_image_2: ImageSelect;
-	};
-	translationsSuperValidated: {
-		translation_1: SuperValidated<TranslationUpdate>;
-		translation_2: SuperValidated<TranslationUpdate>;
-	};
+	preview_image_1: ImageSelect;
+	preview_image_2: ImageSelect;
+	translation_1: SuperValidated<TranslationUpdate>;
+	translation_2: SuperValidated<TranslationUpdate>;
 };
 
 export type CustomPreviewEditorProps = PreviewEditorProps & {
