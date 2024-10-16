@@ -7,7 +7,7 @@
 	type Props = {
 		tags: TagsListForPage;
 		tagsInText: number[];
-		onTagClick: (tagId: number) => void;
+		onTagClick: (tagId: number, action: 'add' | 'remove') => void;
 	};
 
 	let { tags, tagsInText, onTagClick }: Props = $props();
@@ -19,7 +19,7 @@
 			size="small"
 			type="button"
 			kind={tagsInText.includes(tag.id) ? 'primary' : 'secondary'}
-			onclick={() => onTagClick(tag.id)}
+			onclick={() => onTagClick(tag.id, tagsInText.includes(tag.id) ? 'remove' : 'add')}
 		>
 			<Translation recordKey={tag.name_translation_key} />
 			<span class="tag-id">

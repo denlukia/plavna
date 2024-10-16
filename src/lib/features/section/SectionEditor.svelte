@@ -11,7 +11,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
-	import { getLang, getSystemTranslation } from '../i18n/utils';
+	import { getLang, getRecordTranslation, getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
 	import TagsList from '../tag/SectionTagsList.svelte';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
@@ -73,43 +73,43 @@
 	}
 
 	function deleteTagsIfPresent(text: string, tagId: TagSelect['id']) {
-		const mdLinkRegex = /(?:\[(.*?)\])\(tag:(\d*)\)/gm;
-
+		const mdLinkRegex = /\s*\[(.*?)\]\(tag:(\d*)\)\s*/gm;
 		const matches = text.matchAll(mdLinkRegex);
 
 		for (let match of matches) {
 			if (match[2] === tagId.toString()) {
-				return text.replace(match[0], '');
+				return text.replace(match[0], ' ');
 			}
 		}
 
 		return text;
 	}
 
-	function switchTagInText(tagId: TagSelect['id']) {
+	function switchTagInText(tagId: TagSelect['id'], action: 'add' | 'remove') {
 		const lang = descriptionInput.currentLang;
 		const text = $translationForm[lang] || '';
 
-		const newText = deleteTagsIfPresent(text, tagId);
-
-		if (newText !== text) {
-			$translationForm[lang] = newText;
+		if (action === 'remove') {
+			$translationForm[lang] = deleteTagsIfPresent(text, tagId);
 		} else {
 			let textBefore = text.slice(0, descriptionInput.selectionStart);
-			textBefore = textBefore.trimEnd();
-			if (textBefore.length > 0) {
-				textBefore += ' ';
-			}
+			textBefore = textBefore.trim();
 
 			let textAfter = text.slice(descriptionInput.selectionEnd);
-			textAfter = textAfter.trimStart();
-			if (textAfter.length > 0) {
-				textAfter = ' ' + textAfter;
+			textAfter = textAfter.trim();
+
+			const tag = tags.find((tag) => tag.id === tagId);
+
+			if (!tag) {
+				console.error('Tag not found');
+				return;
 			}
+			const tagTemplate = `[${getRecordTranslation(tag.name_translation_key, $page.data.recordsTranslationsState?.value)}](tag:${tagId})`;
 
-			const tagTemplate = `[${getSystemTranslation('page_actor.section.tag_name', $page.data.systemTranslations)}](tag:${tagId})`;
+			const combined = `${textBefore} ${tagTemplate} ${textAfter}`;
+			const combinedTrimmed = combined.trim();
 
-			$translationForm[lang] = `${textBefore}${tagTemplate}${textAfter}`;
+			$translationForm[lang] = combinedTrimmed;
 		}
 	}
 </script>

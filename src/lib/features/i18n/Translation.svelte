@@ -67,6 +67,6 @@
 
 <style>
 	.no-translation {
-		opacity: 0.4;
+		opacity: 0.25;
 	}
 </style>
