@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
@@ -30,11 +31,7 @@
 </script>
 
 {#each items as section, index (section.meta.id)}
-	<Section
-		bind:section={items[index]}
-		bind:recordsTranslations={data.recordsTranslations}
-		bind:previewFamilies={data.previewFamilies}
-	/>
+	<Section bind:section={items[index]} />
 {/each}
 
 {#if creationForm}

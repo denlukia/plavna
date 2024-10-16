@@ -12,7 +12,12 @@
 	let { id }: Props = $props();
 
 	let preparedImage = $derived(
-		getImagePathAndMeta(id, $page.data.user, $page.data.images, $page.data.recordsTranslations)
+		getImagePathAndMeta(
+			id,
+			$page.data.user,
+			$page.data.imagesState?.value,
+			$page.data.recordsTranslationsState?.value
+		)
 	);
 </script>
 

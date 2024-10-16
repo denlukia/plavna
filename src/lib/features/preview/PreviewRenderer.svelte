@@ -14,13 +14,13 @@
 
 	let { meta, tags } = $derived(article);
 	let familyId = $derived(article.meta.preview_family);
-	let previewFamilies = $derived($page.data.previewFamilies);
-	let recordsTranslations = $derived($page.data.recordsTranslations);
-	let images = $derived($page.data.images || {});
+	let previewFamilies = $derived($page.data.previewFamiliesState?.value);
+	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
+	let images = $derived($page.data.imagesState?.value || {});
 
-	let PreviewComponent = $derived(getComponentFromDict('viewer'));
+	let PreviewComponent = $derived(getComponentFromDict());
 
-	function getComponentFromDict(type: PreviewComponentType) {
+	function getComponentFromDict() {
 		if (!previewFamilies) return null;
 		if (!familyId) return null;
 		if (!(familyId in previewFamilies)) return null;
@@ -28,7 +28,7 @@
 		const previewFamilyObj = previewFamilies[familyId];
 		if (!previewFamilyObj) return null;
 
-		return previewFamilyObj.components[type];
+		return previewFamilyObj.components.viewer;
 	}
 
 	function getPreviewData(): PreviewDataProp {

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import ArticlesList from '../article/ArticlesList.svelte';
 	import Translation from '../i18n/Translation.svelte';
-	import type { RecordsTranslationsDict } from '../i18n/types';
 	import { enrichPreviewFamilies } from '../preview/enricher';
-	import type { PreviewFamiliesDict } from '../preview/families/types';
+	import type { TagSelect } from '../tag/parsers';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
 	import type { SectionService } from './service';
@@ -20,15 +20,9 @@
 
 	type Props = {
 		section: SectionProp;
-		recordsTranslations: RecordsTranslationsDict;
-		previewFamilies: PreviewFamiliesDict;
 	};
 
-	let {
-		section = $bindable(),
-		recordsTranslations = $bindable(),
-		previewFamilies = $bindable()
-	}: Props = $props();
+	let { section = $bindable() }: Props = $props();
 
 	let editorOpened = $state(false);
 	let abortController: AbortController | null = $state(null);
@@ -41,49 +35,62 @@
 		editorOpened = true;
 	}
 
+	async function onTagSwitch(tagId: TagSelect['id'], checked: boolean) {
+		// Getting new articles list
+		const body: SectionReconfigRequest = {
+			sectionId: section.meta.id,
+			tagId,
+			newChecked: checked
+		};
+		try {
+			abortController?.abort();
+			abortController = new AbortController();
+			const response = await fetch($page.url, {
+				method: 'POST',
+				body: JSON.stringify(body),
+				signal: abortController?.signal
+			});
+			abortController = null;
+			if (response.ok) {
+				const resultString: string = await response.text();
+				const result: SectionFetchReturn = parse(resultString);
+
+				if (result) {
+					const recordsTranslationsState = $page.data.recordsTranslationsState;
+					const previewFamiliesState = $page.data.previewFamiliesState;
+					const imagesState = $page.data.imagesState;
+
+					if (recordsTranslationsState && previewFamiliesState && imagesState) {
+						recordsTranslationsState.value = {
+							...recordsTranslationsState.value,
+							...result.recordsTranslations
+						};
+						imagesState.value = {
+							...imagesState.value,
+							...result.images
+						};
+						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'viewer');
+						previewFamiliesState.value = {
+							...previewFamiliesState.value,
+							...enriched
+						};
+						section = result.section;
+					} else {
+						console.error('Records translations state or preview families state not found');
+					}
+				}
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
 	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
 
 	const sectionContext: SectionContext = $state({
 		id: section.meta.id,
 		activeTags: section.activeTags,
-		onTagSwitch: async (tagId, checked) => {
-			// Optimistic update (causes blink of empty articles block)
-			// if (checked) {
-			// 	section.activeTags.push({ id: tagId });
-			// } else {
-			// 	section.activeTags = section.activeTags.filter(({ id }) => id !== tagId);
-			// }
-
-			// Getting new articles list
-			const body: SectionReconfigRequest = {
-				sectionId: section.meta.id,
-				tagId,
-				newChecked: checked
-			};
-			try {
-				abortController?.abort();
-				abortController = new AbortController();
-				const response = await fetch($page.url, {
-					method: 'POST',
-					body: JSON.stringify(body),
-					signal: abortController?.signal
-				});
-				abortController = null;
-				if (response.ok) {
-					const result: SectionFetchReturn = await response.json();
-
-					if (result) {
-						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'viewer');
-
-						recordsTranslations = { ...recordsTranslations, ...result.recordsTranslations };
-						previewFamilies = { ...previewFamilies, ...enriched };
-						section = result.section;
-					}
-				}
-			} catch (err) {
-				console.error(err);
-			}
-		}
+		onTagSwitch
 	});
 
 	$effect(() => {
@@ -111,13 +118,15 @@
 		{#if section.articles.length > 0}
 			<ArticlesList {section} />
 		{:else if sectionContext.activeTags.length > 0}
-			<InfoBlock>
-				{#if $page.params.username === $page.data.actor?.username}
-					<Translation key="page_actor.section.no_articles" />
-				{:else}
-					<Translation key="page.section.no_articles" />
-				{/if}
-			</InfoBlock>
+			<div class="info-block-wrapper">
+				<InfoBlock>
+					{#if $page.params.username === $page.data.actor?.username}
+						<Translation key="page_actor.section.no_articles" />
+					{:else}
+						<Translation key="page.section.no_articles" />
+					{/if}
+				</InfoBlock>
+			</div>
 		{/if}
 	</div>
 </section>
@@ -132,11 +141,15 @@
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
 	}
+
 	.articles-list-wrapper {
 		margin-top: var(--size-section-articles-list-margin-top);
 		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
 		overflow: auto;
 		padding-bottom: var(--size-l);
 		scrollbar-width: thin;
+	}
+	.info-block-wrapper {
+		margin-inline: var(--size-main-grid-padding-inline);
 	}
 </style>

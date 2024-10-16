@@ -1,4 +1,5 @@
-import { json } from '@sveltejs/kit';
+import { text } from '@sveltejs/kit';
+import { stringify } from 'devalue';
 import {
 	GET_PAGE_CONFIG_COOKIE_OPTIONS,
 	PAGE_CONFIG_COOKIE_NAME
@@ -33,5 +34,5 @@ export const POST = (async ({ request, cookies, params, locals, url }) => {
 		GET_PAGE_CONFIG_COOKIE_OPTIONS(url.pathname)
 	);
 
-	return json(result);
+	return text(stringify(result));
 }) satisfies RequestHandler;
