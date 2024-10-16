@@ -50,19 +50,19 @@
 
 			img_1: getImagePathAndMeta(
 				meta.preview_image_1_id,
-				$page.data.actor,
+				$page.data.user,
 				images,
 				recordsTranslations
 			),
 			img_2: getImagePathAndMeta(
 				meta.preview_image_2_id,
-				$page.data.actor,
+				$page.data.user,
 				images,
 				recordsTranslations
 			),
 			screenshot: getImagePathAndMeta(
 				meta.preview_screenshot_image_id,
-				$page.data.actor,
+				$page.data.user,
 				images,
 				recordsTranslations
 			)
