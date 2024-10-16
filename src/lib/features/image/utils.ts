@@ -56,7 +56,10 @@ export function getImagePathAndMeta(
 	let path: string | null = image.path;
 	const translationKey = image.path_translation_key;
 	if (translationKey) {
-		path = getRecordTranslation(translationKey, recordsTranslations) || null;
+		const pathFromTranslation = getRecordTranslation(translationKey, recordsTranslations) || null;
+		if (pathFromTranslation) {
+			path = pathFromTranslation;
+		}
 	}
 
 	const src = computeSrc(image.source, user, path);
@@ -66,7 +69,7 @@ export function getImagePathAndMeta(
 
 	const { background, height, width } = image;
 
-	return {
+	const result = {
 		id: imageId,
 		src,
 		alt: null,
@@ -74,6 +77,8 @@ export function getImagePathAndMeta(
 		height,
 		width
 	};
+
+	return result;
 }
 
 export function getLanguagedName(name: string, lang?: SupportedLang | null) {
