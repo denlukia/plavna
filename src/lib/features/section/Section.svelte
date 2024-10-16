@@ -114,21 +114,21 @@
 		{/if}
 	</div>
 
-	<div class="articles-list-wrapper">
-		{#if section.articles.length > 0}
+	{#if section.articles.length > 0}
+		<div class="articles-list-wrapper">
 			<ArticlesList {section} />
-		{:else if sectionContext.activeTags.length > 0}
-			<div class="info-block-wrapper">
-				<InfoBlock>
-					{#if $page.params.username === $page.data.actor?.username}
-						<Translation key="page_actor.section.no_articles" />
-					{:else}
-						<Translation key="page.section.no_articles" />
-					{/if}
-				</InfoBlock>
-			</div>
-		{/if}
-	</div>
+		</div>
+	{:else if sectionContext.activeTags.length > 0}
+		<div class="info-block-wrapper">
+			<InfoBlock>
+				{#if $page.params.username === $page.data.actor?.username}
+					<Translation key="page_actor.section.no_articles" />
+				{:else}
+					<Translation key="page.section.no_articles" />
+				{/if}
+			</InfoBlock>
+		</div>
+	{/if}
 </section>
 
 <style>
@@ -142,11 +142,15 @@
 		margin-bottom: var(--size-section-margin-bottom);
 	}
 
-	.articles-list-wrapper {
+	.articles-list-wrapper,
+	.info-block-wrapper {
 		margin-top: var(--size-section-articles-list-margin-top);
+		padding-bottom: var(--size-l);
+	}
+
+	.articles-list-wrapper {
 		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
 		overflow: auto;
-		padding-bottom: var(--size-l);
 		scrollbar-width: thin;
 	}
 	.info-block-wrapper {

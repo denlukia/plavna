@@ -40,13 +40,12 @@
 
 	function onselectionchange(e: Event) {
 		const target = e.target as Document;
-		const activeElement = target.activeElement;
 
 		if (
-			activeElement instanceof HTMLInputElement ||
-			(activeElement instanceof HTMLTextAreaElement && inputwrapperRef?.contains(activeElement))
+			target instanceof HTMLInputElement ||
+			(target instanceof HTMLTextAreaElement && inputwrapperRef?.contains(target))
 		) {
-			({ selectionStart, selectionEnd } = activeElement);
+			({ selectionStart, selectionEnd } = target);
 		}
 	}
 </script>
