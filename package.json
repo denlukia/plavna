@@ -37,7 +37,7 @@
 		"globals": "^15.11.0",
 		"imagekit": "^5.2.0",
 		"lucia": "^3.2.1",
-		"marked": "14.1.2",
+		"marked": "7.0.5",
 		"nanoid": "^5.0.7",
 		"oslo": "^1.2.1",
 		"prettier": "^3.3.3",

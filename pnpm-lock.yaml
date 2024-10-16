@@ -79,8 +79,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1
       marked:
-        specifier: 14.1.2
-        version: 14.1.2
+        specifier: 7.0.5
+        version: 7.0.5
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -2276,13 +2276,13 @@ packages:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
 
-  marked@14.1.2:
-    resolution: {integrity: sha512-f3r0yqpz31VXiDB/wj9GaOB0a2PRLQl6vJmXiFrniNwjkKdvakqJRULhjFKJpxOchlCRiG5fcacoUZY5Xa6PEQ==}
-    engines: {node: '>= 18'}
-    hasBin: true
-
   marked@5.1.2:
     resolution: {integrity: sha512-ahRPGXJpjMjwSOlBoTMZAK7ATXkli5qCPxZ21TG44rx1KEo44bii4ekgTDQPNRQ4Kh7JMb9Ub1PVk1NxRSsorg==}
+    engines: {node: '>= 16'}
+    hasBin: true
+
+  marked@7.0.5:
+    resolution: {integrity: sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==}
     engines: {node: '>= 16'}
     hasBin: true
 
@@ -4918,9 +4918,9 @@ snapshots:
     dependencies:
       semver: 6.3.1
 
-  marked@14.1.2: {}
-
   marked@5.1.2: {}
+
+  marked@7.0.5: {}
 
   memfs-browser@3.5.10302:
     dependencies:
