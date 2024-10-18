@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Lights from '$lib/design/components/Lights/Lights.svelte';
+	import Lights from '$lib/design/components/Loaders/Lights.svelte';
 
 	// TODO: Dynamize based on server data
 
@@ -12,11 +12,28 @@
 	// Fonts
 	import '$lib/design/themes/typography/inter/index.css';
 
+	import { navigating } from '$app/stores';
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
 	import InterWOFF2 from '$lib/design/themes/typography/inter/InterVariable-subset.woff2';
 	import Header from '$lib/features/layout/Header.svelte';
 
 	let { data, children } = $props();
+
+	let isNavigating = $derived(Boolean($navigating));
+
+	// For Testing
+
+	// let isNavigating = $state(false);
+
+	// $effect(() => {
+	// 	let interval = setInterval(() => {
+	// 		isNavigating = !isNavigating;
+	// 	}, 5000);
+
+	// 	() => {
+	// 		clearInterval(interval);
+	// 	};
+	// });
 </script>
 
 <svelte:head>
@@ -28,7 +45,7 @@
 
 <div class="main-layout">
 	<div class="lights-wrapper">
-		<Lights />
+		<Lights loading={isNavigating} />
 	</div>
 	<div class="content-wrapper">
 		<Header actor={data.actor} />
