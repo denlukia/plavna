@@ -36,6 +36,7 @@
 	}
 
 	async function onTagSwitch(tagId: TagSelect['id'], checked: boolean) {
+		sectionContext.loadingTagId = tagId;
 		// Getting new articles list
 		const body: SectionReconfigRequest = {
 			sectionId: section.meta.id,
@@ -83,6 +84,10 @@
 		} catch (err) {
 			console.error(err);
 		}
+
+		if (sectionContext.loadingTagId === tagId) {
+			sectionContext.loadingTagId = null;
+		}
 	}
 
 	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
@@ -90,7 +95,8 @@
 	const sectionContext: SectionContext = $state({
 		id: section.meta.id,
 		activeTags: section.activeTags,
-		onTagSwitch
+		onTagSwitch,
+		loadingTagId: null
 	});
 
 	$effect(() => {

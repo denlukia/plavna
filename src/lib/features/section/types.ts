@@ -16,6 +16,7 @@ export type SectionContext = {
 	id: SectionSelect['id'];
 	activeTags: Array<ActiveTag>;
 	onTagSwitch?: OnTagSwitchFunction;
+	loadingTagId: TagSelect['id'] | null;
 };
 
 export type SectionReconfigRequest = {

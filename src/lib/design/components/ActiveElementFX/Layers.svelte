@@ -7,13 +7,13 @@
 		stretch?: boolean;
 		overflow?: string;
 	};
-	let { children, stretch = false, overflow = 'hidden', ...attributes }: Props = $props();
+	let { children, stretch = false, overflow = 'hidden', style, ...attributes }: Props = $props();
 </script>
 
 <span
 	class="layers global-fix-overflow"
 	class:stretch
-	style="overflow: {overflow};"
+	style="overflow: {overflow}; {style}"
 	{...attributes}
 >
 	{@render children()}

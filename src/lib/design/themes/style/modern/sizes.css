@@ -149,6 +149,9 @@
 	--size-dropdown-in-input-padding-top: var(--size-m);
 	--size-dropdown-in-input-padding-bottom: var(--size-m);
 
+	/* --- Tag Switch --- */
+	--size-tag-switch-border-radius: var(--size-full);
+
 	/* --- Switch --- */
 	--size-switch-width: var(--size-3xl);
 	--size-switch-border-radius: var(--size-full);

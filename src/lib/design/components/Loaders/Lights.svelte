@@ -9,32 +9,31 @@
 		'var(--colorful-light-2)',
 		'var(--colorful-light-3)'
 	];
-	const defaultWidth = '600px';
 	const defaultMaxGrowth = 2;
 	const baselineGrowth = 1;
 	const msInSecond = 1000;
 
 	type Props = {
-		loading: boolean;
+		loading?: boolean;
 		colors?: string[];
-		width?: string;
 		maxGrowth?: number;
 		sinPeaksPerSecond?: number;
+		maskStyle?: string;
+		lightsStyle?: string;
 	};
 
 	let {
-		loading = true,
+		loading = false,
 		colors = defaultColors,
-		width = defaultWidth,
-		maxGrowth = defaultMaxGrowth,
-		sinPeaksPerSecond = 3
-	} = $props();
 
-	// let interval: NodeJS.Timeout | null = $state(null);
+		maxGrowth = defaultMaxGrowth,
+		sinPeaksPerSecond = 3,
+		maskStyle = '',
+		lightsStyle = ''
+	}: Props = $props();
+
 	let timeSinceStart = $state(0);
 	let currentGrowth = tweened(1, { duration: 1000, easing: cubicInOut });
-
-	$inspect($currentGrowth);
 
 	$effect(() => {
 		if (loading) {
@@ -43,34 +42,6 @@
 			currentGrowth.set(1);
 		}
 	});
-
-	// $effect(() => {
-	// 	if ($currentGrowth > baselineGrowth && interval === null) {
-	// 		const msInSecond = 1000;
-	// 		const timeDivider = msInSecond / sinPeaksPerSecond;
-	// 		const startTime = Date.now() / timeDivider;
-	// 		interval = setInterval(() => {
-	// 			if (get(currentGrowth) <= baselineGrowth) {
-	// 				if (interval !== null) {
-	// 					clearInterval(interval);
-	// 					interval = null;
-	// 				}
-	// 				return;
-	// 			}
-
-	// 			const currentTime = Date.now() / timeDivider;
-	// 			const timeSinceStart = currentTime - startTime;
-	// 			timeSinceLastStart = timeSinceStart;
-	// 		}, 100);
-	// 	}
-
-	// 	return () => {
-	// 		if (interval !== null) {
-	// 			clearInterval(interval);
-	// 			interval = null;
-	// 		}
-	// 	};
-	// });
 
 	$effect(() => {
 		function updateTime() {
@@ -92,8 +63,8 @@
 	}
 </script>
 
-<div class="mask">
-	<div class="lights" class:loading style="--width: {width};">
+<div class="mask" style={maskStyle}>
+	<div class="lights" class:loading style={lightsStyle}>
 		{#each colors as light, index}
 			<div class="light" style="--color: {light}; --grow: {getFlexGrow(index)}">
 				<div class="left"></div>
@@ -119,8 +90,8 @@
 	.lights {
 		display: flex;
 		flex-shrink: 1;
+		width: 750px;
 		height: 250px;
-		width: var(--width);
 	}
 	.light {
 		flex-grow: var(--grow);
