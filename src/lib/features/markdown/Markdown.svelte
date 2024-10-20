@@ -3,7 +3,7 @@
 
 	import Em from './renderers/Em.svelte';
 	import Heading from './renderers/Heading.svelte';
-	import LinkOrTagSwitcher from './renderers/LinkOrTagSwitcher.svelte';
+	import LinkOrTagSwitch from './renderers/LinkOrTagSwitch.svelte';
 	import MarkdownImage from './renderers/MarkdownImage.svelte';
 	import Paragraph from './renderers/Paragraph.svelte';
 	import Strong from './renderers/Strong.svelte';
@@ -23,6 +23,6 @@
 		heading: Heading,
 		strong: Strong,
 		em: Em,
-		link: LinkOrTagSwitcher
+		link: LinkOrTagSwitch
 	}}
 />

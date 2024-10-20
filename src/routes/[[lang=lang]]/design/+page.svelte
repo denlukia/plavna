@@ -14,7 +14,7 @@
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
-	import TagSwitcher from '$lib/features/markdown/renderers/TagSwitcher.svelte';
+	import TagSwitch from '$lib/features/markdown/renderers/TagSwitch.svelte';
 
 	let { data } = $props();
 
@@ -94,7 +94,7 @@
 		<Select>
 			<option>Test</option>
 		</Select>
-		<TagSwitcher tagId={1}>Ім'я тега</TagSwitcher>
+		<TagSwitch tagId={1}>Ім'я тега</TagSwitch>
 		<Labeled as="label">
 			<Checkbox />
 			<Typography>Тест</Typography>

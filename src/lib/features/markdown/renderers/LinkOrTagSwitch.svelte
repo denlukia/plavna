@@ -3,7 +3,7 @@
 	import type { Snippet } from 'svelte';
 	import Link from '$lib/design/components/Link/Link.svelte';
 
-	import Tag from './TagSwitcher.svelte';
+	import TagSwitch from './TagSwitch.svelte';
 
 	type Props = Omit<Tokens.Link, 'type'> & {
 		children: Snippet;
@@ -15,9 +15,9 @@
 </script>
 
 {#if tagId !== null}
-	<Tag {tagId}>
+	<TagSwitch {tagId}>
 		{@render children()}
-	</Tag>
+	</TagSwitch>
 {:else}
 	<Link {href}>
 		{@render children()}
