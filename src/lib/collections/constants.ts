@@ -64,4 +64,4 @@ export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_H
 
 export const PAGE_SLUG_PREFIX = 'p-';
 
-export const WAIT_BEFORE_AUTOSAVE_MS = 1500;
+export const WAIT_BEFORE_AUTOSAVE_MS = 1000;
