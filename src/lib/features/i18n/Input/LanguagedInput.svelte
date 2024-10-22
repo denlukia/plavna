@@ -15,11 +15,12 @@
 		superform,
 		prefix,
 		name,
-		currentLang = $bindable(getLang($page.params.lang)),
 		trailing,
+		currentLang = $bindable(getLang($page.params.lang)),
 		oninput: oninputProp,
 		selectionStart = $bindable(0),
 		selectionEnd = $bindable(0),
+		elementRef = $bindable(null),
 		placeholder,
 		...attributes
 	}: InputOrTextareaProps & {
@@ -73,6 +74,7 @@
 
 <!-- Visible lang -->
 <Input
+	bind:elementRef
 	bind:value
 	bind:selectionStart
 	bind:selectionEnd

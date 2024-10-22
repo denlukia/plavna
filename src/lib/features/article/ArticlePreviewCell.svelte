@@ -12,7 +12,7 @@
 
 	let { article }: Props = $props();
 
-	let { meta, tags } = $derived(article);
+	let { meta } = $derived(article);
 
 	let params = $derived($page.params);
 </script>
