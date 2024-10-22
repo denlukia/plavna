@@ -2,6 +2,7 @@
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/collections/constants';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
@@ -20,14 +21,22 @@
 
 	let formRef: HTMLButtonElement | null = $state(null);
 	let showSaveButton = $state(true);
+	let elementRef: HTMLInputElement | null = $state(null);
+	let isActiveOnLastUpdate = $state(false);
 
-	let { form, enhance, errors } = superForm(superValidated, {
+	let { form, enhance, errors, submit } = superForm(superValidated, {
 		resetForm: false,
 		invalidateAll: false,
 		onUpdate: (e) => {
 			if (e.result.type === 'success') {
 				const form = e.result.data.form;
+				isActiveOnLastUpdate = document.activeElement === elementRef;
 				onSuccessfullUpdate?.(form);
+			}
+		},
+		onUpdated: (e) => {
+			if (isActiveOnLastUpdate) {
+				elementRef?.focus();
 			}
 		}
 	});
@@ -42,10 +51,8 @@
 			form.update((v) => ({ ...v, [firstInputName]: target.value }));
 		}
 
-		formRef?.click();
+		submit(elementRef);
 	}
-
-	const WAIT_BEFORE_AUTOSAVE_MS = 700;
 
 	const debouncedOninput = debounce(oninput, WAIT_BEFORE_AUTOSAVE_MS);
 
@@ -66,9 +73,16 @@
 
 <form {action} use:enhance method="POST">
 	{#if 'key' in $form}
-		<LanguagedInput superform={form} {...attributes} {trailing} oninput={debouncedOninput} />
+		<LanguagedInput
+			bind:elementRef
+			superform={form}
+			{...attributes}
+			{trailing}
+			oninput={debouncedOninput}
+		/>
 	{:else}
 		<Input
+			bind:elementRef
 			bind:value={$form[firstInputName]}
 			name={firstInputName}
 			oninput={debouncedOninput}

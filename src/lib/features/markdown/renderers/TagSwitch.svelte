@@ -69,8 +69,6 @@
 		};
 	});
 
-	$inspect(showLoader);
-
 	function onSwitchChange(e: Event) {
 		const { checked } = e.target as HTMLInputElement;
 		sectionContext?.onTagSwitch?.(tagId, checked);

@@ -11,11 +11,13 @@
 		value = $bindable(),
 		selectionStart = $bindable(0),
 		selectionEnd = $bindable(0),
+		elementRef = $bindable(null),
 		style,
 		leading,
 		trailing,
 		animateOnTypeChange,
 		animateOnValueChange,
+
 		...attributes
 	}: InputOrTextareaProps = $props();
 
@@ -77,6 +79,7 @@
 					{#if attributes.textarea}
 						{#key key}
 							<textarea
+								bind:this={elementRef}
 								in:fly|local={getFlyConf(expoOut, 'bottom')}
 								out:fly|local={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"
@@ -87,6 +90,7 @@
 					{:else}
 						{#key key}
 							<input
+								bind:this={elementRef}
 								in:fly|local={getFlyConf(expoOut, 'bottom')}
 								out:fly|local={getFlyConf(expoOut, 'top')}
 								class="global-reset-input global-text-body"

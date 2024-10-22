@@ -4,7 +4,6 @@
 	import { getRecordTranslation } from '../i18n/utils';
 	import { getImagePathAndMeta } from '../image/utils';
 	import type { SectionProp } from '../section/types';
-	import type { PreviewComponentType } from './families/types';
 	import type { PreviewDataProp } from './types';
 
 	type Props = {

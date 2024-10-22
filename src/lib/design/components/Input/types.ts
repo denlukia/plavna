@@ -9,6 +9,7 @@ type CommonInputProps = {
 	animateOnTypeChange?: boolean;
 	leading?: Snippet;
 	trailing?: Snippet;
+	elementRef?: HTMLInputElement | HTMLTextAreaElement | null;
 };
 
 export type InputProps = { textarea?: false } & HTMLInputAttributes;
