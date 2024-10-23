@@ -12,7 +12,7 @@ export async function update_translation(event: RequestEvent) {
 
 	const form = await superValidate(tokenizedFormData, zod(translationUpdateSchema));
 	if (!form.valid) {
-		fail(400, { form });
+		return fail(400, { form });
 	}
 
 	const detokenizedData = detokenizeEmptyStrings(form.data);

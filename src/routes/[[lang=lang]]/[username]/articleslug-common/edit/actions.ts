@@ -34,7 +34,9 @@ import type { Actions, RequestEvent } from '../../[articleslug]/edit/$types';
 
 async function switch_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(tagUpdateSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { articleslug } = event.params;
 	const { tagService } = event.locals;
@@ -50,7 +52,9 @@ async function switch_tag(event: RequestEvent) {
 
 async function create_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(translationInsertSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { tagService } = event.locals;
 	await tagService.create(form.data);
@@ -60,7 +64,9 @@ async function create_tag(event: RequestEvent) {
 
 async function delete_tag(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(tagDeleteSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { tagService } = event.locals;
 	await tagService.delete(form.data);
@@ -72,7 +78,10 @@ async function update_slug(event: RequestEvent) {
 	const params = event.params;
 	const { articleslug } = params;
 	const form = await superValidate(event.request, zod(articleSlugUpdateSchema));
-	if (!form.valid) fail(400, { form });
+	console.log(form.valid);
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { articleService } = event.locals;
 	const result = await articleService.updateSlug(articleslug, form.data);
@@ -90,7 +99,9 @@ async function update_preview(event: RequestEvent) {
 	const { articleService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(articlePreviewUpdateSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
 		keyof ArticlePreviewImageFileFieldsAll
@@ -109,7 +120,7 @@ async function update_preview(event: RequestEvent) {
 				imagesHandlers[key] = imageHandler;
 			} catch {
 				// TODO: Error for unsupported image
-				fail(400, { form });
+				return fail(400, { form });
 			}
 		} else {
 			imagesHandlers[key] = null;
@@ -123,7 +134,9 @@ async function create_preview_template(event: RequestEvent) {
 	const { previewService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(previewTemplateCreationFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const entry = formData.get('image');
 	let imageHandler: ServerImageHandler | null = null;
@@ -133,7 +146,7 @@ async function create_preview_template(event: RequestEvent) {
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch {
 			// TODO: Error for unsupported image
-			fail(400, { form });
+			return fail(400, { form });
 		}
 	}
 
@@ -144,7 +157,9 @@ async function update_preview_template(event: RequestEvent) {
 	const { previewService } = event.locals;
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(previewTemplateEditingFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const entry = formData.get('image');
 	let imageHandler: ServerImageHandler | null = null;
@@ -154,7 +169,7 @@ async function update_preview_template(event: RequestEvent) {
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch {
 			// TODO: Error for unsupported image
-			fail(400, { form });
+			return fail(400, { form });
 		}
 	}
 
@@ -162,7 +177,9 @@ async function update_preview_template(event: RequestEvent) {
 }
 async function delete_preview_template(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(previewTemplateDeletionFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { previewService } = event.locals;
 	await previewService.delete(form.data);
@@ -170,7 +187,9 @@ async function delete_preview_template(event: RequestEvent) {
 
 async function update_image_provider(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageProviderUpdateFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { actorService } = event.locals;
 	try {
@@ -192,7 +211,9 @@ async function delete_image_provider(event: RequestEvent) {
 
 async function create_image(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageCreationFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { imageService } = event.locals;
 
@@ -207,7 +228,9 @@ async function create_image(event: RequestEvent) {
 async function update_image(event: RequestEvent) {
 	const formData = await event.request.formData();
 	const form = await superValidate(formData, zod(imageUpdateFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { imageService, actorService } = event.locals;
 
@@ -220,7 +243,9 @@ async function update_image(event: RequestEvent) {
 
 async function delete_image(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(imageDeletionFormSchema));
-	if (!form.valid) fail(400, { form });
+	if (!form.valid) {
+		return fail(400, { form });
+	}
 
 	const { imageService } = event.locals;
 	await imageService.deleteRecord(form.data.id);
