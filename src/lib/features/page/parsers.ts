@@ -10,15 +10,18 @@ import { pages } from './schema';
 export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
 
+const slugParser = z
+	.string() //
+	.max(15, {
+		message: checkTranslationKey('pages_list.errors.max_length')
+	})
+	.regex(/^[a-z0-9-]*$/i, {
+		message: checkTranslationKey('pages_list.errors.disallowed_chars')
+	});
+
 // Form Parsers
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
-	slug: pageSelectSchema.shape.slug //
-		.max(15, {
-			message: checkTranslationKey('pages_list.errors.max_length')
-		})
-		.regex(/^[a-z0-9-]*$/i, {
-			message: checkTranslationKey('pages_list.errors.disallowed_chars')
-		})
+	slug: slugParser
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });
 export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true }); // TODO: Maybe simplify to simple key type?

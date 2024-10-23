@@ -38,6 +38,7 @@ export const EN = {
 
 		errors: {
 			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
+			min_length: 'Min length is 3 symbols',
 			max_length: 'Max length is 15 symbols',
 			slug_in_use: 'You already have a page with this slug',
 			only_one_default_slug: 'Only one default page can exist'
@@ -107,7 +108,6 @@ export const EN = {
 			mark_for_deletion: 'Delete on Update',
 			copy_code: 'Copy code'
 		},
-
 		tags: {
 			list_label: 'Tags',
 			template_editing_form_title: 'Tag',
@@ -155,6 +155,12 @@ export const EN = {
 					name: 'Custom'
 				}
 			}
+		},
+		errors: {
+			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
+			min_length: 'Min length is 3 symbols',
+			max_length: 'Max length is 15 symbols',
+			slug_in_use: 'You already have an article with this slug'
 		}
 	}
 };

@@ -167,10 +167,9 @@ export class ArticleService {
 	async loadEditor(username: User['username'], slug: ArticleSelect['slug']) {
 		const actor = await this.actorService.checkOrThrow(null, username);
 
-		let exisingId = await this.getIdIfExists(slug);
+		const exisingId = await this.getIdIfExists(slug);
 		if (exisingId === null) {
-			// TODO Remove creating new by just visiting url
-			exisingId = await this.createFromSlug(slug);
+			error(404);
 		}
 
 		const translForForms = alias(translations, 'translForForms');
@@ -608,7 +607,7 @@ export class ArticleService {
 							})
 							.filter(isNonNullable);
 						if (queueRecordsForInsert.length === 0) {
-							fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}
 					} else {
 						queueRecordsForInsert = [
