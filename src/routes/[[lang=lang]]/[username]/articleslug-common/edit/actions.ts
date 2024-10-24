@@ -102,6 +102,7 @@ async function update_preview(event: RequestEvent) {
 	if (!form.valid) {
 		return fail(400, { form });
 	}
+	console.log(form);
 
 	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
 		keyof ArticlePreviewImageFileFieldsAll
@@ -113,13 +114,14 @@ async function update_preview(event: RequestEvent) {
 
 	for (const key of imagesKeys) {
 		const entry = formData.get(key);
-		if (entry) {
+		if (entry instanceof File && entry.size > 0) {
 			try {
 				const imageHandler = await new ServerImageHandler();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 				imagesHandlers[key] = imageHandler;
-			} catch {
+			} catch (e) {
 				// TODO: Error for unsupported image
+				console.log('Error handling image entry:', entry, e);
 				return fail(400, { form });
 			}
 		} else {
@@ -140,7 +142,7 @@ async function create_preview_template(event: RequestEvent) {
 
 	const entry = formData.get('image');
 	let imageHandler: ServerImageHandler | null = null;
-	if (entry) {
+	if (entry instanceof File && entry.size > 0) {
 		try {
 			imageHandler = await new ServerImageHandler();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
@@ -163,7 +165,7 @@ async function update_preview_template(event: RequestEvent) {
 
 	const entry = formData.get('image');
 	let imageHandler: ServerImageHandler | null = null;
-	if (entry) {
+	if (entry instanceof File && entry.size > 0) {
 		try {
 			imageHandler = await new ServerImageHandler();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
