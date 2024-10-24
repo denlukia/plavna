@@ -7,9 +7,9 @@
 	--text-heading-1-font-family: var(--text-main-font-family);
 	--text-heading-1-padding-top: 0;
 	--text-heading-1-padding-bottom: 0;
-	--text-heading-1-size: 64px;
-	--text-heading-1-weight: 900;
-	--text-heading-1-line-height: 64px;
+	--text-heading-1-size: 62px;
+	--text-heading-1-weight: 800;
+	--text-heading-1-line-height: 60px;
 	--text-heading-1-letter-spacing: -0.01em;
 
 	--text-heading-2-font-family: var(--text-main-font-family);
@@ -17,7 +17,7 @@
 	--text-heading-2-padding-bottom: 3px;
 	--text-heading-2-size: 30px;
 	--text-heading-2-weight: 700;
-	--text-heading-2-line-height: 28px;
+	--text-heading-2-line-height: 32px;
 	--text-heading-2-letter-spacing: -0.01em;
 
 	--text-headline-font-family: var(--text-main-font-family);
