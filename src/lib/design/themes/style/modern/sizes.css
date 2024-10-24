@@ -26,7 +26,7 @@
 	--size-max-cell-width: 240px;
 	--size-cell-aspect: 120 / 240;
 	--size-cols-total: 5;
-	--size-rows-total: 3;
+	--size-rows-total: 5;
 	--size-cell-gap: var(--size-m);
 	--size-cell-overflow: var(--size-l);
 

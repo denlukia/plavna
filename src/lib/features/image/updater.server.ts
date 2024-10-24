@@ -23,7 +23,7 @@ export async function updateImages({
 		let fileIsValid = false;
 		const entry = rawData.get(key);
 
-		if (entry) {
+		if (entry instanceof File && entry.size > 0) {
 			try {
 				const imageHandler = await new ServerImageHandler();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
