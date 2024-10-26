@@ -12,6 +12,8 @@
 
 	let { data }: Props = $props();
 
+	let { article, actor } = $derived(data);
+
 	let editHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', $page.params)
 	);
@@ -27,11 +29,13 @@
 	No preview
 {/if} -->
 
-<div class="main-actions">
-	<Button href={editHref} kind="secondary">
-		<Translation key="article.edit" />
-	</Button>
-</div>
+{#if actor && article.user_id === actor.id}
+	<div class="main-actions">
+		<Button href={editHref} kind="secondary">
+			<Translation key="article.edit" />
+		</Button>
+	</div>
+{/if}
 
 <style>
 	.main-actions {

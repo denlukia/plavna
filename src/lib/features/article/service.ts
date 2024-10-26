@@ -700,7 +700,7 @@ export class ArticleService {
 					.map((row) => row.titleTranslationAlias)
 					.filter(getNullAndDupFilter('key'))
 					.map((row) => [row.key, row[this.translationService.currentLang]])
-			]),
+			]) as RecordsTranslationsDict,
 			images: query.map((rows) => rows.images).filter(getNullAndDupFilter('id')),
 			tags: query.map((rows) => rows.tags).filter(getNullAndDupFilter('id'))
 		};
