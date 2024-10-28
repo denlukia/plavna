@@ -2,10 +2,12 @@ import type { Component } from 'svelte';
 
 import type { PreviewComponentType, PreviewFamiliesDict, PreviewFamilyId } from './families/types';
 
-export async function getPreviewComponent(folder: string, type: PreviewComponentType) {
+export async function getPreviewComponent(familyId: string | null, type: PreviewComponentType) {
+	if (!familyId) return null;
+
 	const previewComponents = import.meta.glob('$lib/features/preview/families/*/*.svelte');
 	const typeCapitalized = type.charAt(0).toUpperCase() + type.slice(1);
-	const moduleSearchString = `${folder}/${typeCapitalized}.svelte`;
+	const moduleSearchString = `${familyId}/${typeCapitalized}.svelte`;
 	const moduleKey = Object.keys(previewComponents).find((key) => key.includes(moduleSearchString));
 	if (moduleKey === undefined) {
 		return null;

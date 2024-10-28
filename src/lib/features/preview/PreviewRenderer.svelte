@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { getRecordTranslation } from '../i18n/utils';
-	import { getImagePathAndMeta } from '../image/utils';
 	import type { SectionProp } from '../section/types';
-	import type { PreviewDataProp } from './types';
+	import { getPreviewData } from './utils';
 
 	type Props = {
 		article: SectionProp['articles'][number];
 	};
 	let { article }: Props = $props();
 
-	let { meta, tags } = $derived(article);
 	let familyId = $derived(article.meta.preview_family);
 	let previewFamilies = $derived($page.data.previewFamiliesState?.value);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
-	let images = $derived($page.data.imagesState?.value || {});
+	let images = $derived($page.data.imagesState?.value);
+	let user = $derived($page.data.user);
 
 	let PreviewComponent = $derived(getComponentFromDict());
 
@@ -29,50 +27,12 @@
 
 		return previewFamilyObj.components.viewer;
 	}
-
-	function getPreviewData(): PreviewDataProp {
-		return {
-			title_translation: getRecordTranslation(meta.title_translation_key, recordsTranslations),
-			description_translation: getRecordTranslation(
-				meta.description_translation_key,
-				recordsTranslations
-			),
-			likes_count: meta.likes_count,
-			prop_1: meta.preview_prop_1,
-			prop_2: meta.preview_prop_2,
-			cols: meta.preview_columns,
-			rows: meta.preview_rows,
-			translation_1: getRecordTranslation(meta.preview_translation_1_key, recordsTranslations),
-			translation_2: getRecordTranslation(meta.preview_translation_2_key, recordsTranslations),
-			publish_time: meta.publish_time,
-			tags: tags.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations)),
-
-			img_1: getImagePathAndMeta(
-				meta.preview_image_1_id,
-				$page.data.user,
-				images,
-				recordsTranslations
-			),
-			img_2: getImagePathAndMeta(
-				meta.preview_image_2_id,
-				$page.data.user,
-				images,
-				recordsTranslations
-			),
-			screenshot: getImagePathAndMeta(
-				meta.preview_screenshot_image_id,
-				$page.data.user,
-				images,
-				recordsTranslations
-			)
-		};
-	}
 </script>
 
 <!-- TODO: Edit title to represent loading on button click, add aria description -->
 <span class="preview-renderer" role="button" tabindex="0">
 	{#if PreviewComponent && !(PreviewComponent instanceof Promise)}
-		<PreviewComponent data={getPreviewData()} />
+		<PreviewComponent data={getPreviewData(article, recordsTranslations, images, user)} />
 	{:else}
 		static component not found
 	{/if}

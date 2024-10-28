@@ -9,8 +9,14 @@
 	let { children }: Props = $props();
 </script>
 
-<p>
+<p class="paragraph">
 	<Typography>
 		{@render children()}
 	</Typography>
 </p>
+
+<style>
+	p {
+		margin-bottom: 1em;
+	}
+</style>

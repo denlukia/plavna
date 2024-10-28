@@ -8,7 +8,7 @@
 		customClass?: string;
 	};
 
-	let { cols = 1, children, customClass = '' }: Props = $props();
+	let { cols = 1, children, customClass = '', style, ...attributes }: Props = $props();
 </script>
 
 {#snippet content()}
@@ -17,7 +17,7 @@
 	{/if}
 {/snippet}
 
-<div class="column global-reset-link {customClass}" style="--cols:{cols}">
+<div class="column global-reset-link {customClass}" style="--cols:{cols}; {style}" {...attributes}>
 	<div class="inner" style="--size-cols-total:{cols}">
 		{@render content()}
 	</div>
