@@ -7,7 +7,7 @@ export const UK = {
 		language: 'Мова',
 		my_items: { pages: 'Cторінки', articles: 'Статті' },
 		my: 'Мої',
-		no_translation: 'Без перкладу',
+		no_translation: 'Без перекладу',
 		or: 'або',
 		save: 'Зберегти'
 	},
