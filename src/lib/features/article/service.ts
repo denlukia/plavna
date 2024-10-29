@@ -661,7 +661,13 @@ export class ArticleService {
 				images,
 				and(
 					eq(images.user_id, articles.user_id),
-					or(eq(images.owning_article_id, articles.id), eq(images.is_account_common, true))
+					or(
+						eq(images.owning_article_id, articles.id),
+						eq(images.is_account_common, true),
+						eq(images.id, articles.preview_image_1_id),
+						eq(images.id, articles.preview_image_2_id),
+						eq(images.id, articles.preview_screenshot_image_id)
+					)
 				)
 			)
 			.leftJoin(
