@@ -14,12 +14,12 @@
 
 	const pages = $derived([
 		{
-			template: '/[lang]/[username]/articles',
-			translation: 'layout.my_items.articles'
-		} as const,
-		{
 			template: '/[lang]/[username]/pages',
 			translation: 'layout.my_items.pages'
+		} as const,
+		{
+			template: '/[lang]/[username]/articles',
+			translation: 'layout.my_items.articles'
 		} as const
 	]);
 
