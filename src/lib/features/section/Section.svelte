@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
+	import { cubicInOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import ArticlesList from '../article/ArticlesList.svelte';
@@ -121,7 +123,7 @@
 	</div>
 
 	{#if section.articles.length > 0}
-		<div class="articles-list-wrapper">
+		<div class="articles-list-wrapper" transition:slide={{ duration: 300, easing: cubicInOut }}>
 			<ArticlesList {section} />
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
