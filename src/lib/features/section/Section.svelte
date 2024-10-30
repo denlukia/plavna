@@ -2,8 +2,6 @@
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
-	import { cubicInOut } from 'svelte/easing';
-	import { slide } from 'svelte/transition';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import ArticlesList from '../article/ArticlesList.svelte';
@@ -108,7 +106,7 @@
 	setContext('section', sectionContext);
 </script>
 
-<section class="section">
+<section class="section" class:disabled={sectionContext.activeTags.length === 0}>
 	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
@@ -123,7 +121,7 @@
 	</div>
 
 	{#if section.articles.length > 0}
-		<div class="articles-list-wrapper" transition:slide={{ duration: 300, easing: cubicInOut }}>
+		<div class="articles-list-wrapper">
 			<ArticlesList {section} />
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
@@ -148,6 +146,11 @@
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
+		transition: opacity 0.3s;
+	}
+
+	.disabled {
+		opacity: 0.25;
 	}
 
 	.articles-list-wrapper,
