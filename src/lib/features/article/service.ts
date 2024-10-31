@@ -101,11 +101,12 @@ export class ArticleService {
 			recordsTranslations
 		};
 	}
-	async getIdIfExists(slug: ArticleSelect['slug']) {
+	async getIdIfExists(username: User['username'], slug: ArticleSelect['slug']) {
 		const article = await db
 			.select({ id: articles.id })
 			.from(articles)
-			.where(eq(articles.slug, slug))
+			.innerJoin(users, eq(users.username, username))
+			.where(and(eq(articles.slug, slug), eq(articles.user_id, users.id)))
 			.get();
 		if (article) {
 			return article.id;
@@ -167,7 +168,7 @@ export class ArticleService {
 	async loadEditor(username: User['username'], slug: ArticleSelect['slug']) {
 		const actor = await this.actorService.checkOrThrow(null, username);
 
-		const exisingId = await this.getIdIfExists(slug);
+		const exisingId = await this.getIdIfExists(username, slug);
 		if (exisingId === null) {
 			error(404);
 		}

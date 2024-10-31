@@ -48,30 +48,41 @@
 	}
 
 	.image {
-		opacity: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	}
+	.no-js-animation,
+	.js-animation {
+		--initial-scale: 1.05;
+		--cubic-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+		--duration: 1000ms;
+
+		/* FX before load */
+		opacity: 0;
+		transform: scale(var(--initial-scale));
+		filter: blur(15px);
+	}
 
 	.no-js-animation {
-		animation: fadeIn 400ms 3s forwards;
+		animation: scaleIn var(--duration) 3s forwards var(--cubic-out);
 	}
 
 	.js-animation {
-		transition: opacity 400ms;
+		transition: all var(--duration) var(--cubic-out);
 	}
 
 	.js-animation.loaded {
 		opacity: 1;
+		transform: scale(1);
+		filter: blur(0);
 	}
 
-	@keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
+	@keyframes scaleIn {
 		100% {
 			opacity: 1;
+			transform: scale(1);
+			filter: blur(0);
 		}
 	}
 </style>
