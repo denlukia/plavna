@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -42,23 +43,6 @@
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>
-
-	<form class="main-actions" use:enhance method="POST">
-		<Button formaction="?/delete" kind="destructive">
-			<Translation key="article_editor.actions.delete" />
-		</Button>
-		<Button href={viewHref} kind="secondary">
-			<Translation key="article_editor.actions.view" />
-		</Button>
-		<Button
-			formaction="?/{publishTime ? 'hide' : 'publish'}"
-			kind={publishTime ? 'primary' : 'prominent'}
-		>
-			<Translation
-				key={publishTime ? 'article_editor.actions.hide' : 'article_editor.actions.publish'}
-			/>
-		</Button>
-	</form>
 
 	<div class="page-editor">
 		<ColumnsContainer>
@@ -114,6 +98,23 @@
 		</ColumnsContainer>
 	</div>
 </BlockAnimator>
+
+<form class="main-actions" use:enhance method="POST" transition:fade|global>
+	<Button formaction="?/delete" kind="destructive">
+		<Translation key="article_editor.actions.delete" />
+	</Button>
+	<Button href={viewHref} kind="secondary">
+		<Translation key="article_editor.actions.view" />
+	</Button>
+	<Button
+		formaction="?/{publishTime ? 'hide' : 'publish'}"
+		kind={publishTime ? 'primary' : 'prominent'}
+	>
+		<Translation
+			key={publishTime ? 'article_editor.actions.hide' : 'article_editor.actions.publish'}
+		/>
+	</Button>
+</form>
 
 <style>
 	.main-actions {
