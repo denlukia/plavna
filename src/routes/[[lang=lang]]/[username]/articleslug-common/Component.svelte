@@ -5,7 +5,7 @@
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
-	import PageAnimator from '$lib/features/animations/PageAnimator.svelte';
+	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewData } from '$lib/features/preview/utils';
@@ -28,7 +28,7 @@
 	);
 </script>
 
-<PageAnimator {routeId} articleId={article.id}>
+<BlockAnimator {routeId} articleId={article.id}>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
@@ -49,7 +49,7 @@
 			</article>
 		</Column>
 	</ColumnsContainer>
-</PageAnimator>
+</BlockAnimator>
 
 {#if actor && article.user_id === actor.id}
 	<div class="main-actions">

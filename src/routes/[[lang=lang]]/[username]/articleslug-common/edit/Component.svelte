@@ -7,7 +7,7 @@
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import PageAnimator from '$lib/features/animations/PageAnimator.svelte';
+	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -38,7 +38,7 @@
 	);
 </script>
 
-<PageAnimator {routeId} articleId={article.id}>
+<BlockAnimator {routeId} articleId={article.id}>
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>
@@ -113,7 +113,7 @@
 			</Column>
 		</ColumnsContainer>
 	</div>
-</PageAnimator>
+</BlockAnimator>
 
 <style>
 	.main-actions {
