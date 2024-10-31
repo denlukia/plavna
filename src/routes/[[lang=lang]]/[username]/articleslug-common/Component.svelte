@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -52,7 +53,7 @@
 </BlockAnimator>
 
 {#if actor && article.user_id === actor.id}
-	<div class="main-actions">
+	<div class="main-actions" transition:fade|global>
 		<Button href={editHref} kind="secondary">
 			<Translation key="article.edit" />
 		</Button>
