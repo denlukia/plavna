@@ -24,6 +24,11 @@
 		showUpdateButton = false;
 		showCopyCode = true;
 	});
+
+	function copyCode() {
+		const imageMd = `![Image description](${image.id})`;
+		navigator.clipboard.writeText(imageMd);
+	}
 </script>
 
 <div class="input-wrapper">
@@ -53,7 +58,7 @@
 	</form>
 	{#if showCopyCode}
 		<div class="action-wrapper copy-code">
-			<Button size="small">
+			<Button size="small" onclick={copyCode}>
 				<Translation key="article_editor.images.copy_code" />
 			</Button>
 		</div>

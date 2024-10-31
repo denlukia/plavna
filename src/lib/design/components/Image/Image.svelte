@@ -10,34 +10,61 @@
 		style?: string;
 	};
 
+	const initialOpacity = '0';
+	const duration = 1000;
+
 	let { pathAndMeta, style = '' }: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
-	let loaded = $state(false);
 
-	function onload() {
-		loaded = true;
+	let mode: 'keyframes' | 'transition' = $state('keyframes');
+	let revealed = $state(false);
+
+	function switchToTransition() {
+		mode = 'transition';
 	}
 
-	$effect(() => {
-		if (imgElement !== null && imgElement.naturalWidth) {
-			onload();
+	function onload() {
+		switchToTransition();
+		revealed = true;
+	}
+
+	onMount(() => {
+		if (!imgElement) return;
+
+		const currentOpacity = getComputedStyle(imgElement).opacity;
+		if (currentOpacity === initialOpacity) {
+			// Keyframes didn't play yet
+			switchToTransition();
+			if (imgElement.naturalWidth) {
+				// To have at least a ms of initial state presence for transition to play
+				setTimeout(() => (revealed = true));
+			}
+		} else {
+			// Keyframes started playing
+			// We wait for them to finish and switch to already played transition
+			setTimeout(() => {
+				switchToTransition();
+				revealed = true;
+			}, duration);
 		}
 	});
 </script>
 
 <Layers stretch>
-	<div class="bg" style="background: {pathAndMeta.background};"></div>
-	<div class="image-wrapper">
+	<span class="bg" style="background: {pathAndMeta.background};"></span>
+	<span class="image-wrapper">
 		<img
+			style="--initial-opacity: {initialOpacity}; --duration: {duration}ms; {style}"
 			bind:this={imgElement}
-			class="image {browser ? 'js-animation' : 'no-js-animation'}"
-			class:loaded
+			class="image {mode}"
+			class:revealed
+			width={pathAndMeta.width}
+			height={pathAndMeta.height}
 			src={pathAndMeta.src}
 			alt={pathAndMeta.alt}
-			{style}
 			{onload}
 		/>
-	</div>
+	</span>
 </Layers>
 
 <style>
@@ -51,38 +78,45 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-	}
-	.no-js-animation,
-	.js-animation {
+
 		--initial-scale: 1.05;
-		--cubic-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-		--duration: 1000ms;
+		--initial-blur: 15px;
 
-		/* FX before load */
-		opacity: 0;
+		--easing: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+		--final-opacity: 1;
+		--final-scale: 1;
+		--final-blur: 0;
+	}
+
+	.keyframes {
+		animation: scaleIn var(--duration) 3s backwards var(--easing);
+	}
+
+	.transition {
+		opacity: var(--initial-opacity);
 		transform: scale(var(--initial-scale));
-		filter: blur(15px);
+		filter: blur(var(--initial-blur));
 	}
 
-	.no-js-animation {
-		animation: scaleIn var(--duration) 3s forwards var(--cubic-out);
-	}
+	.transition.revealed {
+		transition: all var(--duration) var(--easing);
 
-	.js-animation {
-		transition: all var(--duration) var(--cubic-out);
-	}
-
-	.js-animation.loaded {
 		opacity: 1;
 		transform: scale(1);
 		filter: blur(0);
 	}
 
 	@keyframes scaleIn {
+		0% {
+			opacity: var(--initial-opacity);
+			transform: scale(var(--initial-scale));
+			filter: blur(var(--initial-blur));
+		}
 		100% {
-			opacity: 1;
-			transform: scale(1);
-			filter: blur(0);
+			opacity: var(--final-opacity);
+			transform: scale(var(--final-scale));
+			filter: blur(var(--final-blur));
 		}
 	}
 </style>

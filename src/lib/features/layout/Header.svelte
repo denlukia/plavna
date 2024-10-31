@@ -6,6 +6,7 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import { fly } from '$lib/design/transitions/fly';
 
+	import BlockAnimator from '../animations/BlockAnimator.svelte';
 	import { defaultLang, getLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';
 
@@ -27,27 +28,29 @@
 	}
 </script>
 
-<header in:fly|global={{ y: 10 }}>
-	<Popup kind="list">
-		{#snippet label()}
-			{getLang($page.params.lang).toUpperCase()}
-		{/snippet}
-		{#snippet content()}
-			{#each supportedLangs as language}
-				<Button
-					href={generateLangURL($page.url.pathname, language)}
-					kind={language === getLang($page.params.lang) ? 'primary' : 'secondary'}
-				>
-					{language.toUpperCase()}
-				</Button>
-			{/each}
-		{/snippet}
-	</Popup>
+<BlockAnimator routeId="header">
+	<header>
+		<Popup kind="list">
+			{#snippet label()}
+				{getLang($page.params.lang).toUpperCase()}
+			{/snippet}
+			{#snippet content()}
+				{#each supportedLangs as language}
+					<Button
+						href={generateLangURL($page.url.pathname, language)}
+						kind={language === getLang($page.params.lang) ? 'primary' : 'secondary'}
+					>
+						{language.toUpperCase()}
+					</Button>
+				{/each}
+			{/snippet}
+		</Popup>
 
-	{#if actor}
-		<AuthorBlock {actor} />
-	{/if}
-</header>
+		{#if actor}
+			<AuthorBlock {actor} />
+		{/if}
+	</header>
+</BlockAnimator>
 
 <style>
 	header {

@@ -41,6 +41,7 @@
 	<title>Plavna App</title>
 	<meta name="theme-color" content="#AB948A" />
 
+	<!-- TODO: Dynamize -->
 	<link rel="preload" href={InterWOFF2} as="font" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 
