@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
+	import PageAnimator from '$lib/features/animations/PageAnimator.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
@@ -16,6 +16,7 @@
 	let { data }: Props = $props();
 
 	let {
+		routeId,
 		sections: { items, creationForm }
 	} = $state(data);
 
@@ -30,33 +31,35 @@
 	}
 </script>
 
-{#each items as section, index (section.meta.id)}
-	<Section bind:section={items[index]} />
-{/each}
+<PageAnimator {routeId}>
+	{#each items as section, index (section.meta.id)}
+		<Section bind:section={items[index]} />
+	{/each}
 
-{#if creationForm}
-	{#if creatorShown}
-		<div class="section-creator-wrapper">
-			<SectionEditor
-				mainForm={creationForm}
-				onCancel={closeCreator}
-				onSuccessfullUpdate={closeCreator}
-			/>
-		</div>
-	{:else}
-		<button
-			class="global-reset-button section-creation-button"
-			onclick={() => (creatorShown = true)}
-		>
-			<IconWrapper size="heading-2">
-				<Plus />
-			</IconWrapper>
-			<Typography size="heading-2">
-				<Translation key="page_actor.section.creator_title" />
-			</Typography>
-		</button>
+	{#if creationForm}
+		{#if creatorShown}
+			<div class="section-creator-wrapper">
+				<SectionEditor
+					mainForm={creationForm}
+					onCancel={closeCreator}
+					onSuccessfullUpdate={closeCreator}
+				/>
+			</div>
+		{:else}
+			<button
+				class="global-reset-button section-creation-button"
+				onclick={() => (creatorShown = true)}
+			>
+				<IconWrapper size="heading-2">
+					<Plus />
+				</IconWrapper>
+				<Typography size="heading-2">
+					<Translation key="page_actor.section.creator_title" />
+				</Typography>
+			</button>
+		{/if}
 	{/if}
-{/if}
+</PageAnimator>
 
 <style>
 	.section-creator-wrapper,

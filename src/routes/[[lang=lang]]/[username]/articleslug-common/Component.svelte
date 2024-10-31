@@ -5,6 +5,7 @@
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
+	import PageAnimator from '$lib/features/animations/PageAnimator.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewData } from '$lib/features/preview/utils';
@@ -17,7 +18,7 @@
 
 	let { data }: Props = $props();
 
-	let { article, tags, actor, previewComponent: PreviewComponent } = $derived(data);
+	let { article, tags, actor, previewComponent: PreviewComponent, routeId } = $derived(data);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
 	let user = $derived($page.data.user);
@@ -27,26 +28,28 @@
 	);
 </script>
 
-<ColumnsContainer>
-	<Column cols={3} style="margin-inline: auto;">
-		<article class="article">
-			{#if PreviewComponent}
-				<GridContainer>
-					<GridCell cols={3} rows={3}>
-						<PreviewComponent
-							data={getPreviewData({ meta: article, tags }, recordsTranslations, images, user)}
-						/>
-					</GridCell>
-				</GridContainer>
-			{:else}
-				No preview
-			{/if}
-			<div class="content">
-				<Translation recordKey={data.article.content_translation_key} markdown />
-			</div>
-		</article>
-	</Column>
-</ColumnsContainer>
+<PageAnimator {routeId} articleId={article.id}>
+	<ColumnsContainer>
+		<Column cols={3} style="margin-inline: auto;">
+			<article class="article">
+				{#if PreviewComponent}
+					<GridContainer>
+						<GridCell cols={3} rows={3}>
+							<PreviewComponent
+								data={getPreviewData({ meta: article, tags }, recordsTranslations, images, user)}
+							/>
+						</GridCell>
+					</GridContainer>
+				{:else}
+					No preview
+				{/if}
+				<div class="content">
+					<Translation recordKey={data.article.content_translation_key} markdown />
+				</div>
+			</article>
+		</Column>
+	</ColumnsContainer>
+</PageAnimator>
 
 {#if actor && article.user_id === actor.id}
 	<div class="main-actions">
