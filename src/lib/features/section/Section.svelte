@@ -146,7 +146,7 @@
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
-		transition: opacity 0.3s;
+		transition: opacity 0.5s;
 	}
 
 	.disabled {
