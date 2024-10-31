@@ -13,6 +13,7 @@
 	import '$lib/design/themes/typography/inter/index.css';
 
 	import { navigating } from '$app/stores';
+	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
 	import InterWOFF2 from '$lib/design/themes/typography/inter/InterVariable-subset.woff2';
 	import Header from '$lib/features/layout/Header.svelte';
@@ -49,7 +50,9 @@
 	</div>
 	<div class="content-wrapper">
 		<Header actor={data.actor} />
-		{@render children()}
+		<Layers overflow="visible">
+			{@render children()}
+		</Layers>
 	</div>
 	<!-- <div class="grid-wrapper"> -->
 	<GridVisualizer />

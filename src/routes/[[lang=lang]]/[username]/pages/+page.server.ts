@@ -8,12 +8,15 @@ import {
 	type PageCreationForm
 } from '$lib/features/page/parsers';
 
-export const load = async ({ locals: { pageService }, params, parent }) => {
+export const load = async ({ locals: { pageService }, params, parent, route }) => {
 	const forms = await pageService.getMyAsForms(params.username);
 	const { systemTranslations } = await parent();
 
+	const routeId = route.id;
+
 	return {
 		...forms,
+		routeId,
 		systemTranslations: {
 			...systemTranslations,
 			...getSystemTranslationsSlice('pages_list', getLang(params.lang))
