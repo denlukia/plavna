@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import PageAnimator from '$lib/features/animations/PageAnimator.svelte';
+	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
 	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
 	import CardsList from '$lib/features/common/components/CardsList.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -10,7 +10,7 @@
 	let { routeId } = $derived(data);
 </script>
 
-<PageAnimator {routeId}>
+<BlockAnimator {routeId}>
 	<Typography size="heading-1"><Translation key="articles_list.title" /></Typography>
 
 	<CardsList>
@@ -18,4 +18,4 @@
 			<ArticleItem {article} />
 		{/each}
 	</CardsList>
-</PageAnimator>
+</BlockAnimator>

@@ -3,9 +3,11 @@ import { lucia } from '$lib/services/auth';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params, parent, route }) => {
 	const { systemTranslations } = await parent();
+	const routeId = route.id;
 	return {
+		routeId,
 		systemTranslations: {
 			...systemTranslations,
 			...getSystemTranslationsSlice('main', getLang(params.lang))
