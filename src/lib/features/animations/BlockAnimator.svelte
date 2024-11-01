@@ -2,9 +2,7 @@
 	import { navigating } from '$app/stores';
 	import type { Snippet } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
-
-	// import { fly } from '$lib/design/transitions/fly';
+	import { fly } from '$lib/design/transitions/fly';
 
 	import type { ArticleSelect } from '../article/parsers';
 
