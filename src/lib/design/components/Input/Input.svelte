@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { expoOut } from 'svelte/easing';
 	import { fly, getFlyConf } from '$lib/design/transitions/fly';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
@@ -80,8 +79,8 @@
 						{#key key}
 							<textarea
 								bind:this={elementRef}
-								in:fly|local={getFlyConf(expoOut, 'bottom')}
-								out:fly|local={getFlyConf(expoOut, 'top')}
+								in:fly|local={getFlyConf('bottom')}
+								out:fly|local={getFlyConf('top')}
 								class="global-reset-input global-text-body"
 								bind:value
 								{...attributes}
@@ -91,8 +90,8 @@
 						{#key key}
 							<input
 								bind:this={elementRef}
-								in:fly|local={getFlyConf(expoOut, 'bottom')}
-								out:fly|local={getFlyConf(expoOut, 'top')}
+								in:fly|local={getFlyConf('bottom')}
+								out:fly|local={getFlyConf('top')}
 								class="global-reset-input global-text-body"
 								bind:value
 								{...attributes}

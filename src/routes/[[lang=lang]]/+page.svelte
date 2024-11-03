@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
+	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

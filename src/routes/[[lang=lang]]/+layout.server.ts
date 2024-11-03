@@ -1,9 +1,9 @@
 import { selectProvider } from '@denlukia/plavna-common/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { getSafeUserData } from '$lib/features/auth/utils.js';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
 import { imageProviderUpdateFormSchema } from '$lib/features/image/parsers';
-import { getSafeUserData } from '$lib/features/user/utils.js';
 
 export const load = async ({ params, locals }) => {
 	const { actor } = locals;

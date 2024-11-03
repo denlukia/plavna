@@ -2,7 +2,6 @@
 	import { supportedLangs } from '@denlukia/plavna-common/constants';
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
-	import { expoOut } from 'svelte/easing';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
 	import { fly, getFlyConf } from '$lib/design/transitions/fly';
@@ -41,8 +40,8 @@
 		{#key lang}
 			<div
 				class="animation-wrapper"
-				in:fly|local={getFlyConf(expoOut, 'bottom')}
-				out:fly|local={getFlyConf(expoOut, 'top')}
+				in:fly|local={getFlyConf('bottom')}
+				out:fly|local={getFlyConf('top')}
 			>
 				<ImageInput bind:image bind:translation {name} {clientUpload} {processing} {lang} />
 			</div>

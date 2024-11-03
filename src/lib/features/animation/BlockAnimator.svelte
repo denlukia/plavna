@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { navigating } from '$app/stores';
 	import type { Snippet } from 'svelte';
-	import { cubicOut } from 'svelte/easing';
 	import { fly } from '$lib/design/transitions/fly';
 
 	import type { ArticleSelect } from '../article/parsers';
@@ -17,14 +16,11 @@
 	let exiting = $derived(
 		routeId === $navigating?.from?.route?.id && routeId !== $navigating?.to?.route?.id
 	);
-
-	$inspect(exiting);
 </script>
 
 {#key routeId + articleId}
 	{#if !exiting}
-		<!-- in:fly|global={{ duration: 400, delay: 150, y: 10, easing: cubicOut }} -->
-		<div class="animation-wrapper" out:fly|global={{ duration: 500, y: -10, easing: cubicOut }}>
+		<div class="animation-wrapper" out:fly|global={{ duration: 1200, blur: 8, y: -10 }}>
 			{@render children()}
 		</div>
 	{/if}
@@ -32,13 +28,13 @@
 
 <style>
 	.animation-wrapper {
-		animation: fly-in 500ms backwards;
+		animation: fly-in 1200ms 300ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
 	}
 	@keyframes fly-in {
 		0% {
 			opacity: 0;
 			transform: translate(0, 10px);
-			filter: blur(0.3em);
+			filter: blur(8px);
 		}
 		100% {
 			opacity: 1;

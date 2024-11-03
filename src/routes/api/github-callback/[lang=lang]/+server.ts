@@ -2,9 +2,9 @@ import { type RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
+import { users } from '$lib/features/auth/schema';
 import { generatePath } from '$lib/features/common/links';
 import { getLang } from '$lib/features/i18n/utils';
-import { users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
 

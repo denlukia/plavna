@@ -1,5 +1,5 @@
 import { integer, sqliteTable, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
+import { users } from '$lib/features/auth/schema';
 
 import { articles } from '../article/schema';
 import { translations } from '../i18n/schema';

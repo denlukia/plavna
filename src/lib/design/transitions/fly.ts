@@ -1,9 +1,17 @@
-import { cubicOut } from 'svelte/easing';
+import { expoOut } from 'svelte/easing';
 import type { EasingFunction, FlyParams } from 'svelte/transition';
 
 export function fly(
 	node: Element,
-	{ delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 }: FlyParams = {}
+	{
+		delay = 0,
+		duration = 1000,
+		blur = 4,
+		easing = expoOut,
+		x = 0,
+		y = 0,
+		opacity = 0
+	}: FlyParams & { blur?: number } = {}
 ) {
 	// We ignore initial transform and opacity cauase
 	// they are read incorrectly on animation start when prev didn't finish
@@ -22,7 +30,7 @@ export function fly(
 		easing,
 		css: (t: number, u: number) => `
 			transform: translate(${(1 - t) * Number(x_value)}${x_unit}, ${(1 - t) * Number(y_value)}${y_unit});
-			filter: blur(${(1 - t) * 0.3}em);
+			filter: blur(${(1 - t) * blur}px);
 			opacity: ${target_opacity - od * u}`
 	};
 }
@@ -34,10 +42,9 @@ function split_css_unit(value: number | string) {
 		: ([/** @type {number} */ value, 'px'] as const);
 }
 
-export function getFlyConf(easing: EasingFunction, yshift: 'top' | 'bottom'): FlyParams {
+export function getFlyConf(yshift: 'top' | 'bottom'): FlyParams {
 	return {
-		duration: 700,
-		easing,
+		duration: 1200,
 		y: 7 * (yshift === 'top' ? -1 : 1),
 		opacity: 0
 	};

@@ -8,7 +8,7 @@
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
+	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';

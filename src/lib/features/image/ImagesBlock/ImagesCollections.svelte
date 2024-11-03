@@ -5,9 +5,9 @@
 	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import type { ArticleSelect } from '$lib/features/article/parsers';
+	import type { ImageProviderUpdate } from '$lib/features/auth/parsers';
 	import SideBox from '$lib/features/common/components/SideBox.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
 
 	import type { ImagesCollection } from '../parsers';
 	import ImageCreationForm from './ImageCreationForm.svelte';

@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
+import { users } from '$lib/features/auth/schema';
 
 import { articles } from '../article/schema';
 import { translations } from '../i18n/schema';

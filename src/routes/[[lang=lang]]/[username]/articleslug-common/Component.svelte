@@ -6,7 +6,7 @@
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
-	import BlockAnimator from '$lib/features/animations/BlockAnimator.svelte';
+	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewData } from '$lib/features/preview/utils';
