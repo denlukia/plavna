@@ -59,13 +59,13 @@
 		gap: var(--size-m);
 		z-index: 1;
 
-		animation: fly-in 1200ms backwards cubic-bezier(0.19, 1, 0.22, 1);
+		animation: fly-in 800ms backwards cubic-bezier(0.19, 1, 0.22, 1);
 	}
 	@keyframes fly-in {
 		0% {
 			opacity: 0;
 			transform: translate(0, 10px);
-			filter: blur(0.3em);
+			filter: blur(6px);
 		}
 		100% {
 			opacity: 1;

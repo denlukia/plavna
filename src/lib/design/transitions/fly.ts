@@ -44,7 +44,7 @@ function split_css_unit(value: number | string) {
 
 export function getFlyConf(yshift: 'top' | 'bottom'): FlyParams {
 	return {
-		duration: 1200,
+		duration: 1000,
 		y: 7 * (yshift === 'top' ? -1 : 1),
 		opacity: 0
 	};
