@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { flip } from 'svelte/animate';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	type Props = HTMLAttributes<HTMLSpanElement> & {
