@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from '$app/stores';
+	// import { navigating } from '$app/stores';
 	import type { Snippet } from 'svelte';
 	import { fly } from '$lib/design/transitions/fly';
 

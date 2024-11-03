@@ -4,9 +4,7 @@
 	import type { User } from 'lucia';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import { fly } from '$lib/design/transitions/fly';
 
-	import BlockAnimator from '../animation/BlockAnimator.svelte';
 	import { defaultLang, getLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';
 
