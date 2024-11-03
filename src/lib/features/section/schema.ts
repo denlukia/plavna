@@ -1,7 +1,7 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { users } from '$lib/features/auth/schema';
 import { pages } from '$lib/features/page/schema';
-import { users } from '$lib/features/user/schema';
 
 import { translations } from '../i18n/schema';
 import { tags } from '../tag/schema';

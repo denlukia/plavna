@@ -6,7 +6,7 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import { fly } from '$lib/design/transitions/fly';
 
-	import BlockAnimator from '../animations/BlockAnimator.svelte';
+	import BlockAnimator from '../animation/BlockAnimator.svelte';
 	import { defaultLang, getLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';
 
@@ -59,7 +59,7 @@
 		gap: var(--size-m);
 		z-index: 1;
 
-		animation: fly-in 500ms backwards;
+		animation: fly-in 1200ms backwards cubic-bezier(0.19, 1, 0.22, 1);
 	}
 	@keyframes fly-in {
 		0% {

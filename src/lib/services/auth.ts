@@ -5,8 +5,8 @@ import { env } from '$env/dynamic/private';
 import { PUBLIC_HOST } from '$env/static/public';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
-import type { Actor } from '$lib/features/user/parsers';
-import { sessions, users } from '$lib/features/user/schema';
+import type { Actor } from '$lib/features/auth/parsers';
+import { sessions, users } from '$lib/features/auth/schema';
 
 import { db } from './db';
 

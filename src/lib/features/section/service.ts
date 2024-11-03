@@ -9,6 +9,7 @@ import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { articles } from '../article/schema';
+import type { ActorService } from '../auth/service';
 import type { TransactionOrDB } from '../common/types';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
@@ -24,7 +25,6 @@ import type { PreviewFamiliesDict } from '../preview/families/types';
 import { previewTemplates } from '../preview/schema';
 import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
-import type { ActorService } from '../user/service';
 import {
 	sectionDeleteSchema,
 	sectionUpdateSchema,
