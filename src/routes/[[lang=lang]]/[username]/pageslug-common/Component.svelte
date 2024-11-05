@@ -1,8 +1,8 @@
 <script lang="ts">
+	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
-	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';

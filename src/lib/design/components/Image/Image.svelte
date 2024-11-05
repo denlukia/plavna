@@ -25,7 +25,11 @@
 
 	function onload() {
 		switchToTransition();
-		revealed = true;
+		revealInNextFrame();
+	}
+
+	function revealInNextFrame() {
+		requestAnimationFrame(() => (revealed = true));
 	}
 
 	onMount(() => {
@@ -34,18 +38,23 @@
 		const currentOpacity = getComputedStyle(imgElement).opacity;
 		if (currentOpacity === initialOpacity) {
 			// Keyframes didn't play yet
+
 			switchToTransition();
 			if (imgElement.naturalWidth) {
 				// To have at least a ms of initial state presence for transition to play
-				setTimeout(() => (revealed = true));
+				revealInNextFrame();
 			}
 		} else {
 			// Keyframes started playing
 			// We wait for them to finish and switch to already played transition
-			setTimeout(() => {
-				switchToTransition();
-				revealed = true;
-			}, duration);
+			imgElement.addEventListener(
+				'animationend',
+				() => {
+					switchToTransition();
+					revealed = true;
+				},
+				{ once: true }
+			);
 		}
 	});
 </script>

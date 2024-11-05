@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
