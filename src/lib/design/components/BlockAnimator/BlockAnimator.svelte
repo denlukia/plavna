@@ -3,7 +3,7 @@
 	import type { Snippet } from 'svelte';
 	import { fly } from '$lib/design/transitions/fly';
 
-	import type { ArticleSelect } from '../article/parsers';
+	import type { ArticleSelect } from '../../../features/article/parsers';
 
 	type Props = Record<string, any> & {
 		routeId: string;
@@ -13,6 +13,7 @@
 
 	let { children, routeId, articleId }: Props = $props();
 
+	// TODO: Re-entroduce this
 	// let exiting = $derived(
 	// 	routeId === $navigating?.from?.route?.id && routeId !== $navigating?.to?.route?.id
 	// );

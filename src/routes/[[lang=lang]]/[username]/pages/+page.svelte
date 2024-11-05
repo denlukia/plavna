@@ -1,7 +1,7 @@
 <script lang="ts">
+	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
 	import CardsList from '$lib/features/common/components/CardsList.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';

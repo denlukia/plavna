@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
+	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
-	import BlockAnimator from '$lib/features/animation/BlockAnimator.svelte';
+	import { receive, send } from '$lib/features/article/transition';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewData } from '$lib/features/preview/utils';
@@ -27,6 +28,10 @@
 	let editHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', $page.params)
 	);
+
+	// TODO: Turned out to be buggy, I'm in shambles
+	// let conf = $derived({ key: article?.slug });
+	// let isOnArticle = $derived($page.params?.['articleslug'] === article.slug);
 </script>
 
 <BlockAnimator {routeId} articleId={article.id}>
@@ -34,6 +39,8 @@
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
 				{#if PreviewComponent}
+					<!-- {#if isOnArticle} -->
+					<!-- <div class="preview-animator" in:receive|global={conf} out:send|global={conf}> -->
 					<GridContainer>
 						<GridCell cols={3} rows={3}>
 							<PreviewComponent
@@ -41,6 +48,8 @@
 							/>
 						</GridCell>
 					</GridContainer>
+					<!-- </div> -->
+					<!-- {/if} -->
 				{:else}
 					No preview
 				{/if}
