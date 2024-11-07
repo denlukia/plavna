@@ -1,6 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/features/article/service';
-import { ActorService } from '$lib/features/auth/service';
 import { TranslationService } from '$lib/features/i18n/service';
 import { getLang } from '$lib/features/i18n/utils';
 import { ImageService } from '$lib/features/image/service';
@@ -8,6 +7,7 @@ import { PageService } from '$lib/features/page/service';
 import { PreviewService } from '$lib/features/preview/service';
 import { SectionService } from '$lib/features/section/service';
 import { TagService } from '$lib/features/tag/service';
+import { ActorService } from '$lib/features/user/service';
 import { lucia } from '$lib/services/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {

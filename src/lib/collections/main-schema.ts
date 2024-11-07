@@ -1,4 +1,4 @@
-export { users, sessions } from '../features/auth/schema';
+export { users, sessions } from '../features/user/schema';
 export { pages } from '../features/page/schema';
 export { sections, sectionsToTags } from '../features/section/schema';
 export { tags, tagsToArticles } from '../features/tag/schema';

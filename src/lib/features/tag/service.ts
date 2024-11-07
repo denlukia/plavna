@@ -2,9 +2,9 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
 import { articles } from '../article/schema';
-import type { ActorService } from '../auth/service';
 import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
+import type { ActorService } from '../user/service';
 import type { TagDelete, TagUpdate } from './parsers';
 import { tags, tagsToArticles } from './schema';
 

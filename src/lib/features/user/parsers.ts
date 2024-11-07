@@ -19,3 +19,9 @@ export const safeUserData = createSelectSchema(users).pick({
 	imagekit_url_endpoint: true
 });
 export type User = z.infer<typeof safeUserData>;
+
+export const userSettingsFormSchema = createSelectSchema(users).omit({
+	id: true,
+	github_id: true
+});
+export type UserSettingsUpdate = z.infer<typeof userSettingsFormSchema>;

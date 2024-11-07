@@ -9,8 +9,8 @@
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import type { ImageProviderUpdate } from '$lib/features/auth/parsers';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
 
 	type Props = {
 		superValidated: SuperValidated<ImageProviderUpdate>;

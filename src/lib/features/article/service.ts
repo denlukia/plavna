@@ -11,8 +11,6 @@ import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { users } from '../auth/schema';
-import type { ActorService } from '../auth/service';
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
@@ -41,6 +39,8 @@ import {
 } from '../screenshot/utils';
 import { tagDeleteSchema, tagUpdateSchema } from '../tag/parsers';
 import { tags, tagsToArticles } from '../tag/schema';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import {
 	articleSelectSchema,
 	articleSlugUpdateSchema,

@@ -6,9 +6,9 @@ import type {
 	ArticlePreviewImageFileFieldsAll,
 	ArticlePreviewImageIdsFields
 } from '../article/parsers';
-import type { User } from '../auth/parsers';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
+import type { User } from '../user/parsers';
 import type { ImageSelect } from './parsers';
 import type { ImagesDict } from './types';
 
