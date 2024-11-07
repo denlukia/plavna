@@ -20,6 +20,10 @@
 		{
 			template: '/[lang]/[username]/articles',
 			translation: 'layout.my_items.articles'
+		} as const,
+		{
+			template: '/[lang]/[username]/settings',
+			translation: 'layout.my_items.settings'
 		} as const
 	]);
 

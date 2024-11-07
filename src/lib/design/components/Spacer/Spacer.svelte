@@ -1,16 +1,20 @@
 <script lang="ts">
 	type Props = {
 		size?: 's' | 'm' | 'l';
+		type?: 'horizontal' | 'vertical';
 	};
 
-	let { size = 'm' }: Props = $props();
+	let { size = 'm', type = 'horizontal' }: Props = $props();
 </script>
 
-<span class="spacer {size}"></span>
+<span class="spacer {size} {type}"></span>
 
 <style>
-	.spacer {
+	.horizontal {
 		display: inline-block;
+	}
+	.vertical {
+		display: block;
 	}
 	.s {
 		width: var(--size-s);

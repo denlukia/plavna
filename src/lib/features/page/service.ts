@@ -5,8 +5,6 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
-import { users } from '../auth/schema';
-import type { ActorService } from '../auth/service';
 import { isNonNullable } from '../common/utils';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
@@ -16,6 +14,8 @@ import type { PreviewFamiliesDict } from '../preview/families/types';
 import { sectionInsertSchema } from '../section/parsers';
 import type { SectionService } from '../section/service';
 import { tags } from '../tag/schema';
+import { users } from '../user/schema';
+import type { ActorService } from '../user/service';
 import {
 	pageCreationFormSchema,
 	pageDeletionFormSchema,

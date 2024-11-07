@@ -5,7 +5,7 @@ import type { EN } from './en';
 export const UK = {
 	layout: {
 		language: 'Мова',
-		my_items: { pages: 'Cторінки', articles: 'Статті' },
+		my_items: { pages: 'Cторінки', articles: 'Статті', settings: 'Налаштування' },
 		my: 'Мої',
 		no_translation: 'Без перекладу',
 		or: 'або',
@@ -158,6 +158,11 @@ export const UK = {
 				}
 			}
 		}
+	},
+	settings: {
+		heading: 'Мої налаштування',
+		username: "Ім'я користувача",
+		save: 'Зберегти'
 	}
 };
 

@@ -1,7 +1,7 @@
 export const EN = {
 	layout: {
 		language: 'Language',
-		my_items: { pages: 'Pages', articles: 'Articles' },
+		my_items: { pages: 'Pages', articles: 'Articles', settings: 'Settings' },
 		my: 'My',
 		no_translation: 'No translation',
 		or: 'or',
@@ -162,6 +162,11 @@ export const EN = {
 			max_length: 'Max length is 15 symbols',
 			slug_in_use: 'You already have an article with this slug'
 		}
+	},
+	settings: {
+		heading: 'My Settings',
+		username: 'Username',
+		save: 'Save'
 	}
 };
 

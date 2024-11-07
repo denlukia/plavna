@@ -2,7 +2,7 @@
 	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import CardsList from '$lib/features/common/components/CardsList.svelte';
+	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';
 	import PageEditor from '$lib/features/page/PageItemEditor.svelte';
@@ -21,7 +21,7 @@
 <BlockAnimator {routeId}>
 	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
-	<CardsList>
+	<ColumnedContent>
 		{#each data.pageItems as pageItem (pageItem.id)}
 			<PageItem {pageItem} />
 		{/each}
@@ -35,7 +35,7 @@
 				{/snippet}
 			</Popup>
 		</div>
-	</CardsList>
+	</ColumnedContent>
 </BlockAnimator>
 
 <style>

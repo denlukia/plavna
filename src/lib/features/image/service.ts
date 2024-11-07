@@ -3,11 +3,11 @@ import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
-import type { ActorService } from '../auth/service';
 import type { TransactionOrDB } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { ActorService } from '../user/service';
 import type { ImageInsertForm, ImageSelect, ImageUpdate } from './parsers';
 import { images } from './schema';
 

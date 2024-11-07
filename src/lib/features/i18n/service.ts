@@ -5,9 +5,9 @@ import type { User } from 'lucia';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import type { ActorService } from '../auth/service';
 import type { TransactionOrDB } from '../common/types';
 import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
+import type { ActorService } from '../user/service';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
 import { translations } from './schema';
 

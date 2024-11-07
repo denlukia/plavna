@@ -2,12 +2,19 @@ import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { error } from '@sveltejs/kit';
 import { eq, getTableColumns } from 'drizzle-orm';
 import type { User as LuciaUser } from 'lucia';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
 import type { ImageSelect } from '../image/parsers';
 import { images } from '../image/schema';
-import type { Actor, ImageProviderUpdate } from './parsers';
+import {
+	userSettingsFormSchema,
+	type Actor,
+	type ImageProviderUpdate,
+	type UserSettingsUpdate
+} from './parsers';
 import { users } from './schema';
 
 export class ActorService {
@@ -57,5 +64,28 @@ export class ActorService {
 		}
 		this.actorObj = result;
 		return result;
+	}
+	async getSettingsForm(username: Actor['username']) {
+		await this.checkOrThrow(null, username);
+		const actor = await db
+			.select({
+				username: users.username
+			})
+			.from(users)
+			.where(eq(users.username, username))
+			.get();
+		if (!actor) error(404);
+
+		const superValidated = await superValidate(actor, zod(userSettingsFormSchema), {
+			id: 'user-settings'
+		});
+
+		return superValidated;
+	}
+	async updateSettings(data: UserSettingsUpdate) {
+		const actor = await this.getOrThrow();
+
+		// TODO: Only write allowed fields (and across all project)
+		return db.update(users).set(data).where(eq(users.id, actor.id)).returning().get();
 	}
 }

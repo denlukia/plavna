@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { superValidate, SuperValidated } from 'sveltekit-superforms';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import type { ArticleSelect } from '$lib/features/article/parsers';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
@@ -15,7 +14,7 @@
 
 	let { articleId, superValidated }: Props = $props();
 
-	let { enhance } = $derived(superForm(superValidated));
+	let { enhance } = superForm(superValidated);
 </script>
 
 <form method="POST" action="?/create_image" use:enhance>

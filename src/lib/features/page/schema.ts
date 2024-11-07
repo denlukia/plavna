@@ -1,6 +1,6 @@
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
-import { users } from '../auth/schema';
+import { users } from '../user/schema';
 
 export const pages = sqliteTable(
 	'pages',

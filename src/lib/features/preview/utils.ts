@@ -1,9 +1,9 @@
-import type { User } from '../auth/parsers';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
 import type { ImagesDict } from '../image/types';
 import { getImagePathAndMeta } from '../image/utils';
 import type { SectionProp } from '../section/types';
+import type { User } from '../user/parsers';
 import type { PreviewDataProp } from './types';
 
 export function getPreviewData(
