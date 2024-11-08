@@ -62,6 +62,6 @@ export const imageSourceToEndpointKeyInUser = {
 
 export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;
 
-export const PAGE_SLUG_PREFIX = 'p-';
+export const PAGE_SLUG_PREFIX = 'p:';
 
 export const WAIT_BEFORE_AUTOSAVE_MS = 1000;
