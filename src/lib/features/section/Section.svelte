@@ -106,7 +106,7 @@
 	setContext('section', sectionContext);
 </script>
 
-<section class="section" class:disabled={sectionContext.activeTags.length === 0}>
+<section class="section" class:disabled={sectionContext.activeTags.length === 0 && !editorOpened}>
 	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
