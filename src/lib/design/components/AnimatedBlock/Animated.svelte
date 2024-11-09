@@ -11,8 +11,8 @@
 
 	let { key, animateIntroWithCss = true, global = true, children }: Props = $props();
 
-	let configIn = { duration: animateIntroWithCss ? 0 : 400, y: 10, delay: 350 };
-	let configOut = { duration: 400, y: -5 };
+	let configIn = { duration: animateIntroWithCss ? 0 : 400, y: 7, delay: 350 };
+	let configOut = { duration: 400, y: -7 };
 </script>
 
 {#if global}
@@ -47,7 +47,7 @@
 		0% {
 			display: none;
 			opacity: 0;
-			transform: translate(0, 10px);
+			transform: translate(0, 7px);
 			filter: blur(6px);
 		}
 		100% {
