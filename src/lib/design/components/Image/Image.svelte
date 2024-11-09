@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
 	import type { ImagePathAndMeta } from '../../types';
@@ -29,18 +28,21 @@
 	}
 
 	function revealInNextFrame() {
-		requestAnimationFrame(() => (revealed = true));
+		setTimeout(() => {
+			revealed = true;
+		}, 50);
 	}
 
 	onMount(() => {
 		if (!imgElement) return;
 
 		const currentOpacity = getComputedStyle(imgElement).opacity;
+
 		if (currentOpacity === initialOpacity) {
 			// Keyframes didn't play yet
 
 			switchToTransition();
-			if (imgElement.naturalWidth) {
+			if (imgElement.complete) {
 				// To have at least a ms of initial state presence for transition to play
 				revealInNextFrame();
 			}
@@ -50,8 +52,8 @@
 			imgElement.addEventListener(
 				'animationend',
 				() => {
-					switchToTransition();
 					revealed = true;
+					switchToTransition();
 				},
 				{ once: true }
 			);
@@ -99,7 +101,7 @@
 	}
 
 	.keyframes {
-		animation: scaleIn var(--duration) 3s backwards var(--easing);
+		animation: scale-in var(--duration) 4s backwards var(--easing);
 	}
 
 	.transition {
@@ -116,7 +118,7 @@
 		filter: blur(0);
 	}
 
-	@keyframes scaleIn {
+	@keyframes scale-in {
 		0% {
 			opacity: var(--initial-opacity);
 			transform: scale(var(--initial-scale));
