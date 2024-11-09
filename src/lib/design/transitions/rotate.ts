@@ -1,4 +1,4 @@
-import { expoInOut } from 'svelte/easing';
+import { cubicInOut } from 'svelte/easing';
 import { type EasingFunction, type TransitionConfig } from 'svelte/transition';
 import { mapRange } from '$lib/features/common/utils';
 
@@ -7,7 +7,7 @@ export function spin(
 	{
 		duration = 400,
 		delay = 0,
-		easing = expoInOut,
+		easing = cubicInOut,
 		angle = 180,
 		opacity = 1
 	}: {

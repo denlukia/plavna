@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import AnimatedBlock from '$lib/design/components/AnimatedBlock/AnimatedBlock.svelte';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
 
@@ -39,31 +40,20 @@
 			return getRecordTranslation(recordKey, $page.data.recordsTranslationsState?.value);
 	}
 
-	// At new page loads translations for outroing page are erased
-	// but are still needed while outroing transitons are played, so:
-
-	// 1. We get the translation, whether present or null
 	let translation = $derived.by(getTranslation);
-
-	// 2. We create a state from that initial value...
-	let nonUndefinedTranslation: typeof translation = $state(translation);
-
-	// 3. ...and update it only when translation is not null
-	$effect(() => {
-		if (translation !== undefined) nonUndefinedTranslation = translation;
-	});
 </script>
 
-<!-- TODO: add typography renderers for markdown  -->
-{#if nonUndefinedTranslation}
-	{#if markdown}
-		<Markdown source={nonUndefinedTranslation} />
+<AnimatedBlock key={translation}>
+	{#if translation}
+		{#if markdown}
+			<Markdown source={translation} />
+		{:else}
+			{@html translation}
+		{/if}
 	{:else}
-		{@html nonUndefinedTranslation}
+		<span class="no-translation">{noTranslationText}</span>
 	{/if}
-{:else}
-	<span class="no-translation">{noTranslationText}</span>
-{/if}
+</AnimatedBlock>
 
 <style>
 	.no-translation {

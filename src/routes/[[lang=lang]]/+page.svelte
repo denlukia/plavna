@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import { generatePath } from '$lib/features/common/links';
@@ -18,7 +18,7 @@
 	let { routeId } = $derived(data);
 </script>
 
-<BlockAnimator {routeId}>
+<Animated key={routeId}>
 	<Typography size="heading-1"><Translation key="main.landing" /></Typography>
 
 	<div class="actions">
@@ -32,7 +32,7 @@
 			</Button>
 		{/if}
 	</div>
-</BlockAnimator>
+</Animated>
 
 <style>
 	.actions {

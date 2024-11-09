@@ -6,13 +6,22 @@
 		children: Snippet;
 		stretch?: boolean;
 		overflow?: string;
+		inline?: boolean;
 	};
-	let { children, stretch = false, overflow = 'hidden', style, ...attributes }: Props = $props();
+	let {
+		children,
+		stretch = false,
+		overflow = 'hidden',
+		inline = false,
+		style,
+		...attributes
+	}: Props = $props();
 </script>
 
 <span
 	class="layers global-fix-overflow"
 	class:stretch
+	class:inline
 	style="overflow: {overflow}; {style}"
 	{...attributes}
 >
@@ -25,6 +34,9 @@
 		grid-template-areas: 'a';
 		flex-grow: var(--layers-flex-grow);
 		border-radius: var(--layers-border-radius);
+	}
+	.inline {
+		display: inline-grid;
 	}
 	/* We choose :global here to let any components be a layer */
 	.layers > :global(*) {
