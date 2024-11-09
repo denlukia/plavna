@@ -9,7 +9,7 @@
 		style?: string;
 	};
 
-	const initialOpacity = '0';
+	const initialOpacity = '0.01';
 	const duration = 1000;
 
 	let { pathAndMeta, style = '' }: Props = $props();
@@ -121,11 +121,11 @@
 		opacity: var(--initial-opacity);
 		transform: scale(var(--initial-scale));
 		filter: blur(var(--initial-blur));
+
+		transition: all var(--duration) var(--easing);
 	}
 
 	.transition.revealed {
-		transition: all var(--duration) var(--easing);
-
 		opacity: 1;
 		transform: scale(1);
 		filter: blur(0);
