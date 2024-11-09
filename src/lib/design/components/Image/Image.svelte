@@ -106,7 +106,11 @@
 	}
 
 	.keyframes {
-		animation: scale-in var(--duration) 4s backwards var(--easing);
+		opacity: var(--initial-opacity);
+		transform: scale(var(--initial-scale));
+		filter: blur(var(--initial-blur));
+
+		animation: scale-in var(--duration) 3s forwards var(--easing);
 	}
 
 	.transition {
