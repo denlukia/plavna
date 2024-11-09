@@ -17,22 +17,27 @@
 
 	let mode: 'keyframes' | 'transition' = $state('keyframes');
 	let revealed = $state(false);
+	let scheduledReveal: ReturnType<typeof setTimeout> | null = $state(null);
 
 	function switchToTransition() {
-		console.log('Switching to transition');
+		console.log(`mode = 'transition'`);
 		mode = 'transition';
 	}
 
 	function onload() {
 		switchToTransition();
-		revealInNextFrame();
+		scheduleReveal();
 	}
 
-	function revealInNextFrame() {
-		console.log('Revealing in 50ms');
-		setTimeout(() => {
+	function scheduleReveal() {
+		if (scheduledReveal) {
+			return;
+		}
+		console.log('scheduling reveal');
+		scheduledReveal = setTimeout(() => {
+			console.log('revealed = true;');
 			revealed = true;
-		}, 50);
+		}, 20);
 	}
 
 	onMount(() => {
@@ -43,12 +48,11 @@
 		if (currentOpacity === initialOpacity) {
 			// Keyframes didn't play yet
 
-			console.log('Switching to transition');
 			switchToTransition();
 			if (imgElement.complete) {
 				// To have at least a ms of initial state presence for transition to play
-				console.log('Complete:', imgElement.complete, 'Revealing in next frame');
-				revealInNextFrame();
+				console.log('in if complete');
+				scheduleReveal();
 			}
 		} else {
 			// Keyframes started playing
@@ -56,7 +60,7 @@
 			imgElement.addEventListener(
 				'animationend',
 				() => {
-					console.log('Animation ended, revealing immediately');
+					console.log('in animationend');
 					revealed = true;
 					switchToTransition();
 				},
