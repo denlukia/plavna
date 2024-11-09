@@ -19,6 +19,7 @@
 	let revealed = $state(false);
 
 	function switchToTransition() {
+		console.log('Switching to transition');
 		mode = 'transition';
 	}
 
@@ -28,6 +29,7 @@
 	}
 
 	function revealInNextFrame() {
+		console.log('Revealing in 50ms');
 		setTimeout(() => {
 			revealed = true;
 		}, 50);
@@ -37,13 +39,15 @@
 		if (!imgElement) return;
 
 		const currentOpacity = getComputedStyle(imgElement).opacity;
-
+		console.log('onMount', currentOpacity, initialOpacity);
 		if (currentOpacity === initialOpacity) {
 			// Keyframes didn't play yet
 
+			console.log('Switching to transition');
 			switchToTransition();
 			if (imgElement.complete) {
 				// To have at least a ms of initial state presence for transition to play
+				console.log('Complete:', imgElement.complete, 'Revealing in next frame');
 				revealInNextFrame();
 			}
 		} else {
@@ -52,6 +56,7 @@
 			imgElement.addEventListener(
 				'animationend',
 				() => {
+					console.log('Animation ended, revealing immediately');
 					revealed = true;
 					switchToTransition();
 				},
