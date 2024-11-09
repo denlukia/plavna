@@ -1,4 +1,4 @@
-import { expoInOut } from 'svelte/easing';
+import { cubicInOut } from 'svelte/easing';
 import type { EasingFunction, TransitionConfig } from 'svelte/transition';
 
 type RotateAndScaleParams = {
@@ -17,7 +17,7 @@ export function rotateAndScale(
 	{
 		delay = 0,
 		duration = 400,
-		easing = expoInOut,
+		easing = cubicInOut,
 		scaleX = 0,
 		scaleY = 0,
 		rotationX = 0,

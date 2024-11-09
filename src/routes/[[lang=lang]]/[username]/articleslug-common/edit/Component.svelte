@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -39,7 +39,7 @@
 	);
 </script>
 
-<BlockAnimator {routeId} articleId={article.id}>
+<Animated key={routeId + article.id}>
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>
@@ -97,9 +97,9 @@
 			</Column>
 		</ColumnsContainer>
 	</div>
-</BlockAnimator>
+</Animated>
 
-<form class="main-actions" use:enhance method="POST" transition:fade|global>
+<form class="main-actions" use:enhance method="POST" out:fade|global>
 	<Button formaction="?/delete" kind="destructive">
 		<Translation key="article_editor.actions.delete" />
 	</Button>
@@ -131,6 +131,8 @@
 		display: flex;
 		justify-content: center;
 		gap: var(--size-article-actions-gap);
+
+		animation: fade-in 400ms 350ms cubic-bezier(0.215, 0.61, 0.355, 1) backwards;
 	}
 
 	.page-editor {
@@ -152,5 +154,14 @@
 
 	:global(.article-tags-list-cell) {
 		align-self: stretch;
+	}
+
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import { crossfade } from '../../transitions/crossfade';
@@ -27,7 +27,7 @@
 	let pillSkipTransition = $state(false);
 
 	const pillAnimDuration = 500;
-	let [send, receive] = crossfade({ easing: expoOut });
+	let [send, receive] = crossfade({ easing: cubicOut });
 
 	function mutationCallback(mutation: MutationRecord[]) {
 		const activeTabMutations = mutation.filter(

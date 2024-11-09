@@ -1,7 +1,7 @@
 import { cubicIn } from 'svelte/easing';
 import type { FlyParams } from 'svelte/transition';
 
-export function fly(
+export function translationfly(
 	node: Element,
 	{
 		delay = 0,
@@ -13,13 +13,11 @@ export function fly(
 		opacity = 0
 	}: FlyParams & { blur?: number } = {}
 ) {
-	// We ignore initial transform and opacity cauase
-	// they are read incorrectly on animation start when prev didn't finish
-
-	const style = getComputedStyle(node);
-	const target_opacity = +style.opacity;
+	// const style = getComputedStyle(node);
+	// const target_opacity = +style.opacity;
 	// const transform = style.transform === 'none' ? '' : style.transform;
-	// const target_opacity = 1;
+
+	const target_opacity = 1;
 
 	const od = target_opacity * (1 - opacity);
 	const [x_value, x_unit] = split_css_unit(x);
@@ -31,7 +29,7 @@ export function fly(
 		css: (t: number, u: number) => `
 			transform: translate(${(1 - t) * Number(x_value)}${x_unit}, ${(1 - t) * Number(y_value)}${y_unit});
 			filter: blur(${(1 - t) * blur}px);
-			opacity: ${target_opacity - od * u}`
+			opacity: ${target_opacity - od * u};`
 	};
 }
 
@@ -40,12 +38,4 @@ function split_css_unit(value: number | string) {
 	return split
 		? ([parseFloat(split[1]), split[2] || 'px'] as const)
 		: ([/** @type {number} */ value, 'px'] as const);
-}
-
-export function getFlyConf(yshift: 'top' | 'bottom'): FlyParams {
-	return {
-		duration: 1000,
-		y: 7 * (yshift === 'top' ? -1 : 1),
-		opacity: 0
-	};
 }

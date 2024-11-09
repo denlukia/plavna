@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
@@ -18,7 +18,7 @@
 	}
 </script>
 
-<BlockAnimator {routeId}>
+<Animated key={routeId}>
 	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
 	<ColumnedContent>
@@ -36,7 +36,7 @@
 			</Popup>
 		</div>
 	</ColumnedContent>
-</BlockAnimator>
+</Animated>
 
 <style>
 	.new-page-wrapper {

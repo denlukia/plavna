@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 
 	import { rotateAndScale } from '../../transitions/rotate-and-scale';
@@ -12,7 +12,7 @@
 		kind: PopupKind;
 	};
 
-	const animationDuration = 500;
+	const animationDuration = 300;
 
 	let { children, kind = 'form' }: Props = $props();
 </script>
@@ -21,7 +21,7 @@
 	class="box-wrapper"
 	transition:fade|global={{
 		duration: animationDuration,
-		easing: expoOut
+		easing: cubicOut
 	}}
 >
 	<div class="tail-wrapper">
@@ -31,7 +31,7 @@
 		class="box kind-{kind}"
 		transition:rotateAndScale|global={{
 			duration: animationDuration,
-			easing: expoOut,
+			easing: cubicOut,
 			scaleX: 0.1,
 			scaleY: 0.1,
 			opacity: 1

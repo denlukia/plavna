@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
@@ -31,7 +31,7 @@
 	}
 </script>
 
-<BlockAnimator {routeId}>
+<Animated key={routeId}>
 	{#each items as section, index (section.meta.id)}
 		<Section bind:section={items[index]} />
 	{/each}
@@ -59,7 +59,7 @@
 			</button>
 		{/if}
 	{/if}
-</BlockAnimator>
+</Animated>
 
 <style>
 	.section-creator-wrapper,

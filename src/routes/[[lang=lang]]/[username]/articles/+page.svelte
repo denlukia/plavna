@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
 	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
@@ -10,7 +10,7 @@
 	let { routeId } = $derived(data);
 </script>
 
-<BlockAnimator {routeId}>
+<Animated key={routeId}>
 	<Typography size="heading-1"><Translation key="articles_list.title" /></Typography>
 
 	<ColumnedContent>
@@ -18,4 +18,4 @@
 			<ArticleItem {article} />
 		{/each}
 	</ColumnedContent>
-</BlockAnimator>
+</Animated>

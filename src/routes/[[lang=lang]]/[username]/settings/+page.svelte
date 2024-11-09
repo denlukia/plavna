@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
@@ -18,7 +18,7 @@
 	let { form, enhance, errors } = superForm(superValidated);
 </script>
 
-<BlockAnimator {routeId}>
+<Animated key={routeId}>
 	<Typography size="heading-1">
 		<Translation key="settings.heading" />
 	</Typography>
@@ -40,7 +40,7 @@
 			</form>
 		</Column>
 	</ColumnedContent>
-</BlockAnimator>
+</Animated>
 
 <style>
 </style>

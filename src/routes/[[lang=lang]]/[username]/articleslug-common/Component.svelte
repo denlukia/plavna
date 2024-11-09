@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import BlockAnimator from '$lib/design/components/BlockAnimator/BlockAnimator.svelte';
+	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
-	import { receive, send } from '$lib/features/article/transition';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewData } from '$lib/features/preview/utils';
@@ -34,7 +33,7 @@
 	// let isOnArticle = $derived($page.params?.['articleslug'] === article.slug);
 </script>
 
-<BlockAnimator {routeId} articleId={article.id}>
+<Animated key={routeId + article.id}>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
@@ -59,10 +58,10 @@
 			</article>
 		</Column>
 	</ColumnsContainer>
-</BlockAnimator>
+</Animated>
 
 {#if actor && article.user_id === actor.id}
-	<div class="main-actions" transition:fade|global>
+	<div class="main-actions" out:fade|global>
 		<Button href={editHref} kind="secondary">
 			<Translation key="article.edit" />
 		</Button>
@@ -84,7 +83,10 @@
 		display: flex;
 		justify-content: center;
 		gap: var(--size-article-actions-gap);
+
+		animation: fade-in 400ms 350ms cubic-bezier(0.215, 0.61, 0.355, 1) backwards;
 	}
+
 	.article {
 		margin-top: var(--size-4xl);
 		margin-inline: auto;
@@ -93,5 +95,14 @@
 
 	.content {
 		margin-top: var(--size-xl);
+	}
+
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

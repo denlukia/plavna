@@ -6,6 +6,7 @@
 	import Select from '$lib/design/components/Popup/Select.svelte';
 	import { fly, getFlyConf } from '$lib/design/transitions/fly';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import { getSystemTranslation } from '$lib/features/i18n/utils';
 
 	import type { ImageSelect } from '../parsers';
 	import { getLanguagedName } from '../utils';
@@ -33,6 +34,10 @@
 			? $page.data.imageInputsTranslations?.[image.path_translation_key] || null
 			: null
 	);
+
+	let mainLangText = $derived(
+		getSystemTranslation('article_editor.images.main', $page.data.systemTranslations)
+	);
 </script>
 
 <div class="languaged-image-input">
@@ -49,7 +54,7 @@
 	</Layers>
 	<div class="select-positioner">
 		<Select bind:value={lang} isInInput>
-			<option value={null}><Translation key="article_editor.images.main" /></option>
+			<option value={null}>{mainLangText}</option>
 			{#each supportedLangs as lang}
 				<option value={lang}>{lang.toUpperCase()}</option>
 			{/each}

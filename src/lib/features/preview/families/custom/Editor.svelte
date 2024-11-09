@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
 	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
@@ -9,7 +7,6 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
-	import { getImageById } from '$lib/features/image/utils';
 
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
