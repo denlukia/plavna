@@ -37,7 +37,7 @@
 		scheduledReveal = setTimeout(() => {
 			console.log('revealed = true;');
 			revealed = true;
-		}, 20);
+		}, 200);
 	}
 
 	onMount(() => {
