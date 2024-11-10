@@ -4,8 +4,8 @@ import type { Component } from 'svelte';
 import { z } from 'zod';
 
 import { articleInsertSchema, type articleSelectSchema } from '../article/parsers';
-import { generateLanguagedFields } from '../common/parsers-utils';
-import { translationInsertBaseSchema, translationRefineArgs } from '../i18n/parsers';
+import { generateLanguagedFields } from '../common/parsers';
+import { atLeastOneTranslationRefiner, translationInsertBaseSchema } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
 import type { PreviewFamilyId } from './families/types';
 import { previewTemplates } from './schema';
@@ -52,14 +52,14 @@ export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
 	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ key: true, user_id: true })
-	.refine(...translationRefineArgs);
+	.refine(...atLeastOneTranslationRefiner);
 export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
 	.pick({ url: true })
 	.extend({ template_id: previewTemplateSelectSchema.shape.id })
 	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ user_id: true })
-	.refine(...translationRefineArgs);
+	.refine(...atLeastOneTranslationRefiner);
 export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pick({ id: true });
 
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;

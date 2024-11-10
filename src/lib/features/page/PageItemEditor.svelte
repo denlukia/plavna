@@ -5,7 +5,7 @@
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 
-	import Error from '../common/components/Error.svelte';
+	import Errors from '../common/components/Errors.svelte';
 	import Translation from '../i18n/Translation.svelte';
 	import type { PageCreateForm, PageUpdateForm } from './parsers';
 
@@ -34,7 +34,7 @@
 	<Labeled as="label">
 		<Label><Translation key="pages_list.slug" /></Label>
 		<Input name="slug" bind:value={$form.slug} aria-invalid={Boolean($errors.slug?.length)} />
-		<Error errors={$errors.slug} />
+		<Errors errors={$errors.slug} />
 	</Labeled>
 
 	{#if $form.id}

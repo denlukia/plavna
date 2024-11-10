@@ -132,7 +132,7 @@
 	.input-and-affixes:last-child {
 		margin-bottom: var(--input-last-child-margin-bottom);
 	}
-	.input-and-affixes:has(input[aria-invalid='true']) {
+	.input-and-affixes:has([aria-invalid='true']) {
 		background-color: var(--color-input-invalid-bg);
 		animation: error 300ms var(--smooth-ease-out);
 	}

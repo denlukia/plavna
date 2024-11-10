@@ -43,7 +43,7 @@
 	let translation = $derived.by(getTranslation);
 </script>
 
-<AnimatedBlock key={translation}>
+<AnimatedBlock key={translation + noTranslationText}>
 	{#if translation}
 		{#if markdown}
 			<Markdown source={translation} />

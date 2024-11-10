@@ -237,8 +237,8 @@
 
 	/* Tags List */
 	--size-tag-border-radius: var(--size-full);
-	--size-tag-padding-inline: var(--size-m);
-	--size-tag-padding-block: var(--size-s) var(--size-s);
+	--size-tag-padding-inline-end: var(--size-m);
+	--size-tag-padding: var(--size-s) var(--size-m) var(--size-s) var(--size-m-to-l);
 
 	/* Preview List */
 	--size-article-preview-editor-border-radius: var(--size-xl);

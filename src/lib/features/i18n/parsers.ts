@@ -1,26 +1,26 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { z } from 'zod';
-import { ERRORS } from '$lib/collections/errors';
 import { createAtLeastOnePropBeyondTheseIsNonEmptyChecker as atLeastOnePropBeyond } from '$lib/features/common/utils';
 
 import { translations } from './schema';
+import { checkTranslationKey } from './utils';
 
 // Translations
 
-export const translationRefineArgs = [
+export const atLeastOneTranslationRefiner = [
 	atLeastOnePropBeyond(['user_id', 'key']),
-	{ message: ERRORS.AT_LEAST_ONE_TRANSLATION }
+	{ message: checkTranslationKey('actor_errors.at_least_one_translation') }
 ] as const;
 export const translationInsertBaseSchema = createInsertSchema(translations);
 
 export const translationSelectSchema = createSelectSchema(translations);
 export const translationInsertSchema = translationInsertBaseSchema
 	.omit({ user_id: true })
-	.refine(...translationRefineArgs);
+	.refine(...atLeastOneTranslationRefiner);
 export const translationUpdateSchema = createInsertSchema(translations)
 	.omit({ user_id: true })
 	.required({ key: true })
-	.refine(...translationRefineArgs);
+	.refine(...atLeastOneTranslationRefiner);
 export const translationDeleteSchema = translationSelectSchema.pick({ key: true }); // Translations
 
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;

@@ -12,7 +12,7 @@
 	let { children, tone }: Props = $props();
 </script>
 
-<span class="label global-reset-line-height">
+<span class="label">
 	<Typography size="small-short" {tone} bold>
 		{@render children()}
 	</Typography>
@@ -21,5 +21,6 @@
 <style>
 	.label {
 		padding-inline: var(--label-padding-inline);
+		display: inline-block;
 	}
 </style>
