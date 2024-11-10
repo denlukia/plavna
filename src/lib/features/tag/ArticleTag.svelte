@@ -41,7 +41,7 @@
 		<button class="global-reset-button checked-form">
 			<input name="id" type="hidden" bind:value={$form.id} />
 			<Labeled kind="for-checkbox">
-				<div class="events-none">
+				<div class="checkbox-wrapper">
 					<Checkbox checkboxSize="small" name="checked" bind:checked={$form.checked} />
 				</div>
 				<Typography size="body-short">
@@ -103,16 +103,15 @@
 	.checked-form {
 		display: flex;
 		align-items: center;
-
-		padding-inline: var(--size-tag-padding-inline);
-		padding-block: var(--size-tag-padding-block);
+		padding: var(--size-tag-padding);
 	}
 	.editing-forms {
 		display: flex;
 		align-items: center;
-		padding-inline-end: var(--size-tag-padding-inline);
+		padding-inline-end: var(--size-tag-padding-inline-end);
 	}
-	.events-none {
+	.checkbox-wrapper {
+		margin-inline-end: var(--size-xs);
 		pointer-events: none;
 	}
 </style>

@@ -41,9 +41,9 @@
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		padding: var(--size-s) var(--size-m) var(--size-m) var(--size-m-to-l);
+		padding: var(--size-m) var(--size-m-to-l) var(--size-m-to-l) var(--size-l);
 		background-color: var(--color-input-bg);
-		border-radius: var(--size-m-to-l);
+		border-radius: var(--size-xl);
 		width: calc(var(--size-cell-width) * 2 + var(--size-cell-gap));
 		gap: var(--size-m);
 	}
@@ -69,6 +69,6 @@
 	}
 
 	.link-wrapper {
-		margin-top: calc(-1 * var(--size-m));
+		margin-top: calc(-1 * var(--size-s));
 	}
 </style>

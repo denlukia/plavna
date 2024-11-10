@@ -33,11 +33,11 @@
 
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
 
-	let typographySize = $derived(getTypographySize(cols, rows));
-	let headingRadius = $derived(getHeadingRadius(typographySize));
+	let titleSize = $derived(getTitleSize(cols, rows, title_translation));
+	let headingRadius = $derived(getHeadingRadius(titleSize));
 
-	function getTypographySize(cols: number, rows: number): TextSizes {
-		if (rows > 2 && cols > 2) {
+	function getTitleSize(cols: number, rows: number, text: typeof title_translation): TextSizes {
+		if (rows > 2 && cols > 2 && text && text.length < 50) {
 			return 'heading-1';
 		} else if (cols > 1 || rows > 1) {
 			return 'heading-2';
@@ -90,7 +90,7 @@
 						</div>
 						<div class="bottom">
 							<ContinuousCorners radius={headingRadius} style="height: 100%;">
-								<div class="texts {typographySize}">
+								<div class="texts {titleSize}">
 									{#if description_translation}
 										<div class="description">
 											<AnimatedBlock key={description_translation}>
@@ -100,7 +100,7 @@
 									{/if}
 
 									<AnimatedBlock key={title_translation}>
-										<Typography size={typographySize}>{title_translation}</Typography>
+										<Typography size={titleSize}>{title_translation}</Typography>
 									</AnimatedBlock>
 								</div>
 							</ContinuousCorners>

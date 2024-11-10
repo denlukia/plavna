@@ -1,7 +1,7 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { checkTranslationKey } from '../i18n/utils';
+import { slugParser } from '../common/parsers';
 import { sectionSelectSchema } from '../section/parsers';
 import { tagSelectSchema } from '../tag/parsers';
 import { pages } from './schema';
@@ -9,15 +9,6 @@ import { pages } from './schema';
 // Parsers
 export const pageSelectSchema = createSelectSchema(pages);
 export const pageInsertSchema = createInsertSchema(pages);
-
-const slugParser = z
-	.string() //
-	.max(15, {
-		message: checkTranslationKey('pages_list.errors.max_length')
-	})
-	.regex(/^[a-z0-9-]*$/i, {
-		message: checkTranslationKey('pages_list.errors.disallowed_chars')
-	});
 
 // Form Parsers
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({

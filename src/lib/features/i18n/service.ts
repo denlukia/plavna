@@ -10,6 +10,7 @@ import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
 import type { ActorService } from '../user/service';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
 import { translations } from './schema';
+import { checkTranslationKey } from './utils';
 
 export class TranslationService {
 	private actorService: ActorService;
@@ -34,7 +35,7 @@ export class TranslationService {
 		if (mode === 'disallow-empty') {
 			newTranslations.forEach((translation) => {
 				if (!hasNonEmptyPropsBeyondSpecified(translation, ['user_id', 'key'])) {
-					error(403, ERRORS.AT_LEAST_ONE_TRANSLATION);
+					error(403, checkTranslationKey('actor_errors.at_least_one_translation'));
 				}
 			});
 		}

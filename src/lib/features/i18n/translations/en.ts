@@ -1,3 +1,6 @@
+// All new translations must have type equality assertion with EN translation
+// Copy assertions from uk.ts upon creating new translation
+
 export const EN = {
 	layout: {
 		language: 'Language',
@@ -7,18 +10,14 @@ export const EN = {
 		or: 'or',
 		save: 'Save'
 	},
-	// auth: {
-	// 	signup: 'Sign up',
-	// 	login: 'Login',
-	// 	email: 'Email',
-	// 	password: 'Password'
-	// },
-	// login: {
-	// 	to_login: 'Login'
-	// },
-	// signup: {
-	// 	to_signup: 'Sign up'
-	// },
+	actor_errors: {
+		disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
+		min_length_3: 'Min length is 3 symbols',
+		max_length_15: 'Max length is 15 symbols',
+		reserved_word: "Shouldn't be a reserved word",
+		reserved_prefix: "Shoudn't start with a reserved prefix",
+		at_least_one_translation: 'At least one translation is required'
+	},
 	main: {
 		landing: 'Landing',
 		sign_in_with_github: 'Sign in with GitHub',
@@ -37,9 +36,6 @@ export const EN = {
 		new: 'New',
 
 		errors: {
-			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
-			min_length: 'Min length is 3 symbols',
-			max_length: 'Max length is 15 symbols',
 			slug_in_use: 'You already have a page with this slug',
 			only_one_default_slug: 'Only one default page can exist'
 		}
@@ -169,6 +165,3 @@ export const EN = {
 		save: 'Save'
 	}
 };
-
-// All new translations must have type equality assertion with EN translation
-// Copy them from uk.ts upon creating new translation

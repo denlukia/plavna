@@ -4,7 +4,7 @@ import type { SuperValidated } from 'sveltekit-superforms';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
-import { generateLanguagedFields } from '../common/parsers-utils';
+import { generateLanguagedFields } from '../common/parsers';
 import { users } from '../user/schema';
 import { images } from './schema';
 

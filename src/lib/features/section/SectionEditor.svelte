@@ -10,6 +10,8 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
+	import Error from '../../../routes/[[lang=lang]]/+error.svelte';
+	import Errors from '../common/components/Errors.svelte';
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '../i18n/utils';
 	import type { TagSelect } from '../tag/parsers';
@@ -31,7 +33,11 @@
 		onSuccessfullUpdate
 	}: Props = $props();
 
-	let { form: translationForm, enhance } = superForm(mainFormData, {
+	let {
+		form: translationForm,
+		enhance,
+		errors
+	} = superForm(mainFormData, {
 		onUpdate: (e) => {
 			if (e.result.type === 'success') {
 				onSuccessfullUpdate?.();
@@ -132,6 +138,7 @@
 			<Labeled as="label">
 				<Label><Translation key="page_actor.section.description" /></Label>
 				<LanguagedInput
+					aria-invalid={Boolean(Object.keys($errors).length)}
 					superform={translationForm}
 					bind:currentLang={descriptionInput.currentLang as SupportedLang}
 					bind:selectionStart={descriptionInput.selectionStart}
@@ -139,6 +146,7 @@
 					textarea
 					rows={3}
 				/>
+				<Errors errors={$errors} />
 			</Labeled>
 
 			<Labeled as="label">

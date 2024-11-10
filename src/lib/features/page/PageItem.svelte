@@ -54,6 +54,10 @@
 		{/if}
 	{/snippet}
 	{#snippet actions()}
+		<form class="global-display-contents" method="POST" action="?/delete" use:enhance>
+			<input type="hidden" name="id" value={$form.id} />
+			<Button kind="destructive"><Translation key="pages_list.delete_page" /></Button>
+		</form>
 		<Popup triggerType="button" bind:active>
 			{#snippet label()}
 				<Translation key="pages_list.edit_page" />
@@ -62,9 +66,5 @@
 				<PageItemEditor formObj={editingForm} {onSuccessfullUpdate} />
 			{/snippet}
 		</Popup>
-		<form class="global-display-contents" method="POST" action="?/delete" use:enhance>
-			<input type="hidden" name="id" value={$form.id} />
-			<Button kind="destructive"><Translation key="pages_list.delete_page" /></Button>
-		</form>
 	{/snippet}
 </Card>

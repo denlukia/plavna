@@ -78,7 +78,7 @@ async function update_slug(event: RequestEvent) {
 	const params = event.params;
 	const { articleslug } = params;
 	const form = await superValidate(event.request, zod(articleSlugUpdateSchema));
-	console.log(form.valid);
+
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -102,7 +102,6 @@ async function update_preview(event: RequestEvent) {
 	if (!form.valid) {
 		return fail(400, { form });
 	}
-	console.log(form);
 
 	const imagesKeys = Object.keys(articlePreviewImageFileFieldsAllObj) as Array<
 		keyof ArticlePreviewImageFileFieldsAll
@@ -121,7 +120,6 @@ async function update_preview(event: RequestEvent) {
 				imagesHandlers[key] = imageHandler;
 			} catch (e) {
 				// TODO: Error for unsupported image
-				console.log('Error handling image entry:', entry, e);
 				return fail(400, { form });
 			}
 		} else {

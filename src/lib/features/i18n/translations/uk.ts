@@ -11,18 +11,14 @@ export const UK = {
 		or: 'або',
 		save: 'Зберегти'
 	},
-	// auth: {
-	// 	signup: 'Реєстрація',
-	// 	login: 'Вхід',
-	// 	email: 'Електронна пошта',
-	// 	password: 'Пароль'
-	// },
-	// login: {
-	// 	to_login: 'Увійти'
-	// },
-	// signup: {
-	// 	to_signup: 'Зареєструватися'
-	// },
+	actor_errors: {
+		disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
+		min_length_3: 'Мінімальна довжина 3 символи',
+		max_length_15: 'Не довше 15 символів',
+		reserved_word: 'Не має бути зарезервованим словом',
+		reserved_prefix: 'Не має починається з зарезервованого префікса',
+		at_least_one_translation: 'Потрібнен мінімум один переклад'
+	},
 	main: {
 		landing: 'Лендинг',
 		sign_in_with_github: 'Увійти з GitHub',
@@ -41,8 +37,6 @@ export const UK = {
 		new: 'Нова',
 
 		errors: {
-			disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
-			max_length: 'Не довше 15 символів',
 			slug_in_use: 'Така адреса сторінки у вас вже є',
 			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
 		}
@@ -166,4 +160,5 @@ export const UK = {
 	}
 };
 
+// TODO: Make more informative
 assert<TypeEqualityGuard<typeof EN, typeof UK>>();

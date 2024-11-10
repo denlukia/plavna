@@ -133,8 +133,8 @@ export function createAtLeastOnePropBeyondTheseIsNonEmptyChecker(
 ) {
 	return (obj: Record<string | number | symbol, unknown>) =>
 		Object.entries(obj)
-			.filter(([key, _]) => !ignoreKeys || !ignoreKeys.includes(key))
-			.some(([_, value]) => value !== undefined && value !== null);
+			.filter(([key]) => !ignoreKeys || !ignoreKeys.includes(key))
+			.some(([, value]) => value !== undefined && value !== null);
 }
 export function mapRange(
 	x: number,
