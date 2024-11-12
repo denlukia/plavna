@@ -11,8 +11,12 @@ import {
 	type ArticlePreviewImageHandlers
 } from '$lib/features/article/parsers';
 import { generatePath } from '$lib/features/common/links';
-import { update_translation } from '$lib/features/i18n/actions';
-import { translationInsertSchema } from '$lib/features/i18n/parsers';
+import { createTranslationUpdater } from '$lib/features/i18n/actions';
+import {
+	translationInsertSchema,
+	translationUpdateAllowEmptySchema,
+	translationUpdateSchema
+} from '$lib/features/i18n/parsers';
 import {
 	imageCreationFormSchema,
 	imageDeletionFormSchema,
@@ -252,7 +256,8 @@ async function delete_image(event: RequestEvent) {
 }
 
 export const actions = {
-	update_translation,
+	update_translation: createTranslationUpdater(translationUpdateSchema),
+	update_translation_allow_empty: createTranslationUpdater(translationUpdateAllowEmptySchema),
 	switch_tag,
 	create_tag,
 	delete_tag,

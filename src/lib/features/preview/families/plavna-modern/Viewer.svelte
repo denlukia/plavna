@@ -37,9 +37,10 @@
 	let headingRadius = $derived(getHeadingRadius(titleSize));
 
 	function getTitleSize(cols: number, rows: number, text: typeof title_translation): TextSizes {
-		if (rows > 2 && cols > 2 && text && text.length < 50) {
-			return 'heading-1';
-		} else if (cols > 1 || rows > 1) {
+		// if (rows * cols > 6 && text && text.length < 40) {
+		// 	return 'heading-1';
+		// } else
+		if (cols > 1 && rows > 1) {
 			return 'heading-2';
 		} else {
 			return 'headline';
@@ -47,9 +48,10 @@
 	}
 
 	function getHeadingRadius(size: TextSizes) {
-		if (size === 'heading-1') {
-			return 35;
-		} else if (size === 'heading-2') {
+		// if (size === 'heading-1') {
+		// 	return 40;
+		// } else
+		if (size === 'heading-2') {
 			return 30;
 		} else {
 			return 25;
@@ -153,17 +155,18 @@
 		display: flex;
 		justify-content: flex-start;
 		padding: var(--size-m-to-l);
+		padding-top: 0;
 	}
 
 	.texts {
 		flex-shrink: 1;
 		background: var(--bg-color);
 	}
-	.texts.heading-1 {
-		padding: var(--size-m) var(--size-l) var(--size-m);
-	}
+	/* .texts.heading-1 {
+		padding: var(--size-m-to-l) var(--size-xl) var(--size-l);
+	} */
 	.texts.heading-2 {
-		padding: var(--size-s) var(--size-m-to-l) var(--size-s);
+		padding: var(--size-s-to-m) var(--size-l) var(--size-m);
 	}
 	.texts.headline {
 		padding: 0 var(--size-m) 0;

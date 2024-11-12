@@ -151,6 +151,9 @@ export const UK = {
 					name: 'Власне'
 				}
 			}
+		},
+		errors: {
+			slug_in_use: 'Стаття з такою адресою у вас вже є'
 		}
 	},
 	settings: {

@@ -27,15 +27,16 @@
 </script>
 
 {#each normalizedErrors as error (error)}
-	<div class="error" transition:slide|global={{ duration: 500, easing: cubicOut }}>
+	<span class="error" transition:slide|global={{ duration: 500, easing: cubicOut }}>
 		<Label tone="danger">
 			<Translation key={error as SystemTranslationKey} />
 		</Label>
-	</div>
+	</span>
 {/each}
 
 <style>
 	.error {
+		display: inline-flex;
 		overflow: hidden;
 	}
 </style>

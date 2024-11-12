@@ -66,14 +66,14 @@
 					<Label><Translation key="article_editor.short_description" /></Label>
 					<AutosavedInput
 						superValidated={translationForms[article.description_translation_key]}
-						action="?/update_translation"
+						action="?/update_translation_allow_empty"
 					/>
 				</Labeled>
 				<Labeled as="label">
 					<Label><Translation key="article_editor.content" /></Label>
 					<AutosavedInput
 						rows={20}
-						action="?/update_translation"
+						action="?/update_translation_allow_empty"
 						textarea
 						superValidated={translationForms[article.content_translation_key]}
 					/>

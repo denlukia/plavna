@@ -1,7 +1,7 @@
 <script>
-	import Component from '../../articleslug-common/Component.svelte';
+	import Page from '../../articleslug-common/Page.svelte';
 
 	let { data } = $props();
 </script>
 
-<Component {data} />
+<Page {data} />
