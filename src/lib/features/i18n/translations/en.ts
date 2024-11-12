@@ -153,9 +153,6 @@ export const EN = {
 			}
 		},
 		errors: {
-			disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
-			min_length: 'Min length is 3 symbols',
-			max_length: 'Max length is 15 symbols',
 			slug_in_use: 'You already have an article with this slug'
 		}
 	},

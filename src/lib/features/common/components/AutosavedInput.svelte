@@ -10,6 +10,7 @@
 	import type { InputOrTextareaProps } from '../../../design/components/Input/types';
 	import LanguagedInput from '../../i18n/Input/LanguagedInput.svelte';
 	import { debounce } from '../utils';
+	import Errors from './Errors.svelte';
 
 	type Props = InputOrTextareaProps & {
 		action: string;
@@ -91,6 +92,7 @@
 		></Input>
 	{/if}
 </form>
+<Errors errors={$errors} />
 
 <style>
 	.save-button-wrapper {

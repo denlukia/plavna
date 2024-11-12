@@ -40,7 +40,9 @@
 
 		--max-height-base: calc(var(--size-rows-total) * var(--size-cell-height));
 		--max-height-gaps: calc(var(--size-rows-total) * var(--size-cell-gap));
-		max-height: calc(var(--max-height-base) + var(--max-height-gaps));
+		--max-height: calc(var(--max-height-base) + var(--max-height-gaps));
+
+		max-height: var(--max-height);
 
 		--size-cols-total: var(--size-cols-total);
 	}
@@ -49,11 +51,12 @@
 		padding-inline: var(--size-main-grid-padding-inline);
 	}
 
-	.with-padding-inline::after {
+	.with-padding-inline > :global(*:last-child) {
+		display: flex;
+	}
+	.with-padding-inline > :global(*:last-child:after) {
 		content: '.';
 		visibility: hidden;
-		display: block;
-		width: calc(var(--size-main-grid-padding-inline) - var(--size-cell-gap));
-		height: 100%;
+		width: var(--size-main-grid-padding-inline);
 	}
 </style>

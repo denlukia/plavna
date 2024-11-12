@@ -162,7 +162,7 @@
 	--size-switch-handle-width: var(--size-l);
 	--size-switch-handle-height: var(--size-l);
 	--size-switch-handle-border-radius: var(--size-full);
-	--size-switch-handle-border-width: 3.5px;
+	--size-switch-handle-border-width: 4px;
 	--size-switch-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */

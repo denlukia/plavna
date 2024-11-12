@@ -1,3 +1,4 @@
+import BezierEasing from 'bezier-easing';
 import { cubicIn } from 'svelte/easing';
 import type { FlyParams } from 'svelte/transition';
 
@@ -44,8 +45,9 @@ function split_css_unit(value: number | string) {
 
 export function getFlyConf(yshift: 'top' | 'bottom'): FlyParams {
 	return {
-		duration: 1000,
+		duration: 400,
 		y: 7 * (yshift === 'top' ? -1 : 1),
-		opacity: 0
+		opacity: 0,
+		easing: BezierEasing(0.2, 0, 0.4, 1)
 	};
 }

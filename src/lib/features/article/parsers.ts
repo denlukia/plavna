@@ -14,13 +14,13 @@ import { articles } from './schema';
 const slugParser = z
 	.string() //
 	.min(3, {
-		message: checkTranslationKey('article_editor.errors.min_length')
+		message: checkTranslationKey('actor_errors.min_length_3')
 	})
 	.max(15, {
-		message: checkTranslationKey('article_editor.errors.max_length')
+		message: checkTranslationKey('actor_errors.max_length_15')
 	})
 	.regex(/^[a-z0-9-]*$/i, {
-		message: checkTranslationKey('article_editor.errors.disallowed_chars')
+		message: checkTranslationKey('actor_errors.disallowed_chars')
 	});
 
 export const articleSelectSchema = createSelectSchema(articles, {

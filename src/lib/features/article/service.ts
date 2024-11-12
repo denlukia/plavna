@@ -12,7 +12,11 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
-import { translationInsertSchema, translationUpdateSchema } from '../i18n/parsers';
+import {
+	translationInsertSchema,
+	translationUpdateAllowEmptySchema,
+	translationUpdateSchema
+} from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslationsDict, TranslationFormsDict } from '../i18n/types';
@@ -368,9 +372,17 @@ export class ArticleService {
 				await Promise.all(
 					translationsForForms.map(async (translation) => {
 						const { key } = translation;
+						const emptyAllowedKeys = [
+							articleResult.description_translation_key,
+							articleResult.content_translation_key
+						];
+						const schema = emptyAllowedKeys.includes(key)
+							? translationUpdateAllowEmptySchema
+							: translationUpdateSchema;
+
 						return [
 							key,
-							await superValidate(translation, zod(translationUpdateSchema), {
+							await superValidate(translation, zod(schema), {
 								id: 'translation-' + key
 							})
 						];

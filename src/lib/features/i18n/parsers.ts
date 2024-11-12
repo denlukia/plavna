@@ -17,10 +17,12 @@ export const translationSelectSchema = createSelectSchema(translations);
 export const translationInsertSchema = translationInsertBaseSchema
 	.omit({ user_id: true })
 	.refine(...atLeastOneTranslationRefiner);
-export const translationUpdateSchema = createInsertSchema(translations)
+export const translationUpdateAllowEmptySchema = createInsertSchema(translations)
 	.omit({ user_id: true })
-	.required({ key: true })
-	.refine(...atLeastOneTranslationRefiner);
+	.required({ key: true });
+export const translationUpdateSchema = translationUpdateAllowEmptySchema.refine(
+	...atLeastOneTranslationRefiner
+);
 export const translationDeleteSchema = translationSelectSchema.pick({ key: true }); // Translations
 
 export type TranslationSelect = z.infer<typeof translationSelectSchema>;

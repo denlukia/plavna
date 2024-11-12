@@ -23,11 +23,11 @@
 
 <AutosavedInput
 	superValidated={translationsSuperValidated.translation_1}
-	action="?/update_translation"
+	action="?/update_translation_allow_empty"
 />
 <AutosavedInput
 	superValidated={translationsSuperValidated.translation_2}
-	action="?/update_translation"
+	action="?/update_translation_allow_empty"
 />
 <form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
