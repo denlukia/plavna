@@ -11,6 +11,7 @@ import {
 	type ArticlePreviewImageHandlers
 } from '$lib/features/article/parsers';
 import { generatePath } from '$lib/features/common/links';
+import { getActionFailure } from '$lib/features/error/fail-with-form-error';
 import { createTranslationUpdater } from '$lib/features/i18n/actions';
 import {
 	translationInsertSchema,
@@ -88,14 +89,23 @@ async function update_slug(event: RequestEvent) {
 	}
 
 	const { articleService } = event.locals;
-	const result = await articleService.updateSlug(articleslug, form.data);
+	let newSlug: null | string = null;
 
-	redirect(
-		302,
-		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', params, {
-			articleslug: result.slug
-		})
-	);
+	try {
+		const result = await articleService.updateSlug(articleslug, form.data);
+		newSlug = result.slug;
+	} catch (e) {
+		return getActionFailure(e, form, 'slug');
+	}
+
+	if (newSlug) {
+		redirect(
+			302,
+			generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', params, {
+				articleslug: newSlug
+			})
+		);
+	}
 }
 
 async function update_preview(event: RequestEvent) {

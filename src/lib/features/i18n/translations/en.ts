@@ -16,7 +16,11 @@ export const EN = {
 		max_length_15: 'Max length is 15 symbols',
 		reserved_word: "Shouldn't be a reserved word",
 		reserved_prefix: "Shoudn't start with a reserved prefix",
-		at_least_one_translation: 'At least one translation is required'
+		at_least_one_translation: 'At least one translation is required',
+		slug_in_use: 'You already use this slug',
+		only_one_default_slug: 'You already have one main page',
+		unknown_error: 'Unknown error',
+		cannot_delete: "Couldn't delete"
 	},
 	main: {
 		landing: 'Landing',
@@ -33,12 +37,7 @@ export const EN = {
 		main_page: 'Default',
 		delete_page: 'Delete',
 		edit_page: 'Edit',
-		new: 'New',
-
-		errors: {
-			slug_in_use: 'You already have a page with this slug',
-			only_one_default_slug: 'Only one default page can exist'
-		}
+		new: 'New'
 	},
 	articles_list: {
 		title: 'My Articles',
@@ -151,9 +150,6 @@ export const EN = {
 					name: 'Custom'
 				}
 			}
-		},
-		errors: {
-			slug_in_use: 'You already have an article with this slug'
 		}
 	},
 	settings: {

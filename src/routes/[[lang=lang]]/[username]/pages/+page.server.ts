@@ -1,12 +1,9 @@
 import { fail } from '@sveltejs/kit';
-import { setError, superValidate, type SuperValidated } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { checkTranslationKey, getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import {
-	pageCreationFormSchema,
-	pageUpdatingFormSchema,
-	type PageCreationForm
-} from '$lib/features/page/parsers';
+import { getActionFailure } from '$lib/features/error/fail-with-form-error';
+import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/features/page/parsers';
 
 export const load = async ({ locals: { pageService }, params, parent, route }) => {
 	const forms = await pageService.getMyAsForms(params.username);
@@ -24,19 +21,6 @@ export const load = async ({ locals: { pageService }, params, parent, route }) =
 	};
 };
 
-function failWithSlugError(form: SuperValidated<PageCreationForm>) {
-	const { slug } = form.data;
-
-	setError(
-		form,
-		'slug',
-		checkTranslationKey(
-			slug ? 'pages_list.errors.slug_in_use' : 'pages_list.errors.only_one_default_slug'
-		)
-	);
-	return fail(400, { form });
-}
-
 export const actions = {
 	create: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageCreationFormSchema));
@@ -46,8 +30,8 @@ export const actions = {
 
 		try {
 			await pageService.create(form.data);
-		} catch {
-			return failWithSlugError(form);
+		} catch (e) {
+			return getActionFailure(e, form, 'slug');
 		}
 
 		return { form };
@@ -61,8 +45,8 @@ export const actions = {
 
 		try {
 			await pageService.update(form.data);
-		} catch {
-			return failWithSlugError(form);
+		} catch (e) {
+			return getActionFailure(e, form, 'slug');
 		}
 
 		return { form };
