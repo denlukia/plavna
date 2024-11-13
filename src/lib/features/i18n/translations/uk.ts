@@ -17,7 +17,11 @@ export const UK = {
 		max_length_15: 'Не довше 15 символів',
 		reserved_word: 'Не має бути зарезервованим словом',
 		reserved_prefix: 'Не має починається з зарезервованого префікса',
-		at_least_one_translation: 'Потрібнен мінімум один переклад'
+		at_least_one_translation: 'Потрібнен мінімум один переклад',
+		slug_in_use: 'Ви вже використовуєте цю адресу',
+		only_one_default_slug: 'Ви вже маєте одну основну сторінку',
+		unknown_error: 'Невідома помилка',
+		cannot_delete: 'Не вдалося видалити'
 	},
 	main: {
 		landing: 'Лендинг',
@@ -34,12 +38,7 @@ export const UK = {
 		main_page: 'Основна',
 		delete_page: 'Видалити',
 		edit_page: 'Змінити',
-		new: 'Нова',
-
-		errors: {
-			slug_in_use: 'Така адреса сторінки у вас вже є',
-			only_one_default_slug: 'Може існувати тільки одна сторінка за замовчуванням'
-		}
+		new: 'Нова'
 	},
 	articles_list: {
 		title: 'Мої статті',
@@ -151,9 +150,6 @@ export const UK = {
 					name: 'Власне'
 				}
 			}
-		},
-		errors: {
-			slug_in_use: 'Стаття з такою адресою у вас вже є'
 		}
 	},
 	settings: {

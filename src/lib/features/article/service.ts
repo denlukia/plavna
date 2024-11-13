@@ -12,6 +12,8 @@ import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
+import { detectConstraintError } from '../error/detectors';
+import { ErrorWithTranslation } from '../error/ErrorWithTranslation';
 import {
 	translationInsertSchema,
 	translationUpdateAllowEmptySchema,
@@ -19,7 +21,11 @@ import {
 } from '../i18n/parsers';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslationsDict, TranslationFormsDict } from '../i18n/types';
+import type {
+	RecordsTranslationsDict,
+	SystemTranslationKey,
+	TranslationFormsDict
+} from '../i18n/types';
 import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/parsers';
 import { images } from '../image/schema';
 import type { ImageService } from '../image/service';
@@ -71,6 +77,14 @@ export class ArticleService {
 		this.translationService = translationService;
 		this.imageService = imageService;
 	}
+	private selectErrorWithTranslation(error: unknown) {
+		let message: SystemTranslationKey = 'actor_errors.unknown_error';
+		if (error instanceof Error && detectConstraintError(error)) {
+			message = 'actor_errors.slug_in_use';
+		}
+		return new ErrorWithTranslation(message);
+	}
+
 	async getMyAsForms(username: User['username']) {
 		const actor = await this.actorService.checkOrThrow(null, username);
 
@@ -393,12 +407,17 @@ export class ArticleService {
 	}
 	async updateSlug(slug: string, article: ArticleSlugUpdate) {
 		const actor = await this.actorService.getOrThrow();
-		return db
-			.update(articles)
-			.set(article)
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
-			.returning({ slug: articles.slug })
-			.get();
+		try {
+			const response = await db
+				.update(articles)
+				.set(article)
+				.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
+				.returning({ slug: articles.slug })
+				.get();
+			return response;
+		} catch (e) {
+			throw this.selectErrorWithTranslation(e);
+		}
 	}
 	async publish(slug: string) {
 		const actor = await this.actorService.getOrThrow();

@@ -27,7 +27,7 @@
 </script>
 
 {#each normalizedErrors as error (error)}
-	<span class="error" transition:slide|global={{ duration: 500, easing: cubicOut }}>
+	<span class="error" transition:slide|global={{ duration: 250, easing: cubicOut }}>
 		<Label tone="danger">
 			<Translation key={error as SystemTranslationKey} />
 		</Label>

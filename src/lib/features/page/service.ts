@@ -6,9 +6,11 @@ import { SECTIONS_PER_LOAD } from '$lib/collections/constants';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';
+import { detectConstraintError } from '../error/detectors';
+import { ErrorWithTranslation } from '../error/ErrorWithTranslation';
 import { translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslationsDict } from '../i18n/types';
+import type { RecordsTranslationsDict, SystemTranslationKey } from '../i18n/types';
 import type { ImagesDict } from '../image/types';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { sectionInsertSchema } from '../section/parsers';
@@ -42,27 +44,62 @@ export class PageService {
 		this.sectionService = sectionService;
 	}
 
+	private selectErrorWithTranslation(
+		action: 'create' | 'update' | 'delete',
+		error: unknown,
+		slug?: string
+	) {
+		let message: SystemTranslationKey = 'actor_errors.unknown_error';
+
+		if (error instanceof Error && detectConstraintError(error)) {
+			if (['create', 'update'].includes(action)) {
+				message = slug ? 'actor_errors.slug_in_use' : 'actor_errors.only_one_default_slug';
+			} else if (action === 'delete') {
+				message = 'actor_errors.cannot_delete';
+			} else {
+				message = 'actor_errors.unknown_error';
+			}
+		}
+
+		return new ErrorWithTranslation(message);
+	}
+
 	async create(page: PageCreateForm) {
 		const actor = await this.actorService.getOrThrow();
-		return db
-			.insert(pages)
-			.values({ ...page, user_id: actor.id })
-			.run();
+		try {
+			const result = await db
+				.insert(pages)
+				.values({ ...page, user_id: actor.id })
+				.run();
+			return result;
+		} catch (e) {
+			throw this.selectErrorWithTranslation('create', e, page.slug);
+		}
 	}
 	async update(page: PageUpdateForm) {
 		const actor = await this.actorService.getOrThrow();
-		return db
-			.update(pages)
-			.set(page)
-			.where(and(eq(pages.id, page.id), eq(pages.user_id, actor.id)))
-			.run();
+		try {
+			const result = await db
+				.update(pages)
+				.set(page)
+				.where(and(eq(pages.id, page.id), eq(pages.user_id, actor.id)))
+				.run();
+			return result;
+		} catch (e) {
+			throw this.selectErrorWithTranslation('update', e, page.slug);
+		}
 	}
 	async delete(id: PageSelect['id']) {
 		const actor = await this.actorService.getOrThrow();
-		return db
-			.delete(pages)
-			.where(and(eq(pages.id, id), eq(pages.user_id, actor.id)))
-			.run();
+		try {
+			const result = await db
+				.delete(pages)
+				.where(and(eq(pages.id, id), eq(pages.user_id, actor.id)))
+				.run();
+			return result;
+		} catch (e) {
+			throw this.selectErrorWithTranslation('delete', e);
+		}
 	}
 	async getMyAsForms(username: string) {
 		const actor = await this.actorService.checkOrThrow(null, username);

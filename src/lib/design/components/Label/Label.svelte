@@ -21,6 +21,6 @@
 <style>
 	.label {
 		padding-inline: var(--label-padding-inline);
-		display: inline-block;
+		display: inline-flex;
 	}
 </style>
