@@ -166,7 +166,6 @@ async function create_preview_template(event: RequestEvent) {
 
 	await previewService.create(form.data, imageHandler);
 }
-
 async function update_preview_template(event: RequestEvent) {
 	const { previewService } = event.locals;
 	const formData = await event.request.formData();

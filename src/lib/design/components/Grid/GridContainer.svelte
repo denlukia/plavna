@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="grid-container {withPaddingInline ? 'with-padding-inline' : ''}"
+	class="grid-container global-fix-overflow {withPaddingInline ? 'with-padding-inline' : ''}"
 	{...attributes}
 	style="--flex-direction: {direction}; {rowsTotalCSSVariable}"
 >

@@ -67,7 +67,7 @@
 
 			<!-- 2. Input -->
 			<span
-				class="input-wrapper global-fix-overflow"
+				class="input-wrapper"
 				class:no-trailing-padding={trailing}
 				class:no-leading-padding={leading}
 				class:textarea-wrapper={attributes.textarea}

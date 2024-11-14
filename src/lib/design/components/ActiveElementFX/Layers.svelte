@@ -19,7 +19,7 @@
 </script>
 
 <span
-	class="layers global-fix-overflow"
+	class="layers"
 	class:stretch
 	class:inline
 	style="overflow: {overflow}; {style}"

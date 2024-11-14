@@ -23,7 +23,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	class="tab-item global-fix-overflow global-reset-button global-reset-link"
+	class="tab-itemglobal-reset-button global-reset-link"
 	data-active-tab={active}
 	class:active
 	role="tab"

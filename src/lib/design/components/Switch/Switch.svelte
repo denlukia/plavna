@@ -16,7 +16,7 @@
 		<Layers>
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
-				<span class="layer-handle global-fix-overflow">
+				<span class="layer-handle">
 					<span class="handle"></span>
 				</span>
 			</LayerShift>
