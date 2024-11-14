@@ -149,9 +149,10 @@
 	padding-right: var(--size-dropdown-in-input-padding-right);
 }
 
-/* .global-fix-overflow {
-	transform: translate3d(0, 0, 0); // Creates problems with z-index
-} */
+.global-fix-overflow {
+	/* May create problems with z-index */
+	transform: translate3d(0, 0, 0);
+}
 
 .global-disable-default-outline:focus {
 	outline: none;

@@ -91,12 +91,7 @@
 	});
 </script>
 
-<div
-	class="tabs global-fix-overflow global-text-{size}"
-	role="tablist"
-	class:pill-active={pillActive}
-	{...events}
->
+<div class="tabs global-text-{size}" role="tablist" class:pill-active={pillActive} {...events}>
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<div class="pill-wrapper">
