@@ -157,4 +157,9 @@
 	--border-image-input: var(--size-image-input-border-width) dashed var(--color-image-input-border);
 	--shadow-image-input: var(--shadow-input);
 	--backdrop-filter-image-input-checkbox-wrapper: blur(5px);
+
+	/* --- Loaders --- */
+	--shadow-loader-spinner-kind-primary-outer: 0 8px 10px
+		var(--color-loader-spinner-kind-primary-shadow-1);
+	--shadow-loader-spinner-kind-translucent-outer: none;
 }
