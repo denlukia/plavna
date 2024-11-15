@@ -7,6 +7,7 @@
 	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
 	import Label from '$lib/design/components/Label/Label.svelte';
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
+	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
@@ -119,6 +120,10 @@
 				<Button>Let's Go!</Button>
 			{/snippet}
 		</Popup>
+	</div>
+	<div class="group">
+		<Spinner />
+		<Spinner kind="translucent" />
 	</div>
 </div>
 

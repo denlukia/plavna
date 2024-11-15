@@ -1,11 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { fade } from 'svelte/transition';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
-	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 
@@ -23,7 +21,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	class="tab-itemglobal-reset-button global-reset-link"
+	class="tab-item global-reset-button global-reset-link"
 	data-active-tab={active}
 	class:active
 	role="tab"

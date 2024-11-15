@@ -264,4 +264,10 @@
 	--size-image-input-checkbox-wrapper-border-radius: var(--size-full);
 	--size-image-input-checkbox-wrapper-padding-inline: var(--size-m);
 	--size-image-input-checkbox-wrapper-padding-block: var(--size-xs);
+
+	/* --- Laders --- */
+	--size-loader-spinner-radius: var(--size-full);
+	--size-loader-spinner-outer-padding: var(--size-m);
+	--size-loader-spinner: var(--size-xl);
+	--size-loader-spinner-thickness: var(--size-s);
 }
