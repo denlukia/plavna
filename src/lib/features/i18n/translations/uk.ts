@@ -67,10 +67,12 @@ export const UK = {
 	},
 	page: {
 		section: {
-			no_articles: 'Автор ще не опублікував жодної стітті з обраними тегами'
+			no_articles: 'Автор ще не опублікував жодної стітті з обраними тегами',
+			loading_more: 'Завантажую...',
+			load_more: 'Завантажити більше'
 		}
 	},
-	article: {
+	article_actor: {
 		edit: 'Редагувати'
 	},
 	article_editor: {

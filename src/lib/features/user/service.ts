@@ -4,7 +4,7 @@ import { eq, getTableColumns } from 'drizzle-orm';
 import type { User as LuciaUser } from 'lucia';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import type { ImageSelect } from '../image/parsers';

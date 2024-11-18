@@ -67,10 +67,12 @@ export const EN = {
 	},
 	page: {
 		section: {
-			no_articles: 'Author has not published any articles with selected tags'
+			no_articles: 'Author has not published any articles with selected tags',
+			loading_more: 'Loading...',
+			load_more: 'Load more'
 		}
 	},
-	article: {
+	article_actor: {
 		edit: 'Edit'
 	},
 	article_editor: {

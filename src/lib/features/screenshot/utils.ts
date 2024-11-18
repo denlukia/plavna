@@ -1,5 +1,5 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/collections/constants';
+import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/collections/config';
 
 import type { TranslationSelect } from '../i18n/parsers';
 import type { ImageSelect } from '../image/parsers';

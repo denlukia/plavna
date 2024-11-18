@@ -15,7 +15,7 @@ export const load = (async ({ params, parent, locals: { articleService } }) => {
 		recordsTranslations: translations,
 		systemTranslations: {
 			...systemTranslations,
-			...getSystemTranslationsSlice('article', getLang(params.lang))
+			...getSystemTranslationsSlice('article_actor', getLang(params.lang))
 		}
 	};
 }) satisfies PageServerLoad;

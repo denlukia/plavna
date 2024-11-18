@@ -2,7 +2,7 @@
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/collections/constants';
+	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

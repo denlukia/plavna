@@ -216,6 +216,9 @@
 	--size-section-editor-deletion-bottom: var(--size-m-to-l);
 	--size-section-editor-border-radius: var(--size-xl);
 
+	--size-section-load-more-border-radius: none;
+	--size-section-load-more-padding: var(--size-m) var(--size-l);
+
 	/* --- Info Block --- */
 	--size-info-block-padding: var(--size-m-to-l);
 	--size-info-block-border-radius: var(--size-l);

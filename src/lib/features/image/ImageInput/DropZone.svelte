@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+	import { IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

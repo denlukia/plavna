@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/constants';
+	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';

@@ -47,14 +47,8 @@
 		--size-cols-total: var(--size-cols-total);
 	}
 
-	.with-padding-inline {
-		padding-inline: var(--size-main-grid-padding-inline);
-	}
-
-	.with-padding-inline > :global(*:last-child) {
-		display: flex;
-	}
-	.with-padding-inline > :global(*:last-child:after) {
+	.with-padding-inline :global(> *:first-child .cell-padding-wrapper::before),
+	.with-padding-inline :global(> *:last-child .cell-padding-wrapper::after) {
 		content: '.';
 		visibility: hidden;
 		width: var(--size-main-grid-padding-inline);

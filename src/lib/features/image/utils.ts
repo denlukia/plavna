@@ -1,5 +1,5 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { imageSourceToEndpointKeyInUser } from '$lib/collections/constants';
+import { imageSourceToEndpointKeyInUser } from '$lib/collections/config';
 import type { ImagePathAndMeta } from '$lib/design/types';
 
 import type {
