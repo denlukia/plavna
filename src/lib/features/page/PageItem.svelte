@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { PAGE_SLUG_PREFIX } from '$lib/collections/constants';
+	import { PAGE_SLUG_PREFIX } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';

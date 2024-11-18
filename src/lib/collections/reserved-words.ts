@@ -1,4 +1,4 @@
-import { PAGE_SLUG_PREFIX } from './constants';
+import { PAGE_SLUG_PREFIX } from './config';
 
 export const reservedPrefixes = [PAGE_SLUG_PREFIX];
 

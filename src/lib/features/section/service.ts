@@ -1,9 +1,20 @@
 import { error } from '@sveltejs/kit';
-import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
+import {
+	and,
+	desc,
+	eq,
+	getTableColumns,
+	gt,
+	inArray,
+	isNotNull,
+	lt,
+	notInArray,
+	or
+} from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { POSTS_PER_SECTION } from '$lib/collections/constants';
+import { POSTS_PER_SECTION } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
@@ -40,6 +51,11 @@ import { findTagsInSectionTranslations } from './utils';
 type GetOneConfig = { username: string } & (
 	| { pageId: PageSelect['id']; offset: number }
 	| { sectionId: SectionSelect['id']; readerPageConfig: ReaderPageConfig | null }
+	| {
+			sectionId: SectionSelect['id'];
+			tsLessThan: number | undefined;
+			tsGreaterThan: number | undefined;
+	  }
 );
 
 export class SectionService {
@@ -78,6 +94,7 @@ export class SectionService {
 				: isNotNull(translations[this.translationService.currentLang]);
 		const whereCondition2 =
 			'pageId' in config ? eq(sections.page_id, config.pageId) : eq(sections.id, config.sectionId);
+
 		const offset = 'offset' in config ? config.offset : 0;
 
 		// 1. Sections query
@@ -113,6 +130,12 @@ export class SectionService {
 		const translationForTag = alias(translations, 'translation_for_tag');
 		const translationForArticle = alias(translations, 'translation_for_article');
 		const tagsCondition = inArray(tags.id, activeTagsQuery);
+		const timeCondition =
+			'tsLessThan' in config && config.tsLessThan
+				? lt(articles.publish_time, new Date(config.tsLessThan))
+				: 'tsGreaterThan' in config && config.tsGreaterThan
+					? gt(articles.publish_time, new Date(config.tsGreaterThan))
+					: undefined;
 
 		const articlesQuery = db
 			.select(getTableColumns(articles))
@@ -133,7 +156,7 @@ export class SectionService {
 					isNotNull(translationForArticle[this.translationService.currentLang])
 				)
 			)
-			.where(and(isNotNull(articles.publish_time), tagsCondition))
+			.where(and(isNotNull(articles.publish_time), tagsCondition, timeCondition))
 			.orderBy(desc(articles.publish_time))
 			.groupBy(articles.id)
 			.limit(POSTS_PER_SECTION);
@@ -146,7 +169,7 @@ export class SectionService {
 				.from(tags)
 				.innerJoin(tagsToArticles, eq(tagsToArticles.tag_id, tags.id))
 				.innerJoin(articles, eq(articles.id, tagsToArticles.article_id))
-				.where(and(isNotNull(articles.publish_time), tagsCondition))
+				.where(and(isNotNull(articles.publish_time), tagsCondition, timeCondition))
 				.orderBy(desc(articles.publish_time))
 				.groupBy(articles.id)
 				.limit(POSTS_PER_SECTION);

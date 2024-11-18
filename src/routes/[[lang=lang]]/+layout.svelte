@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Lights from '$lib/design/components/Loaders/Lights.svelte';
+	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 
 	// TODO: Dynamize based on server data
 
@@ -47,7 +47,7 @@
 
 <div class="main-layout">
 	<div class="lights-wrapper">
-		<Lights loading={isNavigating} />
+		<RainbowLoader loading={isNavigating} />
 	</div>
 	<div class="content-wrapper">
 		<Header actor={data.actor} />

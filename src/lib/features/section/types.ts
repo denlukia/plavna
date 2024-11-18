@@ -19,9 +19,20 @@ export type SectionContext = {
 	loadingTagId: TagSelect['id'] | null;
 };
 
-export type SectionReconfigRequest = {
-	sectionId: SectionSelect['id'];
+type TagSwitchRequest = {
 	tagId: TagSelect['id'];
 	newChecked: boolean;
 };
+type LoadMoreRequest =
+	| {
+			tsLessThan: number;
+	  }
+	| {
+			tsGreaterThan: number;
+	  };
+
+export type SectionRequest = {
+	sectionId: SectionSelect['id'];
+} & (TagSwitchRequest | LoadMoreRequest);
+
 export type TagIdWithLang = { tag_id: TagUpdate['id']; lang: SupportedLang };

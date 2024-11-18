@@ -1,8 +1,8 @@
 import { error, type Cookies } from '@sveltejs/kit';
-import { PAGE_CONFIG_COOKIE_NAME, PAGE_SLUG_PREFIX } from '$lib/collections/constants';
+import { PAGE_CONFIG_COOKIE_NAME, PAGE_SLUG_PREFIX } from '$lib/collections/config';
 
 import type { SectionSelect } from '../section/parsers';
-import type { SectionReconfigRequest } from '../section/types';
+import type { SectionRequest } from '../section/types';
 import type { TagSelect } from '../tag/parsers';
 import type { ReaderPageConfig } from './parsers';
 
@@ -25,7 +25,7 @@ export function getReaderPageConfigFromCookies(cookies: Cookies): ReaderPageConf
 
 export function updateTagInReaderPageConfig(
 	readerPageConfig: ReaderPageConfig | null,
-	{ sectionId, tagId, newChecked }: SectionReconfigRequest
+	{ sectionId, tagId, newChecked }: SectionRequest
 ) {
 	let section = { excludedTags: [] as Array<TagSelect['id']> };
 	if (readerPageConfig && sectionId in readerPageConfig) {

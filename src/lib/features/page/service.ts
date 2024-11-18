@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { SECTIONS_PER_LOAD } from '$lib/collections/constants';
+import { SECTIONS_PER_LOAD } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';

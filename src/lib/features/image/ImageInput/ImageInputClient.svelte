@@ -3,7 +3,7 @@
 	import type { ImagePathUpdateOrDeletion } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';

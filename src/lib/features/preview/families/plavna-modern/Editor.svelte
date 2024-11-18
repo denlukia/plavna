@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
-	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/constants';
+	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/config';
 	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
 	import GridCell from '$lib/design/components/Grid/Column.svelte';
 	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';

@@ -15,7 +15,7 @@
 		SectionContext,
 		SectionProp,
 		SectionPropWithAuthorship,
-		SectionReconfigRequest
+		SectionRequest
 	} from './types';
 
 	type Props = {
@@ -37,56 +37,115 @@
 
 	async function onTagSwitch(tagId: TagSelect['id'], checked: boolean) {
 		sectionContext.loadingTagId = tagId;
-		// Getting new articles list
-		const body: SectionReconfigRequest = {
+
+		const body: SectionRequest = {
 			sectionId: section.meta.id,
 			tagId,
 			newChecked: checked
 		};
+
 		try {
-			abortController?.abort();
-			abortController = new AbortController();
-			const response = await fetch($page.url, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				signal: abortController?.signal
-			});
-			abortController = null;
-			if (response.ok) {
-				const resultString: string = await response.text();
-				const result: SectionFetchReturn = parse(resultString);
+			const result = await performRequest($page.url, body);
+			if (result) {
+				await updateGlobalStates(result, 'replace');
+			}
+		} catch (err) {
+			console.error(err);
+		} finally {
+			if (sectionContext.loadingTagId === tagId) {
+				sectionContext.loadingTagId = null;
+			}
+		}
+	}
 
-				if (result) {
-					const recordsTranslationsState = $page.data.recordsTranslationsState;
-					const previewFamiliesState = $page.data.previewFamiliesState;
-					const imagesState = $page.data.imagesState;
+	async function onMoreArticlesTrigger(triggerType: 'newer' | 'older') {
+		const comparisonArticle =
+			triggerType === 'newer' ? section.articles[0] : section.articles[section.articles.length - 1];
+		const timeParamValue = comparisonArticle.meta.publish_time?.getTime() ?? new Date().getTime();
+		const timeParam =
+			triggerType === 'newer' ? { tsGreaterThan: timeParamValue } : { tsLessThan: timeParamValue };
 
-					if (recordsTranslationsState && previewFamiliesState && imagesState) {
-						recordsTranslationsState.value = {
-							...recordsTranslationsState.value,
-							...result.recordsTranslations
-						};
-						imagesState.value = {
-							...imagesState.value,
-							...result.images
-						};
-						const enriched = await enrichPreviewFamilies(result.previewFamilies, 'viewer');
-						previewFamiliesState.value = {
-							...previewFamiliesState.value,
-							...enriched
-						};
-						section = result.section;
-					} else {
-						console.error('Records translations state or preview families state not found');
-					}
-				}
+		const body: SectionRequest = {
+			sectionId: section.meta.id,
+			...timeParam
+		};
+
+		try {
+			const result = await performRequest($page.url, body);
+			if (result) {
+				await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
 			}
 		} catch (err) {
 			console.error(err);
 		}
+	}
 
-		if (sectionContext.loadingTagId === tagId) {
-			sectionContext.loadingTagId = null;
+	async function performRequest(
+		url: URL,
+		body: SectionRequest
+	): Promise<SectionFetchReturn | null> {
+		try {
+			abortController?.abort();
+			abortController = new AbortController();
+
+			const response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(body),
+				signal: abortController?.signal
+			});
+
+			abortController = null;
+
+			if (response.ok) {
+				const resultString: string = await response.text();
+				return parse(resultString) as SectionFetchReturn;
+			} else {
+				console.error('Request failed with status:', response.status);
+			}
+		} catch (err) {
+			console.error('Error during request:', err);
+		}
+
+		return null;
+	}
+
+	async function updateGlobalStates(
+		result: NonNullable<SectionFetchReturn>,
+		articlesInsertionType: 'replace' | 'insert-start' | 'insert-end'
+	) {
+		const recordsTranslationsState = $page.data.recordsTranslationsState;
+		const previewFamiliesState = $page.data.previewFamiliesState;
+		const imagesState = $page.data.imagesState;
+
+		if (recordsTranslationsState && previewFamiliesState && imagesState) {
+			recordsTranslationsState.value = {
+				...recordsTranslationsState.value,
+				...result.recordsTranslations
+			};
+
+			imagesState.value = {
+				...imagesState.value,
+				...result.images
+			};
+
+			const enriched = await enrichPreviewFamilies(result.previewFamilies, 'viewer');
+			previewFamiliesState.value = {
+				...previewFamiliesState.value,
+				...enriched
+			};
+		} else {
+			console.error('Required global states not found');
+		}
+
+		const { section: newSection } = result;
+		const { articles: newArticles, ...other } = newSection;
+
+		if (articlesInsertionType === 'replace') {
+			section = { ...other, articles: newArticles };
+		} else if (articlesInsertionType === 'insert-start') {
+			section = { ...other, articles: [...newArticles, ...section.articles] };
+		} else if (articlesInsertionType === 'insert-end') {
+			section = { ...other, articles: [...section.articles, ...newArticles] };
 		}
 	}
 
@@ -122,7 +181,12 @@
 
 	{#if section.articles.length > 0}
 		<div class="articles-list-wrapper">
-			<ArticlesList {section} />
+			<ArticlesList
+				{section}
+				theresMoreNewer={false}
+				theresMoreOlder={true}
+				{onMoreArticlesTrigger}
+			/>
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
 		<div class="info-block-wrapper">

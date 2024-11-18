@@ -2,11 +2,11 @@
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { SECTION_RECONFIG_QUERY_PARAM_NAME } from '$lib/collections/constants';
+	import { SECTION_RECONFIG_QUERY_PARAM_NAME } from '$lib/collections/config';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import Lights from '$lib/design/components/Loaders/Lights.svelte';
+	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 	import Switch from '$lib/design/components/Switch/Switch.svelte';
-	import type { SectionContext, SectionReconfigRequest } from '$lib/features/section/types';
+	import type { SectionContext, SectionRequest } from '$lib/features/section/types';
 
 	const loaderDelay = 500;
 
@@ -25,7 +25,7 @@
 	let checked = $state(initialState);
 	let showAsLink = $state(true);
 	let sectionId = $derived(sectionContext?.id);
-	let reconfigRequest: SectionReconfigRequest | null = $derived(
+	let reconfigRequest: SectionRequest | null = $derived(
 		sectionId
 			? {
 					newChecked: !checked,
@@ -91,7 +91,7 @@
 
 		{#if showLoader}
 			<div class="lights-layer" transition:fade>
-				<Lights
+				<RainbowLoader
 					loading
 					maskStyle={`width: calc(100% + 10px); 
 										height: calc(100% + 5px); 

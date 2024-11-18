@@ -1,4 +1,4 @@
-import { PAGE_SLUG_PREFIX } from '$lib/collections/constants';
+import { PAGE_SLUG_PREFIX } from '$lib/collections/config';
 
 import { defaultLang, getLang } from '../i18n/utils';
 

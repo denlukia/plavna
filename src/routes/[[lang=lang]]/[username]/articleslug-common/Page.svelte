@@ -63,7 +63,7 @@
 {#if actor && article.user_id === actor.id}
 	<div class="main-actions" out:fade|global>
 		<Button href={editHref} kind="secondary">
-			<Translation key="article.edit" />
+			<Translation key="article_actor.edit" />
 		</Button>
 	</div>
 {/if}

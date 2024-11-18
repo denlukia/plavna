@@ -3,14 +3,14 @@ import {
 	GET_PAGE_CONFIG_COOKIE_OPTIONS,
 	PAGE_CONFIG_COOKIE_NAME,
 	SECTION_RECONFIG_QUERY_PARAM_NAME
-} from '$lib/collections/constants';
+} from '$lib/collections/config';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import {
 	getReaderPageConfigFromCookies,
 	updateTagInReaderPageConfig
 } from '$lib/features/page/utils';
-import type { SectionReconfigRequest } from '$lib/features/section/types';
+import type { SectionRequest } from '$lib/features/section/types';
 
 import type { PageServerLoad } from '../$types';
 
@@ -27,7 +27,7 @@ export const load = (async ({ params, parent, locals: { pageService, actor }, co
 
 	const reconfigRequestString = url.searchParams.get(SECTION_RECONFIG_QUERY_PARAM_NAME);
 	const reconfigRequest = reconfigRequestString
-		? (JSON.parse(reconfigRequestString) as SectionReconfigRequest)
+		? (JSON.parse(reconfigRequestString) as SectionRequest)
 		: undefined;
 
 	// If we had reader page config – set new cookie and redirect

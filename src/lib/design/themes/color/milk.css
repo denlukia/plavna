@@ -164,6 +164,11 @@
 
 	/* --- Section --- */
 	--color-section-editor-bg: var(--warm-300-transparent-100);
+	/* --color-section-load-more-bg: linear-gradient(
+		180deg,
+		var(--warm-300-transparent-100),
+		transparent
+	); */
 
 	/* --- Info Block --- */
 	--color-info-block-default-bg: var(--warm-300-transparent-100);

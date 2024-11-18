@@ -2,7 +2,7 @@ import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMG_VALIDATION_CONFIG } from '$lib/collections/constants';
+import { IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
 import { edit_article } from '$lib/features/article/actions';
 import {

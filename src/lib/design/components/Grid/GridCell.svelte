@@ -18,16 +18,19 @@
 	{/if}
 {/snippet}
 
-<span class="cell global-reset-link {customClass}" style="--rows:{rows}; --cols:{cols}">
-	<span class="content">
-		{@render content()}
-	</span>
-</span>
+<div class="cell-padding-wrapper">
+	<div class="cell global-reset-link {customClass}" style="--rows:{rows}; --cols:{cols}">
+		<div class="content">
+			{@render content()}
+		</div>
+	</div>
+</div>
 
 <style>
+	.cell-padding-wrapper {
+		display: flex;
+	}
 	.cell {
-		display: block;
-
 		--width-main: calc(var(--cols) * var(--size-cell-width));
 		--height-main: calc(var(--rows) * var(--size-cell-height));
 		--width-added-gaps: calc(calc(var(--cols) - 1) * var(--size-cell-gap));
@@ -41,7 +44,6 @@
 	}
 
 	.content {
-		display: block;
 		position: absolute;
 		top: 0;
 		left: 0;

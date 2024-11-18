@@ -7,7 +7,7 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/constants';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
