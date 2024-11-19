@@ -56,15 +56,11 @@ import { table_sections, table_sectionsToTags } from './schema';
 import type { TagIdWithLang } from './types';
 import { findTagsInSectionTranslations } from './utils';
 
-type GetOneConfig = { username: string } & (
-	| { pageId: PageSelect['id']; offset: number }
-	| { sectionId: SectionSelect['id']; readerPageConfig: ReaderPageConfig | null }
-	| {
-			sectionId: SectionSelect['id'];
-			tsLessThan: number | undefined;
-			tsGreaterThan: number | undefined;
-	  }
-);
+type GetOneConfig = {
+	username: string;
+	readerPageConfig: ReaderPageConfig | null;
+	articlesOffset: number;
+} & ({ pageId: PageSelect['id']; sectionOffset: number } | { sectionId: SectionSelect['id'] });
 
 export class SectionService {
 	private readonly actorService: ActorService;
@@ -107,7 +103,7 @@ export class SectionService {
 		}
 		if ('pageId' in config) {
 			sectionWhere.push(eq(table_sections.page_id, config.pageId));
-			sectionOffset = config.offset;
+			sectionOffset = config.sectionOffset;
 		}
 
 		const section = db
@@ -116,6 +112,7 @@ export class SectionService {
 			})
 			.from(table_sections)
 			.where(and(...sectionWhere))
+			.limit(1)
 			.offset(sectionOffset);
 		const sectionSq = db.$with('sectionQuery').as(section);
 
@@ -146,10 +143,11 @@ export class SectionService {
 					eq(sectionTranslations.key, table_tags.name_translation_key)
 				)
 			);
-		// console.log(await sectionAndTags);
+
 		const sectionAndTagsSq = db.$with('sectionAndTagsSq').as(sectionAndTags);
 
-		// 3. + Articles
+		// 3. + Articles (tags filtered and published)
+		const tagsCondition = undefined; // TODO based on readerPageConfig (check if it's applied always)
 		const articles = db
 			.with(sectionAndTagsSq)
 			.select({
@@ -157,47 +155,20 @@ export class SectionService {
 				section_tags: sectionAndTagsSq.section_tags,
 				section_translations: sectionAndTagsSq.section_translations,
 				section_tags_to_articles: sectionAndTagsSq.section_tags_to_articles,
-				articles: getTableColumnAliases(table_articles),
-				max_article_publush_time: max(table_articles.publish_time).as('max_article_publush_time'),
-				min_article_publush_time: min(table_articles.publish_time).as('min_article_publush_time')
+				articles: getTableColumnAliases(table_articles)
 			})
 			.from(sectionAndTagsSq)
 			.innerJoin(
 				table_articles,
 				eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id)
-			);
+			)
+			.where(and(isNotNull(table_articles.publish_time), tagsCondition))
+			.offset(config.articlesOffset)
+			.limit(ARTICLES_PER_SECTION);
 
 		const articlesSq = db.$with('articlesSq').as(articles);
 
-		// 4. + Images + Article Tags + Translations + Date filter + Info for pagination
-		const newerArticlesCondition = gt(
-			articlesSq.articles.publish_time,
-			articlesSq.max_article_publush_time
-		);
-		const olderArticlesCondition = lt(
-			articlesSq.articles.publish_time,
-			articlesSq.min_article_publush_time
-		);
-
-		const newerArticlesCount = db
-			.with(articlesSq)
-			.select({
-				count: count().as('newerArticlesCount')
-			})
-			.from(articlesSq)
-			.where(newerArticlesCondition);
-
-		const olderArticlesCount = db
-			.with(articlesSq)
-			.select({
-				count: count().as('olderArticlesCount')
-			})
-			.from(articlesSq)
-			.where(olderArticlesCondition);
-
-		console.log(await olderArticlesCount);
-		console.log(await newerArticlesCount);
-
+		// 4. + Images + Article Tags + Translations
 		const articlesAndAll = db
 			.with(articlesSq)
 			.select({
@@ -205,9 +176,6 @@ export class SectionService {
 				section_meta: articlesSq.section_meta,
 				section_tags: articlesSq.section_tags,
 				section_translations: articlesSq.section_translations,
-
-				// newerArticlesCount: newerArticlesCount,
-				// olderArticlesCount: olderArticlesCount,
 
 				images: table_images,
 				tagsToArticles: table_tagsToArticles,
@@ -259,7 +227,7 @@ export class SectionService {
 				? eq(table_sections.page_id, config.pageId)
 				: eq(table_sections.id, config.sectionId);
 
-		const offset = 'offset' in config ? config.offset : 0;
+		const offset = 'offset' in config ? config.sectionOffset : 0;
 
 		// 1. Sections query
 		const sectionInfo = await db
@@ -601,7 +569,7 @@ export class SectionService {
 		}
 		if ('pageId' in config) {
 			sectionWhere.push(eq(table_sections.page_id, config.pageId));
-			sectionOffset = config.offset;
+			sectionOffset = config.sectionOffset;
 		}
 
 		// 2. Article filters

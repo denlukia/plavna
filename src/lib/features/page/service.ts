@@ -175,7 +175,7 @@ export class PageService {
 		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, offset) => {
 			return this.sectionService.getOne({
 				pageId: pageInfo.id,
-				offset,
+				sectionOffset: offset,
 				readerPageConfig,
 				username
 			});

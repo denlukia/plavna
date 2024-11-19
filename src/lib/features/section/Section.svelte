@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
+	import { ARTICLES_PER_SECTION } from '$lib/collections/config';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import ArticlesList from '../article/ArticlesList.svelte';
@@ -24,6 +25,7 @@
 
 	let { section = $bindable() }: Props = $props();
 
+	let currentOffset = 0;
 	let editorOpened = $state(false);
 	let abortController: AbortController | null = $state(null);
 
@@ -59,15 +61,11 @@
 	}
 
 	async function onMoreArticlesTrigger(triggerType: 'newer' | 'older') {
-		const comparisonArticle =
-			triggerType === 'newer' ? section.articles[0] : section.articles[section.articles.length - 1];
-		const timeParamValue = comparisonArticle.meta.publish_time?.getTime() ?? new Date().getTime();
-		const timeParam =
-			triggerType === 'newer' ? { tsGreaterThan: timeParamValue } : { tsLessThan: timeParamValue };
+		const offset = currentOffset + ARTICLES_PER_SECTION;
 
 		const body: SectionRequest = {
 			sectionId: section.meta.id,
-			...timeParam
+			offset
 		};
 
 		try {

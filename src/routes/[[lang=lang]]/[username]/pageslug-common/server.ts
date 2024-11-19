@@ -24,16 +24,9 @@ export const POST = (async ({ request, cookies, params, locals, url }) => {
 		});
 	}
 
-	const tsBase: { tsLessThan: number | null; tsGreaterThan: number | null } = {
-		tsLessThan: null,
-		tsGreaterThan: null
-	};
-
-	if ('tsLessThan' in sectionRequest) {
-		tsBase.tsLessThan = sectionRequest.tsLessThan;
-	}
-	if ('tsGreaterThan' in sectionRequest) {
-		tsBase.tsGreaterThan = sectionRequest.tsGreaterThan;
+	let articlesOffset = 0;
+	if ('offset' in sectionRequest) {
+		articlesOffset = sectionRequest.offset;
 	}
 
 	const { sectionService } = locals;
@@ -41,7 +34,7 @@ export const POST = (async ({ request, cookies, params, locals, url }) => {
 		sectionId,
 		username,
 		readerPageConfig,
-		...tsBase
+		articlesOffset
 	});
 
 	cookies.set(

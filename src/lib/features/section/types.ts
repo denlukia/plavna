@@ -23,16 +23,10 @@ type TagSwitchRequest = {
 	tagId: TagSelect['id'];
 	newChecked: boolean;
 };
-type LoadMoreRequest =
-	| {
-			tsLessThan: number;
-	  }
-	| {
-			tsGreaterThan: number;
-	  };
+type ArticlesPaginationRequest = { offset: number };
 
 export type SectionRequest = {
 	sectionId: SectionSelect['id'];
-} & (TagSwitchRequest | LoadMoreRequest);
+} & (TagSwitchRequest | ArticlesPaginationRequest);
 
 export type TagIdWithLang = { tag_id: TagUpdate['id']; lang: SupportedLang };
