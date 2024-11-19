@@ -8,14 +8,14 @@ import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import type { ImageSelect } from '../image/parsers';
-import { images } from '../image/schema';
+import { table_images } from '../image/schema';
 import {
 	userSettingsFormSchema,
 	type Actor,
 	type ImageProviderUpdate,
 	type UserSettingsUpdate
 } from './parsers';
-import { users } from './schema';
+import { table_users } from './schema';
 
 export class ActorService {
 	private actorObj: LuciaUser | null;
@@ -43,21 +43,21 @@ export class ActorService {
 		const actor = await this.getOrThrow();
 		const imageHandler = new ServerImageHandler();
 		await imageHandler.setProviderAndUploader(providerData, IMAGE_CREDENTIALS_PATH);
-		return db.update(users).set(providerData).where(eq(users.id, actor.id));
+		return db.update(table_users).set(providerData).where(eq(table_users.id, actor.id));
 	}
 	async deleteImageProvider() {
 		const actor = await this.getOrThrow();
 		return db
-			.update(users)
+			.update(table_users)
 			.set({ imagekit_url_endpoint: null, imagekit_public_key: null, imagekit_private_key: null })
-			.where(eq(users.id, actor.id));
+			.where(eq(table_users.id, actor.id));
 	}
 	async setFromImageIdOrThrow(imageId: ImageSelect['id']) {
 		const result = await db
-			.select(getTableColumns(users))
-			.from(images)
-			.where(eq(images.id, imageId))
-			.innerJoin(users, eq(users.id, images.user_id))
+			.select(getTableColumns(table_users))
+			.from(table_images)
+			.where(eq(table_images.id, imageId))
+			.innerJoin(table_users, eq(table_users.id, table_images.user_id))
 			.get();
 		if (!result) {
 			error(403);
@@ -69,10 +69,10 @@ export class ActorService {
 		await this.checkOrThrow(null, username);
 		const actor = await db
 			.select({
-				username: users.username
+				username: table_users.username
 			})
-			.from(users)
-			.where(eq(users.username, username))
+			.from(table_users)
+			.where(eq(table_users.username, username))
 			.get();
 		if (!actor) error(404);
 
@@ -86,6 +86,6 @@ export class ActorService {
 		const actor = await this.getOrThrow();
 
 		// TODO: Only write allowed fields (and across all project)
-		return db.update(users).set(data).where(eq(users.id, actor.id)).returning().get();
+		return db.update(table_users).set(data).where(eq(table_users.id, actor.id)).returning().get();
 	}
 }

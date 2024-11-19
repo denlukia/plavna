@@ -5,15 +5,15 @@ import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
 import { generateLanguagedFields } from '../common/parsers';
-import { users } from '../user/schema';
-import { images } from './schema';
+import { table_users } from '../user/schema';
+import { table_images } from './schema';
 
 // Images
 export const imageFileField = z.optional(z.string());
 
-export const imageSelectSchema = createSelectSchema(images);
-export const imageInsertSchema = createInsertSchema(images);
-export const imageInsertFormSchema = createInsertSchema(images).omit({
+export const imageSelectSchema = createSelectSchema(table_images);
+export const imageInsertSchema = createInsertSchema(table_images);
+export const imageInsertFormSchema = createInsertSchema(table_images).omit({
 	user_id: true,
 	path_translation_key: true
 });
@@ -39,7 +39,7 @@ export const imageDeletionFormSchema = imageSelectSchema.pick({ id: true });
 // TODO: Refine url schema to accept only valid urls
 // __UTILITY SCHEMAS__
 
-export const imageProviderUpdateFormSchema = createSelectSchema(users).pick({
+export const imageProviderUpdateFormSchema = createSelectSchema(table_users).pick({
 	imagekit_private_key: true,
 	imagekit_public_key: true,
 	imagekit_url_endpoint: true

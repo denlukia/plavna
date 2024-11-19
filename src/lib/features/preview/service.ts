@@ -5,11 +5,11 @@ import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import { articles } from '../article/schema';
-import { translations } from '../i18n/schema';
+import { table_articles } from '../article/schema';
+import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ImageSelect } from '../image/parsers';
-import { images } from '../image/schema';
+import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ActorService } from '../user/service';
 import type {
@@ -17,7 +17,7 @@ import type {
 	PreviewTemplateDeletion,
 	PreviewTemplateEditing
 } from './parsers';
-import { previewTemplates } from './schema';
+import { table_previewTemplates } from './schema';
 
 export class PreviewService {
 	private readonly actorService: ActorService;
@@ -49,7 +49,7 @@ export class PreviewService {
 				await this.imageService.updatePath(record, null, trx);
 			}
 			await trx
-				.insert(previewTemplates)
+				.insert(table_previewTemplates)
 				.values({ user_id: actor.id, url, name_translation_key: key, image_id: imageId })
 				.run();
 		});
@@ -59,15 +59,18 @@ export class PreviewService {
 		const { url, template_id, ...translation } = template;
 		await db.transaction(async (trx) => {
 			const whereCondition = and(
-				eq(previewTemplates.id, template_id),
-				eq(previewTemplates.user_id, actor.id)
+				eq(table_previewTemplates.id, template_id),
+				eq(table_previewTemplates.user_id, actor.id)
 			);
 
 			// 1. Update name translation and URL
 			const translationResult = await trx
-				.select({ key: translations.key })
-				.from(previewTemplates)
-				.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
+				.select({ key: table_translations.key })
+				.from(table_previewTemplates)
+				.innerJoin(
+					table_translations,
+					eq(table_translations.key, table_previewTemplates.name_translation_key)
+				)
 				.where(whereCondition)
 				.get();
 			if (!translationResult) {
@@ -75,14 +78,14 @@ export class PreviewService {
 			}
 
 			await this.translationService.update({ ...translation, key: translationResult.key }, trx);
-			await trx.update(previewTemplates).set({ url }).where(whereCondition);
+			await trx.update(table_previewTemplates).set({ url }).where(whereCondition);
 
 			// 2. Create/Upload/Update image
 			if (imageHandler) {
 				const imageResult = await trx
-					.select({ id: images.id })
-					.from(previewTemplates)
-					.innerJoin(images, eq(images.id, previewTemplates.image_id))
+					.select({ id: table_images.id })
+					.from(table_previewTemplates)
+					.innerJoin(table_images, eq(table_images.id, table_previewTemplates.image_id))
 					.where(whereCondition)
 					.get();
 				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
@@ -90,7 +93,7 @@ export class PreviewService {
 				let imageId: ImageSelect['id'] | undefined = imageResult?.id;
 				if (!imageId) {
 					({ id: imageId } = await this.imageService.createRecord({ source }, trx));
-					await trx.update(previewTemplates).set({ image_id: imageId }).where(whereCondition);
+					await trx.update(table_previewTemplates).set({ image_id: imageId }).where(whereCondition);
 				}
 				const { record } = await imageHandler.upload({ imageId, lang: null });
 				await this.imageService.updatePath(record, null, trx);
@@ -101,22 +104,25 @@ export class PreviewService {
 		const actor = await this.actorService.getOrThrow();
 		await db.transaction(async (trx) => {
 			const whereCondition = and(
-				eq(previewTemplates.id, template.id),
-				eq(previewTemplates.user_id, actor.id)
+				eq(table_previewTemplates.id, template.id),
+				eq(table_previewTemplates.user_id, actor.id)
 			);
 			const recordResult = await trx
-				.select({ translation_key: translations.key, images })
-				.from(previewTemplates)
-				.innerJoin(translations, eq(translations.key, previewTemplates.name_translation_key))
-				.leftJoin(images, eq(images.id, previewTemplates.image_id))
+				.select({ translation_key: table_translations.key, images: table_images })
+				.from(table_previewTemplates)
+				.innerJoin(
+					table_translations,
+					eq(table_translations.key, table_previewTemplates.name_translation_key)
+				)
+				.leftJoin(table_images, eq(table_images.id, table_previewTemplates.image_id))
 				.where(whereCondition)
 				.get();
 			if (recordResult?.translation_key) {
 				await this.translationService.delete({ key: recordResult.translation_key }, trx);
 				await trx
-					.update(articles)
+					.update(table_articles)
 					.set({ preview_family: null })
-					.where(eq(articles.preview_template_id, template.id));
+					.where(eq(table_articles.preview_template_id, template.id));
 			} else {
 				error(403, ERRORS.PREVIEW_TEMPLATE_NOT_FOUND);
 			}
@@ -126,7 +132,7 @@ export class PreviewService {
 				}
 				await this.imageService.deleteRecord(recordResult.images.id, trx);
 			}
-			await trx.delete(previewTemplates).where(whereCondition).run();
+			await trx.delete(table_previewTemplates).where(whereCondition).run();
 		});
 	}
 }

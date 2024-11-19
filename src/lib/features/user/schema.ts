@@ -3,7 +3,7 @@ import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core
 // TODO: Capital names of tables in singular
 // to deal with variable names for queries problem
 
-export const users = sqliteTable(
+export const table_users = sqliteTable(
 	'auth_user',
 	{
 		id: text('id').primaryKey(),
@@ -20,10 +20,10 @@ export const users = sqliteTable(
 	}
 );
 
-export const sessions = sqliteTable('auth_session', {
+export const table_sessions = sqliteTable('auth_session', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => users.id),
+		.references(() => table_users.id),
 	expiresAt: integer('expires_at').notNull()
 });

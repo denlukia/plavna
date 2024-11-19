@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
 import { generatePath } from '$lib/features/common/links';
 import { getLang } from '$lib/features/i18n/utils';
-import { users } from '$lib/features/user/schema';
+import { table_users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
 
@@ -32,8 +32,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 		const existingUser = await db
 			.select()
-			.from(users)
-			.where(eq(users.github_id, githubUser.id))
+			.from(table_users)
+			.where(eq(table_users.github_id, githubUser.id))
 			.get();
 
 		const username = githubUser.login;
@@ -48,7 +48,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		} else {
 			const userId = generateId(15);
 
-			await db.insert(users).values({
+			await db.insert(table_users).values({
 				id: userId,
 				github_id: githubUser.id,
 				username

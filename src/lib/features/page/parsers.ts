@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { slugParser } from '../common/parsers';
 import { sectionSelectSchema } from '../section/parsers';
 import { tagSelectSchema } from '../tag/parsers';
-import { pages } from './schema';
+import { table_pages } from './schema';
 
 // Parsers
-export const pageSelectSchema = createSelectSchema(pages);
-export const pageInsertSchema = createInsertSchema(pages);
+export const pageSelectSchema = createSelectSchema(table_pages);
+export const pageInsertSchema = createInsertSchema(table_pages);
 
 // Form Parsers
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({

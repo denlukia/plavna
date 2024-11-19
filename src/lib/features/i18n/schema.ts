@@ -1,10 +1,13 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
+import { table_users } from '$lib/features/user/schema';
 
-export const translations = sqliteTable('translations', {
+export const table_translations = sqliteTable('translations', {
 	// It's "key" because "id" is Indonasian lang code
 	key: integer('key').primaryKey({ autoIncrement: true }),
-	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+	user_id: text('user_id').references(() => table_users.id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade'
+	}),
 	en: text('en'),
 	uk: text('uk')
 });

@@ -5,11 +5,11 @@ import { db } from '$lib/services/db';
 
 import type { TransactionOrDB } from '../common/types';
 import type { TranslationSelect } from '../i18n/parsers';
-import { translations } from '../i18n/schema';
+import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { ActorService } from '../user/service';
 import type { ImageInsertForm, ImageSelect, ImageUpdate } from './parsers';
-import { images } from './schema';
+import { table_images } from './schema';
 
 export class ImageService {
 	private readonly actorService: ActorService;
@@ -24,7 +24,7 @@ export class ImageService {
 		const actor = await this.actorService.getOrThrow();
 
 		return trx
-			.insert(images)
+			.insert(table_images)
 			.values({ ...newImage, user_id: actor.id })
 			.returning()
 			.get();
@@ -34,9 +34,9 @@ export class ImageService {
 
 		const current = await trx
 			.select()
-			.from(images)
-			.leftJoin(translations, eq(images.path_translation_key, translations.key))
-			.where(and(eq(images.user_id, actor.id), eq(images.id, newImage.id)))
+			.from(table_images)
+			.leftJoin(table_translations, eq(table_images.path_translation_key, table_translations.key))
+			.where(and(eq(table_images.user_id, actor.id), eq(table_images.id, newImage.id)))
 			.get();
 
 		if (!current) {
@@ -81,9 +81,9 @@ export class ImageService {
 		}
 
 		const finalImage = await trx
-			.update(images)
+			.update(table_images)
 			.set(updateObj)
-			.where(and(eq(images.user_id, actor.id), eq(images.id, currentImage.id)))
+			.where(and(eq(table_images.user_id, actor.id), eq(table_images.id, currentImage.id)))
 			.returning()
 			.get();
 
@@ -92,12 +92,12 @@ export class ImageService {
 	async deleteRecord(imageId: ImageSelect['id'], trx: TransactionOrDB = db) {
 		const actor = await this.actorService.getOrThrow();
 
-		const whereCondition = and(eq(images.user_id, actor.id), eq(images.id, imageId));
+		const whereCondition = and(eq(table_images.user_id, actor.id), eq(table_images.id, imageId));
 
 		const translation = await trx
-			.select({ translations })
-			.from(images)
-			.innerJoin(translations, eq(translations.key, images.path_translation_key))
+			.select({ translations: table_translations })
+			.from(table_images)
+			.innerJoin(table_translations, eq(table_translations.key, table_images.path_translation_key))
 			.where(whereCondition)
 			.get();
 
@@ -106,6 +106,6 @@ export class ImageService {
 		if (translation) {
 			await this.translationService.delete({ key: translation.translations.key }, trx);
 		}
-		await trx.delete(images).where(whereCondition).run();
+		await trx.delete(table_images).where(whereCondition).run();
 	}
 }
