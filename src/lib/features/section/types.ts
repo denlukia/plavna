@@ -1,5 +1,6 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
+import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
 import type { SectionSelect } from './parsers';
 import type { SectionService } from './service';
@@ -30,3 +31,9 @@ export type SectionRequest = {
 } & (TagSwitchRequest | ArticlesPaginationRequest);
 
 export type TagIdWithLang = { tag_id: TagUpdate['id']; lang: SupportedLang };
+
+export type GetOneSectionParams = {
+	username: string;
+	readerPageConfig: ReaderPageConfig | null;
+	articlesOffset: number;
+} & ({ pageId: PageSelect['id']; sectionOffset: number } | { sectionId: SectionSelect['id'] });

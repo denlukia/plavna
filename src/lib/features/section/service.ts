@@ -1,33 +1,14 @@
 import { error } from '@sveltejs/kit';
-import {
-	and,
-	count,
-	desc,
-	eq,
-	getTableColumns,
-	gt,
-	inArray,
-	isNotNull,
-	lt,
-	max,
-	min,
-	notInArray,
-	or,
-	Placeholder,
-	sql,
-	SQL
-} from 'drizzle-orm';
+import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { ARTICLES_PER_SECTION } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
-import { tags } from '$lib/collections/main-schema';
 import { db } from '$lib/services/db';
 
 import type { ArticleSelect } from '../article/parsers';
 import { table_articles } from '../article/schema';
-import { dedupeQueryResult, getTableColumnAliases } from '../common/drizzle';
 import type { TransactionOrDB } from '../common/types';
 import { dedupeArray, getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { table_translations } from '../i18n/schema';
@@ -36,7 +17,6 @@ import type { RecordsTranslationsDict } from '../i18n/types';
 import type { ImageSelect } from '../image/parsers';
 import { table_images } from '../image/schema';
 import type { ImagesDict } from '../image/types';
-import type { PageSelect, ReaderPageConfig } from '../page/parsers';
 import { table_pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
 import type { PreviewFamiliesDict } from '../preview/families/types';
@@ -49,18 +29,12 @@ import {
 	sectionUpdateSchema,
 	type SectionDelete,
 	type SectionInsert,
-	type SectionSelect,
 	type SectionUpdate
 } from './parsers';
+import { queryGetOneSection } from './queries';
 import { table_sections, table_sectionsToTags } from './schema';
-import type { TagIdWithLang } from './types';
+import type { GetOneSectionParams, TagIdWithLang } from './types';
 import { findTagsInSectionTranslations } from './utils';
-
-type GetOneConfig = {
-	username: string;
-	readerPageConfig: ReaderPageConfig | null;
-	articlesOffset: number;
-} & ({ pageId: PageSelect['id']; sectionOffset: number } | { sectionId: SectionSelect['id'] });
 
 export class SectionService {
 	private readonly actorService: ActorService;
@@ -89,133 +63,14 @@ export class SectionService {
 		}
 	}
 
-	async getOne(config: GetOneConfig) {
+	async getOne(config: GetOneSectionParams) {
 		// 0. Prepare info needed for queries
 		const actor = await this.actorService.getOrThrow();
 		const lang = this.translationService.currentLang;
 
-		// 1. Section
-		const sectionWhere: SQL[] = [];
-		let sectionOffset = 0;
-
-		if ('sectionId' in config) {
-			sectionWhere.push(eq(table_sections.id, config.sectionId));
-		}
-		if ('pageId' in config) {
-			sectionWhere.push(eq(table_sections.page_id, config.pageId));
-			sectionOffset = config.sectionOffset;
-		}
-
-		const section = db
-			.select({
-				section_meta: getTableColumnAliases(table_sections)
-			})
-			.from(table_sections)
-			.where(and(...sectionWhere))
-			.limit(1)
-			.offset(sectionOffset);
-		const sectionSq = db.$with('sectionQuery').as(section);
-
-		// 2. + its Tags + TagsToArticles
-		const sectionTranslations = alias(table_translations, 'sectionTranslations'); // not using this causes weird bugs
-		const sectionAndTags = db
-			.with(sectionSq)
-			.select({
-				section_meta: sectionSq.section_meta,
-				section_tags: getTableColumnAliases(table_tags),
-				section_tags_to_articles: getTableColumnAliases(table_tagsToArticles),
-				section_translations: getTableColumnAliases(sectionTranslations)
-			})
-			.from(sectionSq)
-			.innerJoin(
-				table_sectionsToTags,
-				and(
-					eq(sectionSq.section_meta.id, table_sectionsToTags.section_id),
-					eq(table_sectionsToTags.lang, lang)
-				)
-			)
-			.innerJoin(table_tags, eq(table_tags.id, table_sectionsToTags.tag_id))
-			.innerJoin(table_tagsToArticles, eq(table_tagsToArticles.tag_id, table_tags.id))
-			.innerJoin(
-				sectionTranslations,
-				or(
-					eq(sectionTranslations.key, sectionSq.section_meta.title_translation_key),
-					eq(sectionTranslations.key, table_tags.name_translation_key)
-				)
-			);
-
-		const sectionAndTagsSq = db.$with('sectionAndTagsSq').as(sectionAndTags);
-
-		// 3. + Articles (tags filtered and published)
-		const tagsCondition = undefined; // TODO based on readerPageConfig (check if it's applied always)
-		const articles = db
-			.with(sectionAndTagsSq)
-			.select({
-				section_meta: sectionAndTagsSq.section_meta,
-				section_tags: sectionAndTagsSq.section_tags,
-				section_translations: sectionAndTagsSq.section_translations,
-				section_tags_to_articles: sectionAndTagsSq.section_tags_to_articles,
-				articles: getTableColumnAliases(table_articles)
-			})
-			.from(sectionAndTagsSq)
-			.innerJoin(
-				table_articles,
-				eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id)
-			)
-			.where(and(isNotNull(table_articles.publish_time), tagsCondition))
-			.offset(config.articlesOffset)
-			.limit(ARTICLES_PER_SECTION);
-
-		const articlesSq = db.$with('articlesSq').as(articles);
-
-		// 4. + Images + Article Tags + Translations
-		const articlesAndAll = db
-			.with(articlesSq)
-			.select({
-				// We put them to 1st layer to be able to dedupe
-				section_meta: articlesSq.section_meta,
-				section_tags: articlesSq.section_tags,
-				section_translations: articlesSq.section_translations,
-
-				images: table_images,
-				tagsToArticles: table_tagsToArticles,
-				tags: table_tags,
-				translations: table_translations
-			})
-			.from(articlesSq)
-			.innerJoin(
-				table_images,
-				or(
-					eq(table_images.id, articlesSq.articles.preview_image_1_id),
-					eq(table_images.id, articlesSq.articles.preview_image_2_id),
-					eq(table_images.id, articlesSq.articles.preview_screenshot_image_id)
-				)
-			)
-			.innerJoin(table_tagsToArticles, eq(articlesSq.articles.id, table_tagsToArticles.article_id))
-			.innerJoin(table_tags, eq(table_tagsToArticles.tag_id, table_tags.id))
-			.innerJoin(
-				table_translations,
-				or(
-					eq(table_translations.key, articlesSq.articles.title_translation_key),
-					eq(table_translations.key, articlesSq.articles.description_translation_key),
-					eq(table_translations.key, articlesSq.articles.preview_translation_1_key),
-					eq(table_translations.key, articlesSq.articles.preview_translation_2_key),
-					eq(table_translations.key, table_tags.name_translation_key),
-					eq(table_translations.key, table_images.path_translation_key)
-				)
-			);
-
-		const result = await articlesAndAll;
-
-		const deduped = dedupeQueryResult(result, {
-			translations: (a, b) => a.key === b.key
-		});
-
-		console.dir(deduped, { depth: Infinity });
-
-		return error(500, 'Not implemented');
+		return queryGetOneSection(config, actor, lang);
 	}
-	async getOneOld(config: GetOneConfig) {
+	async getOneOld(config: GetOneSectionParams) {
 		const actor = await this.actorService.get();
 
 		const whereCondition1 =
@@ -227,7 +82,7 @@ export class SectionService {
 				? eq(table_sections.page_id, config.pageId)
 				: eq(table_sections.id, config.sectionId);
 
-		const offset = 'offset' in config ? config.sectionOffset : 0;
+		const offset = 'sectionOffset' in config ? config.sectionOffset : 0;
 
 		// 1. Sections query
 		const sectionInfo = await db
@@ -265,12 +120,6 @@ export class SectionService {
 		const translationForTag = alias(table_translations, 'translation_for_tag');
 		const translationForArticle = alias(table_translations, 'translation_for_article');
 		const tagsCondition = inArray(table_tags.id, activeTagsQuery);
-		const timeCondition =
-			'tsLessThan' in config && config.tsLessThan
-				? lt(table_articles.publish_time, new Date(config.tsLessThan))
-				: 'tsGreaterThan' in config && config.tsGreaterThan
-					? gt(table_articles.publish_time, new Date(config.tsGreaterThan))
-					: undefined;
 
 		const articlesQuery = db
 			.select(getTableColumns(table_articles))
@@ -291,7 +140,7 @@ export class SectionService {
 					isNotNull(translationForArticle[this.translationService.currentLang])
 				)
 			)
-			.where(and(isNotNull(table_articles.publish_time), tagsCondition, timeCondition))
+			.where(and(isNotNull(table_articles.publish_time), tagsCondition))
 			.orderBy(desc(table_articles.publish_time))
 			.groupBy(table_articles.id)
 			.limit(ARTICLES_PER_SECTION);
@@ -304,7 +153,7 @@ export class SectionService {
 				.from(table_tags)
 				.innerJoin(table_tagsToArticles, eq(table_tagsToArticles.tag_id, table_tags.id))
 				.innerJoin(table_articles, eq(table_articles.id, table_tagsToArticles.article_id))
-				.where(and(isNotNull(table_articles.publish_time), tagsCondition, timeCondition))
+				.where(and(isNotNull(table_articles.publish_time), tagsCondition))
 				.orderBy(desc(table_articles.publish_time))
 				.groupBy(table_articles.id)
 				.limit(ARTICLES_PER_SECTION);
@@ -557,7 +406,7 @@ export class SectionService {
 			images: Object.fromEntries(previewImagesInfo.map(getImageDictEntry)) as ImagesDict
 		};
 	}
-	async getOneQueryEngine(config: GetOneConfig) {
+	async getOneQueryEngine(config: GetOneSectionParams) {
 		const actor = await this.actorService.getOrThrow();
 
 		// 1. Seciton filters
