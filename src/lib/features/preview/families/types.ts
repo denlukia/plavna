@@ -26,12 +26,14 @@ assert<TypeEqualityGuard<CheckPreviewFamilyIds, true>>();
 // Will be red if previewFamilies contains name_translation_key with not existing TranslationKey
 assert<TypeEqualityGuard<CheckTranslationKey, true>>();
 
-export type PreviewFamiliesDict = Record<
-	PreviewFamilyId,
-	{
-		components: Record<PreviewComponentType, MaybePromise<Component | null>>;
-		name_translation_key: PossibleNameTranslationIds;
-	}
+export type PreviewFamiliesDict = Partial<
+	Record<
+		PreviewFamilyId,
+		{
+			components: Record<PreviewComponentType, MaybePromise<Component | null>>;
+			name_translation_key: PossibleNameTranslationIds;
+		}
+	>
 >;
 
 export type PreviewEditorProps = {

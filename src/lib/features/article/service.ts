@@ -19,7 +19,7 @@ import {
 	translationUpdateAllowEmptySchema,
 	translationUpdateSchema
 } from '../i18n/parsers';
-import { translations } from '../i18n/schema';
+import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type {
 	RecordsTranslationsDict,
@@ -27,7 +27,7 @@ import type {
 	TranslationFormsDict
 } from '../i18n/types';
 import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/parsers';
-import { images } from '../image/schema';
+import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
 import { decomposeImageField } from '../image/utils';
@@ -39,17 +39,17 @@ import {
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema
 } from '../preview/parsers';
-import { previewTemplates } from '../preview/schema';
+import { table_previewTemplates } from '../preview/schema';
 import type { ScreenshotsQueueInsertLocal } from '../screenshot/parsers';
-import { screenshotsQueue } from '../screenshot/schema';
+import { table_screenshotsQueue } from '../screenshot/schema';
 import {
 	calculateDimensionsFromCellsTaken,
 	composeURLForScreenshot,
 	getMaybeTranslatedImagePath
 } from '../screenshot/utils';
 import { tagDeleteSchema, tagUpdateSchema } from '../tag/parsers';
-import { tags, tagsToArticles } from '../tag/schema';
-import { users } from '../user/schema';
+import { table_tags, table_tagsToArticles } from '../tag/schema';
+import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import {
 	articleSelectSchema,
@@ -61,7 +61,7 @@ import {
 	type ArticleSelect,
 	type ArticleSlugUpdate
 } from './parsers';
-import { articles } from './schema';
+import { table_articles } from './schema';
 
 export class ArticleService {
 	private readonly actorService: ActorService;
@@ -90,17 +90,20 @@ export class ArticleService {
 
 		const query = await db
 			.select({
-				id: articles.id,
-				slug: articles.slug,
-				publish_time: articles.publish_time,
+				id: table_articles.id,
+				slug: table_articles.slug,
+				publish_time: table_articles.publish_time,
 				title_translation: {
-					key: translations.key,
-					value: translations[this.translationService.currentLang]
+					key: table_translations.key,
+					value: table_translations[this.translationService.currentLang]
 				}
 			})
-			.from(articles)
-			.leftJoin(translations, eq(articles.title_translation_key, translations.key))
-			.where(eq(articles.user_id, actor.id));
+			.from(table_articles)
+			.leftJoin(
+				table_translations,
+				eq(table_articles.title_translation_key, table_translations.key)
+			)
+			.where(eq(table_articles.user_id, actor.id));
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const forms = query.map(({ title_translation, ...article }) => ({
@@ -121,10 +124,10 @@ export class ArticleService {
 	}
 	async getIdIfExists(username: User['username'], slug: ArticleSelect['slug']) {
 		const article = await db
-			.select({ id: articles.id })
-			.from(articles)
-			.innerJoin(users, eq(users.username, username))
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, users.id)))
+			.select({ id: table_articles.id })
+			.from(table_articles)
+			.innerJoin(table_users, eq(table_users.username, username))
+			.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, table_users.id)))
 			.get();
 		if (article) {
 			return article.id;
@@ -164,7 +167,7 @@ export class ArticleService {
 			]);
 
 			const article = await trx
-				.insert(articles)
+				.insert(table_articles)
 				.values({
 					user_id: actor.id,
 					slug: slug,
@@ -177,7 +180,7 @@ export class ArticleService {
 					preview_image_1_id,
 					preview_image_2_id
 				})
-				.returning({ id: articles.id })
+				.returning({ id: table_articles.id })
 				.get();
 
 			return article.id;
@@ -191,31 +194,31 @@ export class ArticleService {
 			error(404);
 		}
 
-		const translForForms = alias(translations, 'translForForms');
-		const translForImageInputs = alias(translations, 'translForImageInputs');
-		const commonImagesTable = alias(images, 'commonImages');
-		const articleImagesTable = alias(images, 'articleImages');
+		const translForForms = alias(table_translations, 'translForForms');
+		const translForImageInputs = alias(table_translations, 'translForImageInputs');
+		const commonImagesTable = alias(table_images, 'commonImages');
+		const articleImagesTable = alias(table_images, 'articleImages');
 		const results = await db
 			.select({
-				articles: articles,
-				tagsArticles: tagsToArticles,
-				tags,
-				translations,
+				articles: table_articles,
+				tagsArticles: table_tagsToArticles,
+				tags: table_tags,
+				translations: table_translations,
 				translForForms,
 				translForImageInputs,
-				previewTemplates,
-				images,
+				previewTemplates: table_previewTemplates,
+				images: table_images,
 				commonImagesTable,
 				articleImagesTable
 			})
-			.from(articles)
-			.leftJoin(previewTemplates, eq(previewTemplates.user_id, actor.id))
+			.from(table_articles)
+			.leftJoin(table_previewTemplates, eq(table_previewTemplates.user_id, actor.id))
 			.leftJoin(
-				images,
+				table_images,
 				or(
-					eq(images.id, previewTemplates.image_id),
-					eq(images.id, articles.preview_image_1_id),
-					eq(images.id, articles.preview_image_2_id)
+					eq(table_images.id, table_previewTemplates.image_id),
+					eq(table_images.id, table_articles.preview_image_1_id),
+					eq(table_images.id, table_articles.preview_image_2_id)
 				)
 			)
 			.leftJoin(
@@ -229,12 +232,15 @@ export class ArticleService {
 					eq(articleImagesTable.owning_article_id, exisingId)
 				)
 			)
-			.leftJoin(tags, eq(tags.user_id, actor.id))
-			.leftJoin(translations, or(eq(translations.key, previewTemplates.name_translation_key)))
+			.leftJoin(table_tags, eq(table_tags.user_id, actor.id))
+			.leftJoin(
+				table_translations,
+				or(eq(table_translations.key, table_previewTemplates.name_translation_key))
+			)
 			.leftJoin(
 				translForImageInputs,
 				or(
-					eq(translForImageInputs.key, images.path_translation_key),
+					eq(translForImageInputs.key, table_images.path_translation_key),
 					eq(translForImageInputs.key, commonImagesTable.path_translation_key),
 					eq(translForImageInputs.key, articleImagesTable.path_translation_key)
 				)
@@ -242,17 +248,17 @@ export class ArticleService {
 			.leftJoin(
 				translForForms,
 				or(
-					eq(translForForms.key, articles.title_translation_key),
-					eq(translForForms.key, articles.description_translation_key),
-					eq(translForForms.key, articles.content_translation_key),
-					eq(translForForms.key, tags.name_translation_key),
-					eq(translForForms.key, articles.preview_translation_1_key),
-					eq(translForForms.key, articles.preview_translation_2_key),
-					eq(translForForms.key, previewTemplates.name_translation_key)
+					eq(translForForms.key, table_articles.title_translation_key),
+					eq(translForForms.key, table_articles.description_translation_key),
+					eq(translForForms.key, table_articles.content_translation_key),
+					eq(translForForms.key, table_tags.name_translation_key),
+					eq(translForForms.key, table_articles.preview_translation_1_key),
+					eq(translForForms.key, table_articles.preview_translation_2_key),
+					eq(translForForms.key, table_previewTemplates.name_translation_key)
 				)
 			)
-			.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, exisingId))
-			.where(eq(articles.id, exisingId))
+			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, exisingId))
+			.where(eq(table_articles.id, exisingId))
 			.all();
 
 		const articleResult = results[0].articles;
@@ -409,10 +415,10 @@ export class ArticleService {
 		const actor = await this.actorService.getOrThrow();
 		try {
 			const response = await db
-				.update(articles)
+				.update(table_articles)
 				.set(article)
-				.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
-				.returning({ slug: articles.slug })
+				.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id)))
+				.returning({ slug: table_articles.slug })
 				.get();
 			return response;
 		} catch (e) {
@@ -422,27 +428,27 @@ export class ArticleService {
 	async publish(slug: string) {
 		const actor = await this.actorService.getOrThrow();
 		return db
-			.update(articles)
+			.update(table_articles)
 			.set({ publish_time: new Date() })
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
-			.returning({ slug: articles.slug })
+			.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id)))
+			.returning({ slug: table_articles.slug })
 			.get();
 	}
 	async hide(slug: string) {
 		const actor = await this.actorService.getOrThrow();
 		return db
-			.update(articles)
+			.update(table_articles)
 			.set({ publish_time: null })
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
-			.returning({ slug: articles.slug })
+			.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id)))
+			.returning({ slug: table_articles.slug })
 			.get();
 	}
 	async delete(slug: string) {
 		const actor = await this.actorService.getOrThrow();
 		const articleDeleted = await db
-			.delete(articles)
-			.where(and(eq(articles.slug, slug), eq(articles.user_id, actor.id)))
-			.returning({ id: articles.id })
+			.delete(table_articles)
+			.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id)))
+			.returning({ id: table_articles.id })
 			.get();
 		if (!articleDeleted) throw new Error('Article not found');
 		await this.imageService.deleteRecord(articleDeleted.id);
@@ -478,8 +484,8 @@ export class ArticleService {
 			preview.preview_family = 'custom';
 		}
 
-		const whereCondition = and(eq(articles.slug, slug), eq(articles.user_id, actor.id));
-		const articleUpdatePromise = db.update(articles).set(preview).where(whereCondition).run();
+		const whereCondition = and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id));
+		const articleUpdatePromise = db.update(table_articles).set(preview).where(whereCondition).run();
 		const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
 
 		// 2. Upload images if present and update records
@@ -491,10 +497,10 @@ export class ArticleService {
 		if (validImagesPresent) {
 			const queryResult = await db
 				.select({
-					preview_image_1_id: articles.preview_image_1_id,
-					preview_image_2_id: articles.preview_image_2_id
+					preview_image_1_id: table_articles.preview_image_1_id,
+					preview_image_2_id: table_articles.preview_image_2_id
 				})
-				.from(articles)
+				.from(table_articles)
 				.where(whereCondition)
 				.all();
 			const articleRecord = queryResult[0];
@@ -527,24 +533,30 @@ export class ArticleService {
 		if (preview.preview_family === 'custom' && preview.preview_template_id) {
 			const articleResult = await db
 				.select({
-					articles,
-					images,
-					translations,
-					previewTemplateUrl: previewTemplates.url
+					articles: table_articles,
+					images: table_images,
+					translations: table_translations,
+					previewTemplateUrl: table_previewTemplates.url
 				})
-				.from(articles)
-				.innerJoin(previewTemplates, eq(previewTemplates.id, preview.preview_template_id))
-				.leftJoin(
-					images,
-					or(eq(images.id, articles.preview_image_1_id), eq(images.id, articles.preview_image_2_id))
+				.from(table_articles)
+				.innerJoin(
+					table_previewTemplates,
+					eq(table_previewTemplates.id, preview.preview_template_id)
 				)
 				.leftJoin(
-					translations,
+					table_images,
 					or(
-						eq(translations.key, articles.preview_translation_1_key),
-						eq(translations.key, articles.preview_translation_2_key),
-						eq(translations.key, images.path_translation_key),
-						eq(translations.key, articles.title_translation_key)
+						eq(table_images.id, table_articles.preview_image_1_id),
+						eq(table_images.id, table_articles.preview_image_2_id)
+					)
+				)
+				.leftJoin(
+					table_translations,
+					or(
+						eq(table_translations.key, table_articles.preview_translation_1_key),
+						eq(table_translations.key, table_articles.preview_translation_2_key),
+						eq(table_translations.key, table_images.path_translation_key),
+						eq(table_translations.key, table_articles.title_translation_key)
 					)
 				)
 				.where(whereCondition)
@@ -613,7 +625,7 @@ export class ArticleService {
 					const newImageRecord = await this.imageService.createRecord({ source });
 					preview_screenshot_image_id = newImageRecord.id;
 					await db
-						.update(articles)
+						.update(table_articles)
 						.set({ preview_screenshot_image_id: newImageRecord.id })
 						.where(whereCondition);
 				}
@@ -637,7 +649,7 @@ export class ArticleService {
 									return null;
 								}
 							})
-							.filter(isNonNullable);
+							.filter(isNotNull);
 						if (queueRecordsForInsert.length === 0) {
 							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}
@@ -654,7 +666,7 @@ export class ArticleService {
 					}
 
 					const queueRecordsInserPromise = db
-						.insert(screenshotsQueue)
+						.insert(table_screenshotsQueue)
 						.values(queueRecordsForInsert)
 						.run();
 					promisesToWaitFor.push(queueRecordsInserPromise);
@@ -667,54 +679,58 @@ export class ArticleService {
 	}
 	async getOne(username: string, slug: string) {
 		const actor = await this.actorService.get();
-		const titleTranslationAlias = alias(translations, 'title_translation');
+		const titleTranslationAlias = alias(table_translations, 'title_translation');
 		const query = await db
 			.select({
-				articles: articles,
+				articles: table_articles,
 				titleTranslationAlias,
 				translations: {
-					key: translations.key,
-					[this.translationService.currentLang]: translations[this.translationService.currentLang]
+					key: table_translations.key,
+					[this.translationService.currentLang]:
+						table_translations[this.translationService.currentLang]
 				},
-				previewTypes: previewTemplates,
-				tags,
-				images
+				previewTypes: table_previewTemplates,
+				tags: table_tags,
+				images: table_images
 			})
-			.from(articles)
-			.innerJoin(users, eq(users.id, articles.user_id))
-			.leftJoin(previewTemplates, eq(previewTemplates.id, articles.preview_template_id))
-			.leftJoin(tagsToArticles, eq(tagsToArticles.article_id, articles.id))
-			.leftJoin(tags, eq(tags.id, tagsToArticles.tag_id))
+			.from(table_articles)
+			.innerJoin(table_users, eq(table_users.id, table_articles.user_id))
+			.leftJoin(
+				table_previewTemplates,
+				eq(table_previewTemplates.id, table_articles.preview_template_id)
+			)
+			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, table_articles.id))
+			.leftJoin(table_tags, eq(table_tags.id, table_tagsToArticles.tag_id))
 			.leftJoin(
 				titleTranslationAlias,
-				eq(titleTranslationAlias.key, articles.title_translation_key)
+				eq(titleTranslationAlias.key, table_articles.title_translation_key)
 			)
 			.leftJoin(
-				images,
+				table_images,
 				and(
-					eq(images.user_id, articles.user_id),
+					eq(table_images.user_id, table_articles.user_id),
 					or(
-						eq(images.owning_article_id, articles.id),
-						eq(images.is_account_common, true),
-						eq(images.id, articles.preview_image_1_id),
-						eq(images.id, articles.preview_image_2_id),
-						eq(images.id, articles.preview_screenshot_image_id)
+						eq(table_images.owning_article_id, table_articles.id),
+						eq(table_images.is_account_common, true),
+						eq(table_images.id, table_articles.preview_image_1_id),
+						eq(table_images.id, table_articles.preview_image_2_id),
+						eq(table_images.id, table_articles.preview_screenshot_image_id)
 					)
 				)
 			)
 			.leftJoin(
-				translations,
+				table_translations,
 				or(
-					eq(translations.key, articles.content_translation_key),
-					eq(translations.key, tags.name_translation_key),
-					eq(translations.key, images.path_translation_key)
+					eq(table_translations.key, table_articles.content_translation_key),
+					eq(table_translations.key, table_tags.name_translation_key),
+					eq(table_translations.key, table_images.path_translation_key)
 				)
 			)
 
 			.where(
 				and(
-					eq(users.username, username),
-					eq(articles.slug, slug),
+					eq(table_users.username, username),
+					eq(table_articles.slug, slug),
 					isNotNull(titleTranslationAlias[this.translationService.currentLang])
 				)
 			)

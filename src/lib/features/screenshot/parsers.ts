@@ -4,7 +4,7 @@ import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/parsers';
-import { screenshotsQueue } from './schema';
+import { table_screenshotsQueue } from './schema';
 
 // Article Preview Screenshotting
 export const articlePreviewScreenshotMeta = z.object({
@@ -34,8 +34,8 @@ export type ArticlePreviewScreenshotQuery = z.infer<typeof articlePreviewScreens
 export type ArticlePreviewCellsTaken = z.infer<typeof articlePreviewCellsTaken>;
 
 // Screenshots Queue
-export type ScreenshotsQueueSelectLocal = typeof screenshotsQueue.$inferSelect;
-export type ScreenshotsQueueInsertLocal = typeof screenshotsQueue.$inferInsert;
+export type ScreenshotsQueueSelectLocal = typeof table_screenshotsQueue.$inferSelect;
+export type ScreenshotsQueueInsertLocal = typeof table_screenshotsQueue.$inferInsert;
 // These will error if screenshots table schema
 // (it's is common for this and screenshotter projects)
 // is different from defined in plavna-common package.

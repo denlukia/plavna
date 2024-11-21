@@ -9,7 +9,7 @@ import type { TransactionOrDB } from '../common/types';
 import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
 import type { ActorService } from '../user/service';
 import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
-import { translations } from './schema';
+import { table_translations } from './schema';
 import { checkTranslationKey } from './utils';
 
 export class TranslationService {
@@ -45,7 +45,7 @@ export class TranslationService {
 			user_id: actor.id
 		}));
 
-		return trx.insert(translations).values(newTranslations).returning().all();
+		return trx.insert(table_translations).values(newTranslations).returning().all();
 	}
 	async update(translation: TranslationUpdate, trx: TransactionOrDB = db, actor?: User) {
 		if (!actor) {
@@ -53,9 +53,11 @@ export class TranslationService {
 		}
 
 		return trx
-			.update(translations)
+			.update(table_translations)
 			.set(translation)
-			.where(and(eq(translations.key, translation.key), eq(translations.user_id, actor.id)))
+			.where(
+				and(eq(table_translations.key, translation.key), eq(table_translations.user_id, actor.id))
+			)
 			.returning()
 			.get();
 	}
@@ -63,8 +65,10 @@ export class TranslationService {
 		const actor = await this.actorService.getOrThrow();
 
 		return trx
-			.delete(translations)
-			.where(and(eq(translations.key, translation.key), eq(translations.user_id, actor.id)))
+			.delete(table_translations)
+			.where(
+				and(eq(table_translations.key, translation.key), eq(table_translations.user_id, actor.id))
+			)
 			.run();
 	}
 }

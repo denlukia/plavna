@@ -8,7 +8,7 @@ import { generateLanguagedFields } from '../common/parsers';
 import { atLeastOneTranslationRefiner, translationInsertBaseSchema } from '../i18n/parsers';
 import { imageFileField } from '../image/parsers';
 import type { PreviewFamilyId } from './families/types';
-import { previewTemplates } from './schema';
+import { table_previewTemplates } from './schema';
 
 // Previews
 const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSchema>, true>> = {
@@ -45,8 +45,8 @@ export const previewTemplateImageFieldsSchema = z.object({
 	image: imageFileField,
 	delete_image: z.boolean().optional()
 });
-export const previewTemplateSelectSchema = createSelectSchema(previewTemplates);
-export const previewTemplateInsertSchema = createInsertSchema(previewTemplates);
+export const previewTemplateSelectSchema = createSelectSchema(table_previewTemplates);
+export const previewTemplateInsertSchema = createInsertSchema(table_previewTemplates);
 export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
 	.pick({ url: true })
 	.merge(previewTemplateImageFieldsSchema)

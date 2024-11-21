@@ -2,8 +2,8 @@ import { dev } from '$app/environment';
 import { PUBLIC_HOST } from '$env/static/public';
 import type { User } from 'lucia';
 
-export const SECTIONS_PER_LOAD = 3;
-export const POSTS_PER_SECTION = 10;
+export const SECTIONS_PER_PAGE = 10;
+export const ARTICLES_PER_SECTION = 10;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
 export const PREVIEW_TEMPLATE_PARAM = 'preview-template';
 export const IMAGEKIT_UPLOAD_ENDPOINT = 'https://upload.imagekit.io/api/v2/files/upload';

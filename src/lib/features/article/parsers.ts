@@ -9,7 +9,7 @@ import type {
 	articlePreviewImageIdsFieldsSchema,
 	articlePreviewUpdateSchema
 } from '../preview/parsers';
-import { articles } from './schema';
+import { table_articles } from './schema';
 
 const slugParser = z
 	.string() //
@@ -23,10 +23,10 @@ const slugParser = z
 		message: checkTranslationKey('actor_errors.disallowed_chars')
 	});
 
-export const articleSelectSchema = createSelectSchema(articles, {
+export const articleSelectSchema = createSelectSchema(table_articles, {
 	preview_family: z.enum(previewFamiliesIds)
 });
-export const articleInsertSchema = createInsertSchema(articles, {
+export const articleInsertSchema = createInsertSchema(table_articles, {
 	preview_family: z.enum(previewFamiliesIds),
 	slug: slugParser
 });

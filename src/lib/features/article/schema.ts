@@ -1,38 +1,41 @@
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
+import { table_users } from '$lib/features/user/schema';
 
-import { translations } from '../i18n/schema';
-import { images } from '../image/schema';
+import { table_translations } from '../i18n/schema';
+import { table_images } from '../image/schema';
 import { previewFamiliesIds } from '../preview/families';
-import { previewTemplates } from '../preview/schema';
+import { table_previewTemplates } from '../preview/schema';
 import { dynamicPreviewActivationConditions } from '../preview/types';
 
-export const articles = sqliteTable(
+export const table_articles = sqliteTable(
 	'articles',
 	{
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		user_id: text('user_id')
 			.notNull()
-			.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+			.references(() => table_users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull(),
 		title_translation_key: integer('title_translation_key')
 			.notNull()
-			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
+			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		description_translation_key: integer('description_translation_key')
 			.notNull()
-			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
+			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		content_translation_key: integer('content_translation_key')
 			.notNull()
-			.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
+			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		publish_time: integer('publish_time', { mode: 'timestamp' }),
 		likes_count: integer('likes_count').notNull().default(0),
 		preview_columns: integer('preview_columns').notNull().default(1),
 		preview_rows: integer('preview_rows').notNull().default(1),
 		preview_family: text('preview_family', { enum: previewFamiliesIds }),
-		preview_template_id: integer('preview_template_id').references(() => previewTemplates.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade'
-		}),
+		preview_template_id: integer('preview_template_id').references(
+			() => table_previewTemplates.id,
+			{
+				onDelete: 'set null',
+				onUpdate: 'cascade'
+			}
+		),
 		preview_interactions_show_on: text('preview_interactions_show_on', {
 			enum: dynamicPreviewActivationConditions
 		}).default('hover'),
@@ -40,19 +43,19 @@ export const articles = sqliteTable(
 		preview_prop_2: text('preview_prop_2'),
 		preview_translation_1_key: integer('preview_translation_1_key')
 			.notNull()
-			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
+			.references(() => table_translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
 		preview_translation_2_key: integer('preview_translation_2_key')
 			.notNull()
-			.references(() => translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
+			.references(() => table_translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),
 		preview_image_1_id: integer('preview_image_1_id')
 			.notNull()
-			.references(() => images.id, {
+			.references(() => table_images.id, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}),
 		preview_image_2_id: integer('preview_image_2_id')
 			.notNull()
-			.references(() => images.id, {
+			.references(() => table_images.id, {
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}),
@@ -62,7 +65,7 @@ export const articles = sqliteTable(
 			.notNull()
 			.default(false),
 		preview_screenshot_image_id: integer('preview_screenshot_image_id').references(
-			() => images.id,
+			() => table_images.id,
 			{
 				onDelete: 'set null',
 				onUpdate: 'cascade'

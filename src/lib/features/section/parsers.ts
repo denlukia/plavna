@@ -2,12 +2,12 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 import { atLeastOneTranslationRefiner } from '../i18n/parsers';
-import { translations } from '../i18n/schema';
-import { sections, sectionsToTags } from './schema';
+import { table_translations } from '../i18n/schema';
+import { table_sections, table_sectionsToTags } from './schema';
 
 // Parsers
-export const sectionSelectSchema = createSelectSchema(sections);
-const sectionInsertBase = createSelectSchema(translations).omit({
+export const sectionSelectSchema = createSelectSchema(table_sections);
+const sectionInsertBase = createSelectSchema(table_translations).omit({
 	user_id: true,
 	key: true
 });
@@ -21,8 +21,8 @@ export const sectionUpdateSchema = sectionInsertBase
 
 export const sectionDeleteSchema = z.object(sectionIdentifierObject);
 
-export const sectionToTagSelectSchema = createSelectSchema(sectionsToTags);
-export const sectionToTagInsertSchema = createInsertSchema(sectionsToTags);
+export const sectionToTagSelectSchema = createSelectSchema(table_sectionsToTags);
+export const sectionToTagInsertSchema = createInsertSchema(table_sectionsToTags);
 
 // Types
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;

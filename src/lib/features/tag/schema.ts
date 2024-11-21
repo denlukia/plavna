@@ -1,30 +1,28 @@
-import { relations } from 'drizzle-orm';
 import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { users } from '$lib/features/user/schema';
+import { table_users } from '$lib/features/user/schema';
 
-import { articles } from '../article/schema';
-import { translations } from '../i18n/schema';
-import { sectionsToTags } from '../section/schema';
+import { table_articles } from '../article/schema';
+import { table_translations } from '../i18n/schema';
 
-export const tags = sqliteTable('tags', {
+export const table_tags = sqliteTable('tags', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	user_id: text('user_id')
 		.notNull()
-		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		.references(() => table_users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	name_translation_key: integer('name_translation_key')
 		.notNull()
-		.references(() => translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
-export const tagsToArticles = sqliteTable(
+export const table_tagsToArticles = sqliteTable(
 	'tags_to_articles',
 	{
 		tag_id: integer('tag_id')
 			.notNull()
-			.references(() => tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+			.references(() => table_tags.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		article_id: integer('article_id')
 			.notNull()
-			.references(() => articles.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.references(() => table_articles.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 	},
 	(table) => {
 		return {

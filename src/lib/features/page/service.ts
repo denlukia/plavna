@@ -2,21 +2,21 @@ import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { SECTIONS_PER_LOAD } from '$lib/collections/config';
+import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';
 import { detectConstraintError } from '../error/detectors';
 import { ErrorWithTranslation } from '../error/ErrorWithTranslation';
-import { translations } from '../i18n/schema';
+import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslationsDict, SystemTranslationKey } from '../i18n/types';
 import type { ImagesDict } from '../image/types';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { sectionInsertSchema } from '../section/parsers';
 import type { SectionService } from '../section/service';
-import { tags } from '../tag/schema';
-import { users } from '../user/schema';
+import { table_tags } from '../tag/schema';
+import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import {
 	pageCreationFormSchema,
@@ -27,7 +27,7 @@ import {
 	type PageUpdateForm,
 	type ReaderPageConfig
 } from './parsers';
-import { pages } from './schema';
+import { table_pages } from './schema';
 
 export class PageService {
 	private readonly actorService: ActorService;
@@ -68,7 +68,7 @@ export class PageService {
 		const actor = await this.actorService.getOrThrow();
 		try {
 			const result = await db
-				.insert(pages)
+				.insert(table_pages)
 				.values({ ...page, user_id: actor.id })
 				.run();
 			return result;
@@ -80,9 +80,9 @@ export class PageService {
 		const actor = await this.actorService.getOrThrow();
 		try {
 			const result = await db
-				.update(pages)
+				.update(table_pages)
 				.set(page)
-				.where(and(eq(pages.id, page.id), eq(pages.user_id, actor.id)))
+				.where(and(eq(table_pages.id, page.id), eq(table_pages.user_id, actor.id)))
 				.run();
 			return result;
 		} catch (e) {
@@ -93,8 +93,8 @@ export class PageService {
 		const actor = await this.actorService.getOrThrow();
 		try {
 			const result = await db
-				.delete(pages)
-				.where(and(eq(pages.id, id), eq(pages.user_id, actor.id)))
+				.delete(table_pages)
+				.where(and(eq(table_pages.id, id), eq(table_pages.user_id, actor.id)))
 				.run();
 			return result;
 		} catch (e) {
@@ -103,7 +103,11 @@ export class PageService {
 	}
 	async getMyAsForms(username: string) {
 		const actor = await this.actorService.checkOrThrow(null, username);
-		const query = await db.select().from(pages).where(eq(pages.user_id, actor.id)).all();
+		const query = await db
+			.select()
+			.from(table_pages)
+			.where(eq(table_pages.user_id, actor.id))
+			.all();
 		const pageItems = await Promise.all(
 			query.map(async (page) => {
 				return {
@@ -132,22 +136,25 @@ export class PageService {
 		const actor = await this.actorService.get();
 
 		// 0. Utilitary queries
-		const userIdSq = db.select({ id: users.id }).from(users).where(eq(users.username, username));
+		const userIdSq = db
+			.select({ id: table_users.id })
+			.from(table_users)
+			.where(eq(table_users.username, username));
 		const lang = this.translationService.currentLang;
 
 		const pagePromise = db
 			.select()
-			.from(pages)
-			.where(and(eq(pages.slug, pageslug), eq(pages.user_id, userIdSq)))
+			.from(table_pages)
+			.where(and(eq(table_pages.slug, pageslug), eq(table_pages.user_id, userIdSq)))
 			.get();
 		const tagsAndTheirTranslationsPromise = db
 			.select({
-				tag: { id: tags.id, name_translation_key: translations.key },
-				translation: { key: translations.key, [lang]: translations[lang] }
+				tag: { id: table_tags.id, name_translation_key: table_translations.key },
+				translation: { key: table_translations.key, [lang]: table_translations[lang] }
 			})
-			.from(tags)
-			.innerJoin(translations, eq(tags.name_translation_key, translations.key))
-			.where(and(eq(userIdSq, actor?.id || ''), eq(tags.user_id, userIdSq)))
+			.from(table_tags)
+			.innerJoin(table_translations, eq(table_tags.name_translation_key, table_translations.key))
+			.where(and(eq(userIdSq, actor?.id || ''), eq(table_tags.user_id, userIdSq)))
 			.all();
 
 		const [pageInfo, tagsAndTheirTranslationsInfo] = await Promise.all([
@@ -165,10 +172,10 @@ export class PageService {
 			error(404);
 		}
 
-		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, offset) => {
+		const sectionsPromises = new Array(SECTIONS_PER_PAGE).fill(null).map(async (_, offset) => {
 			return this.sectionService.getOne({
 				pageId: pageInfo.id,
-				offset,
+				sectionOffset: offset,
 				readerPageConfig,
 				username
 			});
@@ -186,20 +193,13 @@ export class PageService {
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
 			previewFamilies: sectionsNonEmpty.reduce((acc, { previewFamilies }) => {
-				const result = {
-					...acc,
-					...previewFamilies
-				};
-				if ('custom' in previewFamilies) {
-					result.custom = { ...acc.custom, ...previewFamilies.custom };
-				}
-				return result;
+				return { ...acc, ...previewFamilies };
 			}, {} as PreviewFamiliesDict),
-			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.recordsTranslations };
+			recordsTranslations: sectionsNonEmpty.reduce((acc, { recordsTranslations }) => {
+				return { ...acc, ...recordsTranslations };
 			}, tagsTranslationsAsObject as RecordsTranslationsDict),
-			images: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.images };
+			images: sectionsNonEmpty.reduce((acc, { images }) => {
+				return { ...acc, ...images };
 			}, {} as ImagesDict),
 			tags: tagsAndTheirTranslationsInfo.map((t) => t.tag)
 		};

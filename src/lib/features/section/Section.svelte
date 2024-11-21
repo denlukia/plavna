@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
+	import { ARTICLES_PER_SECTION } from '$lib/collections/config';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import ArticlesList from '../article/ArticlesList.svelte';
@@ -24,11 +25,12 @@
 
 	let { section = $bindable() }: Props = $props();
 
+	let currentOffset = 0;
 	let editorOpened = $state(false);
 	let abortController: AbortController | null = $state(null);
 
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
-		return Boolean(section.forms);
+		return Boolean(section.forAuthor);
 	}
 
 	function onEditorOpen() {
@@ -58,26 +60,21 @@
 		}
 	}
 
-	async function onMoreArticlesTrigger(triggerType: 'newer' | 'older') {
-		const comparisonArticle =
-			triggerType === 'newer' ? section.articles[0] : section.articles[section.articles.length - 1];
-		const timeParamValue = comparisonArticle.meta.publish_time?.getTime() ?? new Date().getTime();
-		const timeParam =
-			triggerType === 'newer' ? { tsGreaterThan: timeParamValue } : { tsLessThan: timeParamValue };
-
-		const body: SectionRequest = {
-			sectionId: section.meta.id,
-			...timeParam
-		};
-
-		try {
-			const result = await performRequest($page.url, body);
-			if (result) {
-				await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
-			}
-		} catch (err) {
-			console.error(err);
-		}
+	// TODO: Rewrite to make request only when scrolled to the edge
+	async function onScroll(e: PointerEvent) {
+		// const offset = currentOffset + ARTICLES_PER_SECTION;
+		// const body: SectionRequest = {
+		// 	sectionId: section.meta.id,
+		// 	offset
+		// };
+		// try {
+		// 	const result = await performRequest($page.url, body);
+		// 	if (result) {
+		// 		await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
+		// 	}
+		// } catch (err) {
+		// 	console.error(err);
+		// }
 	}
 
 	async function performRequest(
@@ -169,8 +166,8 @@
 	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
-				mainForm={section.forms.updating}
-				deletionForm={section.forms.deletion}
+				mainForm={section.forAuthor.updating}
+				deletionForm={section.forAuthor.deletion}
 				onCancel={() => (editorOpened = false)}
 				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
@@ -180,13 +177,8 @@
 	</div>
 
 	{#if section.articles.length > 0}
-		<div class="articles-list-wrapper">
-			<ArticlesList
-				{section}
-				theresMoreNewer={false}
-				theresMoreOlder={true}
-				{onMoreArticlesTrigger}
-			/>
+		<div class="articles-list-wrapper" on:scroll={onScroll}>
+			<ArticlesList {section} />
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
 		<div class="info-block-wrapper">

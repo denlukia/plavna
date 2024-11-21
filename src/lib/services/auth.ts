@@ -6,11 +6,11 @@ import { PUBLIC_HOST } from '$env/static/public';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
 import type { Actor } from '$lib/features/user/parsers';
-import { sessions, users } from '$lib/features/user/schema';
+import { table_sessions, table_users } from '$lib/features/user/schema';
 
 import { db } from './db';
 
-const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+const adapter = new DrizzleSQLiteAdapter(db, table_sessions, table_users);
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
