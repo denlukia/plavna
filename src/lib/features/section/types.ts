@@ -9,7 +9,7 @@ type ActiveTag = { id: TagToArticleSelect['tag_id'] };
 
 export type SectionProp = NonNullable<Awaited<ReturnType<SectionService['getOne']>>>['section'];
 export type SectionPropWithAuthorship = SectionProp & {
-	forms: NonNullable<SectionProp['forms']>;
+	forAuthor: NonNullable<SectionProp['forAuthor']>;
 };
 export type OnTagSwitchFunction = (tagId: TagSelect['id'], checked: boolean) => void;
 
@@ -35,5 +35,7 @@ export type TagIdWithLang = { tag_id: TagUpdate['id']; lang: SupportedLang };
 export type GetOneSectionParams = {
 	username: string;
 	readerPageConfig: ReaderPageConfig | null;
-	articlesOffset: number;
-} & ({ pageId: PageSelect['id']; sectionOffset: number } | { sectionId: SectionSelect['id'] });
+} & (
+	| { pageId: PageSelect['id']; sectionOffset: number }
+	| { sectionId: SectionSelect['id']; articlesOffset: number }
+);

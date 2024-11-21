@@ -1,9 +1,12 @@
+import type { ArticleSelect } from '../article/parsers';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
 import type { ImagesDict } from '../image/types';
 import { getImagePathAndMeta } from '../image/utils';
 import type { SectionProp } from '../section/types';
 import type { User } from '../user/parsers';
+import { previewFamilies } from './families';
+import type { PreviewFamiliesDict } from './families/types';
 import type { PreviewDataProp } from './types';
 
 export function getPreviewData(
@@ -38,4 +41,34 @@ export function getPreviewData(
 			recordsTranslations
 		)
 	};
+}
+
+const previewDictEntryTemplate = {
+	components: { viewer: null, editor: null }
+};
+
+export function getPreviewDictEntry(previewFamilyId: NonNullable<ArticleSelect['preview_family']>) {
+	if (previewFamilyId === 'custom') {
+		return [
+			previewFamilyId,
+			{
+				...previewDictEntryTemplate
+			}
+		];
+	}
+	return [previewFamilyId, previewDictEntryTemplate];
+}
+
+export function getPreviewFamiliesDict(families: Array<ArticleSelect['preview_family']>) {
+	return families.reduce<PreviewFamiliesDict>((acc, family) => {
+		if (family !== null && !(family in acc)) {
+			const foundFamily = previewFamilies.find((f) => f.id === family);
+			if (!foundFamily) return acc;
+
+			const name_translation_key = foundFamily.name_translation_key;
+			acc[family] = { ...previewDictEntryTemplate, name_translation_key };
+		}
+
+		return acc;
+	}, {});
 }

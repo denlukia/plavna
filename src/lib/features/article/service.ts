@@ -649,7 +649,7 @@ export class ArticleService {
 									return null;
 								}
 							})
-							.filter(isNonNullable);
+							.filter(isNotNull);
 						if (queueRecordsForInsert.length === 0) {
 							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}

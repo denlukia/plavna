@@ -1,17 +1,31 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
-import { and, eq, isNotNull, notInArray, or, SQL } from 'drizzle-orm';
+import {
+	and,
+	desc,
+	eq,
+	getTableColumns,
+	isNotNull,
+	lte,
+	notInArray,
+	or,
+	sql,
+	SQL
+} from 'drizzle-orm';
 import { ARTICLES_PER_SECTION } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import { table_articles } from '../article/schema';
 import { dedupeQueryResult, getTableColumnAliases } from '../common/drizzle';
+import { isNonNullable } from '../common/utils';
 import type { TranslationSelect } from '../i18n/parsers';
 import { table_translations } from '../i18n/schema';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { table_images } from '../image/schema';
 import type { ImagesDict } from '../image/types';
+import type { PageSelect } from '../page/parsers';
+import { table_pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
-import type { PreviewFamiliesDict } from '../preview/families/types';
+import type { PreviewFamilyId } from '../preview/families/types';
 import { table_tags, table_tagsToArticles } from '../tag/schema';
 import type { Actor } from '../user/parsers';
 import { table_sections, table_sectionsToTags } from './schema';
@@ -19,7 +33,7 @@ import type { GetOneSectionParams } from './types';
 
 // 1. Description in this lang should be not null – DONE
 // 2. Filter out articles with excluded tags – DONE
-// 3. Give out forms only to actor
+// 3. Give out actor related data only to actor
 
 export async function queryGetOneSection(
 	config: GetOneSectionParams,
@@ -45,11 +59,14 @@ export async function queryGetOneSection(
 		.from(table_sections)
 		.innerJoin(table_translations, eq(table_translations.key, table_sections.title_translation_key))
 		.where(and(...sectionWhere))
-		.limit(1)
 		.offset(sectionOffset)
+		.limit(1)
 		.get();
 
 	if (!section) return null;
+	if (actor.id !== section.meta.user_id && !section.translation[lang]) {
+		return null;
+	}
 
 	// 2. + its Tags + TagsToArticles (filtered)
 	const excludedTags = findExcludedTagsInReaderPageConfig(config.readerPageConfig, section.meta.id);
@@ -60,7 +77,6 @@ export async function queryGetOneSection(
 			section_translations: getTableColumnAliases(table_translations)
 		})
 		.from(table_sectionsToTags)
-
 		.innerJoin(table_tags, eq(table_tags.id, table_sectionsToTags.tag_id))
 		.innerJoin(table_tagsToArticles, eq(table_tagsToArticles.tag_id, table_tags.id))
 		.innerJoin(table_translations, eq(table_translations.key, table_tags.name_translation_key))
@@ -74,28 +90,35 @@ export async function queryGetOneSection(
 
 	const sectionAndTagsSq = db.$with('sectionAndTagsSq').as(sectionAndTags);
 
-	// 3. + Articles (published)
-	const tagsCondition = undefined; // TODO based on readerPageConfig (check if it's applied always)
+	// 3. + Articles (only published, offsetted if needed)
+	const currentTime = new Date();
+	const articlesOffset = 'articlesOffset' in config ? config.articlesOffset : 0;
 	const articlesQuery = db
 		.with(sectionAndTagsSq)
 		.select({
 			section_tags: sectionAndTagsSq.section_tags,
 			section_translations: sectionAndTagsSq.section_translations,
 			section_tags_to_articles: sectionAndTagsSq.section_tags_to_articles,
-			articles: getTableColumnAliases(table_articles)
+			articles: getTableColumns(table_articles)
 		})
 		.from(sectionAndTagsSq)
 		.innerJoin(
 			table_articles,
 			eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id)
 		)
-		.where(and(isNotNull(table_articles.publish_time), tagsCondition))
-		.offset(config.articlesOffset)
+		.where(
+			and(isNotNull(table_articles.publish_time), lte(table_articles.publish_time, currentTime))
+		)
+		.orderBy(desc(table_articles.publish_time))
+		.offset(articlesOffset)
 		.limit(ARTICLES_PER_SECTION);
+
+	console.dir(await articlesQuery.all());
 
 	const articlesSq = db.$with('articlesSq').as(articlesQuery);
 
 	// 4. + Images + Article Tags + Translations
+	// TODO: Add preview templates info
 	const articlesAndAll = db
 		.with(articlesSq)
 		.select({
@@ -140,6 +163,10 @@ export async function queryGetOneSection(
 
 	console.dir(deduped, { depth: Infinity });
 
+	if (!deduped) {
+		return null;
+	}
+
 	// 5. Transformations for return
 	const activeTags = deduped.section_tags
 		.map((t) => ({
@@ -152,28 +179,41 @@ export async function queryGetOneSection(
 		tags: deduped.tags.filter((t) => deduped.tagsToArticles.some(({ tag_id }) => tag_id === t.id))
 	}));
 
-	let for_actor = null;
+	let title_translation = null;
 	if (actor.id === section.meta.user_id) {
-		const foundTranslation = deduped.section_translations.find(
-			(t) => t.key === section.meta.title_translation_key
-		);
-		if (!foundTranslation) {
-			throw new Error('Translation not found');
-		}
-		for_actor = {
-			title_translation: foundTranslation
-		};
+		title_translation = section.translation;
 	}
 
-	// TODO: Add records translations, previews families and images
+	const recordsTranslations = [
+		title_translation,
+		...deduped.section_translations,
+		...deduped.translations
+	].reduce<RecordsTranslationsDict>((acc, t) => {
+		const translation = t && t[lang];
+		if (translation) {
+			acc[t.key] = translation;
+		}
+		return acc;
+	}, {});
+
+	const previewFamilyIds = deduped.articles.map((a) => a.preview_family).filter(isNonNullable);
+
+	const images = deduped.images.reduce<ImagesDict>((acc, i) => {
+		const { id, ...other } = i;
+		acc[id] = other;
+		return acc;
+	}, {});
 
 	return {
 		section: {
 			meta: section.meta,
 			activeTags: activeTags,
 			articles: articles,
-			for_actor: for_actor
-		}
+			title_translation: title_translation
+		},
+		recordsTranslations: recordsTranslations,
+		previewFamilyIds: previewFamilyIds,
+		images: images
 	};
 }
 
@@ -218,11 +258,18 @@ type GetOneOldReturn = Promise<{
 				name_translation_key: number;
 			}[];
 		}[];
-		for_actor: {
-			title_translation: TranslationSelect;
-		} | null;
+		title_translation: TranslationSelect | null;
 	};
 	recordsTranslations: RecordsTranslationsDict;
-	previewFamilies: PreviewFamiliesDict;
+	previewFamilyIds: Array<PreviewFamilyId>;
 	images: ImagesDict;
 } | null>;
+
+export async function queryGetSectionsQuantity(pagename: PageSelect['slug'], actorId: Actor['id']) {
+	return db
+		.select({ count: sql<number>`count(*)` })
+		.from(table_pages)
+		.innerJoin(table_sections, eq(table_sections.id, table_pages.id))
+		.where(and(eq(table_pages.slug, pagename), eq(table_pages.user_id, actorId)))
+		.get();
+}

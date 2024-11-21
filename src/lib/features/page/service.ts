@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { SECTIONS_PER_LOAD } from '$lib/collections/config';
+import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';
@@ -172,7 +172,7 @@ export class PageService {
 			error(404);
 		}
 
-		const sectionsPromises = new Array(SECTIONS_PER_LOAD).fill(null).map(async (_, offset) => {
+		const sectionsPromises = new Array(SECTIONS_PER_PAGE).fill(null).map(async (_, offset) => {
 			return this.sectionService.getOne({
 				pageId: pageInfo.id,
 				sectionOffset: offset,
@@ -193,20 +193,13 @@ export class PageService {
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
 			},
 			previewFamilies: sectionsNonEmpty.reduce((acc, { previewFamilies }) => {
-				const result = {
-					...acc,
-					...previewFamilies
-				};
-				if ('custom' in previewFamilies) {
-					result.custom = { ...acc.custom, ...previewFamilies.custom };
-				}
-				return result;
+				return { ...acc, ...previewFamilies };
 			}, {} as PreviewFamiliesDict),
-			recordsTranslations: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.recordsTranslations };
+			recordsTranslations: sectionsNonEmpty.reduce((acc, { recordsTranslations }) => {
+				return { ...acc, ...recordsTranslations };
 			}, tagsTranslationsAsObject as RecordsTranslationsDict),
-			images: sectionsNonEmpty.reduce((acc, s) => {
-				return { ...acc, ...s.images };
+			images: sectionsNonEmpty.reduce((acc, { images }) => {
+				return { ...acc, ...images };
 			}, {} as ImagesDict),
 			tags: tagsAndTheirTranslationsInfo.map((t) => t.tag)
 		};

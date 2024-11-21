@@ -16,7 +16,9 @@ export function dedupeQueryResult<T extends Record<string, unknown>>(
 	dublicationCheckers: Partial<{
 		[K in keyof T]: (a: T[K], b: T[K]) => boolean;
 	}> = {}
-): DedupedObject<T> {
+): DedupedObject<T> | null {
+	if (input.length === 0) return null;
+
 	const result: Partial<DedupedObject<T>> = {};
 
 	input.forEach((item) => {

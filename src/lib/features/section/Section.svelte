@@ -30,7 +30,7 @@
 	let abortController: AbortController | null = $state(null);
 
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
-		return Boolean(section.forms);
+		return Boolean(section.forAuthor);
 	}
 
 	function onEditorOpen() {
@@ -60,22 +60,21 @@
 		}
 	}
 
-	async function onMoreArticlesTrigger(triggerType: 'newer' | 'older') {
-		const offset = currentOffset + ARTICLES_PER_SECTION;
-
-		const body: SectionRequest = {
-			sectionId: section.meta.id,
-			offset
-		};
-
-		try {
-			const result = await performRequest($page.url, body);
-			if (result) {
-				await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
-			}
-		} catch (err) {
-			console.error(err);
-		}
+	// TODO: Rewrite to make request only when scrolled to the edge
+	async function onScroll(e: PointerEvent) {
+		// const offset = currentOffset + ARTICLES_PER_SECTION;
+		// const body: SectionRequest = {
+		// 	sectionId: section.meta.id,
+		// 	offset
+		// };
+		// try {
+		// 	const result = await performRequest($page.url, body);
+		// 	if (result) {
+		// 		await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
+		// 	}
+		// } catch (err) {
+		// 	console.error(err);
+		// }
 	}
 
 	async function performRequest(
@@ -167,8 +166,8 @@
 	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
-				mainForm={section.forms.updating}
-				deletionForm={section.forms.deletion}
+				mainForm={section.forAuthor.updating}
+				deletionForm={section.forAuthor.deletion}
 				onCancel={() => (editorOpened = false)}
 				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
@@ -178,13 +177,8 @@
 	</div>
 
 	{#if section.articles.length > 0}
-		<div class="articles-list-wrapper">
-			<ArticlesList
-				{section}
-				theresMoreNewer={false}
-				theresMoreOlder={true}
-				{onMoreArticlesTrigger}
-			/>
+		<div class="articles-list-wrapper" on:scroll={onScroll}>
+			<ArticlesList {section} />
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
 		<div class="info-block-wrapper">
