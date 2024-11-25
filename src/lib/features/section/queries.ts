@@ -26,9 +26,9 @@ import type { PageSelect } from '../page/parsers';
 import { table_pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
 import type { PreviewFamilyId } from '../preview/families/types';
-import { table_tags, table_tagsToArticles } from '../tag/schema';
+import { table_tags, table_tags_to_articles } from '../tag/schema';
 import type { Actor } from '../user/parsers';
-import { table_sections, table_sectionsToTags } from './schema';
+import { table_sections, table_sections_to_tags } from './schema';
 import type { GetOneSectionParams } from './types';
 
 // 1. Description in this lang should be not null – DONE
@@ -73,18 +73,23 @@ export async function queryGetOneSection(
 	const sectionAndTags = db
 		.select({
 			section_tags: getTableColumnAliases(table_tags),
-			section_tags_to_articles: getTableColumnAliases(table_tagsToArticles),
+			section_tags_to_articles: getTableColumnAliases(table_tags_to_articles),
 			section_translations: getTableColumnAliases(table_translations)
 		})
-		.from(table_sectionsToTags)
-		.innerJoin(table_tags, eq(table_tags.id, table_sectionsToTags.tag_id))
-		.innerJoin(table_tagsToArticles, eq(table_tagsToArticles.tag_id, table_tags.id))
+		.from(table_sections_to_tags)
+		.innerJoin(table_tags, eq(table_tags.id, table_sections_to_tags.tag_id))
+		.leftJoin(
+			table_tags_to_articles,
+			and(
+				eq(table_tags_to_articles.tag_id, table_tags.id),
+				notInArray(table_tags_to_articles.tag_id, excludedTags)
+			)
+		)
 		.innerJoin(table_translations, eq(table_translations.key, table_tags.name_translation_key))
 		.where(
 			and(
-				eq(table_sectionsToTags.section_id, section.meta.id),
-				eq(table_sectionsToTags.lang, lang),
-				notInArray(table_tags.id, excludedTags)
+				eq(table_sections_to_tags.section_id, section.meta.id),
+				eq(table_sections_to_tags.lang, lang)
 			)
 		);
 
@@ -102,18 +107,17 @@ export async function queryGetOneSection(
 			articles: getTableColumns(table_articles)
 		})
 		.from(sectionAndTagsSq)
-		.innerJoin(
+		.leftJoin(
 			table_articles,
-			eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id)
-		)
-		.where(
-			and(isNotNull(table_articles.publish_time), lte(table_articles.publish_time, currentTime))
+			and(
+				eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id),
+				isNotNull(table_articles.publish_time),
+				lte(table_articles.publish_time, currentTime)
+			)
 		)
 		.orderBy(desc(table_articles.publish_time))
 		.offset(articlesOffset)
 		.limit(ARTICLES_PER_SECTION);
-
-	console.dir(await articlesQuery.all());
 
 	const articlesSq = db.$with('articlesSq').as(articlesQuery);
 
@@ -128,12 +132,12 @@ export async function queryGetOneSection(
 			articles: articlesSq.articles,
 
 			images: table_images,
-			tagsToArticles: table_tagsToArticles,
+			tagsToArticles: table_tags_to_articles,
 			tags: table_tags,
 			translations: table_translations
 		})
 		.from(articlesSq)
-		.innerJoin(
+		.leftJoin(
 			table_images,
 			or(
 				eq(table_images.id, articlesSq.articles.preview_image_1_id),
@@ -141,9 +145,9 @@ export async function queryGetOneSection(
 				eq(table_images.id, articlesSq.articles.preview_screenshot_image_id)
 			)
 		)
-		.innerJoin(table_tagsToArticles, eq(articlesSq.articles.id, table_tagsToArticles.article_id))
-		.innerJoin(table_tags, eq(table_tagsToArticles.tag_id, table_tags.id))
-		.innerJoin(
+		.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, articlesSq.articles.id))
+		.leftJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
+		.leftJoin(
 			table_translations,
 			or(
 				eq(table_translations.key, articlesSq.articles.title_translation_key),
@@ -156,12 +160,11 @@ export async function queryGetOneSection(
 		);
 
 	const result = await articlesAndAll;
+	console.dir(result);
 
 	const deduped = dedupeQueryResult(result, {
 		translations: (a, b) => a.key === b.key
 	});
-
-	console.dir(deduped, { depth: Infinity });
 
 	if (!deduped) {
 		return null;
@@ -176,7 +179,13 @@ export async function queryGetOneSection(
 
 	const articles = deduped.articles.map((a) => ({
 		meta: { ...a },
-		tags: deduped.tags.filter((t) => deduped.tagsToArticles.some(({ tag_id }) => tag_id === t.id))
+		tags: deduped.tags
+			.sort((a, b) => b.id - a.id)
+			.filter((t) =>
+				deduped.tagsToArticles.some(
+					({ tag_id, article_id }) => tag_id === t.id && article_id === a.id
+				)
+			)
 	}));
 
 	let title_translation = null;

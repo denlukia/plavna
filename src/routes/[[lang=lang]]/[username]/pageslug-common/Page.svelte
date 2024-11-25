@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -36,7 +37,7 @@
 		<Section bind:section={items[index]} />
 	{/each}
 
-	{#if creationForm}
+	{#if creationForm && items.length < SECTIONS_PER_PAGE}
 		{#if creatorShown}
 			<div class="section-creator-wrapper">
 				<SectionEditor

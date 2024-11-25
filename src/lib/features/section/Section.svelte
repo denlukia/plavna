@@ -5,10 +5,10 @@
 	import { ARTICLES_PER_SECTION } from '$lib/collections/config';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
-	import ArticlesList from '../article/ArticlesList.svelte';
 	import Translation from '../i18n/Translation.svelte';
 	import { enrichPreviewFamilies } from '../preview/enricher';
 	import type { TagSelect } from '../tag/parsers';
+	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
 	import type { SectionService } from './service';
@@ -25,9 +25,19 @@
 
 	let { section = $bindable() }: Props = $props();
 
-	let currentOffset = 0;
+	let initialPaginator = {
+		offset: 0,
+		listenForEndInView: section.articles.length === ARTICLES_PER_SECTION,
+		loading: null
+	};
+
+	let paginator: {
+		offset: number;
+		listenForEndInView: boolean;
+		loading: AbortController | null;
+	} = $state(structuredClone(initialPaginator));
+
 	let editorOpened = $state(false);
-	let abortController: AbortController | null = $state(null);
 
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
 		return Boolean(section.forAuthor);
@@ -48,9 +58,7 @@
 
 		try {
 			const result = await performRequest($page.url, body);
-			if (result) {
-				await updateGlobalStates(result, 'replace');
-			}
+			await updateGlobalStates(result);
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -61,20 +69,19 @@
 	}
 
 	// TODO: Rewrite to make request only when scrolled to the edge
-	async function onScroll(e: PointerEvent) {
-		// const offset = currentOffset + ARTICLES_PER_SECTION;
-		// const body: SectionRequest = {
-		// 	sectionId: section.meta.id,
-		// 	offset
-		// };
-		// try {
-		// 	const result = await performRequest($page.url, body);
-		// 	if (result) {
-		// 		await updateGlobalStates(result, triggerType === 'newer' ? 'insert-start' : 'insert-end');
-		// 	}
-		// } catch (err) {
-		// 	console.error(err);
-		// }
+	async function onEndInView() {
+		console.log('End of view reached');
+		const newOffset = paginator.offset + ARTICLES_PER_SECTION;
+		const body: SectionRequest = {
+			sectionId: section.meta.id,
+			offset: newOffset
+		};
+		try {
+			const result = await performRequest($page.url, body);
+			await updateGlobalStates(result, newOffset);
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
 	async function performRequest(
@@ -82,16 +89,17 @@
 		body: SectionRequest
 	): Promise<SectionFetchReturn | null> {
 		try {
-			abortController?.abort();
-			abortController = new AbortController();
+			paginator.loading?.abort();
+			paginator.loading = new AbortController();
+			paginator.listenForEndInView = false;
 
 			const response = await fetch(url, {
 				method: 'POST',
 				body: JSON.stringify(body),
-				signal: abortController?.signal
+				signal: paginator.loading?.signal
 			});
 
-			abortController = null;
+			paginator.loading = null;
 
 			if (response.ok) {
 				const resultString: string = await response.text();
@@ -106,10 +114,14 @@
 		return null;
 	}
 
-	async function updateGlobalStates(
-		result: NonNullable<SectionFetchReturn>,
-		articlesInsertionType: 'replace' | 'insert-start' | 'insert-end'
-	) {
+	async function updateGlobalStates(result: SectionFetchReturn, newOffset?: number) {
+		if (!result) {
+			if (typeof newOffset === 'number') {
+				paginator.listenForEndInView = false;
+			}
+			return;
+		}
+
 		const recordsTranslationsState = $page.data.recordsTranslationsState;
 		const previewFamiliesState = $page.data.previewFamiliesState;
 		const imagesState = $page.data.imagesState;
@@ -137,12 +149,13 @@
 		const { section: newSection } = result;
 		const { articles: newArticles, ...other } = newSection;
 
-		if (articlesInsertionType === 'replace') {
-			section = { ...other, articles: newArticles };
-		} else if (articlesInsertionType === 'insert-start') {
-			section = { ...other, articles: [...newArticles, ...section.articles] };
-		} else if (articlesInsertionType === 'insert-end') {
+		if (typeof newOffset === 'number') {
 			section = { ...other, articles: [...section.articles, ...newArticles] };
+			paginator.listenForEndInView = newArticles.length === ARTICLES_PER_SECTION;
+			paginator.offset = newOffset;
+		} else {
+			section = { ...other, articles: newArticles };
+			paginator = structuredClone(initialPaginator);
 		}
 	}
 
@@ -177,8 +190,8 @@
 	</div>
 
 	{#if section.articles.length > 0}
-		<div class="articles-list-wrapper" on:scroll={onScroll}>
-			<ArticlesList {section} />
+		<div class="articles-list-wrapper">
+			<ArticlesList {section} {onEndInView} listenForEndInView={paginator.listenForEndInView} />
 		</div>
 	{:else if sectionContext.activeTags.length > 0}
 		<div class="info-block-wrapper">
@@ -219,6 +232,8 @@
 		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
 		overflow: auto;
 		scrollbar-width: thin;
+
+		position: relative;
 	}
 	.info-block-wrapper {
 		margin-inline: var(--size-main-grid-padding-inline);

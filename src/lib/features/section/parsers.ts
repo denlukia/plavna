@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { atLeastOneTranslationRefiner } from '../i18n/parsers';
 import { table_translations } from '../i18n/schema';
-import { table_sections, table_sectionsToTags } from './schema';
+import { table_sections, table_sections_to_tags } from './schema';
 
 // Parsers
 export const sectionSelectSchema = createSelectSchema(table_sections);
@@ -21,8 +21,8 @@ export const sectionUpdateSchema = sectionInsertBase
 
 export const sectionDeleteSchema = z.object(sectionIdentifierObject);
 
-export const sectionToTagSelectSchema = createSelectSchema(table_sectionsToTags);
-export const sectionToTagInsertSchema = createInsertSchema(table_sectionsToTags);
+export const sectionToTagSelectSchema = createSelectSchema(table_sections_to_tags);
+export const sectionToTagInsertSchema = createInsertSchema(table_sections_to_tags);
 
 // Types
 export type SectionSelect = z.infer<typeof sectionSelectSchema>;

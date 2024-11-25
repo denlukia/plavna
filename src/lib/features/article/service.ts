@@ -48,7 +48,7 @@ import {
 	getMaybeTranslatedImagePath
 } from '../screenshot/utils';
 import { tagDeleteSchema, tagUpdateSchema } from '../tag/parsers';
-import { table_tags, table_tagsToArticles } from '../tag/schema';
+import { table_tags, table_tags_to_articles } from '../tag/schema';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import {
@@ -201,7 +201,7 @@ export class ArticleService {
 		const results = await db
 			.select({
 				articles: table_articles,
-				tagsArticles: table_tagsToArticles,
+				tagsArticles: table_tags_to_articles,
 				tags: table_tags,
 				translations: table_translations,
 				translForForms,
@@ -257,7 +257,7 @@ export class ArticleService {
 					eq(translForForms.key, table_previewTemplates.name_translation_key)
 				)
 			)
-			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, exisingId))
+			.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, exisingId))
 			.where(eq(table_articles.id, exisingId))
 			.all();
 
@@ -699,8 +699,8 @@ export class ArticleService {
 				table_previewTemplates,
 				eq(table_previewTemplates.id, table_articles.preview_template_id)
 			)
-			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, table_articles.id))
-			.leftJoin(table_tags, eq(table_tags.id, table_tagsToArticles.tag_id))
+			.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, table_articles.id))
+			.leftJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
 			.leftJoin(
 				titleTranslationAlias,
 				eq(titleTranslationAlias.key, table_articles.title_translation_key)

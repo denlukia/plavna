@@ -51,9 +51,9 @@
 		padding-inline-start: var(--size-main-grid-padding-inline);
 	}
 
-	.with-padding-inline :global(> *:last-child .cell-padding-wrapper::after) {
+	/* .with-padding-inline :global(> *:last-child .cell-padding-wrapper::after) {
 		content: '.';
 		visibility: hidden;
 		width: var(--size-main-grid-padding-inline);
-	}
+	} */
 </style>
