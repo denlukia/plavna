@@ -6,7 +6,7 @@
 	import { getLang, getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
 
 	import Markdown from '../markdown/Markdown.svelte';
-	import type { TranslationSelect, TranslationUpdate } from './parsers';
+	import type { TranslationSelect, TranslationUpdate } from './validators';
 
 	type FormTranslation = {
 		superValidated: SuperValidated<Omit<TranslationUpdate, 'key'>> | undefined;

@@ -9,9 +9,9 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
-	import type { ImageSelect } from '../parsers';
 	import type { ImageService } from '../service';
 	import { getLangFromLanguagedName } from '../utils';
+	import type { ImageSelect } from '../validators';
 	import DropZone from './DropZone.svelte';
 
 	type Props = {

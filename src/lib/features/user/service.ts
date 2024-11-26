@@ -7,15 +7,15 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/collections/config';
 import { db } from '$lib/services/db';
 
-import type { ImageSelect } from '../image/parsers';
 import { table_images } from '../image/schema';
+import type { ImageSelect } from '../image/validators';
+import { table_users } from './schema';
 import {
 	userSettingsFormSchema,
 	type Actor,
 	type ImageProviderUpdate,
 	type UserSettingsUpdate
-} from './parsers';
-import { table_users } from './schema';
+} from './validators';
 
 export class ActorService {
 	private actorObj: LuciaUser | null;

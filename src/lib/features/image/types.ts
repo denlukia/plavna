@@ -2,7 +2,7 @@ import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { User } from 'lucia';
 
 import type { TransactionOrDB } from '../common/types';
-import type { ImageInsertForm, ImageSelect, ImageUpdate } from './parsers';
+import type { ImageInsertForm, ImageSelect, ImageUpdate } from './validators';
 
 export type ImageAnyParams = {
 	lang: SupportedLang | null;

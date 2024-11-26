@@ -2,13 +2,13 @@ import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import type { MaybePromise } from '@sveltejs/kit';
 import type { Component } from 'svelte';
 import type { SuperValidated } from 'sveltekit-superforms';
-import type { ArticlePreviewUpdate } from '$lib/features/article/parsers';
-import type { TranslationUpdate } from '$lib/features/i18n/parsers';
+import type { ArticlePreviewUpdate } from '$lib/features/article/validators';
 import type { SystemTranslationKey } from '$lib/features/i18n/types';
-import type { ImageSelect } from '$lib/features/image/parsers';
+import type { TranslationUpdate } from '$lib/features/i18n/validators';
+import type { ImageSelect } from '$lib/features/image/validators';
 
 import { previewFamilies, previewFamiliesIds } from '.';
-import type { PreviewTemplateSelect } from '../parsers';
+import type { PreviewTemplateSelect } from '../validators';
 
 export type PreviewFamily = (typeof previewFamilies)[number];
 type ExtractPreviewFamilyIds = (typeof previewFamiliesIds)[number];

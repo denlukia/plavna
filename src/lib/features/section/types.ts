@@ -1,9 +1,9 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
-import type { PageSelect, ReaderPageConfig } from '../page/parsers';
-import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/parsers';
-import type { SectionSelect } from './parsers';
+import type { PageSelect, ReaderPageConfig } from '../page/validators';
+import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/validators';
 import type { SectionService } from './service';
+import type { SectionSelect } from './validators';
 
 type ActiveTag = { id: TagToArticleSelect['tag_id'] };
 

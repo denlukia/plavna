@@ -1,7 +1,7 @@
 import type { SuperValidated } from 'sveltekit-superforms';
 
-import type { TranslationSelect, TranslationUpdate } from './parsers';
 import type { EN } from './translations/en';
+import type { TranslationSelect, TranslationUpdate } from './validators';
 
 export type SystemTranslationDict = {
 	[k: string]: SystemTranslationDict | string;

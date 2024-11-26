@@ -10,7 +10,7 @@
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import type { ImageProviderUpdate } from '$lib/features/user/parsers';
+	import type { ImageProviderUpdate } from '$lib/features/user/validators';
 
 	type Props = {
 		superValidated: SuperValidated<ImageProviderUpdate>;

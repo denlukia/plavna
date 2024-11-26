@@ -12,16 +12,19 @@ type DedupedObject<T extends Record<string, unknown>> = {
 };
 
 export function dedupeQueryResult<T extends Record<string, unknown>>(
-	input: Array<T>,
+	drizzleQuery: { _: { selectedFields: Record<string, unknown> } },
+	drizzleResult: Array<T>,
 	dublicationCheckers: Partial<{
 		[K in keyof T]: (a: T[K], b: T[K]) => boolean;
 	}> = {}
-): DedupedObject<T> | null {
-	if (input.length === 0) return null;
-
+): DedupedObject<T> {
 	const result: Partial<DedupedObject<T>> = {};
+	for (const key in drizzleQuery._.selectedFields) {
+		const k = key as keyof T;
+		result[k] = [];
+	}
 
-	input.forEach((item) => {
+	drizzleResult.forEach((item) => {
 		Object.keys(item).forEach((key) => {
 			const k = key as keyof T;
 			if (!result[k]) {

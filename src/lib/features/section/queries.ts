@@ -4,6 +4,7 @@ import {
 	desc,
 	eq,
 	getTableColumns,
+	inArray,
 	isNotNull,
 	lte,
 	notInArray,
@@ -17,17 +18,17 @@ import { db } from '$lib/services/db';
 import { table_articles } from '../article/schema';
 import { dedupeQueryResult, getTableColumnAliases } from '../common/drizzle';
 import { isNonNullable } from '../common/utils';
-import type { TranslationSelect } from '../i18n/parsers';
 import { table_translations } from '../i18n/schema';
 import type { RecordsTranslationsDict } from '../i18n/types';
+import type { TranslationSelect } from '../i18n/validators';
 import { table_images } from '../image/schema';
 import type { ImagesDict } from '../image/types';
-import type { PageSelect } from '../page/parsers';
 import { table_pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
+import type { PageSelect } from '../page/validators';
 import type { PreviewFamilyId } from '../preview/families/types';
 import { table_tags, table_tags_to_articles } from '../tag/schema';
-import type { Actor } from '../user/parsers';
+import type { Actor } from '../user/validators';
 import { table_sections, table_sections_to_tags } from './schema';
 import type { GetOneSectionParams } from './types';
 
@@ -54,7 +55,7 @@ export async function queryGetOneSection(
 
 	sectionWhere.push(isNotNull(table_translations[lang]));
 
-	const section = await db
+	const sectionAndTranslation = await db
 		.select({ meta: table_sections, translation: table_translations })
 		.from(table_sections)
 		.innerJoin(table_translations, eq(table_translations.key, table_sections.title_translation_key))
@@ -63,14 +64,17 @@ export async function queryGetOneSection(
 		.limit(1)
 		.get();
 
-	if (!section) return null;
-	if (actor.id !== section.meta.user_id && !section.translation[lang]) {
+	if (!sectionAndTranslation) return null;
+	if (actor.id !== sectionAndTranslation.meta.user_id && !sectionAndTranslation.translation[lang]) {
 		return null;
 	}
 
 	// 2. + its Tags + TagsToArticles (filtered)
-	const excludedTags = findExcludedTagsInReaderPageConfig(config.readerPageConfig, section.meta.id);
-	const sectionAndTags = db
+	const excludedTags = findExcludedTagsInReaderPageConfig(
+		config.readerPageConfig,
+		sectionAndTranslation.meta.id
+	);
+	const sectionAndTagsQuery = db
 		.select({
 			section_tags: getTableColumnAliases(table_tags),
 			section_tags_to_articles: getTableColumnAliases(table_tags_to_articles),
@@ -88,29 +92,28 @@ export async function queryGetOneSection(
 		.innerJoin(table_translations, eq(table_translations.key, table_tags.name_translation_key))
 		.where(
 			and(
-				eq(table_sections_to_tags.section_id, section.meta.id),
+				eq(table_sections_to_tags.section_id, sectionAndTranslation.meta.id),
 				eq(table_sections_to_tags.lang, lang)
 			)
 		);
+	const sectionAndTags = await sectionAndTagsQuery;
+	const dedupedSectionAndTags = dedupeQueryResult(sectionAndTagsQuery, sectionAndTags);
 
-	const sectionAndTagsSq = db.$with('sectionAndTagsSq').as(sectionAndTags);
+	const articleIdsForSearch = dedupedSectionAndTags.section_tags_to_articles.map(
+		(x) => x.article_id
+	);
 
 	// 3. + Articles (only published, offsetted if needed)
 	const currentTime = new Date();
 	const articlesOffset = 'articlesOffset' in config ? config.articlesOffset : 0;
 	const articlesQuery = db
-		.with(sectionAndTagsSq)
 		.select({
-			section_tags: sectionAndTagsSq.section_tags,
-			section_translations: sectionAndTagsSq.section_translations,
-			section_tags_to_articles: sectionAndTagsSq.section_tags_to_articles,
 			articles: getTableColumns(table_articles)
 		})
-		.from(sectionAndTagsSq)
-		.leftJoin(
-			table_articles,
+		.from(table_articles)
+		.where(
 			and(
-				eq(table_articles.id, sectionAndTagsSq.section_tags_to_articles.article_id),
+				inArray(table_articles.id, articleIdsForSearch),
 				isNotNull(table_articles.publish_time),
 				lte(table_articles.publish_time, currentTime)
 			)
@@ -123,12 +126,10 @@ export async function queryGetOneSection(
 
 	// 4. + Images + Article Tags + Translations
 	// TODO: Add preview templates info
-	const articlesAndAll = db
+	const articlesAndAllQuery = db
 		.with(articlesSq)
 		.select({
 			// We put them to 1st layer to be able to dedupe
-			section_tags: articlesSq.section_tags,
-			section_translations: articlesSq.section_translations,
 			articles: articlesSq.articles,
 
 			images: table_images,
@@ -137,7 +138,7 @@ export async function queryGetOneSection(
 			translations: table_translations
 		})
 		.from(articlesSq)
-		.leftJoin(
+		.innerJoin(
 			table_images,
 			or(
 				eq(table_images.id, articlesSq.articles.preview_image_1_id),
@@ -145,9 +146,12 @@ export async function queryGetOneSection(
 				eq(table_images.id, articlesSq.articles.preview_screenshot_image_id)
 			)
 		)
-		.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, articlesSq.articles.id))
-		.leftJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
-		.leftJoin(
+		.innerJoin(
+			table_tags_to_articles,
+			eq(table_tags_to_articles.article_id, articlesSq.articles.id)
+		)
+		.innerJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
+		.innerJoin(
 			table_translations,
 			or(
 				eq(table_translations.key, articlesSq.articles.title_translation_key),
@@ -159,44 +163,39 @@ export async function queryGetOneSection(
 			)
 		);
 
-	const result = await articlesAndAll;
-	console.dir(result);
-
-	const deduped = dedupeQueryResult(result, {
+	const articlesAndAll = await articlesAndAllQuery;
+	const dedupedArticlesAndAll = dedupeQueryResult(articlesAndAllQuery, articlesAndAll, {
 		translations: (a, b) => a.key === b.key
 	});
 
-	if (!deduped) {
-		return null;
-	}
-
 	// 5. Transformations for return
-	const activeTags = deduped.section_tags
+	const activeTags = dedupedSectionAndTags.section_tags
 		.map((t) => ({
 			id: t.id
 		}))
 		.filter(({ id }) => !excludedTags.includes(id));
 
-	const articles = deduped.articles.map((a) => ({
+	const articlesArr = dedupedArticlesAndAll?.articles || [];
+	const articles = articlesArr.map((a) => ({
 		meta: { ...a },
-		tags: deduped.tags
+		tags: dedupedArticlesAndAll.tags
 			.sort((a, b) => b.id - a.id)
 			.filter((t) =>
-				deduped.tagsToArticles.some(
+				dedupedArticlesAndAll.tagsToArticles.some(
 					({ tag_id, article_id }) => tag_id === t.id && article_id === a.id
 				)
 			)
 	}));
 
 	let title_translation = null;
-	if (actor.id === section.meta.user_id) {
-		title_translation = section.translation;
+	if (actor.id === sectionAndTranslation.meta.user_id) {
+		title_translation = sectionAndTranslation.translation;
 	}
 
 	const recordsTranslations = [
 		title_translation,
-		...deduped.section_translations,
-		...deduped.translations
+		...dedupedSectionAndTags.section_translations,
+		...dedupedArticlesAndAll.translations
 	].reduce<RecordsTranslationsDict>((acc, t) => {
 		const translation = t && t[lang];
 		if (translation) {
@@ -205,9 +204,11 @@ export async function queryGetOneSection(
 		return acc;
 	}, {});
 
-	const previewFamilyIds = deduped.articles.map((a) => a.preview_family).filter(isNonNullable);
+	const previewFamilyIds = dedupedArticlesAndAll.articles
+		.map((a) => a.preview_family)
+		.filter(isNonNullable);
 
-	const images = deduped.images.reduce<ImagesDict>((acc, i) => {
+	const images = dedupedArticlesAndAll.images.reduce<ImagesDict>((acc, i) => {
 		const { id, ...other } = i;
 		acc[id] = other;
 		return acc;
@@ -215,7 +216,7 @@ export async function queryGetOneSection(
 
 	return {
 		section: {
-			meta: section.meta,
+			meta: sectionAndTranslation.meta,
 			activeTags: activeTags,
 			articles: articles,
 			title_translation: title_translation

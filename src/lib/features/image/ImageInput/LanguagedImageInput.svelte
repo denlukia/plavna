@@ -8,8 +8,8 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getSystemTranslation } from '$lib/features/i18n/utils';
 
-	import type { ImageSelect } from '../parsers';
 	import { getLanguagedName } from '../utils';
+	import type { ImageSelect } from '../validators';
 	import ImageInput from './ImageInput.svelte';
 
 	type Props = {

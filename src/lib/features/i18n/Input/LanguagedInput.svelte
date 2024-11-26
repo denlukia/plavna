@@ -7,8 +7,8 @@
 	import type { InputOrTextareaProps } from '$lib/design/components/Input/types';
 
 	import Input from '../../../design/components/Input/Input.svelte';
-	import type { TranslationInsert } from '../parsers';
 	import { getLang } from '../utils';
+	import type { TranslationInsert } from '../validators';
 	import LangSelector from './LangSelector.svelte';
 
 	let {

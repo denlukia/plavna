@@ -14,17 +14,17 @@ import { table_pages } from '../page/schema';
 import { getPreviewFamiliesDict } from '../preview/utils';
 import { table_tags } from '../tag/schema';
 import type { ActorService } from '../user/service';
+import { queryGetOneSection, queryGetSectionsQuantity } from './queries';
+import { table_sections, table_sections_to_tags } from './schema';
+import type { GetOneSectionParams, TagIdWithLang } from './types';
+import { findTagsInSectionTranslations } from './utils';
 import {
 	sectionDeleteSchema,
 	sectionUpdateSchema,
 	type SectionDelete,
 	type SectionInsert,
 	type SectionUpdate
-} from './parsers';
-import { queryGetOneSection, queryGetSectionsQuantity } from './queries';
-import { table_sections, table_sections_to_tags } from './schema';
-import type { GetOneSectionParams, TagIdWithLang } from './types';
-import { findTagsInSectionTranslations } from './utils';
+} from './validators';
 
 export class SectionService {
 	private readonly actorService: ActorService;

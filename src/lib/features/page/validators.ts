@@ -1,18 +1,18 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { slugParser } from '../common/parsers';
-import { sectionSelectSchema } from '../section/parsers';
-import { tagSelectSchema } from '../tag/parsers';
+import { slugValidator } from '../common/validators';
+import { sectionSelectSchema } from '../section/validators';
+import { tagSelectSchema } from '../tag/validators';
 import { table_pages } from './schema';
 
-// Parsers
+// Validators
 export const pageSelectSchema = createSelectSchema(table_pages);
 export const pageInsertSchema = createInsertSchema(table_pages);
 
-// Form Parsers
+// Form Validators
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
-	slug: slugParser
+	slug: slugValidator
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });
 export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true }); // TODO: Maybe simplify to simple key type?

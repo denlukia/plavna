@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { table_tags, table_tags_to_articles } from './schema';
 
-// Parsers
+// Validators
 export const tagSelectSchema = createSelectSchema(table_tags);
 export const tagInsertSchema = createInsertSchema(table_tags);
 export const tagUpdateSchema = tagInsertSchema

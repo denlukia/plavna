@@ -5,7 +5,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import LanguagedImageInput from '../ImageInput/LanguagedImageInput.svelte';
-	import type { ImageCollectionItem } from '../parsers';
+	import type { ImageCollectionItem } from '../validators';
 
 	type Props = {
 		image: ImageCollectionItem;

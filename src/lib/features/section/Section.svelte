@@ -7,7 +7,7 @@
 
 	import Translation from '../i18n/Translation.svelte';
 	import { enrichPreviewFamilies } from '../preview/enricher';
-	import type { TagSelect } from '../tag/parsers';
+	import type { TagSelect } from '../tag/validators';
 	import ArticlesList from './ArticlesList.svelte';
 	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';

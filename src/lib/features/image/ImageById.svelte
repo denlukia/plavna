@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import Image from '$lib/design/components/Image/Image.svelte';
 
-	import type { ImageSelect } from './parsers';
 	import { getImagePathAndMeta } from './utils';
+	import type { ImageSelect } from './validators';
 
 	type Props = {
 		id: ImageSelect['id'];

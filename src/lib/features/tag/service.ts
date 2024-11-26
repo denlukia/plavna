@@ -2,11 +2,11 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
 import { table_articles } from '../article/schema';
-import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
+import type { TranslationInsert } from '../i18n/validators';
 import type { ActorService } from '../user/service';
-import type { TagDelete, TagUpdate } from './parsers';
 import { table_tags, table_tags_to_articles } from './schema';
+import type { TagDelete, TagUpdate } from './validators';
 
 export class TagService {
 	private readonly actorService: ActorService;

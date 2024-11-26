@@ -3,8 +3,8 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { z } from 'zod';
 
-import { articleSelectSchema } from '../article/parsers';
-import { generateLanguagedFields } from '../common/parsers';
+import { articleSelectSchema } from '../article/validators';
+import { generateLanguagedFields } from '../common/validators';
 import { table_users } from '../user/schema';
 import { table_images } from './schema';
 

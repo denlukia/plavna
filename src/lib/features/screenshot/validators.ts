@@ -3,7 +3,7 @@ import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/p
 import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
 import { z } from 'zod';
 
-import { articleSelectSchema } from '../article/parsers';
+import { articleSelectSchema } from '../article/validators';
 import { table_screenshotsQueue } from './schema';
 
 // Article Preview Screenshotting

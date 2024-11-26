@@ -9,7 +9,7 @@ import {
 	articleSlugUpdateSchema,
 	type ArticlePreviewImageFileFieldsAll,
 	type ArticlePreviewImageHandlers
-} from '$lib/features/article/parsers';
+} from '$lib/features/article/validators';
 import { generatePath } from '$lib/features/common/links';
 import { getActionFailure } from '$lib/features/error/fail-with-form-error';
 import { createTranslationUpdater } from '$lib/features/i18n/actions';
@@ -17,23 +17,23 @@ import {
 	translationInsertSchema,
 	translationUpdateAllowEmptySchema,
 	translationUpdateSchema
-} from '$lib/features/i18n/parsers';
+} from '$lib/features/i18n/validators';
+import { updateImages } from '$lib/features/image/updater.server';
 import {
 	imageCreationFormSchema,
 	imageDeletionFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFileFields,
 	imageUpdateFormSchema
-} from '$lib/features/image/parsers';
-import { updateImages } from '$lib/features/image/updater.server';
+} from '$lib/features/image/validators';
 import {
 	articlePreviewImageFileFieldsAllObj,
 	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema
-} from '$lib/features/preview/parsers';
-import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/parsers';
+} from '$lib/features/preview/validators';
+import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/validators';
 
 import type { Actions, RequestEvent } from '../../[articleslug]/edit/$types';
 

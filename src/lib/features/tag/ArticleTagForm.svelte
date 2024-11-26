@@ -9,8 +9,8 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
-	import type { TranslationInsert } from '../i18n/parsers';
 	import Translation from '../i18n/Translation.svelte';
+	import type { TranslationInsert } from '../i18n/validators';
 
 	type Props = {
 		superValidated: SuperValidated<TranslationInsert>;

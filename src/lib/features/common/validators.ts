@@ -20,7 +20,7 @@ export function generateLanguagedFields<N extends string, V>(name: N, validator:
 	);
 }
 
-export const slugParser = z
+export const slugValidator = z
 	.string() //
 	.max(15, {
 		message: checkTranslationKey('actor_errors.max_length')

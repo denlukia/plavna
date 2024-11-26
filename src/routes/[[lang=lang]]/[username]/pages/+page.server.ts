@@ -3,7 +3,7 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { getActionFailure } from '$lib/features/error/fail-with-form-error';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/features/page/parsers';
+import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/features/page/validators';
 
 export const load = async ({ locals: { pageService }, params, parent, route }) => {
 	const forms = await pageService.getMyAsForms(params.username);

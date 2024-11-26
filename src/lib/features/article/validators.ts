@@ -8,10 +8,10 @@ import type {
 	articlePreviewImageFileFieldsAllObj,
 	articlePreviewImageIdsFieldsSchema,
 	articlePreviewUpdateSchema
-} from '../preview/parsers';
+} from '../preview/validators';
 import { table_articles } from './schema';
 
-const slugParser = z
+const slugValidator = z
 	.string() //
 	.min(3, {
 		message: checkTranslationKey('actor_errors.min_length_3')
@@ -28,10 +28,10 @@ export const articleSelectSchema = createSelectSchema(table_articles, {
 });
 export const articleInsertSchema = createInsertSchema(table_articles, {
 	preview_family: z.enum(previewFamiliesIds),
-	slug: slugParser
+	slug: slugValidator
 });
 export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true }).extend({
-	slug: slugParser
+	slug: slugValidator
 });
 
 export type ArticleSelect = z.infer<typeof articleSelectSchema>;

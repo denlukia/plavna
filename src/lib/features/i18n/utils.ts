@@ -1,7 +1,6 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
-import type { TranslationSelect, TranslationUpdate } from './parsers';
 import { EN } from './translations/en';
 import { UK } from './translations/uk';
 import type {
@@ -9,6 +8,7 @@ import type {
 	SystemTranslationKey,
 	SystemTranslationSliceKey
 } from './types';
+import type { TranslationSelect, TranslationUpdate } from './validators';
 
 const LANGUAGES = { en: EN, uk: UK } as const;
 

@@ -3,7 +3,7 @@
 	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
-	import type { SectionDelete } from './parsers';
+	import type { SectionDelete } from './validators';
 
 	type Props = {
 		formData: SuperValidated<SectionDelete>;
