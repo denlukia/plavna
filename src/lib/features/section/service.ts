@@ -1,41 +1,30 @@
 import { error } from '@sveltejs/kit';
-import { and, desc, eq, getTableColumns, inArray, isNotNull, notInArray, or } from 'drizzle-orm';
-import { alias } from 'drizzle-orm/sqlite-core';
+import { and, eq, inArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { ARTICLES_PER_SECTION, SECTIONS_PER_PAGE } from '$lib/collections/config';
+import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 import { ERRORS } from '$lib/collections/errors';
 import { db } from '$lib/services/db';
 
-import type { ArticleSelect } from '../article/parsers';
-import { table_articles } from '../article/schema';
 import type { TransactionOrDB } from '../common/types';
 import { dedupeArray } from '../common/utils';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslationsDict } from '../i18n/types';
-import type { ImageSelect } from '../image/parsers';
-import { table_images } from '../image/schema';
-import type { ImagesDict } from '../image/types';
 import { table_pages } from '../page/schema';
-import { findExcludedTagsInReaderPageConfig } from '../page/utils';
-import type { PreviewFamiliesDict } from '../preview/families/types';
-import { table_previewTemplates } from '../preview/schema';
 import { getPreviewFamiliesDict } from '../preview/utils';
-import type { TagSelect, TagToArticleSelect } from '../tag/parsers';
-import { table_tags, table_tagsToArticles } from '../tag/schema';
+import { table_tags } from '../tag/schema';
 import type { ActorService } from '../user/service';
+import { queryGetOneSection, queryGetSectionsQuantity } from './queries';
+import { table_sections, table_sections_to_tags } from './schema';
+import type { GetOneSectionParams, TagIdWithLang } from './types';
+import { findTagsInSectionTranslations } from './utils';
 import {
 	sectionDeleteSchema,
 	sectionUpdateSchema,
 	type SectionDelete,
 	type SectionInsert,
 	type SectionUpdate
-} from './parsers';
-import { queryGetOneSection, queryGetSectionsQuantity } from './queries';
-import { table_sections, table_sectionsToTags } from './schema';
-import type { GetOneSectionParams, TagIdWithLang } from './types';
-import { findTagsInSectionTranslations } from './utils';
+} from './validators';
 
 export class SectionService {
 	private readonly actorService: ActorService;
@@ -145,7 +134,7 @@ export class SectionService {
 
 			if (uniqueTags.length) {
 				await trx
-					.insert(table_sectionsToTags)
+					.insert(table_sections_to_tags)
 					.values(uniqueTags.map((tag) => ({ ...tag, section_id })))
 					.run();
 			}
@@ -178,12 +167,12 @@ export class SectionService {
 			await this.translationService.update({ ...langsTranslations, key: translation.key }, trx);
 
 			await trx
-				.delete(table_sectionsToTags)
-				.where(eq(table_sectionsToTags.section_id, section_id))
+				.delete(table_sections_to_tags)
+				.where(eq(table_sections_to_tags.section_id, section_id))
 				.run();
 			if (uniqueTags.length) {
 				await trx
-					.insert(table_sectionsToTags)
+					.insert(table_sections_to_tags)
 					.values(uniqueTags.map((tag) => ({ ...tag, section_id })))
 					.run();
 			}
@@ -207,8 +196,8 @@ export class SectionService {
 			const { title_translation_key } = translation;
 			await this.translationService.delete({ key: title_translation_key }, trx);
 			await trx
-				.delete(table_sectionsToTags)
-				.where(and(eq(table_sectionsToTags.section_id, sectionDelete.section_id)))
+				.delete(table_sections_to_tags)
+				.where(and(eq(table_sections_to_tags.section_id, sectionDelete.section_id)))
 				.run();
 		});
 	}

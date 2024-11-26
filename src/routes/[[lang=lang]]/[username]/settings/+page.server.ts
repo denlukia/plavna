@@ -3,7 +3,7 @@ import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { generatePath } from '$lib/features/common/links';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { userSettingsFormSchema } from '$lib/features/user/parsers';
+import { userSettingsFormSchema } from '$lib/features/user/validators';
 
 import type { Actions, PageServerLoad } from './$types';
 

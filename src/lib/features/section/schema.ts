@@ -19,7 +19,7 @@ export const table_sections = sqliteTable('sections', {
 		.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
 });
 
-export const table_sectionsToTags = sqliteTable(
+export const table_sections_to_tags = sqliteTable(
 	'sections_to_tags',
 	{
 		section_id: integer('section_id')

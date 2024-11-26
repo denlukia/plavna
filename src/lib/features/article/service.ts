@@ -14,11 +14,6 @@ import { db } from '$lib/services/db';
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { detectConstraintError } from '../error/detectors';
 import { ErrorWithTranslation } from '../error/ErrorWithTranslation';
-import {
-	translationInsertSchema,
-	translationUpdateAllowEmptySchema,
-	translationUpdateSchema
-} from '../i18n/parsers';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
 import type {
@@ -26,31 +21,37 @@ import type {
 	SystemTranslationKey,
 	TranslationFormsDict
 } from '../i18n/types';
-import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/parsers';
+import {
+	translationInsertSchema,
+	translationUpdateAllowEmptySchema,
+	translationUpdateSchema
+} from '../i18n/validators';
 import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
 import { decomposeImageField } from '../image/utils';
+import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/validators';
 import { previewFamilies } from '../preview/families';
 import type { PreviewFamiliesDict } from '../preview/families/types';
+import { table_previewTemplates } from '../preview/schema';
 import {
 	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema
-} from '../preview/parsers';
-import { table_previewTemplates } from '../preview/schema';
-import type { ScreenshotsQueueInsertLocal } from '../screenshot/parsers';
+} from '../preview/validators';
 import { table_screenshotsQueue } from '../screenshot/schema';
 import {
 	calculateDimensionsFromCellsTaken,
 	composeURLForScreenshot,
 	getMaybeTranslatedImagePath
 } from '../screenshot/utils';
-import { tagDeleteSchema, tagUpdateSchema } from '../tag/parsers';
-import { table_tags, table_tagsToArticles } from '../tag/schema';
+import type { ScreenshotsQueueInsertLocal } from '../screenshot/validators';
+import { table_tags, table_tags_to_articles } from '../tag/schema';
+import { tagDeleteSchema, tagUpdateSchema } from '../tag/validators';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
+import { table_articles } from './schema';
 import {
 	articleSelectSchema,
 	articleSlugUpdateSchema,
@@ -60,8 +61,7 @@ import {
 	type ArticlePreviewUpdate,
 	type ArticleSelect,
 	type ArticleSlugUpdate
-} from './parsers';
-import { table_articles } from './schema';
+} from './validators';
 
 export class ArticleService {
 	private readonly actorService: ActorService;
@@ -201,7 +201,7 @@ export class ArticleService {
 		const results = await db
 			.select({
 				articles: table_articles,
-				tagsArticles: table_tagsToArticles,
+				tagsArticles: table_tags_to_articles,
 				tags: table_tags,
 				translations: table_translations,
 				translForForms,
@@ -257,7 +257,7 @@ export class ArticleService {
 					eq(translForForms.key, table_previewTemplates.name_translation_key)
 				)
 			)
-			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, exisingId))
+			.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, exisingId))
 			.where(eq(table_articles.id, exisingId))
 			.all();
 
@@ -699,8 +699,8 @@ export class ArticleService {
 				table_previewTemplates,
 				eq(table_previewTemplates.id, table_articles.preview_template_id)
 			)
-			.leftJoin(table_tagsToArticles, eq(table_tagsToArticles.article_id, table_articles.id))
-			.leftJoin(table_tags, eq(table_tags.id, table_tagsToArticles.tag_id))
+			.leftJoin(table_tags_to_articles, eq(table_tags_to_articles.article_id, table_articles.id))
+			.leftJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
 			.leftJoin(
 				titleTranslationAlias,
 				eq(titleTranslationAlias.key, table_articles.title_translation_key)

@@ -5,12 +5,12 @@ import type { ImagePathAndMeta } from '$lib/design/types';
 import type {
 	ArticlePreviewImageFileFieldsAll,
 	ArticlePreviewImageIdsFields
-} from '../article/parsers';
+} from '../article/validators';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
-import type { User } from '../user/parsers';
-import type { ImageSelect } from './parsers';
+import type { User } from '../user/validators';
 import type { ImagesDict } from './types';
+import type { ImageSelect } from './validators';
 
 export function decomposeImageField(field: keyof ArticlePreviewImageFileFieldsAll) {
 	const parts = field.split('.');

@@ -2,10 +2,10 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
 	import Button from '$lib/design/components/Button/Button.svelte';
-	import type { ArticleSelect } from '$lib/features/article/parsers';
+	import type { ArticleSelect } from '$lib/features/article/validators';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
-	import type { ImageCreationForm } from '../parsers';
+	import type { ImageCreationForm } from '../validators';
 
 	type Props = {
 		articleId: ArticleSelect['id'] | null;

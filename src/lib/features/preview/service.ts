@@ -8,16 +8,16 @@ import { db } from '$lib/services/db';
 import { table_articles } from '../article/schema';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { ImageSelect } from '../image/parsers';
 import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
+import type { ImageSelect } from '../image/validators';
 import type { ActorService } from '../user/service';
+import { table_previewTemplates } from './schema';
 import type {
 	PreviewTemplateCreation,
 	PreviewTemplateDeletion,
 	PreviewTemplateEditing
-} from './parsers';
-import { table_previewTemplates } from './schema';
+} from './validators';
 
 export class PreviewService {
 	private readonly actorService: ActorService;

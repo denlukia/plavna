@@ -2,11 +2,11 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
 import { table_articles } from '../article/schema';
-import type { TranslationInsert } from '../i18n/parsers';
 import type { TranslationService } from '../i18n/service';
+import type { TranslationInsert } from '../i18n/validators';
 import type { ActorService } from '../user/service';
-import type { TagDelete, TagUpdate } from './parsers';
-import { table_tags, table_tagsToArticles } from './schema';
+import { table_tags, table_tags_to_articles } from './schema';
+import type { TagDelete, TagUpdate } from './validators';
 
 export class TagService {
 	private readonly actorService: ActorService;
@@ -49,17 +49,17 @@ export class TagService {
 
 		if (currentlyChecked) {
 			await db
-				.delete(table_tagsToArticles)
+				.delete(table_tags_to_articles)
 				.where(
 					and(
-						eq(table_tagsToArticles.tag_id, tagSql),
-						eq(table_tagsToArticles.article_id, articleSql)
+						eq(table_tags_to_articles.tag_id, tagSql),
+						eq(table_tags_to_articles.article_id, articleSql)
 					)
 				)
 				.run();
 		} else {
 			await db
-				.insert(table_tagsToArticles)
+				.insert(table_tags_to_articles)
 				.values({ tag_id: tagSql, article_id: articleSql })
 				.run();
 		}

@@ -1,9 +1,9 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { table_tags, table_tagsToArticles } from './schema';
+import { table_tags, table_tags_to_articles } from './schema';
 
-// Parsers
+// Validators
 export const tagSelectSchema = createSelectSchema(table_tags);
 export const tagInsertSchema = createInsertSchema(table_tags);
 export const tagUpdateSchema = tagInsertSchema
@@ -12,7 +12,7 @@ export const tagUpdateSchema = tagInsertSchema
 	.extend({ checked: z.boolean() });
 export const tagDeleteSchema = tagSelectSchema.pick({ id: true });
 
-export const tagToArticleSelectSchema = createSelectSchema(table_tagsToArticles); // Tags
+export const tagToArticleSelectSchema = createSelectSchema(table_tags_to_articles); // Tags
 
 // Types
 export type TagSelect = z.infer<typeof tagSelectSchema>;

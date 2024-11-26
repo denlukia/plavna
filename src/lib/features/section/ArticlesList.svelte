@@ -2,18 +2,19 @@
 	import BezierEasing from 'bezier-easing';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 
-	import type { SectionProp } from '../section/types';
-	import ArticlePreviewCell from './ArticlePreviewCell.svelte';
-	import LoadMore from './LoadMore.svelte';
+	import InViewTrigger from '../../design/components/InViewTrigger/InViewTrigger.svelte';
+	import ArticlePreviewCell from '../article/ArticlePreviewCell.svelte';
+	import type { SectionProp } from './types';
 
 	type Props = {
 		section: SectionProp;
+		onEndInView: () => Promise<void>;
+		listenForEndInView: boolean;
 	};
 
-	let { section }: Props = $props();
+	let { section, onEndInView, listenForEndInView }: Props = $props();
 
 	const easing = BezierEasing(0.25, 0, 0.25, 1);
 </script>
@@ -29,7 +30,15 @@
 			<ArticlePreviewCell {article} />
 		</div>
 	{/each}
+	<div class="end-padder">
+		{#if listenForEndInView}
+			<InViewTrigger onInView={onEndInView} />
+		{/if}
+	</div>
 </GridContainer>
 
 <style>
+	.end-padder {
+		width: calc(var(--size-main-grid-padding-inline) - var(--size-cell-gap));
+	}
 </style>

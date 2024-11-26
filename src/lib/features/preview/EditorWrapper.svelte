@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { SuperForm } from 'sveltekit-superforms';
 
-	import type { ArticlePreviewUpdate } from '../article/parsers';
-	import type { PreviewTemplateSelect } from './parsers';
+	import type { ArticlePreviewUpdate } from '../article/validators';
+	import type { PreviewTemplateSelect } from './validators';
 
 	export let superForm: SuperForm<ArticlePreviewUpdate>;
 	export let previewTypeId: PreviewTemplateSelect['id'];

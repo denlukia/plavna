@@ -2,7 +2,7 @@ import { createSelectSchema } from 'drizzle-zod';
 import type { z } from 'zod';
 import type { PartialNonNull } from '$lib/features/common/types';
 
-import type { imageProviderUpdateFormSchema } from '../image/parsers';
+import type { imageProviderUpdateFormSchema } from '../image/validators';
 import { table_users } from './schema';
 
 // Types

@@ -1,10 +1,10 @@
 import { error, type Cookies } from '@sveltejs/kit';
 import { PAGE_CONFIG_COOKIE_NAME, PAGE_SLUG_PREFIX } from '$lib/collections/config';
 
-import type { SectionSelect } from '../section/parsers';
 import type { SectionRequest } from '../section/types';
-import type { TagSelect } from '../tag/parsers';
-import type { ReaderPageConfig } from './parsers';
+import type { SectionSelect } from '../section/validators';
+import type { TagSelect } from '../tag/validators';
+import type { ReaderPageConfig } from './validators';
 
 export function findExcludedTagsInReaderPageConfig(
 	readerPageConfig: ReaderPageConfig | null,

@@ -1,10 +1,10 @@
-import type { ArticleSelect } from '../article/parsers';
+import type { ArticleSelect } from '../article/validators';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
 import type { ImagesDict } from '../image/types';
 import { getImagePathAndMeta } from '../image/utils';
 import type { SectionProp } from '../section/types';
-import type { User } from '../user/parsers';
+import type { User } from '../user/validators';
 import { previewFamilies } from './families';
 import type { PreviewFamiliesDict } from './families/types';
 import type { PreviewDataProp } from './types';

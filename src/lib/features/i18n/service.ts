@@ -8,9 +8,9 @@ import { db } from '$lib/services/db';
 import type { TransactionOrDB } from '../common/types';
 import { hasNonEmptyPropsBeyondSpecified } from '../common/utils';
 import type { ActorService } from '../user/service';
-import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './parsers';
 import { table_translations } from './schema';
 import { checkTranslationKey } from './utils';
+import type { TranslationDelete, TranslationInsertBase, TranslationUpdate } from './validators';
 
 export class TranslationService {
 	private actorService: ActorService;

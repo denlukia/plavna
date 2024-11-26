@@ -1,4 +1,4 @@
-import type { ImageSelect } from '$lib/features/image/parsers';
+import type { ImageSelect } from '$lib/features/image/validators';
 
 export type ImagePathAndMeta = {
 	id: ImageSelect['id'];

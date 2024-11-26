@@ -11,8 +11,8 @@
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
 	import ImageProviderWarning from '../ImagesBlock/ImageProviderWarning.svelte';
-	import type { ImageSelect } from '../parsers';
 	import { computeSrc } from '../utils';
+	import type { ImageSelect } from '../validators';
 	import ImageInputClient from './ImageInputClient.svelte';
 	import ImageInputServer from './ImageInputServer.svelte';
 

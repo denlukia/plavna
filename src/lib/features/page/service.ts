@@ -13,11 +13,12 @@ import type { TranslationService } from '../i18n/service';
 import type { RecordsTranslationsDict, SystemTranslationKey } from '../i18n/types';
 import type { ImagesDict } from '../image/types';
 import type { PreviewFamiliesDict } from '../preview/families/types';
-import { sectionInsertSchema } from '../section/parsers';
 import type { SectionService } from '../section/service';
+import { sectionInsertSchema } from '../section/validators';
 import { table_tags } from '../tag/schema';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
+import { table_pages } from './schema';
 import {
 	pageCreationFormSchema,
 	pageDeletionFormSchema,
@@ -26,8 +27,7 @@ import {
 	type PageSelect,
 	type PageUpdateForm,
 	type ReaderPageConfig
-} from './parsers';
-import { table_pages } from './schema';
+} from './validators';
 
 export class PageService {
 	private readonly actorService: ActorService;

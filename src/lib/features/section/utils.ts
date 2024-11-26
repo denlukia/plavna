@@ -1,9 +1,9 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import { lexer, type Token, type TokensList } from 'marked';
 
-import type { TagSelect } from '../tag/parsers';
-import type { SectionInsert } from './parsers';
+import type { TagSelect } from '../tag/validators';
 import type { TagIdWithLang } from './types';
+import type { SectionInsert } from './validators';
 
 export function findTagIdsInLinks(tokens: TokensList) {
 	const tags: TagSelect['id'][] = [];

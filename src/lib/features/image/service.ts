@@ -4,12 +4,12 @@ import { and, eq } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
 import type { TransactionOrDB } from '../common/types';
-import type { TranslationSelect } from '../i18n/parsers';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
+import type { TranslationSelect } from '../i18n/validators';
 import type { ActorService } from '../user/service';
-import type { ImageInsertForm, ImageSelect, ImageUpdate } from './parsers';
 import { table_images } from './schema';
+import type { ImageInsertForm, ImageSelect, ImageUpdate } from './validators';
 
 export class ImageService {
 	private readonly actorService: ActorService;

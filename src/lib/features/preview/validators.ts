@@ -3,10 +3,10 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Component } from 'svelte';
 import { z } from 'zod';
 
-import { articleInsertSchema, type articleSelectSchema } from '../article/parsers';
-import { generateLanguagedFields } from '../common/parsers';
-import { atLeastOneTranslationRefiner, translationInsertBaseSchema } from '../i18n/parsers';
-import { imageFileField } from '../image/parsers';
+import { articleInsertSchema, type articleSelectSchema } from '../article/validators';
+import { generateLanguagedFields } from '../common/validators';
+import { atLeastOneTranslationRefiner, translationInsertBaseSchema } from '../i18n/validators';
+import { imageFileField } from '../image/validators';
 import type { PreviewFamilyId } from './families/types';
 import { table_previewTemplates } from './schema';
 

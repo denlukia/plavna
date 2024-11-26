@@ -14,10 +14,10 @@
 	import Errors from '../common/components/Errors.svelte';
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '../i18n/utils';
-	import type { TagSelect } from '../tag/parsers';
 	import TagsList from '../tag/SectionTagsList.svelte';
-	import type { SectionDelete, SectionInsert, SectionUpdate } from './parsers';
+	import type { TagSelect } from '../tag/validators';
 	import SectionDeletion from './SectionDeletion.svelte';
+	import type { SectionDelete, SectionInsert, SectionUpdate } from './validators';
 
 	type Props = {
 		mainForm: SuperValidated<SectionInsert | SectionUpdate>;

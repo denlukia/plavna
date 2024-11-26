@@ -1,9 +1,9 @@
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/collections/config';
 
-import type { TranslationSelect } from '../i18n/parsers';
-import type { ImageSelect } from '../image/parsers';
-import type { ArticlePreviewCellsTaken, ArticlePreviewScreenshotQuery } from './parsers';
+import type { TranslationSelect } from '../i18n/validators';
+import type { ImageSelect } from '../image/validators';
+import type { ArticlePreviewCellsTaken, ArticlePreviewScreenshotQuery } from './validators';
 
 export function composeURLForScreenshot(url: string, params: ArticlePreviewScreenshotQuery) {
 	const urlObj = new URL(url);

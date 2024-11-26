@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/services/db';
 
-import { safeUserData, type Actor, type User } from './parsers';
 import { table_users } from './schema';
+import { safeUserData, type Actor, type User } from './validators';
 
 export async function getSafeUserData(
 	username: Actor['username'] | undefined

@@ -11,9 +11,9 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 
-	import type { TranslationSelect } from '../i18n/parsers';
 	import Translation from '../i18n/Translation.svelte';
-	import type { TagDelete, TagUpdate } from './parsers';
+	import type { TranslationSelect } from '../i18n/validators';
+	import type { TagDelete, TagUpdate } from './validators';
 
 	type Props = {
 		checkedSuperValidated: SuperValidated<TagUpdate>;

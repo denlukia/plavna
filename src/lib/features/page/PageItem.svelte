@@ -10,7 +10,7 @@
 
 	import Card from '../common/components/Card.svelte';
 	import { generatePath } from '../common/links';
-	import type { PageDeletionForm, PageSelect, PageUpdateForm } from './parsers';
+	import type { PageDeletionForm, PageSelect, PageUpdateForm } from './validators';
 
 	type Props = {
 		pageItem: {

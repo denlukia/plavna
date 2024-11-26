@@ -3,7 +3,7 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
-import { imageProviderUpdateFormSchema } from '$lib/features/image/parsers';
+import { imageProviderUpdateFormSchema } from '$lib/features/image/validators';
 import { getSafeUserData } from '$lib/features/user/utils.js';
 
 export const load = async ({ params, locals }) => {

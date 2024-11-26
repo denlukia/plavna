@@ -7,7 +7,7 @@
 
 	import Errors from '../common/components/Errors.svelte';
 	import Translation from '../i18n/Translation.svelte';
-	import type { PageCreateForm, PageUpdateForm } from './parsers';
+	import type { PageCreateForm, PageUpdateForm } from './validators';
 
 	type Props = {
 		formObj: SuperValidated<PageCreateForm> | SuperValidated<PageUpdateForm>;

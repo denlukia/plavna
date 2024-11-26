@@ -14,13 +14,13 @@
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getSystemTranslation } from '../i18n/utils';
 	import LanguagedImageInput from '../image/ImageInput/LanguagedImageInput.svelte';
-	import type { ImageSelect } from '../image/parsers';
 	import { getImageById } from '../image/utils';
+	import type { ImageSelect } from '../image/validators';
 	import type {
 		PreviewTemplateCreationForm,
 		PreviewTemplateDeletionForm,
 		PreviewTemplateEditingForm
-	} from './parsers';
+	} from './validators';
 
 	type Props = {
 		type: 'creating' | 'editing';

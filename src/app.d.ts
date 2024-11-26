@@ -8,17 +8,17 @@ import type {
 	SystemTranslationDict,
 	TranslationFormsDict
 } from '$lib/features/i18n/types';
-import type { ImageProviderSuperValidated } from '$lib/features/image/parsers';
 import type { ImageService } from '$lib/features/image/service';
 import type { ImagesState } from '$lib/features/image/state.svelte';
+import type { ImageProviderSuperValidated } from '$lib/features/image/validators';
 import type { PageService } from '$lib/features/page/service';
 import type { PreviewFamiliesState } from '$lib/features/preview/families/state.svelte';
 import type { PreviewService } from '$lib/features/preview/service';
 import type { SectionService } from '$lib/features/section/service';
 import type { TagService } from '$lib/features/tag/service';
 import type { TagsListForPage } from '$lib/features/tag/types';
-import type { Actor, User } from '$lib/features/user/parsers';
 import type { ActorService } from '$lib/features/user/service';
+import type { Actor, User } from '$lib/features/user/validators';
 
 declare global {
 	namespace App {
