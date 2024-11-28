@@ -68,9 +68,7 @@
 		}
 	}
 
-	// TODO: Rewrite to make request only when scrolled to the edge
 	async function onEndInView() {
-		console.log('End of view reached');
 		const newOffset = paginator.offset + ARTICLES_PER_SECTION;
 		const body: SectionRequest = {
 			sectionId: section.meta.id,

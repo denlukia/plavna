@@ -1,15 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import ThemeInjector from '$lib/design/components/ThemeInjector/ThemeInjector.svelte';
 
 	import type { LayoutData } from '../$types';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-	let { themeComponentSet } = data;
+	let { themeComponentSets } = data;
 </script>
 
-{#each Object.values(themeComponentSet) as Component}
-	<Component />
-{/each}
+<ThemeInjector {themeComponentSets} />
 
 {@render children()}

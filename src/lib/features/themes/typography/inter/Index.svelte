@@ -1,3 +1,3 @@
 <script>
-	import './index.css';
+	// import './something.css';
 </script>

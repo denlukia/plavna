@@ -1,38 +1,51 @@
 import type { Component } from 'svelte';
 
-import type { ThemeComponentSet, ThemeSet } from './themes';
+import type { ThemeComponentSets, ThemeSet } from './themes';
 
-export async function enrichThemeSet(themeSet: ThemeSet) {
-	const glob = import.meta.glob('$lib/features/themes/*/*/Index.svelte');
+export async function enrichThemeSets(themeSet: ThemeSet | null) {
+	if (!themeSet) {
+		return null;
+	}
 
+	const designSystemFilesGlob = import.meta.glob('$lib/design/themes/*/*/Index.svelte');
+	const appFilesGlob = import.meta.glob('$lib/features/themes/*/*/Index.svelte');
+
+	const fileSets = { designSystem: designSystemFilesGlob, app: appFilesGlob };
 	const categories = ['color', 'style', 'typography'] as const;
 
-	const themeComponentSet = {} as ThemeComponentSet;
+	const themeComponentSets = {} as ThemeComponentSets;
 
-	for (const key of categories) {
-		const foundEntry = Object.entries(glob).find(([path]) =>
-			path.includes(`themes/${key}/${themeSet[key]}/Index.svelte`)
-		);
+	for (const fileSet in fileSets) {
+		const fileSetKey = fileSet as keyof typeof fileSets;
+		const glob = fileSets[fileSetKey];
 
-		const errorText = `${key} theme not found`;
+		themeComponentSets[fileSetKey] = {} as ThemeComponentSets[typeof fileSetKey];
 
-		if (!foundEntry) {
-			throw new Error(errorText);
-		}
-		const [, getter] = foundEntry;
-		const themeModule = await getter();
+		for (const category of categories) {
+			const foundEntry = Object.entries(glob).find(([path]) =>
+				path.includes(`themes/${category}/${themeSet[category]}/Index.svelte`)
+			);
 
-		if (
-			themeModule &&
-			// typeof themeModule === 'string'
-			typeof themeModule === 'object' &&
-			'default' in themeModule
-		) {
-			themeComponentSet[key] = themeModule.default as Component;
-		} else {
-			throw new Error(errorText);
+			const errorText = `${category} theme not found`;
+
+			if (!foundEntry) {
+				throw new Error(errorText);
+			}
+			const [, getter] = foundEntry;
+			const themeModule = await getter();
+
+			if (
+				themeModule &&
+				// typeof themeModule === 'string'
+				typeof themeModule === 'object' &&
+				'default' in themeModule
+			) {
+				themeComponentSets[fileSetKey][category] = themeModule.default as Component;
+			} else {
+				throw new Error(errorText);
+			}
 		}
 	}
 
-	return themeComponentSet;
+	return themeComponentSets;
 }

@@ -22,8 +22,15 @@ export const defaultThemeSet: ThemeSet = {
 	typography: themes.typography[0]
 };
 
-export type ThemeComponentSet = {
-	color: Component;
-	style: Component;
-	typography: Component;
+export type ThemeComponentSets = {
+	designSystem: {
+		color: Component;
+		style: Component;
+		typography: Component;
+	};
+	app: {
+		color: Component;
+		style: Component;
+		typography: Component;
+	};
 };
