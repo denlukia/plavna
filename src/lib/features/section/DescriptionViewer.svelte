@@ -45,11 +45,11 @@
 		position: relative;
 	}
 	.info-block-wrapper {
-		padding-top: var(--size-m);
+		padding-top: var(--size-description-viewer-padding-top);
 	}
 	.actions-wrapper {
 		position: absolute;
 		left: 0;
-		top: calc(var(--size-xl-to-2xl) * -1);
+		top: var(--size-description-viewer-actions-top);
 	}
 </style>

@@ -39,6 +39,7 @@
 
 <style>
 	.end-padder {
+		height: 1px; /* We need it to overflow in the grid */
 		width: calc(var(--size-main-grid-padding-inline) - var(--size-cell-gap));
 	}
 </style>

@@ -4,9 +4,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
 import { imageProviderUpdateFormSchema } from '$lib/features/image/validators';
+import { defaultThemeSet, type ThemeSet } from '$lib/features/themes/themes.js';
 import { getSafeUserData } from '$lib/features/user/utils.js';
 
-export const load = async ({ params, locals }) => {
+export const load = async ({ params, locals, route }) => {
 	const { actor } = locals;
 	const user = await getSafeUserData(params.username);
 
@@ -20,9 +21,19 @@ export const load = async ({ params, locals }) => {
 		requiredSlices.push('actor_errors');
 	}
 
+	let themeSet: ThemeSet | null = null;
+	if (
+		route.id !== '/[[lang=lang]]/[username]' &&
+		!route.id.startsWith('/[[lang=lang]]/[username]/[articleslug]') &&
+		!route.id.startsWith('/[[lang=lang]]/[username]/p:[pageslug]')
+	) {
+		themeSet = defaultThemeSet;
+	}
+
 	return {
 		actor,
 		user,
+		themeSet,
 		imageProvider: {
 			hasValidCredentialsSet,
 			superValidated: await superValidate(actor, zod(imageProviderUpdateFormSchema))

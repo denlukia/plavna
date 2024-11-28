@@ -43,6 +43,13 @@
       "when": 1731489196961,
       "tag": "0005_conscious_rocket_racer",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1732754578861,
+      "tag": "0006_normal_black_tom",
+      "breakpoints": true
     }
   ]
 }
