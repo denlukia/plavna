@@ -144,20 +144,6 @@
 	--transition-link: all 300ms var(--smooth-ease-out);
 	--transition-link-hovered: all 100ms var(--smooth-ease-out);
 
-	/* --- Section --- */
-	--transition-section-description: all 600ms var(--smooth-ease-out);
-	--opacity-section-description-disabled: 0.3;
-
-	/* --- Article Editor --- */
-	--shadow-article-actions: 0 4px 20px var(--color-article-actions-shadow-1),
-		0 4px 120px var(--color-article-actions-shadow-2);
-	--border-sidebox-top: var(--size-sidebox-border-width) solid var(--color-sidebox-border);
-
-	/* --- Image Input ---  */
-	--border-image-input: var(--size-image-input-border-width) dashed var(--color-image-input-border);
-	--shadow-image-input: var(--shadow-input);
-	--backdrop-filter-image-input-checkbox-wrapper: blur(5px);
-
 	/* --- Loaders --- */
 	--shadow-loader-spinner-kind-primary-outer: 0 8px 10px
 		var(--color-loader-spinner-kind-primary-shadow-1);

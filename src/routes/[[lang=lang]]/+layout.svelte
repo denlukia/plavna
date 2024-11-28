@@ -3,14 +3,17 @@
 
 	// TODO: Dynamize based on server data
 
-	// Basic
+	// Static
 	import '$lib/styles/index.css';
-	// Color
-	import '$lib/design/themes/color/milk.css';
-	// Aesthetics
+	// Dynamic Design System
+	import '$lib/design/themes/color/milk/index.css';
 	import '$lib/design/themes/style/modern/index.css';
-	// Fonts
 	import '$lib/design/themes/typography/inter/index.css';
+
+	// Dynamic App Theme
+	// import '$lib/features/themes/style/modern/index.css';
+	// import '$lib/features/themes/color/milk/index.css';
+	// import '$lib/features/themes/typography/inter/index.css';
 
 	import { navigating } from '$app/stores';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
