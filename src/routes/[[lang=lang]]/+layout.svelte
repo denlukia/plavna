@@ -1,14 +1,13 @@
 <script lang="ts">
-	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
-
 	// Global CSS
 	import '$lib/styles/index.css';
 
 	import { navigating } from '$app/stores';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
-	import ThemeInjector from '$lib/design/components/ThemeInjector/ThemeInjector.svelte';
+	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
+	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	let { data, children } = $props();
 
@@ -22,7 +21,7 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeInjector {themeComponentSets} />
+<ThemeSetsInjector {themeComponentSets} />
 
 <div class="main-layout">
 	<div class="lights-wrapper">

@@ -1,0 +1,20 @@
+@font-face {
+	font-family: 'Inter Variable';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src:
+		local('Inter Variable'),
+		url('../../fonts/Inter/InterVariable-subset.woff2') format('woff2'),
+		url('../../fonts/Inter/InterVariable-subset.woff') format('woff');
+}
+@font-face {
+	font-family: 'Inter Variable';
+	font-style: italic;
+	font-weight: 100 900;
+	font-display: swap;
+	src:
+		local('Inter Variable'),
+		url('../../fonts/Inter/InterVariable-Italic-subset.woff2') format('woff2'),
+		url('../../fonts/Inter/InterVariable-Italic-subset.woff') format('woff');
+}

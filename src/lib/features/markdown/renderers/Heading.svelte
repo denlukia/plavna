@@ -15,7 +15,7 @@
 </script>
 
 <svelte:element this={`h${depth}`} class="heading {depth === 1 ? 'heading-1' : ''}">
-	<Typography {size}>
+	<Typography {size} purpose="aesthetic">
 		{@render children()}
 	</Typography>
 </svelte:element>

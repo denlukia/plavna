@@ -10,7 +10,7 @@
 </script>
 
 <p class="paragraph">
-	<Typography>
+	<Typography purpose="aesthetic">
 		{@render children()}
 	</Typography>
 </p>

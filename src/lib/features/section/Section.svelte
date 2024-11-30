@@ -9,8 +9,8 @@
 	import { enrichPreviewFamilies } from '../preview/enricher';
 	import type { TagSelect } from '../tag/validators';
 	import ArticlesList from './ArticlesList.svelte';
-	import DescriptionViewer from './DescriptionViewer.svelte';
 	import SectionEditor from './SectionEditor.svelte';
+	import SectionViewer from './SectionViewer.svelte';
 	import type { SectionService } from './service';
 	import type {
 		SectionContext,
@@ -183,7 +183,7 @@
 				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
 		{:else}
-			<DescriptionViewer {section} {onEditorOpen} showEditButton={sectionHasForms(section)} />
+			<SectionViewer {section} {onEditorOpen} showEditButton={sectionHasForms(section)} />
 		{/if}
 	</div>
 

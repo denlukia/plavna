@@ -1,10 +1,10 @@
 import { selectProvider } from '@denlukia/plavna-common/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { defaultThemeSet, type ThemeSet } from '$lib/design/themes/themes';
 import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
 import { imageProviderUpdateFormSchema } from '$lib/features/image/validators';
-import { defaultThemeSet, type ThemeSet } from '$lib/features/themes/themes.js';
 import { getSafeUserData } from '$lib/features/user/utils.js';
 
 export const load = async ({ params, locals, route }) => {

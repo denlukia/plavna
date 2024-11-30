@@ -5,12 +5,12 @@
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
 	import type { SwitchProps } from './types';
 
-	let { checked = $bindable(), ...attributes }: SwitchProps = $props();
+	let { checked = $bindable(), purpose = 'functional', ...attributes }: SwitchProps = $props();
 
 	let { mouse, ...events } = createMouseWatcher();
 </script>
 
-<label class="switch global-reset-line-height">
+<label class="switch global-reset-line-height {purpose}">
 	<input bind:checked {...attributes} type="checkbox" />
 	<span class="switch-visualizer global-" {...events}>
 		<Layers>
@@ -72,10 +72,17 @@
 		width: var(--size-switch-handle-width);
 		height: var(--size-switch-handle-height);
 		background: var(--color-switch-handle-bg);
-		border-radius: var(--size-switch-handle-border-radius);
 		transition: all var(--transition-switch-duration) var(--transition-switch-easing);
-		border: var(--border-switch-handle);
+		border-radius: var(--size-switch-handle-border-radius);
+
 		box-shadow: var(--shadow-switch-handle);
+	}
+
+	.functional .handle {
+		border: var(--border-functional-switch-handle);
+	}
+	.aesthetic .handle {
+		border: var(--border-aesthetic-switch-handle);
 	}
 
 	input:checked + .switch-visualizer {

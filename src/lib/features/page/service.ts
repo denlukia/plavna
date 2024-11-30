@@ -3,6 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { SECTIONS_PER_PAGE } from '$lib/collections/config';
+import type { ThemeSet } from '$lib/design/themes/themes';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';
@@ -18,6 +19,7 @@ import { sectionInsertSchema } from '../section/validators';
 import { table_tags } from '../tag/schema';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
+import { queryGetThemes } from './queries';
 import { table_pages } from './schema';
 import {
 	pageCreationFormSchema,
@@ -100,6 +102,20 @@ export class PageService {
 		} catch (e) {
 			throw this.selectErrorWithTranslation('delete', e);
 		}
+	}
+	async getThemeSet(username: string, pageslug: string): Promise<ThemeSet> {
+		const themes = await queryGetThemes(username, pageslug);
+
+		if (!themes) {
+			error(404);
+		}
+
+		return {
+			color: themes.color_theme,
+			style: themes.style_theme,
+			'typography/functional': themes.typography_functional_theme,
+			'typography/aesthetic': themes.typography_aesthetic_theme
+		};
 	}
 	async getMyAsForms(username: string) {
 		const actor = await this.actorService.checkOrThrow(null, username);

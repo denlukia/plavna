@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import ThemeInjector from '$lib/design/components/ThemeInjector/ThemeInjector.svelte';
+	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	import type { LayoutData } from '../$types';
 
@@ -9,6 +9,6 @@
 	let { themeComponentSets } = data;
 </script>
 
-<ThemeInjector {themeComponentSets} />
+<ThemeSetsInjector {themeComponentSets} />
 
 {@render children()}

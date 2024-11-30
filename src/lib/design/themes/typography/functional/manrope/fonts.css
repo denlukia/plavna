@@ -4,8 +4,8 @@
 	font-style: normal;
 	src:
 		local('Manrope Rounded'),
-		url('/fonts/Manrope Rounded/ManropeRoundedVF.woff2') format('woff2'),
-		url('/fonts/Manrope Rounded/ManropeRoundedVF.woff') format('woff');
+		url('../../fonts/Manrope Rounded/ManropeRoundedVF.woff2') format('woff2'),
+		url('../../fonts/Manrope Rounded/ManropeRoundedVF.woff') format('woff');
 }
 
 @font-face {
@@ -14,5 +14,5 @@
 	font-style: normal;
 	src:
 		local('Manrope'),
-		url('/fonts/Manrope/ManropeVF.woff2') format('woff2');
+		url('../../fonts/Manrope/ManropeVF.woff2') format('woff2');
 }

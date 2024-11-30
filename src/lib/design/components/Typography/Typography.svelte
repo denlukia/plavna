@@ -9,9 +9,17 @@
 		resetPadding?: boolean;
 		tone?: TextTones;
 		bold?: boolean;
+		purpose?: 'functional' | 'aesthetic';
 	};
 
-	let { size = 'body', tone = 'default', children, resetPadding, bold }: Props = $props();
+	let {
+		size = 'body',
+		tone = 'default',
+		purpose = 'functional',
+		children,
+		resetPadding,
+		bold
+	}: Props = $props();
 
 	let outline = $state(false);
 
@@ -24,7 +32,7 @@
 
 <svelte:window {onkeypress} />
 <span
-	class="text global-text-{size} tone-{tone}"
+	class="text global-text-{purpose}-{size} tone-{tone}"
 	class:global-text-strong={bold}
 	class:outline
 	class:reset-padding={resetPadding}
