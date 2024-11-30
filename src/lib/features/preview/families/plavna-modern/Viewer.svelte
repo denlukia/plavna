@@ -61,7 +61,7 @@
 
 {#snippet chip(text: string, customClass = '')}
 	<div class="chip {customClass}">
-		<Typography size="small-short" bold>
+		<Typography size="small-short" bold purpose="aesthetic">
 			<AnimatedBlock key={text}>
 				{text}
 			</AnimatedBlock>
@@ -96,13 +96,16 @@
 									{#if description_translation}
 										<div class="description">
 											<AnimatedBlock key={description_translation}>
-												<Typography size="headline-short">{description_translation}</Typography>
+												<Typography size="headline-short" purpose="aesthetic"
+													>{description_translation}</Typography
+												>
 											</AnimatedBlock>
 										</div>
 									{/if}
 
 									<AnimatedBlock key={title_translation}>
-										<Typography size={titleSize}>{title_translation}</Typography>
+										<Typography size={titleSize} purpose="aesthetic">{title_translation}</Typography
+										>
 									</AnimatedBlock>
 								</div>
 							</ContinuousCorners>
@@ -126,7 +129,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		filter: drop-shadow(0 0 30px var(--text-color));
 	}
 
 	.image {
@@ -149,6 +151,7 @@
 		background-color: var(--bg-color, var(--neutral-1000));
 		color: var(--text-color, var(--neutral-0));
 		border-radius: var(--size-full);
+		transform: translate3d(0, 0, 0);
 	}
 
 	.bottom {

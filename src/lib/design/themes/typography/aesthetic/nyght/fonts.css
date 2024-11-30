@@ -1,0 +1,79 @@
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: normal;
+	font-weight: 800;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Dark.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Dark.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: italic;
+	font-weight: 800;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-DarkItalic.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-DarkItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: normal;
+	font-weight: 700;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Bold.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Bold.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: italic;
+	font-weight: 700;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-BoldItalic.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-BoldItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: normal;
+	font-weight: 400;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Regular.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Regular.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: italic;
+	font-weight: 400;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-RegularItalic.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-RegularItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: normal;
+	font-weight: 300;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Light.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-Light.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Nyght Serif';
+	font-style: italic;
+	font-weight: 300;
+	src:
+		local('Nyght Serif'),
+		url('../../fonts/Nyght Serif/NyghtSerif-LightItalic.woff2') format('woff2'),
+		url('../../fonts/Nyght Serif/NyghtSerif-LightItalic.woff') format('woff');
+}

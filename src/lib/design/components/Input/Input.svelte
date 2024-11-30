@@ -81,7 +81,7 @@
 								bind:this={elementRef}
 								in:fly|local={getFlyConf('bottom')}
 								out:fly|local={getFlyConf('top')}
-								class="global-reset-input global-text-body"
+								class="global-reset-input global-text-functional-body"
 								bind:value
 								{...attributes}
 							></textarea>
@@ -92,7 +92,7 @@
 								bind:this={elementRef}
 								in:fly|local={getFlyConf('bottom')}
 								out:fly|local={getFlyConf('top')}
-								class="global-reset-input global-text-body"
+								class="global-reset-input global-text-functional-body"
 								bind:value
 								{...attributes}
 							/>

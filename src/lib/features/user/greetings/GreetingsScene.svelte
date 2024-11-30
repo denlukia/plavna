@@ -2,8 +2,9 @@
 	import { untrack } from 'svelte';
 	import * as THREE from 'three';
 	import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-	import svg from './translations/uk.svg?raw';
+
 	import { convertPathToCurve } from './paths';
+	import svg from './translations/uk.svg?inline';
 
 	let canvas: HTMLCanvasElement | null = $state(null);
 	let canvasRect = $state({ width: 0, height: 0 });
@@ -127,10 +128,7 @@
 	});
 </script>
 
-<canvas
-	bind:this={canvas}
-	bind:clientWidth={canvasRect.width}
-	bind:clientHeight={canvasRect.height}
+<canvas bind:this={canvas} bind:clientWidth={canvasRect.width} bind:clientHeight={canvasRect.height}
 ></canvas>
 
 <style>

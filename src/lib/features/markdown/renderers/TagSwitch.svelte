@@ -85,7 +85,7 @@
 		<span class="content">
 			{@render children()}
 			<span class="switch-positioner">
-				<Switch bind:checked onchange={onSwitchChange} />
+				<Switch bind:checked onchange={onSwitchChange} purpose="aesthetic" />
 			</span>
 		</span>
 
@@ -116,6 +116,6 @@
 		border-radius: var(--size-tag-switch-border-radius);
 	}
 	.switch-positioner {
-		transform: translateY(0.1em);
+		transform: var(--size-tag-switch-positioner-transform);
 	}
 </style>

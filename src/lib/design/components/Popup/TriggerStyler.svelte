@@ -26,7 +26,7 @@
 					dropdown
 					global-disable-default-outline
 					global-text-strong
-					global-text-{isInInput ? 'small-short' : 'body-short'}
+					global-text-functional-{isInInput ? 'small-short' : 'body-short'}
 					global-reset-select"
 		>
 			{@render children()}

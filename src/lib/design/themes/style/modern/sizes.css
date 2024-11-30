@@ -121,6 +121,11 @@
 
 	/* --- Dropdown --- */
 	--size-dropdown-padding-left: var(--size-m-to-l);
+	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-functional-body-short-padding-top));
+	--size-dropdown-padding-bottom: calc(
+		var(--size-s) + var(--text-functional-body-short-padding-bottom)
+	);
+	--size-dropdown-border-radius: var(--size-m-to-l);
 
 	--size-dropdown-arrow-text-gap: var(--size-xs);
 	--size-dropdown-arrow-padding-right: var(--size-m);
@@ -128,10 +133,6 @@
 		var(--size-dropdown-arrow-text-gap) + var(--size-icon-body-size) +
 			var(--size-dropdown-arrow-padding-right)
 	);
-
-	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-body-short-padding-top));
-	--size-dropdown-padding-bottom: calc(var(--size-s) + var(--text-body-short-padding-bottom));
-	--size-dropdown-border-radius: var(--size-m-to-l);
 
 	/* --- Dropdown as Disclosure */
 	--size-dropdown-disclosure-padding-top: var(--size-s);
@@ -162,7 +163,6 @@
 	--size-switch-handle-width: var(--size-l);
 	--size-switch-handle-height: var(--size-l);
 	--size-switch-handle-border-radius: var(--size-full);
-	--size-switch-handle-border-width: 4px;
 	--size-switch-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */

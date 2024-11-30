@@ -1,74 +1,82 @@
-.global-text-heading-1 {
-	font-family: var(--text-heading-1-font-family);
-	padding-top: var(--text-heading-1-padding-top);
-	padding-bottom: var(--text-heading-1-padding-bottom);
-	font-size: var(--text-heading-1-size);
-	font-weight: var(--text-heading-1-weight);
-	line-height: var(--text-heading-1-line-height);
-	letter-spacing: var(--text-heading-1-letter-spacing);
+.global-text-functional-heading-1 {
+	font-family: var(--text-functional-heading-1-font-family);
+	padding-top: var(--text-functional-heading-1-padding-top);
+	padding-bottom: var(--text-functional-heading-1-padding-bottom);
+	font-size: var(--text-functional-heading-1-size);
+	font-weight: var(--text-functional-heading-1-weight);
+	line-height: var(--text-functional-heading-1-line-height);
+	letter-spacing: var(--text-functional-heading-1-letter-spacing);
+	font-style: var(--text-functional-heading-1-font-style);
 }
-.global-text-heading-2 {
-	font-family: var(--text-heading-2-font-family);
-	padding-top: var(--text-heading-2-padding-top);
-	padding-bottom: var(--text-heading-2-padding-bottom);
-	font-size: var(--text-heading-2-size);
-	font-weight: var(--text-heading-2-weight);
-	line-height: var(--text-heading-2-line-height);
-	letter-spacing: var(--text-heading-2-letter-spacing);
+.global-text-functional-heading-2 {
+	font-family: var(--text-functional-heading-2-font-family);
+	padding-top: var(--text-functional-heading-2-padding-top);
+	padding-bottom: var(--text-functional-heading-2-padding-bottom);
+	font-size: var(--text-functional-heading-2-size);
+	font-weight: var(--text-functional-heading-2-weight);
+	line-height: var(--text-functional-heading-2-line-height);
+	letter-spacing: var(--text-functional-heading-2-letter-spacing);
+	font-style: var(--text-functional-heading-2-font-style);
 }
-.global-text-headline {
-	font-family: var(--text-headline-font-family);
-	padding-top: var(--text-headline-padding-top);
-	padding-bottom: var(--text-headline-padding-bottom);
-	font-size: var(--text-headline-size);
-	font-weight: var(--text-headline-weight);
-	line-height: var(--text-headline-line-height);
-	letter-spacing: var(--text-headline-letter-spacing);
+.global-text-functional-headline {
+	font-family: var(--text-functional-headline-font-family);
+	padding-top: var(--text-functional-headline-padding-top);
+	padding-bottom: var(--text-functional-headline-padding-bottom);
+	font-size: var(--text-functional-headline-size);
+	font-weight: var(--text-functional-headline-weight);
+	line-height: var(--text-functional-headline-line-height);
+	letter-spacing: var(--text-functional-headline-letter-spacing);
+	font-style: var(--text-functional-headline-font-style);
 }
-.global-text-headline-short {
-	font-family: var(--text-headline-short-font-family);
-	padding-top: var(--text-headline-short-padding-top);
-	padding-bottom: var(--text-headline-short-padding-bottom);
-	font-size: var(--text-headline-short-size);
-	font-weight: var(--text-headline-short-weight);
-	line-height: var(--text-headline-short-line-height);
-	letter-spacing: var(--text-headline-short-letter-spacing);
+.global-text-functional-headline-short {
+	font-family: var(--text-functional-headline-short-font-family);
+	padding-top: var(--text-functional-headline-short-padding-top);
+	padding-bottom: var(--text-functional-headline-short-padding-bottom);
+	font-size: var(--text-functional-headline-short-size);
+	font-weight: var(--text-functional-headline-short-weight);
+	line-height: var(--text-functional-headline-short-line-height);
+	letter-spacing: var(--text-functional-headline-short-letter-spacing);
+	font-style: var(--text-functional-headline-short-font-style);
 }
-.global-text-body {
-	font-family: var(--text-body-font-family);
-	padding-top: var(--text-body-padding-top);
-	padding-bottom: var(--text-body-padding-bottom);
-	font-size: var(--text-body-size);
-	font-weight: var(--text-body-weight);
-	line-height: var(--text-body-line-height);
-	letter-spacing: var(--text-body-letter-spacing);
+.global-text-functional-body {
+	font-family: var(--text-functional-body-font-family);
+	padding-top: var(--text-functional-body-padding-top);
+	padding-bottom: var(--text-functional-body-padding-bottom);
+	font-size: var(--text-functional-body-size);
+	font-weight: var(--text-functional-body-weight);
+	line-height: var(--text-functional-body-line-height);
+	letter-spacing: var(--text-functional-body-letter-spacing);
+	font-style: var(--text-functional-body-font-style);
 }
-.global-text-body-short {
-	font-family: var(--text-body-short-font-family);
-	padding-top: var(--text-body-short-padding-top);
-	padding-bottom: var(--text-body-short-padding-bottom);
-	font-size: var(--text-body-short-size);
-	font-weight: var(--text-body-short-weight);
-	line-height: var(--text-body-short-line-height);
-	letter-spacing: var(--text-body-short-letter-spacing);
+.global-text-functional-body-short {
+	font-family: var(--text-functional-body-short-font-family);
+	padding-top: var(--text-functional-body-short-padding-top);
+	padding-bottom: var(--text-functional-body-short-padding-bottom);
+	font-size: var(--text-functional-body-short-size);
+	font-weight: var(--text-functional-body-short-weight);
+	line-height: var(--text-functional-body-short-line-height);
+	letter-spacing: var(--text-functional-body-short-letter-spacing);
+	font-style: var(--text-functional-body-short-font-style);
 }
-.global-text-small {
-	font-family: var(--text-small-font-family);
-	padding-top: var(--text-small-padding-top);
-	padding-bottom: var(--text-small-padding-bottom);
-	font-size: var(--text-small-size);
-	font-weight: var(--text-small-weight);
-	line-height: var(--text-small-line-height);
-	letter-spacing: var(--text-small-letter-spacing);
+.global-text-functional-small {
+	font-family: var(--text-functional-small-font-family);
+	padding-top: var(--text-functional-small-padding-top);
+	padding-bottom: var(--text-functional-small-padding-bottom);
+	font-size: var(--text-functional-small-size);
+	font-weight: var(--text-functional-small-weight);
+	line-height: var(--text-functional-small-line-height);
+	letter-spacing: var(--text-functional-small-letter-spacing);
+	font-style: var(--text-functional-small-font-style);
 }
-.global-text-small-short {
-	font-family: var(--text-small-short-font-family);
-	padding-top: var(--text-small-short-padding-top);
-	padding-bottom: var(--text-small-short-padding-bottom);
-	font-size: var(--text-small-short-size);
-	font-weight: var(--text-small-short-weight);
-	line-height: var(--text-small-short-line-height);
-	letter-spacing: var(--text-small-short-letter-spacing);
+.global-text-functional-small-short {
+	font-family: var(--text-functional-small-short-font-family);
+	padding-top: var(--text-functional-small-short-padding-top);
+	padding-bottom: var(--text-functional-small-short-padding-bottom);
+	font-size: var(--text-functional-small-short-size);
+	font-weight: var(--text-functional-small-short-weight);
+	line-height: var(--text-functional-small-short-line-height);
+	letter-spacing: var(--text-functional-small-short-letter-spacing);
+	font-style: var(--text-functional-small-short-font-style);
 }
 
 .global-text-set-with-variables {
@@ -79,10 +87,92 @@
 	font-weight: var(--text-font-weight);
 	line-height: var(--text-line-height);
 	letter-spacing: var(--text-letter-spacing);
+	font-style: var(--text-font-style);
+}
+
+.global-text-aesthetic-heading-1 {
+	font-family: var(--text-aesthetic-heading-1-font-family);
+	padding-top: var(--text-aesthetic-heading-1-padding-top);
+	padding-bottom: var(--text-aesthetic-heading-1-padding-bottom);
+	font-size: var(--text-aesthetic-heading-1-size);
+	font-weight: var(--text-aesthetic-heading-1-weight);
+	line-height: var(--text-aesthetic-heading-1-line-height);
+	letter-spacing: var(--text-aesthetic-heading-1-letter-spacing);
+	font-style: var(--text-aesthetic-heading-1-font-style);
+}
+.global-text-aesthetic-heading-2 {
+	font-family: var(--text-aesthetic-heading-2-font-family);
+	padding-top: var(--text-aesthetic-heading-2-padding-top);
+	padding-bottom: var(--text-aesthetic-heading-2-padding-bottom);
+	font-size: var(--text-aesthetic-heading-2-size);
+	font-weight: var(--text-aesthetic-heading-2-weight);
+	line-height: var(--text-aesthetic-heading-2-line-height);
+	letter-spacing: var(--text-aesthetic-heading-2-letter-spacing);
+	font-style: var(--text-aesthetic-heading-2-font-style);
+}
+.global-text-aesthetic-headline {
+	font-family: var(--text-aesthetic-headline-font-family);
+	padding-top: var(--text-aesthetic-headline-padding-top);
+	padding-bottom: var(--text-aesthetic-headline-padding-bottom);
+	font-size: var(--text-aesthetic-headline-size);
+	font-weight: var(--text-aesthetic-headline-weight);
+	line-height: var(--text-aesthetic-headline-line-height);
+	letter-spacing: var(--text-aesthetic-headline-letter-spacing);
+	font-style: var(--text-aesthetic-headline-font-style);
+}
+.global-text-aesthetic-headline-short {
+	font-family: var(--text-aesthetic-headline-short-font-family);
+	padding-top: var(--text-aesthetic-headline-short-padding-top);
+	padding-bottom: var(--text-aesthetic-headline-short-padding-bottom);
+	font-size: var(--text-aesthetic-headline-short-size);
+	font-weight: var(--text-aesthetic-headline-short-weight);
+	line-height: var(--text-aesthetic-headline-short-line-height);
+	letter-spacing: var(--text-aesthetic-headline-short-letter-spacing);
+	font-style: var(--text-aesthetic-headline-short-font-style);
+}
+.global-text-aesthetic-body {
+	font-family: var(--text-aesthetic-body-font-family);
+	padding-top: var(--text-aesthetic-body-padding-top);
+	padding-bottom: var(--text-aesthetic-body-padding-bottom);
+	font-size: var(--text-aesthetic-body-size);
+	font-weight: var(--text-aesthetic-body-weight);
+	line-height: var(--text-aesthetic-body-line-height);
+	letter-spacing: var(--text-aesthetic-body-letter-spacing);
+	font-style: var(--text-aesthetic-body-font-style);
+}
+.global-text-aesthetic-body-short {
+	font-family: var(--text-aesthetic-body-short-font-family);
+	padding-top: var(--text-aesthetic-body-short-padding-top);
+	padding-bottom: var(--text-aesthetic-body-short-padding-bottom);
+	font-size: var(--text-aesthetic-body-short-size);
+	font-weight: var(--text-aesthetic-body-short-weight);
+	line-height: var(--text-aesthetic-body-short-line-height);
+	letter-spacing: var(--text-aesthetic-body-short-letter-spacing);
+	font-style: var(--text-aesthetic-body-short-font-style);
+}
+.global-text-aesthetic-small {
+	font-family: var(--text-aesthetic-small-font-family);
+	padding-top: var(--text-aesthetic-small-padding-top);
+	padding-bottom: var(--text-aesthetic-small-padding-bottom);
+	font-size: var(--text-aesthetic-small-size);
+	font-weight: var(--text-aesthetic-small-weight);
+	line-height: var(--text-aesthetic-small-line-height);
+	letter-spacing: var(--text-aesthetic-small-letter-spacing);
+	font-style: var(--text-aesthetic-small-font-style);
+}
+.global-text-aesthetic-small-short {
+	font-family: var(--text-aesthetic-small-short-font-family);
+	padding-top: var(--text-aesthetic-small-short-padding-top);
+	padding-bottom: var(--text-aesthetic-small-short-padding-bottom);
+	font-size: var(--text-aesthetic-small-short-size);
+	font-weight: var(--text-aesthetic-small-short-weight);
+	line-height: var(--text-aesthetic-small-short-line-height);
+	letter-spacing: var(--text-aesthetic-small-short-letter-spacing);
+	font-style: var(--text-aesthetic-small-short-font-style);
 }
 
 .global-text-strong {
-	font-weight: var(--text-strong-font-weight);
+	font-weight: var(--text-functional-strong-font-weight);
 }
 
 .global-text-em {

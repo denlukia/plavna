@@ -50,6 +50,13 @@
       "when": 1732754578861,
       "tag": "0006_normal_black_tom",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1732913550822,
+      "tag": "0007_sour_penance",
+      "breakpoints": true
     }
   ]
 }

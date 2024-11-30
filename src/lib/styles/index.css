@@ -8,8 +8,8 @@
 }
 
 body {
-	font-family: var(--text-main-font-family);
-	font-optical-sizing: var(--text-font-optical-sizing);
+	font-family: var(--text-functional-main-font-family);
+	font-optical-sizing: var(--text-functional-font-optical-sizing);
 	background-color: var(--color-body-bg);
 	color: var(--color-text);
 	flex-grow: 1;
