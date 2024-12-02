@@ -38,7 +38,7 @@ import type { GetOneSectionParams } from './types';
 
 export async function queryGetOneSection(
 	config: GetOneSectionParams,
-	actor: Actor,
+	actor: Actor | null,
 	lang: SupportedLang
 ): GetOneOldReturn {
 	// 1. Section + Decription translation
@@ -65,7 +65,7 @@ export async function queryGetOneSection(
 		.get();
 
 	if (!sectionAndTranslation) return null;
-	if (actor.id !== sectionAndTranslation.meta.user_id && !sectionAndTranslation.translation[lang]) {
+	if (!sectionAndTranslation.translation[lang]) {
 		return null;
 	}
 
@@ -187,10 +187,7 @@ export async function queryGetOneSection(
 			)
 	}));
 
-	let title_translation = null;
-	if (actor.id === sectionAndTranslation.meta.user_id) {
-		title_translation = sectionAndTranslation.translation;
-	}
+	const title_translation = sectionAndTranslation.translation;
 
 	const recordsTranslations = [
 		title_translation,
@@ -250,7 +247,7 @@ type GetOneOldReturn = Promise<{
 				likes_count: number;
 				preview_columns: number;
 				preview_rows: number;
-				preview_family: 'custom' | 'plavna-modern' | null;
+				preview_family: 'custom' | 'modern' | 'sequences' | null;
 				preview_template_id: number | null;
 				preview_interactions_show_on: 'hover' | 'click' | null;
 				preview_prop_1: string | null;

@@ -174,7 +174,7 @@ export class ArticleService {
 					title_translation_key: Number(title_translation_key),
 					description_translation_key: Number(description_translation_key),
 					content_translation_key: Number(content_translation_key),
-					preview_family: 'plavna-modern',
+					preview_family: 'modern',
 					preview_translation_1_key,
 					preview_translation_2_key,
 					preview_image_1_id,

@@ -24,12 +24,12 @@
 
 <FormWrapper>
 	<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
-		<input name="preview_family" type="hidden" value="plavna-modern" />
+		<input name="preview_family" type="hidden" value="modern" />
 		<GridCell cols={2}>
 			<GridCell cols={0.6}>
 				<Labeled as="label">
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.text_color" />
+						<Translation key="article_editor.previews.families.modern.text_color" />
 					</Label>
 					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
 				</Labeled>
@@ -37,7 +37,7 @@
 			<GridCell cols={0.6}>
 				<Labeled as="label">
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.text_bg_color" />
+						<Translation key="article_editor.previews.families.modern.text_bg_color" />
 					</Label>
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 				</Labeled>
@@ -45,7 +45,7 @@
 			<GridCell cols={0.4}>
 				<Labeled as="label">
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.cols" />
+						<Translation key="article_editor.previews.families.modern.cols" />
 					</Label>
 					<Input
 						type="number"
@@ -60,7 +60,7 @@
 			<GridCell cols={0.4}>
 				<Labeled as="label">
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.rows" />
+						<Translation key="article_editor.previews.families.modern.rows" />
 					</Label>
 					<Input
 						type="number"
@@ -75,7 +75,7 @@
 			<GridCell>
 				<Labeled>
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.image" />
+						<Translation key="article_editor.previews.families.modern.image" />
 					</Label>
 					<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
 				</Labeled>
@@ -83,7 +83,7 @@
 			<GridCell>
 				<Labeled>
 					<Label>
-						<Translation key="article_editor.previews.families.plavna_modern.image_depth" />
+						<Translation key="article_editor.previews.families.modern.image_depth" />
 					</Label>
 					<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
 				</Labeled>

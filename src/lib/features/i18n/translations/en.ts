@@ -139,8 +139,17 @@ export const EN = {
 			image_dropzone: 'Drop image here or click to choose from folder',
 			to_preview_the_preview: "See how it'll look",
 			families: {
-				plavna_modern: {
-					name: 'Plavna Modern',
+				modern: {
+					name: 'Modern',
+					text_bg_color: 'Text bg color',
+					text_color: 'Text color',
+					image: 'Image',
+					image_depth: 'Image depth map',
+					cols: 'Cols',
+					rows: 'Rows'
+				},
+				sequences: {
+					name: 'Sequences',
 					text_bg_color: 'Text bg color',
 					text_color: 'Text color',
 					image: 'Image',

@@ -3,7 +3,7 @@ import type { Component } from 'svelte';
 export const themes = {
 	color: ['milk'],
 	style: ['modern'],
-	'typography/functional': ['inter', 'manrope'],
+	'typography/functional': ['inter', 'sequences'],
 	'typography/aesthetic': ['inter', 'nyght']
 } as const;
 
