@@ -1,4 +1,5 @@
 import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import type { sequence } from '@sveltejs/kit/hooks';
 
 import type { EN } from './en';
 
@@ -140,7 +141,16 @@ export const UK = {
 			to_preview_the_preview: 'Переглянути',
 			families: {
 				modern: {
-					name: 'Плавний і сучасний',
+					name: 'Cучасний',
+					text_bg_color: 'Колір тла',
+					text_color: 'Колір тексту',
+					image: 'Зображення',
+					image_depth: 'Мапа глибини зображення',
+					cols: 'Cтовпців',
+					rows: 'Рядків'
+				},
+				sequences: {
+					name: 'Секвенції',
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
 					image: 'Зображення',

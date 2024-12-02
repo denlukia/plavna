@@ -10,15 +10,15 @@
 	--text-aesthetic-heading-1-size: 62px;
 	--text-aesthetic-heading-1-weight: 900;
 	--text-aesthetic-heading-1-line-height: 60px;
-	--text-aesthetic-heading-1-letter-spacing: -0.01em;
+	--text-aesthetic-heading-1-letter-spacing: 0;
 
 	--text-aesthetic-heading-2-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-heading-2-padding-top: 1px;
 	--text-aesthetic-heading-2-padding-bottom: 3px;
 	--text-aesthetic-heading-2-size: 34px;
 	--text-aesthetic-heading-2-weight: 800;
-	--text-aesthetic-heading-2-line-height: 36px;
-	--text-aesthetic-heading-2-letter-spacing: -0.01em;
+	--text-aesthetic-heading-2-line-height: 32px;
+	--text-aesthetic-heading-2-letter-spacing: 0;
 
 	--text-aesthetic-headline-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-headline-padding-top: 3px;
