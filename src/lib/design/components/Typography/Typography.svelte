@@ -45,6 +45,7 @@
 		margin: 0;
 		display: inline-block;
 		padding-inline: var(--text-padding-inline);
+		line-break: normal;
 	}
 
 	.outline {

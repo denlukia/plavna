@@ -1,5 +1,5 @@
 :root {
-	--text-aesthetic-main-font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	--text-aesthetic-main-font-family: Times, 'Times New Roman', serif;
 	--text-aesthetic-main-font-weight: 400;
 
 	--text-aesthetic-heading-1-font-family: 'Nyght Serif';
@@ -8,7 +8,7 @@
 	--text-aesthetic-heading-1-size: 69px;
 	--text-aesthetic-heading-1-weight: 800;
 	--text-aesthetic-heading-1-line-height: 70px;
-	--text-aesthetic-heading-1-font-style: italic;
+	--text-aesthetic-heading-1-font-style: normal;
 
 	--text-aesthetic-heading-2-font-family: 'Nyght Serif';
 	--text-aesthetic-heading-2-padding-top: 0px;
@@ -16,7 +16,7 @@
 	--text-aesthetic-heading-2-size: 34px;
 	--text-aesthetic-heading-2-weight: 600;
 	--text-aesthetic-heading-2-line-height: 40px;
-	--text-aesthetic-heading-2-font-style: italic;
+	--text-aesthetic-heading-2-font-style: normal;
 
 	--text-aesthetic-headline-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-headline-padding-top: 1px;
@@ -64,5 +64,5 @@
 	--size-aesthetic-switch-handle-border-width: 3.5px;
 	--border-aesthetic-switch-handle: var(--size-aesthetic-switch-handle-border-width) solid
 		var(--color-switch-handle-border);
-	--size-tag-switch-positioner-transform: translateY(0.05em);
+	--size-tag-switch-positioner-transform: translateY(0.075em);
 }

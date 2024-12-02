@@ -139,7 +139,7 @@ export const UK = {
 			image_dropzone: 'Перетягніть зображ. або натисніть, щоб вибрати',
 			to_preview_the_preview: 'Переглянути',
 			families: {
-				plavna_modern: {
+				modern: {
 					name: 'Плавний і сучасний',
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',

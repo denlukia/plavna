@@ -61,7 +61,7 @@
 
 {#snippet chip(text: string, customClass = '')}
 	<div class="chip {customClass}">
-		<Typography size="small-short" bold purpose="aesthetic">
+		<Typography size="small-short" purpose="aesthetic">
 			<AnimatedBlock key={text}>
 				{text}
 			</AnimatedBlock>

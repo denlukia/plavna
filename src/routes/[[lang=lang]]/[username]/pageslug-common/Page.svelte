@@ -77,7 +77,6 @@
 		align-items: center;
 		padding: var(--size-l);
 		gap: var(--size-m);
-		border-radius: var(--size-l);
 		padding-bottom: var(--size-4xl);
 
 		--rotation: 179deg;

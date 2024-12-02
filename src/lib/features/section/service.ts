@@ -55,19 +55,22 @@ export class SectionService {
 
 	async getOne(config: GetOneSectionParams) {
 		// 0. Prepare info needed for queries
-		const actor = await this.actorService.getOrThrow();
+		const actor = await this.actorService.get();
 		const lang = this.translationService.currentLang;
 
 		// 1. Query the DB
+
 		const queryResult = await queryGetOneSection(config, actor, lang);
+
 		if (!queryResult) return null;
 
 		const { section, previewFamilyIds, ...other } = queryResult;
 		const { title_translation, ...otherSection } = section;
 
 		// 2. Composing forms for actor if allowed
+
 		let forAuthor = null;
-		if (actor.id === section.meta.user_id) {
+		if (actor && actor.id === section.meta.user_id) {
 			const t = title_translation;
 			if (!t) throw Error("Couldn't add section description forms");
 

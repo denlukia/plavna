@@ -177,6 +177,7 @@ export class PageService {
 			pagePromise,
 			tagsAndTheirTranslationsPromise
 		]);
+
 		const tagsTranslationsAsObject = Object.fromEntries(
 			tagsAndTheirTranslationsInfo.map(({ translation: { key, [lang]: translation } }) => [
 				key,
@@ -196,6 +197,7 @@ export class PageService {
 				username
 			});
 		});
+
 		const sectionsResponses = await Promise.all(sectionsPromises);
 
 		const sectionsNonEmpty = sectionsResponses.filter(isNonNullable);
