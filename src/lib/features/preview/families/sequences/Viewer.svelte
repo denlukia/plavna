@@ -80,14 +80,16 @@
 				{/if}
 				<div class="info global-fix-overflow">
 					<div class="top">
-						{#if publish_time}
-							{@render chip(publish_time.toLocaleDateString(), 'date')}
-						{/if}
-						{#each tags.toReversed() as tag}
-							{#if tag}
-								{@render chip(tag)}
+						<div class="chips">
+							{#if publish_time}
+								{@render chip(publish_time.toLocaleDateString(), 'date')}
 							{/if}
-						{/each}
+							{#each tags.toReversed() as tag}
+								{#if tag}
+									{@render chip(tag)}
+								{/if}
+							{/each}
+						</div>
 					</div>
 					<div class="bottom">
 						<div class="texts {titleSize}">
@@ -133,24 +135,25 @@
 	}
 
 	.top {
-		padding: var(--size-m);
 		display: flex;
 		justify-content: flex-end;
-		flex-wrap: wrap-reverse;
+	}
+
+	.chips {
+		display: flex;
+		background-color: var(--bg-color, var(--neutral-1000));
+		padding: var(--size-s-to-m) var(--size-m-to-l);
+		gap: var(--size-s-to-m);
 	}
 
 	.chip {
 		display: flex;
-		padding: var(--size-xs) var(--size-m);
-		background-color: var(--bg-color, var(--neutral-1000));
 		color: var(--text-color, var(--neutral-0));
-		margin-left: calc(var(--size-m) * -1);
 	}
 
 	.bottom {
 		display: flex;
 		justify-content: flex-start;
-		padding: var(--size-m);
 	}
 
 	.texts {
