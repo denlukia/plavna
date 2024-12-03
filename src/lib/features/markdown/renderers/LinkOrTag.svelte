@@ -9,17 +9,17 @@
 		children: Snippet;
 	};
 
-	let { children, href }: Props = $props();
+	let { children, href, ...other }: Props = $props();
 
 	let tagId = href.startsWith('tag:') ? Number(href.split('tag:')[1]) : null;
 </script>
 
 {#if tagId !== null}
-	<TagSwitch {tagId}>
+	<TagSwitch {tagId} {...other}>
 		{@render children()}
 	</TagSwitch>
 {:else}
-	<Link {href}>
+	<Link {href} {...other}>
 		{@render children()}
 	</Link>
 {/if}

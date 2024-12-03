@@ -55,17 +55,17 @@
 	--text-aesthetic-small-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-small-padding-top: 1px;
 	--text-aesthetic-small-padding-bottom: 3px;
-	--text-aesthetic-small-size: 11px;
+	--text-aesthetic-small-size: 14px;
 	--text-aesthetic-small-weight: 550;
-	--text-aesthetic-small-line-height: 16px;
+	--text-aesthetic-small-line-height: 20px;
 	--text-aesthetic-small-letter-spacing: 0;
 
 	--text-aesthetic-small-short-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-small-short-padding-top: 2px;
 	--text-aesthetic-small-short-padding-bottom: 2px;
-	--text-aesthetic-small-short-size: 11px;
+	--text-aesthetic-small-short-size: 14px;
 	--text-aesthetic-small-short-weight: 550;
-	--text-aesthetic-small-short-line-height: 12px;
+	--text-aesthetic-small-short-line-height: 16px;
 	--text-aesthetic-small-short-letter-spacing: 0;
 
 	/* Switch */
