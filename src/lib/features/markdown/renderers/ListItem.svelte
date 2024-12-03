@@ -1,0 +1,19 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	type Props = {
+		children: Snippet;
+	};
+
+	let { children }: Props = $props();
+</script>
+
+<li class="list-item">
+	{@render children()}
+</li>
+
+<style>
+	.list-item {
+		margin-bottom: var(--size-m);
+	}
+</style>

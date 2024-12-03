@@ -16,7 +16,7 @@ export async function enrichCategories(
 		const errorText = `${subPath} theme not found in ${Object.keys(glob).join(', ')}`;
 
 		if (!foundEntry) {
-			console.warn(errorText);
+			// console.warn(errorText);
 			continue;
 		}
 		const [, getter] = foundEntry;
@@ -30,7 +30,7 @@ export async function enrichCategories(
 		) {
 			componentSet[category] = themeModule.default as Component;
 		} else {
-			console.warn(errorText);
+			// console.warn(errorText);
 		}
 	}
 
