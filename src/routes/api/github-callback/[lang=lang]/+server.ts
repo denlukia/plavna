@@ -36,7 +36,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			.where(eq(table_users.github_id, githubUser.id))
 			.get();
 
-		const username = githubUser.login;
+		const githubUsername = githubUser.login;
 
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
@@ -51,7 +51,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			await db.insert(table_users).values({
 				id: userId,
 				github_id: githubUser.id,
-				username
+				username: githubUsername
 			});
 
 			const session = await lucia.createSession(userId, {});
@@ -65,7 +65,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			status: 302,
 			headers: {
 				Location: generatePath('/[lang]/[username]/pages', event.params, {
-					username
+					username: existingUser?.username || githubUsername
 				})
 			}
 		});
