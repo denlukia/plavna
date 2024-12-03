@@ -3,6 +3,7 @@
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
 	import { ARTICLES_PER_SECTION } from '$lib/collections/config';
+	import Button from '$lib/design/components/Button/Button.svelte';
 	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
@@ -38,6 +39,21 @@
 	} = $state(structuredClone(initialPaginator));
 
 	let editorOpened = $state(false);
+
+	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
+
+	const sectionContext: SectionContext = $state({
+		id: section.meta.id,
+		activeTags: section.activeTags,
+		onTagSwitch,
+		loadingTagId: null
+	});
+
+	$effect(() => {
+		sectionContext.activeTags = Array.from(section.activeTags);
+	});
+
+	setContext('section', sectionContext);
 
 	function sectionHasForms(section: SectionProp): section is SectionPropWithAuthorship {
 		return Boolean(section.forAuthor);
@@ -156,24 +172,17 @@
 			paginator = structuredClone(initialPaginator);
 		}
 	}
-
-	type SectionFetchReturn = Awaited<ReturnType<SectionService['getOne']>>;
-
-	const sectionContext: SectionContext = $state({
-		id: section.meta.id,
-		activeTags: section.activeTags,
-		onTagSwitch,
-		loadingTagId: null
-	});
-
-	$effect(() => {
-		sectionContext.activeTags = Array.from(section.activeTags);
-	});
-
-	setContext('section', sectionContext);
 </script>
 
-<section class="section" class:disabled={sectionContext.activeTags.length === 0 && !editorOpened}>
+<section class="section">
+	{#if sectionHasForms(section) && !editorOpened}
+		<div class="actions-wrapper">
+			<Button size="small" kind="secondary" onclick={onEditorOpen}>
+				<Translation key="page_actor.section.edit" />
+			</Button>
+		</div>
+	{/if}
+
 	<div class="description">
 		{#if sectionHasForms(section) && editorOpened}
 			<SectionEditor
@@ -183,7 +192,7 @@
 				onSuccessfullUpdate={() => (editorOpened = false)}
 			/>
 		{:else}
-			<SectionViewer {section} {onEditorOpen} showEditButton={sectionHasForms(section)} />
+			<SectionViewer {section} {onEditorOpen} />
 		{/if}
 	</div>
 
@@ -205,19 +214,21 @@
 </section>
 
 <style>
-	.description {
-		max-width: var(--size-section-max-width);
-		transition: var(--transition-section-description);
-	}
-
 	.section {
 		position: relative;
 		margin-bottom: var(--size-section-margin-bottom);
 		transition: opacity 0.5s;
 	}
 
-	.disabled {
-		opacity: 0.25;
+	.actions-wrapper {
+		position: absolute;
+		left: 0;
+		top: var(--size-description-viewer-actions-top);
+	}
+
+	.description {
+		max-width: var(--size-section-max-width);
+		transition: var(--transition-section-description);
 	}
 
 	.articles-list-wrapper,

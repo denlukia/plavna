@@ -1,18 +1,21 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { lexer, type Token, type TokensList } from 'marked';
+import { lexer, type Token } from 'marked';
 
 import type { TagSelect } from '../tag/validators';
 import type { TagIdWithLang } from './types';
 import type { SectionInsert } from './validators';
 
-export function findTagIdsInLinks(tokens: TokensList) {
+export function findTagsInText(text: string) {
+	const tokens = lexer(text);
 	const tags: TagSelect['id'][] = [];
 	function parseTokensArray(tokens: Token[]) {
 		tokens.forEach((token) => {
 			if (token.type === 'link' && token.href.startsWith('tag:')) {
 				const tagId = Number(token.href.split('tag:')[1]);
 
-				tags.push(tagId);
+				if (!tags.includes(tagId)) {
+					tags.push(tagId);
+				}
 			}
 
 			if ('tokens' in token && token.tokens) {
@@ -31,9 +34,7 @@ export function findTagsInSectionTranslations(translations: SectionInsert): TagI
 		const translationText = translations[lang];
 		if (!translationText) return;
 
-		const tokens = lexer(translationText);
-
-		const foundTagIds = findTagIdsInLinks(tokens);
+		const foundTagIds = findTagsInText(translationText);
 
 		tagIds.push(...foundTagIds.map((tid) => ({ tag_id: tid, lang })));
 	});

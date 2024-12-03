@@ -2,7 +2,7 @@ import { dev } from '$app/environment';
 import { PUBLIC_HOST } from '$env/static/public';
 import type { User } from 'lucia';
 
-export const SECTIONS_PER_PAGE = 10;
+export const SECTIONS_PER_PAGE = 5;
 export const ARTICLES_PER_SECTION = 10;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
 export const PREVIEW_TEMPLATE_PARAM = 'preview-template';
@@ -62,6 +62,8 @@ export const imageSourceToEndpointKeyInUser = {
 
 export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;
 
-export const PAGE_SLUG_PREFIX = 'p:';
+export const PAGE_SLUG_PREFIX = 'page:';
 
 export const WAIT_BEFORE_AUTOSAVE_MS = 1000;
+
+export const HIDDEN_TAG_PREFIX = '*';

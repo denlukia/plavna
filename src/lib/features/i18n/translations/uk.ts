@@ -59,6 +59,7 @@ export const UK = {
 			cancel: 'Відмінити',
 			description: 'Опис',
 			available_tags: 'Доступні теги',
+			hidden_tags_tip: 'Залиште текст між [] пустим щоб створити приховане згадування тега',
 			gotta_create_tags:
 				'Створіть хоч один тег під час створення статті щоб послатися на нього в секції',
 			tag_name: 'Назва тега',
@@ -108,6 +109,7 @@ export const UK = {
 		},
 		tags: {
 			list_label: 'Теги',
+			hidden_tag_tip: 'Починайте переклади тега з * щоб зробити його невидимим у картках статей',
 			template_editing_form_title: 'Тег',
 			name_label: 'Назва',
 			edit_name_label: 'Редагувати назву',

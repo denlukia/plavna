@@ -17,6 +17,7 @@
 	import TagsList from '../tag/SectionTagsList.svelte';
 	import type { TagSelect } from '../tag/validators';
 	import SectionDeletion from './SectionDeletion.svelte';
+	import { findTagsInText } from './utils';
 	import type { SectionDelete, SectionInsert, SectionUpdate } from './validators';
 
 	type Props = {
@@ -52,9 +53,8 @@
 		if (!text) {
 			return [];
 		}
-		let tokens = lexer(text);
 
-		return findAllTagsInTokens(tokens);
+		return findTagsInText(text);
 	});
 
 	let descriptionInput = $state({
@@ -62,21 +62,6 @@
 		selectionStart: 0,
 		selectionEnd: 0
 	});
-
-	function findAllTagsInTokens(tokens: Token[]): TagSelect['id'][] {
-		const tags: TagSelect['id'][] = [];
-		for (let token of tokens) {
-			const isLinkToken = token.type === 'link' && token.href.startsWith('tag:');
-			if (isLinkToken) {
-				tags.push(Number(token.href.split('tag:')[1]));
-			}
-			if ('tokens' in token && token.tokens) {
-				tags.push(...findAllTagsInTokens(token.tokens));
-			}
-		}
-		const deduped = Array.from(new Set(tags));
-		return deduped;
-	}
 
 	function deleteTagsIfPresent(text: string, tagId: TagSelect['id']) {
 		const mdLinkRegex = /\s*\[(.*?)\]\(tag:(\d*)\)\s*/gm;
@@ -151,6 +136,7 @@
 
 			<Labeled as="label">
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
+				<Label tone="additional"><Translation key="page_actor.section.hidden_tags_tip" /></Label>
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
 				{:else}

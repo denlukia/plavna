@@ -73,6 +73,8 @@
 								}}
 							/>
 						{/if}
+						<Label tone="additional"><Translation key="article_editor.tags.hidden_tag_tip" /></Label
+						>
 					</Labeled>
 
 					<div class="global-text-align-center">
