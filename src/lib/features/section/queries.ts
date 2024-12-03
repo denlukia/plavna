@@ -53,8 +53,6 @@ export async function queryGetOneSection(
 		sectionOffset = config.sectionOffset;
 	}
 
-	sectionWhere.push(isNotNull(table_translations[lang]));
-
 	const sectionAndTranslation = await db
 		.select({ meta: table_sections, translation: table_translations })
 		.from(table_sections)
@@ -66,7 +64,21 @@ export async function queryGetOneSection(
 
 	if (!sectionAndTranslation) return null;
 	if (!sectionAndTranslation.translation[lang]) {
-		return null;
+		if (actor?.id !== sectionAndTranslation.meta.user_id) {
+			return null;
+		} else {
+			return {
+				section: {
+					meta: sectionAndTranslation.meta,
+					activeTags: [],
+					articles: [],
+					title_translation: sectionAndTranslation.translation
+				},
+				recordsTranslations: {},
+				previewFamilyIds: [],
+				images: {}
+			};
+		}
 	}
 
 	// 2. + its Tags + TagsToArticles (filtered)

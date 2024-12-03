@@ -6,22 +6,30 @@
 
 	import { getRecordTranslation } from '../i18n/utils';
 	import type { SectionProp } from './types';
+	import { findTagsInText } from './utils';
 
 	type Props = {
 		section: SectionProp;
 		onEditorOpen: () => void;
-		showEditButton: boolean;
 	};
 
-	let { section, onEditorOpen, showEditButton }: Props = $props();
+	let { section, onEditorOpen }: Props = $props();
 
 	let transitionKey = $derived(section.meta.title_translation_key);
 	let descriptionTranslation = $derived(
 		getRecordTranslation(transitionKey, $page.data.recordsTranslationsState?.value)
 	);
+	let disabled = $derived.by(getDisabled);
+
+	function getDisabled() {
+		if (!descriptionTranslation) return false;
+		let tags = findTagsInText(descriptionTranslation);
+		let activeTags = section.activeTags;
+		return tags.length > 0 && activeTags.length === 0;
+	}
 </script>
 
-<div class="description-viewer">
+<div class="description-viewer" class:disabled>
 	{#if descriptionTranslation}
 		<Translation recordKey={transitionKey} markdown />
 	{:else}
@@ -31,25 +39,18 @@
 			</InfoBlock>
 		</div>
 	{/if}
-	{#if showEditButton}
-		<div class="actions-wrapper">
-			<Button size="small" kind="secondary" onclick={onEditorOpen}>
-				<Translation key="page_actor.section.edit" />
-			</Button>
-		</div>
-	{/if}
 </div>
 
 <style>
 	.description-viewer {
 		position: relative;
+		transition: opacity 250ms;
 	}
 	.info-block-wrapper {
 		padding-top: var(--size-description-viewer-padding-top);
 	}
-	.actions-wrapper {
-		position: absolute;
-		left: 0;
-		top: var(--size-description-viewer-actions-top);
+
+	.disabled {
+		opacity: 0.25;
 	}
 </style>

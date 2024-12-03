@@ -104,7 +104,7 @@ export class SectionService {
 		const actor = await this.actorService.getOrThrow();
 
 		const result = await queryGetSectionsQuantity(pagename, actor.id);
-		if (!result || result.count <= SECTIONS_PER_PAGE) {
+		if (!result || result.count >= SECTIONS_PER_PAGE) {
 			error(403, ERRORS.TOO_MANY_SECTIONS_ON_PAGE);
 		}
 

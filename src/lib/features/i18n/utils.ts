@@ -1,9 +1,11 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 
+import type { RecordsTranslationsState } from './state.svelte';
 import { EN } from './translations/en';
 import { UK } from './translations/uk';
 import type {
+	RecordsTranslationsDict,
 	SystemTranslationDict,
 	SystemTranslationKey,
 	SystemTranslationSliceKey
@@ -87,7 +89,7 @@ export function getSystemTranslation(
 }
 export function getRecordTranslation(
 	key: TranslationSelect['key'],
-	recordsTranslations: App.PageData['recordsTranslations']
+	recordsTranslations: RecordsTranslationsDict | undefined
 ) {
 	return recordsTranslations?.[key];
 }

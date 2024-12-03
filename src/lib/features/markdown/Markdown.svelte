@@ -1,5 +1,8 @@
 <script lang="ts">
-	// Renderers
+	import Markdown from 'svelte-exmarkdown';
+	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
+	import type { Plugin } from 'svelte-exmarkdown/types';
+
 	import Em from './renderers/Em.svelte';
 	import H1 from './renderers/heading/H1.svelte';
 	import H2 from './renderers/heading/H2.svelte';
@@ -16,10 +19,6 @@
 	import Strong from './renderers/Strong.svelte';
 	import Sup from './renderers/Sup.svelte';
 	import UnorderedList from './renderers/UnorderedList.svelte';
-	// Other
-	import { gfmPlugin } from './svelte-exmarkdown/gfm';
-	import Markdown from './svelte-exmarkdown/Markdown.svelte';
-	import type { Plugin } from './svelte-exmarkdown/types';
 
 	type Props = {
 		source: string;

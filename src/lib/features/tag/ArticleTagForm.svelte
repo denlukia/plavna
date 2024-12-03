@@ -43,6 +43,7 @@
 				<Labeled as="label">
 					<Label><Translation key="article_editor.tags.name_label" /></Label>
 					<LanguagedInput superform={form} />
+					<Label tone="additional"><Translation key="article_editor.tags.hidden_tag_tip" /></Label>
 				</Labeled>
 				<Button>
 					<Translation key="article_editor.tags.create" />

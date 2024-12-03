@@ -57,6 +57,7 @@ export const EN = {
 			cancel: 'Cancel',
 			description: 'Description',
 			available_tags: 'Available tags',
+			hidden_tags_tip: 'Leave text between [] empty to create a hidden tag mention',
 			gotta_create_tags:
 				'Create at least one tag during article creation to reference it in section',
 			tag_name: 'Tag name',
@@ -107,6 +108,7 @@ export const EN = {
 		},
 		tags: {
 			list_label: 'Tags',
+			hidden_tag_tip: 'Start tag translations with * to make it hidden in article cards',
 			template_editing_form_title: 'Tag',
 			name_label: 'Name',
 			edit_name_label: 'Edit name',

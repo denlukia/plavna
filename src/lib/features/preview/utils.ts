@@ -1,3 +1,5 @@
+import { HIDDEN_TAG_PREFIX } from '$lib/collections/config';
+
 import type { ArticleSelect } from '../article/validators';
 import type { RecordsTranslationsDict } from '../i18n/types';
 import { getRecordTranslation } from '../i18n/utils';
@@ -16,6 +18,9 @@ export function getPreviewData(
 	user: User | null
 ): PreviewDataProp {
 	const { meta, tags } = article;
+	const filteredTags = tags
+		.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations))
+		.filter((s) => !s?.startsWith(HIDDEN_TAG_PREFIX));
 	return {
 		title_translation: getRecordTranslation(meta.title_translation_key, recordsTranslations),
 		description_translation: getRecordTranslation(
@@ -30,7 +35,7 @@ export function getPreviewData(
 		translation_1: getRecordTranslation(meta.preview_translation_1_key, recordsTranslations),
 		translation_2: getRecordTranslation(meta.preview_translation_2_key, recordsTranslations),
 		publish_time: meta.publish_time,
-		tags: tags.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations)),
+		tags: filteredTags,
 
 		img_1: getImagePathAndMeta(meta.preview_image_1_id, user, images, recordsTranslations),
 		img_2: getImagePathAndMeta(meta.preview_image_2_id, user, images, recordsTranslations),
