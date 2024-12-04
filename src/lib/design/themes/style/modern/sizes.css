@@ -214,5 +214,5 @@
 	--size-loader-spinner-radius: var(--size-full);
 	--size-loader-spinner-outer-padding: var(--size-m);
 	--size-loader-spinner: var(--size-xl);
-	--size-loader-spinner-thickness: var(--size-s);
+	--size-loader-spinner-thickness: var(--size-xs);
 }

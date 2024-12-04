@@ -1,5 +1,4 @@
 import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
-import type { sequence } from '@sveltejs/kit/hooks';
 
 import type { EN } from './en';
 
@@ -10,7 +9,8 @@ export const UK = {
 		my: 'Мої',
 		no_translation: 'Без перекладу',
 		or: 'або',
-		save: 'Зберегти'
+		save: 'Зберегти',
+		only_for_big_screens: 'Наразі Плавна доступна лише для більших екранів'
 	},
 	actor_errors: {
 		disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
@@ -169,7 +169,8 @@ export const UK = {
 	settings: {
 		heading: 'Мої налаштування',
 		username: "Ім'я користувача",
-		save: 'Зберегти'
+		save: 'Зберегти',
+		setup_username: 'Налаштувати імʼя користувача'
 	}
 };
 

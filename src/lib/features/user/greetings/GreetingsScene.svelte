@@ -4,11 +4,12 @@
 	import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 
 	import { convertPathToCurve } from './paths';
-	import svg from './translations/uk.svg?inline';
+	import svg from './translations/uk.svg?raw';
 
 	let canvas: HTMLCanvasElement | null = $state(null);
 	let canvasRect = $state({ width: 0, height: 0 });
 	let initialized = $state(false);
+	let shown = $state(false);
 
 	let camera: THREE.OrthographicCamera;
 	let scene: THREE.Scene;
@@ -18,7 +19,7 @@
 		// 1. Scene setup
 		scene = new THREE.Scene();
 
-		const frustumDivider = 2.5;
+		const frustumDivider = 2;
 		camera = new THREE.OrthographicCamera(
 			-width / frustumDivider,
 			width / frustumDivider,
@@ -46,7 +47,17 @@
 		// Group that will contain all of our paths
 		const svgGroup = new THREE.Group();
 
-		const material = new THREE.MeshNormalMaterial();
+		const material = new THREE.MeshPhysicalMaterial({
+			color: 0xffffff, // Base white color
+			roughness: 0.9, // Smooth but not too reflective
+			transmission: 0.95, // High transmission for a translucent look
+			thickness: 0.5, // Simulates the thickness of the material
+			ior: 1.33, // Index of refraction similar to water/milk
+			opacity: 0.9, // Slightly opaque
+			specularIntensity: 0.2, // Low specular highlights
+			sheen: 0.5, // Subtle sheen for realism
+			envMapIntensity: 0.3 // Reflect environment lightly
+		});
 
 		// Loop through all of the parsed paths
 		svgData.paths.forEach((path, i) => {
@@ -98,15 +109,6 @@
 		renderer.render(scene, camera);
 	};
 
-	const animate = () => {
-		requestAnimationFrame(animate);
-
-		// cube.rotation.x += 0.005;
-		// cube.rotation.y += 0.005;
-
-		render();
-	};
-
 	$effect(() => {
 		if (!canvas) return;
 		if (!initialized && canvasRect.width > 0 && canvasRect.height > 0) {
@@ -116,8 +118,9 @@
 				untrack(() => canvasRect.height)
 			);
 			render();
-			// animate();
+
 			initialized = true;
+			setTimeout(() => (shown = true), 2000);
 		}
 	});
 
@@ -128,12 +131,31 @@
 	});
 </script>
 
-<canvas bind:this={canvas} bind:clientWidth={canvasRect.width} bind:clientHeight={canvasRect.height}
-></canvas>
+<canvas
+	class:hidden={!shown}
+	bind:this={canvas}
+	bind:clientWidth={canvasRect.width}
+	bind:clientHeight={canvasRect.height}
+>
+</canvas>
 
 <style>
 	canvas {
 		width: 100%;
 		height: 100%;
+		transition: opacity 500ms;
+	}
+
+	.hidden {
+		opacity: 0;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 </style>

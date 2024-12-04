@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
 	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
@@ -10,12 +13,13 @@
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import Greetings from '$lib/features/user/greetings/Greetings.svelte';
 
 	let { data } = $props();
 
-	let { routeId, superValidated } = $derived(data);
+	let { routeId, superValidated, closedGreetings } = $derived(data);
 
-	let { form, enhance, errors } = superForm(superValidated);
+	let { form, enhance: enhanceSettings, errors } = superForm(superValidated);
 </script>
 
 <Animated key={routeId}>
@@ -25,7 +29,7 @@
 
 	<ColumnedContent>
 		<Column>
-			<form use:enhance method="POST">
+			<form use:enhanceSettings method="POST" action="?/update_settings">
 				<Labeled>
 					<Label>
 						<Translation key="settings.username" />
@@ -42,5 +46,25 @@
 	</ColumnedContent>
 </Animated>
 
+{#if !closedGreetings}
+	<Greetings>
+		<form use:enhance method="POST" action="?/close_greetings" class="close-greetings-form">
+			<Button kind="translucent"><Translation key="settings.setup_username" /></Button>
+		</form>
+	</Greetings>
+{/if}
+
 <style>
+	.close-greetings-form {
+		animation: fade-in 500ms 4000ms backwards;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 </style>

@@ -8,6 +8,8 @@ import { table_users } from '$lib/features/user/schema';
 import { getGitHubProvider, lucia } from '$lib/services/auth';
 import { db } from '$lib/services/db';
 
+import { CLOSED_GREETINGS_COOKIE_NAME } from '../../../[[lang=lang]]/[username]/settings/config';
+
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
@@ -61,12 +63,19 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				...sessionCookie.attributes
 			});
 		}
+
+		const redirectPathTemplate = event.cookies.get(CLOSED_GREETINGS_COOKIE_NAME)
+			? '/[lang]/[username]/pages'
+			: '/[lang]/[username]/settings';
+		const redirectUsername = existingUser?.username || githubUsername;
+		const redirectLocation = generatePath(redirectPathTemplate, event.params, {
+			username: redirectUsername
+		});
+
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: generatePath('/[lang]/[username]/pages', event.params, {
-					username: existingUser?.username || githubUsername
-				})
+				Location: redirectLocation
 			}
 		});
 	} catch (e) {
