@@ -6,17 +6,21 @@ import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import { userSettingsFormSchema } from '$lib/features/user/validators';
 
 import type { Actions, PageServerLoad } from './$types';
+import { CLOSED_GREETINGS_COOKIE_NAME } from './config';
 
-export const load: PageServerLoad = async ({ params, parent, route, locals }) => {
+export const load: PageServerLoad = async ({ params, parent, route, locals, cookies }) => {
 	const { systemTranslations } = await parent();
 
 	const superValidated = await locals.actorService.getSettingsForm(params.username);
+
+	const closedGreetings = Boolean(cookies.get(CLOSED_GREETINGS_COOKIE_NAME));
 
 	const routeId = route.id;
 
 	return {
 		routeId,
 		superValidated,
+		closedGreetings,
 		systemTranslations: {
 			...systemTranslations,
 			...getSystemTranslationsSlice('settings', getLang(params.lang))
@@ -25,7 +29,7 @@ export const load: PageServerLoad = async ({ params, parent, route, locals }) =>
 };
 
 export const actions: Actions = {
-	default: async ({ request, params, locals: { actorService } }) => {
+	update_settings: async ({ request, params, locals: { actorService } }) => {
 		const form = await superValidate(request, zod(userSettingsFormSchema));
 		if (!form.valid) {
 			return fail(400, { form });
@@ -41,5 +45,15 @@ export const actions: Actions = {
 		}
 
 		return { form };
+	},
+	close_greetings: async ({ cookies }) => {
+		cookies.set(CLOSED_GREETINGS_COOKIE_NAME, 'true', {
+			path: '/',
+			httpOnly: true,
+			maxAge: 60 * 60 * 24 * 30,
+			sameSite: 'lax'
+		});
+
+		return;
 	}
 };

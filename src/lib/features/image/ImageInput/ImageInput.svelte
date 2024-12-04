@@ -3,6 +3,7 @@
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import LayerFlashlight from '$lib/design/components/ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import Image from '$lib/design/components/Image/Image.svelte';
@@ -71,7 +72,7 @@
 	<Layers stretch overflow="visible">
 		{#if imageProvider.hasValidCredentialsSet}
 			{#if image && image.id && pathAndMeta}
-				<div class="image">
+				<div class="image" transition:fade={{ duration: 250 }}>
 					<Image {pathAndMeta} />
 				</div>
 			{:else}

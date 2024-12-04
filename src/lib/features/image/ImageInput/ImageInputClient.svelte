@@ -140,7 +140,7 @@
 	<DropZone {name} {onImageChange} />
 {/if}
 {#if processing}
-	<div class="spinner-wrapper" transition:fade>
+	<div class="spinner-wrapper" transition:fade={{ duration: 250 }}>
 		<Spinner />
 	</div>
 {/if}

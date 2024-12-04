@@ -8,7 +8,8 @@ export const EN = {
 		my: 'My',
 		no_translation: 'No translation',
 		or: 'or',
-		save: 'Save'
+		save: 'Save',
+		only_for_big_screens: 'Plavna is available only for bigger screens for now'
 	},
 	actor_errors: {
 		disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
@@ -168,6 +169,7 @@ export const EN = {
 	settings: {
 		heading: 'My Settings',
 		username: 'Username',
-		save: 'Save'
+		save: 'Save',
+		setup_username: 'Setup username'
 	}
 };
