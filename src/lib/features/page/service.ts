@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { SECTIONS_PER_PAGE } from '$lib/collections/config';
-import type { ThemeSet } from '$lib/design/themes/themes';
+import { defaultThemeSet, type ThemeSet } from '$lib/design/themes/themes';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';
@@ -107,7 +107,7 @@ export class PageService {
 		const themes = await queryGetThemes(username, pageslug);
 
 		if (!themes) {
-			error(404);
+			return defaultThemeSet;
 		}
 
 		return {
