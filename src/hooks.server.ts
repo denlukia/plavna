@@ -11,7 +11,6 @@ import { ActorService } from '$lib/features/user/service';
 import { lucia } from '$lib/services/auth';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log(event.route.id);
 	const { locals, cookies, params } = event;
 
 	locals.session = null;

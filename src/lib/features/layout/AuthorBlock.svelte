@@ -55,5 +55,5 @@
 	href={generatePath('/[lang]/[username]/new', $page.params, { username: actor.username })}
 	dataSvelteKitPreloadData="off"
 >
-	New article
+	<Translation key="layout.new_article" />
 </Button>

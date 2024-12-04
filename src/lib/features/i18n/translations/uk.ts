@@ -10,7 +10,8 @@ export const UK = {
 		no_translation: 'Без перекладу',
 		or: 'або',
 		save: 'Зберегти',
-		only_for_big_screens: 'Наразі Плавна доступна лише для більших екранів'
+		only_for_big_screens: 'Наразі Плавна доступна лише для більших екранів',
+		new_article: 'Нова стаття'
 	},
 	actor_errors: {
 		disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
