@@ -25,7 +25,7 @@
 
 <Card {link} linkText="{PUBLIC_HOST}{link}">
 	{#snippet title()}
-		<Translation recordKey={article.title_translation_key} />
+		<Translation recordKey={article.title_translation_key} markdown="basic" />
 	{/snippet}
 	{#snippet actions()}
 		<form use:enhance method="POST">

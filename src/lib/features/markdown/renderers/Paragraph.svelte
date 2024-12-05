@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
+	import { getMarkdownContext } from '../markdown-context';
 	import { getListContext } from './list-context';
 
 	type Props = {
@@ -11,9 +12,10 @@
 	let { children, ...other }: Props = $props();
 
 	const listContext = getListContext();
+	const markdownContext = getMarkdownContext();
 </script>
 
-{#if listContext}
+{#if listContext || markdownContext?.onlyBasic}
 	{@render children()}
 {:else}
 	<p class="paragraph">

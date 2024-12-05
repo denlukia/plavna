@@ -24,7 +24,7 @@
 		recordKey?: null;
 	};
 	type Props = {
-		markdown?: boolean;
+		markdown?: boolean | 'basic';
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
 	let { superValidated, key, recordKey, markdown = false }: Props = $props();
@@ -46,7 +46,7 @@
 <AnimatedBlock key={translation + noTranslationText} text>
 	{#if translation}
 		{#if markdown}
-			<Markdown source={translation} />
+			<Markdown source={translation} onlyBasic={markdown === 'basic'} />
 		{:else}
 			{@html translation}
 		{/if}
