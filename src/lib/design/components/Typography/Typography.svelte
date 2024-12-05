@@ -32,8 +32,9 @@
 
 <svelte:window {onkeypress} />
 <span
-	class="text global-text-{purpose}-{size} tone-{tone}"
-	class:global-text-strong={bold}
+	class="text global-text-{purpose}-{size} tone-{tone} {bold
+		? `global-text-${purpose}-strong`
+		: ''}"
 	class:outline
 	class:reset-padding={resetPadding}
 >

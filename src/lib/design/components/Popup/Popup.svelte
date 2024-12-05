@@ -16,6 +16,7 @@
 		label: Snippet;
 		content: Snippet;
 		buttonProps?: ButtonProps;
+		style?: string;
 	};
 
 	let {
@@ -25,7 +26,8 @@
 		active = $bindable(),
 		label,
 		content,
-		buttonProps
+		buttonProps,
+		style
 	}: Props = $props();
 
 	function onclick() {
@@ -50,7 +52,7 @@
 	{/if}
 
 	{#if active}
-		<div class="popup-positioner">
+		<div class="popup-positioner" {style}>
 			<Box {kind}>
 				{@render content()}
 			</Box>
@@ -68,7 +70,7 @@
 		bottom: 0%;
 		left: 50%;
 		width: max-content;
-		max-width: 200px;
+		/* max-width: 200px; */
 		transform: translate(-50%, 100%);
 		z-index: 1;
 	}

@@ -7,13 +7,14 @@
 	type Props = {
 		key: any;
 		children: Snippet;
+		text?: boolean;
 	};
 
-	let { key, children }: Props = $props();
+	let { key, children, text }: Props = $props();
 </script>
 
 <Layers overflow="visible" inline>
-	<Animator {key} animateIntroWithCss={false} global={false}>
+	<Animator {key} animateIntroWithCss={false} global={false} {text}>
 		{@render children()}
 	</Animator>
 </Layers>

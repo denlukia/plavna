@@ -19,9 +19,6 @@
 
 	/* ------ Semantic ------ */
 
-	/* --- Main Layout */
-	--size-main-layout-margin-top: var(--size-3xl);
-
 	/* --- Grid --- */
 	--size-max-cell-width: 240px;
 	--size-cell-aspect: 120 / 240;

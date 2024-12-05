@@ -67,3 +67,9 @@ export const PAGE_SLUG_PREFIX = 'page:';
 export const WAIT_BEFORE_AUTOSAVE_MS = 1000;
 
 export const HIDDEN_TAG_PREFIX = '*';
+
+export const SLUG_MIN_LENGTH = 3;
+
+export const SLUG_MAX_LENGTH = 64;
+
+export const SLUG_ALLOWED_CHARS_REGEX = /^[a-z0-9-]*$/i;

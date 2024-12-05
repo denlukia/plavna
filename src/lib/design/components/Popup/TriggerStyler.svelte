@@ -25,7 +25,7 @@
 			class="
 					dropdown
 					global-disable-default-outline
-					global-text-strong
+					global-text-functional-strong
 					global-text-functional-{isInInput ? 'small-short' : 'body-short'}
 					global-reset-select"
 		>

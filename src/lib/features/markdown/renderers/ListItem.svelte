@@ -14,6 +14,6 @@
 
 <style>
 	.list-item {
-		margin-bottom: var(--size-m);
+		margin-bottom: 0.5em;
 	}
 </style>

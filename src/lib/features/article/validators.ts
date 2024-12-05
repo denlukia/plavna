@@ -1,6 +1,11 @@
 import type { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
+import {
+	SLUG_ALLOWED_CHARS_REGEX,
+	SLUG_MAX_LENGTH,
+	SLUG_MIN_LENGTH
+} from '$lib/collections/config';
 
 import { checkTranslationKey } from '../i18n/utils';
 import { previewFamiliesIds } from '../preview/families';
@@ -13,13 +18,13 @@ import { table_articles } from './schema';
 
 const slugValidator = z
 	.string() //
-	.min(3, {
-		message: checkTranslationKey('actor_errors.min_length_3')
+	.min(SLUG_MIN_LENGTH, {
+		message: checkTranslationKey('actor_errors.min_length')
 	})
-	.max(15, {
-		message: checkTranslationKey('actor_errors.max_length_15')
+	.max(SLUG_MAX_LENGTH, {
+		message: checkTranslationKey('actor_errors.max_length')
 	})
-	.regex(/^[a-z0-9-]*$/i, {
+	.regex(SLUG_ALLOWED_CHARS_REGEX, {
 		message: checkTranslationKey('actor_errors.disallowed_chars')
 	});
 

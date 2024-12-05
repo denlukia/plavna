@@ -12,6 +12,16 @@
 	setListContext();
 </script>
 
-<ul>
+<ul class="unordered-list">
 	{@render children()}
 </ul>
+
+<style>
+	.unordered-list {
+		padding-left: var(--size-xl);
+		margin-bottom: 1em;
+	}
+	:global(p) + .unordered-list {
+		margin-top: -0.5em;
+	}
+</style>

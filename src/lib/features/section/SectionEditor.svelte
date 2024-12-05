@@ -132,11 +132,12 @@
 					rows={3}
 				/>
 				<Errors errors={$errors} />
+				<Label tone="additional"><Translation key="page_actor.section.hidden_tags_tip" /></Label>
 			</Labeled>
 
 			<Labeled as="label">
 				<Label><Translation key="page_actor.section.available_tags" /></Label>
-				<Label tone="additional"><Translation key="page_actor.section.hidden_tags_tip" /></Label>
+
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
 				{:else}

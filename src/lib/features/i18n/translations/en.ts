@@ -14,8 +14,8 @@ export const EN = {
 	},
 	actor_errors: {
 		disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
-		min_length_3: 'Min length is 3 symbols',
-		max_length_15: 'Max length is 15 symbols',
+		min_length: 'Min length is 3 symbols',
+		max_length: 'Max length is 64 symbols',
 		reserved_word: "Shouldn't be a reserved word",
 		reserved_prefix: "Shoudn't start with a reserved prefix",
 		at_least_one_translation: 'At least one translation is required',
@@ -87,7 +87,7 @@ export const EN = {
 		images: {
 			label: 'Images',
 			image_provider: 'Image Provider',
-			provider_warning: 'Fill in the image provider to upload images',
+			provider_warning: 'Fill in the image provider first',
 			provider_explanation:
 				"To upload images, create your own storage and share it's credentials with Plavna, it will only upload to it's own folder. You will have 5GB of space (instead of splitting 5GB among all users) and control over the images even if Plavna disappears. Currently, only ImageKit is supported.",
 			fill_in_provider: 'Fill in',

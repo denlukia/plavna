@@ -1,7 +1,6 @@
 :root {
 	/* --- General --- */
-	/* --smooth-ease-out: cubic-bezier(0.4, 0, 0.2, 1); */
-	--smooth-ease-out: cubic-bezier(0.19, 1, 0.22, 1); /* exponential */
+	--smooth-ease-out: cubic-bezier(0.2, 0, 0.3, 1);
 
 	/* --- Layers --- */
 	--transition-layer-flashlight: opacity 500ms;
@@ -21,7 +20,7 @@
 		0 5px 10px var(--color-button-translucent-destructive-shadow-2); */
 
 	--transform-button-hover: translateY(-1px);
-	--transition-button: all 250ms var(--smooth-ease-out);
+	--transition-button: all 350ms var(--smooth-ease-out);
 
 	--shadow-button-hover-primary: 0 2px 4px var(--color-button-primary-shadow-1),
 		0 8px 10px var(--color-button-primary-shadow-2);
@@ -43,7 +42,7 @@
 	/* --- Button in Input */
 	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
 		0 1px 1px var(--color-button-in-input-shadow-2);
-	--transition-button-in-input: all 250ms var(--smooth-ease-out);
+	--transition-button-in-input: all 350ms var(--smooth-ease-out);
 
 	--transform-button-in-input-hover: translateY(-0.5px);
 	--shadow-button-in-input-hover: inset 0 1px 1px var(--color-button-in-input-shadow-1),
@@ -54,7 +53,7 @@
 	/* --- Button in Tag */
 	--shadow-button-in-tag: inset 0 1px 1px var(--color-button-in-tag-shadow-1),
 		0 1px 1px var(--color-button-in-tag-shadow-2);
-	--transition-button-in-tag: all 250ms var(--smooth-ease-out);
+	--transition-button-in-tag: all 350ms var(--smooth-ease-out);
 
 	--transform-button-in-tag-hover: translateY(-0.5px);
 	--shadow-button-in-tag-hover: inset 0 1px 1px var(--color-button-in-tag-shadow-1),

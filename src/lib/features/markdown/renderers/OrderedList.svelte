@@ -18,6 +18,11 @@
 
 <style>
 	.ordered-list {
-		padding-left: var(--size-l);
+		padding-left: var(--size-xl);
+		margin-bottom: 1em;
+	}
+
+	:global(p) + .ordered-list {
+		margin-top: -0.5em;
 	}
 </style>

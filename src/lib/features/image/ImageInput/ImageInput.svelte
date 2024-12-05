@@ -37,7 +37,7 @@
 
 	let { mouse, ...events } = createMouseWatcher();
 
-	let imageProvider = $page.data.imageProvider;
+	let imageProvider = $derived($page.data.imageProvider);
 
 	let pathAndMeta = $derived.by(getPathAndMeta);
 	let isPathPresent = $derived(Boolean(pathAndMeta));
@@ -98,7 +98,7 @@
 		background: var(--color-image-input-bg);
 		border-radius: var(--size-image-input-border-radius);
 		box-shadow: var(--shadow-input);
-		overflow: hidden;
+		/* overflow: hidden; */
 
 		/* For Layers */
 		--layers-border-radius: var(--size-image-input-border-radius);

@@ -27,7 +27,11 @@
 
 	<Spacer size="s" />
 	<div class="popup-wrapper">
-		<Popup triggerType="button" buttonProps={{ size: 'small', kind: 'secondary' }}>
+		<Popup
+			triggerType="button"
+			buttonProps={{ size: 'small', kind: 'secondary' }}
+			style="width: 300px"
+		>
 			{#snippet label()}
 				<Translation key="article_editor.images.fill_in_provider" />
 			{/snippet}
@@ -91,7 +95,7 @@
 		flex-direction: column;
 		gap: var(--size-4);
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 		height: 100%;
 		text-align: center;
 	}

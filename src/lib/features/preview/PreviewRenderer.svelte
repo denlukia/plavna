@@ -32,7 +32,7 @@
 <!-- TODO: Edit title to represent loading on button click, add aria description -->
 <span class="preview-renderer" role="button" tabindex="0">
 	{#if PreviewComponent && !(PreviewComponent instanceof Promise)}
-		<PreviewComponent data={getPreviewData(article, recordsTranslations, images, user)} />
+		<PreviewComponent data={getPreviewData(article, recordsTranslations, images, user, false)} />
 	{:else}
 		static component not found
 	{/if}

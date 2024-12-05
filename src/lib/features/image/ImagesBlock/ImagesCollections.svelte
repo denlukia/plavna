@@ -27,7 +27,7 @@
 	};
 	let { imageProvider, articleId, collections }: Props = $props();
 
-	let { superValidated, hasValidCredentialsSet } = imageProvider;
+	let { superValidated, hasValidCredentialsSet } = $derived(imageProvider);
 
 	let commonShown = $state(false);
 	let collection = $derived(commonShown ? collections.common : collections.article);

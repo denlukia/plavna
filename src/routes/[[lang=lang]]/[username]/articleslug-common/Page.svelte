@@ -43,7 +43,13 @@
 					<GridContainer>
 						<GridCell cols={3} rows={3}>
 							<PreviewComponent
-								data={getPreviewData({ meta: article, tags }, recordsTranslations, images, user)}
+								data={getPreviewData(
+									{ meta: article, tags },
+									recordsTranslations,
+									images,
+									user,
+									true
+								)}
 							/>
 						</GridCell>
 					</GridContainer>

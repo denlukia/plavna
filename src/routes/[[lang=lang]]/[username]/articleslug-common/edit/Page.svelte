@@ -12,7 +12,7 @@
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
-	import ImagesCollectionsList from '$lib/features/image/ImagesBlock/ImagesCollections.svelte';
+	import ImagesCollections from '$lib/features/image/ImagesBlock/ImagesCollections.svelte';
 	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
 
@@ -88,7 +88,7 @@
 					<PreviewEditorsList {data} />
 				</section>
 				<section class="row">
-					<ImagesCollectionsList
+					<ImagesCollections
 						imageProvider={data.imageProvider}
 						articleId={article.id}
 						collections={{ common: data.commonImages, article: data.articleImages }}

@@ -28,7 +28,8 @@
 		translation_2,
 		img_1,
 		img_2,
-		likes_count
+		likes_count,
+		viewing_in_article
 	} = $derived(data);
 
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
@@ -40,10 +41,13 @@
 		// if (rows * cols > 6 && text && text.length < 40) {
 		// 	return 'heading-1';
 		// } else
+		if (viewing_in_article) {
+			return 'heading-1';
+		}
 		if (cols > 1 && rows > 1) {
 			return 'heading-2';
 		} else {
-			return 'headline';
+			return 'headline-short';
 		}
 	}
 
@@ -80,7 +84,7 @@
 				{/if}
 				<div class="info global-fix-overflow">
 					<div class="top">
-						<div class="chips">
+						<!-- <div class="chips">
 							{#if publish_time}
 								{@render chip(publish_time.toLocaleDateString(), 'date')}
 							{/if}
@@ -89,7 +93,7 @@
 									{@render chip(tag)}
 								{/if}
 							{/each}
-						</div>
+						</div> -->
 					</div>
 					<div class="bottom">
 						<div class="texts {titleSize}">
@@ -160,14 +164,14 @@
 		flex-shrink: 1;
 		background: var(--bg-color);
 	}
-	/* .texts.heading-1 {
-		padding: var(--size-m-to-l) var(--size-xl) var(--size-l);
-	} */
+	.texts.heading-1 {
+		padding: var(--size-m-to-l) var(--size-l) var(--size-l);
+	}
 	.texts.heading-2 {
 		padding: var(--size-s-to-m) var(--size-l) var(--size-m);
 	}
-	.texts.headline {
-		padding: 0 var(--size-m) 0;
+	.texts.headline-short {
+		padding: 0 var(--size-m) var(--size-s);
 	}
 	.description {
 		margin-bottom: calc(var(--size-s) * -1);
