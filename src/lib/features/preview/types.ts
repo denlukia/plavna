@@ -11,6 +11,7 @@ export type PreviewDataProp = {
 	cols: number;
 	rows: number;
 	publish_time: Date | null;
+	viewing_in_article: boolean;
 	translation_1: Optional<string>;
 	translation_2: Optional<string>;
 	tags: Array<Optional<string>>;

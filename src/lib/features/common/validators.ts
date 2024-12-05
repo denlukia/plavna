@@ -1,6 +1,11 @@
 import { supportedLangs } from '@denlukia/plavna-common/constants';
 import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { z } from 'zod';
+import {
+	SLUG_ALLOWED_CHARS_REGEX,
+	SLUG_MAX_LENGTH,
+	SLUG_MIN_LENGTH
+} from '$lib/collections/config';
 import { reservedPrefixes, reservedWords } from '$lib/collections/reserved-words';
 
 import { checkTranslationKey } from '../i18n/utils';
@@ -22,10 +27,13 @@ export function generateLanguagedFields<N extends string, V>(name: N, validator:
 
 export const slugValidator = z
 	.string() //
-	.max(15, {
+	.min(SLUG_MIN_LENGTH, {
+		message: checkTranslationKey('actor_errors.min_length')
+	})
+	.max(SLUG_MAX_LENGTH, {
 		message: checkTranslationKey('actor_errors.max_length')
 	})
-	.regex(/^[a-z0-9-]*$/i, {
+	.regex(SLUG_ALLOWED_CHARS_REGEX, {
 		message: checkTranslationKey('actor_errors.disallowed_chars')
 	})
 	.refine((str) => !reservedWords.includes(str), {

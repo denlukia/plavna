@@ -171,8 +171,11 @@
 	font-style: var(--text-aesthetic-small-short-font-style);
 }
 
-.global-text-strong {
+.global-text-functional-strong {
 	font-weight: var(--text-functional-strong-font-weight);
+}
+.global-text-aesthetic-strong {
+	font-weight: var(--text-aesthetic-strong-font-weight);
 }
 
 .global-text-em {

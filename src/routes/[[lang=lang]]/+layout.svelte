@@ -56,6 +56,7 @@
 			0 -100px 0 var(--color-main-layout-bg),
 			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-grid-padding-inline);
+		padding-bottom: var(--size-main-layout-padding-bottom);
 	}
 
 	/* .grid-wrapper {

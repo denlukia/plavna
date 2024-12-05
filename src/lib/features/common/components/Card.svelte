@@ -22,7 +22,7 @@
 				{@render title()}
 			</Typography>
 			<div class="link-wrapper">
-				<AnimatedBlock key={linkText}>
+				<AnimatedBlock key={linkText} text>
 					<Typography>
 						<Link href={link}>{linkText}</Link>
 					</Typography>

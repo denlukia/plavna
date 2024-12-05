@@ -15,7 +15,8 @@ export function getPreviewData(
 	article: SectionProp['articles'][number],
 	recordsTranslations: RecordsTranslationsDict | undefined,
 	images: ImagesDict | undefined,
-	user: User | null
+	user: User | null,
+	viewingInArticle: boolean
 ): PreviewDataProp {
 	const { meta, tags } = article;
 	const filteredTags = tags
@@ -35,6 +36,7 @@ export function getPreviewData(
 		translation_1: getRecordTranslation(meta.preview_translation_1_key, recordsTranslations),
 		translation_2: getRecordTranslation(meta.preview_translation_2_key, recordsTranslations),
 		publish_time: meta.publish_time,
+		viewing_in_article: viewingInArticle,
 		tags: filteredTags,
 
 		img_1: getImagePathAndMeta(meta.preview_image_1_id, user, images, recordsTranslations),

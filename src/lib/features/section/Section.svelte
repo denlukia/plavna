@@ -244,7 +244,4 @@
 
 		position: relative;
 	}
-	.info-block-wrapper {
-		margin-inline: var(--size-main-grid-padding-inline);
-	}
 </style>
