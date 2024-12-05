@@ -24,10 +24,9 @@
 	type Props = {
 		source: string;
 		chooseShort?: boolean;
-		onlyBasic?: boolean;
 	};
 
-	let { source, chooseShort = false, onlyBasic = false }: Props = $props();
+	let { source, chooseShort = false }: Props = $props();
 
 	const plugins: Plugin[] = [
 		gfmPlugin(),
@@ -54,7 +53,7 @@
 		}
 	];
 
-	setMarkdownContext({ chooseShort: chooseShort, onlyBasic: onlyBasic });
+	setMarkdownContext({ chooseShort: chooseShort });
 </script>
 
 <Markdown {plugins} md={source} />

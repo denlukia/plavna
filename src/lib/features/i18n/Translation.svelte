@@ -5,6 +5,7 @@
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
 
+	import BasicMarkdown from '../markdown/BasicMarkdown.svelte';
 	import Markdown from '../markdown/Markdown.svelte';
 	import type { TranslationSelect, TranslationUpdate } from './validators';
 
@@ -45,8 +46,10 @@
 
 <AnimatedBlock key={translation + noTranslationText} text>
 	{#if translation}
-		{#if markdown}
-			<Markdown source={translation} onlyBasic={markdown === 'basic'} />
+		{#if markdown === 'basic'}
+			<BasicMarkdown source={translation} />
+		{:else if markdown}
+			<Markdown source={translation} />
 		{:else}
 			{@html translation}
 		{/if}

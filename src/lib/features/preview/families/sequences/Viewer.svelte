@@ -6,6 +6,7 @@
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import type { TextSizes } from '$lib/design/components/Typography/types';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
 	import Markdown from '$lib/features/markdown/Markdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';
@@ -35,28 +36,16 @@
 
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
 
-	let titleSizeAndTemplate = $derived(getTitleSizeAndTemplate(cols, rows));
+	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 
-	function getTitleSizeAndTemplate(
-		cols: number,
-		rows: number
-	): { size: TextSizes; prefix: string } {
+	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
 		if (viewing_in_article) {
-			return {
-				size: 'heading-1',
-				prefix: '#'
-			};
+			return 'heading-1';
 		}
 		if (cols > 1 && rows > 1) {
-			return {
-				size: 'heading-2',
-				prefix: '##'
-			};
+			return 'heading-2';
 		} else {
-			return {
-				size: 'headline-short',
-				prefix: '###'
-			};
+			return 'headline-short';
 		}
 	}
 </script>
@@ -94,7 +83,7 @@
 						</div> -->
 					</div>
 					<div class="bottom">
-						<div class="texts {titleSizeAndTemplate.size}">
+						<div class="texts {titleSize}">
 							{#if description_translation}
 								<div class="description">
 									<AnimatedBlock key={description_translation}>
@@ -107,11 +96,9 @@
 
 							{#if title_translation}
 								<AnimatedBlock key={title_translation}>
-									<Markdown
-										source={`${titleSizeAndTemplate.prefix} ${title_translation}`}
-										chooseShort
-										skipParagraphs
-									/>
+									<Typography size={titleSize} purpose="aesthetic">
+										<BasicMarkdown source={title_translation} />
+									</Typography>
 								</AnimatedBlock>
 							{/if}
 						</div>
