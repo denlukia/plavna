@@ -1,16 +1,24 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { getMarkdownContext } from '../markdown-context';
+
 	type Props = {
 		children: Snippet;
 	};
 
 	let { children }: Props = $props();
+
+	const markdownContext = getMarkdownContext();
 </script>
 
-<li class="list-item">
+{#if markdownContext?.onlyBasic}
 	{@render children()}
-</li>
+{:else}
+	<li class="list-item">
+		{@render children()}
+	</li>
+{/if}
 
 <style>
 	.list-item {

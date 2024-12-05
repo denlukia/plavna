@@ -3,6 +3,7 @@
 	import { type Snippet } from 'svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
+	import { getMarkdownContext } from '../../markdown-context';
 	import { depthToTypographySize } from '../heading-depth';
 
 	type Props = Omit<Tokens.Heading, 'type'> & {
@@ -11,11 +12,13 @@
 
 	let { children, id, depth }: Props = $props();
 
-	let size = $derived(depthToTypographySize(depth));
+	let markdownContext = getMarkdownContext();
+
+	let size = $derived(depthToTypographySize(depth, markdownContext?.chooseShort));
 </script>
 
 {#if id !== 'footnote-label'}
-	<svelte:element this={`h${depth}`} class="heading {depth === 1 ? 'heading-1' : ''}">
+	<svelte:element this={`h${depth}`}>
 		<Typography {size} purpose="aesthetic">
 			{@render children()}
 		</Typography>
@@ -23,10 +26,7 @@
 {/if}
 
 <style>
-	.heading {
+	/* .heading {
 		line-height: 1;
-	}
-	.heading-1 {
-		/* margin-inline-start: -0.05em; */
-	}
+	} */
 </style>

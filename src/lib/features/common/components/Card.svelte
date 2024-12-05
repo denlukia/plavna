@@ -15,7 +15,7 @@
 	let { title, link, linkText, actions }: Props = $props();
 </script>
 
-<Column cols={2}>
+<Column cols={2} stretch>
 	<div class="card">
 		<div class="info">
 			<Typography size="heading-2">
@@ -39,22 +39,19 @@
 <style>
 	.card {
 		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
+		flex-direction: column;
+		justify-content: space-between;
 		padding: var(--size-m) var(--size-m-to-l) var(--size-m-to-l) var(--size-l);
 		background-color: var(--color-input-bg);
 		border-radius: var(--size-xl);
 		width: calc(var(--size-cell-width) * 2 + var(--size-cell-gap));
 		gap: var(--size-m);
+		height: 100%;
 	}
 
 	.info {
 		display: flex;
 		flex-direction: column;
-
-		flex-basis: 50%;
-		flex-shrink: 0;
-		flex-grow: 1;
 	}
 
 	.actions {
@@ -62,13 +59,5 @@
 		align-items: center;
 		justify-content: flex-end;
 		gap: var(--size-s);
-
-		flex-basis: 50%;
-		flex-shrink: 0;
-		flex-grow: 1;
-	}
-
-	.link-wrapper {
-		margin-top: calc(-1 * var(--size-s));
 	}
 </style>

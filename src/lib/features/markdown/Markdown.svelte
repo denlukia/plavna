@@ -3,6 +3,7 @@
 	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
 	import type { Plugin } from 'svelte-exmarkdown/types';
 
+	import { setMarkdownContext } from './markdown-context';
 	import Em from './renderers/Em.svelte';
 	import H1 from './renderers/heading/H1.svelte';
 	import H2 from './renderers/heading/H2.svelte';
@@ -22,9 +23,11 @@
 
 	type Props = {
 		source: string;
+		chooseShort?: boolean;
+		onlyBasic?: boolean;
 	};
 
-	let { source }: Props = $props();
+	let { source, chooseShort = false, onlyBasic = false }: Props = $props();
 
 	const plugins: Plugin[] = [
 		gfmPlugin(),
@@ -50,6 +53,8 @@
 			}
 		}
 	];
+
+	setMarkdownContext({ chooseShort: chooseShort, onlyBasic: onlyBasic });
 </script>
 
 <Markdown {plugins} md={source} />

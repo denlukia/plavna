@@ -6,6 +6,7 @@
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import type { TextSizes } from '$lib/design/components/Typography/types';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import Markdown from '$lib/features/markdown/Markdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';
 
@@ -34,31 +35,28 @@
 
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
 
-	let titleSize = $derived(getTitleSize(cols, rows, title_translation));
-	let headingRadius = $derived(getHeadingRadius(titleSize));
+	let titleSizeAndTemplate = $derived(getTitleSizeAndTemplate(cols, rows));
 
-	function getTitleSize(cols: number, rows: number, text: typeof title_translation): TextSizes {
-		// if (rows * cols > 6 && text && text.length < 40) {
-		// 	return 'heading-1';
-		// } else
+	function getTitleSizeAndTemplate(
+		cols: number,
+		rows: number
+	): { size: TextSizes; prefix: string } {
 		if (viewing_in_article) {
-			return 'heading-1';
+			return {
+				size: 'heading-1',
+				prefix: '#'
+			};
 		}
 		if (cols > 1 && rows > 1) {
-			return 'heading-2';
+			return {
+				size: 'heading-2',
+				prefix: '##'
+			};
 		} else {
-			return 'headline-short';
-		}
-	}
-
-	function getHeadingRadius(size: TextSizes) {
-		// if (size === 'heading-1') {
-		// 	return 40;
-		// } else
-		if (size === 'heading-2') {
-			return 30;
-		} else {
-			return 25;
+			return {
+				size: 'headline-short',
+				prefix: '###'
+			};
 		}
 	}
 </script>
@@ -96,20 +94,26 @@
 						</div> -->
 					</div>
 					<div class="bottom">
-						<div class="texts {titleSize}">
+						<div class="texts {titleSizeAndTemplate.size}">
 							{#if description_translation}
 								<div class="description">
 									<AnimatedBlock key={description_translation}>
-										<Typography size="headline-short" purpose="aesthetic"
-											>{description_translation}</Typography
-										>
+										<Typography size="headline-short" purpose="aesthetic">
+											{description_translation}
+										</Typography>
 									</AnimatedBlock>
 								</div>
 							{/if}
 
-							<AnimatedBlock key={title_translation}>
-								<Typography size={titleSize} purpose="aesthetic">{title_translation}</Typography>
-							</AnimatedBlock>
+							{#if title_translation}
+								<AnimatedBlock key={title_translation}>
+									<Markdown
+										source={`${titleSizeAndTemplate.prefix} ${title_translation}`}
+										chooseShort
+										skipParagraphs
+									/>
+								</AnimatedBlock>
+							{/if}
 						</div>
 					</div>
 				</div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { getMarkdownContext } from '../markdown-context';
 	import { setListContext } from './list-context';
 
 	type Props = {
@@ -10,11 +11,17 @@
 	let { children }: Props = $props();
 
 	setListContext();
+
+	const markdownContext = getMarkdownContext();
 </script>
 
-<ul class="unordered-list">
+{#if markdownContext?.onlyBasic}
 	{@render children()}
-</ul>
+{:else}
+	<ul class="unordered-list">
+		{@render children()}
+	</ul>
+{/if}
 
 <style>
 	.unordered-list {
