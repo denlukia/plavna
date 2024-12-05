@@ -2,8 +2,7 @@ import { getContext, setContext } from 'svelte';
 
 const listContextName = 'markdown-context';
 const defaultListContext = {
-	chooseShort: false,
-	onlyBasic: false
+	chooseShort: false
 };
 
 export function setMarkdownContext(value?: typeof defaultListContext) {
