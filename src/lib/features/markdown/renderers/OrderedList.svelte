@@ -26,6 +26,6 @@
 	}
 
 	:global(p) + .ordered-list {
-		margin-top: 0;
+		margin-top: -0.5em;
 	}
 </style>

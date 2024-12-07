@@ -2,7 +2,7 @@ import { dev } from '$app/environment';
 import { PUBLIC_HOST } from '$env/static/public';
 import type { User } from 'lucia';
 
-export const SECTIONS_PER_PAGE = 5;
+export const SECTIONS_PER_PAGE = 7;
 export const ARTICLES_PER_SECTION = 7;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
 export const PREVIEW_TEMPLATE_PARAM = 'preview-template';
