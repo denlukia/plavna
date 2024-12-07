@@ -203,6 +203,10 @@
 	--size-box-padding-inline: var(--size-m-to-l);
 	--size-box-gap: var(--size-s);
 
+	/* --- Link --- */
+	--size-link-border-radius: 0;
+	--size-link-border-radius-hovered: var(--size-s);
+
 	/* --- Info Block --- */
 	--size-info-block-padding: var(--size-m-to-l);
 	--size-info-block-border-radius: 0;
