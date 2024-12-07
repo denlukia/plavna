@@ -25,6 +25,6 @@
 		margin-bottom: 0.5em;
 	}
 	:global(p) + .unordered-list {
-		margin-top: 0;
+		margin-top: -0.5em;
 	}
 </style>

@@ -31,7 +31,7 @@
 
 <div class="description-viewer" class:disabled>
 	{#if descriptionTranslation}
-		<Translation recordKey={transitionKey} markdown />
+		<Translation recordKey={transitionKey} markdown markdownRemoveEmptyLinks />
 	{:else}
 		<div class="info-block-wrapper">
 			<InfoBlock>

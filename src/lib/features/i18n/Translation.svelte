@@ -26,9 +26,16 @@
 	};
 	type Props = {
 		markdown?: boolean | 'basic';
+		markdownRemoveEmptyLinks?: boolean;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let { superValidated, key, recordKey, markdown = false }: Props = $props();
+	let {
+		superValidated,
+		key,
+		recordKey,
+		markdown = false,
+		markdownRemoveEmptyLinks = false
+	}: Props = $props();
 
 	let noTranslationText = $derived(
 		getSystemTranslation('layout.no_translation', $page.data.systemTranslations) || '...'
@@ -42,21 +49,32 @@
 	}
 
 	let translation = $derived.by(getTranslation);
+
+	let mdSource = $derived(finalizeSource(translation));
+
+	function finalizeSource(source: string | null | undefined) {
+		if (!source) return source;
+		const emptyLinkRegex = /\[\]\((.*?)\)/g;
+		const afterLinks = markdownRemoveEmptyLinks ? source.replace(emptyLinkRegex, '') : source;
+		return afterLinks.trim();
+	}
 </script>
 
-<AnimatedBlock key={translation + noTranslationText} text>
-	{#if translation}
-		{#if markdown === 'basic'}
-			<BasicMarkdown source={translation} />
-		{:else if markdown}
-			<Markdown source={translation} />
+{#if (markdown && mdSource) || !markdown}
+	<AnimatedBlock key={translation + noTranslationText} text>
+		{#if translation}
+			{#if markdown === 'basic'}
+				<BasicMarkdown source={translation} />
+			{:else if markdown}
+				<Markdown source={translation} />
+			{:else}
+				{@html translation}
+			{/if}
 		{:else}
-			{@html translation}
+			<span class="no-translation">{noTranslationText}</span>
 		{/if}
-	{:else}
-		<span class="no-translation">{noTranslationText}</span>
-	{/if}
-</AnimatedBlock>
+	</AnimatedBlock>
+{/if}
 
 <style>
 	.no-translation {
