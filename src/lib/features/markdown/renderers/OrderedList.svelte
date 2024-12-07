@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 
 	import { setListContext } from './list-context';
+	import { getSectionContext } from './section-context';
 
 	type Props = {
 		children: Snippet;
@@ -10,19 +11,21 @@
 	let { children }: Props = $props();
 
 	setListContext();
+
+	const sectionContext = getSectionContext();
 </script>
 
-<ol class="ordered-list">
+<ol class="ordered-list global-text-aesthetic-{sectionContext?.section ? 'small' : 'body'}">
 	{@render children()}
 </ol>
 
 <style>
 	.ordered-list {
 		padding-left: var(--size-xl);
-		margin-bottom: 1em;
+		margin-bottom: 0.5em;
 	}
 
 	:global(p) + .ordered-list {
-		margin-top: -0.5em;
+		margin-top: 0;
 	}
 </style>
