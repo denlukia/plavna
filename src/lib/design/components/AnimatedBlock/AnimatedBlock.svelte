@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 
-	import Animator from './Animated.svelte';
+	import Animated from './Animated.svelte';
 
 	type Props = {
 		key: any;
@@ -14,7 +14,7 @@
 </script>
 
 <Layers overflow="visible" inline>
-	<Animator {key} animateIntroWithCss={false} global={false} {text}>
+	<Animated {key} animateIntroWithCss={false} global={false} {text}>
 		{@render children()}
-	</Animator>
+	</Animated>
 </Layers>

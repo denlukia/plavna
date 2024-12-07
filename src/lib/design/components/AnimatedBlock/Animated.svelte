@@ -2,7 +2,6 @@
 	import bezier from 'bezier-easing';
 	import type { Snippet } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { translationfly } from '$lib/design/transitions/translation-fly';
 
 	type Props = {
 		children: Snippet;

@@ -3,7 +3,7 @@ import { PUBLIC_HOST } from '$env/static/public';
 import type { User } from 'lucia';
 
 export const SECTIONS_PER_PAGE = 5;
-export const ARTICLES_PER_SECTION = 10;
+export const ARTICLES_PER_SECTION = 7;
 export const PREVIEW_FAMILY_PARAM = 'preview-family';
 export const PREVIEW_TEMPLATE_PARAM = 'preview-template';
 export const IMAGEKIT_UPLOAD_ENDPOINT = 'https://upload.imagekit.io/api/v2/files/upload';
@@ -37,13 +37,6 @@ export const MAX_COLS_IN_SECTION = 5;
 export const MAX_ROWS_IN_SECTION = 5;
 export const ARTISTIC_OVERFLOW_PADDING = 20;
 
-// export const GET_PAGE_CONFIG_COOKIE_NAME = (username: string, pageslug: string | undefined) => {
-// 	let result = `page-config-${username}`;
-// 	if (pageslug) {
-// 		result += `-${pageslug}`;
-// 	}
-// 	return result;
-// };
 export const PAGE_CONFIG_COOKIE_NAME = 'page_config';
 
 export const SECTION_RECONFIG_QUERY_PARAM_NAME = 'section_reconfig';
