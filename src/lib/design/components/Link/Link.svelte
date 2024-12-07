@@ -18,9 +18,11 @@
 		color: var(--color-link);
 		box-shadow: var(--shadow-link);
 		transition: var(--transition-link);
+		border-radius: var(--size-link-border-radius);
 	}
 	.link:hover {
 		box-shadow: var(--shadow-link-hovered);
 		transition: var(--transition-link-hovered);
+		border-radius: var(--size-link-border-radius-hovered);
 	}
 </style>

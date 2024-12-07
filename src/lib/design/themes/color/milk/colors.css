@@ -160,7 +160,7 @@
 	/* --- Link --- */
 	--color-link: var(--cold-200);
 	--color-link-shadow: var(--cold-200-transparent-200);
-	--color-link-hovered-shadow: var(--cold-200);
+	--color-link-hovered-shadow: var(--cold-200-transparent-200);
 
 	/* --- Info Block --- */
 	--color-info-block-default-bg: var(--warm-300-transparent-100);

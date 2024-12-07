@@ -4,7 +4,7 @@
 	import ContinuousCorners from '$lib/design/components/ContinuousCorners/ContinuousCorners.svelte';
 	import Image from '$lib/design/components/Image/Image.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
-	import type { TextSizes } from '$lib/design/components/Typography/types';
+	import type { titleizes } from '$lib/design/components/Typography/types';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
 	import Markdown from '$lib/features/markdown/Markdown.svelte';
@@ -20,17 +20,12 @@
 	let {
 		title_translation,
 		description_translation,
-		publish_time,
 		cols,
 		rows,
-		tags,
 		prop_1: backgroundColor,
 		prop_2: textColor,
-		translation_1,
-		translation_2,
 		img_1,
 		img_2,
-		likes_count,
 		viewing_in_article
 	} = $derived(data);
 
@@ -38,7 +33,7 @@
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 
-	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
+	function getTitleSizeAndTemplate(cols: number, rows: number): titleizes {
 		if (viewing_in_article) {
 			return 'heading-1';
 		}
@@ -50,58 +45,26 @@
 	}
 </script>
 
-{#snippet chip(text: string, customClass = '')}
-	<div class="chip {customClass}">
-		<Typography size="small-short">
-			<AnimatedBlock key={text}>
-				{text.toUpperCase()}
-			</AnimatedBlock>
-		</Typography>
-	</div>
-{/snippet}
-
 <PreviewFoundation>
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {bgColor}; --text-color: {textColor};">
 			<Layers stretch>
 				{#if img_1}
-					<div class="image">
-						<Image pathAndMeta={img_1} style="height: 100%; width: 100%; object-fit: cover" />
-					</div>
+					<div
+						class="emoji-grid"
+						style={`--mask-url: url("${img_1.src}"); --mask-size: ${(img_1.width || 540) / 2}px ${(img_1.height || 160) / 2}px;`}
+					></div>
 				{/if}
 				<div class="info global-fix-overflow">
-					<div class="top">
-						<!-- <div class="chips">
-							{#if publish_time}
-								{@render chip(publish_time.toLocaleDateString(), 'date')}
-							{/if}
-							{#each tags.toReversed() as tag}
-								{#if tag}
-									{@render chip(tag)}
-								{/if}
-							{/each}
-						</div> -->
-					</div>
-					<div class="bottom">
-						<div class="texts {titleSize}">
-							{#if description_translation}
-								<div class="description">
-									<AnimatedBlock key={description_translation}>
-										<Typography size="headline-short" purpose="aesthetic">
-											{description_translation}
-										</Typography>
-									</AnimatedBlock>
-								</div>
-							{/if}
-
-							{#if title_translation}
-								<AnimatedBlock key={title_translation}>
-									<Typography size={titleSize} purpose="aesthetic">
-										<BasicMarkdown source={title_translation} />
-									</Typography>
-								</AnimatedBlock>
-							{/if}
-						</div>
+					<div class="top"></div>
+					<div class="title {titleSize}">
+						{#if title_translation}
+							<AnimatedBlock key={title_translation}>
+								<Typography size={titleSize} purpose="aesthetic">
+									<BasicMarkdown source={title_translation} />
+								</Typography>
+							</AnimatedBlock>
+						{/if}
 					</div>
 				</div>
 			</Layers>
@@ -123,10 +86,15 @@
 		justify-content: space-between;
 	}
 
-	.image {
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
+	.emoji-grid {
+		min-width: 130%;
+		opacity: 0.125;
+		background-color: var(--text-color);
+		mask-image: var(--mask-url);
+		mask-size: var(--mask-size);
+		mask-position: bottom left;
+		transform: translate(7%, -25%) rotate(35deg);
+		filter: drop-shadow(inset 0 0 1px var(--text-color));
 	}
 
 	.top {
@@ -134,36 +102,16 @@
 		justify-content: flex-end;
 	}
 
-	.chips {
-		display: flex;
-		background-color: var(--bg-color, var(--neutral-1000));
-		padding: var(--size-s-to-m) var(--size-m-to-l);
-		gap: var(--size-s-to-m);
-	}
-
-	.chip {
-		display: flex;
-		color: var(--text-color, var(--neutral-0));
-	}
-
-	.bottom {
-		display: flex;
-		justify-content: flex-start;
-	}
-
-	.texts {
-		flex-shrink: 1;
-		background: var(--bg-color);
-	}
-	.texts.heading-1 {
+	.title.heading-1 {
 		padding: var(--size-m-to-l) var(--size-l) var(--size-l);
 	}
-	.texts.heading-2 {
+	.title.heading-2 {
 		padding: var(--size-s-to-m) var(--size-l) var(--size-m);
 	}
-	.texts.headline-short {
+	.title.headline-short {
 		padding: 0 var(--size-m) var(--size-s);
 	}
+
 	.description {
 		margin-bottom: calc(var(--size-s) * -1);
 	}

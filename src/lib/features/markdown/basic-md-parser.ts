@@ -14,6 +14,8 @@ export function parseBasicMarkdown(input: string): BasicMdNode[] {
 	] as const;
 
 	function parseInline(text: string): BasicMdNode[] {
+		const patternsMatches = patterns.map(([pattern]) => pattern.exec(text));
+
 		const nodes: BasicMdNode[] = [];
 		let lastIndex = 0;
 
@@ -25,9 +27,12 @@ export function parseBasicMarkdown(input: string): BasicMdNode[] {
 			} | null = null;
 
 			// Find the closest match among all patterns
-			for (const [pattern, type] of patterns) {
+			for (const i in patterns) {
+				const [pattern, type] = patterns[i];
+
 				pattern.lastIndex = lastIndex; // Start searching from lastIndex
-				const match = pattern.exec(text);
+				const match = patternsMatches[i];
+
 				if (match && match.index >= lastIndex) {
 					if (!closestMatch || match.index < closestMatch.start) {
 						closestMatch = { match, type, start: match.index };
