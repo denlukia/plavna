@@ -15,5 +15,8 @@
 <style>
 	.list-item {
 		margin-bottom: 0.5em;
+
+		font-family: inherit;
+		font-size: inherit;
 	}
 </style>
