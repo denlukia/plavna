@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
+	import Animated from '$lib/design/components/Animated/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -19,7 +19,7 @@
 
 	let { data }: Props = $props();
 
-	let { article, tags, actor, previewComponent: PreviewComponent, routeId } = $derived(data);
+	let { article, tags, actor, previewComponent: PreviewComponent, routeId, lang } = $derived(data);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
 	let user = $derived($page.data.user);
@@ -33,7 +33,7 @@
 	// let isOnArticle = $derived($page.params?.['articleslug'] === article.slug);
 </script>
 
-<Animated key={routeId + article.id}>
+<Animated key={routeId + article.id + lang}>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">

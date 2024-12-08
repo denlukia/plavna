@@ -1,13 +1,9 @@
 <script lang="ts">
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import AnimatedBlock from '$lib/design/components/AnimatedBlock/AnimatedBlock.svelte';
-	import ContinuousCorners from '$lib/design/components/ContinuousCorners/ContinuousCorners.svelte';
-	import Image from '$lib/design/components/Image/Image.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
-	import type { titleizes } from '$lib/design/components/Typography/types';
+	import type { TextSizes } from '$lib/design/components/Typography/types';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
-	import Markdown from '$lib/features/markdown/Markdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';
 
@@ -19,13 +15,11 @@
 
 	let {
 		title_translation,
-		description_translation,
 		cols,
 		rows,
 		prop_1: backgroundColor,
 		prop_2: textColor,
 		img_1,
-		img_2,
 		viewing_in_article
 	} = $derived(data);
 
@@ -33,7 +27,7 @@
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 
-	function getTitleSizeAndTemplate(cols: number, rows: number): titleizes {
+	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
 		if (viewing_in_article) {
 			return 'heading-1';
 		}
@@ -59,11 +53,9 @@
 					<div class="top"></div>
 					<div class="title {titleSize}">
 						{#if title_translation}
-							<AnimatedBlock key={title_translation}>
-								<Typography size={titleSize} purpose="aesthetic">
-									<BasicMarkdown source={title_translation} />
-								</Typography>
-							</AnimatedBlock>
+							<Typography size={titleSize} purpose="aesthetic">
+								<BasicMarkdown source={title_translation} />
+							</Typography>
 						{/if}
 					</div>
 				</div>

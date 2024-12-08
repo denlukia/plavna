@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import AnimatedBlock from '$lib/design/components/AnimatedBlock/AnimatedBlock.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import Link from '$lib/design/components/Link/Link.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
@@ -22,11 +21,9 @@
 				{@render title()}
 			</Typography>
 			<div class="link-wrapper">
-				<AnimatedBlock key={linkText} text>
-					<Typography>
-						<Link href={link}>{linkText}</Link>
-					</Typography>
-				</AnimatedBlock>
+				<Typography>
+					<Link href={link}>{linkText}</Link>
+				</Typography>
 			</div>
 		</div>
 

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import AnimatedBlock from '$lib/design/components/AnimatedBlock/AnimatedBlock.svelte';
 	import type { SystemTranslationKey } from '$lib/features/i18n/types';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '$lib/features/i18n/utils';
 
@@ -61,19 +60,17 @@
 </script>
 
 {#if (markdown && mdSource) || !markdown}
-	<AnimatedBlock key={translation + noTranslationText} text>
-		{#if translation}
-			{#if markdown === 'basic'}
-				<BasicMarkdown source={translation} />
-			{:else if markdown}
-				<Markdown source={translation} />
-			{:else}
-				{@html translation}
-			{/if}
+	{#if translation}
+		{#if markdown === 'basic'}
+			<BasicMarkdown source={translation} />
+		{:else if markdown}
+			<Markdown source={translation} />
 		{:else}
-			<span class="no-translation">{noTranslationText}</span>
+			{@html translation}
 		{/if}
-	</AnimatedBlock>
+	{:else}
+		<span class="no-translation">{noTranslationText}</span>
+	{/if}
 {/if}
 
 <style>

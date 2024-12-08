@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
+	import Animated from '$lib/design/components/Animated/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import { generatePath } from '$lib/features/common/links';
@@ -15,10 +15,10 @@
 
 	let { data }: Props = $props();
 
-	let { routeId } = $derived(data);
+	let { routeId, lang } = $derived(data);
 </script>
 
-<Animated key={routeId}>
+<Animated key={routeId + lang}>
 	<Typography size="heading-1"><Translation key="main.landing" /></Typography>
 
 	<div class="actions">

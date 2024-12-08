@@ -5,14 +5,13 @@ import { createPreviewFamiliesState } from '$lib/features/preview/families/state
 
 import type { PageLoad } from '../$types';
 
-export const load = (async ({ data, route }) => {
-	const { previewFamilies, recordsTranslations, images, ...pageData } = structuredClone(data);
+export const load = (async ({ data }) => {
+	const { previewFamilies, recordsTranslations, images, ...other } = structuredClone(data);
 
 	const enriched = await enrichPreviewFamilies(previewFamilies, 'viewer');
 	const previewFamiliesState = createPreviewFamiliesState(enriched);
 	const recordsTranslationsState = createRecordsTranslationsState(recordsTranslations);
 	const imagesState = createImagesState(images);
-	const routeId = route.id;
 
-	return { ...pageData, previewFamiliesState, recordsTranslationsState, imagesState, routeId };
+	return { ...other, previewFamiliesState, recordsTranslationsState, imagesState };
 }) satisfies PageLoad;

@@ -1,5 +1,5 @@
 /*
-  Josh's Custom CSS Reset
+  Based on Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
 *,
@@ -37,10 +37,6 @@ h4,
 h5,
 h6 {
 	overflow-wrap: break-word;
-}
-#root,
-#__next {
-	isolation: isolate;
 }
 
 form {

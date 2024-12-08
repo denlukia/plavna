@@ -14,7 +14,14 @@ import type { SectionRequest } from '$lib/features/section/types';
 
 import type { PageServerLoad } from '../$types';
 
-export const load = (async ({ params, parent, locals: { pageService, actor }, cookies, url }) => {
+export const load = (async ({
+	route,
+	params,
+	parent,
+	locals: { pageService, actor, lang },
+	cookies,
+	url
+}) => {
 	const { username } = params;
 
 	let pageslug = '';
@@ -55,8 +62,12 @@ export const load = (async ({ params, parent, locals: { pageService, actor }, co
 		? ['page', 'page_actor']
 		: ['page'];
 
+	const routeId = route.id;
+
 	return {
 		...page,
+		lang,
+		routeId,
 		systemTranslations: {
 			...systemTranslations,
 			// TODO: only page if user isn't actor

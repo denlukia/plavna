@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SECTIONS_PER_PAGE } from '$lib/collections/config';
-	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
+	import Animated from '$lib/design/components/Animated/Animated.svelte';
 	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Plus from '$lib/design/icons/Plus.svelte';
@@ -16,8 +16,9 @@
 
 	let { data }: Props = $props();
 
+	let { routeId, lang } = $derived(data);
+
 	let {
-		routeId,
 		sections: { items, creationForm }
 	} = $state(data);
 
@@ -32,7 +33,7 @@
 	}
 </script>
 
-<Animated key={routeId}>
+<Animated key={routeId + lang}>
 	{#each items as section, index (section.meta.id)}
 		<Section bind:section={items[index]} />
 	{/each}

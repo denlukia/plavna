@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
+	import Animated from '$lib/design/components/Animated/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -29,7 +29,8 @@
 		translationForms,
 		tagInfos,
 		tagCreationSuperValidated,
-		routeId
+		routeId,
+		lang
 	} = $derived(data);
 
 	let publishTime = $derived(article.publish_time);
@@ -39,7 +40,7 @@
 	);
 </script>
 
-<Animated key={routeId + article.id}>
+<Animated key={routeId + article.id + lang}>
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>

@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
-	import { fade } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
-	import Animated from '$lib/design/components/AnimatedBlock/Animated.svelte';
+	import Animated from '$lib/design/components/Animated/Animated.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
@@ -17,12 +15,12 @@
 
 	let { data } = $props();
 
-	let { routeId, superValidated, closedGreetings } = $derived(data);
+	let { routeId, superValidated, closedGreetings, lang } = $derived(data);
 
 	let { form, enhance: enhanceSettings, errors } = superForm(superValidated);
 </script>
 
-<Animated key={routeId}>
+<Animated key={routeId + lang}>
 	<Typography size="heading-1">
 		<Translation key="settings.heading" />
 	</Typography>

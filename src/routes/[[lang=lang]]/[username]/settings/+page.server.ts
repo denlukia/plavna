@@ -8,10 +8,16 @@ import { userSettingsFormSchema } from '$lib/features/user/validators';
 import type { Actions, PageServerLoad } from './$types';
 import { CLOSED_GREETINGS_COOKIE_NAME } from './config';
 
-export const load: PageServerLoad = async ({ params, parent, route, locals, cookies }) => {
+export const load: PageServerLoad = async ({
+	params,
+	parent,
+	route,
+	locals: { actorService, lang },
+	cookies
+}) => {
 	const { systemTranslations } = await parent();
 
-	const superValidated = await locals.actorService.getSettingsForm(params.username);
+	const superValidated = await actorService.getSettingsForm(params.username);
 
 	const closedGreetings = Boolean(cookies.get(CLOSED_GREETINGS_COOKIE_NAME));
 
@@ -19,6 +25,7 @@ export const load: PageServerLoad = async ({ params, parent, route, locals, cook
 
 	return {
 		routeId,
+		lang,
 		superValidated,
 		closedGreetings,
 		systemTranslations: {
