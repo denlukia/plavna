@@ -1,7 +1,8 @@
 <script lang="ts">
 	import bezier from 'bezier-easing';
 	import type { Snippet } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';
+	import { pagefly } from '$lib/design/transitions/pagefly';
 
 	type Props = {
 		children: Snippet;
@@ -12,7 +13,7 @@
 
 	const shift = 14;
 	const duration = 300;
-	const delay = 150;
+	const delay = PAGE_INRO_DELAY_MS;
 	const easingValues = [0.2, 0, 0.2, 1] as const;
 	const easingString = easingValues.join(',');
 
@@ -29,13 +30,13 @@
 </script>
 
 {#key key}
-	<span class="animated css-intro" {style} out:fly|global={configOut}>
+	<div class="animated-page" {style} out:pagefly|global={configOut}>
 		{@render children()}
-	</span>
+	</div>
 {/key}
 
 <style>
-	.css-intro {
+	.animated-page {
 		animation: fly-in var(--in-duration) var(--in-delay) var(--in-easing) backwards;
 	}
 	@keyframes fly-in {

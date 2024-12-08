@@ -3,12 +3,14 @@
 	import '$lib/styles/index.css';
 
 	import { navigating } from '$app/stores';
+	import { onMount } from 'svelte';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
 	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
+	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
 	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	let { data, children } = $props();
@@ -16,6 +18,12 @@
 	let { themeComponentSets } = $derived(data);
 
 	let isNavigating = $derived(Boolean($navigating));
+
+	onMount(() => {
+		const unpatch = patchScrollToDelayed();
+
+		return unpatch;
+	});
 </script>
 
 <svelte:head>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { superForm } from 'sveltekit-superforms';
-	import Animated from '$lib/design/components/Animated/Animated.svelte';
+	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import Input from '$lib/design/components/Input/Input.svelte';
@@ -20,7 +20,7 @@
 	let { form, enhance: enhanceSettings, errors } = superForm(superValidated);
 </script>
 
-<Animated key={routeId + lang}>
+<AnimatedPage key={routeId + lang}>
 	<Typography size="heading-1">
 		<Translation key="settings.heading" />
 	</Typography>
@@ -42,7 +42,7 @@
 			</form>
 		</Column>
 	</ColumnedContent>
-</Animated>
+</AnimatedPage>
 
 {#if !closedGreetings}
 	<Greetings>

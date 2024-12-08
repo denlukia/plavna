@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fly, getFlyConf } from '$lib/design/transitions/fly';
+	import { blurfly, getBlurFlyConfig } from '$lib/design/transitions/blurfly';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
@@ -79,8 +79,8 @@
 						{#key key}
 							<textarea
 								bind:this={elementRef}
-								in:fly|local={getFlyConf('bottom')}
-								out:fly|local={getFlyConf('top')}
+								in:blurfly|local={getBlurFlyConfig('bottom')}
+								out:blurfly|local={getBlurFlyConfig('top')}
 								class="global-reset-input global-text-functional-body"
 								bind:value
 								{...attributes}
@@ -90,8 +90,8 @@
 						{#key key}
 							<input
 								bind:this={elementRef}
-								in:fly|local={getFlyConf('bottom')}
-								out:fly|local={getFlyConf('top')}
+								in:blurfly|local={getBlurFlyConfig('bottom')}
+								out:blurfly|local={getBlurFlyConfig('top')}
 								class="global-reset-input global-text-functional-body"
 								bind:value
 								{...attributes}

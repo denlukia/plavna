@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import Select from '$lib/design/components/Popup/Select.svelte';
-	import { fly, getFlyConf } from '$lib/design/transitions/fly';
+	import { blurfly, getBlurFlyConfig } from '$lib/design/transitions/blurfly';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getSystemTranslation } from '$lib/features/i18n/utils';
 
@@ -45,8 +45,8 @@
 		{#key lang}
 			<div
 				class="animation-wrapper"
-				in:fly|local={getFlyConf('bottom')}
-				out:fly|local={getFlyConf('top')}
+				in:blurfly|local={getBlurFlyConfig('bottom')}
+				out:blurfly|local={getBlurFlyConfig('top')}
 			>
 				<ImageInput bind:image bind:translation {name} {clientUpload} {processing} {lang} />
 			</div>

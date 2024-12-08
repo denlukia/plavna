@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Animated from '$lib/design/components/Animated/Animated.svelte';
+	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -33,7 +33,7 @@
 	// let isOnArticle = $derived($page.params?.['articleslug'] === article.slug);
 </script>
 
-<Animated key={routeId + article.id + lang}>
+<AnimatedPage key={routeId + article.id + lang}>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
@@ -64,7 +64,7 @@
 			</article>
 		</Column>
 	</ColumnsContainer>
-</Animated>
+</AnimatedPage>
 
 {#if actor && article.user_id === actor.id}
 	<div class="main-actions" out:fade|global>
