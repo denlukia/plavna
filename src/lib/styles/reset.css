@@ -43,3 +43,21 @@ form {
 	display: block;
 	line-height: 0;
 }
+
+/* Own Reset Additions */
+:root {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+body {
+	font-family: var(--text-functional-main-font-family);
+	font-optical-sizing: var(--text-functional-font-optical-sizing);
+	background-color: var(--color-body-bg);
+	color: var(--color-text);
+	flex-grow: 1;
+
+	display: flex;
+	justify-content: center;
+}

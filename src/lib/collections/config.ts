@@ -66,3 +66,7 @@ export const SLUG_MIN_LENGTH = 3;
 export const SLUG_MAX_LENGTH = 64;
 
 export const SLUG_ALLOWED_CHARS_REGEX = /^[a-z0-9-]*$/i;
+
+export const PAGE_OUTROING_ATTRIBUTE_NAME = 'data-page-outroing';
+
+export const PAGE_INRO_DELAY_MS = 200;

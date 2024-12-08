@@ -2,7 +2,9 @@ import BezierEasing from 'bezier-easing';
 import { cubicIn } from 'svelte/easing';
 import type { FlyParams } from 'svelte/transition';
 
-export function fly(
+import { split_css_unit } from './utils';
+
+export function blurfly(
 	node: Element,
 	{
 		delay = 0,
@@ -36,14 +38,7 @@ export function fly(
 	};
 }
 
-function split_css_unit(value: number | string) {
-	const split = typeof value === 'string' && value.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);
-	return split
-		? ([parseFloat(split[1]), split[2] || 'px'] as const)
-		: ([/** @type {number} */ value, 'px'] as const);
-}
-
-export function getFlyConf(yshift: 'top' | 'bottom'): FlyParams {
+export function getBlurFlyConfig(yshift: 'top' | 'bottom'): FlyParams {
 	return {
 		duration: 400,
 		y: 7 * (yshift === 'top' ? -1 : 1),

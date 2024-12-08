@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Animated from '$lib/design/components/Animated/Animated.svelte';
+	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
 	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
@@ -40,7 +40,7 @@
 	);
 </script>
 
-<Animated key={routeId + article.id + lang}>
+<AnimatedPage key={routeId + article.id + lang}>
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>
@@ -98,7 +98,7 @@
 			</Column>
 		</ColumnsContainer>
 	</div>
-</Animated>
+</AnimatedPage>
 
 <form class="main-actions" use:enhance method="POST" out:fade|global>
 	<Button formaction="?/delete" kind="destructive">

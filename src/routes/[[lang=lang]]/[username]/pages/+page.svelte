@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Animated from '$lib/design/components/Animated/Animated.svelte';
+	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
@@ -18,7 +18,7 @@
 	}
 </script>
 
-<Animated key={routeId + lang}>
+<AnimatedPage key={routeId + lang}>
 	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
 	<ColumnedContent>
@@ -36,7 +36,7 @@
 			</Popup>
 		</div>
 	</ColumnedContent>
-</Animated>
+</AnimatedPage>
 
 <style>
 	.new-page-wrapper {

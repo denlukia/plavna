@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Animated from '$lib/design/components/Animated/Animated.svelte';
+	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
 	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
@@ -10,7 +10,7 @@
 	let { routeId, lang } = $derived(data);
 </script>
 
-<Animated key={routeId + lang}>
+<AnimatedPage key={routeId + lang}>
 	<Typography size="heading-1"><Translation key="articles_list.title" /></Typography>
 
 	<ColumnedContent>
@@ -18,4 +18,4 @@
 			<ArticleItem {article} />
 		{/each}
 	</ColumnedContent>
-</Animated>
+</AnimatedPage>

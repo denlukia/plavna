@@ -12,7 +12,7 @@ type RotateAndScaleParams = {
 	rotationY?: number;
 };
 
-export function rotateAndScale(
+export function rotateandscale(
 	node: Element,
 	{
 		delay = 0,
