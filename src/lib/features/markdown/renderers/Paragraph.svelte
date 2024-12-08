@@ -30,8 +30,4 @@
 		margin-bottom: 0.5em;
 		hyphens: auto;
 	}
-
-	.no-margin {
-		margin-bottom: 0;
-	}
 </style>

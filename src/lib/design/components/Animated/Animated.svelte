@@ -6,21 +6,18 @@
 	type Props = {
 		children: Snippet;
 		key?: any;
-		animateIntroWithCss?: boolean;
-		global?: boolean;
-		text?: boolean;
 	};
 
-	let { key, animateIntroWithCss = true, global = true, text = false, children }: Props = $props();
+	let { key, children }: Props = $props();
 
-	const shift = text ? 5 : 14;
-	const duration = text ? 200 : 400;
-	const delay = text ? 75 : 150;
+	const shift = 14;
+	const duration = 300;
+	const delay = 150;
 	const easingValues = [0.2, 0, 0.2, 1] as const;
 	const easingString = easingValues.join(',');
 
 	let easing = bezier(...easingValues);
-	let configIn = { duration: animateIntroWithCss ? 0 : duration, y: shift, delay: delay, easing };
+
 	let configOut = { duration: duration, y: -shift, easing };
 
 	let style = $derived(
@@ -31,31 +28,11 @@
 	);
 </script>
 
-{#if global}
-	{#key key}
-		<span
-			class="animated"
-			{style}
-			class:css-intro={animateIntroWithCss}
-			in:fly|global={configIn}
-			out:fly|global={configOut}
-		>
-			{@render children()}
-		</span>
-	{/key}
-{:else}
-	{#key key}
-		<span
-			class="animated"
-			{style}
-			class:css-intro={animateIntroWithCss}
-			in:fly={configIn}
-			out:fly={configOut}
-		>
-			{@render children()}
-		</span>
-	{/key}
-{/if}
+{#key key}
+	<span class="animated css-intro" {style} out:fly|global={configOut}>
+		{@render children()}
+	</span>
+{/key}
 
 <style>
 	.css-intro {

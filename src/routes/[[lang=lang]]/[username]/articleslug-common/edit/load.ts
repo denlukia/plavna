@@ -1,8 +1,9 @@
+import { getLang } from '$lib/features/i18n/utils';
 import { enrichPreviewFamilies } from '$lib/features/preview/enricher';
 
 import type { PageLoad } from '../../[articleslug]/edit/$types';
 
-export const load = (async ({ data, route }) => {
+export const load = (async ({ data }) => {
 	const { previewFamilies, ...pageData } = structuredClone(data);
 
 	const enriched = await enrichPreviewFamilies(
@@ -10,7 +11,6 @@ export const load = (async ({ data, route }) => {
 		'editor',
 		(familyId) => familyId === pageData.meta.preview_family
 	);
-	const routeId = route.id;
 
-	return { ...pageData, previewFamilies: enriched, routeId };
+	return { ...pageData, previewFamilies: enriched };
 }) satisfies PageLoad;

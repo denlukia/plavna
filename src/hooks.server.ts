@@ -13,6 +13,7 @@ import { lucia } from '$lib/services/auth';
 export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
+	locals.lang = getLang(params.lang);
 	locals.session = null;
 	locals.actor = null;
 

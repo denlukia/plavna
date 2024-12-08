@@ -5,10 +5,10 @@
 		children: Snippet;
 	};
 
-	let { children }: Props = $props();
+	let { children, ...attributes }: Props = $props();
 </script>
 
-<li class="list-item">
+<li class="list-item" {...attributes}>
 	{@render children()}
 </li>
 

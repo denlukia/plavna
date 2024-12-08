@@ -1,4 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
+import type { SupportedLang } from '@denlukia/plavna-common/types';
 import type { Session } from 'lucia';
 import type { ArticleService } from '$lib/features/article/service';
 import type { TranslationService } from '$lib/features/i18n/service';
@@ -34,6 +35,7 @@ declare global {
 			imageService: ImageService;
 			articleService: ArticleService;
 			previewService: PreviewService;
+			lang: SupportedLang;
 		}
 
 		interface PageData {

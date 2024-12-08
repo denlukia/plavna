@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import AnimatedBlock from '$lib/design/components/AnimatedBlock/AnimatedBlock.svelte';
 	import ContinuousCorners from '$lib/design/components/ContinuousCorners/ContinuousCorners.svelte';
 	import Image from '$lib/design/components/Image/Image.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
@@ -62,9 +61,7 @@
 {#snippet chip(text: string, customClass = '')}
 	<div class="chip {customClass}">
 		<Typography size="small-short" purpose="aesthetic">
-			<AnimatedBlock key={text}>
-				{text}
-			</AnimatedBlock>
+			{text}
 		</Typography>
 	</div>
 {/snippet}
@@ -95,18 +92,13 @@
 								<div class="texts {titleSize}">
 									{#if description_translation}
 										<div class="description">
-											<AnimatedBlock key={description_translation}>
-												<Typography size="headline-short" purpose="aesthetic"
-													>{description_translation}</Typography
-												>
-											</AnimatedBlock>
+											<Typography size="headline-short" purpose="aesthetic"
+												>{description_translation}</Typography
+											>
 										</div>
 									{/if}
 
-									<AnimatedBlock key={title_translation}>
-										<Typography size={titleSize} purpose="aesthetic">{title_translation}</Typography
-										>
-									</AnimatedBlock>
+									<Typography size={titleSize} purpose="aesthetic">{title_translation}</Typography>
 								</div>
 							</ContinuousCorners>
 						</div>

@@ -5,7 +5,7 @@ import { getActionFailure } from '$lib/features/error/fail-with-form-error';
 import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
 import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/features/page/validators';
 
-export const load = async ({ locals: { pageService }, params, parent, route }) => {
+export const load = async ({ locals: { pageService, lang }, params, parent, route }) => {
 	const forms = await pageService.getMyAsForms(params.username);
 	const { systemTranslations } = await parent();
 
@@ -13,6 +13,7 @@ export const load = async ({ locals: { pageService }, params, parent, route }) =
 
 	return {
 		...forms,
+		lang,
 		routeId,
 		systemTranslations: {
 			...systemTranslations,
