@@ -118,6 +118,19 @@
 
 		display: grid;
 		grid-template-areas: 'a';
+
+		animation: reveal-emoji 1000ms 500ms backwards;
+	}
+
+	@keyframes reveal-emoji {
+		0% {
+			display: none;
+			opacity: 0;
+		}
+		100% {
+			display: grid;
+			opacity: 1;
+		}
 	}
 
 	.emoji-layers > * {

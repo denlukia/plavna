@@ -1,4 +1,23 @@
 @font-face {
+	font-family: 'Inter Variable';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src:
+		local('Inter Variable'),
+		url('../../fonts/Inter/InterVariable.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Inter Variable';
+	font-style: italic;
+	font-weight: 100 900;
+	font-display: swap;
+	src:
+		local('Inter Variable'),
+		url('../../fonts/Inter/InterVariable-Italic.woff2') format('woff2');
+}
+
+@font-face {
 	font-family: 'Source Serif 4 Variable';
 	font-style: normal;
 	font-weight: 100 900;

@@ -129,7 +129,7 @@
 					bind:selectionStart={descriptionInput.selectionStart}
 					bind:selectionEnd={descriptionInput.selectionEnd}
 					textarea
-					rows={3}
+					rows={7}
 				/>
 				<Errors errors={$errors} />
 				<Label tone="additional"><Translation key="page_actor.section.hidden_tags_tip" /></Label>

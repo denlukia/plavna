@@ -18,7 +18,7 @@
 </script>
 
 {#if id !== 'footnote-label'}
-	<svelte:element this={`h${depth}`}>
+	<svelte:element this={`h${depth}`} class="heading">
 		<Typography {size} purpose="aesthetic">
 			{@render children()}
 		</Typography>
@@ -26,7 +26,7 @@
 {/if}
 
 <style>
-	/* .heading {
-		line-height: 1;
-	} */
+	:global(.paragraph) + .heading {
+		margin-top: 1.5em;
+	}
 </style>
