@@ -25,7 +25,7 @@ export function generateLanguagedFields<N extends string, V>(name: N, validator:
 	);
 }
 
-export const slugValidator = z
+export const baseSlugValidator = z
 	.string() //
 	.min(SLUG_MIN_LENGTH, {
 		message: checkTranslationKey('actor_errors.min_length')
