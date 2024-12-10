@@ -68,7 +68,11 @@
 </script>
 
 <Layers stretch>
-	<span class="bg" style="background: {pathAndMeta.background};"></span>
+	<span
+		class="bg"
+		style="--background: {pathAndMeta.background}; --duration: {duration}ms;"
+		class:revealed
+	></span>
 	<span class="image-wrapper">
 		<img
 			style="--initial-opacity: {initialOpacity}; --duration: {duration}ms; {style}"
@@ -89,6 +93,15 @@
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
+	}
+
+	.bg {
+		transition: opacity var(--duration);
+		background: var(--background);
+	}
+
+	.bg.revealed {
+		opacity: 0;
 	}
 
 	.image {
