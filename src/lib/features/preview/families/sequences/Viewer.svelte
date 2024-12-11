@@ -7,6 +7,7 @@
 	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';
+	import { interpolateHexColors } from './hex-interpolator';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -14,14 +15,8 @@
 
 	let { data }: Props = $props();
 
-	let rect = $state({ width: 0, height: 0 });
-	let spotlightTopLeft = new Spring(
-		{ x: 0, y: 0 },
-		{
-			stiffness: 0.2,
-			damping: 0.8
-		}
-	);
+	let rect = $state({ width: 200, height: 100 });
+	let spotlightTopLeft = $state({ x: 0, y: 0 });
 
 	let {
 		title_translation,
@@ -34,6 +29,10 @@
 	} = $derived(data);
 
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
+
+	let emojiBaseColor = $derived(
+		bgColor && textColor ? interpolateHexColors(bgColor, textColor, 0.07) : 'transparent'
+	);
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 
@@ -49,10 +48,7 @@
 	}
 
 	function onpointermove(e: PointerEvent) {
-		spotlightTopLeft.set({ x: e.offsetX - rect.width / 2, y: e.offsetY - rect.height / 2 });
-	}
-	function onpointerleave() {
-		spotlightTopLeft.set({ x: 0, y: 0 }, { preserveMomentum: 2000 });
+		spotlightTopLeft = { x: e.offsetX - rect.width / 2, y: e.offsetY - rect.height / 2 };
 	}
 </script>
 
@@ -67,8 +63,9 @@
 						{onpointermove}
 						{onpointerleave}
 						style={`
-							--spotlight-x: ${spotlightTopLeft.current.x}px;
-							--spotlight-y: ${spotlightTopLeft.current.y}px;
+							--emoji-base-color: ${emojiBaseColor};
+							--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
+							--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
 							--image-url: url("${img_1.src}"); 
 							--image-size: ${(img_1.width || 540) / 2}px ${(img_1.height || 160) / 2}px;
 						`}
@@ -112,25 +109,16 @@
 	}
 
 	.emoji-layers {
-		transform: translate(7%, -70%) rotate(35deg);
-		min-width: 130%;
+		/* transform: translate(7%, -50%) rotate(35deg); */
+		transform-origin: 200px 50%;
+		transform: translate(5%, -60%) rotate(25deg);
+		min-width: 200%;
 		min-height: 200%;
 
 		display: grid;
 		grid-template-areas: 'a';
 
-		animation: reveal-emoji 1000ms 500ms backwards;
-	}
-
-	@keyframes reveal-emoji {
-		0% {
-			display: none;
-			opacity: 0;
-		}
-		100% {
-			display: grid;
-			opacity: 1;
-		}
+		animation: reveal 1000ms 1000ms backwards;
 	}
 
 	.emoji-layers > * {
@@ -145,33 +133,12 @@
 	}
 
 	.emoji-base {
-		background-color: hsl(31, 0%, 5%);
+		background-color: var(--emoji-base-color);
 	}
 	.emoji-rainbow {
 		opacity: 0.25;
 		mix-blend-mode: hard-light;
-		/* background: radial-gradient(
-			circle farthest-corner,
-			#1b1d1f 10%,
-			#96a8b3 20.72%,
-			#cbccc0 29.24%,
-			#c6a57a 33.15%,
-			#92583a 36.29%,
-			#412d58 40.12%,
-			#2f5987 43.03%,
-			#619d98 46.63%,
-			#9ea86f 50.69%,
-			#b77a4e 54.52%,
-			#a84d59 57.51%,
-			#7c4471 60.81%,
-			#546176 63.72%,
-			#51905f 69.08%,
-			#a04c60 80.11%,
-			#48785b 90.84%,
-			#95585a 102.26%,
-			#616959 110.38%,
-			#5d5557 120%
-		); */
+
 		background: radial-gradient(
 			circle farthest-corner,
 			rgb(0, 0, 0) 0%,
@@ -186,10 +153,10 @@
 			rgb(187, 83, 79),
 			rgb(123, 68, 118),
 			rgb(59, 117, 114),
-			rgb(58, 147, 89),
-			rgb(114, 128, 81),
-			rgb(166, 85, 91) 68.781868%,
-			rgb(82, 102, 87) 100%
+			rgba(58, 147, 89, 75%),
+			rgba(114, 128, 81, 50%),
+			rgba(166, 85, 91, 25%) 68%,
+			rgba(82, 102, 87, 0%) 80%
 		);
 
 		background-position: var(--spotlight-x) var(--spotlight-y);
@@ -219,11 +186,22 @@
 		filter: blur(60px);
 		mix-blend-mode: screen;
 		pointer-events: none;
+
+		animation: reveal 1000ms 1000ms backwards;
 	}
 
 	.top {
 		display: flex;
 		justify-content: flex-end;
+	}
+
+	.title {
+		background-color: #fff5;
+		color: transparent;
+		text-shadow: 0 1.5px 0px var(--text-color);
+		-webkit-background-clip: text;
+		-moz-background-clip: text;
+		background-clip: text;
 	}
 
 	.title.heading-1 {
@@ -233,10 +211,13 @@
 		padding: var(--size-s-to-m) var(--size-m-to-l) var(--size-l);
 	}
 	.title.headline-short {
-		padding: 0 var(--size-m-to-l) var(--size-m-to-l);
+		padding: 0 var(--size-m) var(--size-m-to-l);
 	}
 
-	.description {
-		margin-bottom: calc(var(--size-s) * -1);
+	@keyframes reveal {
+		0% {
+			display: none;
+			opacity: 0;
+		}
 	}
 </style>

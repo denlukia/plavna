@@ -46,4 +46,7 @@
 		padding: 0;
 		transition: opacity 300ms;
 	}
+	.color-picker::-webkit-color-swatch {
+		border: none;
+	}
 </style>

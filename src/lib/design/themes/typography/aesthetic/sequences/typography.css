@@ -2,7 +2,7 @@
 	--text-aesthetic-heading-font-family: 'Inter Variable', -system-ui, sans-serif;
 	--text-aesthetic-main-font-family: 'Source Serif 4 Variable', serif;
 	--text-aesthetic-font-optical-sizing: auto;
-	--text-aesthetic-main-font-weight: 500;
+	--text-aesthetic-main-font-weight: 550;
 	--text-aesthetic-strong-font-weight: 600;
 
 	--text-aesthetic-heading-1-font-family: var(--text-aesthetic-heading-font-family);
@@ -24,16 +24,16 @@
 	--text-aesthetic-headline-font-family: var(--text-aesthetic-heading-font-family);
 	--text-aesthetic-headline-padding-top: 3px;
 	--text-aesthetic-headline-padding-bottom: 1px;
-	--text-aesthetic-headline-size: 15px;
-	--text-aesthetic-headline-weight: 700;
-	--text-aesthetic-headline-line-height: 24px;
+	--text-aesthetic-headline-size: 18px;
+	--text-aesthetic-headline-weight: 750;
+	--text-aesthetic-headline-line-height: 28px;
 	--text-aesthetic-headline-letter-spacing: 0;
 
 	--text-aesthetic-headline-short-font-family: var(--text-aesthetic-heading-font-family);
 	--text-aesthetic-headline-short-padding-top: 1px;
 	--text-aesthetic-headline-short-padding-bottom: 3px;
-	--text-aesthetic-headline-short-size: 15px;
-	--text-aesthetic-headline-short-weight: 700;
+	--text-aesthetic-headline-short-size: 18px;
+	--text-aesthetic-headline-short-weight: 750;
 	--text-aesthetic-headline-short-line-height: 20px;
 	--text-aesthetic-headline-short-letter-spacing: 0;
 
@@ -50,14 +50,14 @@
 	--text-aesthetic-body-short-padding-bottom: 3px;
 	--text-aesthetic-body-short-size: 20px;
 	--text-aesthetic-body-short-weight: var(--text-aesthetic-main-font-weight);
-	--text-aesthetic-body-short-line-height: 24px;
+	--text-aesthetic-body-short-line-height: 20px;
 	--text-aesthetic-body-short-letter-spacing: 0;
 
 	--text-aesthetic-small-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-small-padding-top: 1px;
 	--text-aesthetic-small-padding-bottom: 3px;
 	--text-aesthetic-small-size: 14px;
-	--text-aesthetic-small-weight: 500;
+	--text-aesthetic-small-weight: 550;
 	--text-aesthetic-small-line-height: 20px;
 	--text-aesthetic-small-letter-spacing: 0;
 
@@ -65,7 +65,7 @@
 	--text-aesthetic-small-short-padding-top: 2px;
 	--text-aesthetic-small-short-padding-bottom: 2px;
 	--text-aesthetic-small-short-size: 14px;
-	--text-aesthetic-small-short-weight: 500;
+	--text-aesthetic-small-short-weight: 550;
 	--text-aesthetic-small-short-line-height: 16px;
 	--text-aesthetic-small-short-letter-spacing: 0;
 
