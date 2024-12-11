@@ -72,20 +72,12 @@
 					/>
 				</Labeled>
 			</GridCell>
-			<GridCell>
+			<GridCell cols={2}>
 				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.image" />
 					</Label>
 					<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
-				</Labeled>
-			</GridCell>
-			<GridCell>
-				<Labeled>
-					<Label>
-						<Translation key="article_editor.previews.families.sequences.image_depth" />
-					</Label>
-					<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
 				</Labeled>
 			</GridCell>
 		</GridCell>
