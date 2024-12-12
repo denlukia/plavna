@@ -265,7 +265,7 @@ type GetOneOldReturn = Promise<{
 				preview_prop_1: string | null;
 				preview_prop_2: string | null;
 				preview_prop_3: string | null;
-
+				preview_prop_4: string | null;
 				preview_translation_1_key: number;
 				preview_translation_2_key: number;
 				preview_image_1_id: number;

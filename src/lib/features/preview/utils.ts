@@ -31,6 +31,8 @@ export function getPreviewData(
 		likes_count: meta.likes_count,
 		prop_1: meta.preview_prop_1,
 		prop_2: meta.preview_prop_2,
+		prop_3: meta.preview_prop_3,
+		prop_4: meta.preview_prop_4,
 		cols: meta.preview_columns,
 		rows: meta.preview_rows,
 		translation_1: getRecordTranslation(meta.preview_translation_1_key, recordsTranslations),
