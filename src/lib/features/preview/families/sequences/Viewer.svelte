@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Spring } from 'svelte/motion';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import type { TextSizes } from '$lib/design/components/Typography/types';
@@ -16,7 +15,7 @@
 	let { data }: Props = $props();
 
 	let rect = $state({ width: 200, height: 100 });
-	let spotlightTopLeft = $state({ x: 0, y: 0 });
+	let spotlightTopLeft = $state({ x: -200, y: 0 });
 
 	let {
 		title_translation,
@@ -31,7 +30,7 @@
 	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
 
 	let emojiBaseColor = $derived(
-		bgColor && textColor ? interpolateHexColors(bgColor, textColor, 0.07) : 'transparent'
+		bgColor && textColor ? interpolateHexColors(bgColor, '#ffffff', 0.3) : 'transparent'
 	);
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
@@ -61,7 +60,6 @@
 						class="emoji-layers"
 						bind:contentRect={rect}
 						{onpointermove}
-						{onpointerleave}
 						style={`
 							--emoji-base-color: ${emojiBaseColor};
 							--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
@@ -85,9 +83,10 @@
 						{/if}
 					</div>
 				</div>
-				{#if img_1}
+				<!-- {#if img_1}
 					<div class="emoji-colorizer" style={`--image-url: url("${img_1.src}");`}></div>
-				{/if}
+				{/if} -->
+				<div class="shadow"></div>
 			</Layers>
 		</div>
 	{/snippet}
@@ -109,9 +108,8 @@
 	}
 
 	.emoji-layers {
-		/* transform: translate(7%, -50%) rotate(35deg); */
-		transform-origin: 200px 50%;
-		transform: translate(5%, -60%) rotate(25deg);
+		transform-origin: 25% 50%;
+		transform: translate(17%, -60%) rotate(20deg);
 		min-width: 200%;
 		min-height: 200%;
 
@@ -136,12 +134,12 @@
 		background-color: var(--emoji-base-color);
 	}
 	.emoji-rainbow {
-		opacity: 0.25;
+		opacity: 0;
 		mix-blend-mode: hard-light;
 
 		background: radial-gradient(
 			circle farthest-corner,
-			rgb(0, 0, 0) 0%,
+			rgba(0, 0, 0, 0%) 0%,
 			rgb(172, 189, 194) 20%,
 			rgb(207, 173, 130),
 			rgb(149, 79, 50),
@@ -161,6 +159,10 @@
 
 		background-position: var(--spotlight-x) var(--spotlight-y);
 		background-repeat: no-repeat;
+		transition: opacity 1000ms;
+	}
+	.emoji-layers:hover .emoji-rainbow {
+		opacity: 0.15;
 	}
 
 	.emoji-clear {
@@ -174,20 +176,30 @@
 		opacity: 0;
 		transition: opacity 1000ms;
 	}
-	.emoji-clear:hover {
+	.emoji-layers:hover .emoji-clear {
 		opacity: 1;
 	}
 
-	.emoji-colorizer {
-		opacity: 0.5;
+	/* .emoji-colorizer {
+		opacity: 0.3;
 		background-image: var(--image-url);
-		background-position: bottom left;
+		background-position: left 90%;
 		background-size: 110% 220%;
-		filter: blur(60px);
-		mix-blend-mode: screen;
+		filter: blur(50px);
+		mix-blend-mode: hard-light;
 		pointer-events: none;
 
 		animation: reveal 1000ms 1000ms backwards;
+	} */
+
+	.shadow {
+		box-shadow:
+			inset 1px 1px 0px #fff,
+			inset -1px -1px 0px #000;
+		opacity: 0.3;
+		transform: translate3d(0, 0, 0);
+		mix-blend-mode: overlay;
+		pointer-events: none;
 	}
 
 	.top {
@@ -196,9 +208,9 @@
 	}
 
 	.title {
-		background-color: #fff5;
+		background-color: #fff6;
 		color: transparent;
-		text-shadow: 0 1.5px 0px var(--text-color);
+		text-shadow: 0 1px 0px var(--text-color);
 		-webkit-background-clip: text;
 		-moz-background-clip: text;
 		background-clip: text;
