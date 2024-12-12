@@ -39,19 +39,27 @@
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
-	let emojiSvg = getEmojiSVG(emoji, 70, 1, 1);
+	let emojiSvg = getEmojiSVG(emoji, 70, 3, 1);
 	let urlEncodedEmojiSvg = encodeSvgForUrl(emojiSvg);
 
-	let gridSvg = getEmojiSVG(emoji, 70, 4, 4);
+	let gridSvg = getEmojiSVG(emoji, 70, 8, 4);
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
 
 	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
-		let pattern1 = emoji;
-		let [first, ...other] = splitEmoji(pattern1);
-		let pattern2 = other.join('') + first;
+		let pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
+		let [first, ...other] = pattern1;
+		let pattern2 = other.concat(first);
 
-		let line1 = Array(cols).fill(pattern1).join(' ');
-		let line2 = Array(cols).fill(pattern2).join(' ');
+		console.log(pattern1, pattern2);
+
+		let line1 = Array(cols)
+			.fill(null)
+			.map((_, i) => pattern1[i % pattern1.length])
+			.join(' ');
+		let line2 = Array(cols)
+			.fill(null)
+			.map((_, i) => pattern2[i % pattern2.length])
+			.join(' ');
 
 		function splitEmoji(string: string) {
 			return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
@@ -67,7 +75,7 @@
 		});
 
 		return `
-		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * [...emoji].length * 0.7}"  height="${size * rows * 1.3}">
+		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * 1.5}"  height="${size * rows * 1.3}">
 			${texts.join('')}
 		</svg>
 	`;
@@ -173,6 +181,7 @@
 		mask-image: var(--image-url);
 		/* mask-size: var(--image-size); */
 		mask-position: bottom left;
+		mask-repeat: no-repeat;
 	}
 
 	.emoji-base {
@@ -213,6 +222,7 @@
 	.emoji-clear {
 		background-image: var(--image-url);
 		background-size: var(--image-size);
+		background-repeat: no-repeat;
 		background-position: bottom left;
 		transform: translate3d(0, 0, 0);
 		mask-image: radial-gradient(circle, #ffffffff 5%, #00000000 20%);
@@ -228,9 +238,10 @@
 	.emoji-filter {
 		opacity: 1;
 		background-image: var(--image-url);
-		background-size: 100% 120%;
+		background-size: 125% 120%;
 		background-position-y: 100%;
-		filter: blur(80px) brightness(1.7);
+		filter: blur(40px);
+		mix-blend-mode: hard-light;
 	}
 
 	.shadow {
