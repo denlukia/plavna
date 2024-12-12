@@ -17,7 +17,14 @@ export const articlePreviewScreenshotParams = z
 		height: z.number(),
 		lang: z.enum(supportedLangs)
 	})
-	.merge(articleSelectSchema.pick({ preview_prop_1: true, preview_prop_2: true }))
+	.merge(
+		articleSelectSchema.pick({
+			preview_prop_1: true,
+			preview_prop_2: true,
+			preview_prop_3: true,
+			preview_prop_4: true
+		})
+	)
 	.extend({
 		preview_translation_1: z.string(),
 		preview_translation_2: z.string(),
