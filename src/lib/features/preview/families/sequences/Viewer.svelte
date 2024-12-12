@@ -46,9 +46,16 @@
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
 
 	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
-		let line1 = Array(cols).fill(emoji).join(' ');
-		let [first, ...other] = [...line1];
-		let line2 = other.join('') + first;
+		let pattern1 = emoji;
+		let [first, ...other] = splitEmoji(pattern1);
+		let pattern2 = other.join('') + first;
+
+		let line1 = Array(cols).fill(pattern1).join(' ');
+		let line2 = Array(cols).fill(pattern2).join(' ');
+
+		function splitEmoji(string: string) {
+			return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
+		}
 
 		function getText(index: number) {
 			const line = index % 2 ? line1 : line2;
