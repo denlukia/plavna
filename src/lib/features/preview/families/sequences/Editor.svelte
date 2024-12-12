@@ -47,7 +47,7 @@
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.emoji_base_color" />
 					</Label>
-					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_3} />
+					<ColorInput name="preview_prop_3" bind:value={$form.preview_prop_3} />
 				</Labeled>
 			</GridCell>
 			<GridCell cols={1}>
