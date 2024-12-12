@@ -13,11 +13,7 @@
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { PreviewEditorProps } from '../types';
 
-	let {
-		mainSuperValidated,
-		preview_image_1 = $bindable(),
-		preview_image_2 = $bindable()
-	}: PreviewEditorProps = $props();
+	let { mainSuperValidated }: PreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
@@ -26,15 +22,7 @@
 	<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 		<input name="preview_family" type="hidden" value="sequences" />
 		<GridCell cols={2}>
-			<GridCell cols={0.6}>
-				<Labeled as="label">
-					<Label>
-						<Translation key="article_editor.previews.families.sequences.text_color" />
-					</Label>
-					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
-				</Labeled>
-			</GridCell>
-			<GridCell cols={0.6}>
+			<GridCell cols={0.66}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.text_bg_color" />
@@ -42,7 +30,32 @@
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 				</Labeled>
 			</GridCell>
-			<GridCell cols={0.4}>
+			<GridCell cols={0.66}>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.sequences.text_color" />
+					</Label>
+					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
+				</Labeled>
+			</GridCell>
+			<GridCell cols={0.66}>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.sequences.emoji_base_color" />
+					</Label>
+					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_3} />
+				</Labeled>
+			</GridCell>
+			<GridCell cols={1}>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.sequences.emoji" />
+					</Label>
+					<Input name="preview_prop_4" bind:value={$form.preview_prop_4} />
+				</Labeled>
+			</GridCell>
+
+			<GridCell cols={0.5}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.cols" />
@@ -57,7 +70,7 @@
 					/>
 				</Labeled>
 			</GridCell>
-			<GridCell cols={0.4}>
+			<GridCell cols={0.5}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.rows" />
@@ -70,14 +83,6 @@
 						name="preview_rows"
 						bind:value={$form.preview_rows}
 					/>
-				</Labeled>
-			</GridCell>
-			<GridCell cols={2}>
-				<Labeled>
-					<Label>
-						<Translation key="article_editor.previews.families.sequences.image" />
-					</Label>
-					<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
 				</Labeled>
 			</GridCell>
 		</GridCell>

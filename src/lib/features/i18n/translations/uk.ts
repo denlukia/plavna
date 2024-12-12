@@ -156,6 +156,8 @@ export const UK = {
 					name: 'Секвенції',
 					text_bg_color: 'Колір тла',
 					text_color: 'Колір тексту',
+					emoji_base_color: 'Колір емоджі',
+					emoji: 'Емоджі',
 					image: 'Зображення',
 					image_depth: 'Мапа глибини зображення',
 					cols: 'Cтовпців',

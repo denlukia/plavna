@@ -23,17 +23,53 @@
 		rows,
 		prop_1: backgroundColor,
 		prop_2: textColor,
-		img_1,
+		prop_3: emojiBaseColorProp,
+		prop_4: emojiProp,
 		viewing_in_article
 	} = $derived(data);
 
-	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
-
 	let emojiBaseColor = $derived(
-		bgColor && textColor ? interpolateHexColors(bgColor, '#ffffff', 0.3) : 'transparent'
+		emojiBaseColorProp
+			? emojiBaseColorProp
+			: backgroundColor
+				? interpolateHexColors(backgroundColor, '#ffffff', 0.3)
+				: 'transparent'
 	);
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
+	let emoji = $derived(emojiProp || '👋 🌍 🚀');
+
+	let emojiSvg = getEmojiSVG(emoji, 70, 1, 1);
+	let urlEncodedEmojiSvg = encodeSvgForUrl(emojiSvg);
+
+	let gridSvg = getEmojiSVG(emoji, 70, 4, 4);
+	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
+
+	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
+		let line1 = Array(cols).fill(emoji).join(' ');
+		let [first, ...other] = [...line1];
+		let line2 = other.join('') + first;
+
+		function getText(index: number) {
+			const line = index % 2 ? line1 : line2;
+			return `<text x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
+		}
+
+		const texts = new Array(rows).fill(null).map((_, i) => {
+			return getText(i);
+		});
+
+		return `
+		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * [...emoji].length * 0.7}"  height="${size * rows * 1.3}">
+			${texts.join('')}
+		</svg>
+	`;
+	}
+
+	function encodeSvgForUrl(svgString: string) {
+		const replaced = encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22');
+		return `url('data:image/svg+xml,${replaced}')`;
+	}
 
 	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
 		if (viewing_in_article) {
@@ -53,27 +89,34 @@
 
 <PreviewFoundation>
 	{#snippet main()}
-		<div class="preview" style="--bg-color: {bgColor}; --text-color: {textColor};">
+		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
 			<Layers stretch>
-				{#if img_1}
-					<div
-						class="emoji-layers"
-						bind:contentRect={rect}
-						{onpointermove}
-						style={`
+				<div
+					class="emoji-layers"
+					bind:contentRect={rect}
+					{onpointermove}
+					style={`
 							--emoji-base-color: ${emojiBaseColor};
 							--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
 							--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
-							--image-url: url("${img_1.src}"); 
-							--image-size: ${(img_1.width || 540) / 2}px ${(img_1.height || 160) / 2}px;
+							--image-url: ${urlEncodedGridSvg}; 
 						`}
-					>
-						<div class="emoji-base"></div>
-						<div class="emoji-rainbow"></div>
-						<div class="emoji-clear"></div>
-					</div>
-				{/if}
-				<div class="info global-fix-overflow">
+				>
+					<div class="emoji-base"></div>
+					<div class="emoji-rainbow"></div>
+				</div>
+				<div class="emoji-filter events-none" style={`--image-url: ${urlEncodedEmojiSvg};`}></div>
+				<div
+					class="emoji-layers events-none"
+					style={`
+						--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
+						--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
+						--image-url: ${urlEncodedGridSvg}; 
+					`}
+				>
+					<div class="emoji-clear"></div>
+				</div>
+				<div class="info events-none global-fix-overflow">
 					<div class="top"></div>
 					<div class="title {titleSize}">
 						{#if title_translation}
@@ -83,10 +126,8 @@
 						{/if}
 					</div>
 				</div>
-				<!-- {#if img_1}
-					<div class="emoji-colorizer" style={`--image-url: url("${img_1.src}");`}></div>
-				{/if} -->
-				<div class="shadow"></div>
+
+				<div class="shadow events-none"></div>
 			</Layers>
 		</div>
 	{/snippet}
@@ -104,7 +145,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		pointer-events: none;
 	}
 
 	.emoji-layers {
@@ -115,8 +155,6 @@
 
 		display: grid;
 		grid-template-areas: 'a';
-
-		animation: reveal 1000ms 1000ms backwards;
 	}
 
 	.emoji-layers > * {
@@ -126,7 +164,7 @@
 	.emoji-base,
 	.emoji-rainbow {
 		mask-image: var(--image-url);
-		mask-size: var(--image-size);
+		/* mask-size: var(--image-size); */
 		mask-position: bottom left;
 	}
 
@@ -159,7 +197,7 @@
 
 		background-position: var(--spotlight-x) var(--spotlight-y);
 		background-repeat: no-repeat;
-		transition: opacity 1000ms;
+		transition: opacity 500ms;
 	}
 	.emoji-layers:hover .emoji-rainbow {
 		opacity: 0.15;
@@ -170,27 +208,23 @@
 		background-size: var(--image-size);
 		background-position: bottom left;
 		transform: translate3d(0, 0, 0);
-		mask-image: radial-gradient(circle, #ffffffff 10%, #00000000 25%);
+		mask-image: radial-gradient(circle, #ffffffff 5%, #00000000 20%);
 		mask-position: var(--spotlight-x) var(--spotlight-y);
 		mask-repeat: no-repeat;
 		opacity: 0;
-		transition: opacity 1000ms;
+		transition: opacity 500ms;
 	}
-	.emoji-layers:hover .emoji-clear {
+	.emoji-layers:hover ~ * .emoji-clear {
 		opacity: 1;
 	}
 
-	/* .emoji-colorizer {
-		opacity: 0.3;
+	.emoji-filter {
+		opacity: 1;
 		background-image: var(--image-url);
-		background-position: left 90%;
-		background-size: 110% 220%;
-		filter: blur(50px);
-		mix-blend-mode: hard-light;
-		pointer-events: none;
-
-		animation: reveal 1000ms 1000ms backwards;
-	} */
+		background-size: 100% 120%;
+		background-position-y: 100%;
+		filter: blur(80px) brightness(1.7);
+	}
 
 	.shadow {
 		box-shadow:
@@ -199,7 +233,6 @@
 		opacity: 0.3;
 		transform: translate3d(0, 0, 0);
 		mix-blend-mode: overlay;
-		pointer-events: none;
 	}
 
 	.top {
@@ -226,10 +259,7 @@
 		padding: 0 var(--size-m) var(--size-m-to-l);
 	}
 
-	@keyframes reveal {
-		0% {
-			display: none;
-			opacity: 0;
-		}
+	.events-none {
+		pointer-events: none;
 	}
 </style>
