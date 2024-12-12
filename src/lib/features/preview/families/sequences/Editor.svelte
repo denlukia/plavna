@@ -13,7 +13,11 @@
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { PreviewEditorProps } from '../types';
 
-	let { mainSuperValidated }: PreviewEditorProps = $props();
+	let {
+		mainSuperValidated,
+		preview_image_1 = $bindable(),
+		preview_image_2 = $bindable()
+	}: PreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
