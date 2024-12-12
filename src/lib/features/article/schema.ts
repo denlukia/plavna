@@ -39,8 +39,10 @@ export const table_articles = sqliteTable(
 		preview_interactions_show_on: text('preview_interactions_show_on', {
 			enum: dynamicPreviewActivationConditions
 		}).default('hover'),
-		preview_prop_1: text('preview_prop_1'),
-		preview_prop_2: text('preview_prop_2'),
+		preview_prop_1: text('preview_prop_1').default(''),
+		preview_prop_2: text('preview_prop_2').default(''),
+		preview_prop_3: text('preview_prop_3').default(''),
+		preview_prop_4: text('preview_prop_4').default(''),
 		preview_translation_1_key: integer('preview_translation_1_key')
 			.notNull()
 			.references(() => table_translations.key, { onDelete: 'set null', onUpdate: 'cascade' }),

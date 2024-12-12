@@ -28,8 +28,6 @@ export function interpolateHexColors(hex1: string, hex2: string, percentage: num
 	const rgb1 = hexToRgb(hex1);
 	const rgb2 = hexToRgb(hex2);
 
-	console.log(hex1, rgb1, hex2, rgb2);
-
 	// Interpolate each component
 	const r = Math.round(rgb1.r + (rgb2.r - rgb1.r) * clampedPercentage);
 	const g = Math.round(rgb1.g + (rgb2.g - rgb1.g) * clampedPercentage);

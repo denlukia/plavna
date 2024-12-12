@@ -156,6 +156,8 @@ export const EN = {
 					name: 'Sequences',
 					text_bg_color: 'Text bg color',
 					text_color: 'Text color',
+					emoji_base_color: 'Emoji base color',
+					emoji: 'Emojis',
 					image: 'Image',
 					image_depth: 'Image depth map',
 					cols: 'Cols',

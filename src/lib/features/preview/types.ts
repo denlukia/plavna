@@ -8,6 +8,8 @@ export type PreviewDataProp = {
 	likes_count: number;
 	prop_1: string | null;
 	prop_2: string | null;
+	prop_3: string | null;
+	prop_4: string | null;
 	cols: number;
 	rows: number;
 	publish_time: Date | null;
