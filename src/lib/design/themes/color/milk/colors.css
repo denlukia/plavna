@@ -28,6 +28,7 @@
 	--red-200-transparent-500: hsla(0, 100%, 20%, 50%);
 
 	--cold-200: hsl(200, 70%, 30%);
+	--cold-200-transparent-100: hsla(200, 70%, 30%, 10%);
 	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
 
 	--colorful-light-1: hsl(32deg, 100%, 71%);
@@ -160,7 +161,7 @@
 	/* --- Link --- */
 	--color-link: var(--cold-200);
 	--color-link-shadow: var(--cold-200-transparent-200);
-	--color-link-hovered-shadow: var(--cold-200-transparent-200);
+	--color-link-hovered-shadow: var(--cold-200-transparent-100);
 
 	/* --- Info Block --- */
 	--color-info-block-default-bg: var(--warm-300-transparent-100);

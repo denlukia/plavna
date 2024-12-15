@@ -39,18 +39,16 @@
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
-	let emojiSvg = getEmojiSVG(emoji, 70, 3, 1);
+	let emojiSvg = getEmojiSVG(emoji, 90, 3, 1);
 	let urlEncodedEmojiSvg = encodeSvgForUrl(emojiSvg);
 
-	let gridSvg = getEmojiSVG(emoji, 70, 8, 4);
+	let gridSvg = getEmojiSVG(emoji, 90, 5, 3);
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
 
 	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
 		let pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
 		let [first, ...other] = pattern1;
 		let pattern2 = other.concat(first);
-
-		console.log(pattern1, pattern2);
 
 		let line1 = Array(cols)
 			.fill(null)
@@ -66,7 +64,7 @@
 		}
 
 		function getText(index: number) {
-			const line = index % 2 ? line1 : line2;
+			const line = index % 2 === 0 ? line1 : line2;
 			return `<text x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
 		}
 
@@ -179,7 +177,6 @@
 	.emoji-base,
 	.emoji-rainbow {
 		mask-image: var(--image-url);
-		/* mask-size: var(--image-size); */
 		mask-position: bottom left;
 		mask-repeat: no-repeat;
 	}
@@ -189,7 +186,6 @@
 	}
 	.emoji-rainbow {
 		opacity: 0;
-		mix-blend-mode: hard-light;
 
 		background: radial-gradient(
 			circle farthest-corner,
@@ -216,7 +212,7 @@
 		transition: opacity 500ms;
 	}
 	.emoji-layers:hover .emoji-rainbow {
-		opacity: 0.15;
+		opacity: 0.2;
 	}
 
 	.emoji-clear {
@@ -241,7 +237,7 @@
 		background-size: 125% 120%;
 		background-position-y: 100%;
 		filter: blur(40px);
-		mix-blend-mode: hard-light;
+		mix-blend-mode: screen;
 	}
 
 	.shadow {
@@ -259,12 +255,8 @@
 	}
 
 	.title {
-		background-color: #fff6;
-		color: transparent;
-		text-shadow: 0 1px 0px var(--text-color);
-		-webkit-background-clip: text;
-		-moz-background-clip: text;
-		background-clip: text;
+		color: var(--text-color);
+		text-shadow: 0 -1px 0px #fff6;
 	}
 
 	.title.heading-1 {

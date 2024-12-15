@@ -22,7 +22,6 @@ export function patchScrollToDelayed() {
 	function patchedScrollTo(x: number, y: number): void;
 	function patchedScrollTo(x: ScrollToOptions | undefined): void;
 	function patchedScrollTo(arg1: number | ScrollToOptions | undefined, arg2?: number) {
-		console.log('Scrolling to', arg1, arg2);
 		if (typeof arg1 === 'number' && typeof arg2 === 'number') {
 			promise?.then(() => {
 				originalScrollTo(arg1, arg2);

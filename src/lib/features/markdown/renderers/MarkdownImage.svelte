@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { getAstNode } from 'svelte-exmarkdown';
 
 	import ImageById from '../../image/ImageById.svelte';
 
 	type Props = {
-		href: string;
+		src: string;
 	};
 
-	let { href }: Props = $props();
+	let { src }: Props = $props();
 
-	let imageId = $derived(Number(href));
+	let imageId = $derived(Number(src));
 </script>
 
 {#if !isNaN(imageId)}

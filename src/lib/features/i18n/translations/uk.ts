@@ -9,7 +9,7 @@ export const UK = {
 		my: 'Мої',
 		no_translation: 'Без перекладу',
 		or: 'або',
-		save: 'Зберегти',
+		save: 'Онов.',
 		only_for_big_screens: 'Наразі Плавна доступна лише для більших екранів',
 		new_article: 'Нова стаття'
 	},
