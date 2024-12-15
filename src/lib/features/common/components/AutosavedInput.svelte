@@ -16,14 +16,20 @@
 		action: string;
 		onSuccessfullUpdate?: (form: any) => void;
 		superValidated: SuperValidated<any>;
+		manualOnly?: boolean;
 	};
 
-	let { action, superValidated, onSuccessfullUpdate, ...attributes }: Props = $props();
+	let {
+		action,
+		superValidated,
+		onSuccessfullUpdate,
+		manualOnly = true,
+		...attributes
+	}: Props = $props();
 
 	let formRef: HTMLButtonElement | null = $state(null);
 	let showSaveButton = $state(true);
 	let elementRef: HTMLInputElement | null = $state(null);
-	let isActiveOnLastUpdate = $state(false);
 
 	let { form, enhance, errors, submit } = superForm(superValidated, {
 		resetForm: false,
@@ -31,34 +37,39 @@
 		onUpdate: (e) => {
 			if (e.result.type === 'success') {
 				const form = e.result.data.form;
-				isActiveOnLastUpdate = document.activeElement === elementRef;
+
 				onSuccessfullUpdate?.(form);
 			}
 		},
 		onUpdated: (e) => {
-			if (isActiveOnLastUpdate) {
-				elementRef?.focus();
-			}
+			if (manualOnly) return;
+
+			setTimeout(() => elementRef?.focus());
 		}
 	});
 
 	let firstInputName = $derived(Object.keys($form)[0]);
 
 	function oninput(e: Event, lang?: SupportedLang) {
+		if (manualOnly) return;
+
 		const target = e.target as HTMLInputElement;
 		if (lang && lang in $form) {
 			form.update((v) => ({ ...v, [lang]: target.value }));
 		} else {
 			form.update((v) => ({ ...v, [firstInputName]: target.value }));
 		}
-
 		submit(elementRef);
 	}
 
 	const debouncedOninput = debounce(oninput, WAIT_BEFORE_AUTOSAVE_MS);
 
-	onMount(() => {
-		showSaveButton = false;
+	$effect(() => {
+		if (manualOnly) {
+			showSaveButton = true;
+		} else {
+			showSaveButton = false;
+		}
 	});
 </script>
 
@@ -95,7 +106,7 @@
 <Errors errors={$errors} />
 
 <style>
-	.save-button-wrapper {
+	/* .save-button-wrapper {
 		display: grid;
 		grid-template-columns: 0fr;
 		opacity: 0;
@@ -127,5 +138,5 @@
 		100% {
 			overflow: visible;
 		}
-	}
+	} */
 </style>

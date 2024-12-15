@@ -57,7 +57,7 @@ export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_H
 
 export const PAGE_SLUG_PREFIX = 'page:';
 
-export const WAIT_BEFORE_AUTOSAVE_MS = 1000;
+export const WAIT_BEFORE_AUTOSAVE_MS = 500;
 
 export const HIDDEN_TAG_PREFIX = '*';
 
