@@ -34,8 +34,8 @@
 
 	const plugins: Plugin[] = [
 		gfmPlugin(),
-		{ remarkPlugin: remarkMath },
-		{ rehypePlugin: rehypeKatex },
+		// { remarkPlugin: remarkMath },
+		// { rehypePlugin: rehypeKatex },
 		{
 			renderer: {
 				image: MarkdownImage,
