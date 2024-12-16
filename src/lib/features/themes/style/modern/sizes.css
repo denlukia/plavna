@@ -1,6 +1,7 @@
 :root {
 	/* --- Main Layout */
 	--size-main-layout-margin-top: var(--size-3xl);
+	--size-main-layout-padding-top: 0;
 	--size-main-layout-padding-bottom: var(--size-6xl);
 
 	/* Description Viewer */
@@ -8,7 +9,7 @@
 	--size-description-viewer-actions-top: calc(var(--size-xl-to-2xl) * -1);
 
 	/* --- Section --- */
-	--size-section-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
+	--size-section-description-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-5xl);
 	--size-section-articles-list-margin-top: var(--size-xl);
 
@@ -63,4 +64,10 @@
 	--size-image-input-checkbox-wrapper-border-radius: var(--size-full);
 	--size-image-input-checkbox-wrapper-padding-inline: var(--size-m);
 	--size-image-input-checkbox-wrapper-padding-block: var(--size-xs);
+}
+
+@media (max-width: 1024px) {
+	:root {
+		--size-main-layout-padding-top: var(--size-4xl);
+	}
 }

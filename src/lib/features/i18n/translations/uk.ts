@@ -10,7 +10,7 @@ export const UK = {
 		no_translation: 'Без перекладу',
 		or: 'або',
 		save: 'Онов.',
-		only_for_big_screens: 'Наразі Плавна доступна лише для більших екранів',
+		only_for_big_screens: 'Наразі ця сторінка в Плавна доступна лише для більших екранів',
 		new_article: 'Нова стаття'
 	},
 	actor_errors: {

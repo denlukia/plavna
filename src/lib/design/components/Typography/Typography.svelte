@@ -10,6 +10,7 @@
 		tone?: TextTones;
 		bold?: boolean;
 		purpose?: 'functional' | 'aesthetic';
+		style?: string;
 	};
 
 	let {
@@ -18,7 +19,8 @@
 		purpose = 'functional',
 		children,
 		resetPadding,
-		bold
+		bold,
+		style
 	}: Props = $props();
 
 	let outline = $state(false);
@@ -37,6 +39,7 @@
 		: ''}"
 	class:outline
 	class:reset-padding={resetPadding}
+	{style}
 >
 	{@render children()}
 </span>
@@ -46,7 +49,8 @@
 		margin: 0;
 		display: inline-block;
 		padding-inline: var(--text-padding-inline);
-		line-break: normal;
+		word-break: break-word;
+		hyphens: auto;
 	}
 
 	.outline {

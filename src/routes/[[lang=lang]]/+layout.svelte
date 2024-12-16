@@ -2,8 +2,10 @@
 	// Global CSS
 	import '$lib/styles/index.css';
 
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { PAGE_INRO_DELAY_MS, PAGE_SLUG_PREFIX } from '$lib/collections/config.js';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
 	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
@@ -18,6 +20,14 @@
 	let { themeComponentSets } = $derived(data);
 
 	let isNavigating = $derived(Boolean($navigating));
+
+	const mobileNonAdaptedRoutes = [
+		'/[[lang=lang]]/[username]/[articleslug]/edit',
+		`/[[lang=lang]]/[username]/${PAGE_SLUG_PREFIX}[pageslug]/[articleslug]/edit`
+	];
+	let showAdaptivityWarning = $derived(
+		$page.route.id && mobileNonAdaptedRoutes.includes($page.route.id)
+	);
 
 	onMount(() => {
 		const unpatch = patchScrollToDelayed();
@@ -46,13 +56,20 @@
 
 	<GridVisualizer />
 </div>
-<div class="only-big-screens">
-	<div class="text">
-		<Typography size="heading-2">
-			<Translation key="layout.only_for_big_screens" />
-		</Typography>
+
+{#if showAdaptivityWarning}
+	<div
+		class="only-big-screens"
+		in:fade={{ duration: PAGE_INRO_DELAY_MS }}
+		out:fade={{ delay: PAGE_INRO_DELAY_MS, duration: PAGE_INRO_DELAY_MS }}
+	>
+		<div class="text">
+			<Typography size="heading-2">
+				<Translation key="layout.only_for_big_screens" />
+			</Typography>
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.main-layout {
@@ -82,6 +99,7 @@
 	.content-wrapper {
 		isolation: isolate;
 		margin-top: var(--size-main-layout-margin-top);
+		padding-top: var(--size-main-layout-padding-top);
 		position: relative;
 	}
 
@@ -98,7 +116,7 @@
 		background-color: var(--color-main-layout-bg);
 	}
 
-	@media screen and (max-width: 1024px) {
+	@media (max-width: 1024px) {
 		.only-big-screens {
 			display: flex;
 		}

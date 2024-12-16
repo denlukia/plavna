@@ -33,6 +33,10 @@ export async function enrichPreviewFamilies(
 		const component = await getPreviewComponent(previewFamily, type);
 		if (!component) continue;
 
+		if (!previewFamilies[previewFamilyTyped]) {
+			return previewFamilies;
+		}
+
 		previewFamilies[previewFamilyTyped].components = {
 			...previewFamilies[previewFamilyTyped].components,
 			[type]: component

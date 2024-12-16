@@ -15,7 +15,7 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
-		"@denlukia/plavna-common": "^0.0.37",
+		"@denlukia/plavna-common": "^0.0.39",
 		"@ianvs/prettier-plugin-sort-imports": "^4.3.1",
 		"@libsql/client": "^0.14.0",
 		"@lucia-auth/adapter-drizzle": "^1.1.0",
@@ -44,6 +44,8 @@
 		"oslo": "^1.2.1",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.7",
+		"rehype-katex": "^7.0.1",
+		"remark-math": "^6.0.0",
 		"svelte": "^5.10.0",
 		"svelte-check": "^4.0.5",
 		"svelte-exmarkdown": "^4.0.2",

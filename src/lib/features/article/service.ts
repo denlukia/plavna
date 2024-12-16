@@ -105,7 +105,6 @@ export class ArticleService {
 			)
 			.where(eq(table_articles.user_id, actor.id));
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const forms = query.map(({ title_translation, ...article }) => ({
 			title_translation_key: title_translation?.key,
 			...article
@@ -492,7 +491,7 @@ export class ArticleService {
 		// TODO: There were validImage field in ImageHandler, we replaced
 		// for just imageHandler presence, check if everything works ok still
 		const validImagesPresent = Object.entries(imageHandlers).some(([key, imageHandler]) => {
-			imageHandler && !keysForDeletion.find((k) => k === `delete_${key}`);
+			return imageHandler && !keysForDeletion.find((k) => k === `delete_${key}`);
 		});
 		if (validImagesPresent) {
 			const queryResult = await db
@@ -614,6 +613,8 @@ export class ArticleService {
 					lang: this.translationService.currentLang,
 					preview_prop_1: preview.preview_prop_1 || null,
 					preview_prop_2: preview.preview_prop_2 || null,
+					preview_prop_3: preview.preview_prop_3 || null,
+					preview_prop_4: preview.preview_prop_4 || null,
 					preview_translation_1,
 					preview_translation_2,
 					preview_image_1,
@@ -649,7 +650,7 @@ export class ArticleService {
 									return null;
 								}
 							})
-							.filter(isNotNull);
+							.filter(isNonNullable);
 						if (queueRecordsForInsert.length === 0) {
 							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 						}

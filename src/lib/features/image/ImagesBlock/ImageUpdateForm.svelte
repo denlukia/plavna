@@ -18,11 +18,11 @@
 	let image = $state(meta);
 
 	let showUpdateButton = $state(true);
-	let showCopyCode = $state(false);
+	let hideCopyCode = $state(true);
 
 	onMount(() => {
 		showUpdateButton = false;
-		showCopyCode = true;
+		hideCopyCode = false;
 	});
 
 	function copyCode() {
@@ -56,13 +56,12 @@
 			</Button>
 		</div>
 	</form>
-	{#if showCopyCode}
-		<div class="action-wrapper copy-code">
-			<Button size="small" onclick={copyCode}>
-				<Translation key="article_editor.images.copy_code" />
-			</Button>
-		</div>
-	{/if}
+
+	<div class="action-wrapper copy-code" class:hide={hideCopyCode}>
+		<Button size="small" onclick={copyCode}>
+			<Translation key="article_editor.images.copy_code" />
+		</Button>
+	</div>
 </div>
 
 <style>
@@ -79,7 +78,6 @@
 	}
 	.action-wrapper.copy-code {
 		right: var(--size-m);
-		animation: fade-in 500ms backwards;
 	}
 	.action-wrapper.deletion {
 		left: var(--size-m);
@@ -89,12 +87,26 @@
 		animation: fade-in 500ms 3s backwards;
 	}
 
+	.copy-code.hide {
+		animation: fade-out 500ms 3s forwards;
+	}
+
 	@keyframes fade-in {
 		0% {
 			opacity: 0;
 		}
 		100% {
 			opacity: 1;
+		}
+	}
+
+	@keyframes fade-out {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+			display: none;
 		}
 	}
 </style>

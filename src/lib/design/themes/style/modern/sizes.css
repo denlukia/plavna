@@ -28,7 +28,10 @@
 	--size-cell-overflow: var(--size-l);
 
 	--size-main-grid-padding-inline: var(--size-l);
-	--size-main-grid-max-width: calc(var(--size-max-cell-width) * 5 + var(--size-cell-gap) * 4);
+	--size-main-grid-max-width: calc(
+		var(--size-max-cell-width) * var(--size-cols-total) + var(--size-cell-gap) *
+			calc(var(--size-cols-total) - 1)
+	);
 	--size-main-grid-width: calc(
 		min(var(--size-main-grid-max-width), 100vw) - 2 * var(--size-main-grid-padding-inline)
 	);
@@ -216,4 +219,11 @@
 	--size-loader-spinner-outer-padding: var(--size-m);
 	--size-loader-spinner: var(--size-xl);
 	--size-loader-spinner-thickness: var(--size-xs);
+}
+
+@media (max-width: 1024px) {
+	:root {
+		/* --- Grid --- */
+		--size-cols-total: 3;
+	}
 }

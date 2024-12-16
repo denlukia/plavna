@@ -12,7 +12,7 @@
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';
 
-	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/p-[pageslug]/[articleslug]/edit/$types';
+	import type { PageData } from '../../../routes/[[lang=lang]]/[username]/page:[pageslug]/[articleslug]/edit/$types';
 	import SideBox from '../common/components/SideBox.svelte';
 	import type { SystemTranslationKey } from '../i18n/types';
 	import { getImageById } from '../image/utils';
@@ -87,11 +87,15 @@
 			if (!currentPreviewObject.family) {
 				return null;
 			}
-			let component = previewFamilies[currentPreviewObject.family].components.editor;
+			let previewFamilyObj = previewFamilies[currentPreviewObject.family];
+			if (!previewFamilyObj) {
+				return null;
+			}
+			let component = previewFamilyObj.components.editor;
 			if (!component) {
 				component = getPreviewComponent(currentPreviewObject.family, 'editor');
 			}
-			return (previewFamilies[currentPreviewObject.family].components.editor = component);
+			return (previewFamilyObj.components.editor = component);
 		});
 	}
 

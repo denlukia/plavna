@@ -56,6 +56,8 @@ export const imageSourceToEndpointKeyInUser = {
 export const IMAGE_CREDENTIALS_PATH = `${dev ? 'http://' : 'https://'}${PUBLIC_HOST}/api/images/credentials`;
 
 export const PAGE_SLUG_PREFIX = 'page:';
+// Don't forget to change folder names and Type imports accordingly
+// Search for prev prefix
 
 export const WAIT_BEFORE_AUTOSAVE_MS = 500;
 

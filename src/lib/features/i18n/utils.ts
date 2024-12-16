@@ -99,7 +99,7 @@ export function isSupportedLang(lang: string): lang is SupportedLang {
 	return supportedLangs.includes(lang as SupportedLang);
 }
 
-export function replaceEmptyWithNull(translation: TranslationUpdate) {
+export function replaceEmptyWithNull<T extends TranslationUpdate>(translation: T) {
 	return Object.fromEntries(
 		Object.entries(translation).map(([key, value]) => {
 			if (value === '') {
@@ -107,7 +107,9 @@ export function replaceEmptyWithNull(translation: TranslationUpdate) {
 			}
 			return [key, value];
 		})
-	);
+	) as {
+		[K in keyof T]: T[K] extends string ? T[K] | null : T[K];
+	};
 }
 
 export function getLang(lang: string | undefined): SupportedLang {

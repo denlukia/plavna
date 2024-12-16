@@ -132,7 +132,7 @@ async function update_preview(event: RequestEvent) {
 				const imageHandler = await new ServerImageHandler();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 				imagesHandlers[key] = imageHandler;
-			} catch (e) {
+			} catch {
 				// TODO: Error for unsupported image
 				return fail(400, { form });
 			}

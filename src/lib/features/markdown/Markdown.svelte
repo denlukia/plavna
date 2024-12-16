@@ -1,4 +1,6 @@
 <script lang="ts">
+	import rehypeKatex from 'rehype-katex';
+	import remarkMath from 'remark-math';
 	import Markdown from 'svelte-exmarkdown';
 	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
 	import type { Plugin } from 'svelte-exmarkdown/types';
@@ -17,7 +19,9 @@
 	import OrderedList from './renderers/OrderedList.svelte';
 	import Paragraph from './renderers/Paragraph.svelte';
 	import Section from './renderers/Section.svelte';
+	import Span from './renderers/Span.svelte';
 	import Strong from './renderers/Strong.svelte';
+	import Sub from './renderers/Sub.svelte';
 	import Sup from './renderers/Sup.svelte';
 	import UnorderedList from './renderers/UnorderedList.svelte';
 
@@ -30,6 +34,8 @@
 
 	const plugins: Plugin[] = [
 		gfmPlugin(),
+		{ remarkPlugin: remarkMath },
+		{ rehypePlugin: rehypeKatex },
 		{
 			renderer: {
 				image: MarkdownImage,
@@ -46,9 +52,11 @@
 				img: MarkdownImage,
 				section: Section,
 				sup: Sup,
+				sub: Sub,
 				ul: UnorderedList,
 				ol: OrderedList,
-				li: ListItem
+				li: ListItem,
+				span: Span
 			}
 		}
 	];

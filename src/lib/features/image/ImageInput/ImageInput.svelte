@@ -1,5 +1,4 @@
 <script lang="ts">
-	import path from 'path';
 	import type { SupportedLang } from '@denlukia/plavna-common/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
