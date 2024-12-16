@@ -1,6 +1,6 @@
 <script lang="ts">
-	import rehypeKatex from 'rehype-katex';
-	import remarkMath from 'remark-math';
+	// import rehypeKatex from 'rehype-katex';
+	// import remarkMath from 'remark-math';
 	import Markdown from 'svelte-exmarkdown';
 	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
 	import type { Plugin } from 'svelte-exmarkdown/types';
