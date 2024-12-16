@@ -6,6 +6,7 @@
 	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
+	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
@@ -40,49 +41,56 @@
 
 	// TODO Dry this up
 
-	async function onImageChange(e: Event) {
-		// 0. Check file presence
-		const target = e.target as HTMLInputElement;
-		const file = target.files?.[0];
-		if (!file) return;
-
+	async function processFile(file: File) {
 		processing = true;
 
 		// 1. Perform basic checks, and initialize image uploader (if needed)
 		const actor = $page.data.actor;
 		if (!actor) throw Error('Actor not found');
 
-		if (!imageHandler) imageHandler = await getImageHandler();
-		await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
-
-		// 2. Validate image
 		try {
+			if (!imageHandler) imageHandler = await getImageHandler();
+			await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+
+			// 2. Validate image
 			await imageHandler.setImageFromEntry(file, IMG_VALIDATION_CONFIG);
+
+			const lang = getLangFromLanguagedName(name);
+
+			// 3. Process and upload image
+			const pathUpdate = await imageHandler.upload({ imageId: image.id, lang });
+
+			// 4. Report image upload
+			const response = await fetch('/api/images/update-path', {
+				method: 'POST',
+				body: JSON.stringify(pathUpdate)
+			});
+			if (!response.ok) {
+				errors = await response.text();
+			}
+
+			// 5. Update translation and path locally
+			const update: Awaited<ReturnType<ImageService['updatePath']>> = await response.json();
+			updateLocalsFromResponse(update);
 		} catch (err: any) {
 			errors = err;
+		} finally {
 			processing = false;
 			return;
 		}
+	}
 
-		const lang = getLangFromLanguagedName(name);
+	async function onImageChange(e: Event) {
+		// 0. Check file presence
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0];
+		if (!file) return;
 
-		// 3. Process and upload image
-		const pathUpdate = await imageHandler.upload({ imageId: image.id, lang });
+		await processFile(file);
+	}
 
-		// 4. Report image upload
-		const response = await fetch('/api/images/update-path', {
-			method: 'POST',
-			body: JSON.stringify(pathUpdate)
-		});
-		if (!response.ok) {
-			errors = await response.text();
-		}
-
-		// 5. Update translation and path locally
-		const update: Awaited<ReturnType<ImageService['updatePath']>> = await response.json();
-		updateLocalsFromResponse(update);
-
-		processing = false;
+	async function onDrop(file: File) {
+		await processFile(file);
 	}
 
 	async function onDelete() {
@@ -137,15 +145,12 @@
 		</Button>
 	</div>
 {:else}
-	<DropZone {name} {onImageChange} />
+	<DropZone {name} {onImageChange} {onDrop} {errors} />
 {/if}
 {#if processing}
 	<div class="spinner-wrapper" transition:fade={{ duration: 250 }}>
 		<Spinner />
 	</div>
-{/if}
-{#if errors}
-	<div class="errors">{errors}</div>
 {/if}
 
 <style>

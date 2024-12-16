@@ -69,7 +69,7 @@
 		margin-bottom: var(--size-6xl);
 	}
 	.section-creator-wrapper {
-		max-width: var(--size-section-max-width);
+		max-width: var(--size-section-description-max-width);
 	}
 	.section-creation-button {
 		display: flex;

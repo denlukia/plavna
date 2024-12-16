@@ -32,6 +32,7 @@
 <style>
 	.tags-list {
 		display: flex;
+		flex-wrap: wrap;
 		margin-top: var(--size-s-to-m);
 		gap: var(--size-s);
 	}

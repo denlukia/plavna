@@ -1,11 +1,14 @@
 import { fail, type RequestEvent } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
-import { zod, type ZodObjectTypes, type ZodValidation } from 'sveltekit-superforms/adapters';
+import { zod } from 'sveltekit-superforms/adapters';
 
 import { detokenizeEmptyStrings, removeNullValues, tokenizeEmptyStrings } from '../common/utils';
 import { replaceEmptyWithNull } from './utils';
+import type { translationUpdateAllowEmptySchema, translationUpdateSchema } from './validators';
 
-export function createTranslationUpdater(schema: ZodValidation<ZodObjectTypes>) {
+export function createTranslationUpdater(
+	schema: typeof translationUpdateSchema | typeof translationUpdateAllowEmptySchema
+) {
 	return async (event: RequestEvent) => {
 		const formData = await event.request.formData();
 		const tokenizedFormData = tokenizeEmptyStrings(formData);

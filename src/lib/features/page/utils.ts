@@ -25,8 +25,13 @@ export function getReaderPageConfigFromCookies(cookies: Cookies): ReaderPageConf
 
 export function updateTagInReaderPageConfig(
 	readerPageConfig: ReaderPageConfig | null,
-	{ sectionId, tagId, newChecked }: SectionRequest
+	sectionRequest: SectionRequest
 ) {
+	if (!('tagId' in sectionRequest)) {
+		return readerPageConfig;
+	}
+	const { sectionId, tagId, newChecked } = sectionRequest;
+
 	let section = { excludedTags: [] as Array<TagSelect['id']> };
 	if (readerPageConfig && sectionId in readerPageConfig) {
 		section = readerPageConfig[sectionId];

@@ -48,6 +48,7 @@
 		box-shadow: var(--shadow-link);
 		transition: var(--transition-link);
 		border-radius: var(--size-link-border-radius);
+		word-break: break-word;
 	}
 	.link:hover {
 		box-shadow: var(--shadow-link-hovered);

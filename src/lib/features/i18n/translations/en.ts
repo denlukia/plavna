@@ -9,7 +9,7 @@ export const EN = {
 		no_translation: 'No translation',
 		or: 'or',
 		save: 'Save',
-		only_for_big_screens: 'Plavna is available only for bigger screens for now',
+		only_for_big_screens: 'This Plavna page is available only for bigger screens for now',
 		new_article: 'New article'
 	},
 	actor_errors: {

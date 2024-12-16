@@ -43,8 +43,6 @@
 		--max-height: calc(var(--max-height-base) + var(--max-height-gaps));
 
 		max-height: var(--max-height);
-
-		--size-cols-total: var(--size-cols-total);
 	}
 
 	.with-padding-inline {

@@ -1,5 +1,4 @@
 import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
-import type { MaybePromise } from '@sveltejs/kit';
 import type { Component } from 'svelte';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { ArticlePreviewUpdate } from '$lib/features/article/validators';
@@ -30,7 +29,7 @@ export type PreviewFamiliesDict = Partial<
 	Record<
 		PreviewFamilyId,
 		{
-			components: Record<PreviewComponentType, MaybePromise<Component | null>>;
+			components: Record<PreviewComponentType, Promise<Component | null> | Component | null>;
 			name_translation_key: PossibleNameTranslationIds;
 		}
 	>

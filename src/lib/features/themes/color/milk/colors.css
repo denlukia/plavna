@@ -37,4 +37,5 @@
 	--color-image-input-border: var(--warm-300-transparent-200);
 	--color-image-input-checkbox-wrapper-bg: var(--neutral-0-transparent-400);
 	--color-image-input-checkbox-wrapper-text: var(--neutral-1000);
+	--color-image-input-error-bg: var(--red-900);
 }

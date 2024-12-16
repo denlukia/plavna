@@ -13,28 +13,24 @@
 
 	let {
 		mainSuperValidated,
-		images = bindable(),
-		translationsSuperValidated,
+		preview_image_1 = $bindable(),
+		preview_image_2 = $bindable(),
+		translation_1,
+		translation_2,
 		templateMeta
 	}: CustomPreviewEditorProps = $props();
 
 	let { form, enhance, errors } = superForm(mainSuperValidated);
 </script>
 
-<AutosavedInput
-	superValidated={translationsSuperValidated.translation_1}
-	action="?/update_translation_allow_empty"
-/>
-<AutosavedInput
-	superValidated={translationsSuperValidated.translation_2}
-	action="?/update_translation_allow_empty"
-/>
+<AutosavedInput superValidated={translation_1} action="?/update_translation_allow_empty" />
+<AutosavedInput superValidated={translation_2} action="?/update_translation_allow_empty" />
 <form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 	<input name="preview_template_id" type="hidden" bind:value={templateMeta.id} />
 	<Input name="preview_prop_1" type="text" bind:value={$form.preview_prop_1} />
 	<Input name="preview_prop_2" type="text" bind:value={$form.preview_prop_2} />
-	<LanguagedImageInput name="preview_image_1" bind:image={images.preview_image_1} clientUpload />
-	<LanguagedImageInput name="preview_image_2" bind:image={images.preview_image_2} clientUpload />
+	<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
+	<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
 	<Labeled as="label" kind="for-checkbox">
 		<Checkbox
 			name="preview_create_localized_screenshots"

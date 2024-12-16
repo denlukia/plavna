@@ -6,16 +6,36 @@
 	type Props = {
 		name: string;
 		onImageChange?: (e: Event) => Promise<void>;
+		onDrop?: (file: File) => Promise<void>;
+		errors?: string | string[] | null;
 	};
 
-	let { name, onImageChange }: Props = $props();
+	let { name, onImageChange, onDrop, errors }: Props = $props();
+
+	let id = $derived(`image-input-${name}`);
+
+	function ondragover(e: DragEvent) {
+		e.preventDefault();
+	}
+
+	function ondrop(e: DragEvent) {
+		e.preventDefault();
+		if (!e.dataTransfer) return;
+		const file = e.dataTransfer.files[0];
+		onDrop?.(file);
+	}
 </script>
 
-<label class="drop-zone">
-	<Typography size="small">
-		<Translation key="article_editor.previews.image_dropzone" />
+<label class="drop-zone" for={id} {ondrop} {ondragover}>
+	<Typography size="small" tone={errors ? 'danger' : 'default'} style="pointer-events: none">
+		{#if errors}
+			{errors}
+		{:else}
+			<Translation key="article_editor.previews.image_dropzone" />
+		{/if}
 		<br />
 		<input
+			{id}
 			class="file-input"
 			type="file"
 			maxlength="1"
@@ -38,6 +58,7 @@
 		color: var(--color-image-input);
 	}
 	.file-input {
+		pointer-events: all;
 		margin-top: var(--size-s-to-m);
 		width: 100%;
 		margin-inline-start: -2px;

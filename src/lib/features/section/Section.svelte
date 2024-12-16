@@ -227,7 +227,7 @@
 	}
 
 	.description {
-		max-width: var(--size-section-max-width);
+		max-width: var(--size-section-description-max-width);
 		transition: var(--transition-section-description);
 	}
 
@@ -241,7 +241,7 @@
 		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
 		overflow: auto;
 		scrollbar-width: thin;
-
 		position: relative;
+		max-width: calc(100% + var(--size-main-grid-padding-inline) * 2);
 	}
 </style>
