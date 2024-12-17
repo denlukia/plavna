@@ -1,6 +1,6 @@
 import { cubicOut } from 'svelte/easing';
 import type { FlyParams } from 'svelte/transition';
-import { PAGE_OUTROING_ATTRIBUTE_NAME } from '$lib/collections/config';
+import { PAGE_TRANSITION_STATE_ATTRIBUTE_NAME } from '$lib/collections/config';
 
 import { split_css_unit } from './utils';
 
@@ -24,7 +24,6 @@ export function pagefly(
 	const [y_value, y_unit] = split_css_unit(y);
 
 	markBodyOutroingStart();
-	setTimeout(markBodyOutroingEnd, duration);
 
 	return {
 		delay,
@@ -37,9 +36,5 @@ export function pagefly(
 }
 
 function markBodyOutroingStart() {
-	document.body.setAttribute(PAGE_OUTROING_ATTRIBUTE_NAME, 'true');
-}
-
-function markBodyOutroingEnd() {
-	document.body.removeAttribute(PAGE_OUTROING_ATTRIBUTE_NAME);
+	document.body.setAttribute(PAGE_TRANSITION_STATE_ATTRIBUTE_NAME, 'outroing');
 }

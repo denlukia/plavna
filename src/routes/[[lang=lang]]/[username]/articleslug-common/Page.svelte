@@ -41,12 +41,13 @@
 	<title>{title}</title>
 </svelte:head>
 
+<div class="back-button" out:fade|global>
+	<Button href={backToArticlesHref} kind="prominent">
+		<Translation key="article.back_to_articles" />
+	</Button>
+</div>
+
 <AnimatedPage key={routeId + article.id + lang}>
-	<div class="back-button" out:fade|global>
-		<Button href={backToArticlesHref} kind="prominent">
-			<Translation key="article.back_to_articles" />
-		</Button>
-	</div>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
