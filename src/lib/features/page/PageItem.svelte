@@ -10,6 +10,7 @@
 
 	import Card from '../common/components/Card.svelte';
 	import { generatePath } from '../common/links';
+	import { slugToTitle } from './utils';
 	import type { PageDeletionForm, PageSelect, PageUpdateForm } from './validators';
 
 	type Props = {
@@ -36,12 +37,6 @@
 
 	function onSuccessfullUpdate() {
 		active = false;
-	}
-
-	function slugToTitle(str: string) {
-		const [first, ...rest] = str.split('');
-		const joined = [first.toUpperCase(), ...rest].join('');
-		return joined.replaceAll('-', ' ');
 	}
 </script>
 

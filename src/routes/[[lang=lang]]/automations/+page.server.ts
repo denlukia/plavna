@@ -1,4 +1,5 @@
 export const actions = {
+	// TODO: Remove
 	create_articles: async (event) => {
 		const { translationService, tagService, articleService } = event.locals;
 

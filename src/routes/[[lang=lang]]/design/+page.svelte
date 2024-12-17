@@ -37,6 +37,10 @@
 	let active = $state(false);
 </script>
 
+<svelte:head>
+	<title>Design Test</title>
+</svelte:head>
+
 <div class="blocks">
 	<div class="group">
 		<Typography size="heading-1">denis lukianenko</Typography>

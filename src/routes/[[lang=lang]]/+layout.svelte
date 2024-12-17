@@ -13,6 +13,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
 	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
+	import { getTitle } from '$lib/features/layout/title.js';
 	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	let { data, children } = $props();
@@ -34,10 +35,12 @@
 
 		return unpatch;
 	});
+
+	let title = $derived(getTitle($page.params));
 </script>
 
 <svelte:head>
-	<title>Plavna App</title>
+	<title>{title}</title>
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
