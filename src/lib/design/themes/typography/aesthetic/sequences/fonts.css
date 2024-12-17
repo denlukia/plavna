@@ -23,7 +23,7 @@
 	font-weight: 100 900;
 	font-display: swap;
 	src:
-		local('Inter Variable'),
+		local('Source Serif 4'),
 		url('../../fonts/Source Serif 4/SourceSerif4Variable-Roman.otf.woff2') format('woff2'),
 		url('../../fonts/Source Serif 4/SourceSerif4Variable-Roman.otf.woff') format('woff');
 }
