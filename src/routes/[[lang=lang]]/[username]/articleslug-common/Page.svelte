@@ -24,22 +24,23 @@
 	let images = $derived($page.data.imagesState?.value);
 	let user = $derived($page.data.user);
 
+	let backToArticlesHref = $derived(generatePath('/[lang]/[username]/[pageslug]', $page.params));
+
 	let editHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', $page.params)
 	);
-
-	// TODO: Turned out to be buggy, I'm in shambles
-	// let conf = $derived({ key: article?.slug });
-	// let isOnArticle = $derived($page.params?.['articleslug'] === article.slug);
 </script>
 
 <AnimatedPage key={routeId + article.id + lang}>
+	<div class="back-button" out:fade|global>
+		<Button href={backToArticlesHref} kind="prominent">
+			<Translation key="article.back_to_articles" />
+		</Button>
+	</div>
 	<ColumnsContainer>
 		<Column cols={3} style="margin-inline: auto;">
 			<article class="article">
 				{#if PreviewComponent}
-					<!-- {#if isOnArticle} -->
-					<!-- <div class="preview-animator" in:receive|global={conf} out:send|global={conf}> -->
 					<GridContainer>
 						<GridCell cols={3} rows={3}>
 							<PreviewComponent
@@ -53,8 +54,6 @@
 							/>
 						</GridCell>
 					</GridContainer>
-					<!-- </div> -->
-					<!-- {/if} -->
 				{:else}
 					No preview
 				{/if}
@@ -101,6 +100,12 @@
 
 	.content {
 		margin-top: var(--size-xl);
+	}
+
+	.back-button {
+		position: absolute;
+		top: 0;
+		left: 0;
 	}
 
 	@keyframes fade-in {
