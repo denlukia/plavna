@@ -54,3 +54,9 @@ export function updateTagInReaderPageConfig(
 	readerPageConfig[sectionId] = section;
 	return readerPageConfig;
 }
+
+export function slugToTitle(str: string) {
+	const [first, ...rest] = str.split('');
+	const joined = [first.toUpperCase(), ...rest].join('');
+	return joined.replaceAll('-', ' ');
+}

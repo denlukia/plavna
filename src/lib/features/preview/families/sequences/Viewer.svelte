@@ -40,10 +40,7 @@
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
-	let emojiSvg = getEmojiSVG(emoji, 90, 3, 1);
-	let urlEncodedEmojiSvg = encodeSvgForUrl(emojiSvg);
-
-	let gridSvg = getEmojiSVG(emoji, 90, 5, 3);
+	let gridSvg = getEmojiSVG(emoji, 90, 4, 3);
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
 
 	let showAdvancedLayers = $state(false);

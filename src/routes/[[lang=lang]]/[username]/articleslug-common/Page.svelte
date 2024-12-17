@@ -9,6 +9,8 @@
 	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import { getRecordTranslation } from '$lib/features/i18n/utils';
+	import { getTitle } from '$lib/features/layout/title';
 	import { getPreviewData } from '$lib/features/preview/utils';
 
 	import type { PageData } from '../[articleslug]/$types';
@@ -29,7 +31,15 @@
 	let editHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', $page.params)
 	);
+
+	let titleTranslation = getRecordTranslation(article.title_translation_key, recordsTranslations);
+
+	let title = $derived(getTitle($page.params, `${titleTranslation}`));
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
 
 <AnimatedPage key={routeId + article.id + lang}>
 	<div class="back-button" out:fade|global>
