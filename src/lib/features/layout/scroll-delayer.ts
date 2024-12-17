@@ -1,23 +1,24 @@
-import { PAGE_INRO_DELAY_MS, PAGE_OUTROING_ATTRIBUTE_NAME } from '$lib/collections/config';
+import { PAGE_TRANSITION_STATE_ATTRIBUTE_NAME } from '$lib/collections/config';
 
 export function patchScrollToDelayed() {
 	const originalScrollTo = window.scrollTo;
 
 	let promise: null | Promise<unknown> = null;
 	let resolve: null | ((value: unknown) => void) = null;
-	let timeoutId: null | ReturnType<typeof setTimeout> = null;
 
-	const stopObserving = observeBodyAttributeChange(PAGE_OUTROING_ATTRIBUTE_NAME, (newValue) => {
-		if (newValue === 'true') {
-			({ promise, resolve } = Promise.withResolvers());
-			if (timeoutId) {
-				clearTimeout(timeoutId);
+	const stopObserving = observeBodyAttributeChange(
+		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME,
+		(newValue) => {
+			if (newValue === 'outroing') {
+				console.log('PROMISING');
+				({ promise, resolve } = Promise.withResolvers());
 			}
-			timeoutId = setTimeout(() => {
-				resolve?.(true);
-			}, PAGE_INRO_DELAY_MS);
+			if (newValue === 'introing') {
+				console.log('RESOLVING');
+				resolve?.(null);
+			}
 		}
-	});
+	);
 
 	function patchedScrollTo(x: number, y: number): void;
 	function patchedScrollTo(x: ScrollToOptions | undefined): void;

@@ -1,7 +1,10 @@
 <script lang="ts">
 	import bezier from 'bezier-easing';
-	import type { Snippet } from 'svelte';
-	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';
+	import { onMount, type Snippet } from 'svelte';
+	import {
+		PAGE_INRO_DELAY_MS,
+		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME
+	} from '$lib/collections/config';
 	import { pagefly } from '$lib/design/transitions/pagefly';
 
 	type Props = {
@@ -27,6 +30,12 @@
 		 --in-duration: ${duration}ms;
 		 --in-easing: cubic-bezier(${easingString});`
 	);
+
+	onMount(() => {
+		setTimeout(() => {
+			document.body.setAttribute(PAGE_TRANSITION_STATE_ATTRIBUTE_NAME, 'introing');
+		}, delay);
+	});
 </script>
 
 {#key key}
