@@ -31,7 +31,8 @@
 		 --in-easing: cubic-bezier(${easingString});`
 	);
 
-	onMount(() => {
+	$effect(() => {
+		key;
 		setTimeout(() => {
 			document.body.setAttribute(PAGE_TRANSITION_STATE_ATTRIBUTE_NAME, 'introing');
 		}, delay);
