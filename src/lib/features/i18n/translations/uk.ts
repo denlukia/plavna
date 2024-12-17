@@ -75,6 +75,9 @@ export const UK = {
 			load_more: 'Завантажити більше'
 		}
 	},
+	article: {
+		back_to_articles: 'Назад'
+	},
 	article_actor: {
 		edit: 'Редагувати'
 	},

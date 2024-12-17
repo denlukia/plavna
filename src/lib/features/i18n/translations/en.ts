@@ -75,6 +75,9 @@ export const EN = {
 			load_more: 'Load more'
 		}
 	},
+	article: {
+		back_to_articles: 'Back'
+	},
 	article_actor: {
 		edit: 'Edit'
 	},
