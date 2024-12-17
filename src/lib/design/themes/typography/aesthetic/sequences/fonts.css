@@ -18,6 +18,27 @@
 }
 
 @font-face {
+	font-family: 'EB Garamond Variable';
+	font-style: normal;
+	font-weight: 400 800;
+	font-display: swap;
+	src:
+		local('EB Garamond'),
+		url('../../fonts/EB Garamond/EBGaramond-VariableFont_wght.woff2') format('woff2'),
+		url('../../fonts/EB Garamond/EBGaramond-VariableFont_wght.woff') format('woff');
+}
+@font-face {
+	font-family: 'EB Garamond Variable';
+	font-style: italic;
+	font-weight: 400 800;
+	font-display: swap;
+	src:
+		local('EB Garamond'),
+		url('../../fonts/EB Garamond/EBGaramond-Italic-VariableFont_wght.woff2') format('woff2'),
+		url('../../fonts/EB Garamond/EBGaramond-Italic-VariableFont_wght.woff') format('woff');
+}
+
+@font-face {
 	font-family: 'Source Serif 4 Variable';
 	font-style: normal;
 	font-weight: 100 900;
