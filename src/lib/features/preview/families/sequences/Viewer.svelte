@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
 	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
 	import type { TextSizes } from '$lib/design/components/Typography/types';
@@ -44,6 +45,8 @@
 
 	let gridSvg = getEmojiSVG(emoji, 90, 5, 3);
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
+
+	let showAdvancedLayers = $state(false);
 
 	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
 		let pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
@@ -98,6 +101,12 @@
 	function onpointermove(e: PointerEvent) {
 		spotlightTopLeft = { x: e.offsetX - rect.width / 2, y: e.offsetY - rect.height / 2 };
 	}
+	function onpointerenter() {
+		showAdvancedLayers = true;
+	}
+	function onpointerleave() {
+		showAdvancedLayers = false;
+	}
 </script>
 
 <PreviewFoundation>
@@ -108,27 +117,29 @@
 					class="emoji-layers"
 					bind:contentRect={rect}
 					{onpointermove}
+					{onpointerenter}
+					{onpointerleave}
 					style={`
 							--emoji-base-color: ${emojiBaseColor};
-							--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
-							--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
 							--image-url: ${urlEncodedGridSvg}; 
 						`}
 				>
 					<div class="emoji-base"></div>
-					<div class="emoji-rainbow"></div>
 				</div>
-				<div class="emoji-filter events-none" style={`--image-url: ${urlEncodedEmojiSvg};`}></div>
-				<div
-					class="emoji-layers events-none"
-					style={`
+				{#if showAdvancedLayers}
+					<div
+						transition:fade
+						class="emoji-layers advanced-layers events-none"
+						style={`
 						--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
 						--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
 						--image-url: ${urlEncodedGridSvg}; 
 					`}
-				>
-					<div class="emoji-clear"></div>
-				</div>
+					>
+						<div class="emoji-clear"></div>
+						<div class="emoji-rainbow"></div>
+					</div>
+				{/if}
 				<div class="info events-none global-fix-overflow">
 					<div class="top"></div>
 					<div class="title {titleSize}">
@@ -185,7 +196,7 @@
 		background-color: var(--emoji-base-color);
 	}
 	.emoji-rainbow {
-		opacity: 0;
+		opacity: 0.2;
 
 		background: radial-gradient(
 			circle farthest-corner,
@@ -211,9 +222,6 @@
 		background-repeat: no-repeat;
 		transition: opacity 500ms;
 	}
-	.emoji-layers:hover .emoji-rainbow {
-		opacity: 0.2;
-	}
 
 	.emoji-clear {
 		background-image: var(--image-url);
@@ -224,29 +232,15 @@
 		mask-image: radial-gradient(circle, #ffffffff 5%, #00000000 20%);
 		mask-position: var(--spotlight-x) var(--spotlight-y);
 		mask-repeat: no-repeat;
-		opacity: 0;
+		opacity: 1;
 		transition: opacity 500ms;
-	}
-	.emoji-layers:hover ~ * .emoji-clear {
-		opacity: 1;
-	}
-
-	.emoji-filter {
-		opacity: 1;
-		background-image: var(--image-url);
-		background-size: 125% 120%;
-		background-position-y: 100%;
-		filter: blur(40px);
-		mix-blend-mode: screen;
 	}
 
 	.shadow {
 		box-shadow:
-			inset 1px 1px 0px #fff,
-			inset -1px -1px 0px #000;
-		opacity: 0.3;
+			inset 1px 1px 0px #fff9,
+			inset -1px -1px 0px #0001;
 		transform: translate3d(0, 0, 0);
-		mix-blend-mode: overlay;
 	}
 
 	.top {
