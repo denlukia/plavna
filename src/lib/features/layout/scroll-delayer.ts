@@ -10,11 +10,9 @@ export function patchScrollToDelayed() {
 		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME,
 		(newValue) => {
 			if (newValue === 'outroing') {
-				console.log('PROMISING');
 				({ promise, resolve } = Promise.withResolvers());
 			}
 			if (newValue === 'introing') {
-				console.log('RESOLVING');
 				resolve?.(null);
 			}
 		}
