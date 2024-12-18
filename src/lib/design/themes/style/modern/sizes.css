@@ -20,7 +20,7 @@
 	/* ------ Semantic ------ */
 
 	/* --- Grid --- */
-	--size-max-cell-width: 240px;
+	--size-max-cell-width: 260px;
 	--size-cell-aspect: 120 / 240;
 	--size-cols-total: 5;
 	--size-rows-total: 5;
@@ -225,5 +225,6 @@
 	:root {
 		/* --- Grid --- */
 		--size-cols-total: 3;
+		--size-main-grid-padding-inline: var(--size-l-to-xl);
 	}
 }

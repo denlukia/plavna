@@ -254,7 +254,7 @@
 		padding: var(--size-m-to-l) var(--size-l) var(--size-l-to-xl);
 	}
 	.title.heading-2 {
-		padding: var(--size-s-to-m) var(--size-m-to-l) var(--size-l);
+		padding: var(--size-s-to-m) var(--size-m-to-l) var(--size-m-to-l);
 	}
 	.title.headline-short {
 		padding: 0 var(--size-m) var(--size-m-to-l);
