@@ -78,9 +78,6 @@
 
 @media (max-width: 1024px) {
 	:root {
-		--text-aesthetic-main-font-weight: 600;
-		--text-aesthetic-strong-font-weight: 650;
-
 		--text-aesthetic-heading-1-padding-top: 0;
 		--text-aesthetic-heading-1-padding-bottom: 0;
 		--text-aesthetic-heading-1-size: 34px;
