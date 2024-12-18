@@ -30,7 +30,7 @@
 	let currentPathname = $derived($page.url.pathname);
 </script>
 
-<Popup kind="list">
+<Popup kind="list" position={{ x: 'left' }}>
 	{#snippet label()}
 		<span class="label-wrapper">
 			<Translation key="layout.my" />

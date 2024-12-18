@@ -6,7 +6,7 @@
 	import type { ButtonProps } from '../Button/types';
 	import Box from './Box.svelte';
 	import TriggerStyler from './TriggerStyler.svelte';
-	import type { PopupKind } from './types';
+	import type { PopupKind, TailPosition } from './types';
 
 	type Props = {
 		triggerType?: 'button' | 'dropdown';
@@ -17,6 +17,10 @@
 		content: Snippet;
 		buttonProps?: ButtonProps;
 		style?: string;
+		position?: {
+			x?: 'left' | 'center' | 'right';
+			y?: 'top' | 'bottom';
+		};
 	};
 
 	let {
@@ -27,14 +31,35 @@
 		label,
 		content,
 		buttonProps,
-		style
+		style,
+		position = {
+			x: 'center',
+			y: 'bottom'
+		}
 	}: Props = $props();
+
+	let { x: horizontalPosition = 'center', y: verticalPosition = 'bottom' } = $derived(position);
+
+	let tailPosition = $derived.by(getTailPosition);
 
 	function onclick() {
 		active = !active;
 	}
 	function onclickoutside() {
 		active = false;
+	}
+
+	function getTailPosition() {
+		const tailPosition: TailPosition = { x: 'center', y: 'top' };
+		if (verticalPosition === 'top') {
+			tailPosition.y = 'bottom';
+		}
+		if (horizontalPosition === 'left') {
+			tailPosition.x = 'right';
+		} else if (horizontalPosition === 'right') {
+			tailPosition.x = 'left';
+		}
+		return tailPosition;
 	}
 </script>
 
@@ -45,15 +70,18 @@
 		</Button>
 	{:else}
 		<TriggerStyler {active}>
-			<button class="global-reset-button global-dropdown-paddings" {onclick}>
+			<button class="global-reset-button global-reset-link global-dropdown-paddings" {onclick}>
 				{@render label()}
 			</button>
 		</TriggerStyler>
 	{/if}
 
 	{#if active}
-		<div class="popup-positioner" {style}>
-			<Box {kind}>
+		<div
+			class="popup-positioner vertical-{verticalPosition} horizontal-{horizontalPosition}"
+			{style}
+		>
+			<Box {kind} {tailPosition}>
 				{@render content()}
 			</Box>
 		</div>
@@ -67,11 +95,42 @@
 	}
 	.popup-positioner {
 		position: absolute;
-		bottom: 0%;
-		left: 50%;
 		width: max-content;
-		/* max-width: 200px; */
-		transform: translate(-50%, 100%);
 		z-index: 1;
+	}
+
+	.vertical-top {
+		top: 0%;
+	}
+	.vertical-bottom {
+		bottom: 0%;
+	}
+	.horizontal-left {
+		right: 0%;
+	}
+	.horizontal-center {
+		left: 50%;
+	}
+	.horizontal-right {
+		left: 0%;
+	}
+
+	.vertical-top.horizontal-center {
+		transform: translate(-50%, -100%);
+	}
+	.vertical-bottom.horizontal-center {
+		transform: translate(-50%, 100%);
+	}
+	.vertical-top.horizontal-left {
+		transform: translate(-100%, -100%);
+	}
+	.vertical-bottom.horizontal-left {
+		transform: translate(0%, 100%);
+	}
+	.vertical-top.horizontal-right {
+		transform: translate(0%, -100%);
+	}
+	.vertical-bottom.horizontal-right {
+		transform: translate(0%, 100%);
 	}
 </style>
