@@ -5,16 +5,17 @@
 
 	import { rotateandscale } from '../../transitions/rotateandscale';
 	import Tail from './Tail.svelte';
-	import type { PopupKind } from './types';
+	import type { PopupKind, TailPosition } from './types';
 
 	type Props = {
 		children: Snippet;
 		kind: PopupKind;
+		tailPosition: TailPosition;
 	};
 
 	const animationDuration = 300;
 
-	let { children, kind = 'form' }: Props = $props();
+	let { children, kind = 'form', tailPosition }: Props = $props();
 </script>
 
 <div
@@ -24,11 +25,11 @@
 		easing: cubicOut
 	}}
 >
-	<div class="tail-wrapper">
+	<div class="tail-wrapper horizontal-{tailPosition.x} vertical-{tailPosition.y}">
 		<Tail />
 	</div>
 	<div
-		class="box kind-{kind}"
+		class="box kind-{kind} origin-horizontal-{tailPosition.x} origin-vertical-{tailPosition.y}"
 		transition:rotateandscale|global={{
 			duration: animationDuration,
 			easing: cubicOut,
@@ -47,8 +48,28 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: 2px;
-		transform-origin: top center;
+
+		--size-tail-half-width: 25px;
 	}
+	.origin-horizontal-left.origin-vertical-top {
+		transform-origin: calc(0% + var(--size-tail-half-width)) 0%;
+	}
+	.origin-horizontal-left.origin-vertical-bottom {
+		transform-origin: calc(0% + var(--size-tail-half-width)) 100%;
+	}
+	.origin-horizontal-right.origin-vertical-top {
+		transform-origin: calc(100% - var(--size-tail-half-width)) 0%;
+	}
+	.origin-horizontal-right.origin-vertical-bottom {
+		transform-origin: calc(100% - var(--size-tail-half-width)) 100%;
+	}
+	.origin-horizontal-center.origin-vertical-top {
+		transform-origin: 50% 0%;
+	}
+	.origin-horizontal-center.origin-vertical-bottom {
+		transform-origin: 50% 100%;
+	}
+
 	.box {
 		min-width: 150px;
 		display: flex;
@@ -63,10 +84,11 @@
 	}
 	.tail-wrapper {
 		color: var(--color-box-bg);
-		width: 60px;
+		width: calc(var(--size-tail-half-width) * 2);
 		z-index: 1;
 		margin-bottom: -0.5px;
 		transform-origin: bottom center;
+		margin-inline: calc(var(--size-tail-half-width) / 1.5);
 	}
 	.kind-list {
 		gap: var(--size-box-gap);
@@ -80,5 +102,15 @@
 		width: 100%;
 		height: 100%;
 		display: block;
+	}
+
+	.horizontal-left {
+		align-self: flex-start;
+	}
+	.horizontal-right {
+		align-self: flex-end;
+	}
+	.vertical-bottom {
+		order: 1;
 	}
 </style>

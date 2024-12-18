@@ -27,7 +27,7 @@
 </script>
 
 <header class="header">
-	<Popup kind="list">
+	<Popup kind="list" position={{ x: 'left' }}>
 		{#snippet label()}
 			{getLang($page.params.lang).toUpperCase()}
 		{/snippet}

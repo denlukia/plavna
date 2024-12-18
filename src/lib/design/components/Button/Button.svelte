@@ -44,7 +44,7 @@
 	data-sveltekit-preload-data={dataSvelteKitPreloadData}
 	data-sveltekit-reload={dataSvelteKitReload}
 	class="button kind-{kind} size-{size} placement-{placement} {customClass}
-		global-reset-line-height {href ? 'global-link-rest' : 'global-button-rest'}"
+		global-reset-line-height {href ? 'global-rest-link' : 'global-rest-button'}"
 	class:pressed={active || pressed}
 	onclick={onclickWrapper}
 	{...events}
