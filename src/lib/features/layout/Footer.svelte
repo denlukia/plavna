@@ -13,7 +13,7 @@
 
 	let { logoTextSvg }: Props = $props();
 
-	let linkToMain = generatePath('/[lang]/', $page.params);
+	let linkToMain = $derived(generatePath('/[lang]/', $page.params));
 </script>
 
 <footer>
