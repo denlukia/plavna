@@ -29,4 +29,8 @@
 	:global(.paragraph) + .heading {
 		margin-top: 1.5em;
 	}
+
+	.heading + :global(.heading) {
+		margin-top: 0.5em;
+	}
 </style>

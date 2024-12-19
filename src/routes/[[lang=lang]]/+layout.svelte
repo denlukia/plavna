@@ -11,6 +11,7 @@
 	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import Footer from '$lib/features/layout/Footer.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
 	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
 	import { getTitle } from '$lib/features/layout/title.js';
@@ -56,7 +57,7 @@
 			{@render children()}
 		</Layers>
 	</div>
-
+	<Footer logoTextSvg={data.logoTextSvg} />
 	<GridVisualizer />
 </div>
 
@@ -85,10 +86,11 @@
 			0 100px 0 var(--color-main-layout-bg);
 		padding-inline: var(--size-main-grid-padding-inline);
 		padding-bottom: var(--size-main-layout-padding-bottom);
-	}
 
-	/* .grid-wrapper {
-	} */
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
 	.lights-wrapper {
 		position: absolute;

@@ -9,7 +9,7 @@
 	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
+	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Greetings from '$lib/features/user/greetings/Greetings.svelte';
 
@@ -25,7 +25,7 @@
 		<Translation key="settings.heading" />
 	</Typography>
 
-	<ColumnedContent>
+	<ColumnedCards>
 		<Column>
 			<form use:enhanceSettings method="POST" action="?/update_settings">
 				<Labeled>
@@ -41,7 +41,7 @@
 				</Button>
 			</form>
 		</Column>
-	</ColumnedContent>
+	</ColumnedCards>
 </AnimatedPage>
 
 {#if !closedGreetings}

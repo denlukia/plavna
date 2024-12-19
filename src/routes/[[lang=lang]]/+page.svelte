@@ -3,6 +3,8 @@
 	import { page } from '$app/stores';
 	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
+	import Column from '$lib/design/components/Grid/Column.svelte';
+	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
@@ -19,7 +21,11 @@
 </script>
 
 <AnimatedPage key={routeId + lang}>
-	<Typography size="heading-1"><Translation key="main.landing" /></Typography>
+	<ColumnsContainer>
+		<Column cols={3}>
+			<Typography size="heading-2"><Translation key="main.landing" markdown /></Typography>
+		</Column>
+	</ColumnsContainer>
 
 	<div class="actions">
 		{#if data.actor}

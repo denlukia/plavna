@@ -50,7 +50,6 @@
 		display: inline-block;
 		padding-inline: var(--text-padding-inline);
 		word-break: break-word;
-		hyphens: auto;
 	}
 
 	.outline {

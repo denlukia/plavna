@@ -25,7 +25,8 @@ export const EN = {
 		cannot_delete: "Couldn't delete"
 	},
 	main: {
-		landing: 'Landing',
+		landing:
+			"## Plavna is an app developed by me — Denis Lukianenko — for people to publish their design-⁠frontend portfolios and blogs. \n ## For the author, it's like Medium, where they can customize not just the header, but *all* the colors and aesthetics, and each article card can be a custom interactive widget. \n ## For the reader, it's like NYT, where they can turn off any uninteresting categories, or The Verge, where they can switch to a simpler theme. \n## For me, this is a project where I try to combine in one package things I've learned over the years in design and development. \n## Plavna is focused on svelte, but highly-animated interface, because it's creator believes: animation is not a decoration, it is a fundamental property of the world.",
 		sign_in_with_github: 'Sign in with GitHub',
 		to_sign_out: 'Sign out'
 	},
