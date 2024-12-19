@@ -41,6 +41,7 @@
 	--color-text: var(--neutral-0);
 	--color-text-danger: var(--red-200);
 	--color-text-additional: var(--neutral-0-transparent-400);
+	--color-text-barely-visible: var(--neutral-0-transparent-100);
 
 	/* --- Main Layout */
 	--color-main-layout-bg: var(--warm-950);

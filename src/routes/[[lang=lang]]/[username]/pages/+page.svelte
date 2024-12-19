@@ -2,7 +2,7 @@
 	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import ColumnedContent from '$lib/features/common/components/ColumnedContent.svelte';
+	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';
 	import PageEditor from '$lib/features/page/PageItemEditor.svelte';
@@ -21,7 +21,7 @@
 <AnimatedPage key={routeId + lang}>
 	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
-	<ColumnedContent>
+	<ColumnedCards>
 		{#each data.pageItems as pageItem (pageItem.id)}
 			<PageItem {pageItem} />
 		{/each}
@@ -35,7 +35,7 @@
 				{/snippet}
 			</Popup>
 		</div>
-	</ColumnedContent>
+	</ColumnedCards>
 </AnimatedPage>
 
 <style>

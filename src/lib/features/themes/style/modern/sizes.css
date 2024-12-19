@@ -2,7 +2,7 @@
 	/* --- Main Layout */
 	--size-main-layout-margin-top: var(--size-3xl);
 	--size-main-layout-padding-top: 0;
-	--size-main-layout-padding-bottom: var(--size-6xl);
+	--size-main-layout-padding-bottom: var(--size-l);
 
 	/* Description Viewer */
 	--size-description-viewer-padding-top: var(--size-m);
