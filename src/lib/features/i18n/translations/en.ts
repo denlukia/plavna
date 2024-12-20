@@ -26,7 +26,7 @@ export const EN = {
 	},
 	main: {
 		landing:
-			"## Plavna is a free, open-source Svelte app developed by Denis Lukianenko for people to publish their design/frontend portfolios and blogs. \n ## For authors, it's like Medium, where they can customize not just the header, but typography, colors and aesthetics, and each article preview can be custom and interactive. \n ## For readers, it's like NYT, where they can turn off uninteresting categories, or The Verge, where they can switch to a lighter theme. \n## For me, this is a project where I try to combine things I've learned over the years in design and development. \n## Plavna is focused on svelte, highly animated interface, because I believe: animation is not a decoration, it is a fundamental property of the world.",
+			"## Plavna is a free Svelte app developed by Denis Lukianenko for people to publish their design/frontend portfolios and blogs. \n ## For authors, it's like Medium, where they can customize not just the header, but typography, colors and aesthetics, and each article preview can be custom and interactive. \n ## For readers, it's like NYT, where they can turn off uninteresting categories, or The Verge, where they can switch to a lighter theme. \n## For me, this is a project where I try to combine things I've learned over the years in design and development. \n## Plavna is focused on svelte, highly animated interface, because I believe: animation is not a decoration, it is a fundamental property of the world.",
 		sign_in_with_github: 'Sign in with GitHub',
 		to_sign_out: 'Sign out'
 	},
