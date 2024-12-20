@@ -25,20 +25,38 @@ export function generateLanguagedFields<N extends string, V>(name: N, validator:
 	);
 }
 
-export const baseSlugValidator = z
-	.string() //
-	.min(SLUG_MIN_LENGTH, {
-		message: checkTranslationKey('actor_errors.min_length')
-	})
-	.max(SLUG_MAX_LENGTH, {
-		message: checkTranslationKey('actor_errors.max_length')
-	})
-	.regex(SLUG_ALLOWED_CHARS_REGEX, {
-		message: checkTranslationKey('actor_errors.disallowed_chars')
-	})
-	.refine((str) => !reservedWords.includes(str), {
-		message: checkTranslationKey('actor_errors.reserved_word')
-	})
-	.refine((str) => reservedPrefixes.every((prefix) => !str.startsWith(prefix)), {
-		message: checkTranslationKey('actor_errors.reserved_prefix')
-	});
+export function getBasicSlugValidator(type: 'article' | 'page') {
+	const base = z
+		.string()
+		.max(SLUG_MAX_LENGTH, {
+			message: checkTranslationKey('actor_errors.max_length')
+		})
+		.regex(SLUG_ALLOWED_CHARS_REGEX, {
+			message: checkTranslationKey('actor_errors.disallowed_chars')
+		});
+
+	const addReservedWordRefiners = (base: z.ZodString) => {
+		return base
+			.refine((str) => !reservedWords.includes(str), {
+				message: checkTranslationKey('actor_errors.reserved_word')
+			})
+			.refine((str) => reservedPrefixes.every((prefix) => !str.startsWith(prefix)), {
+				message: checkTranslationKey('actor_errors.reserved_prefix')
+			});
+	};
+
+	if (type === 'article') {
+		return addReservedWordRefiners(
+			base.min(SLUG_MIN_LENGTH, {
+				message: checkTranslationKey('actor_errors.min_length')
+			})
+		);
+	} else {
+		return addReservedWordRefiners(base).refine(
+			(str) => str.length >= SLUG_MIN_LENGTH || str === '',
+			{
+				message: checkTranslationKey('actor_errors.min_length')
+			}
+		);
+	}
+}

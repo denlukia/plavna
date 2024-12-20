@@ -1,12 +1,12 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { baseSlugValidator } from '../common/validators';
+import { getBasicSlugValidator } from '../common/validators';
 import { sectionSelectSchema } from '../section/validators';
 import { tagSelectSchema } from '../tag/validators';
 import { table_pages } from './schema';
 
-const pageSlugValidator = baseSlugValidator.or(z.literal(''));
+const pageSlugValidator = getBasicSlugValidator('page');
 
 // Validators
 export const pageSelectSchema = createSelectSchema(table_pages);
