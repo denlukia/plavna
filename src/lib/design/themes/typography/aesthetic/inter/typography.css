@@ -23,16 +23,16 @@
 	--text-aesthetic-headline-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-headline-padding-top: 3px;
 	--text-aesthetic-headline-padding-bottom: 1px;
-	--text-aesthetic-headline-size: 15px;
-	--text-aesthetic-headline-weight: 700;
-	--text-aesthetic-headline-line-height: 24px;
+	--text-aesthetic-headline-size: 18px;
+	--text-aesthetic-headline-weight: 750;
+	--text-aesthetic-headline-line-height: 28px;
 	--text-aesthetic-headline-letter-spacing: 0;
 
 	--text-aesthetic-headline-short-font-family: var(--text-aesthetic-main-font-family);
 	--text-aesthetic-headline-short-padding-top: 1px;
 	--text-aesthetic-headline-short-padding-bottom: 3px;
-	--text-aesthetic-headline-short-size: 15px;
-	--text-aesthetic-headline-short-weight: 700;
+	--text-aesthetic-headline-short-size: 18px;
+	--text-aesthetic-headline-short-weight: 750;
 	--text-aesthetic-headline-short-line-height: 20px;
 	--text-aesthetic-headline-short-letter-spacing: 0;
 
