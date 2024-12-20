@@ -2,7 +2,7 @@ import type { ServerImageHandler } from '@denlukia/plavna-common/images';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { baseSlugValidator } from '../common/validators';
+import { getBasicSlugValidator } from '../common/validators';
 import { previewFamiliesIds } from '../preview/families';
 import type {
 	articlePreviewImageFileFieldsAllObj,
@@ -16,10 +16,10 @@ export const articleSelectSchema = createSelectSchema(table_articles, {
 });
 export const articleInsertSchema = createInsertSchema(table_articles, {
 	preview_family: z.enum(previewFamiliesIds),
-	slug: baseSlugValidator
+	slug: getBasicSlugValidator('article')
 });
 export const articleSlugUpdateSchema = articleSelectSchema.pick({ slug: true }).extend({
-	slug: baseSlugValidator
+	slug: getBasicSlugValidator('article')
 });
 
 export type ArticleSelect = z.infer<typeof articleSelectSchema>;

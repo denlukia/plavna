@@ -39,6 +39,7 @@ export const actions = {
 	},
 	update: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
+		console.log(form);
 
 		if (!form.valid) {
 			return fail(400, { form });
