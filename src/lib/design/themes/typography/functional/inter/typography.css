@@ -9,7 +9,7 @@
 	--text-functional-heading-1-padding-bottom: 0;
 	--text-functional-heading-1-size: 62px;
 	--text-functional-heading-1-weight: 900;
-	--text-functional-heading-1-line-height: 60px;
+	--text-functional-heading-1-line-height: 56px;
 	--text-functional-heading-1-letter-spacing: -0.01em;
 
 	--text-functional-heading-2-font-family: var(--text-functional-main-font-family);
@@ -23,16 +23,16 @@
 	--text-functional-headline-font-family: var(--text-functional-main-font-family);
 	--text-functional-headline-padding-top: 3px;
 	--text-functional-headline-padding-bottom: 1px;
-	--text-functional-headline-size: 15px;
-	--text-functional-headline-weight: 700;
-	--text-functional-headline-line-height: 24px;
+	--text-functional-headline-size: 18px;
+	--text-functional-headline-weight: 750;
+	--text-functional-headline-line-height: 28px;
 	--text-functional-headline-letter-spacing: 0;
 
 	--text-functional-headline-short-font-family: var(--text-functional-main-font-family);
 	--text-functional-headline-short-padding-top: 1px;
 	--text-functional-headline-short-padding-bottom: 3px;
-	--text-functional-headline-short-size: 15px;
-	--text-functional-headline-short-weight: 700;
+	--text-functional-headline-short-size: 18px;
+	--text-functional-headline-short-weight: 750;
 	--text-functional-headline-short-line-height: 20px;
 	--text-functional-headline-short-letter-spacing: 0;
 
