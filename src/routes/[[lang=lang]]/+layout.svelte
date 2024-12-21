@@ -11,6 +11,7 @@
 	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
 	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
+	import { getLang } from '$lib/features/i18n/utils.js';
 	import Footer from '$lib/features/layout/Footer.svelte';
 	import Header from '$lib/features/layout/Header.svelte';
 	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
@@ -38,6 +39,11 @@
 	});
 
 	let title = $derived(getTitle($page.params));
+
+	$effect(() => {
+		const lang = getLang($page.params.lang);
+		document.documentElement.lang = lang;
+	});
 </script>
 
 <svelte:head>

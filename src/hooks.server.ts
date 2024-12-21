@@ -64,5 +64,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		locals.imageService
 	);
 
-	return await resolve(event);
+	return await resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%lang%', locals.lang)
+	});
 };
