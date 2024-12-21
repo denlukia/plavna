@@ -41,7 +41,7 @@
 	<title>{title}</title>
 </svelte:head>
 
-<div class="back-button" out:fade|global>
+<div class="back-button" transition:fade|global>
 	<Button href={backToArticlesHref} kind="prominent">
 		<Translation key="article.back_to_articles" />
 	</Button>
