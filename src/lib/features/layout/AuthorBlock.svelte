@@ -49,11 +49,3 @@
 		{/each}
 	{/snippet}
 </Popup>
-
-<Button
-	kind="prominent"
-	href={generatePath('/[lang]/[username]/new', $page.params, { username: actor.username })}
-	dataSvelteKitPreloadData="off"
->
-	<Translation key="layout.new_article" />
-</Button>

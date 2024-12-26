@@ -77,7 +77,7 @@ export const EN = {
 		}
 	},
 	article: {
-		back_to_articles: 'Back'
+		back_to_articles: 'To articles'
 	},
 	article_actor: {
 		edit: 'Edit'

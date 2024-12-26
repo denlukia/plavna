@@ -43,7 +43,7 @@
 
 <div class="back-button" transition:fade|global>
 	<Button href={backToArticlesHref} kind="prominent">
-		<Translation key="article.back_to_articles" />
+		↰ <Translation key="article.back_to_articles" />
 	</Button>
 </div>
 
