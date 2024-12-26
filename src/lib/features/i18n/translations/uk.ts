@@ -77,7 +77,7 @@ export const UK = {
 		}
 	},
 	article: {
-		back_to_articles: 'Назад'
+		back_to_articles: 'До статей'
 	},
 	article_actor: {
 		edit: 'Редагувати'
