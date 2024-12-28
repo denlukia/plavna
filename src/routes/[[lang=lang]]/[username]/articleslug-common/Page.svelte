@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
+	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';
 	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Column from '$lib/design/components/Grid/Column.svelte';
@@ -12,6 +13,7 @@
 	import { getRecordTranslation } from '$lib/features/i18n/utils';
 	import { getTitle } from '$lib/features/layout/title';
 	import { getPreviewData } from '$lib/features/preview/utils';
+	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	import type { PageData } from '../[articleslug]/$types';
 
@@ -21,7 +23,15 @@
 
 	let { data }: Props = $props();
 
-	let { article, tags, actor, previewComponent: PreviewComponent, routeId, lang } = $derived(data);
+	let {
+		article,
+		tags,
+		actor,
+		previewComponent: PreviewComponent,
+		routeId,
+		lang,
+		themeComponentSets
+	} = $derived(data);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
 	let user = $derived($page.data.user);
@@ -41,7 +51,13 @@
 	<title>{title}</title>
 </svelte:head>
 
-<div class="back-button" transition:fade|global>
+<ThemeSetsInjector {themeComponentSets} />
+
+<div
+	class="back-button"
+	in:fade|global={{ duration: 400, delay: PAGE_INRO_DELAY_MS }}
+	out:fade|global={{ duration: 400 }}
+>
 	<Button href={backToArticlesHref} kind="prominent">
 		↰ <Translation key="article.back_to_articles" />
 	</Button>

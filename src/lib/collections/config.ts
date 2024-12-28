@@ -71,4 +71,4 @@ export const SLUG_ALLOWED_CHARS_REGEX = /^[a-z0-9-]*$/i;
 
 export const PAGE_TRANSITION_STATE_ATTRIBUTE_NAME = 'data-transition-state';
 
-export const PAGE_INRO_DELAY_MS = 200;
+export const PAGE_INRO_DELAY_MS = 300;

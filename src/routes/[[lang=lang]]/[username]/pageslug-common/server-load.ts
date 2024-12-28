@@ -56,7 +56,10 @@ export const load = (async ({
 		readerPageConfig
 	);
 
-	// 3. Add system translations
+	// 3. Add theme
+	const themeSet = await pageService.getThemeSet(params.username, pageslug);
+
+	// 4. Add system translations
 	const { systemTranslations } = await parent();
 	const additionalTranslationsSlices: SystemTranslationSliceKey[] = actor
 		? ['page', 'page_actor']
@@ -66,6 +69,7 @@ export const load = (async ({
 
 	return {
 		...page,
+		themeSet,
 		lang,
 		routeId,
 		systemTranslations: {
