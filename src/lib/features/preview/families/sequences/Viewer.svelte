@@ -25,7 +25,8 @@
 		prop_1: backgroundColor,
 		prop_2: textColor,
 		prop_3: emojiBaseColorProp,
-		prop_4: emojiProp,
+		img_1: gridImage,
+		img_2: lightsImage,
 		viewing_in_article
 	} = $derived(data);
 
@@ -38,51 +39,7 @@
 	);
 
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
-	let emoji = $derived(emojiProp || '👋 🌍 🚀');
-
-	let gridSvg = getEmojiSVG(emoji, 90, 4, 3);
-	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
-
 	let showAdvancedLayers = $state(false);
-
-	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
-		let pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
-		let [first, ...other] = pattern1;
-		let pattern2 = other.concat(first);
-
-		let line1 = Array(cols)
-			.fill(null)
-			.map((_, i) => pattern1[i % pattern1.length])
-			.join(' ');
-		let line2 = Array(cols)
-			.fill(null)
-			.map((_, i) => pattern2[i % pattern2.length])
-			.join(' ');
-
-		function splitEmoji(string: string) {
-			return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
-		}
-
-		function getText(index: number) {
-			const line = index % 2 === 0 ? line1 : line2;
-			return `<text x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
-		}
-
-		const texts = new Array(rows).fill(null).map((_, i) => {
-			return getText(i);
-		});
-
-		return `
-		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * 1.5}"  height="${size * rows * 1.3}">
-			${texts.join('')}
-		</svg>
-	`;
-	}
-
-	function encodeSvgForUrl(svgString: string) {
-		const replaced = encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22');
-		return `url('data:image/svg+xml,${replaced}')`;
-	}
 
 	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
 		if (viewing_in_article) {
@@ -110,32 +67,37 @@
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
 			<Layers stretch>
-				<div
-					class="emoji-layers"
-					bind:contentRect={rect}
-					{onpointermove}
-					{onpointerenter}
-					{onpointerleave}
-					style={`
-							--emoji-base-color: ${emojiBaseColor};
-							--image-url: ${urlEncodedGridSvg}; 
-						`}
-				>
-					<div class="emoji-base"></div>
-				</div>
-				{#if showAdvancedLayers}
+				{#if gridImage}
 					<div
-						transition:fade
-						class="emoji-layers advanced-layers events-none"
+						class="emoji-layers"
+						bind:contentRect={rect}
+						{onpointermove}
+						{onpointerenter}
+						{onpointerleave}
 						style={`
+							--emoji-base-color: ${emojiBaseColor};
+							--image-url: url(${gridImage.src}); 
+							--image-size: ${(gridImage.width || 0) / 2}px ${(gridImage.height || 0) / 2}px;
+						`}
+					>
+						<div class="emoji-base"></div>
+					</div>
+
+					{#if showAdvancedLayers}
+						<div
+							transition:fade
+							class="emoji-layers advanced-layers events-none"
+							style={`
 						--spotlight-x: ${spotlightTopLeft.x.toFixed(0)}px;
 						--spotlight-y: ${spotlightTopLeft.y.toFixed(0)}px;
-						--image-url: ${urlEncodedGridSvg}; 
+						--image-url: url(${gridImage.src}); 
+						--image-size: ${(gridImage.width || 0) / 2}px ${(gridImage.height || 0) / 2}px;
 					`}
-					>
-						<div class="emoji-clear"></div>
-						<div class="emoji-rainbow"></div>
-					</div>
+						>
+							<div class="emoji-clear"></div>
+							<div class="emoji-rainbow"></div>
+						</div>
+					{/if}
 				{/if}
 				<div class="info events-none global-fix-overflow">
 					<div class="top"></div>
@@ -147,7 +109,9 @@
 						{/if}
 					</div>
 				</div>
-
+				{#if lightsImage}
+					<img class="lights events-none global-fix-overflow" alt="lights" src={lightsImage.src} />
+				{/if}
 				<div class="shadow events-none"></div>
 			</Layers>
 		</div>
@@ -185,6 +149,7 @@
 	.emoji-base,
 	.emoji-rainbow {
 		mask-image: var(--image-url);
+		mask-size: var(--image-size);
 		mask-position: bottom left;
 		mask-repeat: no-repeat;
 	}
@@ -231,6 +196,14 @@
 		mask-repeat: no-repeat;
 		opacity: 1;
 		transition: opacity 500ms;
+	}
+
+	.lights {
+		opacity: 1;
+		mix-blend-mode: lighten;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 	}
 
 	.shadow {

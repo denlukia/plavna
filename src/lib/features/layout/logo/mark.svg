@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 257 213" fill="none">
   <path stroke="#000" stroke-width="16" d="M54 44.5c-55 73-66 200.5 2 146m0-79.5c22.5-77 205.9-35 192-81C237.2-5.6 66.5 9.4 11 26.9"/>
   <path stroke="#000" stroke-width="16" d="M43 127.5c19.5 5 35.5 18.5 44.5 68 30.5-31.5 35.5-71 25-108"/>
-  <mask id="a" width="159" height="151" x="90" y="61" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+  <mask id="logo-n-mask" width="159" height="151" x="90" y="61" maskUnits="userSpaceOnUse" style="mask-type:alpha">
     <path fill="#FFF" d="M90 212h159V61H90z"/>
   </mask>
-  <g mask="url(#a)">
+  <g mask="url(#logo-n-mask)">
     <path stroke="currentColor" stroke-width="16" d="M106.5 217C155 161 140 141 153 112c14-31.3 52.7-37.8 70-20.5 39 39-55.5 75-55.5 100 0 18 28.7 18.5 56.8-12"/>
   </g>
 </svg>

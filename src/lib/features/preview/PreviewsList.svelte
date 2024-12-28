@@ -239,9 +239,10 @@
 					{onPreviewPreviewRequest}
 				/>
 				<div class="actions-row">
-					<Button kind="secondary">
+					<!-- TODO -->
+					<!-- <Button kind="secondary">
 						<Translation key="article_editor.previews.to_preview_the_preview" />
-					</Button>
+					</Button> -->
 					<Button form={PREVIEW_EDITOR_FORM_ATTRS.id}>
 						<Translation key="article_editor.previews.set_and_update" />
 					</Button>

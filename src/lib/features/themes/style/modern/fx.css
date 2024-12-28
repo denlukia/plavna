@@ -1,6 +1,6 @@
 :root {
 	/* --- Section --- */
-	--transition-section-description: all 600ms var(--smooth-ease-out);
+	--transition-section-description: opacity 600ms var(--smooth-ease-out);
 	--opacity-section-description-disabled: 0.3;
 
 	/* --- Article Editor --- */

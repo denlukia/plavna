@@ -1,16 +1,12 @@
 <script lang="ts">
-	import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/images';
-	import type { ImagePathUpdateOrDeletion } from '@denlukia/plavna-common/types';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 	import Button from '$lib/design/components/Button/Button.svelte';
 	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
-	import type { ImageService } from '../service';
+	import { deleteImage, uploadImage, type ImageWorkConfig } from '../client-uploader';
 	import { getLangFromLanguagedName } from '../utils';
 	import type { ImageSelect } from '../validators';
 	import DropZone from './DropZone.svelte';
@@ -32,53 +28,24 @@
 	}: Props = $props();
 
 	let errors: string | string[] | null = $state(null);
-	let imageHandler: ClientImageHandlerType | null = null;
 
-	async function getImageHandler() {
-		let { ClientImageHandler } = await import('@denlukia/plavna-common/images');
-		return new ClientImageHandler();
-	}
+	const imageWorkConfig: ImageWorkConfig = {
+		actor: $page.data.actor,
+		imageId: image.id,
+		lang: getLangFromLanguagedName($page.data.lang),
+		setProcessing: (v) => (processing = v),
+		setErrors: (v) => (errors = v),
+		updateLocalsFromResponse: (update) => {
+			const { image: newImage, translation: newTranslation } = update;
 
-	// TODO Dry this up
+			image = newImage;
 
-	async function processFile(file: File) {
-		processing = true;
-
-		// 1. Perform basic checks, and initialize image uploader (if needed)
-		const actor = $page.data.actor;
-		if (!actor) throw Error('Actor not found');
-
-		try {
-			if (!imageHandler) imageHandler = await getImageHandler();
-			await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
-
-			// 2. Validate image
-			await imageHandler.setImageFromEntry(file, IMG_VALIDATION_CONFIG);
-
-			const lang = getLangFromLanguagedName(name);
-
-			// 3. Process and upload image
-			const pathUpdate = await imageHandler.upload({ imageId: image.id, lang });
-
-			// 4. Report image upload
-			const response = await fetch('/api/images/update-path', {
-				method: 'POST',
-				body: JSON.stringify(pathUpdate)
-			});
-			if (!response.ok) {
-				errors = await response.text();
+			if (newTranslation) {
+				const { key: translationKey, ...translationOther } = newTranslation;
+				translation = translationOther;
 			}
-
-			// 5. Update translation and path locally
-			const update: Awaited<ReturnType<ImageService['updatePath']>> = await response.json();
-			updateLocalsFromResponse(update);
-		} catch (err: any) {
-			errors = err;
-		} finally {
-			processing = false;
-			return;
 		}
-	}
+	};
 
 	async function onImageChange(e: Event) {
 		// 0. Check file presence
@@ -86,55 +53,15 @@
 		const file = target.files?.[0];
 		if (!file) return;
 
-		await processFile(file);
+		await uploadImage(file, imageWorkConfig);
 	}
 
 	async function onDrop(file: File) {
-		await processFile(file);
+		await uploadImage(file, imageWorkConfig);
 	}
 
-	async function onDelete() {
-		processing = true;
-
-		// 1. Perform basic checks, and initialize image uploader (if needed)
-		const actor = $page.data.actor;
-		if (!actor) throw Error('User not found');
-
-		// 2. Delete image from provider TODO
-		// if (!imageHandler) imageHandler = await getImageHandler();
-		// if (!imageHandler.provider)
-		// 	await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
-
-		const lang = getLangFromLanguagedName(name);
-
-		const pathUpdate: ImagePathUpdateOrDeletion = { record: { id: image.id }, lang };
-
-		// 3. Delete image path in DB
-		const response = await fetch('/api/images/update-path', {
-			method: 'POST',
-			body: JSON.stringify(pathUpdate)
-		});
-		if (!response.ok) {
-			errors = await response.text();
-		}
-
-		// 4. Update translation and path locally
-		const update: Awaited<ReturnType<ImageService['updatePath']>> = await response.json();
-		updateLocalsFromResponse(update);
-
-		// TODO: If someone throws above – we don't get to set this to false
-		processing = false;
-	}
-
-	function updateLocalsFromResponse(update: Awaited<ReturnType<ImageService['updatePath']>>) {
-		const { image: newImage, translation: newTranslation } = update;
-
-		image = newImage;
-
-		if (newTranslation) {
-			const { key: translationKey, ...translationOther } = newTranslation;
-			translation = translationOther;
-		}
+	function onDelete() {
+		deleteImage(imageWorkConfig);
 	}
 </script>
 

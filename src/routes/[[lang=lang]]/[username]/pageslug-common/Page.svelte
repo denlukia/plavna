@@ -7,6 +7,7 @@
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
+	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	import type { PageData } from '../$types';
 
@@ -16,7 +17,7 @@
 
 	let { data }: Props = $props();
 
-	let { routeId, lang } = $derived(data);
+	let { routeId, lang, themeComponentSets } = $derived(data);
 
 	let {
 		sections: { items, creationForm }
@@ -32,6 +33,8 @@
 		creatorShown = false;
 	}
 </script>
+
+<ThemeSetsInjector {themeComponentSets} />
 
 <AnimatedPage key={routeId + lang}>
 	{#each items as section, index (section.meta.id)}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import bezier from 'bezier-easing';
-	import { onMount, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import {
 		PAGE_INRO_DELAY_MS,
 		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME
@@ -15,7 +15,7 @@
 	let { key, children }: Props = $props();
 
 	const shift = 14;
-	const duration = 300;
+	const duration = 400;
 	const delay = PAGE_INRO_DELAY_MS;
 	const easingValues = [0.2, 0, 0.2, 1] as const;
 	const easingString = easingValues.join(',');
