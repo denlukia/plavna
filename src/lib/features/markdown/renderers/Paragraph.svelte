@@ -26,6 +26,9 @@
 {/if}
 
 <style>
+	:global(.heading) + .paragraph {
+		margin-top: 0.5em;
+	}
 	p {
 		margin-bottom: 0.75em;
 		hyphens: auto;

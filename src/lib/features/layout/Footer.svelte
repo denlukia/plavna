@@ -33,12 +33,12 @@
 
 <style>
 	footer {
-		padding-top: 100px;
+		padding-top: 70px;
 	}
 	footer :global(.logo-link) {
 		display: inline-flex;
 		justify-content: flex-end;
-		font-size: 48px;
+		font-size: 38px;
 		line-height: 1em;
 		padding-inline: 4px;
 		color: var(--color-text);
@@ -49,7 +49,7 @@
 	}
 	footer :global(.logo-link:hover) {
 		--color-link-hovered-shadow: var(--color-text-barely-visible);
-		--shadow-link-hovered: inset 0 -1.5em 0px var(--color-link-hovered-shadow);
+		--shadow-link-hovered: inset 0 -1em 0px var(--color-link-hovered-shadow);
 		box-shadow: var(--shadow-link-hovered);
 	}
 	.logotype {
@@ -57,13 +57,13 @@
 		align-items: flex-end;
 	}
 	.logomark > :global(svg) {
-		height: 35px;
+		height: 27px;
 	}
 	.logotext {
 		margin-left: 5px;
 	}
 	.logotext > :global(svg) {
-		height: 26px;
+		height: 23px;
 		margin-bottom: -6.5px;
 	}
 </style>

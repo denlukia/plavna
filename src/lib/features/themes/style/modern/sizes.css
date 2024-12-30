@@ -68,6 +68,7 @@
 
 @media (max-width: 1024px) {
 	:root {
+		--size-main-layout-margin-top: var(--size-2xl);
 		--size-main-layout-padding-top: var(--size-4xl);
 	}
 }
