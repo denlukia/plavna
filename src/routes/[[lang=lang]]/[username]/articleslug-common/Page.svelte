@@ -128,6 +128,9 @@
 	.content {
 		margin-top: var(--size-xl);
 	}
+	.content :global(.paragraph) {
+		text-align: justify;
+	}
 
 	.back-button {
 		position: absolute;

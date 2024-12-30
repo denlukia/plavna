@@ -2,6 +2,8 @@
 	// Global CSS
 	import '$lib/styles/index.css';
 
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -44,6 +46,8 @@
 		const lang = getLang($page.params.lang);
 		document.documentElement.lang = lang;
 	});
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
 </script>
 
 <svelte:head>

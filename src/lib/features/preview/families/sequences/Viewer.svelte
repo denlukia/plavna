@@ -233,6 +233,18 @@
 		padding: 0 var(--size-m) var(--size-m-to-l);
 	}
 
+	@media (max-width: 1024px) {
+		.title.heading-1 {
+			padding: var(--size-s-to-m) var(--size-m-to-l) var(--size-m-to-l);
+		}
+		.title.heading-2 {
+			padding: var(--size-s-to-m) var(--size-m) var(--size-m);
+		}
+		.title.headline-short {
+			padding: 0 var(--size-s-to-m) var(--size-s-to-m);
+		}
+	}
+
 	.events-none {
 		pointer-events: none;
 	}

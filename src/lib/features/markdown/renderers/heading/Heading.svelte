@@ -27,7 +27,7 @@
 
 <style>
 	:global(.paragraph) + .heading {
-		margin-top: 1.5em;
+		margin-top: 1.25em;
 	}
 
 	.heading + :global(.heading) {
