@@ -38,12 +38,13 @@
 				: 'transparent'
 	);
 
-	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
+	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows, title_translation?.length || 0));
 	let showAdvancedLayers = $state(false);
 
-	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
+	function getTitleSizeAndTemplate(cols: number, rows: number, length: number): TextSizes {
+		const isLong = length > 60;
 		if (viewing_in_article) {
-			return 'heading-1';
+			return isLong ? 'heading-2' : 'heading-1';
 		}
 		if (cols > 1 && rows > 1) {
 			return 'heading-2';
@@ -221,6 +222,7 @@
 	.title {
 		color: var(--text-color);
 		text-shadow: 0 -1px 0px #fff6;
+		hyphens: auto;
 	}
 
 	.title.heading-1 {
@@ -242,6 +244,16 @@
 		}
 		.title.headline-short {
 			padding: 0 var(--size-s-to-m) var(--size-s-to-m);
+		}
+		.title.heading-2 > :global(.text),
+		.title.headline-short > :global(.text) {
+			display: block;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 4;
+			line-clamp: 4;
+			text-overflow: ellipsis;
 		}
 	}
 
