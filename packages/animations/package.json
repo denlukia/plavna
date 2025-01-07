@@ -1,5 +1,6 @@
 {
-	"name": "plavna",
+	"name": "@plavna/animations",
+	"repository": "https://github.com/denlukia/plavna",
 	"license": "./LICENSE",
 	"version": "0.0.1",
 	"scripts": {

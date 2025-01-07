@@ -1,6 +1,6 @@
 {
-	"name": "@denlukia/plavna-common",
-	"repository": "https://github.com/denlukia/plavna-common",
+	"name": "@plavna/image-uploader",
+	"repository": "https://github.com/denlukia/plavna",
 	"version": "0.0.39",
 	"scripts": {
 		"dev": "vite dev",

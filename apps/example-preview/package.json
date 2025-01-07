@@ -1,5 +1,5 @@
 {
-	"name": "plavna-custom-preview-test",
+	"name": "@plavna/example-preview",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
