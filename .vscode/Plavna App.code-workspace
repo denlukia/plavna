@@ -1,55 +1,57 @@
 {
-	"folders": [
-		{
-			"name": "src",
-			"path": "../src"
-		},
-		{
-			"name": "plavna-app",
-			"path": ".."
-		}
-	],
-	"settings": {
-		"typescript.tsdk": "plavna-app/node_modules/typescript/lib"
-	},
-	"tasks": {
-		"version": "2.0.0",
-		"tasks": [
-			{
-				"label": "Svelte Check",
-				"type": "shell",
-				"command": "pnpm run check",
-				"presentation": {
-					"reveal": "silent"
-				},
-				"problemMatcher": {
-					"owner": "svelte",
-					"applyTo": "closedDocuments",
-					"fileLocation": ["absolute"],
-					"pattern": [
-						{
-							"regexp": "^(.*?):(\\d+):(\\d+)$",
-							"file": 1,
-							"line": 2,
-							"column": 3
-						},
-						{
-							"regexp": "^(Error|Warn|Hint):(.*?)$",
-							"severity": 1,
-							"message": 2
-						}
-					],
-					"background": {
-						"activeOnStart": false,
-						"beginsPattern": {
-							"regexp": "Getting Svelte diagnostics"
-						},
-						"endsPattern": {
-							"regexp": "svelte-check found"
-						}
-					}
-				}
-			}
-		]
-	}
+  "folders": [
+    { "name": "Root", "path": ".." },
+    {
+      "name": "Plavna",
+      "path": "../apps/plavna/src"
+    },
+    {
+      "name": "Design",
+      "path": "../packages/design/src"
+    }
+  ]
+  // TODO
+  // "settings": {
+  //   "typescript.tsdk": "plavna-app/node_modules/typescript/lib"
+  // },
+  // "tasks": {
+  //   "version": "2.0.0",
+  //   "tasks": [
+  //     {
+  //       "label": "Svelte Check",
+  //       "type": "shell",
+  //       "command": "pnpm run check",
+  //       "presentation": {
+  //         "reveal": "silent"
+  //       },
+  //       "problemMatcher": {
+  //         "owner": "svelte",
+  //         "applyTo": "closedDocuments",
+  //         "fileLocation": ["absolute"],
+  //         "pattern": [
+  //           {
+  //             "regexp": "^(.*?):(\\d+):(\\d+)$",
+  //             "file": 1,
+  //             "line": 2,
+  //             "column": 3
+  //           },
+  //           {
+  //             "regexp": "^(Error|Warn|Hint):(.*?)$",
+  //             "severity": 1,
+  //             "message": 2
+  //           }
+  //         ],
+  //         "background": {
+  //           "activeOnStart": false,
+  //           "beginsPattern": {
+  //             "regexp": "Getting Svelte diagnostics"
+  //           },
+  //           "endsPattern": {
+  //             "regexp": "svelte-check found"
+  //           }
+  //         }
+  //       }
+  //     }
+  //   ]
+  // }
 }
