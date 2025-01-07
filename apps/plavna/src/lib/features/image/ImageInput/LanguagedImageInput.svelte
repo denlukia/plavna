@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import Select from '@plavna/design/components/Popup/Select.svelte';
+	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions/blurfly';
+	import { supportedLangs } from '@plavna/image-uploader/constants';
+	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import Select from '$lib/design/components/Popup/Select.svelte';
-	import { blurfly, getBlurFlyConfig } from '$lib/design/transitions/blurfly';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getSystemTranslation } from '$lib/features/i18n/utils';
 

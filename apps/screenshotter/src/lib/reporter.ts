@@ -1,7 +1,6 @@
+import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@plavna/image-uploader/constants';
+import type { ImagePathUpdateOrDeletion } from '@plavna/image-uploader/types';
 import { env } from '$env/dynamic/private';
-import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
-
-import type { ImagePathUpdateOrDeletion } from '@denlukia/plavna-common/types';
 
 export async function reportScreenshotUpload(imageUpdateRequest: ImagePathUpdateOrDeletion) {
 	return fetch(env.REPORT_UPLOAD_URL, {

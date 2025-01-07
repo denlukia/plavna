@@ -2,16 +2,16 @@
 	// Global CSS
 	import '$lib/styles/index.css';
 
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import GridVisualizer from '@plavna/design/components/Grid/MicrogridVisualizer.svelte';
+	import RainbowLoader from '@plavna/design/components/Loaders/RainbowLoader.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS, PAGE_SLUG_PREFIX } from '$lib/collections/config.js';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import GridVisualizer from '$lib/design/components/Grid/MicrogridVisualizer.svelte';
-	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getLang } from '$lib/features/i18n/utils.js';
 	import Footer from '$lib/features/layout/Footer.svelte';

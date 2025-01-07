@@ -1,19 +1,19 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Checkbox from '@plavna/design/components/Checkbox/Checkbox.svelte';
+	import Input from '@plavna/design/components/Input/Input.svelte';
+	import PasswordInput from '@plavna/design/components/Input/PasswordInput.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Spinner from '@plavna/design/components/Loaders/Spinner.svelte';
+	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import Select from '@plavna/design/components/Popup/Select.svelte';
+	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
+	import TabItem from '@plavna/design/components/Tabs/TabItem.svelte';
+	import Tabs from '@plavna/design/components/Tabs/Tabs.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
-	import Input from '$lib/design/components/Input/Input.svelte';
-	import PasswordInput from '$lib/design/components/Input/PasswordInput.svelte';
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import Select from '$lib/design/components/Popup/Select.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
-	import TabItem from '$lib/design/components/Tabs/TabItem.svelte';
-	import Tabs from '$lib/design/components/Tabs/Tabs.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import TagSwitch from '$lib/features/markdown/renderers/TagSwitch.svelte';
 

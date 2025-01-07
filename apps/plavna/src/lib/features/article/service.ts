@@ -1,6 +1,6 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { ServerImageHandler } from '@denlukia/plavna-common/images';
 import type { ResultSet } from '@libsql/client';
+import { supportedLangs } from '@plavna/image-uploader/constants';
+import { ServerImageHandler } from '@plavna/image-uploader/images';
 import { error } from '@sveltejs/kit';
 import { and, eq, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';

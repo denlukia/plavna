@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { db } from '$lib/services/db';

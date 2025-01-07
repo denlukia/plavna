@@ -1,7 +1,7 @@
 <script lang="ts">
+	import IconWrapper from '@plavna/design/components/IconWrapper/IconWrapper.svelte';
+	import Eye from '@plavna/design/icons/Eye.svelte';
 	import { tweened } from 'svelte/motion';
-	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
-	import Eye from '$lib/design/icons/Eye.svelte';
 
 	import Button from '../Button/Button.svelte';
 	import Input from './Input.svelte';

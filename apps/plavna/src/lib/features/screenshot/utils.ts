@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/collections/config';
 
 import type { TranslationSelect } from '../i18n/validators';

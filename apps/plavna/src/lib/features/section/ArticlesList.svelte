@@ -1,8 +1,8 @@
 <script lang="ts">
+	import GridContainer from '@plavna/design/components/Grid/GridContainer.svelte';
 	import BezierEasing from 'bezier-easing';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
-	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 
 	import InViewTrigger from '../../design/components/InViewTrigger/InViewTrigger.svelte';
 	import ArticlePreviewCell from '../article/ArticlePreviewCell.svelte';

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/collections/config';
-	import Button from '$lib/design/components/Button/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import Input from '../../../design/components/Input/Input.svelte';

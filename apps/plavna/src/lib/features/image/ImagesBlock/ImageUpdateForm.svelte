@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
 	import { onMount } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import LanguagedImageInput from '../ImageInput/LanguagedImageInput.svelte';

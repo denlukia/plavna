@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import {
 	and,
 	desc,

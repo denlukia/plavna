@@ -1,9 +1,9 @@
 <script lang="ts">
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import PreviewFoundation from '@plavna/design/components/PreviewFoundation/PreviewFoundation.svelte';
+	import type { TextSizes } from '@plavna/design/components/Typography/types';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { fade } from 'svelte/transition';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import PreviewFoundation from '$lib/design/components/PreviewFoundation/PreviewFoundation.svelte';
-	import type { TextSizes } from '$lib/design/components/Typography/types';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';

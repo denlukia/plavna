@@ -1,14 +1,14 @@
 <script lang="ts">
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Column from '@plavna/design/components/Grid/Column.svelte';
+	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Column from '$lib/design/components/Grid/Column.svelte';
-	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';

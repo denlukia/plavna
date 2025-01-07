@@ -1,5 +1,5 @@
 <script>
-	import StyleToHead from '$lib/design/components/ThemeInjector/CSSToHead.svelte';
+	import StyleToHead from '@plavna/design/components/ThemeInjector/CSSToHead.svelte';
 
 	import Fonts from './fonts.css?inline';
 	import Typography from './typography.css?inline';

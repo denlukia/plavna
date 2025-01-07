@@ -1,7 +1,7 @@
 <script lang="ts">
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItem from '$lib/features/page/PageItem.svelte';

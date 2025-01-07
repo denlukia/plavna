@@ -1,12 +1,12 @@
 <script lang="ts">
+	import FormWrapper from '@plavna/design/components/FormWrapper/FormWrapper.svelte';
+	import GridCell from '@plavna/design/components/Grid/Column.svelte';
+	import ColorInput from '@plavna/design/components/Input/ColorInput.svelte';
+	import Input from '@plavna/design/components/Input/Input.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/config';
-	import FormWrapper from '$lib/design/components/FormWrapper/FormWrapper.svelte';
-	import GridCell from '$lib/design/components/Grid/Column.svelte';
-	import ColorInput from '$lib/design/components/Input/ColorInput.svelte';
-	import Input from '$lib/design/components/Input/Input.svelte';
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';
 

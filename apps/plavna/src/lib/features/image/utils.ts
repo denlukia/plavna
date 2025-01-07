@@ -1,6 +1,6 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
+import type { ImagePathAndMeta } from '@plavna/design/types';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import { imageSourceToEndpointKeyInUser } from '$lib/collections/config';
-import type { ImagePathAndMeta } from '$lib/design/types';
 
 import type {
 	ArticlePreviewImageFileFieldsAll,

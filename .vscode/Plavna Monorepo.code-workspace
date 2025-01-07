@@ -6,16 +6,16 @@
       "path": "../apps/plavna/src"
     },
     {
-      "name": "App: Screenshots Src",
-      "path": "../apps/screenshots/src"
+      "name": "App: Screenshotter Src",
+      "path": "../apps/screenshotter/src"
     },
     {
-      "name": "App: Screenshots Cron Src",
-      "path": "../apps/cron/src"
+      "name": "App: Screenshotter Cron Src",
+      "path": "../apps/screenshotter-cron/src"
     },
     {
-      "name": "App: Custom Preview Test Src",
-      "path": "../apps/custom-preview-test/src"
+      "name": "App: Example Preview Src",
+      "path": "../apps/example-preview/src"
     },
     {
       "name": "Package: Design Src",

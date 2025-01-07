@@ -1,9 +1,9 @@
 <script lang="ts">
+	import Checkbox from '@plavna/design/components/Checkbox/Checkbox.svelte';
+	import Input from '@plavna/design/components/Input/Input.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { superForm } from 'sveltekit-superforms';
-	import Checkbox from '$lib/design/components/Checkbox/Checkbox.svelte';
-	import Input from '$lib/design/components/Input/Input.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/features/image/ImageInput/LanguagedImageInput.svelte';

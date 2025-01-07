@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import type { InputOrTextareaProps } from '@plavna/design/components/Input/types';
+	import { supportedLangs } from '@plavna/image-uploader/constants';
+	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
-	import type { InputOrTextareaProps } from '$lib/design/components/Input/types';
 
 	import Input from '../../../design/components/Input/Input.svelte';
 	import { getLang } from '../utils';

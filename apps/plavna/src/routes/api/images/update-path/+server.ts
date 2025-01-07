@@ -1,5 +1,5 @@
-import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@denlukia/plavna-common/constants';
-import type { ImagePathUpdateOrDeletion, SupportedLang } from '@denlukia/plavna-common/types';
+import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@plavna/image-uploader/constants';
+import type { ImagePathUpdateOrDeletion, SupportedLang } from '@plavna/image-uploader/types';
 import { error, json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 

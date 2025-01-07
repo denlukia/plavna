@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import { supportedLangs } from '@plavna/image-uploader/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
 
 	import { defaultLang, getLang } from '../i18n/utils';
 	import AuthorBlock from './AuthorBlock.svelte';

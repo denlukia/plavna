@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { supportedLangs } from '@denlukia/plavna-common/constants';
+	import { supportedLangs } from '@plavna/image-uploader/constants';
 
 	import Select from '../../../design/components/Popup/Select.svelte';
 

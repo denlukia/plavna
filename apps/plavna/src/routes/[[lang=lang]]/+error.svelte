@@ -1,7 +1,7 @@
 <script lang="ts">
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { page } from '$app/stores';
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 </script>
 
 <AnimatedPage key={$page.status}>

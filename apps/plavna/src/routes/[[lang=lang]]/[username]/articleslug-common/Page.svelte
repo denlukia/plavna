@@ -1,13 +1,13 @@
 <script lang="ts">
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Column from '@plavna/design/components/Grid/Column.svelte';
+	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
+	import GridCell from '@plavna/design/components/Grid/GridCell.svelte';
+	import GridContainer from '@plavna/design/components/Grid/GridContainer.svelte';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Column from '$lib/design/components/Grid/Column.svelte';
-	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
-	import GridCell from '$lib/design/components/Grid/GridCell.svelte';
-	import GridContainer from '$lib/design/components/Grid/GridContainer.svelte';
 	import { generatePath } from '$lib/features/common/links';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getRecordTranslation } from '$lib/features/i18n/utils';

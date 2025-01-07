@@ -1,5 +1,5 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
-import type { SupportedLang } from '@denlukia/plavna-common/types';
+import { supportedLangs } from '@plavna/image-uploader/constants';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 
 import type { RecordsTranslationsState } from './state.svelte';
 import { EN } from './translations/en';

@@ -1,4 +1,4 @@
-import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import type { Component } from 'svelte';
 import type { SuperValidated } from 'sveltekit-superforms';
 import type { ArticlePreviewUpdate } from '$lib/features/article/validators';

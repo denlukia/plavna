@@ -1,5 +1,5 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
-import { createScreenshotsQueueSchema } from '@denlukia/plavna-common/queue';
+import { supportedLangs } from '@plavna/image-uploader/constants';
+import { createScreenshotsQueueSchema } from '@plavna/image-uploader/queue';
 
 import { table_images } from '../image/schema';
 

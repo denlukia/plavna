@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { pagefly } from '@plavna/design/transitions/pagefly';
 	import bezier from 'bezier-easing';
 	import { type Snippet } from 'svelte';
 	import {
 		PAGE_INRO_DELAY_MS,
 		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME
 	} from '$lib/collections/config';
-	import { pagefly } from '$lib/design/transitions/pagefly';
 
 	type Props = {
 		children: Snippet;

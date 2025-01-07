@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import InfoBlock from '@plavna/design/components/InfoBlock/InfoBlock.svelte';
 	import { page } from '$app/stores';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import { getRecordTranslation } from '../i18n/utils';

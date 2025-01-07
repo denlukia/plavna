@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Label from '@plavna/design/components/Label/Label.svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 	import type { ValidationErrors } from 'sveltekit-superforms';
-	import Label from '$lib/design/components/Label/Label.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { type SystemTranslationKey } from '$lib/features/i18n/types';
 

@@ -1,4 +1,4 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
+import { supportedLangs } from '@plavna/image-uploader/constants';
 import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { table_pages } from '$lib/features/page/schema';
 import { table_users } from '$lib/features/user/schema';

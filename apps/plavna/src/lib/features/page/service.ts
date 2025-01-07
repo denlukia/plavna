@@ -1,9 +1,9 @@
+import { defaultThemeSet, type ThemeSet } from '@plavna/design/themes/themes';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { SECTIONS_PER_PAGE } from '$lib/collections/config';
-import { defaultThemeSet, type ThemeSet } from '$lib/design/themes/themes';
 import { db } from '$lib/services/db';
 
 import { isNonNullable } from '../common/utils';

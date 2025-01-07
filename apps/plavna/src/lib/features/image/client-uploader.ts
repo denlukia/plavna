@@ -1,5 +1,5 @@
-import type { ClientImageHandler as ClientImageHandlerType } from '@denlukia/plavna-common/images';
-import type { ImagePathUpdateOrDeletion, SupportedLang } from '@denlukia/plavna-common/types';
+import type { ClientImageHandler as ClientImageHandlerType } from '@plavna/image-uploader/images';
+import type { ImagePathUpdateOrDeletion, SupportedLang } from '@plavna/image-uploader/types';
 import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 
 import type { Actor } from '../user/validators';
@@ -18,7 +18,7 @@ export type ImageWorkConfig = {
 };
 
 async function getImageHandler() {
-	const { ClientImageHandler } = await import('@denlukia/plavna-common/images');
+	const { ClientImageHandler } = await import('@plavna/image-uploader/images');
 	return new ClientImageHandler();
 }
 

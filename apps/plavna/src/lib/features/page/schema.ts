@@ -1,5 +1,5 @@
+import { themes } from '@plavna/design/themes/themes';
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-import { themes } from '$lib/design/themes/themes';
 
 import { table_users } from '../user/schema';
 

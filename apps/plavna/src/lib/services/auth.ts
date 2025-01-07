@@ -1,5 +1,5 @@
-import type { SupportedLang } from '@denlukia/plavna-common/types';
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { PUBLIC_HOST } from '$env/static/public';

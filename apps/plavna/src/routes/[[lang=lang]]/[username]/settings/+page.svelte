@@ -1,14 +1,14 @@
 <script lang="ts">
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Column from '@plavna/design/components/Grid/Column.svelte';
+	import Input from '@plavna/design/components/Input/Input.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { enhance } from '$app/forms';
 	import { superForm } from 'sveltekit-superforms';
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Column from '$lib/design/components/Grid/Column.svelte';
-	import Input from '$lib/design/components/Input/Input.svelte';
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Spacer from '$lib/design/components/Spacer/Spacer.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Greetings from '$lib/features/user/greetings/Greetings.svelte';

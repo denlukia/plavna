@@ -1,10 +1,10 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Popup from '@plavna/design/components/Popup/Popup.svelte';
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { PAGE_SLUG_PREFIX } from '$lib/collections/config';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import PageItemEditor from '$lib/features/page/PageItemEditor.svelte';
 

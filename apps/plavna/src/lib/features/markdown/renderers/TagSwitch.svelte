@@ -1,11 +1,11 @@
 <script lang="ts">
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import RainbowLoader from '@plavna/design/components/Loaders/RainbowLoader.svelte';
+	import Switch from '@plavna/design/components/Switch/Switch.svelte';
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { SECTION_RECONFIG_QUERY_PARAM_NAME } from '$lib/collections/config';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import RainbowLoader from '$lib/design/components/Loaders/RainbowLoader.svelte';
-	import Switch from '$lib/design/components/Switch/Switch.svelte';
 	import type { SectionContext, SectionRequest } from '$lib/features/section/types';
 
 	const loaderDelay = 500;

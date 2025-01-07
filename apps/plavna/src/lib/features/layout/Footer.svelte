@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import Link from '@plavna/design/components/Link/Link.svelte';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import Link from '$lib/design/components/Link/Link.svelte';
 	import logomark from '$lib/features/layout/logo/mark.svg?raw';
 
 	import { generatePath } from '../common/links';

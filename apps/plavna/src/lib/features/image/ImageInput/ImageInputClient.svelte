@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Spinner from '@plavna/design/components/Loaders/Spinner.svelte';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Spinner from '$lib/design/components/Loaders/Spinner.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 

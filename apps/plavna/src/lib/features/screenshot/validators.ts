@@ -1,6 +1,6 @@
-import { supportedLangs } from '@denlukia/plavna-common/constants';
-import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@denlukia/plavna-common/queue';
-import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import { supportedLangs } from '@plavna/image-uploader/constants';
+import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@plavna/image-uploader/queue';
+import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import { z } from 'zod';
 
 import { articleSelectSchema } from '../article/validators';

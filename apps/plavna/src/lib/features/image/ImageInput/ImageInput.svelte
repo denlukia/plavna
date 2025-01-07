@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import LayerFlashlight from '@plavna/design/components/ActiveElementFX/LayerFlashlight.svelte';
+	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
+	import Image from '@plavna/design/components/Image/Image.svelte';
+	import { createMouseWatcher } from '@plavna/design/reactivity/mouse-watcher.svelte';
+	import type { ImagePathAndMeta } from '@plavna/design/types';
+	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import LayerFlashlight from '$lib/design/components/ActiveElementFX/LayerFlashlight.svelte';
-	import Layers from '$lib/design/components/ActiveElementFX/Layers.svelte';
-	import Image from '$lib/design/components/Image/Image.svelte';
-	import { createMouseWatcher } from '$lib/design/reactivity/mouse-watcher.svelte';
-	import type { ImagePathAndMeta } from '$lib/design/types';
 	import type { ImageInputsTranslationsDictValue } from '$lib/features/i18n/types';
 
 	import ImageProviderWarning from '../ImagesBlock/ImageProviderWarning.svelte';

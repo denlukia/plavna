@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import type { Tokens } from 'marked';
 	import { type Snippet } from 'svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import { getMarkdownContext } from '../../markdown-context';
 	import { depthToTypographySize } from '../heading-depth';

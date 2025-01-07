@@ -1,5 +1,5 @@
-import { ACTOR_DATA_PARAM_NAME } from '@denlukia/plavna-common/constants';
-import type { ImageProviderRelatedActorData } from '@denlukia/plavna-common/types';
+import { ACTOR_DATA_PARAM_NAME } from '@plavna/image-uploader/constants';
+import type { ImageProviderRelatedActorData } from '@plavna/image-uploader/types';
 import type { Config } from '@sveltejs/adapter-vercel';
 import { json } from '@sveltejs/kit';
 import ImageKit from 'imagekit';

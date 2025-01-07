@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
 	import type { ArticleSelect } from '$lib/features/article/validators';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

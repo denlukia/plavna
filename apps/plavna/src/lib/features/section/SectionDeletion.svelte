@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
 	import type { SectionDelete } from './validators';

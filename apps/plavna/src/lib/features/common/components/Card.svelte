@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Column from '@plavna/design/components/Grid/Column.svelte';
+	import Link from '@plavna/design/components/Link/Link.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import type { Snippet } from 'svelte';
-	import Column from '$lib/design/components/Grid/Column.svelte';
-	import Link from '$lib/design/components/Link/Link.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	type Props = {
 		title: Snippet;

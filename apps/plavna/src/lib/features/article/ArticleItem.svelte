@@ -1,8 +1,8 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';
-	import Button from '$lib/design/components/Button/Button.svelte';
 
 	import Card from '../common/components/Card.svelte';
 	import { generatePath } from '../common/links';

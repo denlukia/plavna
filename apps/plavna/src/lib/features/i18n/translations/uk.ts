@@ -1,4 +1,4 @@
-import { assert, type TypeEqualityGuard } from '@denlukia/plavna-common/types';
+import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 
 import type { EN } from './en';
 

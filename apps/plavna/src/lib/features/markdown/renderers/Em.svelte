@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import type { Snippet } from 'svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	type Props = {
 		children: Snippet;

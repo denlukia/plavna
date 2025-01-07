@@ -1,5 +1,5 @@
+import { ServerImageHandler } from '@plavna/image-uploader/image-handler';
 import { REQUEST_CREDENTIALS_URL } from '$env/static/private';
-import { ServerImageHandler } from '@denlukia/plavna-common/image-handler';
 
 import type { screenshotsQueue } from './db-schema';
 

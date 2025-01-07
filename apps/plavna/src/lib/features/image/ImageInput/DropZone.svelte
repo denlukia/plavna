@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { IMG_VALIDATION_CONFIG } from '$lib/collections/config';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	type Props = {

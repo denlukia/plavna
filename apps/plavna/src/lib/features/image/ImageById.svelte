@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Image from '@plavna/design/components/Image/Image.svelte';
 	import { page } from '$app/stores';
-	import Image from '$lib/design/components/Image/Image.svelte';
 
 	import { getImagePathAndMeta } from './utils';
 	import type { ImageSelect } from './validators';

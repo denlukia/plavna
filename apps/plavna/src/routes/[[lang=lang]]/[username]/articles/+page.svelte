@@ -1,8 +1,8 @@
 <script lang="ts">
+	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import { page } from '$app/stores';
-	import AnimatedPage from '$lib/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
 	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
 	import { generatePath } from '$lib/features/common/links.js';

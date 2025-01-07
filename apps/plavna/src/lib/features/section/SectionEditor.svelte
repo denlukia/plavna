@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { SupportedLang } from '@denlukia/plavna-common/types';
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import InfoBlock from '@plavna/design/components/InfoBlock/InfoBlock.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { lexer, type Token } from 'marked';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import Error from '../../../routes/[[lang=lang]]/+error.svelte';

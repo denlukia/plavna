@@ -1,6 +1,6 @@
 <script lang="ts">
+	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
 	import type { Snippet } from 'svelte';
-	import ColumnsContainer from '$lib/design/components/Grid/ColumnsContainer.svelte';
 
 	type Props = {
 		children: Snippet;

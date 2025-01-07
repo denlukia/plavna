@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';

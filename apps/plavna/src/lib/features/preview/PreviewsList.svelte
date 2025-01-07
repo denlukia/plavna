@@ -1,13 +1,13 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import IconWrapper from '@plavna/design/components/IconWrapper/IconWrapper.svelte';
+	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import Plus from '@plavna/design/icons/Plus.svelte';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { PREVIEW_FAMILY_PARAM, PREVIEW_TEMPLATE_PARAM } from '$lib/collections/config';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import IconWrapper from '$lib/design/components/IconWrapper/IconWrapper.svelte';
-	import Popup from '$lib/design/components/Popup/Popup.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
-	import Plus from '$lib/design/icons/Plus.svelte';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import { getPreviewComponent } from '$lib/features/preview/enricher';
 	import type { PreviewFamilyId } from '$lib/features/preview/families/types';

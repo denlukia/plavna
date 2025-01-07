@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Label from '$lib/design/components/Label/Label.svelte';
-	import Labeled from '$lib/design/components/Label/Labeled.svelte';
-	import Typography from '$lib/design/components/Typography/Typography.svelte';
+	import Label from '@plavna/design/components/Label/Label.svelte';
+	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import Typography from '@plavna/design/components/Typography/Typography.svelte';
 	import type { ArticleService } from '$lib/features/article/service';
 	import type { ExtractMethods } from '$lib/features/common/types';
 

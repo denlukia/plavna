@@ -1,10 +1,10 @@
 <script lang="ts">
+	import Button from '@plavna/design/components/Button/Button.svelte';
+	import InfoBlock from '@plavna/design/components/InfoBlock/InfoBlock.svelte';
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
 	import { ARTICLES_PER_SECTION } from '$lib/collections/config';
-	import Button from '$lib/design/components/Button/Button.svelte';
-	import InfoBlock from '$lib/design/components/InfoBlock/InfoBlock.svelte';
 
 	import Translation from '../i18n/Translation.svelte';
 	import { enrichPreviewFamilies } from '../preview/enricher';

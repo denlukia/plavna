@@ -1,6 +1,6 @@
 <script>
-	import StyleToHead from '$lib/design/components/ThemeInjector/CSSToHead.svelte';
-	import FontPreloadToHead from '$lib/design/components/ThemeInjector/FontPreloadToHead.svelte';
+	import StyleToHead from '@plavna/design/components/ThemeInjector/CSSToHead.svelte';
+	import FontPreloadToHead from '@plavna/design/components/ThemeInjector/FontPreloadToHead.svelte';
 
 	import InterItalicWoff2 from '../../fonts/Inter/InterVariable-Italic.woff2';
 	import InterWoff2 from '../../fonts/Inter/InterVariable.woff2';

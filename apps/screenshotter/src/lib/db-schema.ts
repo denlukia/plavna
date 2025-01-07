@@ -1,9 +1,9 @@
 import {
+	createScreenshotsQueueSchema,
 	type ScreenshotsQueueInsert,
-	type ScreenshotsQueueSelect,
-	createScreenshotsQueueSchema
-} from '@denlukia/plavna-common/queue';
-import { type TypeEqualityGuard, assert } from '@denlukia/plavna-common/types';
+	type ScreenshotsQueueSelect
+} from '@plavna/image-uploader/queue';
+import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
 const supportedLangs = ['en', 'uk'] as const;
