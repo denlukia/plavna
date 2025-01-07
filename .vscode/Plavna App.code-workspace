@@ -1,14 +1,35 @@
 {
   "folders": [
-    { "name": "Root", "path": ".." },
+    
     {
-      "name": "Plavna",
+      "name": "App: Plavna",
       "path": "../apps/plavna/src"
     },
     {
-      "name": "Design",
+      "name": "App: Screenshots",
+      "path": "../apps/screenshots/src"
+    },
+    {
+      "name": "App: Screenshots Cron",
+      "path": "../apps/cron/src"
+    },
+    {
+      "name": "App: Custom Preview Test",
+      "path": "../apps/custom-preview-test/src"
+    },
+    {
+      "name": "Package: Design",
       "path": "../packages/design/src"
-    }
+    },
+    {
+      "name": "Package: Animations",
+      "path": "../packages/animations/src"
+    },
+    {
+      "name": "Package: Common",
+      "path": "../packages/common/src"
+    },
+    { "name": "Root", "path": ".." }
   ]
   // TODO
   // "settings": {

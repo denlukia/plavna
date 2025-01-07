@@ -1,0 +1,10 @@
+export { default as jpeg } from './parse_sync/jpeg';
+export { default as png } from './parse_sync/png';
+export { default as svg } from './parse_sync/svg';
+export { default as webp } from './parse_sync/webp';
+export { default as tiff } from './parse_sync/tiff';
+export { default as avif } from './parse_sync/avif';
+export { default as gif } from './parse_sync/gif';
+export { default as bmp } from './parse_sync/bmp';
+export { default as ico } from './parse_sync/ico';
+export { default as psd } from './parse_sync/psd';
