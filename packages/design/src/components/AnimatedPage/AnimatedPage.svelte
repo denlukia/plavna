@@ -1,32 +1,36 @@
 <script lang="ts">
-	import { pagefly } from '@plavna/design/transitions/pagefly';
 	import bezier from 'bezier-easing';
 	import { type Snippet } from 'svelte';
-	import {
-		PAGE_INRO_DELAY_MS,
-		PAGE_TRANSITION_STATE_ATTRIBUTE_NAME
-	} from '$lib/collections/config';
+
+	import { pagefly } from '../../transitions';
 
 	type Props = {
 		children: Snippet;
 		key?: any;
+		introDelay?: number;
+		onIntroStart?: () => void;
+		onOutroStart?: () => void;
 	};
 
-	let { key, children }: Props = $props();
+	let { key, children, introDelay = 0, onOutroStart, onIntroStart }: Props = $props();
 
 	const shift = 14;
 	const duration = 400;
-	const delay = PAGE_INRO_DELAY_MS;
 	const easingValues = [0.2, 0, 0.2, 1] as const;
 	const easingString = easingValues.join(',');
 
 	let easing = bezier(...easingValues);
 
-	let configOut = { duration: duration, y: -shift, easing };
+	let configOut = {
+		duration: duration,
+		y: -shift,
+		easing,
+		onOutroStart
+	};
 
 	let style = $derived(
 		`--in-shift: ${shift}px;
-		 --in-delay: ${delay}ms;
+		 --in-delay: ${introDelay}ms;
 		 --in-duration: ${duration}ms;
 		 --in-easing: cubic-bezier(${easingString});`
 	);
@@ -34,8 +38,8 @@
 	$effect(() => {
 		key;
 		setTimeout(() => {
-			document.body.setAttribute(PAGE_TRANSITION_STATE_ATTRIBUTE_NAME, 'introing');
-		}, delay);
+			onIntroStart?.();
+		}, introDelay);
 	});
 </script>
 

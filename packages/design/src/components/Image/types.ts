@@ -1,7 +1,5 @@
-import type { ImageSelect } from '$lib/features/image/validators';
-
 export type ImagePathAndMeta = {
-	id: ImageSelect['id'];
+	id: number;
 	src: string;
 	alt: string | null;
 	width: number | null;

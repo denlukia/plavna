@@ -3,9 +3,9 @@
 	import { cubicOut } from 'svelte/easing';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
-	import { crossfade } from '../../transitions/crossfade';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
+	import { tabsCrossfade } from './tabs-crossfade';
 
 	// TODO: Fix animation on first switching
 
@@ -27,7 +27,7 @@
 	let pillSkipTransition = $state(false);
 
 	const pillAnimDuration = 500;
-	let [send, receive] = crossfade({ easing: cubicOut });
+	let [send, receive] = tabsCrossfade({ easing: cubicOut });
 
 	function mutationCallback(mutation: MutationRecord[]) {
 		const activeTabMutations = mutation.filter(

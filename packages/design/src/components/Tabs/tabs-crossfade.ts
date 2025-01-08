@@ -15,7 +15,7 @@ type Transition = (node: Element, params: CrossfadeParams & { key: Key }) => () 
 
 type Key = string | undefined;
 
-export function crossfade({
+export function tabsCrossfade({
 	fadeOutDuration = 150,
 	...defaults
 }: CrossfadeParams & { fadeOutDuration?: number }): [Transition, Transition] {

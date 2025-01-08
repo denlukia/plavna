@@ -12,7 +12,7 @@ type RotateAndScaleParams = {
 	rotationY?: number;
 };
 
-export function rotateandscale(
+export function boxflip(
 	node: Element,
 	{
 		delay = 0,

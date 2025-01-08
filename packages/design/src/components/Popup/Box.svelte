@@ -3,7 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 
-	import { rotateandscale } from '../../transitions/rotateandscale';
+	import { boxflip } from './boxflip';
 	import Tail from './Tail.svelte';
 	import type { PopupKind, TailPosition } from './types';
 
@@ -30,7 +30,7 @@
 	</div>
 	<div
 		class="box kind-{kind} origin-horizontal-{tailPosition.x} origin-vertical-{tailPosition.y}"
-		transition:rotateandscale|global={{
+		transition:boxflip|global={{
 			duration: animationDuration,
 			easing: cubicOut,
 			scaleX: 0.1,

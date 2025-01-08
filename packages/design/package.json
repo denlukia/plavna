@@ -14,19 +14,20 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"exports": {
-
+		"./actions": "./src/actions/index.js",
+		"./components": "./src/components/index.js",
+		"./icons": "./src/icons/index.js",
+		"./reactivity": "./src/reactivity/index.js",
+		"./themes": "./src/themes/index.js",
+		"./transitions": "./src/transitions/index.js"
 	},
-	"files": [
-
-	],
+	"files": [],
 	"peerDependencies": {
 		"svelte": "^5.10.0"
 	},
-	"devDependencies": {
-
-	},
+	"devDependencies": {},
 	"type": "module",
 	"dependencies": {
-
+		"bezier-easing": "^2.1.0"
 	}
 }

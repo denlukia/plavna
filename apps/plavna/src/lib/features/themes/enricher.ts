@@ -1,4 +1,4 @@
-import { enrichCategories } from '@plavna/design/themes/base-enricher';
+import { enrichThemes } from '@plavna/design/themes/theme-enricher';
 import type { ThemeSet } from '@plavna/design/themes/themes';
 
 import type { ThemeComponentSets } from './themes';
@@ -19,7 +19,7 @@ export async function enrichThemeSets(themeSet: ThemeSet | null) {
 		const fileSetKey = fileSet as keyof typeof fileSets;
 		const glob = fileSets[fileSetKey];
 
-		themeComponentSets[fileSetKey] = await enrichCategories(glob, themeSet);
+		themeComponentSets[fileSetKey] = await enrichThemes(glob, themeSet);
 	}
 
 	return themeComponentSets;

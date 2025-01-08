@@ -1,9 +1,1 @@
-export {
-  clickOutside 
-  
-
-} from "./click-outside"; 
-
-
-
-
+export { clickOutside } from './click-outside';

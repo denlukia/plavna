@@ -2,7 +2,7 @@ import type { Component } from 'svelte';
 
 import type { ThemeComponentSet, ThemeSet } from './themes';
 
-export async function enrichCategories(
+export async function enrichThemes(
 	glob: Record<string, () => Promise<unknown>>,
 	themeSet: ThemeSet
 ) {
@@ -12,8 +12,6 @@ export async function enrichCategories(
 	for (const category of categories) {
 		const subPath = `themes/${category}/${themeSet[category]}/Index.svelte`;
 		const foundEntry = Object.entries(glob).find(([path]) => path.includes(subPath));
-
-		const errorText = `${subPath} theme not found in ${Object.keys(glob).join(', ')}`;
 
 		if (!foundEntry) {
 			// console.warn(errorText);
