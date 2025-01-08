@@ -1,10 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-
-import { defineConfig, loadEnv } from 'vite';
-
-const env = loadEnv('all', process.cwd(), '');
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [sveltekit()],
-	server: { host: env.HOST, port: parseInt(env.PORT), strictPort: true }
+	plugins: [sveltekit()]
 });
