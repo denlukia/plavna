@@ -38,19 +38,19 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.10.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.1",
-		"@sveltejs/kit": "^1.30.4",
+		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
 		"@types/get-pixels": "^3.3.4",
 		"@types/probe-image-size": "^7.2.4",
-		"drizzle-orm": "^0.30.10",
+		"drizzle-orm": "^0.36.3",
 		"publint": "^0.1.16",
-		"svelte": "^4.2.16",
-		"svelte-check": "^3.7.1",
-		"vite": "^4.5.3",
+		"svelte": "^5.10.0",
+		"svelte-check": "^4.0.5",
+		"vite": "^5.4.11",
 		"ndarray": "^1.0.19"
 	},
 	"type": "module",
