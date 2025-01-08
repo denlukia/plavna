@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
+	import { ColumnsContainer } from '@plavna/design/components';
 	import type { Snippet } from 'svelte';
 
 	type Props = {

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import { Button, Popup } from '@plavna/design/components';
 	import { supportedLangs } from '@plavna/image-uploader/constants';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';

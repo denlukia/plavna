@@ -1,5 +1,5 @@
-import { enrichThemes } from '@plavna/design/themes/theme-enricher';
-import type { ThemeSet } from '@plavna/design/themes/themes';
+import { enrichThemes } from '@plavna/design/themes';
+import type { ThemeSet } from '@plavna/design/themes';
 
 import type { ThemeComponentSets } from './themes';
 
@@ -8,6 +8,7 @@ export async function enrichThemeSets(themeSet: ThemeSet | null) {
 		return null;
 	}
 
+	// TODO: Update meta globs
 	const designSystemFilesGlob = import.meta.glob('@plavna/design/themes/**/*/Index.svelte');
 	const appFilesGlob = import.meta.glob('$lib/features/themes/**/*/Index.svelte');
 

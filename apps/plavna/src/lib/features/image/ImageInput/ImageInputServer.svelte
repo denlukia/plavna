@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Checkbox from '@plavna/design/components/Checkbox/Checkbox.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Checkbox, Labeled, Typography } from '@plavna/design/components';
 
 	import Translation from '../../i18n/Translation.svelte';
 	import DropZone from './DropZone.svelte';

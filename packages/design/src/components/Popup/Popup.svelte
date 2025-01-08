@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { clickOutside } from '../../actions/click-outside';
 	import Button from '../Button/Button.svelte';
 	import type { ButtonProps } from '../Button/types';
 	import Box from './Box.svelte';
+	import { clickOutside } from './click-outside';
 	import TriggerStyler from './TriggerStyler.svelte';
 	import type { PopupKind, TailPosition } from './types';
 

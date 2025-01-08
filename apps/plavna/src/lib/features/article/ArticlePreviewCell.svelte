@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GridCell from '@plavna/design/components/Grid/GridCell.svelte';
+	import { GridCell } from '@plavna/design/components';
 	import { navigating, page } from '$app/stores';
 	import { generatePath } from '$lib/features/common/links';
 

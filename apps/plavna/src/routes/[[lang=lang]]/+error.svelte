@@ -1,6 +1,5 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { AnimatedPage, Typography } from '@plavna/design/components';
 	import { page } from '$app/stores';
 </script>
 

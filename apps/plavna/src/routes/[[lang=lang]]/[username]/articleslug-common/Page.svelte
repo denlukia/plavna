@@ -1,10 +1,12 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Column from '@plavna/design/components/Grid/Column.svelte';
-	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
-	import GridCell from '@plavna/design/components/Grid/GridCell.svelte';
-	import GridContainer from '@plavna/design/components/Grid/GridContainer.svelte';
+	import {
+		AnimatedPage,
+		Button,
+		Column,
+		ColumnsContainer,
+		GridCell,
+		GridContainer
+	} from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';

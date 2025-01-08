@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Image from '@plavna/design/components/Image/Image.svelte';
-	import PreviewFoundation from '@plavna/design/components/PreviewFoundation/PreviewFoundation.svelte';
+	import { Image, PreviewFoundation } from '@plavna/design/components';
 
 	import type { PreviewDataProp } from '../../types';
 

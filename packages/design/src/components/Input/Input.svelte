@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions/blurfly';
+	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions';
 
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';

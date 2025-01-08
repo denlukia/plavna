@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Typography } from '@plavna/design/components';
 	import type { Snippet } from 'svelte';
 
 	type Props = {

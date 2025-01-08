@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GridContainer from '@plavna/design/components/Grid/GridContainer.svelte';
+	import { GridContainer } from '@plavna/design/components';
 	import BezierEasing from 'bezier-easing';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';

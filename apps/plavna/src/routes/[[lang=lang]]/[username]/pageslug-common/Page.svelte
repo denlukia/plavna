@@ -1,8 +1,6 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import IconWrapper from '@plavna/design/components/IconWrapper/IconWrapper.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
-	import Plus from '@plavna/design/icons/Plus.svelte';
+	import { AnimatedPage, IconWrapper, Typography } from '@plavna/design/components';
+	import { Plus } from '@plavna/design/icons';
 	import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';

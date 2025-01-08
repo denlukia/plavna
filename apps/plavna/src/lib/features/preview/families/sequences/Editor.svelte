@@ -1,11 +1,13 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import FormWrapper from '@plavna/design/components/FormWrapper/FormWrapper.svelte';
-	import GridCell from '@plavna/design/components/Grid/Column.svelte';
-	import ColorInput from '@plavna/design/components/Input/ColorInput.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import {
+		Button,
+		ColorInput,
+		FormWrapper,
+		GridCell,
+		Input,
+		Label,
+		Labeled
+	} from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/collections/config';

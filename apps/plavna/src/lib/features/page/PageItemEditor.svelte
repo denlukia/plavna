@@ -1,8 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
+	import { Button, Input, Label, Labeled } from '@plavna/design/components';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 
 	import Errors from '../common/components/Errors.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Label from '@plavna/design/components/Label/Label.svelte';
+	import { Label } from '@plavna/design/components';
 	import { cubicOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 	import type { ValidationErrors } from 'sveltekit-superforms';

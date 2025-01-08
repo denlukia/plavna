@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Typography } from '@plavna/design/components';
 	import { IMG_VALIDATION_CONFIG } from '$lib/collections/config';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 

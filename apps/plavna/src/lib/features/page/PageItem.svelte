@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Popup from '@plavna/design/components/Popup/Popup.svelte';
+	import { Button, Popup } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';

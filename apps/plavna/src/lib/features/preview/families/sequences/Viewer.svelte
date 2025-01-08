@@ -1,8 +1,6 @@
 <script lang="ts">
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import PreviewFoundation from '@plavna/design/components/PreviewFoundation/PreviewFoundation.svelte';
-	import type { TextSizes } from '@plavna/design/components/Typography/types';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Layers, PreviewFoundation, Typography } from '@plavna/design/components';
+	import type { TextSizes } from '@plavna/design/components';
 	import { fade } from 'svelte/transition';
 	import BasicMarkdown from '$lib/features/markdown/BasicMarkdown.svelte';
 

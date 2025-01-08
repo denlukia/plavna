@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Link from '@plavna/design/components/Link/Link.svelte';
+	import { Link } from '@plavna/design/components';
 	import type { Tokens } from 'marked';
 	import type { Snippet } from 'svelte';
 	import { getAstNode, type HastNode } from 'svelte-exmarkdown';

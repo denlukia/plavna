@@ -1,17 +1,19 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Checkbox from '@plavna/design/components/Checkbox/Checkbox.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import PasswordInput from '@plavna/design/components/Input/PasswordInput.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Spinner from '@plavna/design/components/Loaders/Spinner.svelte';
-	import Popup from '@plavna/design/components/Popup/Popup.svelte';
-	import Select from '@plavna/design/components/Popup/Select.svelte';
-	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
-	import TabItem from '@plavna/design/components/Tabs/TabItem.svelte';
-	import Tabs from '@plavna/design/components/Tabs/Tabs.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		Button,
+		Checkbox,
+		Input,
+		Label,
+		Labeled,
+		PasswordInput,
+		Popup,
+		Select,
+		Spacer,
+		Spinner,
+		TabItem,
+		Tabs,
+		Typography
+	} from '@plavna/design/components';
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';

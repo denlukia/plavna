@@ -1,9 +1,6 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import IconWrapper from '@plavna/design/components/IconWrapper/IconWrapper.svelte';
-	import Popup from '@plavna/design/components/Popup/Popup.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
-	import Plus from '@plavna/design/icons/Plus.svelte';
+	import { Button, IconWrapper, Popup, Typography } from '@plavna/design/components';
+	import { Plus } from '@plavna/design/icons';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';

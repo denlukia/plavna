@@ -1,9 +1,11 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Column from '@plavna/design/components/Grid/Column.svelte';
-	import ColumnsContainer from '@plavna/design/components/Grid/ColumnsContainer.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		AnimatedPage,
+		Button,
+		Column,
+		ColumnsContainer,
+		Typography
+	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { generatePath } from '$lib/features/common/links';

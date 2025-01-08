@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { InputOrTextareaProps } from '@plavna/design/components/Input/types';
+	import type { InputOrTextareaProps } from '@plavna/design/components';
 	import { supportedLangs } from '@plavna/image-uploader/constants';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';

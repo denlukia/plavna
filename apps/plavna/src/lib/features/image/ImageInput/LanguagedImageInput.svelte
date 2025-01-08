@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import Select from '@plavna/design/components/Popup/Select.svelte';
-	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions/blurfly';
+	import { Layers, Select } from '@plavna/design/components';
+	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions';
 	import { supportedLangs } from '@plavna/image-uploader/constants';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';

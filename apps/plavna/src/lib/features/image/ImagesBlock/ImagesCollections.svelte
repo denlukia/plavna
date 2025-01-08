@@ -1,8 +1,5 @@
 <script lang="ts">
-	import Column from '@plavna/design/components/Grid/Column.svelte';
-	import TabItem from '@plavna/design/components/Tabs/TabItem.svelte';
-	import Tabs from '@plavna/design/components/Tabs/Tabs.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Column, TabItem, Tabs, Typography } from '@plavna/design/components';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { ArticleSelect } from '$lib/features/article/validators';
 	import SideBox from '$lib/features/common/components/SideBox.svelte';

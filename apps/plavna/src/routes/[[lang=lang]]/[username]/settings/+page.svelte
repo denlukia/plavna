@@ -1,12 +1,14 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Column from '@plavna/design/components/Grid/Column.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		AnimatedPage,
+		Button,
+		Column,
+		Input,
+		Label,
+		Labeled,
+		Spacer,
+		Typography
+	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { superForm } from 'sveltekit-superforms';
 	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';

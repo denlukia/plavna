@@ -1,9 +1,7 @@
 <script lang="ts">
-	import LayerFlashlight from '@plavna/design/components/ActiveElementFX/LayerFlashlight.svelte';
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import Image from '@plavna/design/components/Image/Image.svelte';
-	import { createMouseWatcher } from '@plavna/design/reactivity/mouse-watcher.svelte';
-	import type { ImagePathAndMeta } from '@plavna/design/types';
+	import { Image, LayerFlashlight, Layers } from '@plavna/design/components';
+	import type { ImagePathAndMeta } from '@plavna/design/components';
+	import { createMouseWatcher } from '@plavna/design/reactivity';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';

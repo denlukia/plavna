@@ -1,7 +1,5 @@
 <script lang="ts">
-	import AnimatedPage from '@plavna/design/components/AnimatedPage/AnimatedPage.svelte';
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { AnimatedPage, Button, Typography } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
 	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';

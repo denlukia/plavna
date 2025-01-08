@@ -1,10 +1,12 @@
 <script lang="ts">
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import ContinuousCorners from '@plavna/design/components/ContinuousCorners/ContinuousCorners.svelte';
-	import Image from '@plavna/design/components/Image/Image.svelte';
-	import PreviewFoundation from '@plavna/design/components/PreviewFoundation/PreviewFoundation.svelte';
-	import type { TextSizes } from '@plavna/design/components/Typography/types';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		ContinuousCorners,
+		Image,
+		Layers,
+		PreviewFoundation,
+		Typography
+	} from '@plavna/design/components';
+	import type { TextSizes } from '@plavna/design/components';
 
 	import type { PreviewDataProp } from '../../types';
 

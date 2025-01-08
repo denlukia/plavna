@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
+	import { Button } from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { PUBLIC_HOST } from '$env/static/public';

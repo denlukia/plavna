@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
+	import { Button } from '@plavna/design/components';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';

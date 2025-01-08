@@ -1,12 +1,14 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import FormWrapper from '@plavna/design/components/FormWrapper/FormWrapper.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Popup from '@plavna/design/components/Popup/Popup.svelte';
-	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		Button,
+		FormWrapper,
+		Input,
+		Label,
+		Labeled,
+		Popup,
+		Spacer,
+		Typography
+	} from '@plavna/design/components';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
 	import Translation from '$lib/features/i18n/Translation.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Image from '@plavna/design/components/Image/Image.svelte';
+	import { Image } from '@plavna/design/components';
 	import { page } from '$app/stores';
 
 	import { getImagePathAndMeta } from './utils';

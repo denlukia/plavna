@@ -1,11 +1,13 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import FormWrapper from '@plavna/design/components/FormWrapper/FormWrapper.svelte';
-	import Input from '@plavna/design/components/Input/Input.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Spacer from '@plavna/design/components/Spacer/Spacer.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import {
+		Button,
+		FormWrapper,
+		Input,
+		Label,
+		Labeled,
+		Spacer,
+		Typography
+	} from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';

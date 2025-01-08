@@ -2,10 +2,7 @@
 	// Global CSS
 	import '$lib/styles/index.css';
 
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import GridVisualizer from '@plavna/design/components/Grid/MicrogridVisualizer.svelte';
-	import RainbowLoader from '@plavna/design/components/Loaders/RainbowLoader.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { GridVisualizer, Layers, RainbowLoader, Typography } from '@plavna/design/components';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';

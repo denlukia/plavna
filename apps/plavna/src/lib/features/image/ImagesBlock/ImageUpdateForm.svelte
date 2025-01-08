@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
+	import { Button } from '@plavna/design/components';
 	import { onMount } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import Translation from '$lib/features/i18n/Translation.svelte';

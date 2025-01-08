@@ -1,4 +1,4 @@
-import { defaultThemeSet } from '@plavna/design/themes/themes';
+import { defaultThemeSet } from '@plavna/design/themes';
 import { selectProvider } from '@plavna/image-uploader/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

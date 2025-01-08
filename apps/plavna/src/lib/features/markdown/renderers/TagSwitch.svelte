@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Layers from '@plavna/design/components/ActiveElementFX/Layers.svelte';
-	import RainbowLoader from '@plavna/design/components/Loaders/RainbowLoader.svelte';
-	import Switch from '@plavna/design/components/Switch/Switch.svelte';
+	import { Layers, RainbowLoader, Switch } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';

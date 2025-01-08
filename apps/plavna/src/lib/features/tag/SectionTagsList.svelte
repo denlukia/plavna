@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
+	import { Button } from '@plavna/design/components';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 
 	import type { TagsListForPage } from './types';

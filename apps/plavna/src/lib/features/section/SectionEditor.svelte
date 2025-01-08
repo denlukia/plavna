@@ -1,9 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import InfoBlock from '@plavna/design/components/InfoBlock/InfoBlock.svelte';
-	import Label from '@plavna/design/components/Label/Label.svelte';
-	import Labeled from '@plavna/design/components/Label/Labeled.svelte';
-	import Typography from '@plavna/design/components/Typography/Typography.svelte';
+	import { Button, InfoBlock, Label, Labeled, Typography } from '@plavna/design/components';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { lexer, type Token } from 'marked';

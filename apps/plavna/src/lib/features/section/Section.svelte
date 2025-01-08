@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Button from '@plavna/design/components/Button/Button.svelte';
-	import InfoBlock from '@plavna/design/components/InfoBlock/InfoBlock.svelte';
+	import { Button, InfoBlock } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { parse } from 'devalue';
 	import { setContext } from 'svelte';
