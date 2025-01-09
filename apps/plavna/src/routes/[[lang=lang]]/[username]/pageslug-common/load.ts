@@ -23,6 +23,7 @@ export const load = (async ({ data }) => {
 		previewFamiliesState,
 		recordsTranslationsState,
 		imagesState,
-		themeComponentSets
+		themeComponentSets,
+		themeSet
 	};
 }) satisfies PageLoad;

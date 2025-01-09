@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getGlobalTypographyClass } from '@plavna/design/components';
 	import type { Snippet } from 'svelte';
 
 	type Props = {
@@ -8,6 +9,6 @@
 	let { children }: Props = $props();
 </script>
 
-<strong class="global-text-strong">
+<strong class="{getGlobalTypographyClass('markdown')} global-text-strong">
 	{@render children()}
 </strong>

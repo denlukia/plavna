@@ -4,6 +4,7 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
+	import { getGlobalTypographyClass } from '../Typography';
 	import type { InputOrTextareaProps } from './types';
 
 	let {
@@ -74,14 +75,14 @@
 				bind:this={inputwrapperRef}
 			>
 				<Layers overflow="visible">
-					<!-- ISSUE: DRY-ing this into svelte:element seems to break #key -->
+					<!-- TODO: DRY-ing this into svelte:element seems to break #key -->
 					{#if attributes.textarea}
 						{#key key}
 							<textarea
 								bind:this={elementRef}
 								in:blurfly|local={getBlurFlyConfig('bottom')}
 								out:blurfly|local={getBlurFlyConfig('top')}
-								class="global-reset-input global-textbody"
+								class="{getGlobalTypographyClass('interface')} global-reset-input global-text-body"
 								bind:value
 								{...attributes}
 							></textarea>
@@ -92,7 +93,7 @@
 								bind:this={elementRef}
 								in:blurfly|local={getBlurFlyConfig('bottom')}
 								out:blurfly|local={getBlurFlyConfig('top')}
-								class="global-reset-input global-textbody"
+								class="{getGlobalTypographyClass('interface')} global-reset-input global-text-body"
 								bind:value
 								{...attributes}
 							/>

@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { getThemeContext } from '../../theming/context';
-	import { defaultThemeSet, getThemeClass } from '../../theming/themes';
 	import type { TextSizes, TextTones } from './types';
+	import { getGlobalTypographyClass } from './utils';
 
 	type Props = {
 		children: Snippet;
@@ -32,16 +31,11 @@
 			outline = !outline;
 		}
 	}
-
-	let themeContext = getThemeContext();
-	let themeKey =
-		purpose === 'interface' ? ('typographyInterface' as const) : ('typographyMarkdown' as const);
-	let themeId = $derived(themeContext ? themeContext[themeKey] : defaultThemeSet[themeKey]);
 </script>
 
 <svelte:window {onkeypress} />
 <span
-	class="text {getThemeClass('typography', themeId)} global-text-{size} tone-{tone} {bold
+	class="text {getGlobalTypographyClass(purpose)} global-text-{size} tone-{tone} {bold
 		? `global-text-strong`
 		: ''}"
 	class:outline

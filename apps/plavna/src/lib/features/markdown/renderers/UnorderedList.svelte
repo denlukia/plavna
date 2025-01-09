@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getGlobalTypographyClass } from '@plavna/design/components';
 	import type { Snippet } from 'svelte';
 
 	import { setListContext } from './list-context';
@@ -15,7 +16,11 @@
 	const sectionContext = getSectionContext();
 </script>
 
-<ul class="unordered-list global-text-{sectionContext?.section ? 'small' : 'body'}">
+<ul
+	class="unordered-list {getGlobalTypographyClass('markdown')} global-text-{sectionContext?.section
+		? 'small'
+		: 'body'}"
+>
 	{@render children()}
 </ul>
 

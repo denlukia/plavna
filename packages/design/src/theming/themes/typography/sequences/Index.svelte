@@ -1,6 +1,6 @@
 <script>
-	import FontPreloadToHead from '../../../../components/FontPreloadToHead.svelte';
-	import ThemeStyleToHead from '../../../../components/ThemeStyleToHead.svelte';
+	import FontPreloadToHead from '../../../components/FontPreloadToHead.svelte';
+	import ThemeStyleToHead from '../../../components/ThemeStyleToHead.svelte';
 	import InterItalicWoff2 from '../../fonts/Inter/InterVariable-Italic.woff2';
 	import InterWoff2 from '../../fonts/Inter/InterVariable.woff2';
 	import SourceSerifItalicWoff2 from '../../fonts/Source Serif 4/SourceSerif4Variable-Italic.otf.woff2';
@@ -14,4 +14,4 @@
 />
 
 <ThemeStyleToHead css={Fonts} />
-<ThemeStyleToHead css={Typography} type="typography" id="nyght" />
+<ThemeStyleToHead css={Typography} type="typography" id="sequences" />

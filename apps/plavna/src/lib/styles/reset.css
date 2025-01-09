@@ -52,12 +52,6 @@ form {
 }
 
 body {
-	font-family: var(--textmain-font-family);
-	font-optical-sizing: var(--textfont-optical-sizing);
-	background-color: var(--color-body-bg);
-	color: var(--color-text);
-	flex-grow: 1;
-
 	display: flex;
-	justify-content: center;
+	flex-grow: 1;
 }

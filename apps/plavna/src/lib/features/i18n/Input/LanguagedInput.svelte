@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { InputOrTextareaProps } from '@plavna/design/components';
+	import { Input } from '@plavna/design/components';
 	import { supportedLangs } from '@plavna/image-uploader/constants';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
 
-	import Input from '../../../design/components/Input/Input.svelte';
 	import { getLang } from '../utils';
 	import type { TranslationInsert } from '../validators';
 	import LangSelector from './LangSelector.svelte';

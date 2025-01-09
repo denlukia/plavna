@@ -49,5 +49,7 @@ export async function enrichThemeSets(
 		themeComponentSets[fileSetKey] = await enrichThemes(glob, themeSet);
 	}
 
+	console.log(themeComponentSets);
+
 	return themeComponentSets;
 }

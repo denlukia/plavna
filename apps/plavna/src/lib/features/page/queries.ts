@@ -9,8 +9,8 @@ export function queryGetThemes(username: string, pageslug: string) {
 		.select({
 			color_theme: table_pages.color_theme,
 			style_theme: table_pages.style_theme,
-			typography_functional_theme: table_pages.typography_interface_theme,
-			typography_aesthetic_theme: table_pages.typography_markdown_theme
+			typography_interface_theme: table_pages.typography_interface_theme,
+			typography_markdown_theme: table_pages.typography_markdown_theme
 		})
 		.from(table_users)
 		.innerJoin(

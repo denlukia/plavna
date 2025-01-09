@@ -16,5 +16,12 @@ export const load = (async ({ data }) => {
 
 	const themeComponentSets = await enrichThemeSets(themeSet, getThemeStylesGlob());
 
-	return { ...other, previewComponent, recordsTranslationsState, imagesState, themeComponentSets };
+	return {
+		...other,
+		previewComponent,
+		recordsTranslationsState,
+		imagesState,
+		themeComponentSets,
+		themeSet
+	};
 }) satisfies PageLoad;

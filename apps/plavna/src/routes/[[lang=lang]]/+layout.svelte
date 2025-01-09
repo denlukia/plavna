@@ -52,7 +52,7 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeContextProvider {themeSet} components={themeComponentSets}>
+<ThemeContextProvider {themeSet} components={themeComponentSets} root>
 	<div class="main-layout">
 		<div class="lights-wrapper">
 			<RainbowLoader loading={isNavigating} />

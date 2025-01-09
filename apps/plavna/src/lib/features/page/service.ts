@@ -113,8 +113,8 @@ export class PageService {
 		return {
 			color: themes.color_theme,
 			style: themes.style_theme,
-			'typography/functional': themes.typography_functional_theme,
-			'typography/aesthetic': themes.typography_aesthetic_theme
+			typographyInterface: themes.typography_interface_theme,
+			typographyMarkdown: themes.typography_markdown_theme
 		};
 	}
 	async getMyAsForms(username: string) {

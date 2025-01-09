@@ -199,3 +199,12 @@
 .global-display-contents {
 	display: contents;
 }
+
+.global-theme-provider {
+	display: flex;
+	flex-grow: 1;
+	justify-content: center;
+
+	background-color: var(--color-body-bg);
+	color: var(--color-text);
+}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getGlobalTypographyClass } from '@plavna/design/components';
 	import type { Snippet } from 'svelte';
 
 	import { setSectionContext } from './section-context';
@@ -12,7 +13,7 @@
 	setSectionContext({ section: true });
 </script>
 
-<section class="section global-text-small">
+<section class="section {getGlobalTypographyClass('markdown')} global-text-small">
 	{@render children()}
 </section>
 

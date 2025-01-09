@@ -5,6 +5,7 @@
 	import { createMouseWatcher } from '../../reactivity/mouse-watcher.svelte';
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
+	import { getGlobalTypographyClass } from '../Typography';
 	import { tabsCrossfade } from './tabs-crossfade';
 
 	// TODO: Fix animation on first switching
@@ -91,7 +92,12 @@
 	});
 </script>
 
-<div class="tabs global-text-{size}" role="tablist" class:pill-active={pillActive} {...events}>
+<div
+	class="tabs {getGlobalTypographyClass('interface')} global-text-{size}"
+	role="tablist"
+	class:pill-active={pillActive}
+	{...events}
+>
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<div class="pill-wrapper">

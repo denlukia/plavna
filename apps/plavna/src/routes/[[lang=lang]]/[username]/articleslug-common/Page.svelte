@@ -7,6 +7,7 @@
 		GridCell,
 		GridContainer
 	} from '@plavna/design/components';
+	import { ThemeContextProvider } from '@plavna/design/theming';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS } from '$lib/collections/config';
@@ -15,7 +16,6 @@
 	import { getRecordTranslation } from '$lib/features/i18n/utils';
 	import { getTitle } from '$lib/features/layout/title';
 	import { getPreviewData } from '$lib/features/preview/utils';
-	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	import type { PageData } from '../[articleslug]/$types';
 
@@ -32,7 +32,8 @@
 		previewComponent: PreviewComponent,
 		routeId,
 		lang,
-		themeComponentSets
+		themeComponentSets,
+		themeSet
 	} = $derived(data);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
@@ -53,54 +54,54 @@
 	<title>{title}</title>
 </svelte:head>
 
-<ThemeSetsInjector {themeComponentSets} />
-
-<div
-	class="back-button"
-	in:fade|global={{ duration: 400, delay: PAGE_INRO_DELAY_MS }}
-	out:fade|global={{ duration: 400 }}
->
-	<Button href={backToArticlesHref} kind="prominent">
-		↰ <Translation key="article.back_to_articles" />
-	</Button>
-</div>
-
-<AnimatedPage key={routeId + article.id + lang}>
-	<ColumnsContainer>
-		<Column cols={3} style="margin-inline: auto;">
-			<article class="article">
-				{#if PreviewComponent}
-					<GridContainer>
-						<GridCell cols={3} rows={3}>
-							<PreviewComponent
-								data={getPreviewData(
-									{ meta: article, tags },
-									recordsTranslations,
-									images,
-									user,
-									true
-								)}
-							/>
-						</GridCell>
-					</GridContainer>
-				{:else}
-					No preview
-				{/if}
-				<div class="content">
-					<Translation recordKey={data.article.content_translation_key} markdown />
-				</div>
-			</article>
-		</Column>
-	</ColumnsContainer>
-</AnimatedPage>
-
-{#if actor && article.user_id === actor.id}
-	<div class="main-actions" out:fade|global>
-		<Button href={editHref} kind="secondary">
-			<Translation key="article_actor.edit" />
+<ThemeContextProvider components={themeComponentSets} {themeSet}>
+	<div
+		class="back-button"
+		in:fade|global={{ duration: 400, delay: PAGE_INRO_DELAY_MS }}
+		out:fade|global={{ duration: 400 }}
+	>
+		<Button href={backToArticlesHref} kind="prominent">
+			↰ <Translation key="article.back_to_articles" />
 		</Button>
 	</div>
-{/if}
+
+	<AnimatedPage key={routeId + article.id + lang}>
+		<ColumnsContainer>
+			<Column cols={3} style="margin-inline: auto;">
+				<article class="article">
+					{#if PreviewComponent}
+						<GridContainer>
+							<GridCell cols={3} rows={3}>
+								<PreviewComponent
+									data={getPreviewData(
+										{ meta: article, tags },
+										recordsTranslations,
+										images,
+										user,
+										true
+									)}
+								/>
+							</GridCell>
+						</GridContainer>
+					{:else}
+						No preview
+					{/if}
+					<div class="content">
+						<Translation recordKey={data.article.content_translation_key} markdown />
+					</div>
+				</article>
+			</Column>
+		</ColumnsContainer>
+	</AnimatedPage>
+
+	{#if actor && article.user_id === actor.id}
+		<div class="main-actions" out:fade|global>
+			<Button href={editHref} kind="secondary">
+				<Translation key="article_actor.edit" />
+			</Button>
+		</div>
+	{/if}
+</ThemeContextProvider>
 
 <style>
 	.main-actions {

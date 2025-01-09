@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { GridContainer } from '@plavna/design/components';
+	import { GridContainer, InViewTrigger } from '@plavna/design/components';
 	import BezierEasing from 'bezier-easing';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 
-	import InViewTrigger from '../../design/components/InViewTrigger/InViewTrigger.svelte';
 	import ArticlePreviewCell from '../article/ArticlePreviewCell.svelte';
 	import type { SectionProp } from './types';
 

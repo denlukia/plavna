@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { Select } from '@plavna/design/components';
 	import { supportedLangs } from '@plavna/image-uploader/constants';
-
-	import Select from '../../../design/components/Popup/Select.svelte';
 
 	type Props = {
 		value: string;

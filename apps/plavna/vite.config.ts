@@ -7,6 +7,6 @@ const env = loadEnv('all', process.cwd(), '');
 export default defineConfig({
 	ssr: { noExternal: ['three'] },
 	plugins: [svelteInspector(), sveltekit()],
-	server: { host: env.HOST, port: parseInt(env.PORT), strictPort: true },
+	server: { host: env.HOST, port: parseInt(env.PORT), strictPort: true, fs: { strict: false } },
 	build: { sourcemap: true }
 });

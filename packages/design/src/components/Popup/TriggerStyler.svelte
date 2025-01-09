@@ -4,6 +4,7 @@
 	import ArrowDown from '../../icons/ArrowDown.svelte';
 	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
 	import IconWrapper from '../IconWrapper/IconWrapper.svelte';
+	import { getGlobalTypographyClass } from '../Typography';
 
 	type Props = {
 		isInInput?: boolean;
@@ -25,8 +26,9 @@
 			class="
 					dropdown
 					global-disable-default-outline
-					global-textstrong
-					global-text{isInInput ? 'small-short' : 'body-short'}
+					{getGlobalTypographyClass('interface')}
+					global-text-strong
+					global-text-{isInInput ? 'small-short' : 'body-short'}
 					global-reset-select"
 		>
 			{@render children()}

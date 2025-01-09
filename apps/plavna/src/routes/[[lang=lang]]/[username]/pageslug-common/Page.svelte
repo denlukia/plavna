@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { AnimatedPage, IconWrapper, Typography } from '@plavna/design/components';
 	import { Plus } from '@plavna/design/icons';
+	import { ThemeContextProvider } from '@plavna/design/theming';
 	import { SECTIONS_PER_PAGE } from '$lib/collections/config';
 	import Translation from '$lib/features/i18n/Translation.svelte';
 	import Section from '$lib/features/section/Section.svelte';
 	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
-	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	import type { PageData } from '../$types';
 
@@ -15,7 +15,7 @@
 
 	let { data }: Props = $props();
 
-	let { routeId, lang, themeComponentSets } = $derived(data);
+	let { routeId, lang, themeComponentSets, themeSet } = $derived(data);
 
 	let {
 		sections: { items, creationForm }
@@ -32,37 +32,37 @@
 	}
 </script>
 
-<ThemeSetsInjector {themeComponentSets} />
+<ThemeContextProvider components={themeComponentSets} {themeSet}>
+	<AnimatedPage key={routeId + lang}>
+		{#each items as section, index (section.meta.id)}
+			<Section bind:section={items[index]} />
+		{/each}
 
-<AnimatedPage key={routeId + lang}>
-	{#each items as section, index (section.meta.id)}
-		<Section bind:section={items[index]} />
-	{/each}
-
-	{#if creationForm && items.length < SECTIONS_PER_PAGE}
-		{#if creatorShown}
-			<div class="section-creator-wrapper">
-				<SectionEditor
-					mainForm={creationForm}
-					onCancel={closeCreator}
-					onSuccessfullUpdate={closeCreator}
-				/>
-			</div>
-		{:else}
-			<button
-				class="global-reset-button section-creation-button"
-				onclick={() => (creatorShown = true)}
-			>
-				<IconWrapper size="heading-2">
-					<Plus />
-				</IconWrapper>
-				<Typography size="heading-2">
-					<Translation key="page_actor.section.creator_title" />
-				</Typography>
-			</button>
+		{#if creationForm && items.length < SECTIONS_PER_PAGE}
+			{#if creatorShown}
+				<div class="section-creator-wrapper">
+					<SectionEditor
+						mainForm={creationForm}
+						onCancel={closeCreator}
+						onSuccessfullUpdate={closeCreator}
+					/>
+				</div>
+			{:else}
+				<button
+					class="global-reset-button section-creation-button"
+					onclick={() => (creatorShown = true)}
+				>
+					<IconWrapper size="heading-2">
+						<Plus />
+					</IconWrapper>
+					<Typography size="heading-2">
+						<Translation key="page_actor.section.creator_title" />
+					</Typography>
+				</button>
+			{/if}
 		{/if}
-	{/if}
-</AnimatedPage>
+	</AnimatedPage>
+</ThemeContextProvider>
 
 <style>
 	.section-creator-wrapper,
