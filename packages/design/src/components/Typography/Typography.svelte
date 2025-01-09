@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import { getThemeContext } from '../../theming/context';
+	import { defaultThemeSet, getThemeClass } from '../../theming/themes';
 	import type { TextSizes, TextTones } from './types';
 
 	type Props = {
@@ -9,14 +11,14 @@
 		resetPadding?: boolean;
 		tone?: TextTones;
 		bold?: boolean;
-		purpose?: 'functional' | 'aesthetic';
+		purpose?: 'interface' | 'markdown';
 		style?: string;
 	};
 
 	let {
 		size = 'body',
 		tone = 'default',
-		purpose = 'functional',
+		purpose = 'interface',
 		children,
 		resetPadding,
 		bold,
@@ -30,12 +32,17 @@
 			outline = !outline;
 		}
 	}
+
+	let themeContext = getThemeContext();
+	let themeKey =
+		purpose === 'interface' ? ('typographyInterface' as const) : ('typographyMarkdown' as const);
+	let themeId = $derived(themeContext ? themeContext[themeKey] : defaultThemeSet[themeKey]);
 </script>
 
 <svelte:window {onkeypress} />
 <span
-	class="text global-text-{purpose}-{size} tone-{tone} {bold
-		? `global-text-${purpose}-strong`
+	class="text {getThemeClass('typography', themeId)} global-text-{size} tone-{tone} {bold
+		? `global-text-strong`
 		: ''}"
 	class:outline
 	class:reset-padding={resetPadding}

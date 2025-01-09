@@ -12,7 +12,7 @@
 	setSectionContext({ section: true });
 </script>
 
-<section class="section global-text-aesthetic-small">
+<section class="section global-text-small">
 	{@render children()}
 </section>
 

@@ -1,6 +1,5 @@
 <script>
-	import { ThemeStyleToHead } from '@plavna/design/theming';
-
+	import ThemeStyleToHead from '../../../components/ThemeStyleToHead.svelte';
 	import Colors from './colors.css?inline';
 </script>
 

@@ -17,10 +17,9 @@
 		"./components": "./src/components/index.js",
 		"./icons": "./src/icons/index.js",
 		"./reactivity": "./src/reactivity/index.js",
-		"./themes": "./src/themes/index.js",
+		"./theming": "./src/theming/index.js",
 		"./transitions": "./src/transitions/index.js"
 	},
-	"files": [],
 	"peerDependencies": {
 		"svelte": "^5.10.0"
 	},

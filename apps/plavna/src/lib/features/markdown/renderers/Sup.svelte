@@ -8,6 +8,6 @@
 	let { children }: Props = $props();
 </script>
 
-<sup class="global-text-aesthetic-small-short">
+<sup class="global-text-small-short">
 	{@render children()}
 </sup>

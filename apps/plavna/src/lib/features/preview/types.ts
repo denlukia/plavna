@@ -1,4 +1,4 @@
-import type { ImagePathAndMeta } from '@plavna/design/types';
+import type { ImagePathAndMeta } from '@plavna/design/components';
 
 type Optional<T> = T | null | undefined;
 

@@ -15,7 +15,7 @@
 	const sectionContext = getSectionContext();
 </script>
 
-<ul class="unordered-list global-text-aesthetic-{sectionContext?.section ? 'small' : 'body'}">
+<ul class="unordered-list global-text-{sectionContext?.section ? 'small' : 'body'}">
 	{@render children()}
 </ul>
 

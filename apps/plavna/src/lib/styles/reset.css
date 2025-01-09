@@ -52,8 +52,8 @@ form {
 }
 
 body {
-	font-family: var(--text-functional-main-font-family);
-	font-optical-sizing: var(--text-functional-font-optical-sizing);
+	font-family: var(--textmain-font-family);
+	font-optical-sizing: var(--textfont-optical-sizing);
 	background-color: var(--color-body-bg);
 	color: var(--color-text);
 	flex-grow: 1;

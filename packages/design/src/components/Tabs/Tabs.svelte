@@ -91,12 +91,7 @@
 	});
 </script>
 
-<div
-	class="tabs global-text-functional-{size}"
-	role="tablist"
-	class:pill-active={pillActive}
-	{...events}
->
+<div class="tabs global-text-{size}" role="tablist" class:pill-active={pillActive} {...events}>
 	<Layers>
 		<LayerFlashlight {mouse} />
 		<div class="pill-wrapper">
@@ -154,7 +149,7 @@
 
 	/* --- Size-dependent --- */
 	/* Size Heading-2 */
-	.tabs.global-text-functional-heading-2 {
+	.tabs.global-text-heading-2 {
 		border-radius: var(--size-tabs-heading-2-border-radius);
 		padding: var(--size-tabs-heading-2-padding);
 
@@ -170,22 +165,22 @@
 		--active-tab-item-border-radius: var(--size-tab-item-active-heading-2-border-radius);
 
 		/* For Text component inside TabItems */
-		--text-font-family: var(--text-functional-heading-2-font-family);
-		--text-padding-top: var(--text-functional-heading-2-padding-top);
-		--text-padding-bottom: var(--text-functional-heading-2-padding-bottom);
-		--text-font-size: var(--text-functional-heading-2-font-size);
-		--text-font-weight: var(--text-functional-heading-2-font-weight);
-		--text-line-height: var(--text-functional-heading-2-line-height);
-		--text-letter-spacing: var(--text-functional-heading-2-letter-spacing);
-		--text-font-style: var(--text-functional-heading-2-font-style);
+		--text-font-family: var(--text-heading-2-font-family);
+		--text-padding-top: var(--text-heading-2-padding-top);
+		--text-padding-bottom: var(--text-heading-2-padding-bottom);
+		--text-font-size: var(--text-heading-2-font-size);
+		--text-font-weight: var(--text-heading-2-font-weight);
+		--text-line-height: var(--text-heading-2-line-height);
+		--text-letter-spacing: var(--text-heading-2-letter-spacing);
+		--text-font-style: var(--text-heading-2-font-style);
 	}
 
-	.tabs.global-text-functional-heading-2 .active-tab-pill {
+	.tabs.global-text-heading-2 .active-tab-pill {
 		border-radius: var(--size-tab-item-active-heading-2-border-radius);
 	}
 
 	/* Size Body */
-	.tabs.global-text-functional-body {
+	.tabs.global-text-body {
 		border-radius: var(--size-tabs-body-border-radius);
 		padding: var(--size-tabs-body-padding);
 
@@ -201,22 +196,22 @@
 		--active-tab-item-border-radius: var(--size-tab-item-active-body-border-radius);
 
 		/* For Text component inside TabItems */
-		--text-font-family: var(--text-functional-body-short-font-family);
-		--text-padding-top: var(--text-functional-body-short-padding-top);
-		--text-padding-bottom: var(--text-functional-body-short-padding-bottom);
-		--text-font-size: var(--text-functional-body-short-font-size);
-		--text-font-weight: var(--text-functional-body-short-font-weight);
-		--text-line-height: var(--text-functional-body-short-line-height);
-		--text-letter-spacing: var(--text-functional-body-short-letter-spacing);
-		--text-font-style: var(--text-functional-body-short-font-style);
+		--text-font-family: var(--text-body-short-font-family);
+		--text-padding-top: var(--text-body-short-padding-top);
+		--text-padding-bottom: var(--text-body-short-padding-bottom);
+		--text-font-size: var(--text-body-short-font-size);
+		--text-font-weight: var(--text-body-short-font-weight);
+		--text-line-height: var(--text-body-short-line-height);
+		--text-letter-spacing: var(--text-body-short-letter-spacing);
+		--text-font-style: var(--text-body-short-font-style);
 	}
 
-	.tabs.global-text-functional-body .active-tab-pill {
+	.tabs.global-text-body .active-tab-pill {
 		border-radius: var(--size-tab-item-active-body-border-radius);
 	}
 
 	/* Size Small */
-	.tabs.global-text-functional-small {
+	.tabs.global-text-small {
 		border-radius: var(--size-tabs-small-border-radius);
 		padding: var(--size-tabs-small-padding);
 
@@ -232,17 +227,17 @@
 		--active-tab-item-border-radius: var(--size-tab-item-active-small-border-radius);
 
 		/* For Text component inside TabItems */
-		--text-font-family: var(--text-functional-small-font-family);
-		--text-padding-top: var(--text-functional-small-padding-top);
-		--text-padding-bottom: var(--text-functional-small-padding-bottom);
-		--text-font-size: var(--text-functional-small-font-size);
-		--text-font-weight: var(--text-functional-small-font-weight);
-		--text-line-height: var(--text-functional-small-line-height);
-		--text-letter-spacing: var(--text-functional-small-letter-spacing);
-		--text-font-style: var(--text-functional-small-font-style);
+		--text-font-family: var(--text-small-font-family);
+		--text-padding-top: var(--text-small-padding-top);
+		--text-padding-bottom: var(--text-small-padding-bottom);
+		--text-font-size: var(--text-small-font-size);
+		--text-font-weight: var(--text-small-font-weight);
+		--text-line-height: var(--text-small-line-height);
+		--text-letter-spacing: var(--text-small-letter-spacing);
+		--text-font-style: var(--text-small-font-style);
 	}
 
-	.tabs.global-text-functional-small .active-tab-pill {
+	.tabs.global-text-small .active-tab-pill {
 		border-radius: var(--size-tab-item-active-small-border-radius);
 	}
 </style>

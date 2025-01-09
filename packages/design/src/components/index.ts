@@ -18,5 +18,4 @@ export * from './PreviewFoundation';
 export * from './Spacer';
 export * from './Switch';
 export * from './Tabs';
-export * from './ThemeInjector';
 export * from './Typography';

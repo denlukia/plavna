@@ -15,7 +15,7 @@
 	const sectionContext = getSectionContext();
 </script>
 
-<ol class="ordered-list global-text-aesthetic-{sectionContext?.section ? 'small' : 'body'}">
+<ol class="ordered-list global-text-{sectionContext?.section ? 'small' : 'body'}">
 	{@render children()}
 </ol>
 

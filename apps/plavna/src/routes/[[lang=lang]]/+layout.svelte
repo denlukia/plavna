@@ -3,6 +3,7 @@
 	import '$lib/styles/index.css';
 
 	import { GridVisualizer, Layers, RainbowLoader, Typography } from '@plavna/design/components';
+	import { ThemeContextProvider } from '@plavna/design/theming';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';
@@ -15,11 +16,10 @@
 	import Header from '$lib/features/layout/Header.svelte';
 	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
 	import { getTitle } from '$lib/features/layout/title.js';
-	import ThemeSetsInjector from '$lib/features/themes/components/ThemeSetsInjector.svelte';
 
 	let { data, children } = $props();
 
-	let { themeComponentSets } = $derived(data);
+	let { themeSet, themeComponentSets } = $derived(data);
 
 	let isNavigating = $derived(Boolean($navigating));
 
@@ -52,35 +52,35 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeSetsInjector {themeComponentSets} />
-
-<div class="main-layout">
-	<div class="lights-wrapper">
-		<RainbowLoader loading={isNavigating} />
-	</div>
-	<div class="content-wrapper">
-		<Header actor={data.actor} />
-		<Layers overflow="visible">
-			{@render children()}
-		</Layers>
-	</div>
-	<Footer logoTextSvg={data.logoTextSvg} />
-	<GridVisualizer />
-</div>
-
-{#if showAdaptivityWarning}
-	<div
-		class="only-big-screens"
-		in:fade={{ duration: PAGE_INRO_DELAY_MS }}
-		out:fade={{ delay: PAGE_INRO_DELAY_MS, duration: PAGE_INRO_DELAY_MS }}
-	>
-		<div class="text">
-			<Typography size="heading-2">
-				<Translation key="layout.only_for_big_screens" />
-			</Typography>
+<ThemeContextProvider {themeSet} components={themeComponentSets}>
+	<div class="main-layout">
+		<div class="lights-wrapper">
+			<RainbowLoader loading={isNavigating} />
 		</div>
+		<div class="content-wrapper">
+			<Header actor={data.actor} />
+			<Layers overflow="visible">
+				{@render children()}
+			</Layers>
+		</div>
+		<Footer logoTextSvg={data.logoTextSvg} />
+		<GridVisualizer />
 	</div>
-{/if}
+
+	{#if showAdaptivityWarning}
+		<div
+			class="only-big-screens"
+			in:fade={{ duration: PAGE_INRO_DELAY_MS }}
+			out:fade={{ delay: PAGE_INRO_DELAY_MS, duration: PAGE_INRO_DELAY_MS }}
+		>
+			<div class="text">
+				<Typography size="heading-2">
+					<Translation key="layout.only_for_big_screens" />
+				</Typography>
+			</div>
+		</div>
+	{/if}
+</ThemeContextProvider>
 
 <style>
 	.main-layout {

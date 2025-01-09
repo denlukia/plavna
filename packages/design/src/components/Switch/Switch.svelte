@@ -79,10 +79,10 @@
 	}
 
 	.functional .handle {
-		border: var(--border-functional-switch-handle);
+		border: var(--borderswitch-handle);
 	}
 	.aesthetic .handle {
-		border: var(--border-aesthetic-switch-handle);
+		border: var(--border-switch-handle);
 	}
 
 	input:checked + .switch-visualizer {

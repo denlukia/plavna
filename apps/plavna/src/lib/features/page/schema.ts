@@ -1,4 +1,4 @@
-import { themes } from '@plavna/design/themes';
+import { allThemes } from '@plavna/design/theming';
 import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 import { table_users } from '../user/schema';
@@ -11,18 +11,22 @@ export const table_pages = sqliteTable(
 			.notNull()
 			.references(() => table_users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull(),
-		color_theme: text('color_theme', { enum: themes.color }).notNull().default(themes.color[0]),
-		style_theme: text('style_theme', { enum: themes.style }).notNull().default(themes.style[0]),
-		typography_functional_theme: text('typography_functional_theme', {
-			enum: themes['typography/functional']
+		color_theme: text('color_theme', { enum: allThemes.color })
+			.notNull()
+			.default(allThemes.color[0]),
+		style_theme: text('style_theme', { enum: allThemes.style })
+			.notNull()
+			.default(allThemes.style[0]),
+		typography_interface_theme: text('typography_functional_theme', {
+			enum: allThemes['typographyInterface']
 		})
 			.notNull()
-			.default(themes['typography/functional'][0]),
-		typography_aesthetic_theme: text('typography_aesthetic_theme', {
-			enum: themes['typography/aesthetic']
+			.default(allThemes['typographyInterface'][0]),
+		typography_markdown_theme: text('typography_aesthetic_theme', {
+			enum: allThemes['typographyMarkdown']
 		})
 			.notNull()
-			.default(themes['typography/aesthetic'][0])
+			.default(allThemes['typographyMarkdown'][0])
 	},
 	(table) => {
 		return {

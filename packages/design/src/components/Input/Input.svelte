@@ -81,7 +81,7 @@
 								bind:this={elementRef}
 								in:blurfly|local={getBlurFlyConfig('bottom')}
 								out:blurfly|local={getBlurFlyConfig('top')}
-								class="global-reset-input global-text-functional-body"
+								class="global-reset-input global-textbody"
 								bind:value
 								{...attributes}
 							></textarea>
@@ -92,7 +92,7 @@
 								bind:this={elementRef}
 								in:blurfly|local={getBlurFlyConfig('bottom')}
 								out:blurfly|local={getBlurFlyConfig('top')}
-								class="global-reset-input global-text-functional-body"
+								class="global-reset-input global-textbody"
 								bind:value
 								{...attributes}
 							/>

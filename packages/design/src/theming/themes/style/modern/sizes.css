@@ -121,10 +121,8 @@
 
 	/* --- Dropdown --- */
 	--size-dropdown-padding-left: var(--size-m-to-l);
-	--size-dropdown-padding-top: calc(var(--size-s) + var(--text-functional-body-short-padding-top));
-	--size-dropdown-padding-bottom: calc(
-		var(--size-s) + var(--text-functional-body-short-padding-bottom)
-	);
+	--size-dropdown-padding-top: calc(var(--size-s) + var(--textbody-short-padding-top));
+	--size-dropdown-padding-bottom: calc(var(--size-s) + var(--textbody-short-padding-bottom));
 	--size-dropdown-border-radius: var(--size-m-to-l);
 
 	--size-dropdown-arrow-text-gap: var(--size-xs);
