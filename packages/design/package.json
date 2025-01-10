@@ -15,6 +15,7 @@
 	},
 	"exports": {
 		"./*": {
+			"types": "./src/lib/*/index.ts",
 			"svelte": "./src/lib/*/index.ts"
 		}
 	},
