@@ -8,6 +8,7 @@
 	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
 	import { generatePath } from '$lib/common/links';
 	import Translation from '$lib/i18n/Translation.svelte';
 
@@ -22,7 +23,7 @@
 	let { routeId, lang } = $derived(data);
 </script>
 
-<AnimatedPage key={routeId + lang}>
+<AnimatedPage key={routeId + lang} introDelay={PAGE_INRO_DELAY_MS}>
 	<ColumnsContainer>
 		<Column cols={3}>
 			<Typography size="heading-2"><Translation key="main.landing" markdown /></Typography>
