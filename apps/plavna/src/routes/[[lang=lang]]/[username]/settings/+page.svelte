@@ -12,6 +12,7 @@
 	import { enhance } from '$app/forms';
 	import { superForm } from 'sveltekit-superforms';
 	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
+	import { PAGE_INRO_DELAY_MS } from '$lib/common/config.js';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import Greetings from '$lib/user/greetings/Greetings.svelte';
 
@@ -22,7 +23,7 @@
 	let { form, enhance: enhanceSettings, errors } = superForm(superValidated);
 </script>
 
-<AnimatedPage key={routeId + lang}>
+<AnimatedPage key={routeId + lang} introDelay={PAGE_INRO_DELAY_MS}>
 	<Typography size="heading-1">
 		<Translation key="settings.heading" />
 	</Typography>

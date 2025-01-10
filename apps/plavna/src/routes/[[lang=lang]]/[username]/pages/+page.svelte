@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { AnimatedPage, Popup, Typography } from '@plavna/design/components';
 	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
+	import { PAGE_INRO_DELAY_MS } from '$lib/common/config.js';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import PageItem from '$lib/page/PageItem.svelte';
 	import PageEditor from '$lib/page/PageItemEditor.svelte';
@@ -16,7 +17,7 @@
 	}
 </script>
 
-<AnimatedPage key={routeId + lang}>
+<AnimatedPage key={routeId + lang} introDelay={PAGE_INRO_DELAY_MS}>
 	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
 
 	<ColumnedCards>

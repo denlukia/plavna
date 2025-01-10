@@ -7,7 +7,6 @@
 
 	type Props = {
 		children: Snippet;
-
 		key?: any;
 		introDelay?: number;
 	};

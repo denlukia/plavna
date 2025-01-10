@@ -65,7 +65,7 @@
 		</Button>
 	</div>
 
-	<AnimatedPage key={routeId + article.id + lang}>
+	<AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
 		<ColumnsContainer>
 			<Column cols={3} style="margin-inline: auto;">
 				<article class="article">

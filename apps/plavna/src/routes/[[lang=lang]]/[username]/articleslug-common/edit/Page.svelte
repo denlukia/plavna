@@ -12,6 +12,7 @@
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
+	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
 	import { generatePath } from '$lib/common/links';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import ImagesCollections from '$lib/image/ImagesBlock/ImagesCollections.svelte';
@@ -42,7 +43,7 @@
 	);
 </script>
 
-<AnimatedPage key={routeId + article.id + lang}>
+<AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
 	<Typography size="heading-1">
 		<Translation key="article_editor.heading" />
 	</Typography>

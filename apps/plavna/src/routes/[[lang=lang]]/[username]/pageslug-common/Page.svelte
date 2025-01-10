@@ -2,7 +2,7 @@
 	import { AnimatedPage, IconWrapper, Typography } from '@plavna/design/components';
 	import { Plus } from '@plavna/design/icons';
 	import { ThemeContextProvider } from '@plavna/design/theming';
-	import { SECTIONS_PER_PAGE } from '$lib/common/config';
+	import { PAGE_INRO_DELAY_MS, SECTIONS_PER_PAGE } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import Section from '$lib/section/Section.svelte';
 	import SectionEditor from '$lib/section/SectionEditor.svelte';
@@ -33,7 +33,7 @@
 </script>
 
 <ThemeContextProvider components={themeComponentSets} {themeSet}>
-	<AnimatedPage key={routeId + lang}>
+	<AnimatedPage key={routeId + lang} introDelay={PAGE_INRO_DELAY_MS}>
 		{#each items as section, index (section.meta.id)}
 			<Section bind:section={items[index]} />
 		{/each}
