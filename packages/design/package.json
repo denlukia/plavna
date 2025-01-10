@@ -4,21 +4,19 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && npm run package",
+		"build": "vite build && pnpm run package",
 		"preview": "vite preview",
 		"package": "svelte-kit sync && svelte-package && publint",
-		"prepublishOnly": "npm run package",
+		"prepublishOnly": "pnpm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"exports": {
-		"./components": "./src/lib/components/index.js",
-		"./icons": "./src/lib/icons/index.js",
-		"./reactivity": "./src/lib/reactivity/index.js",
-		"./theming": "./src/lib/theming/index.js",
-		"./transitions": "./src/lib/transitions/index.js"
+		"./*": {
+			"svelte": "./src/lib/*/index.ts"
+		}
 	},
 	"peerDependencies": {
 		"svelte": "^5.10.0"
@@ -27,6 +25,7 @@
 		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
+		"publint": "^0.1.16",
 		"svelte-check": "^4.0.5",
 		"vite": "^5.4.11"
 	},
