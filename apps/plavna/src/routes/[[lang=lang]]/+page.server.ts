@@ -1,5 +1,5 @@
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { lucia } from '$lib/services/auth';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
+import { lucia } from '$lib/user/auth';
 
 import type { Actions, PageServerLoad } from './$types';
 

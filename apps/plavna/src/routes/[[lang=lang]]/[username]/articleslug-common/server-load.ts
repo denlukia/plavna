@@ -1,5 +1,5 @@
-import type { SystemTranslationSliceKey } from '$lib/features/i18n/types';
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import type { SystemTranslationSliceKey } from '$lib/i18n/types';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
 
 import type { PageServerLoad } from '../[articleslug]/$types';
 

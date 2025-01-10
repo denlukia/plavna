@@ -16,8 +16,8 @@
 	} from '@plavna/design/components';
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
-	import TagSwitch from '$lib/features/markdown/renderers/TagSwitch.svelte';
+	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
+	import TagSwitch from '$lib/markdown/renderers/TagSwitch.svelte';
 
 	let { data } = $props();
 

@@ -2,20 +2,25 @@
 	// Global CSS
 	import '$lib/styles/index.css';
 
-	import { GridVisualizer, Layers, RainbowLoader, Typography } from '@plavna/design/components';
+	import {
+		GridVisualizer,
+		Layers,
+		patchScrollToDelayed,
+		RainbowLoader,
+		Typography
+	} from '@plavna/design/components';
 	import { ThemeContextProvider } from '@plavna/design/theming';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { PAGE_INRO_DELAY_MS, PAGE_SLUG_PREFIX } from '$lib/collections/config.js';
-	import Translation from '$lib/features/i18n/Translation.svelte';
-	import { getLang } from '$lib/features/i18n/utils.js';
-	import Footer from '$lib/features/layout/Footer.svelte';
-	import Header from '$lib/features/layout/Header.svelte';
-	import { patchScrollToDelayed } from '$lib/features/layout/scroll-delayer';
-	import { getTitle } from '$lib/features/layout/title.js';
+	import { PAGE_INRO_DELAY_MS, PAGE_SLUG_PREFIX } from '$lib/common/config.js';
+	import Translation from '$lib/i18n/Translation.svelte';
+	import { getLang } from '$lib/i18n/utils.js';
+	import Footer from '$lib/layout/Footer.svelte';
+	import Header from '$lib/layout/Header.svelte';
+	import { getTitle } from '$lib/layout/title.js';
 
 	let { data, children } = $props();
 

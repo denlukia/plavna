@@ -1,0 +1,36 @@
+import type { ResultSet } from '@libsql/client';
+import type { ExtractTablesWithRelations } from 'drizzle-orm';
+import type { SQLiteTransaction } from 'drizzle-orm/sqlite-core';
+import type { Database } from '$lib/db/db';
+
+export type UnionIncludesAll<T, U> = Exclude<U, T> extends never ? true : false;
+
+export type RemoveNullValues<T> = {
+	[K in keyof T as Exclude<T[K], null> extends never ? never : K]: T[K];
+};
+
+export type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>;
+		}
+	: T;
+
+type RequiredNotNull<T> = {
+	[P in keyof T]: NonNullable<T[P]>;
+};
+
+export type PartialNonNull<T, K extends keyof T> = T & RequiredNotNull<Pick<T, K>>;
+
+export type TransactionOrDB =
+	| SQLiteTransaction<
+			'async',
+			ResultSet,
+			typeof import('$lib/db/main-schema'),
+			ExtractTablesWithRelations<typeof import('$lib/db/main-schema')>
+	  >
+	| Database;
+
+type ExtractMethodNames<T> = {
+	[K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+}[keyof T];
+export type ExtractMethods<T> = Pick<T, ExtractMethodNames<T>>;

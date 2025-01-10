@@ -1,5 +1,5 @@
 import { enrichThemeSets } from '@plavna/design/theming';
-import { getThemeStylesGlob } from '$lib/features/themes/glob';
+import { getThemeStylesGlob } from '$lib/styles/themes/glob';
 
 import type { LayoutLoad } from './$types';
 

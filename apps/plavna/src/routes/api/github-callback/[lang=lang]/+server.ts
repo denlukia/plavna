@@ -2,11 +2,11 @@ import { type RequestEvent } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { generateId } from 'lucia';
-import { generatePath } from '$lib/features/common/links';
-import { getLang } from '$lib/features/i18n/utils';
-import { table_users } from '$lib/features/user/schema';
-import { getGitHubProvider, lucia } from '$lib/services/auth';
-import { db } from '$lib/services/db';
+import { generatePath } from '$lib/common/links';
+import { db } from '$lib/db/db';
+import { getLang } from '$lib/i18n/utils';
+import { getGitHubProvider, lucia } from '$lib/user/auth';
+import { table_users } from '$lib/user/schema';
 
 import { CLOSED_GREETINGS_COOKIE_NAME } from '../../../[[lang=lang]]/[username]/settings/config';
 

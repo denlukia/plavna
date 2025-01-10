@@ -1,6 +1,6 @@
-import { edit_article } from '$lib/features/article/actions';
-import { createRecordsTranslationsState } from '$lib/features/i18n/state.svelte';
-import { getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { edit_article } from '$lib/article/actions';
+import { createRecordsTranslationsState } from '$lib/i18n/state.svelte';
+import { getSystemTranslationsSlice } from '$lib/i18n/utils';
 
 import type { RequestEvent } from './$types';
 

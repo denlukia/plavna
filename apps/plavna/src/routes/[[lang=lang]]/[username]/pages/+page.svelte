@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { AnimatedPage, Popup, Typography } from '@plavna/design/components';
-	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
-	import Translation from '$lib/features/i18n/Translation.svelte';
-	import PageItem from '$lib/features/page/PageItem.svelte';
-	import PageEditor from '$lib/features/page/PageItemEditor.svelte';
+	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
+	import Translation from '$lib/i18n/Translation.svelte';
+	import PageItem from '$lib/page/PageItem.svelte';
+	import PageEditor from '$lib/page/PageItemEditor.svelte';
 
 	let { data } = $props();
 

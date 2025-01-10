@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { generatePath } from '$lib/features/common/links';
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { userSettingsFormSchema } from '$lib/features/user/validators';
+import { generatePath } from '$lib/common/links';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
+import { userSettingsFormSchema } from '$lib/user/validators';
 
 import type { Actions, PageServerLoad } from './$types';
 import { CLOSED_GREETINGS_COOKIE_NAME } from './config';

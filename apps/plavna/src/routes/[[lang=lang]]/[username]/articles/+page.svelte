@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { AnimatedPage, Button, Typography } from '@plavna/design/components';
 	import { page } from '$app/stores';
-	import ArticleItem from '$lib/features/article/ArticleItem.svelte';
-	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
-	import { generatePath } from '$lib/features/common/links.js';
-	import Translation from '$lib/features/i18n/Translation.svelte';
+	import ArticleItem from '$lib/article/ArticleItem.svelte';
+	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
+	import { generatePath } from '$lib/common/links.js';
+	import Translation from '$lib/i18n/Translation.svelte';
 
 	let { data } = $props();
 

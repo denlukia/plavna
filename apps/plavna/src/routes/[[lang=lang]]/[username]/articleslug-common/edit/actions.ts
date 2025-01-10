@@ -2,38 +2,38 @@ import { ServerImageHandler } from '@plavna/image-uploader/images';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMG_VALIDATION_CONFIG } from '$lib/collections/config';
-import { ERRORS } from '$lib/collections/errors';
-import { edit_article } from '$lib/features/article/actions';
+import { edit_article } from '$lib/article/actions';
 import {
 	articleSlugUpdateSchema,
 	type ArticlePreviewImageFileFieldsAll,
 	type ArticlePreviewImageHandlers
-} from '$lib/features/article/validators';
-import { generatePath } from '$lib/features/common/links';
-import { getActionFailure } from '$lib/features/error/fail-with-form-error';
-import { createTranslationUpdater } from '$lib/features/i18n/actions';
+} from '$lib/article/validators';
+import { IMG_VALIDATION_CONFIG } from '$lib/common/config';
+import { generatePath } from '$lib/common/links';
+import { ERRORS } from '$lib/errors/errors';
+import { getActionFailure } from '$lib/errors/fail-with-form-error';
+import { createTranslationUpdater } from '$lib/i18n/actions';
 import {
 	translationInsertSchema,
 	translationUpdateAllowEmptySchema,
 	translationUpdateSchema
-} from '$lib/features/i18n/validators';
-import { updateImages } from '$lib/features/image/updater.server';
+} from '$lib/i18n/validators';
+import { updateImages } from '$lib/image/updater.server';
 import {
 	imageCreationFormSchema,
 	imageDeletionFormSchema,
 	imageProviderUpdateFormSchema,
 	imageUpdateFileFields,
 	imageUpdateFormSchema
-} from '$lib/features/image/validators';
+} from '$lib/image/validators';
 import {
 	articlePreviewImageFileFieldsAllObj,
 	articlePreviewUpdateSchema,
 	previewTemplateCreationFormSchema,
 	previewTemplateDeletionFormSchema,
 	previewTemplateEditingFormSchema
-} from '$lib/features/preview/validators';
-import { tagDeleteSchema, tagUpdateSchema } from '$lib/features/tag/validators';
+} from '$lib/preview/validators';
+import { tagDeleteSchema, tagUpdateSchema } from '$lib/tag/validators';
 
 import type { Actions, RequestEvent } from '../../[articleslug]/edit/$types';
 

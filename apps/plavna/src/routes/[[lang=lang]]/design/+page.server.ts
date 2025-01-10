@@ -1,6 +1,6 @@
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { translationInsertSchema } from '$lib/features/i18n/validators';
+import { translationInsertSchema } from '$lib/i18n/validators';
 
 import type { PageServerLoad } from './$types';
 

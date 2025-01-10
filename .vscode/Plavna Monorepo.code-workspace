@@ -1,78 +1,78 @@
 {
-  "folders": [
-    
-    {
-      "name": "App: Plavna Src",
-      "path": "../apps/plavna/src"
-    },
-    {
-      "name": "App: Screenshotter Src",
-      "path": "../apps/screenshotter/src"
-    },
-    {
-      "name": "App: Screenshotter Cron Src",
-      "path": "../apps/screenshotter-cron/src"
-    },
-    {
-      "name": "App: Example Preview Src",
-      "path": "../apps/example-preview/src"
-    },
-    {
-      "name": "Package: Design Src",
-      "path": "../packages/design/src"
-    },
-    {
-      "name": "Package: Animations Src",
-      "path": "../packages/animations/src"
-    },
-    {
-      "name": "Package: Common Src",
-      "path": "../packages/common/src"
-    },
-    { "name": "Root", "path": ".." }
-  ]
-  // TODO
-  // "settings": {
-  //   "typescript.tsdk": "plavna-app/node_modules/typescript/lib"
-  // },
-  // "tasks": {
-  //   "version": "2.0.0",
-  //   "tasks": [
-  //     {
-  //       "label": "Svelte Check",
-  //       "type": "shell",
-  //       "command": "pnpm run check",
-  //       "presentation": {
-  //         "reveal": "silent"
-  //       },
-  //       "problemMatcher": {
-  //         "owner": "svelte",
-  //         "applyTo": "closedDocuments",
-  //         "fileLocation": ["absolute"],
-  //         "pattern": [
-  //           {
-  //             "regexp": "^(.*?):(\\d+):(\\d+)$",
-  //             "file": 1,
-  //             "line": 2,
-  //             "column": 3
-  //           },
-  //           {
-  //             "regexp": "^(Error|Warn|Hint):(.*?)$",
-  //             "severity": 1,
-  //             "message": 2
-  //           }
-  //         ],
-  //         "background": {
-  //           "activeOnStart": false,
-  //           "beginsPattern": {
-  //             "regexp": "Getting Svelte diagnostics"
-  //           },
-  //           "endsPattern": {
-  //             "regexp": "svelte-check found"
-  //           }
-  //         }
-  //       }
-  //     }
-  //   ]
-  // }
+	"folders": [
+		{
+			"name": "App: Plavna Src",
+			"path": "../apps/plavna/src"
+		},
+		{
+			"name": "App: Screenshotter Src",
+			"path": "../apps/screenshotter/src"
+		},
+		{
+			"name": "App: Screenshotter Cron Src",
+			"path": "../apps/screenshotter-cron/src"
+		},
+		{
+			"name": "App: Example Preview Src",
+			"path": "../apps/example-preview/src"
+		},
+		{
+			"name": "Package: Design Src",
+			"path": "../packages/design/src"
+		},
+		{
+			"name": "Package: Animations Src",
+			"path": "../packages/animations/src"
+		},
+		{
+			"name": "Package: Common Src",
+			"path": "../packages/common/src"
+		},
+		{ "name": "Root", "path": ".." }
+	],
+	"settings": {}
+	// TODO
+	// "settings": {
+	//   "typescript.tsdk": "plavna-app/node_modules/typescript/lib"
+	// },
+	// "tasks": {
+	//   "version": "2.0.0",
+	//   "tasks": [
+	//     {
+	//       "label": "Svelte Check",
+	//       "type": "shell",
+	//       "command": "pnpm run check",
+	//       "presentation": {
+	//         "reveal": "silent"
+	//       },
+	//       "problemMatcher": {
+	//         "owner": "svelte",
+	//         "applyTo": "closedDocuments",
+	//         "fileLocation": ["absolute"],
+	//         "pattern": [
+	//           {
+	//             "regexp": "^(.*?):(\\d+):(\\d+)$",
+	//             "file": 1,
+	//             "line": 2,
+	//             "column": 3
+	//           },
+	//           {
+	//             "regexp": "^(Error|Warn|Hint):(.*?)$",
+	//             "severity": 1,
+	//             "message": 2
+	//           }
+	//         ],
+	//         "background": {
+	//           "activeOnStart": false,
+	//           "beginsPattern": {
+	//             "regexp": "Getting Svelte diagnostics"
+	//           },
+	//           "endsPattern": {
+	//             "regexp": "svelte-check found"
+	//           }
+	//         }
+	//       }
+	//     }
+	//   ]
+	// }
 }

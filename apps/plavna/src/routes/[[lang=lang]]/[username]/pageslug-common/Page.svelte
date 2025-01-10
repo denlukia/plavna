@@ -2,10 +2,10 @@
 	import { AnimatedPage, IconWrapper, Typography } from '@plavna/design/components';
 	import { Plus } from '@plavna/design/icons';
 	import { ThemeContextProvider } from '@plavna/design/theming';
-	import { SECTIONS_PER_PAGE } from '$lib/collections/config';
-	import Translation from '$lib/features/i18n/Translation.svelte';
-	import Section from '$lib/features/section/Section.svelte';
-	import SectionEditor from '$lib/features/section/SectionEditor.svelte';
+	import { SECTIONS_PER_PAGE } from '$lib/common/config';
+	import Translation from '$lib/i18n/Translation.svelte';
+	import Section from '$lib/section/Section.svelte';
+	import SectionEditor from '$lib/section/SectionEditor.svelte';
 
 	import type { PageData } from '../$types';
 

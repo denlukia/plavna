@@ -1,14 +1,14 @@
 import type { Handle } from '@sveltejs/kit';
-import { ArticleService } from '$lib/features/article/service';
-import { TranslationService } from '$lib/features/i18n/service';
-import { getLang } from '$lib/features/i18n/utils';
-import { ImageService } from '$lib/features/image/service';
-import { PageService } from '$lib/features/page/service';
-import { PreviewService } from '$lib/features/preview/service';
-import { SectionService } from '$lib/features/section/service';
-import { TagService } from '$lib/features/tag/service';
-import { ActorService } from '$lib/features/user/service';
-import { lucia } from '$lib/services/auth';
+import { ArticleService } from '$lib/article/service';
+import { TranslationService } from '$lib/i18n/service';
+import { getLang } from '$lib/i18n/utils';
+import { ImageService } from '$lib/image/service';
+import { PageService } from '$lib/page/service';
+import { PreviewService } from '$lib/preview/service';
+import { SectionService } from '$lib/section/service';
+import { TagService } from '$lib/tag/service';
+import { lucia } from '$lib/user/auth';
+import { ActorService } from '$lib/user/service';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;

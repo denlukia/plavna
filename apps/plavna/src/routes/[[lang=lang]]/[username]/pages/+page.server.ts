@@ -1,9 +1,9 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { getActionFailure } from '$lib/features/error/fail-with-form-error';
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/features/page/validators';
+import { getActionFailure } from '$lib/errors/fail-with-form-error';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
+import { pageCreationFormSchema, pageUpdatingFormSchema } from '$lib/page/validators';
 
 export const load = async ({ locals: { pageService, lang }, params, parent, route }) => {
 	const forms = await pageService.getMyAsForms(params.username);
@@ -39,7 +39,6 @@ export const actions = {
 	},
 	update: async ({ locals: { pageService }, request }) => {
 		const form = await superValidate(request, zod(pageUpdatingFormSchema));
-		console.log(form);
 
 		if (!form.valid) {
 			return fail(400, { form });

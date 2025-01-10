@@ -3,7 +3,7 @@ import type { ImageProviderRelatedActorData } from '@plavna/image-uploader/types
 import type { Config } from '@sveltejs/adapter-vercel';
 import { json } from '@sveltejs/kit';
 import ImageKit from 'imagekit';
-import { ERRORS } from '$lib/collections/errors';
+import { ERRORS } from '$lib/errors/errors';
 
 export const config: Config = { runtime: 'nodejs20.x', regions: ['fra1'] };
 

@@ -11,9 +11,9 @@
 	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { superForm } from 'sveltekit-superforms';
-	import ColumnedCards from '$lib/features/common/components/ColumnedCards.svelte';
-	import Translation from '$lib/features/i18n/Translation.svelte';
-	import Greetings from '$lib/features/user/greetings/Greetings.svelte';
+	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
+	import Translation from '$lib/i18n/Translation.svelte';
+	import Greetings from '$lib/user/greetings/Greetings.svelte';
 
 	let { data } = $props();
 

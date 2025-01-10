@@ -8,8 +8,8 @@
 	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { generatePath } from '$lib/features/common/links';
-	import Translation from '$lib/features/i18n/Translation.svelte';
+	import { generatePath } from '$lib/common/links';
+	import Translation from '$lib/i18n/Translation.svelte';
 
 	import type { PageData } from './$types';
 

@@ -1,9 +1,9 @@
 import { enrichThemeSets } from '@plavna/design/theming';
-import { createRecordsTranslationsState } from '$lib/features/i18n/state.svelte';
-import { createImagesState } from '$lib/features/image/state.svelte';
-import { enrichPreviewFamilies } from '$lib/features/preview/enricher';
-import { createPreviewFamiliesState } from '$lib/features/preview/families/state.svelte';
-import { getThemeStylesGlob } from '$lib/features/themes/glob';
+import { createRecordsTranslationsState } from '$lib/i18n/state.svelte';
+import { createImagesState } from '$lib/image/state.svelte';
+import { enrichPreviewFamilies } from '$lib/preview/enricher';
+import { createPreviewFamiliesState } from '$lib/preview/families/state.svelte';
+import { getThemeStylesGlob } from '$lib/styles/themes/glob';
 
 import type { PageLoad } from '../$types';
 

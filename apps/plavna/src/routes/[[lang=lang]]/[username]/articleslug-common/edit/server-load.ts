@@ -1,4 +1,4 @@
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
 
 import type { PageServerLoad } from '../../[articleslug]/edit/$types';
 

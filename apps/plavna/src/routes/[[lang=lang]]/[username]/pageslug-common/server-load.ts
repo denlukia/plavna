@@ -3,14 +3,11 @@ import {
 	GET_PAGE_CONFIG_COOKIE_OPTIONS,
 	PAGE_CONFIG_COOKIE_NAME,
 	SECTION_RECONFIG_QUERY_PARAM_NAME
-} from '$lib/collections/config';
-import type { SystemTranslationSliceKey } from '$lib/features/i18n/types';
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils';
-import {
-	getReaderPageConfigFromCookies,
-	updateTagInReaderPageConfig
-} from '$lib/features/page/utils';
-import type { SectionRequest } from '$lib/features/section/types';
+} from '$lib/common/config';
+import type { SystemTranslationSliceKey } from '$lib/i18n/types';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils';
+import { getReaderPageConfigFromCookies, updateTagInReaderPageConfig } from '$lib/page/utils';
+import type { SectionRequest } from '$lib/section/types';
 
 import type { PageServerLoad } from '../$types';
 

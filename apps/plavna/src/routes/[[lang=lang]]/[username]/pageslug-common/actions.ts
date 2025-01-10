@@ -5,7 +5,7 @@ import {
 	sectionDeleteSchema,
 	sectionInsertSchema,
 	sectionUpdateSchema
-} from '$lib/features/section/validators';
+} from '$lib/section/validators';
 
 import type { Actions } from '../$types';
 

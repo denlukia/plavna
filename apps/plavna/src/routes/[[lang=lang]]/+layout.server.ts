@@ -2,11 +2,11 @@ import { defaultThemeSet } from '@plavna/design/theming';
 import { selectProvider } from '@plavna/image-uploader/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import type { SystemTranslationSliceKey } from '$lib/features/i18n/types.js';
-import { getLang, getSystemTranslationsSlice } from '$lib/features/i18n/utils.js';
-import { imageProviderUpdateFormSchema } from '$lib/features/image/validators';
-import { enrichLogo } from '$lib/features/layout/enricher.js';
-import { getSafeUserData } from '$lib/features/user/utils.js';
+import type { SystemTranslationSliceKey } from '$lib/i18n/types.js';
+import { getLang, getSystemTranslationsSlice } from '$lib/i18n/utils.js';
+import { imageProviderUpdateFormSchema } from '$lib/image/validators';
+import { enrichLogo } from '$lib/layout/enricher.js';
+import { getSafeUserData } from '$lib/user/utils.js';
 
 export const load = async ({ params, locals }) => {
 	const { actor, lang } = locals;

@@ -1,11 +1,8 @@
 import { text } from '@sveltejs/kit';
 import { stringify } from 'devalue';
-import { GET_PAGE_CONFIG_COOKIE_OPTIONS, PAGE_CONFIG_COOKIE_NAME } from '$lib/collections/config';
-import {
-	getReaderPageConfigFromCookies,
-	updateTagInReaderPageConfig
-} from '$lib/features/page/utils';
-import type { SectionRequest } from '$lib/features/section/types';
+import { GET_PAGE_CONFIG_COOKIE_OPTIONS, PAGE_CONFIG_COOKIE_NAME } from '$lib/common/config';
+import { getReaderPageConfigFromCookies, updateTagInReaderPageConfig } from '$lib/page/utils';
+import type { SectionRequest } from '$lib/section/types';
 
 import type { RequestHandler } from '../$types';
 

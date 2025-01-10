@@ -11,12 +11,12 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import AutosavedInput from '$lib/features/common/components/AutosavedInput.svelte';
-	import { generatePath } from '$lib/features/common/links';
-	import Translation from '$lib/features/i18n/Translation.svelte';
-	import ImagesCollections from '$lib/features/image/ImagesBlock/ImagesCollections.svelte';
-	import PreviewEditorsList from '$lib/features/preview/PreviewsList.svelte';
-	import ArticleTagsList from '$lib/features/tag/ArticleTagsList.svelte';
+	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
+	import { generatePath } from '$lib/common/links';
+	import Translation from '$lib/i18n/Translation.svelte';
+	import ImagesCollections from '$lib/image/ImagesBlock/ImagesCollections.svelte';
+	import PreviewEditorsList from '$lib/preview/PreviewsList.svelte';
+	import ArticleTagsList from '$lib/tag/ArticleTagsList.svelte';
 
 	import type { PageData } from '../../[articleslug]/edit/$types';
 
