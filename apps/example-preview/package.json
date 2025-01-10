@@ -1,0 +1,22 @@
+{
+	"name": "@plavna/example-preview",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/kit": "^2.7.2",
+		"svelte": "^5.10.0",
+		"svelte-check": "^4.0.5",
+		"vite": "^5.4.11"
+	},
+	"type": "module"
+}

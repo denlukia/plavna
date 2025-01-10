@@ -1,0 +1,23 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"tasks": {
+		"build": {
+			"env": [
+				"PUBLIC_HOST",
+				"DATABASE_AUTH_TOKEN",
+				"DATABASE_URL",
+				"GITHUB_CLIENT_SECRET",
+				"GITHUB_CLIENT_ID",
+				"GITHUB_PKG_AUTH_TOKEN",
+				"SCREENSHOTTER_ACCESS_TOKEN"
+			],
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": [".svelte-kit/**", ".vercel/**"]
+		},
+		"dev": {
+			"persistent": true,
+			"cache": false
+		}
+	}
+}

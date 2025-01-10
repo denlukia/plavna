@@ -1,0 +1,6 @@
+name = "plavna-cron"
+main = "src/index.ts"
+compatibility_date = "2023-05-15"
+
+[triggers]
+crons = ["* * * * *"] # * * * * * = run every minute

@@ -1,0 +1,28 @@
+<script lang="ts">
+	import { Button } from '@plavna/design/components';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
+	import type { ArticleSelect } from '$lib/article/validators';
+	import Translation from '$lib/i18n/Translation.svelte';
+
+	import type { ImageCreationForm } from '../validators';
+
+	type Props = {
+		articleId: ArticleSelect['id'] | null;
+		superValidated: SuperValidated<ImageCreationForm>;
+	};
+
+	let { articleId, superValidated }: Props = $props();
+
+	let { enhance } = superForm(superValidated);
+</script>
+
+<form method="POST" action="?/create_image" use:enhance>
+	{#if articleId}
+		<input type="hidden" name="article_id" value={articleId} />
+	{/if}
+
+	<Button>
+		<Translation key="article_editor.images.new" />
+	</Button>
+</form>

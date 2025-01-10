@@ -1,0 +1,61 @@
+{
+	"name": "@plavna/image-uploader",
+	"repository": "https://github.com/denlukia/plavna",
+	"version": "0.0.39",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && npm run package",
+		"preview": "vite preview",
+		"package": "svelte-kit sync && svelte-package && publint",
+		"prepublishOnly": "npm run package",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"main": "dist/index.js",
+	"exports": {
+		"./images": {
+			"types": "./dist/images.d.ts",
+			"default": "./dist/images.js"
+		},
+		"./queue": {
+			"types": "./dist/queue.d.ts",
+			"default": "./dist/queue.js"
+		},
+		"./constants": {
+			"types": "./dist/constants.d.ts",
+			"default": "./dist/constants.js"
+		},
+		"./types": {
+			"types": "./dist/types.d.ts",
+			"default": "./dist/types.js"
+		}
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"peerDependencies": {
+		"svelte": "^5.10.0"
+	},
+	"devDependencies": {
+		"@sveltejs/kit": "^2.7.2",
+		"@sveltejs/package": "^2.3.1",
+		"@types/get-pixels": "^3.3.4",
+		"@types/probe-image-size": "^7.2.4",
+		"drizzle-orm": "^0.36.3",
+		"publint": "^0.1.16",
+		"svelte": "^5.10.0",
+		"svelte-check": "^4.0.5",
+		"vite": "^5.4.11",
+		"ndarray": "^1.0.19"
+	},
+	"type": "module",
+	"dependencies": {
+		"extract-colors": "^4.0.6",
+		"get-pixels": "^3.3.3",
+		"imagekit-javascript": "^2.0.0"
+	}
+}

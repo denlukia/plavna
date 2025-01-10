@@ -1,0 +1,33 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../src"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "plavna-common/node_modules/typescript/lib",
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#552a00",
+			"activityBar.background": "#552a00",
+			"activityBar.foreground": "#e7e7e7",
+			"activityBar.inactiveForeground": "#e7e7e799",
+			"activityBarBadge.background": "#00803f",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#e7e7e799",
+			"sash.hoverBorder": "#552a00",
+			"statusBar.background": "#221100",
+			"statusBar.foreground": "#e7e7e7",
+			"statusBarItem.hoverBackground": "#552a00",
+			"statusBarItem.remoteBackground": "#221100",
+			"statusBarItem.remoteForeground": "#e7e7e7",
+			"titleBar.activeBackground": "#221100",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveBackground": "#22110099",
+			"titleBar.inactiveForeground": "#e7e7e799"
+		},
+		"peacock.color": "#221100"
+	}
+}
