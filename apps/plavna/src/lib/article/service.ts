@@ -116,6 +116,8 @@ export class ArticleService {
 			return acc;
 		}, {} as RecordsTranslationsDict);
 
+		console.log(query);
+
 		return {
 			articles: forms,
 			recordsTranslations

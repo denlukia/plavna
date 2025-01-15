@@ -9,7 +9,7 @@
 		RainbowLoader,
 		Typography
 	} from '@plavna/design/components';
-	import { ThemeContextProvider } from '@plavna/design/theming';
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/stores';

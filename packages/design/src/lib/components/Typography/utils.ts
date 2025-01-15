@@ -1,6 +1,5 @@
-import { defaultThemeSet } from '../../theming';
+import { defaultThemeSet, getThemeClass } from '../../theming/basics';
 import { getThemeContext } from '../../theming/context';
-import { getThemeClass } from '../../theming/themes';
 
 export function getGlobalTypographyClass(purpose: 'interface' | 'markdown') {
 	const themeContext = getThemeContext();

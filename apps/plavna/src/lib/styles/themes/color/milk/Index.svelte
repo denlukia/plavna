@@ -1,5 +1,5 @@
 <script>
-	import { ThemeStyleToHead } from '@plavna/design/theming';
+	import { ThemeStyleToHead } from '@plavna/design/theming/components';
 
 	import Colors from './colors.css?inline';
 </script>

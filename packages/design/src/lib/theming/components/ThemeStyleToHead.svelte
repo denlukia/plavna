@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getThemeClass } from '../themes';
+	import { getThemeClass } from '../basics';
 
 	type Props = {
 		css: string;

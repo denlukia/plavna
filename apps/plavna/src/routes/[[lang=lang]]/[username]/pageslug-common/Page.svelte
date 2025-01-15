@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { AnimatedPage, IconWrapper, Typography } from '@plavna/design/components';
 	import { Plus } from '@plavna/design/icons';
-	import { ThemeContextProvider } from '@plavna/design/theming';
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { PAGE_INRO_DELAY_MS, SECTIONS_PER_PAGE } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import Section from '$lib/section/Section.svelte';

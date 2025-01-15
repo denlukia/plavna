@@ -1,4 +1,4 @@
-import { enrichThemeSets } from '@plavna/design/theming';
+import { enrichThemeSets } from '@plavna/design/theming/enricher';
 import { createRecordsTranslationsState } from '$lib/i18n/state.svelte';
 import { createImagesState } from '$lib/image/state.svelte';
 import { getPreviewComponent } from '$lib/preview/enricher';

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {
 		ColorInput,
+		Column,
 		FormWrapper,
-		GridCell,
 		Input,
 		Label,
 		Labeled
@@ -27,24 +27,24 @@
 <FormWrapper>
 	<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 		<input name="preview_family" type="hidden" value="modern" />
-		<GridCell cols={2}>
-			<GridCell cols={0.6}>
+		<Column cols={2}>
+			<Column cols={0.6}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.modern.text_color" />
 					</Label>
 					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.6}>
+			</Column>
+			<Column cols={0.6}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.modern.text_bg_color" />
 					</Label>
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.4}>
+			</Column>
+			<Column cols={0.4}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.modern.cols" />
@@ -58,8 +58,8 @@
 						bind:value={$form.preview_columns}
 					/>
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.4}>
+			</Column>
+			<Column cols={0.4}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.modern.rows" />
@@ -73,23 +73,23 @@
 						bind:value={$form.preview_rows}
 					/>
 				</Labeled>
-			</GridCell>
-			<GridCell>
+			</Column>
+			<Column>
 				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.modern.image" />
 					</Label>
 					<LanguagedImageInput name="preview_image_1" bind:image={preview_image_1} clientUpload />
 				</Labeled>
-			</GridCell>
-			<GridCell>
+			</Column>
+			<Column>
 				<Labeled>
 					<Label>
 						<Translation key="article_editor.previews.families.modern.image_depth" />
 					</Label>
 					<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
 				</Labeled>
-			</GridCell>
-		</GridCell>
+			</Column>
+		</Column>
 	</form>
 </FormWrapper>
