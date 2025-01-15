@@ -1,4 +1,4 @@
-import { defaultThemeSet, type ThemeSet } from '@plavna/design/theming';
+import { defaultThemeSet, type ThemeSet } from '@plavna/design/theming/basics';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';

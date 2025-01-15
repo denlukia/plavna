@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 
-import type { ThemeSet } from '.';
+import type { ThemeSet } from './constants';
 
 const contextName = 'themeSet';
 

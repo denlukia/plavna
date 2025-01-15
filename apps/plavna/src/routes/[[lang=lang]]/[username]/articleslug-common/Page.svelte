@@ -7,7 +7,7 @@
 		GridCell,
 		GridContainer
 	} from '@plavna/design/components';
-	import { ThemeContextProvider } from '@plavna/design/theming';
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';

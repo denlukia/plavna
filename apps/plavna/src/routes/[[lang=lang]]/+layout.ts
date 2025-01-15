@@ -1,4 +1,4 @@
-import { enrichThemeSets } from '@plavna/design/theming';
+import { enrichThemeSets } from '@plavna/design/theming/enricher';
 import { getThemeStylesGlob } from '$lib/styles/themes/glob';
 
 import type { LayoutLoad } from './$types';

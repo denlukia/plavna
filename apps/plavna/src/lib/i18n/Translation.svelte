@@ -48,29 +48,18 @@
 	}
 
 	let translation = $derived.by(getTranslation);
-
-	let mdSource = $derived(finalizeSource(translation));
-
-	function finalizeSource(source: string | null | undefined) {
-		if (!source) return source;
-		const emptyLinkRegex = /\[\]\((.*?)\)/g;
-		const afterLinks = markdownRemoveEmptyLinks ? source.replace(emptyLinkRegex, '') : source;
-		return afterLinks.trim();
-	}
 </script>
 
-{#if (markdown && mdSource) || !markdown}
-	{#if translation}
-		{#if markdown === 'basic'}
-			<BasicMarkdown source={translation} />
-		{:else if markdown}
-			<Markdown source={translation} />
-		{:else}
-			{@html translation}
-		{/if}
+{#if translation}
+	{#if markdown === 'basic'}
+		<BasicMarkdown source={translation} />
+	{:else if markdown}
+		<Markdown source={translation} />
 	{:else}
-		<span class="no-translation">{noTranslationText}</span>
+		{@html translation}
 	{/if}
+{:else}
+	<span class="no-translation">{noTranslationText}</span>
 {/if}
 
 <style>

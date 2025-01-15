@@ -2,8 +2,8 @@
 	import {
 		Button,
 		ColorInput,
+		Column,
 		FormWrapper,
-		GridCell,
 		Input,
 		Label,
 		Labeled
@@ -163,24 +163,24 @@
 <FormWrapper>
 	<form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>
 		<input name="preview_family" type="hidden" value="sequences" />
-		<GridCell cols={2}>
-			<GridCell cols={0.66}>
+		<Column cols={2}>
+			<Column cols={0.66}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.text_bg_color" />
 					</Label>
 					<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.66}>
+			</Column>
+			<Column cols={0.66}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.text_color" />
 					</Label>
 					<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.3}>
+			</Column>
+			<Column cols={0.3}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.cols" />
@@ -194,8 +194,8 @@
 						bind:value={$form.preview_columns}
 					/>
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.3}>
+			</Column>
+			<Column cols={0.3}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.rows" />
@@ -209,28 +209,28 @@
 						bind:value={$form.preview_rows}
 					/>
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.5}>
+			</Column>
+			<Column cols={0.5}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.emoji_base_color" />
 					</Label>
 					<ColorInput name="preview_prop_3" bind:value={$form.preview_prop_3} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.5}>
+			</Column>
+			<Column cols={0.5}>
 				<Labeled as="label">
 					<Label>
 						<Translation key="article_editor.previews.families.sequences.emoji" />
 					</Label>
 					<Input name="preview_prop_4" bind:value={$form.preview_prop_4} />
 				</Labeled>
-			</GridCell>
-			<GridCell cols={0.99} style="display: flex; align-items: flex-end;">
+			</Column>
+			<Column cols={0.99} style="display: flex; align-items: flex-end;">
 				<Button kind="secondary" type="button" disabled={processing} onclick={updateEmojiImages}>
 					<Translation key="article_editor.previews.families.sequences.generate_emoji_image" />
 				</Button>
-			</GridCell>
-		</GridCell>
+			</Column>
+		</Column>
 	</form>
 </FormWrapper>

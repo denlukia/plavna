@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Component, Snippet } from 'svelte';
 
+	import { getThemeClass, type ThemeSet } from '../basics';
 	import { createThemeContext } from '../context';
-	import { getThemeClass, type ThemeSet } from '../themes';
 
 	type Props = {
 		themeSet: ThemeSet;

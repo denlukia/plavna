@@ -1,6 +1,6 @@
 import type { Component } from 'svelte';
 
-import type { ThemeComponentSet, ThemeComponentSets, ThemeSet } from './themes';
+import type { ThemeComponentSet, ThemeComponentSets, ThemeSet } from './constants';
 
 export async function enrichThemes(
 	glob: Record<string, () => Promise<unknown>> | null,
