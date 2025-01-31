@@ -18,7 +18,7 @@
 </script>
 
 {#if id !== 'footnote-label'}
-	<svelte:element this={`h${depth}`} class="heading">
+	<svelte:element this={`h${depth}`} class="heading {size}">
 		<Typography {size} purpose="markdown">
 			{@render children()}
 		</Typography>
@@ -32,5 +32,9 @@
 
 	.heading + :global(.heading) {
 		margin-top: 0.5em;
+	}
+
+	.heading.heading-1 + :global(.heading.heading-2) {
+		margin-top: 0;
 	}
 </style>
