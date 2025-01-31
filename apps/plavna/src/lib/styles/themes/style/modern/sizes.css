@@ -11,7 +11,7 @@
 	/* --- Section --- */
 	--size-section-description-max-width: calc(var(--size-cell-width) * 3 + var(--size-cell-gap) * 2);
 	--size-section-margin-bottom: var(--size-5xl);
-	--size-section-articles-list-margin-top: var(--size-l);
+	--size-section-articles-list-margin-top: var(--size-xl);
 
 	--size-section-editor-padding: var(--size-s) var(--size-m-to-l) var(--size-m-to-l);
 	--size-section-editor-deletion-left: var(--size-m-to-l);

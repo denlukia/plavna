@@ -37,7 +37,7 @@
 	footer :global(.logo-link) {
 		display: inline-flex;
 		justify-content: flex-end;
-		font-size: 38px;
+		font-size: 40px;
 		line-height: 1em;
 		padding-inline: 4px;
 		color: var(--color-text);
@@ -48,7 +48,7 @@
 	}
 	footer :global(.logo-link:hover) {
 		--color-link-hovered-shadow: var(--color-text-barely-visible);
-		--shadow-link-hovered: inset 0 -1em 0px var(--color-link-hovered-shadow);
+		--shadow-link-hovered: inset 0 -1.2em 0px var(--color-link-hovered-shadow);
 		box-shadow: var(--shadow-link-hovered);
 	}
 	.logotype {
