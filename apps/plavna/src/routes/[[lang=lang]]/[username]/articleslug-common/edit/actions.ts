@@ -142,6 +142,8 @@ async function update_preview(event: RequestEvent) {
 	}
 
 	await articleService.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
+
+	return { form };
 }
 
 async function create_preview_template(event: RequestEvent) {
@@ -165,6 +167,8 @@ async function create_preview_template(event: RequestEvent) {
 	}
 
 	await previewService.create(form.data, imageHandler);
+
+	return { form };
 }
 async function update_preview_template(event: RequestEvent) {
 	const { previewService } = event.locals;
@@ -187,6 +191,8 @@ async function update_preview_template(event: RequestEvent) {
 	}
 
 	await previewService.update(form.data, imageHandler);
+
+	return { form };
 }
 async function delete_preview_template(event: RequestEvent) {
 	const form = await superValidate(event.request, zod(previewTemplateDeletionFormSchema));
@@ -196,6 +202,8 @@ async function delete_preview_template(event: RequestEvent) {
 
 	const { previewService } = event.locals;
 	await previewService.delete(form.data);
+
+	return { form };
 }
 
 async function update_image_provider(event: RequestEvent) {
@@ -207,10 +215,10 @@ async function update_image_provider(event: RequestEvent) {
 	const { actorService } = event.locals;
 	try {
 		await actorService.updateImageProvider(form.data);
-		return { form };
 	} catch {
 		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
 	}
+	return { form };
 }
 async function delete_image_provider(event: RequestEvent) {
 	const form = await superValidate(zod(imageProviderUpdateFormSchema));
@@ -236,6 +244,8 @@ async function create_image(event: RequestEvent) {
 		owning_article_id: article_id,
 		is_account_common: typeof article_id !== 'number'
 	});
+
+	return { form };
 }
 
 async function update_image(event: RequestEvent) {
@@ -252,6 +262,8 @@ async function update_image(event: RequestEvent) {
 	const imagesKeys = Object.keys(imageUpdateFileFields);
 
 	await updateImages({ imagesKeys, imageService, rawData: formData, data: form.data, actor });
+
+	return { form };
 }
 
 async function delete_image(event: RequestEvent) {
@@ -262,6 +274,8 @@ async function delete_image(event: RequestEvent) {
 
 	const { imageService } = event.locals;
 	await imageService.deleteRecord(form.data.id);
+
+	return { form };
 }
 
 export const actions = {

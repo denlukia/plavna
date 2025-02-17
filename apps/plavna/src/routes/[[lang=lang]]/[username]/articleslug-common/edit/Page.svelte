@@ -16,7 +16,7 @@
 	import { generatePath } from '$lib/common/links';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import ImagesCollections from '$lib/image/ImagesBlock/ImagesCollections.svelte';
-	import PreviewEditorsList from '$lib/preview/PreviewsList.svelte';
+	import PreviewsList from '$lib/preview/PreviewsList.svelte';
 	import ArticleTagsList from '$lib/tag/ArticleTagsList.svelte';
 
 	import type { PageData } from '../../[articleslug]/edit/$types';
@@ -89,7 +89,7 @@
 					<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
 				</section>
 				<section class="row">
-					<PreviewEditorsList {data} />
+					<PreviewsList {data} />
 				</section>
 				<section class="row">
 					<ImagesCollections
