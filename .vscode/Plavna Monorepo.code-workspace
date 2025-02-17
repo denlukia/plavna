@@ -13,8 +13,8 @@
 			"path": "../apps/screenshotter-cron/src"
 		},
 		{
-			"name": "App: Example Preview Src",
-			"path": "../apps/example-preview/src"
+			"name": "App: Previews Src",
+			"path": "../apps/previews/src"
 		},
 		{
 			"name": "Package: Design Src",
@@ -25,8 +25,8 @@
 			"path": "../packages/animations/src"
 		},
 		{
-			"name": "Package: Common Src",
-			"path": "../packages/common/src"
+			"name": "Package: Image Uploader Src",
+			"path": "../packages/image-uploader/src"
 		},
 		{ "name": "Root", "path": ".." }
 	],

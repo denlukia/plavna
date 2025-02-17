@@ -22,7 +22,8 @@ export const EN = {
 		slug_in_use: 'You already use this slug',
 		only_one_default_slug: 'You already have one main page',
 		unknown_error: 'Unknown error',
-		cannot_delete: "Couldn't delete"
+		cannot_delete: "Couldn't delete",
+		invalid_url: 'Invalid URL'
 	},
 	main: {
 		landing:

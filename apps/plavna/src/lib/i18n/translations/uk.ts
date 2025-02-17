@@ -23,7 +23,8 @@ export const UK = {
 		slug_in_use: 'Ви вже використовуєте цю адресу',
 		only_one_default_slug: 'Ви вже маєте одну основну сторінку',
 		unknown_error: 'Невідома помилка',
-		cannot_delete: 'Не вдалося видалити'
+		cannot_delete: 'Не вдалося видалити',
+		invalid_url: 'Невірна адреса'
 	},
 	main: {
 		landing:

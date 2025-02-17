@@ -1,6 +1,7 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Component } from 'svelte';
 import { z } from 'zod';
+import { checkTranslationKey } from '$lib/i18n/utils';
 
 import { articleInsertSchema, type articleSelectSchema } from '../article/validators';
 import { generateLanguagedFields } from '../common/validators';
@@ -21,6 +22,19 @@ const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSch
 	preview_columns: true,
 	preview_rows: true
 };
+
+const urlRefiner = [
+	(data: { url: string }) => {
+		try {
+			new URL(data.url);
+			return true;
+		} catch {
+			return false;
+		}
+	},
+	{ message: checkTranslationKey('actor_errors.invalid_url'), path: ['url'] }
+] as const;
+
 export const articlePreviewImageIdsFieldsSchema = articleInsertSchema.pick({
 	preview_image_1_id: true,
 	preview_image_2_id: true
@@ -53,14 +67,16 @@ export const previewTemplateCreationFormSchema = previewTemplateInsertSchema
 	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ key: true, user_id: true })
-	.refine(...atLeastOneTranslationRefiner);
+	.refine(...atLeastOneTranslationRefiner)
+	.refine(...urlRefiner);
 export const previewTemplateEditingFormSchema = previewTemplateSelectSchema
 	.pick({ url: true })
 	.extend({ template_id: previewTemplateSelectSchema.shape.id })
 	.merge(previewTemplateImageFieldsSchema)
 	.merge(translationInsertBaseSchema)
 	.omit({ user_id: true })
-	.refine(...atLeastOneTranslationRefiner);
+	.refine(...atLeastOneTranslationRefiner)
+	.refine(...urlRefiner);
 export const previewTemplateDeletionFormSchema = previewTemplateSelectSchema.pick({ id: true });
 
 export type PreviewTemplateSelect = z.infer<typeof previewTemplateSelectSchema>;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, IconWrapper, Popup, Typography } from '@plavna/design/components';
+	import { Button, IconWrapper, Popup, Spinner, Typography } from '@plavna/design/components';
 	import { Plus } from '@plavna/design/icons';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
@@ -42,6 +42,7 @@
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
 
 	function getCurrentPreviewTemplate() {
+		console.log(currentPreviewObject);
 		if (!currentPreviewObject.family || typeof currentPreviewObject.template !== 'number') {
 			return;
 		}
@@ -224,7 +225,7 @@
 		</div>
 		{#if EditorComponent}
 			{#await EditorComponent}
-				Loading...
+				<Spinner />
 			{:then EditorComponent}
 				<EditorComponent
 					mainSuperValidated={previewEditorSuperValidated}
@@ -280,7 +281,7 @@
 			text-align: start;
 		}
 		.preview-family-button-content.editor {
-			padding-inline-end: calc(var(--size-article-previewfam-padding-inline) + var(--size-l));
+			padding-inline-end: calc(var(--size-article-previewfam-padding-inline) + var(--size-2xl));
 		}
 	}
 
@@ -288,6 +289,11 @@
 		display: contents;
 		list-style: none;
 		padding: 0;
+		align-items: flex-start;
+	}
+
+	.list > * {
+		display: flex;
 	}
 
 	.preview-family-wrapper {
