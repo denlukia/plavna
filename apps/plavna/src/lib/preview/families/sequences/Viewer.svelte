@@ -2,6 +2,7 @@
 	import { Layers, PreviewFoundation, Typography } from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
 	import { fade } from 'svelte/transition';
+	import { ARTISTIC_OVERFLOW_PADDING } from '$lib/common/config';
 	import BasicMarkdown from '$lib/markdown/BasicMarkdown.svelte';
 
 	import type { PreviewDataProp } from '../../types';
@@ -62,7 +63,7 @@
 	}
 </script>
 
-<PreviewFoundation>
+<PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW_PADDING}>
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
 			<Layers stretch>

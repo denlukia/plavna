@@ -42,7 +42,6 @@
 	type PreviewObject = ReturnType<typeof getInitialCurrentPreview>;
 
 	function getCurrentPreviewTemplate() {
-		console.log(currentPreviewObject);
 		if (!currentPreviewObject.family || typeof currentPreviewObject.template !== 'number') {
 			return;
 		}

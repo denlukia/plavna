@@ -1,0 +1,2 @@
+ALTER TABLE `articles` RENAME COLUMN "preview_screenshot_opened_image_id" TO "preview_screenshot_in_article_image_id";--> statement-breakpoint
+ALTER TABLE `articles` ALTER COLUMN "preview_screenshot_in_article_image_id" TO "preview_screenshot_in_article_image_id" integer REFERENCES images(id) ON DELETE set null ON UPDATE cascade;

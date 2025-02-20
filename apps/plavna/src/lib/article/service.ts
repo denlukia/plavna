@@ -7,7 +7,11 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
+import {
+	ARTICLE_OPENED_PREVIEW_COLS,
+	ARTICLE_OPENED_PREVIEW_ROWS,
+	IMAGE_CREDENTIALS_PATH
+} from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ERRORS } from '$lib/errors/errors';
 
@@ -115,8 +119,6 @@ export class ArticleService {
 			}
 			return acc;
 		}, {} as RecordsTranslationsDict);
-
-		console.log(query);
 
 		return {
 			articles: forms,
@@ -574,7 +576,8 @@ export class ArticleService {
 					preview_image_2_id,
 					title_translation_key
 				} = articleResult[0].articles;
-				let { preview_screenshot_image_id } = articleResult[0].articles;
+				let { preview_screenshot_image_id, preview_screenshot_in_article_image_id } =
+					articleResult[0].articles;
 
 				const imagesArr = articleResult
 					.map(({ images }) => images)
@@ -593,10 +596,6 @@ export class ArticleService {
 					] || '';
 				const titleTranslationObj = translationsArr.find((t) => t.key === title_translation_key);
 
-				const { width, height } = calculateDimensionsFromCellsTaken({
-					preview_columns,
-					preview_rows
-				});
 				const preview_image_1 = getMaybeTranslatedImagePath(
 					imagesArr,
 					translationsArr,
@@ -609,19 +608,6 @@ export class ArticleService {
 					preview_image_2_id,
 					this.translationService.currentLang
 				);
-				const url = composeURLForScreenshot(previewTemplateUrl, {
-					width,
-					height,
-					lang: this.translationService.currentLang,
-					preview_prop_1: preview.preview_prop_1 || null,
-					preview_prop_2: preview.preview_prop_2 || null,
-					preview_prop_3: preview.preview_prop_3 || null,
-					preview_prop_4: preview.preview_prop_4 || null,
-					preview_translation_1,
-					preview_translation_2,
-					preview_image_1,
-					preview_image_2
-				});
 
 				// Creating screenshot image record if needed
 				if (!preview_screenshot_image_id) {
@@ -632,40 +618,84 @@ export class ArticleService {
 						.set({ preview_screenshot_image_id: newImageRecord.id })
 						.where(whereCondition);
 				}
+				if (!preview_screenshot_in_article_image_id) {
+					const newImageRecord = await this.imageService.createRecord({ source });
+					preview_screenshot_in_article_image_id = newImageRecord.id;
+					await db
+						.update(table_articles)
+						.set({ preview_screenshot_in_article_image_id: newImageRecord.id })
+						.where(whereCondition);
+				}
 
-				if (preview_screenshot_image_id && providerData) {
-					const image_id = preview_screenshot_image_id;
+				if (preview_screenshot_image_id && preview_screenshot_in_article_image_id && providerData) {
 					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
-					if (preview.preview_create_localized_screenshots) {
-						queueRecordsForInsert = supportedLangs
-							.map((lang) => {
-								if (titleTranslationObj?.[lang]) {
-									return {
-										image_id,
-										width,
-										height,
-										lang,
-										url,
-										imageProviderData: providerData
-									};
-								} else {
-									return null;
-								}
-							})
-							.filter(isNonNullable);
-						if (queueRecordsForInsert.length === 0) {
-							return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
-						}
-					} else {
-						queueRecordsForInsert = [
-							{
-								image_id,
-								width,
-								height,
-								url,
-								imageProviderData: providerData
+
+					const langs = preview.preview_create_localized_screenshots ? supportedLangs : [undefined];
+					queueRecordsForInsert = langs
+						.map((lang) => {
+							if ((lang && titleTranslationObj?.[lang]) || !lang) {
+								const urlConfigBase = {
+									lang: this.translationService.currentLang,
+									preview_prop_1: preview.preview_prop_1 || null,
+									preview_prop_2: preview.preview_prop_2 || null,
+									preview_prop_3: preview.preview_prop_3 || null,
+									preview_prop_4: preview.preview_prop_4 || null,
+									preview_translation_1,
+									preview_translation_2,
+									preview_image_1,
+									preview_image_2
+								};
+
+								const { width: width, height: height } = calculateDimensionsFromCellsTaken({
+									preview_columns: preview_columns,
+									preview_rows: preview_rows
+								});
+								const url = composeURLForScreenshot(previewTemplateUrl, {
+									...urlConfigBase,
+									width: width,
+									height: height
+								});
+
+								const { width: widthInArticle, height: heightInArticle } =
+									calculateDimensionsFromCellsTaken({
+										preview_columns: ARTICLE_OPENED_PREVIEW_COLS,
+										preview_rows: ARTICLE_OPENED_PREVIEW_ROWS
+									});
+								const urlInArticle = composeURLForScreenshot(previewTemplateUrl, {
+									...urlConfigBase,
+									width: widthInArticle,
+									height: heightInArticle
+								});
+
+								const screenshotQueueRecordBase = {
+									lang,
+									imageProviderData: providerData
+								};
+
+								return [
+									{
+										...screenshotQueueRecordBase,
+										image_id: preview_screenshot_image_id,
+										width: width,
+										height: height,
+										url: url
+									},
+									{
+										...screenshotQueueRecordBase,
+										image_id: preview_screenshot_in_article_image_id,
+										width: widthInArticle,
+										height: heightInArticle,
+										url: urlInArticle
+									}
+								];
+							} else {
+								return null;
 							}
-						];
+						})
+						.filter(isNonNullable)
+						.flat();
+					if (queueRecordsForInsert.length === 0) {
+						return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
 					}
 
 					const queueRecordsInserPromise = db
@@ -717,7 +747,8 @@ export class ArticleService {
 						eq(table_images.is_account_common, true),
 						eq(table_images.id, table_articles.preview_image_1_id),
 						eq(table_images.id, table_articles.preview_image_2_id),
-						eq(table_images.id, table_articles.preview_screenshot_image_id)
+						eq(table_images.id, table_articles.preview_screenshot_image_id),
+						eq(table_images.id, table_articles.preview_screenshot_in_article_image_id)
 					)
 				)
 			)

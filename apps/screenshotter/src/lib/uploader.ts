@@ -8,9 +8,9 @@ export async function uploadScreenshot(task: typeof screenshotsQueue.$inferSelec
 
 	const imageHandler = await new ServerImageHandler();
 
-	imageHandler.setProviderAndUploader(imageProviderData, REQUEST_CREDENTIALS_URL);
+	await imageHandler.setProviderAndUploader(imageProviderData, REQUEST_CREDENTIALS_URL);
 
-	imageHandler.setImageFromEntry(file, {
+	await imageHandler.setImageFromEntry(file, {
 		formats: ['image/png'],
 		maxSizeMb: 25
 	});

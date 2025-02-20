@@ -7,6 +7,7 @@
 		Typography
 	} from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
+	import { ARTISTIC_OVERFLOW_PADDING } from '$lib/common/config';
 
 	import type { PreviewDataProp } from '../../types';
 
@@ -68,7 +69,7 @@
 	</div>
 {/snippet}
 
-<PreviewFoundation>
+<PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW_PADDING}>
 	{#snippet main()}
 		<ContinuousCorners radius={50} style="height: 100%;">
 			<div class="preview" style="--bg-color: {bgColor}; --text-color: {textColor};">

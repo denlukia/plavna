@@ -20,6 +20,7 @@ export type PreviewDataProp = {
 	img_1: Optional<ImagePathAndMeta>;
 	img_2: Optional<ImagePathAndMeta>;
 	screenshot?: Optional<ImagePathAndMeta>;
+	screenshot_in_article?: Optional<ImagePathAndMeta>;
 };
 
 export const dynamicPreviewActivationConditions = ['hover', 'click'] as const;

@@ -1,4 +1,4 @@
-import { ImageProviderRelatedActorData } from './types';
+import type { ImageProviderRelatedActorData } from './types';
 
 export function selectProvider(actorData: ImageProviderRelatedActorData) {
 	const { imagekit_public_key, imagekit_private_key, imagekit_url_endpoint } = actorData;
