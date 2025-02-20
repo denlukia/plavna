@@ -155,7 +155,8 @@ export async function queryGetOneSection(
 			or(
 				eq(table_images.id, articlesSq.articles.preview_image_1_id),
 				eq(table_images.id, articlesSq.articles.preview_image_2_id),
-				eq(table_images.id, articlesSq.articles.preview_screenshot_image_id)
+				eq(table_images.id, articlesSq.articles.preview_screenshot_image_id),
+				eq(table_images.id, articlesSq.articles.preview_screenshot_in_article_image_id)
 			)
 		)
 		.innerJoin(
@@ -272,6 +273,7 @@ type GetOneOldReturn = Promise<{
 				preview_image_2_id: number;
 				preview_create_localized_screenshots: boolean;
 				preview_screenshot_image_id: number | null;
+				preview_screenshot_in_article_image_id: number | null;
 			};
 			tags: {
 				id: number;

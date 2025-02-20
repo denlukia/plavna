@@ -72,7 +72,13 @@ export const table_articles = sqliteTable(
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}
-		)
+		),
+		preview_screenshot_in_article_image_id: integer(
+			'preview_screenshot_in_article_image_id'
+		).references(() => table_images.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade'
+		})
 	},
 	(table) => {
 		return {

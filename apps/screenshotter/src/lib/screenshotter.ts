@@ -11,11 +11,11 @@ export async function getScreenshot(page: Page, url: string, width: number, heig
 
 	const previewRoot = await page.$('.preview-root');
 	const screenshotConfig: ElementScreenshotOptions = { omitBackground: true, encoding: 'binary' };
-	const buffer = previewRoot
+	const uint8Array = previewRoot
 		? await previewRoot.screenshot(screenshotConfig)
 		: await page.screenshot(screenshotConfig);
 
-	const file = new File([buffer], 'screenshot.png', { type: 'image/png' });
+	const file = new File([uint8Array], 'screenshot.png', { type: 'image/png' });
 
 	await page.close();
 

@@ -48,6 +48,12 @@ export function getPreviewData(
 			user,
 			images,
 			recordsTranslations
+		),
+		screenshot_in_article: getImagePathAndMeta(
+			meta.preview_screenshot_in_article_image_id,
+			user,
+			images,
+			recordsTranslations
 		)
 	};
 }

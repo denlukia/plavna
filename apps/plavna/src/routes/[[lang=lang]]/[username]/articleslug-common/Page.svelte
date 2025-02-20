@@ -10,7 +10,7 @@
 	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
+	import { ARTICLE_OPENED_PREVIEW_COLS, PAGE_INRO_DELAY_MS } from '$lib/common/config';
 	import { generatePath } from '$lib/common/links';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import { getRecordTranslation } from '$lib/i18n/utils';
@@ -71,7 +71,7 @@
 				<article class="article">
 					{#if PreviewComponent}
 						<GridContainer>
-							<GridCell cols={3} rows={3}>
+							<GridCell cols={ARTICLE_OPENED_PREVIEW_COLS} rows={ARTICLE_OPENED_PREVIEW_COLS}>
 								<PreviewComponent
 									data={getPreviewData(
 										{ meta: article, tags },

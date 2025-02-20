@@ -33,23 +33,23 @@
 		<Column cols={0.6}>
 			<Labeled as="label">
 				<Label>
-					<Translation key="article_editor.previews.families.modern.text_color" />
+					<Translation key="article_editor.previews.families.custom.prop_1" />
 				</Label>
-				<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
+				<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
 			</Labeled>
 		</Column>
 		<Column cols={0.6}>
 			<Labeled as="label">
 				<Label>
-					<Translation key="article_editor.previews.families.modern.text_bg_color" />
+					<Translation key="article_editor.previews.families.custom.prop_2" />
 				</Label>
-				<ColorInput name="preview_prop_1" bind:value={$form.preview_prop_1} />
+				<ColorInput name="preview_prop_2" bind:value={$form.preview_prop_2} />
 			</Labeled>
 		</Column>
 		<Column cols={0.4}>
 			<Labeled as="label">
 				<Label>
-					<Translation key="article_editor.previews.families.modern.cols" />
+					<Translation key="article_editor.previews.families.custom.cols" />
 				</Label>
 				<Input
 					type="number"
@@ -64,7 +64,7 @@
 		<Column cols={0.4}>
 			<Labeled as="label">
 				<Label>
-					<Translation key="article_editor.previews.families.modern.rows" />
+					<Translation key="article_editor.previews.families.custom.rows" />
 				</Label>
 				<Input
 					type="number"

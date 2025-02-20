@@ -170,7 +170,11 @@ export const UK = {
 					generate_emoji_image: 'Згенерувати сітку емоджі'
 				},
 				custom: {
-					name: 'Власне'
+					name: 'Власне',
+					prop_1: 'Параметр 1',
+					prop_2: 'Параметр 2',
+					cols: 'Cтовпців',
+					rows: 'Рядків'
 				}
 			}
 		}

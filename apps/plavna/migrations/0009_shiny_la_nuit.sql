@@ -1,0 +1,1 @@
+ALTER TABLE `articles` ADD `preview_screenshot_opened_image_id` integer REFERENCES images(id);

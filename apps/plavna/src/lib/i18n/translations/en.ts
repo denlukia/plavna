@@ -170,7 +170,11 @@ export const EN = {
 					generate_emoji_image: 'Generate emoji grid'
 				},
 				custom: {
-					name: 'Custom'
+					name: 'Custom',
+					prop_1: 'Prop 1',
+					prop_2: 'Prop 2',
+					cols: 'Cols',
+					rows: 'Rows'
 				}
 			}
 		}

@@ -16,10 +16,11 @@
 <style>
 	.preview-root {
 		/* TODO to single source of truth with main service */
-		--artistic-padding: 20px;
+		--artistic-padding: 16px;
 		padding: var(--artistic-padding);
 		width: var(--width);
 		height: var(--height);
+		outline: 1px solid black;
 	}
 	.preview {
 		background-color: var(--bg);
@@ -30,5 +31,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		outline: 1px solid black;
 	}
 </style>

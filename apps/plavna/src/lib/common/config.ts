@@ -35,7 +35,10 @@ export const IMG_VALIDATION_CONFIG = {
 export const CELL = { WIDTH: 200, HEIGHT: 100, GAP: 10 };
 export const MAX_COLS_IN_SECTION = 5;
 export const MAX_ROWS_IN_SECTION = 5;
-export const ARTISTIC_OVERFLOW_PADDING = 20;
+export const ARTISTIC_OVERFLOW_PADDING = 16;
+
+export const ARTICLE_OPENED_PREVIEW_COLS = 3;
+export const ARTICLE_OPENED_PREVIEW_ROWS = 3;
 
 export const PAGE_CONFIG_COOKIE_NAME = 'page_config';
 

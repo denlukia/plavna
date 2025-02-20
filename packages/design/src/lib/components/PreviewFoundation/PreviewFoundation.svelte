@@ -4,15 +4,16 @@
 	type Props = {
 		main?: Snippet;
 		overflowing?: Snippet;
+		artisticOverflow?: number;
 	};
 
-	let { main, overflowing }: Props = $props();
+	let { main, overflowing, artisticOverflow = 0 }: Props = $props();
 </script>
 
 <span class="main-content">
 	{@render main?.()}
 </span>
-<span class="overflowing-content">
+<span class="overflowing-content" style="--artistic-overflow: {artisticOverflow}px;">
 	{@render overflowing?.()}
 </span>
 
@@ -30,10 +31,10 @@
 		pointer-events: all;
 	}
 	.overflowing-content {
-		top: calc(var(--size-cell-overflow) * -1);
-		left: calc(var(--size-cell-overflow) * -1);
-		right: calc(var(--size-cell-overflow) * -1);
-		bottom: calc(var(--size-cell-overflow) * -1);
+		top: calc(var(--artistic-overflow) * -1);
+		left: calc(var(--artistic-overflow) * -1);
+		right: calc(var(--artistic-overflow) * -1);
+		bottom: calc(var(--artistic-overflow) * -1);
 
 		pointer-events: none;
 	}
