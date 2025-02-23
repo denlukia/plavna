@@ -24,7 +24,9 @@
 		templateMeta
 	}: CustomPreviewEditorProps = $props();
 
-	let { form, enhance, errors } = superForm(mainSuperValidated);
+	let { form, enhance, errors } = superForm(mainSuperValidated, {
+		resetForm: false
+	});
 </script>
 
 <form use:enhance {...PREVIEW_EDITOR_FORM_ATTRS}>

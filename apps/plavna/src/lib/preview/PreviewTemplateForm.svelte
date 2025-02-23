@@ -39,7 +39,7 @@
 		type
 	}: Props = $props();
 
-	let { enhance, form, errors } = superForm(superValidatedMain);
+	let { enhance, form, errors } = superForm(superValidatedMain, { resetForm: false });
 
 	let { form: deletionForm = null, enhance: deletionEnhance = null } = superValidateDeletion
 		? superForm(superValidateDeletion)
