@@ -21,7 +21,9 @@
 		preview_image_2 = $bindable()
 	}: PreviewEditorProps = $props();
 
-	let { form, enhance, errors } = superForm(mainSuperValidated);
+	let { form, enhance, errors } = superForm(mainSuperValidated, {
+		resetForm: false
+	});
 </script>
 
 <FormWrapper>
