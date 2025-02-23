@@ -1,5 +1,5 @@
 import { ServerImageHandler } from '@plavna/image-uploader/images';
-import { REQUEST_CREDENTIALS_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 import type { screenshotsQueue } from './db-schema';
 
@@ -8,7 +8,7 @@ export async function uploadScreenshot(task: typeof screenshotsQueue.$inferSelec
 
 	const imageHandler = await new ServerImageHandler();
 
-	await imageHandler.setProviderAndUploader(imageProviderData, REQUEST_CREDENTIALS_URL);
+	await imageHandler.setProviderAndUploader(imageProviderData, env.REQUEST_CREDENTIALS_URL);
 
 	await imageHandler.setImageFromEntry(file, {
 		formats: ['image/png'],

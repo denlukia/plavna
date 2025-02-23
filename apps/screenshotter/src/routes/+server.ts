@@ -1,5 +1,5 @@
 import { error, text } from '@sveltejs/kit';
-import { REPLACE_PREVIEW_URL_IN, REPLACE_PREVIEW_URL_OUT } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { getBrowser } from '$lib/browser';
 import { BROWSER_MAX_OPENING_MS } from '$lib/constants';
 import { getPage } from '$lib/page';
@@ -32,8 +32,8 @@ export const POST: RequestHandler = async ({ request }) => {
 				await run(setTaskInProcessing, task);
 				const page = await run(getPage, browser);
 
-				if (REPLACE_PREVIEW_URL_IN && REPLACE_PREVIEW_URL_OUT) {
-					task.url = task.url.replace(REPLACE_PREVIEW_URL_IN, REPLACE_PREVIEW_URL_OUT);
+				if (env.REPLACE_PREVIEW_URL_IN && env.REPLACE_PREVIEW_URL_OUT) {
+					task.url = task.url.replace(env.REPLACE_PREVIEW_URL_IN, env.REPLACE_PREVIEW_URL_OUT);
 				}
 
 				const screenshot = await run(getScreenshot, page, task.url, task.width, task.height);
