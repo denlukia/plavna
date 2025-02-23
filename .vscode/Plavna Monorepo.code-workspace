@@ -13,8 +13,8 @@
 			"path": "../apps/screenshotter-cron/src"
 		},
 		{
-			"name": "App: Previews Src",
-			"path": "../apps/previews/src"
+			"name": "App: Denlukia Previews Src",
+			"path": "../apps/denlukia-previews/src"
 		},
 		{
 			"name": "Package: Design Src",
