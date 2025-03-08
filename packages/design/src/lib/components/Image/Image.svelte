@@ -7,12 +7,20 @@
 	type Props = {
 		pathAndMeta: ImagePathAndMeta;
 		style?: string;
+		bgInset?: string;
+		zoomOut?: boolean;
+		transitionDuration?: number;
 	};
 
 	const initialOpacity = '0.01';
-	const duration = 1000;
 
-	let { pathAndMeta, style = '' }: Props = $props();
+	let {
+		pathAndMeta,
+		bgInset: bgInset = '0',
+		style = '',
+		zoomOut = true,
+		transitionDuration = 1000
+	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
 	let mode: 'keyframes' | 'transition' = $state('keyframes');
@@ -67,15 +75,17 @@
 	});
 </script>
 
-<Layers stretch>
+<div class="positioner">
 	<span
 		class="bg"
-		style="--background: {pathAndMeta.background}; --duration: {duration}ms;"
+		style="--background: {pathAndMeta.background}; --duration: {transitionDuration}ms; --bg-inset: {bgInset}"
 		class:revealed
 	></span>
 	<span class="image-wrapper">
 		<img
-			style="--initial-opacity: {initialOpacity}; --duration: {duration}ms; {style}"
+			style="--initial-opacity: {initialOpacity}; initial-scale: {zoomOut
+				? 1.05
+				: 1}; --duration: {transitionDuration}ms; {style}"
 			bind:this={imgElement}
 			class="image {mode}"
 			class:revealed
@@ -86,9 +96,18 @@
 			{onload}
 		/>
 	</span>
-</Layers>
+</div>
 
 <style>
+	.positioner {
+		position: relative;
+	}
+
+	.positioner > .bg {
+		position: absolute;
+		inset: var(--bg-inset);
+	}
+
 	.image-wrapper {
 		width: 100%;
 		height: 100%;
@@ -96,7 +115,7 @@
 	}
 
 	.bg {
-		transition: opacity var(--duration);
+		transition: opacity var(--duration) calc(var(--duration) / 2);
 		background: var(--background);
 	}
 
@@ -109,7 +128,6 @@
 		height: 100%;
 		object-fit: cover;
 
-		--initial-scale: 1.05;
 		--initial-blur: 15px;
 
 		--easing: cubic-bezier(0.215, 0.61, 0.355, 1);

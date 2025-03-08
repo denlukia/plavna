@@ -10,9 +10,9 @@
 	} from '@plavna/design/components';
 	import { superForm } from 'sveltekit-superforms';
 	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
-	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/image/ImageInput/LanguagedImageInput.svelte';
+	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/styles/grid';
 
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { CustomPreviewEditorProps } from '../types';
