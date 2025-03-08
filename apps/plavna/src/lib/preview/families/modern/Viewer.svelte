@@ -7,7 +7,7 @@
 		Typography
 	} from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
-	import { ARTISTIC_OVERFLOW } from '$lib/common/config';
+	import { ARTISTIC_OVERFLOW } from '$lib/styles/grid';
 
 	import type { PreviewDataProp } from '../../types';
 

@@ -8,7 +8,9 @@
 
 <div
 	class="preview-root"
-	style="--width: {width}px; --height: {height}px; --bg: {preview_prop_2 || 'greenyellow'};"
+	style="--width: {width ? `${width}px` : '100%'}; 
+				 --height: {height ? `${height}px` : '100%'}; 
+				 --bg: {preview_prop_2 || 'greenyellow'};"
 >
 	<div class="preview">{preview_prop_1 || 'Test'}</div>
 </div>
