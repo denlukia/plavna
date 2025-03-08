@@ -19,28 +19,6 @@
 
 	/* ------ Semantic ------ */
 
-	/* --- Grid --- */
-	--size-max-cell-width: 260px;
-	--size-cell-aspect: 120 / 240;
-	--size-cols-total: 5;
-	--size-rows-total: 5;
-	--size-cell-gap: var(--size-m);
-
-	--size-main-grid-padding-inline: var(--size-l);
-	--size-main-grid-max-width: calc(
-		var(--size-max-cell-width) * var(--size-cols-total) + var(--size-cell-gap) *
-			calc(var(--size-cols-total) - 1)
-	);
-	--size-main-grid-width: calc(
-		min(var(--size-main-grid-max-width), 100vw) - 2 * var(--size-main-grid-padding-inline)
-	);
-
-	--size-cell-width: calc(
-		calc(var(--size-main-grid-width) - calc(var(--size-cols-total) - 1) * var(--size-cell-gap)) /
-			var(--size-cols-total)
-	);
-	--size-cell-height: calc(var(--size-cell-width) * var(--size-cell-aspect));
-
 	/* --- Layers --- */
 	--size-layer-flashlight-pointer: 90px;
 	--size-layer-shift-hover-translate: 2px;

@@ -1,5 +1,5 @@
 import type { SupportedLang } from '@plavna/image-uploader/types';
-import { ARTISTIC_OVERFLOW_PADDING, CELL } from '$lib/common/config';
+import { ARTISTIC_OVERFLOW, CELL } from '$lib/styles/grid';
 
 import type { TranslationSelect } from '../i18n/validators';
 import type { ImageSelect } from '../image/validators';
@@ -19,8 +19,8 @@ export function calculateDimensionsFromCellsTaken({
 }: ArticlePreviewCellsTaken) {
 	const { WIDTH, HEIGHT, GAP } = CELL;
 	return {
-		width: preview_columns * WIDTH + (preview_columns - 1) * GAP + ARTISTIC_OVERFLOW_PADDING * 2,
-		height: preview_rows * HEIGHT + (preview_rows - 1) * GAP + ARTISTIC_OVERFLOW_PADDING * 2
+		width: preview_columns * WIDTH + (preview_columns - 1) * GAP + ARTISTIC_OVERFLOW * 2,
+		height: preview_rows * HEIGHT + (preview_rows - 1) * GAP + ARTISTIC_OVERFLOW * 2
 	};
 }
 

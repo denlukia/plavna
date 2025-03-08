@@ -10,12 +10,13 @@
 	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import { ARTICLE_OPENED_PREVIEW_COLS, PAGE_INRO_DELAY_MS } from '$lib/common/config';
+	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
 	import { generatePath } from '$lib/common/links';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import { getRecordTranslation } from '$lib/i18n/utils';
 	import { getTitle } from '$lib/layout/title';
 	import { getPreviewData } from '$lib/preview/utils';
+	import { ARTICLE_OPENED_PREVIEW_COLS } from '$lib/styles/grid';
 
 	import type { PageData } from '../[articleslug]/$types';
 

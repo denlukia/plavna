@@ -7,13 +7,10 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import {
-	ARTICLE_OPENED_PREVIEW_COLS,
-	ARTICLE_OPENED_PREVIEW_ROWS,
-	IMAGE_CREDENTIALS_PATH
-} from '$lib/common/config';
+import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ERRORS } from '$lib/errors/errors';
+import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { detectConstraintError } from '../errors/detectors';

@@ -10,9 +10,9 @@
 	} from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
-	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import { uploadImage } from '$lib/image/client-uploader';
+	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/styles/grid';
 
 	import { PREVIEW_EDITOR_FORM_ATTRS } from '..';
 	import type { PreviewEditorProps } from '../types';
