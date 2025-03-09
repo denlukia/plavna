@@ -1,9 +1,10 @@
+import { supportedLangs } from '@plavna/common';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Component } from 'svelte';
 import { z } from 'zod';
 import { checkTranslationKey } from '$lib/i18n/utils';
 
-import { articleInsertSchema, type articleSelectSchema } from '../article/validators';
+import { articleInsertSchema, articleSelectSchema } from '../article/validators';
 import { generateLanguagedFields } from '../common/validators';
 import { atLeastOneTranslationRefiner, translationInsertBaseSchema } from '../i18n/validators';
 import { imageFileField } from '../image/validators';

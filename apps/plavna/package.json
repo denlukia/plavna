@@ -15,6 +15,7 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
+		"@plavna/common": "workspace:*",
 		"@plavna/image-uploader": "workspace:*",
 		"@plavna/design": "workspace:*",
 		"@libsql/client": "^0.14.0",

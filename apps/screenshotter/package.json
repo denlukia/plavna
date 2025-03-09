@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@plavna/common": "workspace:*",
 		"@plavna/image-uploader": "workspace:*",
 		"@sparticuz/chromium-min": "^132.0.0",
 		"puppeteer-core": "^24.2.1"

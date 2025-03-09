@@ -1,4 +1,4 @@
-import { supportedLangs } from '@plavna/image-uploader/constants';
+import { supportedLangs } from '@plavna/common';
 import { lexer, type Token } from 'marked';
 
 import type { TagSelect } from '../tag/validators';

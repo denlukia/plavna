@@ -1,4 +1,4 @@
-import { supportedLangs } from '@plavna/image-uploader/constants';
+import { supportedLangs } from '@plavna/common';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import { z } from 'zod';
 import { SLUG_ALLOWED_CHARS_REGEX, SLUG_MAX_LENGTH, SLUG_MIN_LENGTH } from '$lib/common/config';

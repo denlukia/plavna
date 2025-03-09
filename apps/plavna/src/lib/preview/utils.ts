@@ -1,4 +1,6 @@
+import type { PreviewDataProp } from '@plavna/common';
 import { HIDDEN_TAG_PREFIX } from '$lib/common/config';
+import { calculateDimensionsFromCellsTaken } from '$lib/screenshot/utils';
 
 import type { ArticleSelect } from '../article/validators';
 import type { RecordsTranslationsDict } from '../i18n/types';
@@ -9,7 +11,6 @@ import type { SectionProp } from '../section/types';
 import type { User } from '../user/validators';
 import { previewFamilies } from './families';
 import type { PreviewFamiliesDict } from './families/types';
-import type { PreviewDataProp } from './types';
 
 export function getPreviewData(
 	article: SectionProp['articles'][number],
@@ -22,6 +23,10 @@ export function getPreviewData(
 	const filteredTags = tags
 		.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations))
 		.filter((s) => !s?.startsWith(HIDDEN_TAG_PREFIX));
+	const { width, height } = calculateDimensionsFromCellsTaken({
+		preview_columns: meta.preview_columns,
+		preview_rows: meta.preview_rows
+	});
 	return {
 		title_translation: getRecordTranslation(meta.title_translation_key, recordsTranslations),
 		description_translation: getRecordTranslation(
@@ -54,7 +59,10 @@ export function getPreviewData(
 			user,
 			images,
 			recordsTranslations
-		)
+		),
+		url: null,
+		width,
+		height
 	};
 }
 

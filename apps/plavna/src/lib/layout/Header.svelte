@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Popup } from '@plavna/design/components';
-	import { supportedLangs } from '@plavna/image-uploader/constants';
+	import { supportedLangs } from '@plavna/common';
 	import { page } from '$app/stores';
 	import type { User } from 'lucia';
 

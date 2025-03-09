@@ -1,25 +1,26 @@
 <script>
+	import { ARTISTIC_OVERFLOW } from '@plavna/common';
+
 	import './styles.css';
 
 	export let data;
 
-	$: ({ width, height, preview_prop_1, preview_prop_2 } = data.params);
+	$: ({ width, height, prop_1, prop_2 } = data);
 </script>
 
 <div
 	class="preview-root"
 	style="--width: {width ? `${width}px` : '100%'}; 
 				 --height: {height ? `${height}px` : '100%'}; 
-				 --bg: {preview_prop_2 || 'greenyellow'};"
+				 --bg: {prop_2 || 'greenyellow'};
+				 --padding: {ARTISTIC_OVERFLOW}px"
 >
-	<div class="preview">{preview_prop_1 || 'Test'}</div>
+	<div class="preview">{prop_1 || 'Test'}</div>
 </div>
 
 <style>
 	.preview-root {
-		/* TODO to single source of truth with main service */
-		--artistic-padding: 16px;
-		padding: var(--artistic-padding);
+		padding: var(--padding);
 		width: var(--width);
 		height: var(--height);
 		outline: 1px solid black;

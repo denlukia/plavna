@@ -1,17 +1,10 @@
-import type { SupportedLang } from '@plavna/image-uploader/types';
-import { ARTISTIC_OVERFLOW, CELL } from '$lib/styles/grid';
+import { ARTISTIC_OVERFLOW } from '@plavna/common';
 
-import type { TranslationSelect } from '../i18n/validators';
-import type { ImageSelect } from '../image/validators';
-import type { ArticlePreviewCellsTaken, ArticlePreviewScreenshotQuery } from './validators';
+import type {} from '$lib/preview/validators';
 
-export function composeURLForScreenshot(url: string, params: ArticlePreviewScreenshotQuery) {
-	const urlObj = new URL(url);
-	Object.entries(params).map(([key, value]) => {
-		urlObj.searchParams.set(key, String(value ?? ''));
-	});
-	return urlObj.href;
-}
+import { CELL } from '$lib/styles/grid';
+
+import type { ArticlePreviewCellsTaken } from './validators';
 
 export function calculateDimensionsFromCellsTaken({
 	preview_columns,
@@ -22,17 +15,4 @@ export function calculateDimensionsFromCellsTaken({
 		width: preview_columns * WIDTH + (preview_columns - 1) * GAP + ARTISTIC_OVERFLOW * 2,
 		height: preview_rows * HEIGHT + (preview_rows - 1) * GAP + ARTISTIC_OVERFLOW * 2
 	};
-}
-
-export function getMaybeTranslatedImagePath(
-	imagesArr: ImageSelect[],
-	translationsArr: TranslationSelect[],
-	preview_image_id: ImageSelect['id'],
-	lang: SupportedLang
-) {
-	const preview_image_1_base = imagesArr.find((i) => i.id === preview_image_id);
-	const preview_image_1_translation = translationsArr.find(
-		(t) => t.key === preview_image_1_base?.path_translation_key
-	)?.[lang];
-	return preview_image_1_translation || preview_image_1_base?.path || '';
 }

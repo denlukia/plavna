@@ -1,4 +1,4 @@
-import { supportedLangs } from '@plavna/image-uploader/constants';
+import { supportedLangs } from '@plavna/common';
 import { createScreenshotsQueueSchema } from '@plavna/image-uploader/queue';
 
 import { table_images } from '../image/schema';
