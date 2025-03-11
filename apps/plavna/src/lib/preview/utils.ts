@@ -17,9 +17,10 @@ export function getPreviewData(
 	recordsTranslations: RecordsTranslationsDict | undefined,
 	images: ImagesDict | undefined,
 	user: User | null,
-	viewingInArticle: boolean
+	viewingInArticle: boolean,
+	lang: string
 ): PreviewDataProp {
-	const { meta, tags } = article;
+	const { meta, tags, previewTemplateUrl } = article;
 	const filteredTags = tags
 		.map((tag) => getRecordTranslation(tag.name_translation_key, recordsTranslations))
 		.filter((s) => !s?.startsWith(HIDDEN_TAG_PREFIX));
@@ -60,9 +61,10 @@ export function getPreviewData(
 			images,
 			recordsTranslations
 		),
-		url: null,
+		url: previewTemplateUrl,
 		width,
-		height
+		height,
+		lang
 	};
 }
 

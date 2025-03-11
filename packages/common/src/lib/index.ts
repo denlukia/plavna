@@ -1,4 +1,3 @@
-import z from 'zod';
 import type { ImagePathAndMeta } from '@plavna/design/components';
 
 // ISO 639-1

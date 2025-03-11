@@ -803,7 +803,7 @@ export class ArticleService {
 		}
 		return {
 			article: query[0].articles,
-			previewType: query[0].previewTypes,
+			previewTemplateUrl: query[0].previewTypes?.url || null,
 			translations: Object.fromEntries([
 				...query
 					.map((row) => row.translations)

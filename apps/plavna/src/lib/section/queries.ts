@@ -14,6 +14,7 @@ import {
 } from 'drizzle-orm';
 import { ARTICLES_PER_SECTION } from '$lib/common/config';
 import { db } from '$lib/db/db';
+import { table_previewTemplates } from '$lib/preview/schema';
 
 import { table_articles } from '../article/schema';
 import { dedupeQueryResult, getTableColumnAliases } from '../common/drizzle';
@@ -147,6 +148,7 @@ export async function queryGetOneSection(
 			images: table_images,
 			tagsToArticles: table_tags_to_articles,
 			tags: table_tags,
+			previewTemplates: table_previewTemplates,
 			translations: table_translations
 		})
 		.from(articlesSq)
@@ -164,6 +166,10 @@ export async function queryGetOneSection(
 			eq(table_tags_to_articles.article_id, articlesSq.articles.id)
 		)
 		.innerJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
+		.innerJoin(
+			table_previewTemplates,
+			eq(table_previewTemplates.id, articlesSq.articles.preview_template_id)
+		)
 		.innerJoin(
 			table_translations,
 			or(
@@ -191,6 +197,9 @@ export async function queryGetOneSection(
 	const articlesArr = dedupedArticlesAndAll?.articles || [];
 	const articles = articlesArr.map((a) => ({
 		meta: { ...a },
+		previewTemplateUrl:
+			dedupedArticlesAndAll.previewTemplates.find((p) => p.id === a.preview_template_id)?.url ||
+			null,
 		tags: dedupedArticlesAndAll.tags
 			.sort((a, b) => b.id - a.id)
 			.filter((t) =>
@@ -275,6 +284,7 @@ type GetOneOldReturn = Promise<{
 				preview_screenshot_image_id: number | null;
 				preview_screenshot_in_article_image_id: number | null;
 			};
+			previewTemplateUrl: string | null;
 			tags: {
 				id: number;
 				user_id: string;

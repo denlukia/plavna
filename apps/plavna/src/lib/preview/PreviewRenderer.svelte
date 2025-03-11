@@ -14,6 +14,7 @@
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
 	let user = $derived($page.data.user);
+	let lang = $derived($page.params.lang);
 
 	let PreviewComponent = $derived(getComponentFromDict());
 
@@ -32,7 +33,9 @@
 <!-- TODO: Edit title to represent loading on button click, add aria description -->
 <span class="preview-renderer" role="button" tabindex="0">
 	{#if PreviewComponent && !(PreviewComponent instanceof Promise)}
-		<PreviewComponent data={getPreviewData(article, recordsTranslations, images, user, false)} />
+		<PreviewComponent
+			data={getPreviewData(article, recordsTranslations, images, user, false, lang)}
+		/>
 	{:else}
 		static component not found
 	{/if}
