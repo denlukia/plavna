@@ -1,4 +1,4 @@
-import { supportedLangs } from '@plavna/image-uploader/constants';
+import { supportedLangs } from '@plavna/common';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 
 import type { RecordsTranslationsState } from './state.svelte';

@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { ARTISTIC_OVERFLOW } from '@plavna/common';
+	import type { PreviewDataProp } from '@plavna/common';
 	import { Layers, PreviewFoundation, Typography } from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
 	import { fade } from 'svelte/transition';
 	import BasicMarkdown from '$lib/markdown/BasicMarkdown.svelte';
-	import { ARTISTIC_OVERFLOW } from '$lib/styles/grid';
 
-	import type { PreviewDataProp } from '../../types';
 	import { interpolateHexColors } from './hex-interpolator';
 
 	type Props = {

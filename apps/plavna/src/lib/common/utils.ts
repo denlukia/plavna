@@ -1,3 +1,4 @@
+import type { PreviewDataProp } from '@plavna/common';
 import type { RemoveNullValues } from '$lib/common/types';
 
 export function nestify<T extends object>(obj: T): any {

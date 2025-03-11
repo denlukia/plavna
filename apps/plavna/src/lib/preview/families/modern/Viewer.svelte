@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { ARTISTIC_OVERFLOW } from '@plavna/common';
+	import type { PreviewDataProp } from '@plavna/common';
 	import {
 		ContinuousCorners,
 		Image,
@@ -7,9 +9,6 @@
 		Typography
 	} from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
-	import { ARTISTIC_OVERFLOW } from '$lib/styles/grid';
-
-	import type { PreviewDataProp } from '../../types';
 
 	type Props = {
 		data: PreviewDataProp;

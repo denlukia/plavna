@@ -1,3 +1,4 @@
+import { supportedLangs } from '@plavna/common';
 import {
 	createScreenshotsQueueSchema,
 	type ScreenshotsQueueInsert,
@@ -5,8 +6,6 @@ import {
 } from '@plavna/image-uploader/queue';
 import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
-
-const supportedLangs = ['en', 'uk'] as const;
 
 export const imagesMock = sqliteTable('images', {
 	id: integer('id').primaryKey({ autoIncrement: true })

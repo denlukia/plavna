@@ -34,7 +34,8 @@
 		routeId,
 		lang,
 		themeComponentSets,
-		themeSet
+		themeSet,
+		previewTemplateUrl
 	} = $derived(data);
 	let recordsTranslations = $derived($page.data.recordsTranslationsState?.value);
 	let images = $derived($page.data.imagesState?.value);
@@ -75,11 +76,12 @@
 							<GridCell cols={ARTICLE_OPENED_PREVIEW_COLS} rows={ARTICLE_OPENED_PREVIEW_COLS}>
 								<PreviewComponent
 									data={getPreviewData(
-										{ meta: article, tags },
+										{ meta: article, tags, previewTemplateUrl },
 										recordsTranslations,
 										images,
 										user,
-										true
+										true,
+										lang
 									)}
 								/>
 							</GridCell>

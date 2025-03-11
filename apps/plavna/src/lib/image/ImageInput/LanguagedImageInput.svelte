@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Layers, Select } from '@plavna/design/components';
 	import { blurfly, getBlurFlyConfig } from '@plavna/design/transitions';
-	import { supportedLangs } from '@plavna/image-uploader/constants';
+	import { supportedLangs } from '@plavna/common';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import Translation from '$lib/i18n/Translation.svelte';

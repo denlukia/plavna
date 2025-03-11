@@ -1,8 +1,10 @@
 import type { ResultSet } from '@libsql/client';
-import { supportedLangs } from '@plavna/image-uploader/constants';
+import { serializePreviewParams, supportedLangs } from '@plavna/common';
+import type { ImagePathAndMeta } from '@plavna/design/components';
 import { ServerImageHandler } from '@plavna/image-uploader/images';
+import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
-import { and, eq, isNotNull, or } from 'drizzle-orm';
+import { and, desc, eq, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
@@ -10,6 +12,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ERRORS } from '$lib/errors/errors';
+import { defaultLang } from '$lib/i18n/utils';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
@@ -30,7 +33,7 @@ import {
 import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
-import { decomposeImageField } from '../image/utils';
+import { computeSrc, decomposeImageField } from '../image/utils';
 import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/validators';
 import { previewFamilies } from '../preview/families';
 import type { PreviewFamiliesDict } from '../preview/families/types';
@@ -42,11 +45,7 @@ import {
 	previewTemplateEditingFormSchema
 } from '../preview/validators';
 import { table_screenshotsQueue } from '../screenshot/schema';
-import {
-	calculateDimensionsFromCellsTaken,
-	composeURLForScreenshot,
-	getMaybeTranslatedImagePath
-} from '../screenshot/utils';
+import { calculateDimensionsFromCellsTaken } from '../screenshot/utils';
 import type { ScreenshotsQueueInsertLocal } from '../screenshot/validators';
 import { table_tags, table_tags_to_articles } from '../tag/schema';
 import { tagDeleteSchema, tagUpdateSchema } from '../tag/validators';
@@ -556,7 +555,8 @@ export class ArticleService {
 						eq(table_translations.key, table_articles.preview_translation_1_key),
 						eq(table_translations.key, table_articles.preview_translation_2_key),
 						eq(table_translations.key, table_images.path_translation_key),
-						eq(table_translations.key, table_articles.title_translation_key)
+						eq(table_translations.key, table_articles.title_translation_key),
+						eq(table_translations.key, table_articles.description_translation_key)
 					)
 				)
 				.where(whereCondition)
@@ -571,7 +571,8 @@ export class ArticleService {
 					preview_translation_2_key,
 					preview_image_1_id,
 					preview_image_2_id,
-					title_translation_key
+					title_translation_key,
+					description_translation_key
 				} = articleResult[0].articles;
 				let { preview_screenshot_image_id, preview_screenshot_in_article_image_id } =
 					articleResult[0].articles;
@@ -592,18 +593,8 @@ export class ArticleService {
 						this.translationService.currentLang
 					] || '';
 				const titleTranslationObj = translationsArr.find((t) => t.key === title_translation_key);
-
-				const preview_image_1 = getMaybeTranslatedImagePath(
-					imagesArr,
-					translationsArr,
-					preview_image_1_id,
-					this.translationService.currentLang
-				);
-				const preview_image_2 = getMaybeTranslatedImagePath(
-					imagesArr,
-					translationsArr,
-					preview_image_2_id,
-					this.translationService.currentLang
+				const descriptionTranslationObj = translationsArr.find(
+					(t) => t.key === description_translation_key
 				);
 
 				// Creating screenshot image record if needed
@@ -627,30 +618,66 @@ export class ArticleService {
 				if (preview_screenshot_image_id && preview_screenshot_in_article_image_id && providerData) {
 					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
 
-					const langs = preview.preview_create_localized_screenshots ? supportedLangs : [undefined];
+					const langs = preview.preview_create_localized_screenshots
+						? supportedLangs
+						: [defaultLang];
 					queueRecordsForInsert = langs
 						.map((lang) => {
-							if ((lang && titleTranslationObj?.[lang]) || !lang) {
+							if (lang && titleTranslationObj?.[lang]) {
 								const urlConfigBase = {
+									title_translation: titleTranslationObj?.[lang],
+									description_translation: descriptionTranslationObj?.[lang],
+									rows: preview_rows,
+									cols: preview_columns,
+									likes_count: articleResult[0].articles.likes_count,
 									lang: this.translationService.currentLang,
-									preview_prop_1: preview.preview_prop_1 || null,
-									preview_prop_2: preview.preview_prop_2 || null,
-									preview_prop_3: preview.preview_prop_3 || null,
-									preview_prop_4: preview.preview_prop_4 || null,
-									preview_translation_1,
-									preview_translation_2,
-									preview_image_1,
-									preview_image_2
+									publish_time: articleResult[0].articles.publish_time,
+									prop_1: preview.preview_prop_1 || null,
+									prop_2: preview.preview_prop_2 || null,
+									prop_3: preview.preview_prop_3 || null,
+									prop_4: preview.preview_prop_4 || null,
+									translation_1: preview_translation_1,
+									translation_2: preview_translation_2,
+									img_1: getImage(preview_image_1_id, lang),
+									img_2: getImage(preview_image_2_id, lang),
+									url: null,
+									tags: []
+									// TODO: Tags
 								};
+
+								function getImage(
+									imageId: number | null,
+									lang: SupportedLang
+								): ImagePathAndMeta | null {
+									const image = imagesArr.find((i) => i.id === imageId);
+									if (!image) return null;
+
+									const { id, width, height, background } = image;
+									let { path } = image;
+
+									if (image && image.path_translation_key) {
+										const translatedPath = translationsArr.find(
+											(t) => t.key === image.path_translation_key
+										)?.[lang];
+										if (translatedPath) {
+											path = computeSrc(image.source, null, translatedPath);
+										}
+									}
+
+									if (!path) return null;
+
+									return { id, src: path, width, height, background, alt: '' };
+								}
 
 								const { width: width, height: height } = calculateDimensionsFromCellsTaken({
 									preview_columns: preview_columns,
 									preview_rows: preview_rows
 								});
-								const url = composeURLForScreenshot(previewTemplateUrl, {
+								const url = serializePreviewParams(previewTemplateUrl, {
 									...urlConfigBase,
 									width: width,
-									height: height
+									height: height,
+									viewing_in_article: false
 								});
 
 								const { width: widthInArticle, height: heightInArticle } =
@@ -658,10 +685,11 @@ export class ArticleService {
 										preview_columns: ARTICLE_OPENED_PREVIEW_COLS,
 										preview_rows: ARTICLE_OPENED_PREVIEW_ROWS
 									});
-								const urlInArticle = composeURLForScreenshot(previewTemplateUrl, {
+								const urlInArticle = serializePreviewParams(previewTemplateUrl, {
 									...urlConfigBase,
 									width: widthInArticle,
-									height: heightInArticle
+									height: heightInArticle,
+									viewing_in_article: true
 								});
 
 								const screenshotQueueRecordBase = {
@@ -775,7 +803,7 @@ export class ArticleService {
 		}
 		return {
 			article: query[0].articles,
-			previewType: query[0].previewTypes,
+			previewTemplateUrl: query[0].previewTypes?.url || null,
 			translations: Object.fromEntries([
 				...query
 					.map((row) => row.translations)

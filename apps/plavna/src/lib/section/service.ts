@@ -59,7 +59,6 @@ export class SectionService {
 		const lang = this.translationService.currentLang;
 
 		// 1. Query the DB
-
 		const queryResult = await queryGetOneSection(config, actor, lang);
 
 		if (!queryResult) return null;
@@ -68,7 +67,6 @@ export class SectionService {
 		const { title_translation, ...otherSection } = section;
 
 		// 2. Composing forms for actor if allowed
-
 		let forAuthor = null;
 		if (actor && actor.id === section.meta.user_id) {
 			const t = title_translation;
