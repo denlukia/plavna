@@ -2,7 +2,7 @@ import { enrichThemeSets } from '@plavna/design/theming/enricher';
 import { createRecordsTranslationsState } from '$lib/i18n/state.svelte';
 import { createImagesState } from '$lib/image/state.svelte';
 import { getPreviewComponent } from '$lib/preview/enricher';
-import { getThemeStylesGlob } from '$lib/styles/themes/glob';
+import { getAppThemeGlob } from '$lib/styles/themes/glob';
 
 import type { PageLoad } from '../[articleslug]/$types';
 
@@ -14,7 +14,7 @@ export const load = (async ({ data }) => {
 	const imagesDict = Object.fromEntries(images.map(({ id, ...other }) => [id, other]));
 	const imagesState = createImagesState(imagesDict);
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getThemeStylesGlob());
+	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
 
 	return {
 		...other,

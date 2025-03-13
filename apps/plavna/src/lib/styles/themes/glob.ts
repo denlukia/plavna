@@ -1,3 +1,3 @@
-export function getThemeStylesGlob() {
+export function getAppThemeGlob() {
 	return import.meta.glob('./*/*/Index.svelte');
 }

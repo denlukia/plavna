@@ -3,7 +3,7 @@ import { createRecordsTranslationsState } from '$lib/i18n/state.svelte';
 import { createImagesState } from '$lib/image/state.svelte';
 import { enrichPreviewFamilies } from '$lib/preview/enricher';
 import { createPreviewFamiliesState } from '$lib/preview/families/state.svelte';
-import { getThemeStylesGlob } from '$lib/styles/themes/glob';
+import { getAppThemeGlob } from '$lib/styles/themes/glob';
 
 import type { PageLoad } from '../$types';
 
@@ -16,7 +16,7 @@ export const load = (async ({ data }) => {
 	const recordsTranslationsState = createRecordsTranslationsState(recordsTranslations);
 	const imagesState = createImagesState(images);
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getThemeStylesGlob());
+	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
 
 	return {
 		...other,

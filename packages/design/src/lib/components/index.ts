@@ -14,7 +14,7 @@ export * from './Label';
 export * from './Link';
 export * from './Loaders';
 export * from './Popup';
-export * from './PreviewFoundation';
+export * from './Preview';
 export * from './Spacer';
 export * from './Switch';
 export * from './Tabs';

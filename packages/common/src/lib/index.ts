@@ -26,10 +26,11 @@ export type PreviewDataProp = {
 	img_2: Optional<ImagePathAndMeta>;
 	screenshot?: Optional<ImagePathAndMeta>;
 	screenshot_in_article?: Optional<ImagePathAndMeta>;
-	width: Optional<number>;
-	height: Optional<number>;
 	lang: Optional<string>;
 	url: Optional<string>;
+	width?: Optional<number>;
+	height?: Optional<number>;
+	pointer?: { x: number; y: number } | null;
 };
 
 export function serializePreviewParams(baseUrl: string | undefined, params: PreviewDataProp) {
@@ -160,4 +161,14 @@ export function deserializePreviewParams(url: string): PreviewDataProp {
 	});
 
 	return result as PreviewDataProp;
+}
+
+export function mapRange(
+	x: number,
+	in_min: number,
+	in_max: number,
+	out_min: number,
+	out_max: number
+) {
+	return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
