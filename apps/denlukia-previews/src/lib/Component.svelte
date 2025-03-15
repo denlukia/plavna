@@ -14,6 +14,11 @@
 
 <style>
 	.component {
+		flex-grow: 1;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		padding: var(--size-l);
 		background-color: var(--color-main-layout-bg);
 	}

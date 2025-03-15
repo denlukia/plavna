@@ -12,10 +12,10 @@
 </script>
 
 <div class="preview-root">
-	<div class="main">
+	<div class="main" style="--padding: {artisticOverflow}px">
 		{@render main?.()}
 	</div>
-	<div class="overflowing" style="--padding: {artisticOverflow}px">
+	<div class="overflowing">
 		{@render overflowing?.()}
 	</div>
 </div>
@@ -33,9 +33,10 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-	}
-	.overflowing {
-		padding: var(--padding);
+
 		pointer-events: none;
+	}
+	.main {
+		padding: var(--padding);
 	}
 </style>

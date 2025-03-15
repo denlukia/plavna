@@ -34,6 +34,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 				if (env.REPLACE_PREVIEW_URL_IN && env.REPLACE_PREVIEW_URL_OUT) {
 					task.url = task.url.replace(env.REPLACE_PREVIEW_URL_IN, env.REPLACE_PREVIEW_URL_OUT);
+					console.log(task.url);
 				}
 
 				const screenshot = await run(getScreenshot, page, task.url, task.width, task.height);
