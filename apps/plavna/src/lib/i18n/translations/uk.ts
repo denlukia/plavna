@@ -169,6 +169,13 @@ export const UK = {
 					rows: 'Рядків',
 					generate_emoji_image: 'Згенерувати сітку емоджі'
 				},
+				'two-images': {
+					name: 'Два зображення',
+					image_in_grid: 'Зображення у сітці',
+					image_in_article: 'Зображення у статті',
+					cols: 'Cтовпців',
+					rows: 'Рядків'
+				},
 				custom: {
 					name: 'Власне',
 					prop_1: 'Параметр 1',

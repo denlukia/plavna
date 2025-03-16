@@ -39,11 +39,13 @@
 		display: inline-grid;
 	}
 	/* We choose :global here to let any components be a layer */
-	.layers > :global(*) {
+	.layers > :global(*),
+	.layers > :global(.global-display-contents > *) {
 		grid-area: a;
 		max-width: 100%;
 		max-height: 100%;
 	}
+
 	.stretch {
 		height: 100%;
 	}

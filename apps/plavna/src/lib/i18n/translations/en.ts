@@ -169,6 +169,13 @@ export const EN = {
 					rows: 'Rows',
 					generate_emoji_image: 'Generate emoji grid'
 				},
+				'two-images': {
+					name: 'Two Images',
+					image_in_grid: 'Image in Grid',
+					image_in_article: 'Image in Article',
+					cols: 'Cols',
+					rows: 'Rows'
+				},
 				custom: {
 					name: 'Custom',
 					prop_1: 'Prop 1',
