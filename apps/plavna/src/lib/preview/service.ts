@@ -35,7 +35,10 @@ export class PreviewService {
 	}
 
 	// TODO: Show image input only if account has Image Provider keys
-	async create(template: PreviewTemplateCreation, imageHandler: ServerImageHandler | null) {
+	async create(
+		template: PreviewTemplateCreation,
+		imageHandler: ServerImageHandlerVercelEdge | null
+	) {
 		const actor = await this.actorService.getOrThrow();
 		const { url, ...translation } = template;
 		await db.transaction(async (trx) => {
@@ -54,7 +57,10 @@ export class PreviewService {
 				.run();
 		});
 	}
-	async update(template: PreviewTemplateEditing, imageHandler: ServerImageHandler | null) {
+	async update(
+		template: PreviewTemplateEditing,
+		imageHandler: ServerImageHandlerVercelEdge | null
+	) {
 		const actor = await this.actorService.getOrThrow();
 		const { url, template_id, ...translation } = template;
 		await db.transaction(async (trx) => {

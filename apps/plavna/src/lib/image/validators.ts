@@ -64,4 +64,7 @@ export type ImagesCollection = {
 	creation: SuperValidated<ImageCreationForm>;
 	items: ImageCollectionItem[];
 };
-export type ImageUpdateImageHandlers = Record<keyof ImageUpdateFileFields, ServerImageHandler>;
+export type ImageUpdateImageHandlers = Record<
+	keyof ImageUpdateFileFields,
+	ServerImageHandlerVercelEdge
+>;

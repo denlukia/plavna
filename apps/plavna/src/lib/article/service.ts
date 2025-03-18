@@ -154,7 +154,7 @@ export class ArticleService {
 
 			let source = null;
 			try {
-				const imageHandler = new ServerImageHandler();
+				const imageHandler = new ServerImageHandlerVercelEdge();
 				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 				source = imageHandler.provider?.type;
 			} catch {
@@ -465,7 +465,7 @@ export class ArticleService {
 
 		// TODO: Remake all such places to not call Image Handler if not uploading images
 		try {
-			const imageHandler = new ServerImageHandler();
+			const imageHandler = new ServerImageHandlerVercelEdge();
 			await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
 			const provider = imageHandler.provider;
 			if (provider) {

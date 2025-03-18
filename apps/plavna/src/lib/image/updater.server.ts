@@ -18,14 +18,14 @@ export async function updateImages({
 	imageService: ImageService;
 	actor: User;
 }) {
-	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandler>;
+	const imagesHandlers = {} as Record<(typeof imagesKeys)[number], ServerImageHandlerVercelEdge>;
 	const imageHandledPromises = imagesKeys.map(async (key) => {
 		let fileIsValid = false;
 		const entry = rawData.get(key);
 
 		if (entry instanceof File && entry.size > 0) {
 			try {
-				const imageHandler = await new ServerImageHandler();
+				const imageHandler = await new ServerImageHandlerVercelEdge();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 				imagesHandlers[key] = imageHandler;
 				fileIsValid = true;
