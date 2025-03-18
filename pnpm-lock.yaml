@@ -224,6 +224,9 @@ importers:
       '@sparticuz/chromium-min':
         specifier: ^132.0.0
         version: 132.0.0
+      get-pixels:
+        specifier: ^3.3.3
+        version: 3.3.3
       puppeteer-core:
         specifier: ^24.2.1
         version: 24.2.1
@@ -240,6 +243,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.2
         version: 4.0.4(svelte@5.20.2)(vite@5.4.14(@types/node@22.13.4))
+      '@types/get-pixels':
+        specifier: ^3.3.4
+        version: 3.3.4
       drizzle-orm:
         specifier: ^0.36.3
         version: 0.36.4(@cloudflare/workers-types@4.20241230.0)(@libsql/client@0.14.0)(better-sqlite3@11.7.2)
@@ -383,9 +389,6 @@ importers:
       extract-colors:
         specifier: ^4.0.6
         version: 4.1.1
-      get-pixels:
-        specifier: ^3.3.3
-        version: 3.3.3
       imagekit-javascript:
         specifier: ^2.0.0
         version: 2.0.0
@@ -396,9 +399,6 @@ importers:
       '@sveltejs/package':
         specifier: ^2.3.1
         version: 2.3.7(svelte@5.16.5)(typescript@5.7.2)
-      '@types/get-pixels':
-        specifier: ^3.3.4
-        version: 3.3.4
       '@types/probe-image-size':
         specifier: ^7.2.4
         version: 7.2.5
@@ -5958,7 +5958,7 @@ snapshots:
   '@types/get-pixels@3.3.4':
     dependencies:
       '@types/ndarray': 1.0.14
-      '@types/node': 22.10.5
+      '@types/node': 22.13.4
 
   '@types/hast@3.0.4':
     dependencies:
@@ -5991,7 +5991,6 @@ snapshots:
   '@types/node@22.13.4':
     dependencies:
       undici-types: 6.20.0
-    optional: true
 
   '@types/probe-image-size@7.2.5':
     dependencies:
