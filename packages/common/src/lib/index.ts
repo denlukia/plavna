@@ -1,4 +1,11 @@
-import type { ImagePathAndMeta } from '@plavna/design/components';
+export type ImagePathAndMeta = {
+	id: number;
+	src: string;
+	alt: string | null;
+	width: number | null;
+	height: number | null;
+	background: string | null;
+};
 
 // ISO 639-1
 export const supportedLangs = ['en', 'uk'] as const;
