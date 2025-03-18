@@ -1,8 +1,6 @@
 <script lang="ts">
+	import type { ImagePathAndMeta } from '@plavna/common';
 	import { onMount } from 'svelte';
-
-	import Layers from '../ActiveElementFX/Layers.svelte';
-	import type { ImagePathAndMeta } from './types';
 
 	type Props = {
 		pathAndMeta: ImagePathAndMeta;

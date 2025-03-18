@@ -1,10 +1,10 @@
 import type { ResultSet } from '@libsql/client';
 import { serializePreviewParams, supportedLangs } from '@plavna/common';
-import type { ImagePathAndMeta } from '@plavna/design/components';
+import type { ImagePathAndMeta } from '@plavna/common';
 import { ServerImageHandler } from '@plavna/image-uploader/images';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
-import { and, desc, eq, isNotNull, or } from 'drizzle-orm';
+import { and, eq, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';

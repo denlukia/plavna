@@ -1,4 +1,4 @@
-import type { ImagePathAndMeta } from '@plavna/design/components';
+import type { ImagePathAndMeta } from '@plavna/common';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import { imageSourceToEndpointKeyInUser } from '$lib/common/config';
 

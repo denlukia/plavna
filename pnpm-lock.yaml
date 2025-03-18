@@ -301,9 +301,6 @@ importers:
       '@eslint/js':
         specifier: ^9.18.0
         version: 9.21.0
-      '@plavna/design':
-        specifier: workspace:*
-        version: link:../design
       '@sveltejs/adapter-auto':
         specifier: ^4.0.0
         version: 4.0.0(@sveltejs/kit@2.17.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.20.2)(vite@6.1.1(@types/node@22.13.4)))(svelte@5.20.2)(vite@6.1.1(@types/node@22.13.4)))
