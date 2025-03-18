@@ -129,7 +129,7 @@ async function update_preview(event: RequestEvent) {
 		const entry = formData.get(key);
 		if (entry instanceof File && entry.size > 0) {
 			try {
-				const imageHandler = await new ServerImageHandler();
+				const imageHandler = await new ServerImageHandlerVercelEdge();
 				await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 				imagesHandlers[key] = imageHandler;
 			} catch {
@@ -155,10 +155,10 @@ async function create_preview_template(event: RequestEvent) {
 	}
 
 	const entry = formData.get('image');
-	let imageHandler: ServerImageHandler | null = null;
+	let imageHandler: ServerImageHandlerVercelEdge | null = null;
 	if (entry instanceof File && entry.size > 0) {
 		try {
-			imageHandler = await new ServerImageHandler();
+			imageHandler = await new ServerImageHandlerVercelEdge();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch {
 			// TODO: Error for unsupported image
@@ -179,10 +179,10 @@ async function update_preview_template(event: RequestEvent) {
 	}
 
 	const entry = formData.get('image');
-	let imageHandler: ServerImageHandler | null = null;
+	let imageHandler: ServerImageHandlerVercelEdge | null = null;
 	if (entry instanceof File && entry.size > 0) {
 		try {
-			imageHandler = await new ServerImageHandler();
+			imageHandler = await new ServerImageHandlerVercelEdge();
 			await imageHandler.setImageFromEntry(entry, IMG_VALIDATION_CONFIG);
 		} catch {
 			// TODO: Error for unsupported image

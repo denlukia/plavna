@@ -41,7 +41,7 @@ export class ActorService {
 	}
 	async updateImageProvider(providerData: ImageProviderUpdate) {
 		const actor = await this.getOrThrow();
-		const imageHandler = new ServerImageHandler();
+		const imageHandler = new ServerImageHandlerVercelEdge();
 		await imageHandler.setProviderAndUploader(providerData, IMAGE_CREDENTIALS_PATH);
 		return db.update(table_users).set(providerData).where(eq(table_users.id, actor.id));
 	}
