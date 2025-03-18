@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@plavna/image-uploader/images';
+import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@plavna/image-uploader/images';
+import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import { error } from '@sveltejs/kit';
 import { eq, getTableColumns } from 'drizzle-orm';
 import type { User as LuciaUser } from 'lucia';

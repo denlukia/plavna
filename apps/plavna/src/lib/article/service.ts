@@ -1,7 +1,7 @@
 import type { ResultSet } from '@libsql/client';
 import { serializePreviewParams, supportedLangs } from '@plavna/common';
 import type { ImagePathAndMeta } from '@plavna/common';
-import { ServerImageHandler } from '@plavna/image-uploader/images';
+import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
 import { and, eq, isNotNull, or } from 'drizzle-orm';

@@ -1,4 +1,4 @@
-import type { ServerImageHandler } from '@plavna/image-uploader/images';
+import type { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
