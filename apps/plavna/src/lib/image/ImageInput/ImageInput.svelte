@@ -106,6 +106,7 @@
 
 	.image {
 		overflow: hidden;
+		border-radius: var(--size-image-input-border-radius);
 	}
 
 	.image > :global(*) {

@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { mapRange } from '@plavna/common';
 	import { cubicInOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import { get } from 'svelte/store';
-	import { mapRange } from '$lib/common/utils';
 
 	const defaultColors = [
 		'var(--colorful-light-1)',

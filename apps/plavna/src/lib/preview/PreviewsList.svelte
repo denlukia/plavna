@@ -118,6 +118,8 @@
 	function onPreviewPreviewRequest() {
 		// TODO
 	}
+
+	$inspect(currentPreviewTemplateMeta);
 </script>
 
 {#snippet previewFamilyButton(
@@ -155,29 +157,7 @@
 		</Typography>
 	{/snippet}
 	{#snippet content()}
-		<div class="scroller">
-			<Popup
-				triggerType="button"
-				customClass="preview-family-popup"
-				buttonProps={{
-					kind: 'secondary',
-					size: 'body',
-					customClass: 'preview-family-button inactive',
-					contentCustomClass: 'preview-family-button-content',
-					leading: leading
-				}}
-			>
-				{#snippet label()}
-					<Translation key="article_editor.previews.new" />
-				{/snippet}
-				{#snippet content()}
-					<PreviewTemplateForm
-						type="creating"
-						superValidatedMain={previewTemplateCreationSuperValidated}
-					/>
-				{/snippet}
-			</Popup>
-
+		<div class="list-wrapper">
 			<ul class="list">
 				{#each Object.entries(previewFamilies) as [familyId, { name_translation_key }]}
 					{#if familyId !== 'custom'}
@@ -221,10 +201,34 @@
 					</div>
 				{/each}
 			</ul>
+
+			<Popup
+				triggerType="button"
+				customClass="preview-family-popup"
+				buttonProps={{
+					kind: 'secondary',
+					size: 'body',
+					customClass: 'preview-family-button inactive',
+					contentCustomClass: 'preview-family-button-content',
+					leading: leading
+				}}
+			>
+				{#snippet label()}
+					<Translation key="article_editor.previews.new" />
+				{/snippet}
+				{#snippet content()}
+					<PreviewTemplateForm
+						type="creating"
+						superValidatedMain={previewTemplateCreationSuperValidated}
+					/>
+				{/snippet}
+			</Popup>
 		</div>
 		{#if EditorComponent}
 			{#await EditorComponent}
-				<Spinner />
+				<div class="spinner-wrapper">
+					<Spinner />
+				</div>
 			{:then EditorComponent}
 				<EditorComponent
 					mainSuperValidated={previewEditorSuperValidated}
@@ -252,15 +256,16 @@
 </SideBox>
 
 <style>
-	.scroller {
+	.list-wrapper {
 		display: flex;
+		flex-wrap: wrap;
 		gap: var(--size-article-previewlist-gap);
-		width: 100%;
-		padding-bottom: var(--size-l);
+		margin-bottom: var(--size-l);
 	}
-	.scroller :global {
+
+	.list-wrapper :global {
 		* {
-			flex-shrink: 1;
+			flex-shrink: 0;
 		}
 
 		.preview-family-button {
@@ -293,6 +298,13 @@
 
 	.list > * {
 		display: flex;
+	}
+
+	.spinner-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 150px;
 	}
 
 	.preview-family-wrapper {

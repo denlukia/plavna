@@ -21,13 +21,11 @@ import { dedupeQueryResult, getTableColumnAliases } from '../common/drizzle';
 import { isNonNullable } from '../common/utils';
 import { table_translations } from '../i18n/schema';
 import type { RecordsTranslationsDict } from '../i18n/types';
-import type { TranslationSelect } from '../i18n/validators';
 import { table_images } from '../image/schema';
 import type { ImagesDict } from '../image/types';
 import { table_pages } from '../page/schema';
 import { findExcludedTagsInReaderPageConfig } from '../page/utils';
 import type { PageSelect } from '../page/validators';
-import type { PreviewFamilyId } from '../preview/families/types';
 import { table_tags, table_tags_to_articles } from '../tag/schema';
 import type { Actor } from '../user/validators';
 import { table_sections, table_sections_to_tags } from './schema';
@@ -41,7 +39,7 @@ export async function queryGetOneSection(
 	config: GetOneSectionParams,
 	actor: Actor | null,
 	lang: SupportedLang
-): GetOneOldReturn {
+) {
 	// 1. Section + Decription translation
 	const sectionWhere: SQL[] = [];
 	let sectionOffset = 0;
@@ -166,7 +164,7 @@ export async function queryGetOneSection(
 			eq(table_tags_to_articles.article_id, articlesSq.articles.id)
 		)
 		.innerJoin(table_tags, eq(table_tags.id, table_tags_to_articles.tag_id))
-		.innerJoin(
+		.leftJoin(
 			table_previewTemplates,
 			eq(table_previewTemplates.id, articlesSq.articles.preview_template_id)
 		)
@@ -180,7 +178,8 @@ export async function queryGetOneSection(
 				eq(table_translations.key, table_tags.name_translation_key),
 				eq(table_translations.key, table_images.path_translation_key)
 			)
-		);
+		)
+		.orderBy(desc(articlesSq.articles.publish_time));
 
 	const articlesAndAll = await articlesAndAllQuery;
 	const dedupedArticlesAndAll = dedupeQueryResult(articlesAndAllQuery, articlesAndAll, {
@@ -198,7 +197,7 @@ export async function queryGetOneSection(
 	const articles = articlesArr.map((a) => ({
 		meta: { ...a },
 		previewTemplateUrl:
-			dedupedArticlesAndAll.previewTemplates.find((p) => p.id === a.preview_template_id)?.url ||
+			dedupedArticlesAndAll.previewTemplates.find((p) => p?.id === a.preview_template_id)?.url ||
 			null,
 		tags: dedupedArticlesAndAll.tags
 			.sort((a, b) => b.id - a.id)
@@ -245,58 +244,6 @@ export async function queryGetOneSection(
 		images: images
 	};
 }
-
-type GetOneOldReturn = Promise<{
-	section: {
-		meta: {
-			id: number;
-			page_id: number;
-			user_id: string;
-			title_translation_key: number;
-		};
-		activeTags: {
-			id: number;
-		}[];
-		articles: {
-			meta: {
-				id: number;
-				user_id: string;
-				slug: string;
-				title_translation_key: number;
-				description_translation_key: number;
-				content_translation_key: number;
-				publish_time: Date | null;
-				likes_count: number;
-				preview_columns: number;
-				preview_rows: number;
-				preview_family: 'custom' | 'modern' | 'sequences' | null;
-				preview_template_id: number | null;
-				preview_interactions_show_on: 'hover' | 'click' | null;
-				preview_prop_1: string | null;
-				preview_prop_2: string | null;
-				preview_prop_3: string | null;
-				preview_prop_4: string | null;
-				preview_translation_1_key: number;
-				preview_translation_2_key: number;
-				preview_image_1_id: number;
-				preview_image_2_id: number;
-				preview_create_localized_screenshots: boolean;
-				preview_screenshot_image_id: number | null;
-				preview_screenshot_in_article_image_id: number | null;
-			};
-			previewTemplateUrl: string | null;
-			tags: {
-				id: number;
-				user_id: string;
-				name_translation_key: number;
-			}[];
-		}[];
-		title_translation: TranslationSelect | null;
-	};
-	recordsTranslations: RecordsTranslationsDict;
-	previewFamilyIds: Array<PreviewFamilyId>;
-	images: ImagesDict;
-} | null>;
 
 export async function queryGetSectionsQuantity(pagename: PageSelect['slug'], actorId: Actor['id']) {
 	return db

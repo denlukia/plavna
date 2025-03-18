@@ -1,4 +1,6 @@
 <script lang="ts">
+	// Global CSS from Plavna Design
+	import '@plavna/design/theming/styles';
 	// Global CSS
 	import '$lib/styles/index.css';
 
@@ -57,34 +59,36 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeContextProvider {themeSet} components={themeComponentSets} root>
-	<div class="main-layout">
-		<div class="lights-wrapper">
-			<RainbowLoader loading={isNavigating} />
-		</div>
-		<div class="content-wrapper">
-			<Header actor={data.actor} />
-			<Layers overflow="visible">
-				{@render children()}
-			</Layers>
-		</div>
-		<Footer logoTextSvg={data.logoTextSvg} />
-		<GridVisualizer />
-	</div>
-
-	{#if showAdaptivityWarning}
-		<div
-			class="only-big-screens"
-			in:fade={{ duration: PAGE_INRO_DELAY_MS }}
-			out:fade={{ delay: PAGE_INRO_DELAY_MS, duration: PAGE_INRO_DELAY_MS }}
-		>
-			<div class="text">
-				<Typography size="heading-2">
-					<Translation key="layout.only_for_big_screens" />
-				</Typography>
+<ThemeContextProvider {themeSet} components={themeComponentSets}>
+	<div class="global-theme-root-element">
+		<div class="main-layout">
+			<div class="lights-wrapper">
+				<RainbowLoader loading={isNavigating} />
 			</div>
+			<div class="content-wrapper">
+				<Header actor={data.actor} />
+				<Layers overflow="visible">
+					{@render children()}
+				</Layers>
+			</div>
+			<Footer logoTextSvg={data.logoTextSvg} />
+			<GridVisualizer />
 		</div>
-	{/if}
+
+		{#if showAdaptivityWarning}
+			<div
+				class="only-big-screens"
+				in:fade={{ duration: PAGE_INRO_DELAY_MS }}
+				out:fade={{ delay: PAGE_INRO_DELAY_MS, duration: PAGE_INRO_DELAY_MS }}
+			>
+				<div class="text">
+					<Typography size="heading-2">
+						<Translation key="layout.only_for_big_screens" />
+					</Typography>
+				</div>
+			</div>
+		{/if}
+	</div>
 </ThemeContextProvider>
 
 <style>

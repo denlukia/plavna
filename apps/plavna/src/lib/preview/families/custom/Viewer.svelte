@@ -23,15 +23,20 @@
 	let iframeShown = $state(false);
 	let iframeVisible = $state(false);
 
+	let pointer: { x: number; y: number } | null = $state(null);
+
 	let overridenImageTransitionDuration: number | undefined = $state(undefined);
+
+	let iframe: HTMLIFrameElement | null = $state(null);
 
 	function onload() {
 		iframeVisible = true;
 		imageVisible = false;
 	}
 
-	function onpointerenter() {
+	function onpointerenter(e: PointerEvent) {
 		iframeShown = true;
+		pointer = { x: e.offsetX, y: e.offsetY };
 	}
 
 	function onpointerleave() {
@@ -39,19 +44,24 @@
 		iframeVisible = false;
 		overridenImageTransitionDuration = 0;
 		imageVisible = true;
+		pointer = null;
+	}
+
+	function onpointermove(e: PointerEvent) {
+		pointer = { x: e.offsetX, y: e.offsetY };
 	}
 </script>
 
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
 	{#snippet overflowing()}
-		<span class="preview" {onpointerenter} {onpointerleave}>
+		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
 			{#if iframeShown && finalUrl}
 				<iframe
+					src={serializePreviewParams(finalUrl, { ...otherData, pointer: pointer })}
 					class="iframe"
 					class:visible={iframeVisible}
 					style="--inset: {ARTISTIC_OVERFLOW}px"
 					title="preview"
-					src={serializePreviewParams(finalUrl, otherData)}
 					{onload}
 				></iframe>
 			{/if}
@@ -84,6 +94,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		pointer-events: none;
 	}
 
 	.image-wrapper {

@@ -200,7 +200,7 @@
 	display: contents;
 }
 
-.global-theme-provider {
+.global-theme-root-element {
 	display: flex;
 	flex-grow: 1;
 	justify-content: center;

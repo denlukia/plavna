@@ -8,10 +8,9 @@
 		themeSet: ThemeSet;
 		components: Record<string, Record<string, Component>> | null;
 		children: Snippet;
-		root?: boolean;
 	};
 
-	let { components, themeSet, children, root }: Props = $props();
+	let { components, themeSet, children }: Props = $props();
 
 	createThemeContext(themeSet);
 </script>
@@ -25,7 +24,7 @@
 {/if}
 
 <div
-	class={`${root ? 'global-theme-provider' : ''} 
+	class={`global-display-contents 
 					${getThemeClass('typography', themeSet['typographyInterface'])}
 					${getThemeClass('color', themeSet['color'])} 
 					${getThemeClass('style', themeSet['style'])}

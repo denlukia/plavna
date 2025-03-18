@@ -1,12 +1,12 @@
 import { enrichThemeSets } from '@plavna/design/theming/enricher';
-import { getThemeStylesGlob } from '$lib/styles/themes/glob';
+import { getAppThemeGlob } from '$lib/styles/themes/glob';
 
 import type { LayoutLoad } from './$types';
 
 export const load = (async ({ data }) => {
 	const { themeSet, ...other } = data;
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getThemeStylesGlob());
+	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
 
 	return { themeComponentSets, themeSet, ...other };
 }) satisfies LayoutLoad;

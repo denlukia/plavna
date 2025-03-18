@@ -1,9 +1,7 @@
 <script lang="ts">
-	import Strong from '$lib/markdown/renderers/Strong.svelte';
-
 	import { createPressWatcher } from '../../reactivity/press-watcher.svelte';
-	import ActiveElementFX from '../ActiveElementFX/ActiveElementFX.svelte';
-	import Typography from '../Typography/Typography.svelte';
+	import { ActiveElementFX } from '../ActiveElementFX';
+	import { Typography } from '../Typography';
 	import type { ButtonProps } from './types';
 
 	let {
@@ -57,10 +55,8 @@
 				{@render leading()}
 			{/if}
 			{#if children}
-				<Typography size="{size}-short">
-					<Strong>
-						{@render children()}
-					</Strong>
+				<Typography size="{size}-short" bold>
+					{@render children()}
 				</Typography>
 			{/if}
 			{#if trailing}
