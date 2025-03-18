@@ -118,6 +118,8 @@
 	function onPreviewPreviewRequest() {
 		// TODO
 	}
+
+	$inspect(currentPreviewTemplateMeta);
 </script>
 
 {#snippet previewFamilyButton(
@@ -224,7 +226,9 @@
 		</div>
 		{#if EditorComponent}
 			{#await EditorComponent}
-				<Spinner />
+				<div class="spinner-wrapper">
+					<Spinner />
+				</div>
 			{:then EditorComponent}
 				<EditorComponent
 					mainSuperValidated={previewEditorSuperValidated}
@@ -294,6 +298,13 @@
 
 	.list > * {
 		display: flex;
+	}
+
+	.spinner-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 150px;
 	}
 
 	.preview-family-wrapper {

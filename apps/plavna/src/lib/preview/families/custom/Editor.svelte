@@ -9,7 +9,6 @@
 		Typography
 	} from '@plavna/design/components';
 	import { superForm } from 'sveltekit-superforms';
-	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/image/ImageInput/LanguagedImageInput.svelte';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/styles/grid';

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Typography } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SystemTranslationKey } from '$lib/i18n/types';
@@ -28,13 +29,7 @@
 		markdownRemoveEmptyLinks?: boolean;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let {
-		superValidated,
-		key,
-		recordKey,
-		markdown = false,
-		markdownRemoveEmptyLinks = false
-	}: Props = $props();
+	let { superValidated, key, recordKey, markdown = false }: Props = $props();
 
 	let noTranslationText = $derived(
 		getSystemTranslation('layout.no_translation', $page.data.systemTranslations) || '...'
@@ -59,11 +54,5 @@
 		{@html translation}
 	{/if}
 {:else}
-	<span class="no-translation">{noTranslationText}</span>
+	<Typography size="body" purpose="markdown" tone="additional">{noTranslationText}</Typography>
 {/if}
-
-<style>
-	.no-translation {
-		opacity: 0.3;
-	}
-</style>

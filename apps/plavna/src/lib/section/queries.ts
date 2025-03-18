@@ -178,7 +178,8 @@ export async function queryGetOneSection(
 				eq(table_translations.key, table_tags.name_translation_key),
 				eq(table_translations.key, table_images.path_translation_key)
 			)
-		);
+		)
+		.orderBy(desc(articlesSq.articles.publish_time));
 
 	const articlesAndAll = await articlesAndAllQuery;
 	const dedupedArticlesAndAll = dedupeQueryResult(articlesAndAllQuery, articlesAndAll, {
