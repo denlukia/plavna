@@ -1,4 +1,4 @@
-import { ServerImageHandler } from '@plavna/image-uploader/images';
+import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import type { User } from 'lucia';
 import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/common/config';
