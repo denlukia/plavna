@@ -12,6 +12,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@types/get-pixels": "^3.3.4",
 		"@libsql/client": "^0.14.0",
 		"@sveltejs/adapter-vercel": "^5.4.5",
 		"@sveltejs/kit": "^2.7.2",
@@ -27,6 +28,7 @@
 		"@plavna/common": "workspace:*",
 		"@plavna/image-uploader": "workspace:*",
 		"@sparticuz/chromium-min": "^132.0.0",
-		"puppeteer-core": "^24.2.1"
+		"puppeteer-core": "^24.2.1",
+		"get-pixels": "^3.3.3"
 	}
 }

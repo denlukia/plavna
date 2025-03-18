@@ -1,7 +1,7 @@
-import { ServerImageHandler } from '@plavna/image-uploader/images';
 import { env } from '$env/dynamic/private';
 
 import type { screenshotsQueue } from './db-schema';
+import { ServerImageHandler } from './server-image-uploader';
 
 export async function uploadScreenshot(task: typeof screenshotsQueue.$inferSelect, file: File) {
 	const { image_id, lang, imageProviderData } = task;

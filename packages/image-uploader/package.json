@@ -43,7 +43,6 @@
 	"devDependencies": {
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
-		"@types/get-pixels": "^3.3.4",
 		"@types/probe-image-size": "^7.2.4",
 		"drizzle-orm": "^0.36.3",
 		"publint": "^0.1.16",
@@ -55,7 +54,6 @@
 	"type": "module",
 	"dependencies": {
 		"extract-colors": "^4.0.6",
-		"get-pixels": "^3.3.3",
 		"imagekit-javascript": "^2.0.0"
 	}
 }
