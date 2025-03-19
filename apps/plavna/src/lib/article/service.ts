@@ -482,6 +482,9 @@ export class ArticleService {
 		if (preview.preview_template_id) {
 			preview.preview_family = 'custom';
 		}
+		if (preview.preview_family === 'custom' && !preview.preview_template_id) {
+			error(500);
+		}
 
 		const whereCondition = and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id));
 		const articleUpdatePromise = db.update(table_articles).set(preview).where(whereCondition).run();

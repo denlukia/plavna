@@ -75,13 +75,21 @@
 			<Layers stretch>
 				{#if !viewing_in_article && img_1}
 					<div class="image">
-						<Image pathAndMeta={img_1} style="height: 100%; width: 100%; object-fit: cover" />
+						<Image
+							pathAndMeta={img_1}
+							bgInset="{ARTISTIC_OVERFLOW}px"
+							style="height: 100%; width: 100%; object-fit: cover"
+						/>
 					</div>
 				{/if}
 				{@const oneOfImages = img_2 || img_1}
 				{#if viewing_in_article && oneOfImages}
 					<div class="image">
-						<Image pathAndMeta={oneOfImages} style="height: 100%; width: 100%; object-fit: cover" />
+						<Image
+							pathAndMeta={oneOfImages}
+							bgInset="{ARTISTIC_OVERFLOW}px"
+							style="height: 100%; width: 100%; object-fit: cover"
+						/>
 					</div>
 				{/if}
 			</Layers>

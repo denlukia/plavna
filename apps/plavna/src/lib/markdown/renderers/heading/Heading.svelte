@@ -26,6 +26,10 @@
 {/if}
 
 <style>
+	.heading {
+		/* balanced wrapping */
+		text-wrap-style: balance;
+	}
 	:global(.paragraph) + .heading {
 		margin-top: 1.25em;
 	}
