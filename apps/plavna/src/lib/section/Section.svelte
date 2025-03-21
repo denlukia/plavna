@@ -233,6 +233,7 @@
 	.articles-list-wrapper,
 	.info-block-wrapper {
 		margin-top: var(--size-section-articles-list-margin-top);
+		padding-top: var(--size-l);
 		padding-bottom: var(--size-l);
 	}
 
