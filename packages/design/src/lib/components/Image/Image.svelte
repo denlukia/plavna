@@ -8,6 +8,7 @@
 		bgInset?: string;
 		zoomOut?: boolean;
 		transitionDuration?: number;
+		objectFit?: 'cover' | 'contain';
 	};
 
 	const initialOpacity = '0.01';
@@ -17,13 +18,19 @@
 		bgInset: bgInset = '0',
 		style = '',
 		zoomOut = true,
-		transitionDuration = 1000
+		transitionDuration = 1000,
+		objectFit = 'cover'
 	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
 	let mode: 'keyframes' | 'transition' = $state('keyframes');
 	let revealed = $state(false);
 	let scheduledReveal: ReturnType<typeof setTimeout> | null = $state(null);
+	let aspectRatio = $derived(
+		typeof pathAndMeta.width === 'number' && typeof pathAndMeta.height === 'number'
+			? pathAndMeta.width / pathAndMeta.height
+			: null
+	);
 
 	function switchToTransition() {
 		mode = 'transition';
@@ -73,17 +80,26 @@
 	});
 </script>
 
-<div class="positioner">
-	<span
-		class="bg"
-		style="--background: {pathAndMeta.background}; --duration: {transitionDuration}ms; --bg-inset: {bgInset}"
+<div class="positioner" {style}>
+	<div
+		class="bg-wrapper"
 		class:revealed
-	></span>
-	<span class="image-wrapper">
+		style="--bg-inset: {bgInset}; --duration: {transitionDuration}ms;"
+	>
+		<div
+			class="bg"
+			style="--background: {pathAndMeta.background}; 
+					   --aspect-ratio: {aspectRatio}; 
+						 --width: {(aspectRatio !== null && aspectRatio > 1) || objectFit === 'cover' ? '100%' : 'unset'};
+						 --height: {(aspectRatio !== null && aspectRatio < 1) || objectFit === 'cover' ? '100%' : 'unset'}"
+		></div>
+	</div>
+
+	<div class="image-wrapper">
 		<img
 			style="--initial-opacity: {initialOpacity}; initial-scale: {zoomOut
 				? 1.05
-				: 1}; --duration: {transitionDuration}ms; {style}"
+				: 1}; --duration: {transitionDuration}ms; --object-fit: {objectFit}"
 			bind:this={imgElement}
 			class="image {mode}"
 			class:revealed
@@ -93,17 +109,12 @@
 			alt={pathAndMeta.alt}
 			{onload}
 		/>
-	</span>
+	</div>
 </div>
 
 <style>
 	.positioner {
 		position: relative;
-	}
-
-	.positioner > .bg {
-		position: absolute;
-		inset: var(--bg-inset);
 	}
 
 	.image-wrapper {
@@ -112,19 +123,30 @@
 		overflow: hidden;
 	}
 
-	.bg {
+	.bg-wrapper {
+		position: absolute;
+		inset: var(--bg-inset);
 		transition: opacity var(--duration) calc(var(--duration) / 2);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bg {
+		aspect-ratio: var(--aspect-ratio);
+		width: var(--width);
+		height: var(--height);
 		background: var(--background);
 	}
 
-	.bg.revealed {
+	.bg-wrapper.revealed {
 		opacity: 0;
 	}
 
 	.image {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: var(--object-fit);
 
 		--initial-blur: 15px;
 

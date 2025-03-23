@@ -239,7 +239,8 @@
 
 	.articles-list-wrapper {
 		margin-inline: calc(var(--size-main-grid-padding-inline) * -1);
-		overflow: auto;
+		overflow-x: auto;
+		overflow-y: hidden;
 		scrollbar-width: thin;
 		position: relative;
 		max-width: calc(100% + var(--size-main-grid-padding-inline) * 2);

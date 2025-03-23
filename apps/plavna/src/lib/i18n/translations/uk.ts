@@ -157,6 +157,14 @@ export const UK = {
 					cols: 'Cтовпців',
 					rows: 'Рядків'
 				},
+				'in-frame': {
+					name: 'У рамці',
+					frame_color: 'Колір рамки',
+					mat_color: 'Колір паспарту',
+					image: 'Зображення',
+					cols: 'Cтовпців',
+					rows: 'Рядків'
+				},
 				sequences: {
 					name: 'Секвенції',
 					text_bg_color: 'Колір тла',

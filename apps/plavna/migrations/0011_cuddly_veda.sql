@@ -1,0 +1,1 @@
+ALTER TABLE `sections` ADD `max_rows` integer DEFAULT 5 NOT NULL;

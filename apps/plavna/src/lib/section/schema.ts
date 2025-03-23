@@ -1,6 +1,7 @@
 import { supportedLangs } from '@plavna/common';
 import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { table_pages } from '$lib/page/schema';
+import { MAX_ROWS_IN_SECTION } from '$lib/styles/grid';
 import { table_users } from '$lib/user/schema';
 
 import { table_translations } from '../i18n/schema';
@@ -18,7 +19,8 @@ export const table_sections = sqliteTable(
 			.references(() => table_users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		title_translation_key: integer('title_translation_key')
 			.notNull()
-			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),
+		max_rows: integer('max_rows').notNull().default(MAX_ROWS_IN_SECTION)
 	},
 	(table) => {
 		return {
