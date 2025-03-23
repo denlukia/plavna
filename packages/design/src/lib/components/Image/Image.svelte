@@ -9,6 +9,7 @@
 		zoomOut?: boolean;
 		transitionDuration?: number;
 		objectFit?: 'cover' | 'contain';
+		parentAspectRatio?: number;
 	};
 
 	const initialOpacity = '0.01';
@@ -19,7 +20,8 @@
 		style = '',
 		zoomOut = true,
 		transitionDuration = 1000,
-		objectFit = 'cover'
+		objectFit = 'cover',
+		parentAspectRatio = 1
 	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
@@ -29,7 +31,7 @@
 	let aspectRatio = $derived(
 		typeof pathAndMeta.width === 'number' && typeof pathAndMeta.height === 'number'
 			? pathAndMeta.width / pathAndMeta.height
-			: null
+			: 1
 	);
 
 	function switchToTransition() {
@@ -86,13 +88,15 @@
 		class:revealed
 		style="--bg-inset: {bgInset}; --duration: {transitionDuration}ms;"
 	>
-		<div
+		<!-- <div
 			class="bg"
 			style="--background: {pathAndMeta.background}; 
+						 --parent-aspect-ratio: {parentAspectRatio};
 					   --aspect-ratio: {aspectRatio}; 
-						 --width: {(aspectRatio !== null && aspectRatio > 1) || objectFit === 'cover' ? '100%' : 'unset'};
-						 --height: {(aspectRatio !== null && aspectRatio < 1) || objectFit === 'cover' ? '100%' : 'unset'}"
-		></div>
+						 --width: {parentAspectRatio < aspectRatio || objectFit === 'cover' ? '100%' : ''};
+						 --height: {parentAspectRatio > aspectRatio || objectFit === 'cover' ? '100%' : ''}"
+		></div> -->
+		<div class="bg" style="--background: {pathAndMeta.background};"></div>
 	</div>
 
 	<div class="image-wrapper">
@@ -130,12 +134,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		overflow: hidden;
 	}
 
 	.bg {
-		aspect-ratio: var(--aspect-ratio);
+		/* aspect-ratio: var(--aspect-ratio);
 		width: var(--width);
-		height: var(--height);
+		height: var(--height); */
+		width: 100%;
+		height: 100%;
 		background: var(--background);
 	}
 

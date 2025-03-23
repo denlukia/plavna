@@ -16,7 +16,7 @@
 	import { getRecordTranslation } from '$lib/i18n/utils';
 	import { getTitle } from '$lib/layout/title';
 	import { getPreviewData } from '$lib/preview/utils';
-	import { ARTICLE_OPENED_PREVIEW_COLS } from '$lib/styles/grid';
+	import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
 	import type { PageData } from '../[articleslug]/$types';
 
@@ -73,7 +73,7 @@
 				<article class="article">
 					{#if PreviewComponent}
 						<GridContainer>
-							<GridCell cols={ARTICLE_OPENED_PREVIEW_COLS} rows={ARTICLE_OPENED_PREVIEW_COLS}>
+							<GridCell cols={ARTICLE_OPENED_PREVIEW_COLS} rows={ARTICLE_OPENED_PREVIEW_ROWS}>
 								<PreviewComponent
 									data={getPreviewData(
 										{ meta: article, tags, previewTemplateUrl },
