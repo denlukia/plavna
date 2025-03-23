@@ -18,7 +18,7 @@
 	const easing = BezierEasing(0.25, 0, 0.25, 1);
 </script>
 
-<GridContainer direction="column" withPaddingInline>
+<GridContainer direction="column" withPaddingInline maxRows={section.meta.max_rows}>
 	{#each section.articles as article (article.meta.id)}
 		<div
 			class="animate-wrapper"

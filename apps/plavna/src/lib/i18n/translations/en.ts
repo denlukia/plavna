@@ -157,6 +157,14 @@ export const EN = {
 					cols: 'Cols',
 					rows: 'Rows'
 				},
+				'in-frame': {
+					name: 'In Frame',
+					frame_color: 'Frame color',
+					mat_color: 'Mat color',
+					image: 'Image',
+					cols: 'Cols',
+					rows: 'Rows'
+				},
 				sequences: {
 					name: 'Sequences',
 					text_bg_color: 'Text bg color',
