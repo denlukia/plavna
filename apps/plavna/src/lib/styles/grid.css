@@ -1,7 +1,7 @@
 :root {
 	/* Change grid.ts if you change this */
 	--size-max-cell-width: 260px;
-	--size-cell-aspect: 120 / 240;
+	--size-cell-aspect: 130 / 260;
 	--size-cols-total: 5;
 	--size-rows-total: 5;
 	--size-cell-gap: 8px;

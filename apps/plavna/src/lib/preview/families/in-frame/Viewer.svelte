@@ -10,6 +10,8 @@
 		Typography
 	} from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
+	import { calculateDimensionsFromCellsTaken } from '$lib/screenshot/utils';
+	import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -31,10 +33,28 @@
 		img_1,
 		img_2,
 		likes_count,
-		viewing_in_article
+		viewing_in_article,
+		width,
+		height
 	} = $derived(data);
 
 	let rotation = $derived(stableNumberFromString(img_1?.src));
+	// let aspectRatio = $derived.by(getAspectRatio);
+
+	// function getAspectRatio() {
+	// 	if (viewing_in_article) {
+	// 		let { width, height } = calculateDimensionsFromCellsTaken({
+	// 			preview_columns: ARTICLE_OPENED_PREVIEW_COLS,
+	// 			preview_rows: ARTICLE_OPENED_PREVIEW_ROWS
+	// 		});
+	// 		return width / height;
+	// 	}
+
+	// 	return (
+	// 		(width ? width - (viewing_in_article ? 40 : 20) * 2 : 1) /
+	// 		(height ? height - (viewing_in_article ? 40 : 20) * 2 : 1)
+	// 	);
+	// }
 
 	function stableNumberFromString(input: string | null | undefined): number {
 		if (!input) return 0;
