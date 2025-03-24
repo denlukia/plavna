@@ -6,7 +6,7 @@
 	import Translation from '$lib/i18n/Translation.svelte';
 	import { type SystemTranslationKey } from '$lib/i18n/types';
 
-	import { isNonNullable } from '../utils';
+	import { isNonNullable } from '../common/utils';
 
 	type GeneralValidationErrors = ValidationErrors<{ [key: string]: any }>;
 

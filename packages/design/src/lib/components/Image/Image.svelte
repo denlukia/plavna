@@ -2,6 +2,8 @@
 	import type { ImagePathAndMeta } from '@plavna/common';
 	import { onMount } from 'svelte';
 
+	import { getResizedSrc } from './utils';
+
 	type Props = {
 		pathAndMeta: ImagePathAndMeta;
 		style?: string;
@@ -9,7 +11,8 @@
 		zoomOut?: boolean;
 		transitionDuration?: number;
 		objectFit?: 'cover' | 'contain';
-		parentAspectRatio?: number;
+		width?: number | null;
+		height?: number | null;
 	};
 
 	const initialOpacity = '0.01';
@@ -21,18 +24,16 @@
 		zoomOut = true,
 		transitionDuration = 1000,
 		objectFit = 'cover',
-		parentAspectRatio = 1
+		width,
+		height
 	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
 	let mode: 'keyframes' | 'transition' = $state('keyframes');
 	let revealed = $state(false);
 	let scheduledReveal: ReturnType<typeof setTimeout> | null = $state(null);
-	let aspectRatio = $derived(
-		typeof pathAndMeta.width === 'number' && typeof pathAndMeta.height === 'number'
-			? pathAndMeta.width / pathAndMeta.height
-			: 1
-	);
+
+	let resizedSrc = $derived(getResizedSrc(pathAndMeta.src, { width, height }));
 
 	function switchToTransition() {
 		mode = 'transition';
@@ -88,14 +89,6 @@
 		class:revealed
 		style="--bg-inset: {bgInset}; --duration: {transitionDuration}ms;"
 	>
-		<!-- <div
-			class="bg"
-			style="--background: {pathAndMeta.background}; 
-						 --parent-aspect-ratio: {parentAspectRatio};
-					   --aspect-ratio: {aspectRatio}; 
-						 --width: {parentAspectRatio < aspectRatio || objectFit === 'cover' ? '100%' : ''};
-						 --height: {parentAspectRatio > aspectRatio || objectFit === 'cover' ? '100%' : ''}"
-		></div> -->
 		<div class="bg" style="--background: {pathAndMeta.background};"></div>
 	</div>
 
@@ -107,9 +100,9 @@
 			bind:this={imgElement}
 			class="image {mode}"
 			class:revealed
-			width={pathAndMeta.width}
-			height={pathAndMeta.height}
-			src={pathAndMeta.src}
+			width={width && height ? width : pathAndMeta.width}
+			height={width && height ? height : pathAndMeta.height}
+			src={resizedSrc}
 			alt={pathAndMeta.alt}
 			{onload}
 		/>

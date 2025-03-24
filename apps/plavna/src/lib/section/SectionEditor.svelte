@@ -5,7 +5,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Translation from '$lib/i18n/Translation.svelte';
 
-	import Errors from '../common/components/Errors.svelte';
+	import Errors from '../errors/Errors.svelte';
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';
 	import { getLang, getRecordTranslation, getSystemTranslation } from '../i18n/utils';
 	import TagsList from '../tag/SectionTagsList.svelte';

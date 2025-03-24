@@ -2,7 +2,7 @@
 	import { Button, Input, Label, Labeled } from '@plavna/design/components';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 
-	import Errors from '../common/components/Errors.svelte';
+	import Errors from '../errors/Errors.svelte';
 	import Translation from '../i18n/Translation.svelte';
 	import type { PageCreateForm, PageUpdateForm } from './validators';
 

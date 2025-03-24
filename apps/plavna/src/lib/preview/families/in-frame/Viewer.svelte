@@ -39,22 +39,10 @@
 	} = $derived(data);
 
 	let rotation = $derived(stableNumberFromString(img_1?.src));
-	// let aspectRatio = $derived.by(getAspectRatio);
-
-	// function getAspectRatio() {
-	// 	if (viewing_in_article) {
-	// 		let { width, height } = calculateDimensionsFromCellsTaken({
-	// 			preview_columns: ARTICLE_OPENED_PREVIEW_COLS,
-	// 			preview_rows: ARTICLE_OPENED_PREVIEW_ROWS
-	// 		});
-	// 		return width / height;
-	// 	}
-
-	// 	return (
-	// 		(width ? width - (viewing_in_article ? 40 : 20) * 2 : 1) /
-	// 		(height ? height - (viewing_in_article ? 40 : 20) * 2 : 1)
-	// 	);
-	// }
+	let { width: widthFinal, height: heightFinal } = calculateDimensionsFromCellsTaken({
+		preview_columns: viewing_in_article ? ARTICLE_OPENED_PREVIEW_COLS : cols,
+		preview_rows: viewing_in_article ? ARTICLE_OPENED_PREVIEW_ROWS : rows
+	});
 
 	function stableNumberFromString(input: string | null | undefined): number {
 		if (!input) return 0;
@@ -73,7 +61,13 @@
 		<div class="picture" style="--rotation: {rotation}deg;" class:in-article={viewing_in_article}>
 			<div class="mat" style="--bg-color: {matColor};">
 				{#if img_1}
-					<Image pathAndMeta={img_1} style="height: 100%;" objectFit="contain" />
+					<Image
+						pathAndMeta={img_1}
+						style="height: 100%;"
+						objectFit="contain"
+						width={widthFinal}
+						height={heightFinal}
+					/>
 				{/if}
 			</div>
 			<div class="frame" style="--frame-color: {frameColor};"></div>
