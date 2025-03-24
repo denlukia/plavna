@@ -11,7 +11,7 @@
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
-	import Errors from '$lib/common/components/Errors.svelte';
+	import Errors from '$lib/errors/Errors.svelte';
 	import Translation from '$lib/i18n/Translation.svelte';
 
 	import LanguagedInput from '../i18n/Input/LanguagedInput.svelte';

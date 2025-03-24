@@ -6,9 +6,9 @@
 	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';
 
+	import Errors from '../../errors/Errors.svelte';
 	import LanguagedInput from '../../i18n/Input/LanguagedInput.svelte';
 	import { debounce } from '../utils';
-	import Errors from './Errors.svelte';
 
 	type Props = InputOrTextareaProps & {
 		action: string;
