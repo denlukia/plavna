@@ -13,5 +13,13 @@
 </script>
 
 {#if !isNaN(imageId)}
-	<ImageById id={imageId} />
+	<div class="markdown-image">
+		<ImageById id={imageId} flexibleHeight />
+	</div>
 {/if}
+
+<style>
+	.markdown-image {
+		margin-bottom: var(--size-l);
+	}
+</style>

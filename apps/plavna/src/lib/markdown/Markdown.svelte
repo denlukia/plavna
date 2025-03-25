@@ -13,9 +13,9 @@
 	import H4 from './renderers/heading/H4.svelte';
 	import H5 from './renderers/heading/H5.svelte';
 	import H6 from './renderers/heading/H6.svelte';
+	import ImageMarkdown from './renderers/ImageMarkdown.svelte';
 	import LinkOrTag from './renderers/LinkOrTag.svelte';
 	import ListItem from './renderers/ListItem.svelte';
-	import MarkdownImage from './renderers/MarkdownImage.svelte';
 	import OrderedList from './renderers/OrderedList.svelte';
 	import Paragraph from './renderers/Paragraph.svelte';
 	import Section from './renderers/Section.svelte';
@@ -38,7 +38,7 @@
 		// { rehypePlugin: rehypeKatex },
 		{
 			renderer: {
-				image: MarkdownImage,
+				image: ImageMarkdown,
 				p: Paragraph,
 				em: Em,
 				strong: Strong,
@@ -49,7 +49,7 @@
 				h5: H5,
 				h6: H6,
 				a: LinkOrTag,
-				img: MarkdownImage,
+				img: ImageMarkdown,
 				section: Section,
 				sup: Sup,
 				sub: Sub,

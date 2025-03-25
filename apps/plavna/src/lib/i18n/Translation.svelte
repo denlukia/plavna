@@ -53,6 +53,8 @@
 	{:else}
 		{@html translation}
 	{/if}
-{:else}
+{:else if markdown}
 	<Typography size="body" purpose="markdown" tone="additional">{noTranslationText}</Typography>
+{:else}
+	<span class="global-text-additional">{noTranslationText}</span>
 {/if}

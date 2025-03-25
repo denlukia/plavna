@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Image } from '@plavna/design/components';
+	import { ImageCDN } from '@plavna/design/components';
 	import { page } from '$app/stores';
 
 	import { getImagePathAndMeta } from './utils';
@@ -7,9 +7,10 @@
 
 	type Props = {
 		id: ImageSelect['id'];
+		flexibleHeight?: boolean;
 	};
 
-	let { id }: Props = $props();
+	let { id, flexibleHeight }: Props = $props();
 
 	let preparedImage = $derived(
 		getImagePathAndMeta(
@@ -22,5 +23,5 @@
 </script>
 
 {#if preparedImage}
-	<Image pathAndMeta={preparedImage} />
+	<ImageCDN pathAndMeta={preparedImage} {flexibleHeight} />
 {/if}

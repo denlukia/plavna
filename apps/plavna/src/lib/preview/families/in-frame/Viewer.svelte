@@ -4,7 +4,7 @@
 	import type { PreviewDataProp } from '@plavna/common';
 	import {
 		ContinuousCorners,
-		Image,
+		ImageCDN,
 		Layers,
 		PreviewFoundation,
 		Typography
@@ -61,7 +61,7 @@
 		<div class="picture" style="--rotation: {rotation}deg;" class:in-article={viewing_in_article}>
 			<div class="mat" style="--bg-color: {matColor};">
 				{#if img_1}
-					<Image
+					<ImageCDN
 						pathAndMeta={img_1}
 						style="height: 100%;"
 						objectFit="contain"

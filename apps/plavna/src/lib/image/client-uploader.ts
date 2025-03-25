@@ -55,7 +55,7 @@ export async function uploadImage(file: File, config: ImageWorkConfig) {
 	} catch (err: unknown) {
 		setErrors?.(JSON.stringify(err));
 	} finally {
-		setProcessing?.(true);
+		setProcessing?.(false);
 	}
 }
 

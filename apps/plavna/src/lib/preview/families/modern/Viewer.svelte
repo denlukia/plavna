@@ -3,7 +3,7 @@
 	import type { PreviewDataProp } from '@plavna/common';
 	import {
 		ContinuousCorners,
-		Image,
+		ImageCDN,
 		Layers,
 		PreviewFoundation,
 		Typography
@@ -75,7 +75,7 @@
 				<Layers stretch>
 					{#if img_1}
 						<div class="image">
-							<Image pathAndMeta={img_1} style="height: 100%; width: 100%; object-fit: cover" />
+							<ImageCDN pathAndMeta={img_1} style="height: 100%; width: 100%; object-fit: cover" />
 						</div>
 					{/if}
 					<div class="info">
