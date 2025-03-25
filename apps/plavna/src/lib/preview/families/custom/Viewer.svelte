@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ARTISTIC_OVERFLOW, serializePreviewParams, type PreviewDataProp } from '@plavna/common';
-	import { Image, PreviewFoundation } from '@plavna/design/components';
+	import { ImageCDN, PreviewFoundation } from '@plavna/design/components';
 	import { dev } from '$app/environment';
 	import { env } from '$env/dynamic/public';
 
@@ -68,7 +68,7 @@
 
 			{#if finalScreenshot}
 				<div class="image-wrapper" class:visible={imageVisible}>
-					<Image
+					<ImageCDN
 						pathAndMeta={finalScreenshot}
 						bgInset="{ARTISTIC_OVERFLOW}px"
 						zoomOut={false}

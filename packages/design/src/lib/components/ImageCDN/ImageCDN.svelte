@@ -2,7 +2,7 @@
 	import type { ImagePathAndMeta } from '@plavna/common';
 	import { onMount } from 'svelte';
 
-	import { getResizedSrc } from './utils';
+	import { addImageTransformParams } from './utils';
 
 	type Props = {
 		pathAndMeta: ImagePathAndMeta;
@@ -13,6 +13,7 @@
 		objectFit?: 'cover' | 'contain';
 		width?: number | null;
 		height?: number | null;
+		flexibleHeight?: boolean;
 	};
 
 	const initialOpacity = '0.01';
@@ -25,7 +26,8 @@
 		transitionDuration = 1000,
 		objectFit = 'cover',
 		width,
-		height
+		height,
+		flexibleHeight
 	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
@@ -33,7 +35,15 @@
 	let revealed = $state(false);
 	let scheduledReveal: ReturnType<typeof setTimeout> | null = $state(null);
 
-	let resizedSrc = $derived(getResizedSrc(pathAndMeta.src, { width, height }));
+	let finalSrc = $derived.by(getFinalSrc);
+
+	function getFinalSrc() {
+		return addImageTransformParams(pathAndMeta.src, {
+			q: 95,
+			width: width ? width * 2 : null,
+			height: height ? height * 2 : null
+		});
+	}
 
 	function switchToTransition() {
 		mode = 'transition';
@@ -101,8 +111,8 @@
 			class="image {mode}"
 			class:revealed
 			width={width && height ? width : pathAndMeta.width}
-			height={width && height ? height : pathAndMeta.height}
-			src={resizedSrc}
+			height={flexibleHeight ? null : width && height ? height : pathAndMeta.height}
+			src={finalSrc}
 			alt={pathAndMeta.alt}
 			{onload}
 		/>
@@ -144,8 +154,8 @@
 	}
 
 	.image {
-		width: 100%;
-		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
 		object-fit: var(--object-fit);
 
 		--initial-blur: 15px;

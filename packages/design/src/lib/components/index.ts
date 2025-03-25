@@ -6,7 +6,7 @@ export * from './ContinuousCorners';
 export * from './FormWrapper';
 export * from './Grid';
 export * from './IconWrapper';
-export * from './Image';
+export * from './ImageCDN';
 export * from './InfoBlock';
 export * from './Input';
 export * from './InViewTrigger';

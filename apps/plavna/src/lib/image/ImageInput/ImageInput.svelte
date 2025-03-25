@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ImagePathAndMeta } from '@plavna/common';
-	import { Image, LayerFlashlight, Layers } from '@plavna/design/components';
+	import { ImageCDN, LayerFlashlight, Layers } from '@plavna/design/components';
 	import { createMouseWatcher } from '@plavna/design/reactivity';
 	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { browser } from '$app/environment';
@@ -70,7 +70,7 @@
 		{#if imageProvider.hasValidCredentialsSet}
 			{#if image && image.id && pathAndMeta}
 				<div class="image" transition:fade={{ duration: 250 }}>
-					<Image {pathAndMeta} />
+					<ImageCDN {pathAndMeta} />
 				</div>
 			{:else}
 				<LayerFlashlight {mouse} />
