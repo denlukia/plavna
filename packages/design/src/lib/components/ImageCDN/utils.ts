@@ -23,7 +23,7 @@ export function addImageTransformParams(
 			} else {
 				parts.splice(2, 0, param);
 			}
-			url.password = parts.join('/');
+			url.pathname = parts.join('/');
 			return url.toString();
 		} catch (e: unknown) {
 			console.error('Error adding image transform params:', e);
