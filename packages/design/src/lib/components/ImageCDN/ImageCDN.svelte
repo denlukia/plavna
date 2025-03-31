@@ -133,7 +133,7 @@
 	.bg-wrapper {
 		position: absolute;
 		inset: var(--bg-inset);
-		transition: opacity var(--duration) calc(var(--duration) / 2);
+		transition: opacity var(--duration);
 		display: flex;
 		align-items: center;
 		justify-content: center;

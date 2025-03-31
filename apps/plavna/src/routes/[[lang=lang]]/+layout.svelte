@@ -14,7 +14,7 @@
 	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
-	import { navigating, page } from '$app/stores';
+	import { navigating, page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS, PAGE_SLUG_PREFIX } from '$lib/common/config.js';
@@ -28,14 +28,14 @@
 
 	let { themeSet, themeComponentSets } = $derived(data);
 
-	let isNavigating = $derived(Boolean($navigating));
+	let isNavigating = $derived(Boolean(navigating.complete));
 
 	const mobileNonAdaptedRoutes = [
 		'/[[lang=lang]]/[username]/[articleslug]/edit',
 		`/[[lang=lang]]/[username]/${PAGE_SLUG_PREFIX}[pageslug]/[articleslug]/edit`
 	];
 	let showAdaptivityWarning = $derived(
-		$page.route.id && mobileNonAdaptedRoutes.includes($page.route.id)
+		page.route.id && mobileNonAdaptedRoutes.includes(page.route.id)
 	);
 
 	onMount(() => {
@@ -44,10 +44,12 @@
 		return unpatch;
 	});
 
-	let title = $derived(getTitle($page.params));
+	let title = $derived(getTitle(page.params));
+
+	$inspect(page.params);
 
 	$effect(() => {
-		const lang = getLang($page.params.lang);
+		const lang = getLang(page.params.lang);
 		document.documentElement.lang = lang;
 	});
 

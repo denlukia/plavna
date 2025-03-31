@@ -23,6 +23,8 @@
 	import Strong from './renderers/Strong.svelte';
 	import Sub from './renderers/Sub.svelte';
 	import Sup from './renderers/Sup.svelte';
+	import Table from './renderers/Table.svelte';
+	import Th from './renderers/Th.svelte';
 	import UnorderedList from './renderers/UnorderedList.svelte';
 
 	type Props = {
@@ -56,7 +58,9 @@
 				ul: UnorderedList,
 				ol: OrderedList,
 				li: ListItem,
-				span: Span
+				span: Span,
+				table: Table,
+				th: Th
 			}
 		}
 	];
