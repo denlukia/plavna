@@ -66,7 +66,6 @@
 						style="height: 100%;"
 						objectFit="contain"
 						width={widthFinal}
-						height={heightFinal}
 					/>
 				{/if}
 			</div>
