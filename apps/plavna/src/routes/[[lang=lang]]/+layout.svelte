@@ -46,8 +46,6 @@
 
 	let title = $derived(getTitle(page.params));
 
-	$inspect(page.params);
-
 	$effect(() => {
 		const lang = getLang(page.params.lang);
 		document.documentElement.lang = lang;

@@ -32,63 +32,30 @@
 		likes_count,
 		viewing_in_article
 	} = $derived(data);
-
-	let bgColor = $derived(backgroundColor ? backgroundColor : img_1?.background);
-
-	let titleSize = $derived(getTitleSize(cols, rows, title_translation));
-	let headingRadius = $derived(getHeadingRadius(titleSize));
-
-	function getTitleSize(cols: number, rows: number, text: typeof title_translation): TextSizes {
-		// if (rows * cols > 6 && text && text.length < 40) {
-		// 	return 'heading-1';
-		// } else
-		if (cols > 1 && rows > 1) {
-			return 'heading-2';
-		} else {
-			return 'headline';
-		}
-	}
-
-	function getHeadingRadius(size: TextSizes) {
-		// if (size === 'heading-1') {
-		// 	return 40;
-		// } else
-		if (size === 'heading-2') {
-			return 30;
-		} else {
-			return 25;
-		}
-	}
 </script>
-
-{#snippet chip(text: string, customClass = '')}
-	<div class="chip {customClass}">
-		<Typography size="small-short" purpose="markdown">
-			{text}
-		</Typography>
-	</div>
-{/snippet}
 
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
 	{#snippet overflowing()}
 		<div class="preview">
 			<Layers stretch>
 				{#if !viewing_in_article && img_1}
-					<div class="image">
+					<div class="image" style="--artistic-overflow: {ARTISTIC_OVERFLOW}px">
 						<ImageCDN
+							objectFit="stretch"
 							pathAndMeta={img_1}
 							bgInset="{ARTISTIC_OVERFLOW}px"
-							style="height: 100%; width: 100%; object-fit: cover"
+							style="height: 100%; width: 100%;"
 						/>
 					</div>
 				{/if}
 				{@const oneOfImages = img_2 || img_1}
 				{#if viewing_in_article && oneOfImages}
-					<div class="image">
+					<div class="image" style="--artistic-overflow: {ARTISTIC_OVERFLOW}px">
 						<ImageCDN
+							objectFit="stretch"
 							pathAndMeta={oneOfImages}
 							bgInset="{ARTISTIC_OVERFLOW}px"
-							style="height: 100%; width: 100%; object-fit: cover"
+							style="height: 100%; width: 100%;"
 						/>
 					</div>
 				{/if}
@@ -103,8 +70,20 @@
 	}
 
 	.image {
-		width: 100%;
-		height: 100%;
+		--inset-x: calc(
+			var(--artistic-overflow) -
+				calc(var(--size-cell-width) / var(--size-max-cell-width) * var(--artistic-overflow))
+		);
+		--inset-y: calc(
+			var(--artistic-overflow) -
+				calc(var(--size-cell-height) / var(--size-max-cell-height) * var(--artistic-overflow))
+		);
+
+		margin-left: var(--inset-x);
+		margin-top: var(--inset-y);
+
+		width: calc(100% - var(--inset-x) * 2);
+		height: calc(100% - var(--inset-y) * 2);
 		overflow: hidden;
 	}
 </style>

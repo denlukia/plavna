@@ -195,11 +195,3 @@
 	--size-loader-spinner: var(--size-xl);
 	--size-loader-spinner-thickness: var(--size-xs);
 }
-
-@media (max-width: 1024px) {
-	:root {
-		/* --- Grid --- */
-		--size-cols-total: 3;
-		--size-main-grid-padding-inline: var(--size-l);
-	}
-}
