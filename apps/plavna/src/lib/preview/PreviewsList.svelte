@@ -118,8 +118,6 @@
 	function onPreviewPreviewRequest() {
 		// TODO
 	}
-
-	$inspect(currentPreviewTemplateMeta);
 </script>
 
 {#snippet previewFamilyButton(

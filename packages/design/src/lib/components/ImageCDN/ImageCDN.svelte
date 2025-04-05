@@ -10,7 +10,7 @@
 		bgInset?: string;
 		zoomOut?: boolean;
 		transitionDuration?: number;
-		objectFit?: 'cover' | 'contain';
+		objectFit?: 'cover' | 'contain' | 'stretch';
 		width?: number | null;
 		height?: number | null;
 		flexibleHeight?: boolean;
