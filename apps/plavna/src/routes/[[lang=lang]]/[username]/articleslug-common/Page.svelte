@@ -16,7 +16,12 @@
 	import { getRecordTranslation } from '$lib/i18n/utils';
 	import { getTitle } from '$lib/layout/title';
 	import { getPreviewData } from '$lib/preview/utils';
-	import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
+	import {
+		ARTICLE_OPENED_MOBILE_PREVIEW_COLS,
+		ARTICLE_OPENED_MOBILE_PREVIEW_ROWS,
+		ARTICLE_OPENED_PREVIEW_COLS,
+		ARTICLE_OPENED_PREVIEW_ROWS
+	} from '$lib/styles/grid';
 
 	import type { PageData } from '../[articleslug]/$types';
 
@@ -69,31 +74,37 @@
 
 	<AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
 		<ColumnsContainer>
-			<Column cols={3} style="margin-inline: auto;">
-				<article class="article">
-					{#if PreviewComponent}
-						<GridContainer>
-							<GridCell cols={ARTICLE_OPENED_PREVIEW_COLS} rows={ARTICLE_OPENED_PREVIEW_ROWS}>
-								<PreviewComponent
-									data={getPreviewData(
-										{ meta: article, tags, previewTemplateUrl },
-										recordsTranslations,
-										images,
-										user,
-										true,
-										lang
-									)}
-								/>
-							</GridCell>
-						</GridContainer>
-					{:else}
-						No preview
-					{/if}
+			<article class="article">
+				{#if PreviewComponent}
+					<GridContainer>
+						<GridCell
+							cols={ARTICLE_OPENED_PREVIEW_COLS}
+							rows={ARTICLE_OPENED_PREVIEW_ROWS}
+							mobileCols={ARTICLE_OPENED_MOBILE_PREVIEW_COLS}
+							mobileRows={ARTICLE_OPENED_MOBILE_PREVIEW_ROWS}
+						>
+							<PreviewComponent
+								data={getPreviewData(
+									{ meta: article, tags, previewTemplateUrl },
+									recordsTranslations,
+									images,
+									user,
+									true,
+									lang
+								)}
+							/>
+						</GridCell>
+					</GridContainer>
+				{:else}
+					No preview
+				{/if}
+
+				<Column cols={2.25} style="margin-inline: auto;">
 					<div class="content">
 						<Translation recordKey={data.article.content_translation_key} markdown />
 					</div>
-				</article>
-			</Column>
+				</Column>
+			</article>
 		</ColumnsContainer>
 	</AnimatedPage>
 

@@ -1,4 +1,3 @@
-import { getLang } from '$lib/i18n/utils';
 import { enrichPreviewFamilies } from '$lib/preview/enricher';
 
 import type { PageLoad } from '../../[articleslug]/edit/$types';

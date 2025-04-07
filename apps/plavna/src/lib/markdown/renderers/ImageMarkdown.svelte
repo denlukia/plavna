@@ -20,6 +20,7 @@
 
 <style>
 	.markdown-image {
+		margin-top: var(--size-l);
 		margin-bottom: var(--size-l);
 	}
 </style>

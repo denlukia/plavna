@@ -6,8 +6,10 @@ import { getAppThemeGlob } from '$lib/styles/themes/glob';
 
 import type { PageLoad } from '../[articleslug]/$types';
 
-export const load = (async ({ data }) => {
+export const load = (async ({ data, depends }) => {
 	const { recordsTranslations, images, themeSet, ...other } = structuredClone(data);
+
+	depends('article:content');
 
 	const previewComponent = await getPreviewComponent(other.article.preview_family, 'viewer');
 	const recordsTranslationsState = createRecordsTranslationsState(recordsTranslations);
