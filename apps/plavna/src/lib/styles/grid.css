@@ -27,6 +27,5 @@
 	:root {
 		/* --- Grid --- */
 		--size-cols-total: 3;
-		--size-main-grid-padding-inline: 8px;
 	}
 }

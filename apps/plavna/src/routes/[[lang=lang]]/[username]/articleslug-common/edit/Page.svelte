@@ -9,6 +9,7 @@
 		Typography
 	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
+	import { beforeNavigate, invalidate, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
@@ -41,6 +42,10 @@
 	let viewHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]', $page.params)
 	);
+
+	async function onViewClick() {
+		await invalidate('article:content');
+	}
 </script>
 
 <AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
@@ -107,7 +112,7 @@
 	<Button formaction="?/delete" kind="destructive">
 		<Translation key="article_editor.actions.delete" />
 	</Button>
-	<Button href={viewHref} kind="secondary">
+	<Button href={viewHref} onclick={onViewClick} kind="secondary">
 		<Translation key="article_editor.actions.view" />
 	</Button>
 	<Button

@@ -1,17 +1,19 @@
 import type { Component } from 'svelte';
 
-export const typographyThemes = ['inter', 'sequences', 'nyght'] as const;
+export const typographyInterfaceThemes = ['inter', 'sequences', 'nyght'] as const;
+export const typographyMarkdownThemes = ['inter-markdown', 'sequences', 'nyght'] as const;
 
 export const allThemes = {
 	color: ['milk'],
 	style: ['modern'],
-	typographyInterface: typographyThemes,
-	typographyMarkdown: typographyThemes
+	typographyInterface: typographyInterfaceThemes,
+	typographyMarkdown: typographyMarkdownThemes
 } as const;
 
 export type ColorTheme = (typeof allThemes.color)[number];
 export type StyleTheme = (typeof allThemes.style)[number];
-export type TypographyTheme = (typeof typographyThemes)[number];
+export type TypographyInterfaceTheme = (typeof typographyInterfaceThemes)[number];
+export type TypographyMarkdownTheme = (typeof typographyMarkdownThemes)[number];
 
 export type ThemeComponentSets = {
 	designSystem: ThemeComponentSet;
@@ -21,8 +23,8 @@ export type ThemeComponentSets = {
 export type ThemeSet = {
 	color: ColorTheme;
 	style: StyleTheme;
-	typographyInterface: TypographyTheme;
-	typographyMarkdown: TypographyTheme;
+	typographyInterface: TypographyInterfaceTheme;
+	typographyMarkdown: TypographyMarkdownTheme;
 };
 
 export type ThemeComponentSet = Partial<{
@@ -36,7 +38,7 @@ export const defaultThemeSet: ThemeSet = {
 	color: 'milk',
 	style: 'modern',
 	typographyInterface: 'inter',
-	typographyMarkdown: 'inter'
+	typographyMarkdown: 'inter-markdown'
 };
 
 export function getThemeClass(type: 'color' | 'style' | 'typography', id: string) {

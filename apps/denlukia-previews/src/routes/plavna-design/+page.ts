@@ -6,7 +6,7 @@ export async function load() {
 		color: 'milk',
 		style: 'modern',
 		typographyInterface: 'inter',
-		typographyMarkdown: 'inter'
+		typographyMarkdown: 'inter-markdown'
 	};
 
 	const dsThemeComponentSet = await enrichThemes(null, themeSet);
