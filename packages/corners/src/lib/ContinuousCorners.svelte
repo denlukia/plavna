@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { getPolygon } from './get-polygon';
+	import { getPolygon } from './get-polygon.js';
 
 	type Props = {
 		children: Snippet;
