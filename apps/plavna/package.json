@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@plavna/common": "workspace:*",
+		"@plavna/corners": "workspace:*",
 		"@plavna/image-uploader": "workspace:*",
 		"@plavna/design": "workspace:*",
 		"@libsql/client": "^0.14.0",

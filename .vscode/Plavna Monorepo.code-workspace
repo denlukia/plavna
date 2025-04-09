@@ -28,7 +28,8 @@
 			"name": "Package: Image Uploader Src",
 			"path": "../packages/image-uploader/src"
 		},
-		{ "name": "Package: Common", "path": "../packages/common/src" },
+		{ "name": "Package: Common Src", "path": "../packages/common/src" },
+		{ "name": "Package: Corners Src", "path": "../packages/corners/src" },
 		{ "name": "Root", "path": ".." }
 	],
 	"settings": {}

@@ -1,15 +1,7 @@
 <script lang="ts">
-	import path from 'path';
 	import { ARTISTIC_OVERFLOW } from '@plavna/common';
 	import type { PreviewDataProp } from '@plavna/common';
-	import {
-		ContinuousCorners,
-		ImageCDN,
-		Layers,
-		PreviewFoundation,
-		Typography
-	} from '@plavna/design/components';
-	import type { TextSizes } from '@plavna/design/components';
+	import { ImageCDN, PreviewFoundation } from '@plavna/design/components';
 	import { calculateDimensionsFromCellsTaken } from '$lib/screenshot/utils';
 	import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 

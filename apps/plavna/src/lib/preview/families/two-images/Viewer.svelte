@@ -1,14 +1,7 @@
 <script lang="ts">
 	import { ARTISTIC_OVERFLOW } from '@plavna/common';
 	import type { PreviewDataProp } from '@plavna/common';
-	import {
-		ContinuousCorners,
-		ImageCDN,
-		Layers,
-		PreviewFoundation,
-		Typography
-	} from '@plavna/design/components';
-	import type { TextSizes } from '@plavna/design/components';
+	import { ImageCDN, Layers, PreviewFoundation } from '@plavna/design/components';
 
 	type Props = {
 		data: PreviewDataProp;
