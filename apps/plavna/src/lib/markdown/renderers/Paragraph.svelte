@@ -31,7 +31,7 @@
 	}
 	p {
 		margin-bottom: 0.75em;
-		hyphens: auto;
+		/* hyphens: auto; */
 		/* text-align: justify; */
 	}
 </style>

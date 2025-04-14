@@ -146,7 +146,8 @@
 		margin-top: var(--size-xl);
 	}
 	.content :global(.paragraph) {
-		text-align: justify;
+		/* text-align: justify; */
+		text-wrap: balance;
 	}
 
 	.back-button {
