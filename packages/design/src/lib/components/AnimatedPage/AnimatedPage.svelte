@@ -14,7 +14,7 @@
 	let { key, children, introDelay = 0 }: Props = $props();
 
 	const shift = 14;
-	const duration = 400;
+	const duration = introDelay || 300;
 	const easingValues = [0.2, 0, 0.2, 1] as const;
 	const easingString = easingValues.join(',');
 
