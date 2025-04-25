@@ -29,7 +29,7 @@
 	"devDependencies": {
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
-		"publint": "^0.1.16",
+		"publint": "0.3.12",
 		"svelte": "^5.10.0",
 		"svelte-check": "^4.0.5",
 		"vite": "^5.4.11"

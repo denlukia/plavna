@@ -44,7 +44,6 @@
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
 		"@types/probe-image-size": "^7.2.4",
-		"drizzle-orm": "^0.36.3",
 		"publint": "^0.1.16",
 		"svelte": "^5.10.0",
 		"svelte-check": "^4.0.5",
@@ -54,6 +53,7 @@
 	"type": "module",
 	"dependencies": {
 		"extract-colors": "^4.0.6",
-		"imagekit-javascript": "^2.0.0"
+		"imagekit-javascript": "^2.0.0",
+		"drizzle-orm": "^0.36.3"
 	}
 }
