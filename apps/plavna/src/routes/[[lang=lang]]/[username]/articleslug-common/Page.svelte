@@ -99,7 +99,7 @@
 					No preview
 				{/if}
 
-				<Column cols={2.25} style="margin-inline: auto;">
+				<Column cols={2.5} style="margin-inline: auto;">
 					<div class="content">
 						<Translation recordKey={data.article.content_translation_key} markdown />
 					</div>
@@ -147,7 +147,7 @@
 	}
 	.content :global(.paragraph) {
 		/* text-align: justify; */
-		text-wrap: balance;
+		/* text-wrap: balance; */
 	}
 
 	.back-button {
