@@ -5,7 +5,7 @@ import { json } from '@sveltejs/kit';
 import ImageKit from 'imagekit';
 import { ERRORS } from '$lib/errors/errors';
 
-export const config: Config = { runtime: 'nodejs20.x', regions: ['fra1'] };
+export const config: Config = { runtime: 'nodejs20.x', regions: ['dub1'] };
 
 export const GET = async ({ locals: { actorService }, url }) => {
 	let actorData: ImageProviderRelatedActorData | null = null;
