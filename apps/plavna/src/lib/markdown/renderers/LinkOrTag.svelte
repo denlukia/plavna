@@ -14,7 +14,7 @@
 
 	const ast = getAstNode();
 
-	let hasNonEmptyText = $derived.by(() => getHasNonEmptyText(ast.current));
+	let hasNonEmptyText = $derived.by(() => getHasNonEmptyText($ast));
 
 	function getHasNonEmptyText(ast: HastNode) {
 		if (!ast) return false;
