@@ -68,7 +68,10 @@
 
 @media (max-width: 1024px) {
 	:root {
-		--size-main-layout-margin-top: var(--size-2xl);
+		--size-main-layout-margin-top: var(--size-xl);
 		--size-main-layout-padding-top: var(--size-4xl);
+
+		--size-section-articles-list-margin-top: var(--size-none);
+		--size-section-margin-bottom: var(--size-xl);
 	}
 }
