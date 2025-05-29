@@ -12,7 +12,7 @@
 		Typography
 	} from '@plavna/design/components';
 	import { ThemeContextProvider } from '@plavna/design/theming/components';
-	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	// import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { dev } from '$app/environment';
 	import { navigating, page } from '$app/state';
 	import { onMount } from 'svelte';
@@ -51,7 +51,7 @@
 		document.documentElement.lang = lang;
 	});
 
-	injectAnalytics({ mode: dev ? 'development' : 'production' });
+	// injectAnalytics({ mode: dev ? 'development' : 'production' });
 </script>
 
 <svelte:head>

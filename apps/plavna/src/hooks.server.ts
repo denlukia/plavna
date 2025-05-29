@@ -1,3 +1,5 @@
+import {sequence} from '@sveltejs/kit/hooks';
+import * as Sentry from '@sentry/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/article/service';
 import { TranslationService } from '$lib/i18n/service';
@@ -10,7 +12,12 @@ import { TagService } from '$lib/tag/service';
 import { lucia } from '$lib/user/auth';
 import { ActorService } from '$lib/user/service';
 
-export const handle: Handle = async ({ event, resolve }) => {
+Sentry.init({
+    dsn: "https://378a9658ae1cc68c845e4b8be36dfee0@o4509407519965184.ingest.de.sentry.io/4509407521603664",
+    tracesSampleRate: 1
+})
+
+export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
 	locals.lang = getLang(params.lang);
@@ -67,4 +74,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 	return await resolve(event, {
 		transformPageChunk: ({ html }) => html.replace('%lang%', locals.lang)
 	});
-};
+});
+export const handleError = Sentry.handleErrorWithSentry();
