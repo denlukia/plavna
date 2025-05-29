@@ -35,5 +35,3 @@ Implementing a feature folders structure in your SvelteKit project requires 3 co
    - Additional helping files like utils.ts, types.ts, transitions.ts, etc.
 
    Some of the features won't stick to file list above (like DB feature or Styles feature) but still view these things as features. Let them exist on the same level in hierarchy as the others. Keep your `commons` thin. Once my errors related code become few files (not just constants, but a component and different helper functions) – it was a sign that it became a feature.
-
-   ![That's all folks!](./thats-all.png)
