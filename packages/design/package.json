@@ -14,18 +14,14 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"exports": {
-		"./theming/*": {
-			"types": "./dist/theming/*.d.ts",
-			"svelte": "./dist/theming/*.js",
-			"default": "./dist/theming/*.js"
-		},
 		"./theming/styles": {
-			"default": "./dist/theming/styles/index.css"
+			"default": "./src/lib/theming/styles/index.css"
+		},
+		"./theming/*": {
+			"default": "./src/lib/theming/*.ts"
 		},
 		"./*": {
-			"types": "./dist/*/index.d.ts",
-			"svelte": "./dist/*/index.js",
-			"default": "./dist/*/index.js"
+			"default": "./src/lib/*/index.ts"
 		}
 	},
 	"peerDependencies": {

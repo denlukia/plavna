@@ -47,7 +47,6 @@
 		box-shadow: var(--shadow-link);
 	}
 	footer :global(.logo-link:hover) {
-		--color-link-hovered-shadow: var(--color-text-barely-visible);
 		--shadow-link-hovered: inset 0 -1.2em 0px var(--color-link-hovered-shadow);
 		box-shadow: var(--shadow-link-hovered);
 	}
