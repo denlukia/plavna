@@ -37,6 +37,7 @@
 		hyphens: none;
 	}
 	.link:hover {
+		color: var(--color-link-hovered);
 		box-shadow: var(--shadow-link-hovered);
 		transition: var(--transition-link-hovered);
 		border-radius: var(--size-link-border-radius-hovered);

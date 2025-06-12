@@ -27,6 +27,9 @@
 	--red-300-transparent-500: hsla(0, 100%, 30%, 50%);
 	--red-200-transparent-500: hsla(0, 100%, 20%, 50%);
 
+	--orange-500: hsl(25deg, 100%, 45%);
+	--orange-500-transparent-100: hsla(25deg, 100%, 45%, 10%);
+
 	--cold-200: hsl(200, 70%, 30%);
 	--cold-200-transparent-100: hsla(200, 70%, 30%, 10%);
 	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
@@ -162,7 +165,8 @@
 	/* --- Link --- */
 	--color-link: var(--cold-200);
 	--color-link-shadow: var(--cold-200-transparent-200);
-	--color-link-hovered-shadow: var(--cold-200-transparent-100);
+	--color-link-hovered: var(--orange-500);
+	--color-link-hovered-shadow: var(--orange-500-transparent-100);
 
 	/* --- Info Block --- */
 	--color-info-block-default-bg: var(--warm-300-transparent-100);
