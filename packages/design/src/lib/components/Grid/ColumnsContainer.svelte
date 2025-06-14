@@ -7,10 +7,14 @@
 		rows?: number;
 	};
 
-	let { children, rows, ...attributes }: Props = $props();
+	let { children, rows, style, ...attributes }: Props = $props();
 </script>
 
-<div class="columns-container" {...attributes} style={rows ? `--size-rows-total: ${rows};` : ''}>
+<div
+	class="columns-container"
+	{...attributes}
+	style={`${style} ${rows ? `--size-rows-total: ${rows};` : ''}`}
+>
 	{@render children()}
 </div>
 

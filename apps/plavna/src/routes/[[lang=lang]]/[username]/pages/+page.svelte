@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { AnimatedPage, Popup, Typography } from '@plavna/design/components';
+	import {
+		AnimatedPage,
+		Column,
+		ColumnsContainer,
+		Popup,
+		Typography
+	} from '@plavna/design/components';
 	import ColumnedCards from '$lib/common/components/ColumnedCards.svelte';
 	import { PAGE_INRO_DELAY_MS } from '$lib/common/config.js';
 	import Translation from '$lib/i18n/Translation.svelte';
@@ -18,22 +24,28 @@
 </script>
 
 <AnimatedPage key={routeId + lang} introDelay={PAGE_INRO_DELAY_MS}>
-	<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
+	<ColumnsContainer style="align-items: center;">
+		<Column cols={2}>
+			<Typography size="heading-1"><Translation key="pages_list.title" /></Typography>
+		</Column>
+		<Column>
+			<div class="new-page-wrapper">
+				<Popup triggerType="button" bind:active>
+					{#snippet label()}
+						<Translation key="pages_list.new" />
+					{/snippet}
+					{#snippet content()}
+						<PageEditor formObj={data.creationForm} {onSuccessfullUpdate} />
+					{/snippet}
+				</Popup>
+			</div>
+		</Column>
+	</ColumnsContainer>
 
 	<ColumnedCards>
 		{#each data.pageItems as pageItem (pageItem.id)}
 			<PageItem {pageItem} />
 		{/each}
-		<div class="new-page-wrapper">
-			<Popup triggerType="button" bind:active>
-				{#snippet label()}
-					<Translation key="pages_list.new" />
-				{/snippet}
-				{#snippet content()}
-					<PageEditor formObj={data.creationForm} {onSuccessfullUpdate} />
-				{/snippet}
-			</Popup>
-		</div>
 	</ColumnedCards>
 </AnimatedPage>
 

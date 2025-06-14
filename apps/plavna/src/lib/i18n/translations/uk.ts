@@ -42,7 +42,7 @@ export const UK = {
 		main_page: 'Основна',
 		delete_page: 'Видалити',
 		edit_page: 'Змінити',
-		new: 'Нова'
+		new: 'Нова сторінка'
 	},
 	articles_list: {
 		title: 'Мої статті',
