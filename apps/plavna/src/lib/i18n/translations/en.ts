@@ -41,7 +41,7 @@ export const EN = {
 		main_page: 'Default',
 		delete_page: 'Delete',
 		edit_page: 'Edit',
-		new: 'New'
+		new: 'New page'
 	},
 	articles_list: {
 		title: 'My Articles',

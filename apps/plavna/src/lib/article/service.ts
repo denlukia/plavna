@@ -4,7 +4,7 @@ import type { ImagePathAndMeta } from '@plavna/common';
 import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
 import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
-import { and, eq, isNotNull, or } from 'drizzle-orm';
+import { and, desc, eq, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { fail, superValidate } from 'sveltekit-superforms';
@@ -103,7 +103,8 @@ export class ArticleService {
 				table_translations,
 				eq(table_articles.title_translation_key, table_translations.key)
 			)
-			.where(eq(table_articles.user_id, actor.id));
+			.where(eq(table_articles.user_id, actor.id))
+			.orderBy(desc(table_articles.id));
 
 		const forms = query.map(({ title_translation, ...article }) => ({
 			title_translation_key: title_translation?.key,

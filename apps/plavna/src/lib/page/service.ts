@@ -1,6 +1,6 @@
 import { defaultThemeSet, type ThemeSet } from '@plavna/design/theming/basics';
 import { error } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { SECTIONS_PER_PAGE } from '$lib/common/config';
@@ -123,6 +123,7 @@ export class PageService {
 			.select()
 			.from(table_pages)
 			.where(eq(table_pages.user_id, actor.id))
+			.orderBy(desc(table_pages.id))
 			.all();
 		const pageItems = await Promise.all(
 			query.map(async (page) => {
