@@ -222,6 +222,7 @@
 		color: var(--text-color);
 		text-shadow: 0 -1px 0px #fff6;
 		hyphens: auto;
+		text-wrap: balance;
 	}
 
 	.title.heading-1 {

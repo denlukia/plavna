@@ -134,6 +134,9 @@
 
 				{#if tags.length > 0}
 					<TagsList {tags} {tagsInText} onTagClick={switchTagInText} />
+					<Label tone="additional">
+						<Translation key="page_actor.section.add_tags_on_article_creation" />
+					</Label>
 				{:else}
 					<div class="info-block-wrapper">
 						<InfoBlock>

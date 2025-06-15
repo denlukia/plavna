@@ -1,3 +1,4 @@
+import { defaultThemeSet } from '@plavna/design/theming/basics';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -14,7 +15,15 @@ export const pageInsertSchema = createInsertSchema(table_pages);
 
 // Form Validators
 export const pageCreationFormSchema = pageInsertSchema.omit({ user_id: true }).extend({
-	slug: pageSlugValidator
+	slug: pageSlugValidator,
+	color_theme: pageSelectSchema.shape.color_theme.default(defaultThemeSet.color),
+	style_theme: pageSelectSchema.shape.style_theme.default(defaultThemeSet.style),
+	typography_interface_theme: pageSelectSchema.shape.typography_interface_theme.default(
+		defaultThemeSet.typographyInterface
+	),
+	typography_markdown_theme: pageSelectSchema.shape.typography_markdown_theme.default(
+		defaultThemeSet.typographyMarkdown
+	)
 });
 export const pageUpdatingFormSchema = pageCreationFormSchema.required({ id: true });
 export const pageDeletionFormSchema = pageSelectSchema.pick({ id: true }); // TODO: Maybe simplify to simple key type?
