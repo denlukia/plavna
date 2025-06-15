@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Typography } from '@plavna/design/components';
+	import { getGlobalTypographyClass, Typography } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { SystemTranslationKey } from '$lib/i18n/types';
@@ -53,8 +53,12 @@
 	{:else}
 		{@html translation}
 	{/if}
-{:else if markdown}
-	<Typography size="body" purpose="markdown" tone="additional">{noTranslationText}</Typography>
+	<!-- {:else if markdown}
+	<Typography size="body" purpose="markdown" tone="additional">{noTranslationText}</Typography> -->
 {:else}
-	<span class="global-text-additional">{noTranslationText}</span>
+	<span
+		class="global-text-additional {getGlobalTypographyClass(markdown ? 'markdown' : 'interface')}"
+	>
+		{noTranslationText}
+	</span>
 {/if}

@@ -5,8 +5,8 @@
 	type Props = HTMLLabelAttributes & {
 		children: Snippet;
 		customClass?: string;
-		as?: 'label' | 'span' | 'div';
-		kind?: 'for-checkbox' | 'for-switch';
+		as?: 'label' | 'span' | 'div' | 'legend';
+		kind?: 'for-checkbox' | 'for-switch' | 'for-radiogroup' | 'for-radioinput';
 		size?: 'body' | 'small';
 		href?: string;
 	};
@@ -37,8 +37,23 @@
 		align-items: flex-end;
 		flex-direction: row;
 		gap: var(--size-labeled-input-checkbox-wrapper-gap);
+	}
+	.labeled.for-radiogroup {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		margin-bottom: var(--size-s);
 
-		/* For Checkbox */
+		--label-padding-inline: 0;
+	}
+	.labeled.for-radiogroup :global(.label:first-of-type) {
+		margin-bottom: var(--size-xs);
+	}
+	.labeled.for-radioinput {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--size-labeled-input-checkbox-wrapper-gap);
 	}
 	.labeled.for-checkbox.size-body {
 		--checkbox-margin-top: var(--size-labeled-checkbox-body-margin-top);

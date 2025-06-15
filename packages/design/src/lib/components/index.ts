@@ -18,3 +18,4 @@ export * from './Spacer';
 export * from './Switch';
 export * from './Tabs';
 export * from './Typography';
+export * from './RadioButton';

@@ -41,7 +41,11 @@ export const EN = {
 		main_page: 'Default',
 		delete_page: 'Delete',
 		edit_page: 'Edit',
-		new: 'New page'
+		new: 'New page',
+		themes: 'Themes',
+		color_theme: 'Color',
+		style_theme: 'Style',
+		typography_markdown_theme: 'Typography'
 	},
 	articles_list: {
 		title: 'My Articles',
@@ -67,7 +71,8 @@ export const EN = {
 			tag_name: 'Tag name',
 			no_articles: 'You have not published any articles with selected tags',
 			section_invisible:
-				"In current language this section is only visible to you,<br> because it doesn't have description translation"
+				"In current language this section is only visible to you,<br> because it doesn't have description translation",
+			add_tags_on_article_creation: 'You can create more tags while creating an article'
 		}
 	},
 	page: {
