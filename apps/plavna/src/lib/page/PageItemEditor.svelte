@@ -33,8 +33,8 @@
 
 	const mapping = [
 		['typography_markdown_theme', 'typographyMarkdown'],
-		['color_theme', 'color'],
-		['style_theme', 'style']
+		['color_theme', 'color']
+		// ['style_theme', 'style']
 	] as const;
 
 	function humanizeThemeName(theme: string) {
@@ -48,9 +48,11 @@
 	{/if}
 
 	<div class="input-group">
-		<Typography size="headline-short">
-			<Translation key="pages_list.themes" />
-		</Typography>
+		<div class="align-center">
+			<Typography size="headline-short">
+				<Translation key="pages_list.themes" />
+			</Typography>
+		</div>
 
 		<div class="theme-radiogroups">
 			{#each mapping as [category, allThemesCategory]}
@@ -73,6 +75,8 @@
 		<Errors errors={$errors.slug} />
 	</Labeled>
 
+	<Spacer />
+
 	{#if $form.id}
 		<Button formaction="?/update">
 			<Translation key="pages_list.update" />
@@ -94,5 +98,8 @@
 		display: flex;
 		gap: var(--size-l);
 		flex-wrap: wrap;
+	}
+	.align-center {
+		text-align: center;
 	}
 </style>
