@@ -28,7 +28,7 @@
 
 	let { themeSet, themeComponentSets } = $derived(data);
 
-	let isNavigating = $derived(Boolean(navigating.complete));
+	let isNavigating = $derived(Boolean(navigating.to));
 
 	const mobileNonAdaptedRoutes = [
 		'/[[lang=lang]]/[username]/[articleslug]/edit',

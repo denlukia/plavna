@@ -1,17 +1,12 @@
 <script lang="ts">
-	import { mapRange } from '@plavna/common';
 	import { cubicInOut } from 'svelte/easing';
-	import { tweened } from 'svelte/motion';
-	import { get } from 'svelte/store';
+	import { Tween } from 'svelte/motion';
 
 	const defaultColors = [
 		'var(--colorful-light-1)',
 		'var(--colorful-light-2)',
 		'var(--colorful-light-3)'
 	];
-	const defaultMaxGrowth = 2;
-	const baselineGrowth = 1;
-	const msInSecond = 1000;
 
 	type Props = {
 		loading?: boolean;
@@ -25,48 +20,27 @@
 	let {
 		loading = false,
 		colors = defaultColors,
-
-		maxGrowth = defaultMaxGrowth,
-		sinPeaksPerSecond = 3,
 		maskStyle = '',
 		lightsStyle = ''
 	}: Props = $props();
 
-	let timeSinceStart = $state(0);
-	let currentGrowth = tweened(1, { duration: 1000, easing: cubicInOut });
+	let k = new Tween(0, { easing: cubicInOut, duration: 1000 });
 
 	$effect(() => {
-		if (loading) {
-			currentGrowth.set(maxGrowth);
-		} else {
-			currentGrowth.set(1);
-		}
+		let target = loading ? 1 : 0;
+		if (k.target !== target) k.set(target);
 	});
-
-	$effect(() => {
-		function updateTime() {
-			if (get(currentGrowth) > baselineGrowth) {
-				timeSinceStart = (Date.now() / msInSecond) * sinPeaksPerSecond;
-			}
-			requestAnimationFrame(updateTime);
-		}
-
-		requestAnimationFrame(updateTime);
-	});
-
-	function getFlexGrow(index: number) {
-		const shift = Math.PI * (index / (colors.length - 1));
-		const currentSin = Math.sin(timeSinceStart - shift);
-		const mapped = mapRange(currentSin, -1, 1, baselineGrowth, get(currentGrowth));
-
-		return mapped;
-	}
 </script>
 
 <div class="mask" style={maskStyle}>
 	<div class="lights" class:loading style={lightsStyle}>
 		{#each colors as light, index}
-			<div class="light" style="--color: {light}; --grow: {getFlexGrow(index)}">
+			<div
+				class="light"
+				style="--color: {light}; --anim-name: loader-pulse-{index + 1}; --k: {k.current.toFixed(
+					2
+				)};"
+			>
 				<div class="left"></div>
 				<div class="right"></div>
 			</div>
@@ -94,10 +68,352 @@
 		height: 250px;
 	}
 	.light {
-		flex-grow: var(--grow);
 		height: 100%;
-		transition: flex-grow 100ms linear;
+		flex-grow: 1;
 		position: relative;
+		animation: var(--anim-name) 3000ms linear infinite;
+	}
+
+	@keyframes -global-loader-pulse-1 {
+		0.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
+		1.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 0%));
+		}
+		2.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 0%));
+		}
+		4.2% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 0%));
+		}
+		5.6% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 0%));
+		}
+		19.4% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 0%));
+		}
+		20.8% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 0%));
+		}
+		22.2% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 0%));
+		}
+		23.6% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0%));
+		}
+		25.0% {
+			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		}
+		26.4% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * -0.5%));
+		}
+		27.8% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * -1.2%));
+		}
+		29.2% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * -2.1%));
+		}
+		30.6% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * -3.1%));
+		}
+		44.4% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * -16.9%));
+		}
+		45.8% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * -17.9%));
+		}
+		47.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * -18.8%));
+		}
+		48.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * -19.5%));
+		}
+		50.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		51.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		52.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		54.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		55.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		69.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		70.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		72.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		73.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		75.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		76.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -19.5%));
+		}
+		77.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -18.8%));
+		}
+		79.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -17.9%));
+		}
+		80.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -16.9%));
+		}
+		94.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -3.1%));
+		}
+		95.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -2.1%));
+		}
+		97.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -1.2%));
+		}
+		98.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -0.5%));
+		}
+		100.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
+	}
+
+	@keyframes -global-loader-pulse-2 {
+		0.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
+		1.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0.5%));
+		}
+		2.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 1.2%));
+		}
+		4.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 2.1%));
+		}
+		5.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 3.1%));
+		}
+		19.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 16.9%));
+		}
+		20.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 17.9%));
+		}
+		22.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 18.8%));
+		}
+		23.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 19.5%));
+		}
+		25.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		26.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 19.5%));
+		}
+		27.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 18.8%));
+		}
+		29.2% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 17.9%));
+		}
+		30.6% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 16.9%));
+		}
+		44.4% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 3.1%));
+		}
+		45.8% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 2.1%));
+		}
+		47.2% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 1.2%));
+		}
+		48.6% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0.5%));
+		}
+		50.0% {
+			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		}
+		51.4% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * -0.5%));
+		}
+		52.8% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * -1.2%));
+		}
+		54.2% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * -2.1%));
+		}
+		55.6% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * -3.1%));
+		}
+		69.4% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * -16.9%));
+		}
+		70.8% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * -17.9%));
+		}
+		72.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * -18.8%));
+		}
+		73.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * -19.5%));
+		}
+		75.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		}
+		76.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -19.5%));
+		}
+		77.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -18.8%));
+		}
+		79.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -17.9%));
+		}
+		80.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -16.9%));
+		}
+		94.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -3.1%));
+		}
+		95.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -2.1%));
+		}
+		97.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -1.2%));
+		}
+		98.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -0.5%));
+		}
+		100.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
+	}
+
+	@keyframes -global-loader-pulse-3 {
+		0.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
+		1.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0.5%));
+		}
+		2.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 1.2%));
+		}
+		4.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 2.1%));
+		}
+		5.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 3.1%));
+		}
+		19.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 16.9%));
+		}
+		20.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 17.9%));
+		}
+		22.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 18.8%));
+		}
+		23.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 19.5%));
+		}
+		25.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		26.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		27.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		29.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		30.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		44.4% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		45.8% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		47.2% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		48.6% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		50.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		}
+		51.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 19.5%));
+		}
+		52.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 18.8%));
+		}
+		54.2% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 17.9%));
+		}
+		55.6% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 16.9%));
+		}
+		69.4% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 3.1%));
+		}
+		70.8% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 2.1%));
+		}
+		72.2% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 1.2%));
+		}
+		73.6% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0.5%));
+		}
+		75.0% {
+			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		}
+		76.4% {
+			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0%));
+		}
+		77.8% {
+			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 0%));
+		}
+		79.2% {
+			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 0%));
+		}
+		80.6% {
+			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 0%));
+		}
+		94.4% {
+			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 0%));
+		}
+		95.8% {
+			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 0%));
+		}
+		97.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 0%));
+		}
+		98.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 0%));
+		}
+		100.0% {
+			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		}
 	}
 
 	.left,
