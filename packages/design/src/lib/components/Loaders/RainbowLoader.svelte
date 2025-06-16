@@ -71,348 +71,233 @@
 		height: 100%;
 		flex-grow: 1;
 		position: relative;
-		animation: var(--anim-name) 3000ms linear infinite;
+		animation: var(--anim-name) 2000ms linear infinite;
 	}
 
 	@keyframes -global-loader-pulse-1 {
 		0.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+			transform: scaleX(calc(100% + var(--k) * 44%)) translateX(calc(var(--k) * 0%));
 		}
-		1.4% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 0%));
+		1.6% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * -0.5%));
 		}
-		2.8% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 0%));
+		3.2% {
+			transform: scaleX(calc(100% + var(--k) * 42.4%)) translateX(calc(var(--k) * -1.1%));
 		}
-		4.2% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 0%));
+		4.8% {
+			transform: scaleX(calc(100% + var(--k) * 40.7%)) translateX(calc(var(--k) * -1.9%));
 		}
-		5.6% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 0%));
+		6.4% {
+			transform: scaleX(calc(100% + var(--k) * 38.7%)) translateX(calc(var(--k) * -2.8%));
 		}
-		19.4% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 0%));
+		26.6% {
+			transform: scaleX(calc(100% + var(--k) * 6.3%)) translateX(calc(var(--k) * -17.2%));
 		}
-		20.8% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 0%));
+		28.2% {
+			transform: scaleX(calc(100% + var(--k) * 4.3%)) translateX(calc(var(--k) * -18.1%));
 		}
-		22.2% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 0%));
+		29.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.6%)) translateX(calc(var(--k) * -18.9%));
 		}
-		23.6% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0%));
+		31.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * -19.5%));
 		}
-		25.0% {
-			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		33.0% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -20%));
 		}
-		26.4% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * -0.5%));
+		34.6%,
+		36.2%,
+		37.8%,
+		39.4%,
+		59.6%,
+		61.2%,
+		62.8%,
+		64.4%,
+		66.0% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -20%));
 		}
-		27.8% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * -1.2%));
+		67.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * -19.5%));
 		}
-		29.2% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * -2.1%));
-		}
-		30.6% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * -3.1%));
-		}
-		44.4% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * -16.9%));
-		}
-		45.8% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * -17.9%));
-		}
-		47.2% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * -18.8%));
-		}
-		48.6% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * -19.5%));
-		}
-		50.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
-		}
-		51.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
-		}
-		52.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
-		}
-		54.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
-		}
-		55.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
-		}
-		69.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		69.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.5%)) translateX(calc(var(--k) * -18.9%));
 		}
 		70.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+			transform: scaleX(calc(100% + var(--k) * 4.2%)) translateX(calc(var(--k) * -18.2%));
 		}
-		72.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		72.4% {
+			transform: scaleX(calc(100% + var(--k) * 6.1%)) translateX(calc(var(--k) * -17.3%));
 		}
-		73.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		93.6% {
+			transform: scaleX(calc(100% + var(--k) * 38.9%)) translateX(calc(var(--k) * -2.7%));
 		}
-		75.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		95.2% {
+			transform: scaleX(calc(100% + var(--k) * 40.8%)) translateX(calc(var(--k) * -1.8%));
 		}
-		76.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -19.5%));
+		96.8% {
+			transform: scaleX(calc(100% + var(--k) * 42.5%)) translateX(calc(var(--k) * -1.1%));
 		}
-		77.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -18.8%));
-		}
-		79.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -17.9%));
-		}
-		80.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -16.9%));
-		}
-		94.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -3.1%));
-		}
-		95.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -2.1%));
-		}
-		97.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -1.2%));
-		}
-		98.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -0.5%));
+		98.4% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * -0.5%));
 		}
 		100.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+			transform: scaleX(calc(100% + var(--k) * 44%)) translateX(calc(var(--k) * 0%));
 		}
 	}
 
 	@keyframes -global-loader-pulse-2 {
 		0.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 20%));
 		}
-		1.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0.5%));
+		1.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * 19.5%));
 		}
-		2.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 1.2%));
+		3.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.6%)) translateX(calc(var(--k) * 18.9%));
 		}
-		4.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 2.1%));
+		4.8% {
+			transform: scaleX(calc(100% + var(--k) * 4.3%)) translateX(calc(var(--k) * 18.1%));
 		}
-		5.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 3.1%));
+		6.4% {
+			transform: scaleX(calc(100% + var(--k) * 6.3%)) translateX(calc(var(--k) * 17.2%));
 		}
-		19.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 16.9%));
+		26.6% {
+			transform: scaleX(calc(100% + var(--k) * 38.7%)) translateX(calc(var(--k) * 2.8%));
 		}
-		20.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 17.9%));
+		28.2% {
+			transform: scaleX(calc(100% + var(--k) * 40.7%)) translateX(calc(var(--k) * 1.9%));
 		}
-		22.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 18.8%));
+		29.8% {
+			transform: scaleX(calc(100% + var(--k) * 42.4%)) translateX(calc(var(--k) * 1.1%));
 		}
-		23.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 19.5%));
+		31.4% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * 0.5%));
 		}
-		25.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		33.0% {
+			transform: scaleX(calc(100% + var(--k) * 44%)) translateX(calc(var(--k) * 0%));
 		}
-		26.4% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 19.5%));
+		34.6% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * -0.5%));
 		}
-		27.8% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 18.8%));
+		36.2% {
+			transform: scaleX(calc(100% + var(--k) * 42.4%)) translateX(calc(var(--k) * -1.1%));
 		}
-		29.2% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 17.9%));
+		37.8% {
+			transform: scaleX(calc(100% + var(--k) * 40.7%)) translateX(calc(var(--k) * -1.9%));
 		}
-		30.6% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 16.9%));
+		39.4% {
+			transform: scaleX(calc(100% + var(--k) * 38.7%)) translateX(calc(var(--k) * -2.8%));
 		}
-		44.4% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 3.1%));
+		59.6% {
+			transform: scaleX(calc(100% + var(--k) * 6.3%)) translateX(calc(var(--k) * -17.2%));
 		}
-		45.8% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 2.1%));
+		61.2% {
+			transform: scaleX(calc(100% + var(--k) * 4.3%)) translateX(calc(var(--k) * -18.1%));
 		}
-		47.2% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 1.2%));
+		62.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.6%)) translateX(calc(var(--k) * -18.9%));
 		}
-		48.6% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0.5%));
+		64.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * -19.5%));
 		}
-		50.0% {
-			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		66.0% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -20%));
 		}
-		51.4% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * -0.5%));
+		67.6% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -19%));
 		}
-		52.8% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * -1.2%));
-		}
-		54.2% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * -2.1%));
-		}
-		55.6% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * -3.1%));
-		}
-		69.4% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * -16.9%));
+		69.2% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -17.8%));
 		}
 		70.8% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * -17.9%));
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -16.3%));
 		}
-		72.2% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * -18.8%));
+		72.4% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * -14.6%));
 		}
-		73.6% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * -19.5%));
+		93.6% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 14.6%));
 		}
-		75.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -20%));
+		95.2% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 16.3%));
 		}
-		76.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -19.5%));
+		96.8% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 17.8%));
 		}
-		77.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -18.8%));
-		}
-		79.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -17.9%));
-		}
-		80.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -16.9%));
-		}
-		94.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -3.1%));
-		}
-		95.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -2.1%));
-		}
-		97.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -1.2%));
-		}
-		98.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * -0.5%));
+		98.4% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 19%));
 		}
 		100.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 20%));
 		}
 	}
 
 	@keyframes -global-loader-pulse-3 {
-		0.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+		0.0%,
+		1.6%,
+		3.2%,
+		4.8%,
+		6.4%,
+		26.6%,
+		28.2%,
+		29.8%,
+		31.4%,
+		33.0% {
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 20%));
 		}
-		1.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0.5%));
+		34.6% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * 19.5%));
 		}
-		2.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 1.2%));
+		36.2% {
+			transform: scaleX(calc(100% + var(--k) * 2.6%)) translateX(calc(var(--k) * 18.9%));
 		}
-		4.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 2.1%));
+		37.8% {
+			transform: scaleX(calc(100% + var(--k) * 4.3%)) translateX(calc(var(--k) * 18.1%));
 		}
-		5.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 3.1%));
+		39.4% {
+			transform: scaleX(calc(100% + var(--k) * 6.3%)) translateX(calc(var(--k) * 17.2%));
 		}
-		19.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 16.9%));
+		59.6% {
+			transform: scaleX(calc(100% + var(--k) * 38.7%)) translateX(calc(var(--k) * 2.8%));
 		}
-		20.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 17.9%));
+		61.2% {
+			transform: scaleX(calc(100% + var(--k) * 40.7%)) translateX(calc(var(--k) * 1.9%));
 		}
-		22.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 18.8%));
+		62.8% {
+			transform: scaleX(calc(100% + var(--k) * 42.4%)) translateX(calc(var(--k) * 1.1%));
 		}
-		23.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 19.5%));
+		64.4% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * 0.5%));
 		}
-		25.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		66.0% {
+			transform: scaleX(calc(100% + var(--k) * 44%)) translateX(calc(var(--k) * 0%));
 		}
-		26.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
+		67.6% {
+			transform: scaleX(calc(100% + var(--k) * 43.9%)) translateX(calc(var(--k) * 0.5%));
 		}
-		27.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		29.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		30.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		44.4% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		45.8% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		47.2% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		48.6% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		50.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 20%));
-		}
-		51.4% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 19.5%));
-		}
-		52.8% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 18.8%));
-		}
-		54.2% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 17.9%));
-		}
-		55.6% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 16.9%));
-		}
-		69.4% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 3.1%));
+		69.2% {
+			transform: scaleX(calc(100% + var(--k) * 42.5%)) translateX(calc(var(--k) * 1.1%));
 		}
 		70.8% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 2.1%));
+			transform: scaleX(calc(100% + var(--k) * 40.8%)) translateX(calc(var(--k) * 1.8%));
 		}
-		72.2% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 1.2%));
+		72.4% {
+			transform: scaleX(calc(100% + var(--k) * 38.9%)) translateX(calc(var(--k) * 2.7%));
 		}
-		73.6% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0.5%));
+		93.6% {
+			transform: scaleX(calc(100% + var(--k) * 6.1%)) translateX(calc(var(--k) * 17.3%));
 		}
-		75.0% {
-			transform: scaleX(calc(100% + var(--k) * 50%)) translateX(calc(var(--k) * 0%));
+		95.2% {
+			transform: scaleX(calc(100% + var(--k) * 4.2%)) translateX(calc(var(--k) * 18.2%));
 		}
-		76.4% {
-			transform: scaleX(calc(100% + var(--k) * 48.8%)) translateX(calc(var(--k) * 0%));
+		96.8% {
+			transform: scaleX(calc(100% + var(--k) * 2.5%)) translateX(calc(var(--k) * 18.9%));
 		}
-		77.8% {
-			transform: scaleX(calc(100% + var(--k) * 47.1%)) translateX(calc(var(--k) * 0%));
-		}
-		79.2% {
-			transform: scaleX(calc(100% + var(--k) * 44.8%)) translateX(calc(var(--k) * 0%));
-		}
-		80.6% {
-			transform: scaleX(calc(100% + var(--k) * 42.2%)) translateX(calc(var(--k) * 0%));
-		}
-		94.4% {
-			transform: scaleX(calc(100% + var(--k) * 7.8%)) translateX(calc(var(--k) * 0%));
-		}
-		95.8% {
-			transform: scaleX(calc(100% + var(--k) * 5.2%)) translateX(calc(var(--k) * 0%));
-		}
-		97.2% {
-			transform: scaleX(calc(100% + var(--k) * 2.9%)) translateX(calc(var(--k) * 0%));
-		}
-		98.6% {
-			transform: scaleX(calc(100% + var(--k) * 1.2%)) translateX(calc(var(--k) * 0%));
+		98.4% {
+			transform: scaleX(calc(100% + var(--k) * 1.1%)) translateX(calc(var(--k) * 19.5%));
 		}
 		100.0% {
-			transform: scaleX(calc(100% + var(--k) * 0%)) translateX(calc(var(--k) * 0%));
+			transform: scaleX(calc(100%)) translateX(calc(var(--k) * 20%));
 		}
 	}
 
