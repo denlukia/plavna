@@ -36,7 +36,11 @@
 
 	function onpointerenter(e: PointerEvent) {
 		iframeShown = true;
-		pointer = { x: e.offsetX, y: e.offsetY };
+		sendPointerToIframe({ x: e.offsetX, y: e.offsetY });
+	}
+
+	function onpointermove(e: PointerEvent) {
+		sendPointerToIframe({ x: e.offsetX, y: e.offsetY });
 	}
 
 	function onpointerleave() {
@@ -47,8 +51,9 @@
 		pointer = null;
 	}
 
-	function onpointermove(e: PointerEvent) {
-		pointer = { x: e.offsetX, y: e.offsetY };
+	function sendPointerToIframe(pointer: { x: number; y: number } | null) {
+		const value = JSON.stringify(pointer);
+		iframe?.contentWindow?.postMessage({ key: 'pointer', value }, '*');
 	}
 </script>
 
@@ -57,7 +62,8 @@
 		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
 			{#if iframeShown && finalUrl}
 				<iframe
-					src={serializePreviewParams(finalUrl, { ...otherData, pointer: pointer })}
+					bind:this={iframe}
+					src={serializePreviewParams(finalUrl, { ...otherData })}
 					class="iframe"
 					class:visible={iframeVisible}
 					style="--inset: {ARTISTIC_OVERFLOW}px"

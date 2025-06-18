@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { cubicInOut } from 'svelte/easing';
-	import { Tween } from 'svelte/motion';
-
 	const defaultColors = [
 		'var(--colorful-light-1)',
 		'var(--colorful-light-2)',
@@ -15,32 +12,46 @@
 		sinPeaksPerSecond?: number;
 		maskStyle?: string;
 		lightsStyle?: string;
+		transitionDuration?: number;
 	};
 
 	let {
 		loading = false,
 		colors = defaultColors,
 		maskStyle = '',
-		lightsStyle = ''
+		lightsStyle = '',
+		transitionDuration = 500
 	}: Props = $props();
 
-	let k = new Tween(0, { easing: cubicInOut, duration: 1000 });
+	let animating = $state(false);
 
-	$effect(() => {
-		let target = loading ? 1 : 0;
-		if (k.target !== target) k.set(target);
-	});
+	function onLoadingChange(newLoading: boolean) {
+		animating = newLoading;
+	}
+
+	function debounce<T extends (...args: any[]) => any>(fn: T, delay: number) {
+		let timeout: any;
+		return (...args: any[]) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				fn(...args);
+			}, delay);
+		};
+	}
+
+	const debouncedLoadingChange = debounce(onLoadingChange, transitionDuration);
+
+	$effect(() => debouncedLoadingChange(loading));
 </script>
 
 <div class="mask" style={maskStyle}>
-	<div class="lights" class:loading style={lightsStyle}>
+	<div
+		class="lights"
+		class:animating
+		style="{lightsStyle}; --transition-duration: {transitionDuration}ms;"
+	>
 		{#each colors as light, index}
-			<div
-				class="light"
-				style="--color: {light}; --anim-name: loader-pulse-{index + 1}; --k: {k.current.toFixed(
-					2
-				)};"
-			>
+			<div class="light" style="--color: {light}; --anim-name: loader-pulse-{index + 1};">
 				<div class="left"></div>
 				<div class="right"></div>
 			</div>
@@ -49,6 +60,12 @@
 </div>
 
 <style>
+	@property --k {
+		syntax: '<number>';
+		initial-value: 0;
+		inherits: true;
+	}
+
 	.mask {
 		width: 100%;
 		display: flex;
@@ -66,12 +83,34 @@
 		flex-shrink: 1;
 		width: 750px;
 		height: 250px;
+		animation: k-outro var(--transition-duration);
+	}
+	.lights.animating {
+		animation: k-intro var(--transition-duration) forwards;
 	}
 	.light {
 		height: 100%;
 		flex-grow: 1;
 		position: relative;
 		animation: var(--anim-name) 2000ms linear infinite;
+	}
+
+	@keyframes k-intro {
+		0% {
+			--k: 0;
+		}
+		100% {
+			--k: 1;
+		}
+	}
+
+	@keyframes k-outro {
+		0% {
+			--k: 1;
+		}
+		100% {
+			--k: 0;
+		}
 	}
 
 	@keyframes -global-loader-pulse-1 {
