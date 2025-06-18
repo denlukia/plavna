@@ -1,13 +1,23 @@
 <script lang="ts">
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
+
+	import '@plavna/design/theming/styles';
+	import '$lib/reset.css';
+
 	import type { Snippet } from 'svelte';
 
-	import './reset.css';
+	import type { LayoutData } from './$types';
 
 	type Props = {
-		children?: Snippet;
+		data: LayoutData;
+		children: Snippet;
 	};
 
-	let { children }: Props = $props();
+	let { data, children }: Props = $props();
+
+	let { dsThemeComponentSet, themeSet } = $derived(data);
 </script>
 
-{@render children?.()}
+<ThemeContextProvider {themeSet} components={{ designSystem: dsThemeComponentSet }}>
+	{@render children()}
+</ThemeContextProvider>

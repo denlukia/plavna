@@ -193,8 +193,12 @@ export const EN = {
 					name: 'Custom',
 					prop_1: 'Prop 1',
 					prop_2: 'Prop 2',
+					prop_3: 'Prop 3',
+					prop_4: 'Prop 4',
 					cols: 'Cols',
-					rows: 'Rows'
+					rows: 'Rows',
+					image_1: 'Image 1',
+					image_2: 'Image 2'
 				}
 			}
 		}
