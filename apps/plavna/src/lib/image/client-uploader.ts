@@ -1,5 +1,6 @@
+import type { SupportedLang } from '@plavna/common';
 import type { ClientImageHandler as ClientImageHandlerType } from '@plavna/image-uploader/images';
-import type { ImagePathUpdateOrDeletion, SupportedLang } from '@plavna/image-uploader/types';
+import type { ImagePathUpdateOrDeletion } from '@plavna/image-uploader/types';
 import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/common/config';
 
 import type { Actor } from '../user/validators';

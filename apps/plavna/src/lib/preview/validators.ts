@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Component } from 'svelte';
-import { z, ZodEffects } from 'zod';
+import { z } from 'zod';
 import { checkTranslationKey } from '$lib/i18n/utils';
 
 import { articleInsertSchema, articleSelectSchema } from '../article/validators';
@@ -18,7 +18,6 @@ const previewRelatedFields: Partial<Record<keyof z.infer<typeof articleSelectSch
 	preview_prop_2: true,
 	preview_prop_3: true,
 	preview_prop_4: true,
-	preview_create_localized_screenshots: true,
 	preview_columns: true,
 	preview_rows: true
 };

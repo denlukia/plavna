@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 import type { ParamMatcher } from '@sveltejs/kit';
 import { isSupportedLang } from '$lib/i18n/utils';
 

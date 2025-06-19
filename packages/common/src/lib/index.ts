@@ -10,6 +10,8 @@ export type ImagePathAndMeta = {
 // ISO 639-1
 export const supportedLangs = ['en', 'uk'] as const;
 
+export type SupportedLang = (typeof supportedLangs)[number];
+
 export const ARTISTIC_OVERFLOW = 16;
 
 type Optional<T> = T | null | undefined;

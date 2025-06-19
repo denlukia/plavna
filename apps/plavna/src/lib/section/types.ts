@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 
 import type { PageSelect, ReaderPageConfig } from '../page/validators';
 import type { TagSelect, TagToArticleSelect, TagUpdate } from '../tag/validators';

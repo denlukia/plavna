@@ -61,11 +61,6 @@ export const table_articles = sqliteTable(
 				onDelete: 'set null',
 				onUpdate: 'cascade'
 			}),
-		preview_create_localized_screenshots: integer('preview_create_localized_screenshots', {
-			mode: 'boolean'
-		})
-			.notNull()
-			.default(false),
 		preview_screenshot_image_id: integer('preview_screenshot_image_id').references(
 			() => table_images.id,
 			{

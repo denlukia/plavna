@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { SupportedLang } from '@plavna/common';
 	import { Button, Input } from '@plavna/design/components';
 	import type { InputOrTextareaProps } from '@plavna/design/components';
-	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { WAIT_BEFORE_AUTOSAVE_MS } from '$lib/common/config';
 	import Translation from '$lib/i18n/Translation.svelte';

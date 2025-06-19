@@ -1,17 +1,15 @@
 import type { ResultSet } from '@libsql/client';
 import { serializePreviewParams, supportedLangs } from '@plavna/common';
-import type { ImagePathAndMeta } from '@plavna/common';
+import type { ImagePathAndMeta, SupportedLang } from '@plavna/common';
 import { ServerImageHandlerVercelEdge } from '@plavna/image-uploader/images';
-import type { SupportedLang } from '@plavna/image-uploader/types';
 import { error } from '@sveltejs/kit';
 import { and, desc, eq, isNotNull, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
-import { fail, superValidate } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
-import { ERRORS } from '$lib/errors/errors';
 import { defaultLang } from '$lib/i18n/utils';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
@@ -77,10 +75,13 @@ export class ArticleService {
 		this.translationService = translationService;
 		this.imageService = imageService;
 	}
-	private selectErrorWithTranslation(error: unknown) {
+	private selectErrorWithTranslation(error: object) {
 		let message: SystemTranslationKey = 'actor_errors.unknown_error';
 		if (error instanceof Error && detectConstraintError(error)) {
 			message = 'actor_errors.slug_in_use';
+		}
+		if ('type' in error && error.type === 'at_least_one_title') {
+			message = 'actor_errors.at_least_one_title';
 		}
 		return new ErrorWithTranslation(message);
 	}
@@ -622,10 +623,7 @@ export class ArticleService {
 				if (preview_screenshot_image_id && preview_screenshot_in_article_image_id && providerData) {
 					let queueRecordsForInsert: Array<ScreenshotsQueueInsertLocal> = [];
 
-					const langs = preview.preview_create_localized_screenshots
-						? supportedLangs
-						: [defaultLang];
-					queueRecordsForInsert = langs
+					queueRecordsForInsert = supportedLangs
 						.map((lang) => {
 							if (lang && titleTranslationObj?.[lang]) {
 								const urlConfigBase = {
@@ -723,8 +721,9 @@ export class ArticleService {
 						})
 						.filter(isNonNullable)
 						.flat();
+
 					if (queueRecordsForInsert.length === 0) {
-						return fail(403, { message: ERRORS.AT_LEAST_ONE_TITLE });
+						throw this.selectErrorWithTranslation({ type: 'at_least_one_title' });
 					}
 
 					const queueRecordsInserPromise = db
@@ -735,7 +734,7 @@ export class ArticleService {
 				}
 			}
 		} else {
-			// Delete any queues and images
+			// TODO: Delete any queues and images
 		}
 		return Promise.all(promisesToWaitFor);
 	}

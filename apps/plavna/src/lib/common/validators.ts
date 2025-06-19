@@ -1,5 +1,5 @@
 import { supportedLangs } from '@plavna/common';
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 import { z } from 'zod';
 import { SLUG_ALLOWED_CHARS_REGEX, SLUG_MAX_LENGTH, SLUG_MIN_LENGTH } from '$lib/common/config';
 import { reservedPrefixes, reservedWords } from '$lib/common/reserved-words';

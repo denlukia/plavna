@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { supportedLangs } from '@plavna/common';
+	import type { SupportedLang } from '@plavna/common';
 	import type { InputOrTextareaProps } from '@plavna/design/components';
 	import { Input } from '@plavna/design/components';
-	import { supportedLangs } from '@plavna/common';
-	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { untrack } from 'svelte';
 	import type { SuperForm } from 'sveltekit-superforms';

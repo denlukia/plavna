@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Checkbox, ColorInput, Column, Input, Label, Labeled } from '@plavna/design/components';
+	import { Column, Input, Label, Labeled, Spacer } from '@plavna/design/components';
 	import { superForm } from 'sveltekit-superforms';
+	import Errors from '$lib/errors/Errors.svelte';
 	import Translation from '$lib/i18n/Translation.svelte';
 	import LanguagedImageInput from '$lib/image/ImageInput/LanguagedImageInput.svelte';
 	import { MAX_COLS_IN_SECTION, MAX_ROWS_IN_SECTION } from '$lib/styles/grid';
@@ -103,4 +104,7 @@
 			</Labeled>
 		</Column>
 	</Column>
+
+	<Spacer type="vertical" size="l" />
+	<Errors errors={$errors} />
 </form>
