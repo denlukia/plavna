@@ -2,7 +2,7 @@ import { error, text } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { getBrowser } from '$lib/browser';
 import { BROWSER_MAX_OPENING_MS } from '$lib/constants';
-import { getPage } from '$lib/page';
+import { closePage, getPage, loadPage } from '$lib/page';
 import { reportScreenshotUpload } from '$lib/reporter';
 import { createRunner } from '$lib/runner';
 import { getScreenshot } from '$lib/screenshotter';
@@ -37,7 +37,9 @@ export const POST: RequestHandler = async ({ request }) => {
 					console.log(task.url);
 				}
 
-				const screenshot = await run(getScreenshot, page, task.url, task.width, task.height);
+				const element = await run(loadPage, page, task.url, task.width, task.height);
+				const screenshot = await run(getScreenshot, element);
+				await run(closePage, page);
 				const imageProcessed = await run(uploadScreenshot, task, screenshot);
 				const reportResponse = await run(reportScreenshotUpload, imageProcessed);
 				if (reportResponse.ok) {
@@ -46,8 +48,6 @@ export const POST: RequestHandler = async ({ request }) => {
 					throw new Error('Reporting error');
 				}
 			} catch (e: unknown) {
-				console.error(e);
-				await setTaskProcessingFailed(task);
 				error(500, String(e));
 			}
 		}

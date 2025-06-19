@@ -1,0 +1,1 @@
+ALTER TABLE `screenshots_queue` ADD `processing_started_at` integer;

@@ -1,4 +1,4 @@
-import type { ImageProviderRelatedActorData } from './types';
+import type { ImageProviderRelatedActorData } from '@plavna/common';
 
 export function selectProvider(actorData: ImageProviderRelatedActorData) {
 	const { imagekit_public_key, imagekit_private_key, imagekit_url_endpoint } = actorData;

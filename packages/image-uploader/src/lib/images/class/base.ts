@@ -1,28 +1,27 @@
+import type { ImageProviderRelatedActorData } from '@plavna/common';
 import { extractColors } from 'extract-colors';
 import ImageKit from 'imagekit-javascript';
-
-import { BYTES_IN_MB, ERRORS, DEFAULT_IMAGEKIT_UPLOAD_CONFIG, PLAVNA_FOLDER } from '../constants';
-
-import { getImageTypeAndSize } from '$lib/probe-image-size';
+import { ACTOR_DATA_PARAM_NAME } from '$lib/constants';
 import {
-	HSLToString,
 	extractorConfig,
 	finalColorToHSL,
-	findOptimalColor
+	findOptimalColor,
+	HSLToString
 } from '$lib/images/colors';
+import { getImageTypeAndSize } from '$lib/probe-image-size';
+
+import { BYTES_IN_MB, DEFAULT_IMAGEKIT_UPLOAD_CONFIG, ERRORS, PLAVNA_FOLDER } from '../constants';
+import { selectProvider } from '../provider-selector';
 import type {
-	ImageProviderRelatedActorData,
-	ImgValidationConfig,
-	ImageUploadConfig,
+	BaseUploadOptions,
+	ClientUploadCredentials,
 	ImagePathUpdateOrDeletion,
-	Uploader,
+	ImageUploadConfig,
+	ImgValidationConfig,
 	Provider,
 	SizeAndType,
-	BaseUploadOptions,
-	ClientUploadCredentials
+	Uploader
 } from '../types';
-import { ACTOR_DATA_PARAM_NAME } from '$lib/constants';
-import { selectProvider } from '../provider-selector';
 
 export abstract class ImageHandler {
 	protected file: File | null = null;

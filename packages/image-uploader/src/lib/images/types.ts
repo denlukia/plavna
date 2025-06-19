@@ -1,5 +1,5 @@
+import type { imageMock, ImageProviderRelatedActorData } from '@plavna/common';
 import type { getImageTypeAndSize } from '$lib/probe-image-size';
-import type { imageMock } from '$lib/queue';
 
 export type ImageSource = 'imagekit';
 
@@ -9,12 +9,6 @@ type ImageId = typeof imageMock.$inferSelect.id;
 export type ImgValidationConfig = {
 	formats: string[];
 	maxSizeMb: number;
-};
-
-export type ImageProviderRelatedActorData = {
-	imagekit_public_key: string | null;
-	imagekit_private_key: string | null;
-	imagekit_url_endpoint: string | null;
 };
 
 export type ImageUploadConfig = {

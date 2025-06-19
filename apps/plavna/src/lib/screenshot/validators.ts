@@ -1,5 +1,5 @@
 import { supportedLangs } from '@plavna/common';
-import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@plavna/image-uploader/queue';
+import type { ScreenshotsQueueInsert, ScreenshotsQueueSelect } from '@plavna/common';
 import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import { z } from 'zod';
 
