@@ -6,7 +6,7 @@ import { closePage, getPage, loadPage } from '$lib/page';
 import { reportScreenshotUpload } from '$lib/reporter';
 import { createRunner } from '$lib/runner';
 import { getScreenshot } from '$lib/screenshotter';
-import { clearTask, getTask, setTaskInProcessing, setTaskProcessingFailed } from '$lib/task';
+import { clearTask, getTask, setTaskInProcessing } from '$lib/task';
 import { uploadScreenshot } from '$lib/uploader';
 import { validateRequest } from '$lib/validator';
 
@@ -27,6 +27,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	// 2. If browser loaded fast then we run everything else
 	if (executionTime < BROWSER_MAX_OPENING_MS) {
 		const task = await run(getTask);
+
 		if (task) {
 			try {
 				await run(setTaskInProcessing, task);
