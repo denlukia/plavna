@@ -341,7 +341,7 @@
 	}
 
 	.fade-in-smooth {
-		animation: fade-in 800ms ease-out backwards;
+		animation: fade-in 500ms ease-out backwards;
 	}
 
 	@keyframes fade-in {
