@@ -56,5 +56,5 @@
 		"@jill64/sentry-sveltekit-edge": "^2.0.7"
 	},
 	"type": "module",
-	"packageManager": "pnpm@9.7.1"
+	"packageManager": "pnpm@10.9.0"
 }
