@@ -1,5 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 import type { Session } from 'lucia';
 import type { ArticleService } from '$lib/article/service';
 import type { TranslationService } from '$lib/i18n/service';

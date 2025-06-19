@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import type { User } from 'lucia';

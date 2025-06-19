@@ -27,7 +27,8 @@ export const UK = {
 		only_one_default_slug: 'Ви вже маєте одну основну сторінку',
 		unknown_error: 'Невідома помилка',
 		cannot_delete: 'Не вдалося видалити',
-		invalid_url: 'Невірна адреса'
+		invalid_url: 'Невірна адреса',
+		at_least_one_title: 'Стаття повинна містити заголовок хоча б однією мовою'
 	},
 	main: {
 		landing:

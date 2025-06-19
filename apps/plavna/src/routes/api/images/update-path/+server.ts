@@ -1,5 +1,6 @@
+import type { SupportedLang } from '@plavna/common';
 import { SCREENSHOTTER_ACCESS_COOKIE_NAME } from '@plavna/image-uploader/constants';
-import type { ImagePathUpdateOrDeletion, SupportedLang } from '@plavna/image-uploader/types';
+import type { ImagePathUpdateOrDeletion } from '@plavna/image-uploader/types';
 import { error, json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 

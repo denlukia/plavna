@@ -1,7 +1,5 @@
-import { supportedLangs } from '@plavna/common';
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import { supportedLangs, type SupportedLang } from '@plavna/common';
 
-import type { RecordsTranslationsState } from './state.svelte';
 import { EN } from './translations/en';
 import { UK } from './translations/uk';
 import type {

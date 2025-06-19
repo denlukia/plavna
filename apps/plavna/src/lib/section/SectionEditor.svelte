@@ -1,6 +1,6 @@
 <script lang="ts">
+	import type { SupportedLang } from '@plavna/common';
 	import { Button, InfoBlock, Label, Labeled, Typography } from '@plavna/design/components';
-	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { page } from '$app/stores';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import Translation from '$lib/i18n/Translation.svelte';

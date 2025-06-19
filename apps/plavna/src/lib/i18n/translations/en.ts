@@ -26,7 +26,8 @@ export const EN = {
 		only_one_default_slug: 'You already have one main page',
 		unknown_error: 'Unknown error',
 		cannot_delete: "Couldn't delete",
-		invalid_url: 'Invalid URL'
+		invalid_url: 'Invalid URL',
+		at_least_one_title: 'Article should have title at least in one language'
 	},
 	main: {
 		landing:

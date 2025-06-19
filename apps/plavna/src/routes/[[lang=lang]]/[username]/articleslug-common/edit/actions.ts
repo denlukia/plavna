@@ -141,7 +141,11 @@ async function update_preview(event: RequestEvent) {
 		}
 	}
 
-	await articleService.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
+	try {
+		await articleService.updatePreview(articleslug, form.data, imagesHandlers, keysForDeletion);
+	} catch (e) {
+		return getActionFailure(e, form, '');
+	}
 
 	return { form };
 }

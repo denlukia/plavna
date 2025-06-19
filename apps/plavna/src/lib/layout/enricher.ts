@@ -1,4 +1,4 @@
-import type { SupportedLang } from '@plavna/image-uploader/types';
+import type { SupportedLang } from '@plavna/common';
 
 export async function enrichLogo(lang: SupportedLang) {
 	try {

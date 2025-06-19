@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { ImagePathAndMeta } from '@plavna/common';
+	import type { ImagePathAndMeta, SupportedLang } from '@plavna/common';
 	import { ImageCDN, LayerFlashlight, Layers } from '@plavna/design/components';
 	import { createMouseWatcher } from '@plavna/design/reactivity';
-	import type { SupportedLang } from '@plavna/image-uploader/types';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
