@@ -3,6 +3,7 @@
 	import { ImageCDN, PreviewFoundation } from '@plavna/design/components';
 	import { dev } from '$app/environment';
 	import { env } from '$env/dynamic/public';
+	import { blur } from 'svelte/transition';
 	import Translation from '$lib/i18n/Translation.svelte';
 
 	import Typography from '../../../../../../../packages/design/src/lib/components/Typography/Typography.svelte';
@@ -63,17 +64,29 @@
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
 	{#snippet main()}
 		{#if !finalScreenshot}
-			<div class="screenshot-not-ready">
+			<span class="screenshot-not-ready">
 				<Typography size="headline-short">
 					<Translation key="layout.previews.screenshot_not_ready" />
 				</Typography>
-			</div>
+			</span>
 		{/if}
 	{/snippet}
 	{#snippet overflowing()}
 		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
+			{#if finalScreenshot}
+				<span class="image-wrapper" class:visible={imageVisible}>
+					<ImageCDN
+						pathAndMeta={finalScreenshot}
+						bgInset="{ARTISTIC_OVERFLOW}px"
+						zoomOut={false}
+						transitionDuration={overridenImageTransitionDuration}
+						fitAndCoverParent
+					/>
+				</span>
+			{/if}
 			{#if iframeShown && finalUrl}
 				<iframe
+					out:blur={{ duration: 500 }}
 					bind:this={iframe}
 					src={serializePreviewParams(finalUrl, { ...otherData })}
 					class="iframe"
@@ -82,17 +95,6 @@
 					title="preview"
 					{onload}
 				></iframe>
-			{/if}
-
-			{#if finalScreenshot}
-				<div class="image-wrapper" class:visible={imageVisible}>
-					<ImageCDN
-						pathAndMeta={finalScreenshot}
-						bgInset="{ARTISTIC_OVERFLOW}px"
-						zoomOut={false}
-						transitionDuration={overridenImageTransitionDuration}
-					/>
-				</div>
 			{/if}
 		</span>
 	{/snippet}
@@ -115,6 +117,7 @@
 		display: block;
 		height: 100%;
 		pointer-events: all;
+		position: relative;
 	}
 
 	.iframe,
@@ -125,21 +128,26 @@
 		width: 100%;
 		height: 100%;
 		pointer-events: none;
+
+		opacity: 0;
+		filter: blur(10px);
+		transition: all 500ms;
 	}
 
 	.image-wrapper {
-		visibility: hidden;
+		transition-delay: 500ms;
+	}
+	.image-wrapper.visible {
+		transition-delay: 0ms;
 	}
 
+	.iframe.visible,
 	.image-wrapper.visible {
-		visibility: visible;
+		opacity: 1;
+		filter: blur(0px);
 	}
 
 	.iframe {
 		border: none;
-		visibility: hidden;
-	}
-	.iframe.visible {
-		visibility: visible;
 	}
 </style>

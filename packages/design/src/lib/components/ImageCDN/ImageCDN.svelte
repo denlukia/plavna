@@ -14,6 +14,7 @@
 		width?: number | null;
 		height?: number | null;
 		flexibleHeight?: boolean;
+		fitAndCoverParent?: boolean;
 	};
 
 	const initialOpacity = '0.01';
@@ -27,7 +28,8 @@
 		objectFit = 'cover',
 		width,
 		height,
-		flexibleHeight
+		flexibleHeight,
+		fitAndCoverParent
 	}: Props = $props();
 	let imgElement: HTMLImageElement | null = $state(null);
 
@@ -93,7 +95,7 @@
 	});
 </script>
 
-<div class="positioner" {style}>
+<div class="positioner" class:fit-and-cover-parent={fitAndCoverParent} {style}>
 	<div
 		class="bg-wrapper"
 		class:revealed
@@ -123,6 +125,10 @@
 	.positioner {
 		position: relative;
 	}
+	.fit-and-cover-parent {
+		width: 100%;
+		height: 100%;
+	}
 
 	.image-wrapper {
 		width: 100%;
@@ -141,9 +147,6 @@
 	}
 
 	.bg {
-		/* aspect-ratio: var(--aspect-ratio);
-		width: var(--width);
-		height: var(--height); */
 		width: 100%;
 		height: 100%;
 		background: var(--background);
