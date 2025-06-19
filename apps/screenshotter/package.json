@@ -30,5 +30,6 @@
 		"@sparticuz/chromium-min": "^132.0.0",
 		"puppeteer-core": "^24.2.1",
 		"get-pixels": "^3.3.3"
-	}
+	},
+	"packageManager": "pnpm@10.9.0"
 }
