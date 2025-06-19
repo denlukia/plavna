@@ -12,7 +12,7 @@ export async function getScreenshot(page: Page, url: string, width: number, heig
 	await page.goto(url);
 
 	const previewRoot = await page.$('.preview-root');
-	await wait(500);
+	await wait(2000);
 
 	const screenshotConfig: ElementScreenshotOptions = { omitBackground: true, encoding: 'binary' };
 	const uint8Array = previewRoot
