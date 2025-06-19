@@ -70,7 +70,7 @@
 				<Layers stretch>
 					{#if img_1}
 						<div class="image">
-							<ImageCDN pathAndMeta={img_1} style="height: 100%; width: 100%; object-fit: cover" />
+							<ImageCDN pathAndMeta={img_1} fitAndCoverParent />
 						</div>
 					{/if}
 					<div class="info">
