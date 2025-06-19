@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { type PreviewDataProp } from '@plavna/common';
-	import { Layers, Typography, type TextSizes } from '@plavna/design/components';
+	import {
+		CustomPreviewWrapper,
+		Layers,
+		Typography,
+		type TextSizes
+	} from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
 
-	import CustomPreviewWrapper from '../../../../../packages/design/src/lib/components/Preview/CustomPreviewWrapper.svelte';
+	import EmojiFont from './seguiemj-1.35-flat.ttf?inline';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -72,7 +77,7 @@
 
 		function getText(index: number) {
 			const line = index % 2 === 0 ? line1 : line2;
-			return `<text x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
+			return `<text class="emoji-font" x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
 		}
 
 		const texts = new Array(rows).fill(null).map((_, i) => {
@@ -81,6 +86,15 @@
 
 		return `
 		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * 1.5}"  height="${size * rows * 1.3}">
+			<style type="text/css">
+				@font-face {
+					font-family: 'Segoe UI Emoji';
+					src: url('${EmojiFont}') format('truetype');
+				}
+				.emoji-font {
+					font-family: 'Segoe UI Emoji';
+				}
+			</style>
 			${texts.join('')}
 		</svg>
 	`;
@@ -142,6 +156,9 @@
 								{title_translation}
 							</Typography>
 						{/if}
+					</div>
+					<div class="emoji-svg">
+						{@html gridSvg}
 					</div>
 				</div>
 
