@@ -19,10 +19,6 @@
 			"types": "./dist/images.d.ts",
 			"default": "./dist/images.js"
 		},
-		"./queue": {
-			"types": "./dist/queue.d.ts",
-			"default": "./dist/queue.js"
-		},
 		"./constants": {
 			"types": "./dist/constants.d.ts",
 			"default": "./dist/constants.js"
@@ -41,6 +37,7 @@
 		"svelte": "^5.10.0"
 	},
 	"devDependencies": {
+		"@plavna/common": "workspace:*",
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/package": "^2.3.1",
 		"@types/probe-image-size": "^7.2.4",

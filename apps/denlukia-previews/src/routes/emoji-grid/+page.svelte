@@ -61,8 +61,8 @@
 			const { dataUrl, logicalSize } = await createEmojiCanvas(
 				emoji,
 				80,
-				viewing_in_article ? 12 : 4,
-				viewing_in_article ? 8 : 3
+				viewing_in_article ? 9 : 4,
+				viewing_in_article ? 5 : 3
 			);
 			emojiCanvasDataUrl = `url('${dataUrl}')`;
 			imageSize = `${logicalSize.width}px ${logicalSize.height}px`;
@@ -103,8 +103,7 @@
 
 		if (!ctx) throw new Error('Could not get canvas context');
 
-		// Get device pixel ratio for retina displays
-		const dpr = window.devicePixelRatio || 1;
+		const dpr = 1.5;
 
 		// Set logical canvas size
 		const logicalWidth = size * cols * 1.5;
@@ -341,7 +340,7 @@
 	}
 
 	.fade-in-smooth {
-		animation: fade-in 500ms ease-out backwards;
+		animation: fade-in 250ms backwards;
 	}
 
 	@keyframes fade-in {

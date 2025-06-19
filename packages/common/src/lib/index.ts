@@ -1,3 +1,6 @@
+import { sql } from 'drizzle-orm';
+import { blob, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+
 export type ImagePathAndMeta = {
 	id: number;
 	src: string;
@@ -180,3 +183,46 @@ export function mapRange(
 ) {
 	return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
+
+export type ImageProviderRelatedActorData = {
+	imagekit_public_key: string | null;
+	imagekit_private_key: string | null;
+	imagekit_url_endpoint: string | null;
+};
+
+// Just to reference types and declare foreign key in queue schema creator
+export const imageMock = sqliteTable('images', {
+	id: integer('id').primaryKey({ autoIncrement: true })
+});
+
+export function createScreenshotsQueueSchema(
+	langsEnum: readonly [string, ...string[]],
+	images: typeof imageMock
+) {
+	return sqliteTable('screenshots_queue', {
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		image_id: integer('image_id')
+			.notNull()
+			.references(() => images.id),
+		width: integer('width').notNull(),
+		height: integer('height').notNull(),
+		url: text('url').notNull(),
+		lang: text('lang', { enum: langsEnum }),
+		queued_at: integer('queued_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(strftime('%s', 'now'))`),
+		processing_attempts: integer('processing_attempts').notNull().default(0),
+		processing_running: integer('processing_running', { mode: 'boolean' }).notNull().default(false),
+		processing_started_at: integer('processing_started_at', { mode: 'timestamp' }),
+		imageProviderData: blob('image_provider_data', { mode: 'json' })
+			.notNull()
+			.$type<ImageProviderRelatedActorData>()
+	});
+}
+
+export type ScreenshotsQueueSelect = ReturnType<
+	typeof createScreenshotsQueueSchema
+>['$inferSelect'];
+export type ScreenshotsQueueInsert = ReturnType<
+	typeof createScreenshotsQueueSchema
+>['$inferInsert'];

@@ -1,9 +1,9 @@
-import { supportedLangs } from '@plavna/common';
 import {
 	createScreenshotsQueueSchema,
+	supportedLangs,
 	type ScreenshotsQueueInsert,
 	type ScreenshotsQueueSelect
-} from '@plavna/image-uploader/queue';
+} from '@plavna/common';
 import { assert, type TypeEqualityGuard } from '@plavna/image-uploader/types';
 import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
