@@ -3,6 +3,9 @@
 	import { ImageCDN, PreviewFoundation } from '@plavna/design/components';
 	import { dev } from '$app/environment';
 	import { env } from '$env/dynamic/public';
+	import Translation from '$lib/i18n/Translation.svelte';
+
+	import Typography from '../../../../../../../packages/design/src/lib/components/Typography/Typography.svelte';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -36,7 +39,11 @@
 
 	function onpointerenter(e: PointerEvent) {
 		iframeShown = true;
-		pointer = { x: e.offsetX, y: e.offsetY };
+		sendPointerToIframe({ x: e.offsetX, y: e.offsetY });
+	}
+
+	function onpointermove(e: PointerEvent) {
+		sendPointerToIframe({ x: e.offsetX, y: e.offsetY });
 	}
 
 	function onpointerleave() {
@@ -47,17 +54,28 @@
 		pointer = null;
 	}
 
-	function onpointermove(e: PointerEvent) {
-		pointer = { x: e.offsetX, y: e.offsetY };
+	function sendPointerToIframe(pointer: { x: number; y: number } | null) {
+		const value = JSON.stringify(pointer);
+		iframe?.contentWindow?.postMessage({ key: 'pointer', value }, '*');
 	}
 </script>
 
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
+	{#snippet main()}
+		{#if !finalScreenshot}
+			<div class="screenshot-not-ready">
+				<Typography size="headline-short">
+					<Translation key="layout.previews.screenshot_not_ready" />
+				</Typography>
+			</div>
+		{/if}
+	{/snippet}
 	{#snippet overflowing()}
 		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
 			{#if iframeShown && finalUrl}
 				<iframe
-					src={serializePreviewParams(finalUrl, { ...otherData, pointer: pointer })}
+					bind:this={iframe}
+					src={serializePreviewParams(finalUrl, { ...otherData })}
 					class="iframe"
 					class:visible={iframeVisible}
 					style="--inset: {ARTISTIC_OVERFLOW}px"
@@ -81,6 +99,18 @@
 </PreviewFoundation>
 
 <style>
+	.screenshot-not-ready {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--size-2xl);
+		text-wrap: balance;
+		text-align: center;
+		color: var(--color-text-additional);
+		background: var(--warm-300-transparent-100);
+		pointer-events: none;
+	}
 	.preview {
 		display: block;
 		height: 100%;

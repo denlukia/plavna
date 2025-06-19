@@ -10,7 +10,10 @@ export const EN = {
 		or: 'or',
 		save: 'Save',
 		only_for_big_screens: 'This Plavna page is available only for bigger screens for now',
-		new_article: 'New article'
+		new_article: 'New article',
+		previews: {
+			screenshot_not_ready: 'Preview should be ready in a minute'
+		}
 	},
 	actor_errors: {
 		disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',
@@ -193,8 +196,12 @@ export const EN = {
 					name: 'Custom',
 					prop_1: 'Prop 1',
 					prop_2: 'Prop 2',
+					prop_3: 'Prop 3',
+					prop_4: 'Prop 4',
 					cols: 'Cols',
-					rows: 'Rows'
+					rows: 'Rows',
+					image_1: 'Image 1',
+					image_2: 'Image 2'
 				}
 			}
 		}

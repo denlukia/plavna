@@ -1,12 +1,12 @@
 import { getContext, setContext } from 'svelte';
 
-import type { ThemeSet } from './constants';
+import type { ThemeSet } from './basics';
 
-const contextName = 'themeSet';
+const themeSetContextName = 'themeSet';
 
 export function createThemeContext(themeSet: ThemeSet) {
-	return setContext(contextName, themeSet);
+	return setContext(themeSetContextName, themeSet);
 }
 export function getThemeContext() {
-	return getContext<ThemeSet | undefined>(contextName);
+	return getContext<ThemeSet | undefined>(themeSetContextName);
 }

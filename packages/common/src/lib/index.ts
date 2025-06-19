@@ -37,7 +37,6 @@ export type PreviewDataProp = {
 	url: Optional<string>;
 	width?: Optional<number>;
 	height?: Optional<number>;
-	pointer?: { x: number; y: number } | null;
 };
 
 export function serializePreviewParams(baseUrl: string | undefined, params: PreviewDataProp) {

@@ -1,13 +1,31 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
 
-	import './reset.css';
+	import '@plavna/design/theming/styles';
+	import '$lib/reset.css';
+
+	import { createPointerContext, updatePointerFromWindowMessages } from '@plavna/design/reactivity';
+	import { onMount, type Snippet } from 'svelte';
+
+	import type { LayoutData } from './$types';
 
 	type Props = {
-		children?: Snippet;
+		data: LayoutData;
+		children: Snippet;
 	};
 
-	let { children }: Props = $props();
+	let { data, children }: Props = $props();
+
+	let { dsThemeComponentSet, themeSet } = $derived(data);
+
+	createPointerContext();
+
+	onMount(() => {
+		const cleanup = updatePointerFromWindowMessages();
+		return cleanup;
+	});
 </script>
 
-{@render children?.()}
+<ThemeContextProvider {themeSet} components={{ designSystem: dsThemeComponentSet }}>
+	{@render children()}
+</ThemeContextProvider>

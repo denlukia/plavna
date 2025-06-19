@@ -11,7 +11,10 @@ export const UK = {
 		or: 'або',
 		save: 'Онов.',
 		only_for_big_screens: 'Наразі ця сторінка в Плавна доступна лише для більших екранів',
-		new_article: 'Нова стаття'
+		new_article: 'Нова стаття',
+		previews: {
+			screenshot_not_ready: 'Передогляд має бути готовий за хвилину'
+		}
 	},
 	actor_errors: {
 		disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',
@@ -140,7 +143,7 @@ export const UK = {
 			section_label: 'Передогляд',
 			new: 'Новий',
 			template_new_form_title: 'Новий передогляд',
-			template_editing_form_title: 'Редагування передогляду',
+			template_editing_form_title: 'Ред. передогляду',
 			create: 'Створити',
 			update: 'Оновити',
 			set_and_update: 'Обрати й оновити',
@@ -193,8 +196,12 @@ export const UK = {
 					name: 'Власне',
 					prop_1: 'Параметр 1',
 					prop_2: 'Параметр 2',
+					prop_3: 'Параметр 3',
+					prop_4: 'Параметр 4',
 					cols: 'Cтовпців',
-					rows: 'Рядків'
+					rows: 'Рядків',
+					image_1: 'Зображення 1',
+					image_2: 'Зображення 2'
 				}
 			}
 		}

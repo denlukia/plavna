@@ -1,7 +1,8 @@
+import { deserializePreviewParams } from '@plavna/common';
 import type { ThemeSet } from '@plavna/design/theming/basics';
 import { enrichThemes } from '@plavna/design/theming/enricher';
 
-export async function load() {
+export async function load({ url }) {
 	const themeSet: ThemeSet = {
 		color: 'milk',
 		style: 'modern',
@@ -11,8 +12,5 @@ export async function load() {
 
 	const dsThemeComponentSet = await enrichThemes(null, themeSet);
 
-	return {
-		themeSet,
-		dsThemeComponentSet
-	};
+	return { ...deserializePreviewParams(url.toString()), themeSet, dsThemeComponentSet };
 }
