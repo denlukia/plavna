@@ -10,7 +10,10 @@ export const EN = {
 		or: 'or',
 		save: 'Save',
 		only_for_big_screens: 'This Plavna page is available only for bigger screens for now',
-		new_article: 'New article'
+		new_article: 'New article',
+		previews: {
+			screenshot_not_ready: 'Preview should be ready in a minute'
+		}
 	},
 	actor_errors: {
 		disallowed_chars: 'Only small latin letters, numbers and "-" are allowed',

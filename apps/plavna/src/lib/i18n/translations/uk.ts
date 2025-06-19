@@ -11,7 +11,10 @@ export const UK = {
 		or: 'або',
 		save: 'Онов.',
 		only_for_big_screens: 'Наразі ця сторінка в Плавна доступна лише для більших екранів',
-		new_article: 'Нова стаття'
+		new_article: 'Нова стаття',
+		previews: {
+			screenshot_not_ready: 'Передогляд має бути готовий за хвилину'
+		}
 	},
 	actor_errors: {
 		disallowed_chars: 'Підходять тільки латинські літери, цифри та "-"',

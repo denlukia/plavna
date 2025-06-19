@@ -24,8 +24,6 @@
 		viewing_in_article
 	} = $derived(data);
 
-	$inspect(data);
-
 	let pointer = getPointerContext();
 
 	let rect = $state({ width: 200, height: 100 });
@@ -42,10 +40,11 @@
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
-	let gridSvg = getEmojiSVG(emoji, 90, 4, 3);
+	let gridSvg = getEmojiSVG(emoji, 80, viewing_in_article ? 12 : 4, viewing_in_article ? 8 : 3);
 	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
 
 	function getSpotlightFromPointer() {
+		// if (viewing_in_article) return { x: 0 - rect.width / 2.2, y: 0 + rect.height / 2.25 };
 		if (!pointer?.current) return null;
 		return {
 			x: pointer.current.x - rect.width / 1.7,
@@ -121,7 +120,7 @@
 
 				{#if spotlight}
 					<div
-						transition:fade
+						out:fade={{ duration: 1000 }}
 						class="emoji-layers advanced-layers"
 						style={`
 						--spotlight-x: ${spotlight.x.toFixed(0)}px;
@@ -150,7 +149,7 @@
 			</Layers>
 		</div>
 	{/snippet}
-</PreviewFoundation>
+</CustomPreviewWrapper>
 
 <style>
 	.preview {
@@ -246,6 +245,7 @@
 	.title {
 		color: var(--text-color);
 		text-shadow: 0 -1px 0px #fff6;
+		text-wrap-style: balance;
 	}
 
 	.title.heading-1 {
@@ -256,5 +256,18 @@
 	}
 	.title.headline-short {
 		padding: 0 var(--size-m) var(--size-m-to-l);
+	}
+
+	.advanced-layers {
+		animation: fade-in 1000ms backwards;
+	}
+
+	@keyframes fade-in {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

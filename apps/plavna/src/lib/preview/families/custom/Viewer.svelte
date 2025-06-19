@@ -3,6 +3,9 @@
 	import { ImageCDN, PreviewFoundation } from '@plavna/design/components';
 	import { dev } from '$app/environment';
 	import { env } from '$env/dynamic/public';
+	import Translation from '$lib/i18n/Translation.svelte';
+
+	import Typography from '../../../../../../../packages/design/src/lib/components/Typography/Typography.svelte';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -58,6 +61,15 @@
 </script>
 
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
+	{#snippet main()}
+		{#if !finalScreenshot}
+			<div class="screenshot-not-ready">
+				<Typography size="headline-short">
+					<Translation key="layout.previews.screenshot_not_ready" />
+				</Typography>
+			</div>
+		{/if}
+	{/snippet}
 	{#snippet overflowing()}
 		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
 			{#if iframeShown && finalUrl}
@@ -87,6 +99,18 @@
 </PreviewFoundation>
 
 <style>
+	.screenshot-not-ready {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--size-2xl);
+		text-wrap: balance;
+		text-align: center;
+		color: var(--color-text-additional);
+		background: var(--warm-300-transparent-100);
+		pointer-events: none;
+	}
 	.preview {
 		display: block;
 		height: 100%;
