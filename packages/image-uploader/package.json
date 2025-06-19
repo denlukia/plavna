@@ -34,23 +34,23 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^5.10.0"
+		"svelte": "^5.28.2"
 	},
 	"devDependencies": {
 		"@plavna/common": "workspace:*",
-		"@sveltejs/kit": "^2.7.2",
+		"@sveltejs/kit": "^2.20.7",
 		"@sveltejs/package": "^2.3.1",
 		"@types/probe-image-size": "^7.2.4",
-		"publint": "^0.1.16",
-		"svelte": "^5.10.0",
+		"publint": "0.3.12",
+		"svelte": "^5.28.2",
 		"svelte-check": "^4.0.5",
-		"vite": "^5.4.11",
+		"vite": "^6.2.5",
 		"ndarray": "^1.0.19"
 	},
 	"type": "module",
 	"dependencies": {
 		"extract-colors": "^4.0.6",
 		"imagekit-javascript": "^2.0.0",
-		"drizzle-orm": "^0.36.3"
+		"drizzle-orm": "^0.44.2"
 	}
 }
