@@ -7,6 +7,7 @@
 		type TextSizes
 	} from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
 
@@ -45,11 +46,31 @@
 	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
-	let gridSvg = getEmojiSVG(emoji, 80, viewing_in_article ? 12 : 4, viewing_in_article ? 8 : 3);
-	let urlEncodedGridSvg = encodeSvgForUrl(gridSvg);
+	// Canvas-related state
+	let fontLoaded = $state(false);
+	let emojiCanvasDataUrl = $state<string>('');
+	let canvasReady = $state(false);
+	let loadedFont: FontFace | null = null;
+	let imageSize = $state<string>('');
+
+	// Load font and create canvas when component mounts or dependencies change
+	$effect(async () => {
+		if (emoji && cols && rows) {
+			canvasReady = false; // Reset canvas ready state
+			await loadEmojiFont();
+			const { dataUrl, logicalSize } = await createEmojiCanvas(
+				emoji,
+				80,
+				viewing_in_article ? 12 : 4,
+				viewing_in_article ? 8 : 3
+			);
+			emojiCanvasDataUrl = `url('${dataUrl}')`;
+			imageSize = `${logicalSize.width}px ${logicalSize.height}px`;
+			canvasReady = true; // Mark canvas as ready
+		}
+	});
 
 	function getSpotlightFromPointer() {
-		// if (viewing_in_article) return { x: 0 - rect.width / 2.2, y: 0 + rect.height / 2.25 };
 		if (!pointer?.current) return null;
 		return {
 			x: pointer.current.x - rect.width / 1.7,
@@ -57,52 +78,85 @@
 		};
 	}
 
-	function getEmojiSVG(emoji: string, size: number, cols: number, rows: number) {
-		let pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
-		let [first, ...other] = pattern1;
-		let pattern2 = other.concat(first);
+	async function loadEmojiFont(): Promise<void> {
+		if (loadedFont) return;
 
-		let line1 = Array(cols)
-			.fill(null)
-			.map((_, i) => pattern1[i % pattern1.length])
-			.join(' ');
-		let line2 = Array(cols)
-			.fill(null)
-			.map((_, i) => pattern2[i % pattern2.length])
-			.join(' ');
-
-		function splitEmoji(string: string) {
-			return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
+		try {
+			loadedFont = new FontFace('CustomSegoeEmoji', `url(${EmojiFont})`);
+			await loadedFont.load();
+			document.fonts.add(loadedFont);
+			fontLoaded = true;
+		} catch (error) {
+			console.warn('Failed to load custom emoji font, falling back to system fonts:', error);
+			fontLoaded = true; // Continue with system fonts
 		}
-
-		function getText(index: number) {
-			const line = index % 2 === 0 ? line1 : line2;
-			return `<text class="emoji-font" x="0" y="${index * size * 1.3 + size}" font-size="${size}">${line}</text>`;
-		}
-
-		const texts = new Array(rows).fill(null).map((_, i) => {
-			return getText(i);
-		});
-
-		return `
-		<svg xmlns="http://www.w3.org/2000/svg" width="${size * cols * 1.5}"  height="${size * rows * 1.3}">
-			<style type="text/css">
-				@font-face {
-					font-family: 'Segoe UI Emoji';
-					src: url('${EmojiFont}') format('truetype');
-				}
-				.emoji-font {
-					font-family: 'Segoe UI Emoji';
-				}
-			</style>
-			${texts.join('')}
-		</svg>
-	`;
 	}
 
-	function encodeSvgForUrl(svgString: string) {
-		const replaced = encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22');
-		return `url('data:image/svg+xml,${replaced}')`;
+	async function createEmojiCanvas(
+		emoji: string,
+		size: number,
+		cols: number,
+		rows: number
+	): Promise<{ dataUrl: string; logicalSize: { width: number; height: number } }> {
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+
+		if (!ctx) throw new Error('Could not get canvas context');
+
+		// Get device pixel ratio for retina displays
+		const dpr = window.devicePixelRatio || 1;
+
+		// Set logical canvas size
+		const logicalWidth = size * cols * 1.5;
+		const logicalHeight = size * rows * 1.3;
+
+		// Set actual canvas size for retina
+		canvas.width = logicalWidth * dpr;
+		canvas.height = logicalHeight * dpr;
+
+		// Set CSS size to maintain logical dimensions
+		canvas.style.width = `${logicalWidth}px`;
+		canvas.style.height = `${logicalHeight}px`;
+
+		// Scale the context to match device pixel ratio
+		ctx.scale(dpr, dpr);
+
+		// Set up font with scaled size
+		const fontFamily = loadedFont
+			? 'CustomSegoeEmoji, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif'
+			: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif';
+
+		ctx.font = `${size}px ${fontFamily}`;
+		ctx.textBaseline = 'bottom';
+		ctx.textAlign = 'left';
+		ctx.fillStyle = '#000'; // This will be masked anyway
+
+		// Split emoji into segments
+		const pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
+		const [first, ...other] = pattern1;
+		const pattern2 = other.concat(first);
+
+		// Create alternating lines - start from bottom
+		for (let row = 0; row < rows; row++) {
+			const pattern = row % 2 === 0 ? pattern1 : pattern2;
+			// Calculate Y position from bottom: bottom of canvas minus row offset
+			const y = logicalHeight - (rows - 1 - row) * size * 1.3;
+
+			for (let col = 0; col < cols; col++) {
+				const emojiChar = pattern[col % pattern.length];
+				const x = col * size * 1.5;
+				ctx.fillText(emojiChar, x, y);
+			}
+		}
+
+		return {
+			dataUrl: canvas.toDataURL(),
+			logicalSize: { width: logicalWidth, height: logicalHeight }
+		};
+	}
+
+	function splitEmoji(string: string) {
+		return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
 	}
 
 	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
@@ -115,36 +169,49 @@
 			return 'headline-short';
 		}
 	}
+
+	// Cleanup on destroy
+	onMount(() => {
+		return () => {
+			if (loadedFont) {
+				document.fonts.delete(loadedFont);
+			}
+		};
+	});
 </script>
 
 <CustomPreviewWrapper>
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
 			<Layers stretch>
-				<div
-					class="emoji-layers"
-					bind:contentRect={rect}
-					style={`
-							--emoji-base-color: ${emojiBaseColor};
-							--image-url: ${urlEncodedGridSvg}; 
-						`}
-				>
-					<div class="emoji-base"></div>
-				</div>
-
-				{#if spotlight}
+				{#if canvasReady}
 					<div
-						out:fade={{ duration: 1000 }}
-						class="emoji-layers advanced-layers"
+						class="emoji-layers fade-in-smooth"
+						bind:contentRect={rect}
 						style={`
-						--spotlight-x: ${spotlight.x.toFixed(0)}px;
-						--spotlight-y: ${spotlight.y.toFixed(0)}px;
-						--image-url: ${urlEncodedGridSvg}; 
-					`}
+								--emoji-base-color: ${emojiBaseColor};
+								--image-url: ${emojiCanvasDataUrl}; 
+								--image-size: ${imageSize};
+							`}
 					>
-						<div class="emoji-clear"></div>
-						<div class="emoji-rainbow"></div>
+						<div class="emoji-base"></div>
 					</div>
+
+					{#if spotlight}
+						<div
+							out:fade={{ duration: 1000 }}
+							class="emoji-layers fade-in-smooth"
+							style={`
+							--spotlight-x: ${spotlight.x.toFixed(0)}px;
+							--spotlight-y: ${spotlight.y.toFixed(0)}px;
+							--image-url: ${emojiCanvasDataUrl}; 
+							--image-size: ${imageSize};
+						`}
+						>
+							<div class="emoji-clear"></div>
+							<div class="emoji-rainbow"></div>
+						</div>
+					{/if}
 				{/if}
 
 				<div class="info global-fix-overflow">
@@ -152,13 +219,9 @@
 					<div class="title {titleSize}">
 						{#if title_translation}
 							<Typography size={titleSize} purpose="markdown">
-								<!-- <BasicMarkdown source={title_translation} /> -->
 								{title_translation}
 							</Typography>
 						{/if}
-					</div>
-					<div class="emoji-svg">
-						{@html gridSvg}
 					</div>
 				</div>
 
@@ -201,11 +264,13 @@
 		mask-image: var(--image-url);
 		mask-position: bottom left;
 		mask-repeat: no-repeat;
+		mask-size: var(--image-size);
 	}
 
 	.emoji-base {
 		background-color: var(--emoji-base-color);
 	}
+
 	.emoji-rainbow {
 		opacity: 0.2;
 
@@ -275,8 +340,8 @@
 		padding: 0 var(--size-m) var(--size-m-to-l);
 	}
 
-	.advanced-layers {
-		animation: fade-in 1000ms backwards;
+	.fade-in-smooth {
+		animation: fade-in 800ms ease-out backwards;
 	}
 
 	@keyframes fade-in {
