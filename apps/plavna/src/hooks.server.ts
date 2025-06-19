@@ -1,4 +1,3 @@
-import { init } from '@jill64/sentry-sveltekit-edge/server';
 import type { Handle } from '@sveltejs/kit';
 import { ArticleService } from '$lib/article/service';
 import { TranslationService } from '$lib/i18n/service';
@@ -11,12 +10,7 @@ import { TagService } from '$lib/tag/service';
 import { lucia } from '$lib/user/auth';
 import { ActorService } from '$lib/user/service';
 
-const { onHandle, onError } = init(
-	'https://378a9658ae1cc68c845e4b8be36dfee0@o4509407519965184.ingest.de.sentry.io/4509407521603664',
-	{ sentryOptions: { tracesSampleRate: 1 } }
-);
-
-export const myHandle: Handle = async ({ event, resolve }) => {
+export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
 	locals.lang = getLang(params.lang);
@@ -74,9 +68,3 @@ export const myHandle: Handle = async ({ event, resolve }) => {
 		transformPageChunk: ({ html }) => html.replace('%lang%', locals.lang)
 	});
 };
-
-export const handle = onHandle(myHandle);
-
-export const handleError = onError((e) => {
-	// Your Error Handler
-});
