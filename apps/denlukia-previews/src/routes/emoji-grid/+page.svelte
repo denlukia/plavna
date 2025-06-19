@@ -1,9 +1,11 @@
 <script lang="ts">
-	import type { PreviewDataProp } from '@plavna/common';
-	import { Layers, PreviewFoundation, Typography, type TextSizes } from '@plavna/design/components';
+	import { type PreviewDataProp } from '@plavna/common';
+	import { Layers, Typography, type TextSizes } from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
+
+	import CustomPreviewWrapper from '../../../../../packages/design/src/lib/components/Preview/CustomPreviewWrapper.svelte';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -102,7 +104,7 @@
 	}
 </script>
 
-<PreviewFoundation>
+<CustomPreviewWrapper>
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
 			<Layers stretch>
