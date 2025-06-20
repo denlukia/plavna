@@ -295,7 +295,7 @@
 
 		background-position: var(--spotlight-x) var(--spotlight-y);
 		background-repeat: no-repeat;
-		transition: opacity 500ms;
+		transition: opacity 1000ms;
 	}
 
 	.emoji-clear {
@@ -308,7 +308,7 @@
 		mask-position: var(--spotlight-x) var(--spotlight-y);
 		mask-repeat: no-repeat;
 		opacity: 1;
-		transition: opacity 500ms;
+		transition: opacity 1000ms;
 	}
 
 	.shadow {
@@ -340,7 +340,7 @@
 	}
 
 	.fade-in-smooth {
-		animation: fade-in 250ms backwards;
+		animation: fade-in 1000ms backwards;
 	}
 
 	@keyframes fade-in {
