@@ -61,8 +61,8 @@
 			const { dataUrl, logicalSize } = await createEmojiCanvas(
 				emoji,
 				80,
-				viewing_in_article ? 9 : 4,
-				viewing_in_article ? 5 : 3
+				viewing_in_article ? 9 : cols * 2,
+				viewing_in_article ? 5 : rows * 2
 			);
 			emojiCanvasDataUrl = `url('${dataUrl}')`;
 			imageSize = `${logicalSize.width}px ${logicalSize.height}px`;

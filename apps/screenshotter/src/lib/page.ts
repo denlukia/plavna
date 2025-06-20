@@ -15,7 +15,7 @@ export async function loadPage(page: Page, url: string, width: number, height: n
 
 	await page.goto(url);
 
-	await wait(1000);
+	await wait(1250);
 
 	const previewRoot = await page.$('.preview-root');
 
