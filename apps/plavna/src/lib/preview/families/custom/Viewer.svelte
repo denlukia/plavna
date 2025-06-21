@@ -4,6 +4,7 @@
 	import { dev } from '$app/environment';
 	import { env } from '$env/dynamic/public';
 	import Translation from '$lib/i18n/Translation.svelte';
+	import ImageWrapper from '$lib/preview/ImageWrapper.svelte';
 
 	import Iframe from './Iframe.svelte';
 
@@ -62,15 +63,16 @@
 	{#snippet overflowing()}
 		<span class="preview" {onpointerenter} {onpointerleave} {onpointermove}>
 			{#if finalScreenshot}
-				<span class="image-wrapper" class:visible={!iframeReady}>
+				<ImageWrapper visible={!iframeReady}>
 					<ImageCDN
 						pathAndMeta={finalScreenshot}
 						bgInset="{ARTISTIC_OVERFLOW}px"
 						zoomOut={false}
 						transitionDuration={overridenImageTransitionDuration}
 						fitAndCoverParent
+						objectFit="stretch"
 					/>
-				</span>
+				</ImageWrapper>
 			{/if}
 			{#if iframeShown && finalUrl}
 				<Iframe
@@ -102,29 +104,5 @@
 		height: 100%;
 		pointer-events: all;
 		position: relative;
-	}
-
-	.image-wrapper {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-
-		opacity: 0;
-		filter: blur(10px);
-
-		transition:
-			filter 750ms 0ms,
-			opacity 750ms 375ms;
-	}
-
-	.image-wrapper.visible {
-		opacity: 1;
-		filter: blur(0px);
-		transition:
-			filter 750ms 0ms,
-			opacity 750ms 0ms;
 	}
 </style>

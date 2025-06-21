@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { ThemeContextProvider } from '@plavna/design/theming/components';
-
 	import '@plavna/design/theming/styles';
 	import '$lib/reset.css';
 
@@ -14,9 +12,7 @@
 		children: Snippet;
 	};
 
-	let { data, children }: Props = $props();
-
-	let { dsThemeComponentSet, themeSet } = $derived(data);
+	let { children }: Props = $props();
 
 	createPointerContext();
 
@@ -26,6 +22,4 @@
 	});
 </script>
 
-<ThemeContextProvider {themeSet} components={{ designSystem: dsThemeComponentSet }}>
-	{@render children()}
-</ThemeContextProvider>
+{@render children()}

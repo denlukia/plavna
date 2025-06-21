@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { type PreviewDataProp } from '@plavna/common';
 	import {
 		CustomPreviewWrapper,
 		Layers,
@@ -7,17 +6,14 @@
 		type TextSizes
 	} from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
+	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
 
 	import EmojiFont from './seguiemj-1.35-flat.ttf?inline';
 
-	type Props = {
-		data: PreviewDataProp;
-	};
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	let {
 		title_translation,
@@ -27,7 +23,9 @@
 		prop_2: textColor,
 		prop_3: emojiBaseColorProp,
 		prop_4: emojiProp,
-		viewing_in_article
+		viewing_in_article,
+		themeSet,
+		dsThemeComponentSet
 	} = $derived(data);
 
 	let pointer = getPointerContext();
@@ -179,56 +177,58 @@
 	});
 </script>
 
-<CustomPreviewWrapper>
-	{#snippet main()}
-		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
-			<Layers stretch>
-				{#if canvasReady}
-					<div
-						class="emoji-layers fade-in-smooth"
-						bind:contentRect={rect}
-						style={`
+<ThemeContextProvider {themeSet} components={{ designSystem: dsThemeComponentSet }}>
+	<CustomPreviewWrapper>
+		{#snippet main()}
+			<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
+				<Layers stretch>
+					{#if canvasReady}
+						<div
+							class="emoji-layers fade-in-smooth"
+							bind:contentRect={rect}
+							style={`
 								--emoji-base-color: ${emojiBaseColor};
 								--image-url: ${emojiCanvasDataUrl}; 
 								--image-size: ${imageSize};
 							`}
-					>
-						<div class="emoji-base"></div>
-					</div>
+						>
+							<div class="emoji-base"></div>
+						</div>
 
-					{#if spotlight}
-						<div
-							out:fade={{ duration: 1000 }}
-							class="emoji-layers fade-in-smooth"
-							style={`
+						{#if spotlight}
+							<div
+								out:fade={{ duration: 1000 }}
+								class="emoji-layers fade-in-smooth"
+								style={`
 							--spotlight-x: ${spotlight.x.toFixed(0)}px;
 							--spotlight-y: ${spotlight.y.toFixed(0)}px;
 							--image-url: ${emojiCanvasDataUrl}; 
 							--image-size: ${imageSize};
 						`}
-						>
-							<div class="emoji-clear"></div>
-							<div class="emoji-rainbow"></div>
-						</div>
-					{/if}
-				{/if}
-
-				<div class="info global-fix-overflow">
-					<div class="top"></div>
-					<div class="title {titleSize}">
-						{#if title_translation}
-							<Typography size={titleSize} purpose="markdown">
-								{title_translation}
-							</Typography>
+							>
+								<div class="emoji-clear"></div>
+								<div class="emoji-rainbow"></div>
+							</div>
 						{/if}
-					</div>
-				</div>
+					{/if}
 
-				<div class="shadow"></div>
-			</Layers>
-		</div>
-	{/snippet}
-</CustomPreviewWrapper>
+					<div class="info global-fix-overflow">
+						<div class="top"></div>
+						<div class="title {titleSize}">
+							{#if title_translation}
+								<div class="custom-typography {titleSize}">
+									{title_translation}
+								</div>
+							{/if}
+						</div>
+					</div>
+
+					<div class="shadow"></div>
+				</Layers>
+			</div>
+		{/snippet}
+	</CustomPreviewWrapper>
+</ThemeContextProvider>
 
 <style>
 	.preview {
@@ -341,6 +341,106 @@
 
 	.fade-in-smooth {
 		animation: fade-in 1000ms backwards;
+	}
+
+	.custom-typography {
+		--text-heading-font-family: 'Inter Variable', -system-ui, sans-serif;
+	}
+
+	.custom-typography.heading-1 {
+		/* --text-heading-1-font-family: var(--text-heading-font-family);
+		--text-heading-1-padding-top: 0;
+		--text-heading-1-padding-bottom: 0;
+		--text-heading-1-size: 62px;
+		--text-heading-1-weight: 900;
+		--text-heading-1-line-height: 56px;
+		--text-heading-1-letter-spacing: -0.01em; */
+
+		font-family: var(--text-heading-font-family);
+		padding-top: 0;
+		padding-bottom: 0;
+		font-size: 62px;
+		font-weight: 900;
+		line-height: 56px;
+		letter-spacing: -0.01em;
+
+		@media (max-width: 540px) {
+			/* --text-heading-1-padding-top: 0;
+		--text-heading-1-padding-bottom: 0;
+		--text-heading-1-size: 34px;
+		--text-heading-1-line-height: 32px;
+		--text-heading-1-letter-spacing: -0.01em; */
+
+			padding-top: 0;
+			padding-bottom: 0;
+			font-size: 34px;
+			line-height: 32px;
+			letter-spacing: -0.01em;
+		}
+	}
+
+	.custom-typography.heading-2 {
+		/* --text-heading-2-font-family: var(--text-heading-font-family);
+		--text-heading-2-padding-top: 1px;
+		--text-heading-2-padding-bottom: 3px;
+		--text-heading-2-size: 30px;
+		--text-heading-2-weight: 750;
+		--text-heading-2-line-height: 32px;
+		--text-heading-2-letter-spacing: -0.01em; */
+
+		font-family: var(--text-heading-font-family);
+		padding-top: 1px;
+		padding-bottom: 3px;
+		font-size: 30px;
+		font-weight: 750;
+		line-height: 32px;
+		letter-spacing: -0.01em;
+
+		@media (max-width: 540px) {
+			/* --text-heading-2-padding-top: 1px;
+		--text-heading-2-padding-bottom: 3px;
+		--text-heading-2-size: 24px;
+		--text-heading-2-line-height: 24px;
+		--text-heading-2-letter-spacing: -0.01em; */
+
+			padding-top: 1px;
+			padding-bottom: 3px;
+			font-size: 24px;
+			line-height: 24px;
+			letter-spacing: -0.01em;
+		}
+	}
+
+	.custom-typography.headline {
+		/* --text-headline-font-family: var(--text-heading-font-family);
+		--text-headline-padding-top: 3px;
+		--text-headline-padding-bottom: 1px;
+		--text-headline-size: 18px;
+		--text-headline-weight: 750;
+		--text-headline-line-height: 28px;
+		--text-headline-letter-spacing: 0; */
+
+		font-family: var(--text-heading-font-family);
+		padding-top: 3px;
+		padding-bottom: 1px;
+		font-size: 18px;
+		font-weight: 750;
+		line-height: 28px;
+		letter-spacing: 0;
+
+		@media (max-width: 540px) {
+			/* --text-headline-padding-top: 3px;
+		--text-headline-padding-bottom: 1px;
+		--text-headline-size: 18px;
+		--text-headline-line-height: 28px;
+		--text-headline-letter-spacing: 0; */
+
+			padding-top: 3px;
+			padding-bottom: 1px;
+			font-size: 18px;
+			line-height: 28px;
+			letter-spacing: 0;
+		}
 	}
 
 	@keyframes fade-in {
