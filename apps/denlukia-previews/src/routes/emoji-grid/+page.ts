@@ -7,7 +7,7 @@ export async function load({ url }) {
 		color: 'milk',
 		style: 'modern',
 		typographyInterface: 'inter',
-		typographyMarkdown: 'inter-markdown'
+		typographyMarkdown: 'sequences'
 	};
 
 	const dsThemeComponentSet = await enrichThemes(null, themeSet);

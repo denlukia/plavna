@@ -2,6 +2,7 @@
 	import { ARTISTIC_OVERFLOW } from '@plavna/common';
 	import type { PreviewDataProp } from '@plavna/common';
 	import { ImageCDN, Layers, PreviewFoundation } from '@plavna/design/components';
+	import ImageWrapper from '$lib/preview/ImageWrapper.svelte';
 
 	type Props = {
 		data: PreviewDataProp;
@@ -32,25 +33,25 @@
 		<div class="preview">
 			<Layers stretch>
 				{#if !viewing_in_article && img_1}
-					<div class="image" style="--artistic-overflow: {ARTISTIC_OVERFLOW}px">
+					<ImageWrapper>
 						<ImageCDN
 							objectFit="stretch"
 							pathAndMeta={img_1}
 							bgInset="{ARTISTIC_OVERFLOW}px"
 							style="height: 100%; width: 100%;"
 						/>
-					</div>
+					</ImageWrapper>
 				{/if}
 				{@const oneOfImages = img_2 || img_1}
 				{#if viewing_in_article && oneOfImages}
-					<div class="image in-article" style="--artistic-overflow: {ARTISTIC_OVERFLOW}px">
+					<ImageWrapper inArticle>
 						<ImageCDN
 							objectFit="stretch"
 							pathAndMeta={oneOfImages}
 							bgInset="{ARTISTIC_OVERFLOW}px"
 							style="height: 100%; width: 100%;"
 						/>
-					</div>
+					</ImageWrapper>
 				{/if}
 			</Layers>
 		</div>
@@ -60,55 +61,5 @@
 <style>
 	.preview {
 		height: 100%;
-	}
-
-	.image {
-		--in-min-raw: 1025;
-		--in-max-raw: 1332;
-		--out-min-raw: 4;
-		--out-max-raw: 0;
-
-		--in-min: 1025px;
-		--in-max: 1332px;
-		--out-min: 4px;
-		--out-max: 0px;
-
-		--x: 100vw;
-
-		--inset: clamp(
-			calc(
-				calc((var(--x) - var(--in-min)) / calc(var(--in-max-raw) - var(--in-min-raw))) *
-					calc(var(--out-max-raw) - var(--out-min-raw)) + var(--out-min)
-			),
-			var(--out-max),
-			var(--out-min)
-		);
-
-		margin-left: var(--inset);
-		margin-top: var(--inset);
-
-		width: calc(100% - var(--inset) * 2);
-		height: calc(100% - var(--inset) * 2);
-		overflow: hidden;
-	}
-
-	@media (max-width: 1024px) {
-		.image {
-			--in-min-raw: 320;
-			--in-max-raw: 796;
-			--out-min-raw: 10;
-			--out-max-raw: 0;
-
-			--in-min: 320px;
-			--in-max: 796px;
-			--out-min: 10px;
-			--out-max: 0px;
-		}
-		.image.in-article {
-			--out-min-raw: 12;
-			--out-max-raw: 7;
-			--out-min: 12px;
-			--out-max: 7px;
-		}
 	}
 </style>
