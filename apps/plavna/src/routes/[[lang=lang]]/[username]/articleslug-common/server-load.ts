@@ -7,19 +7,13 @@ export const load = (async ({
 	route,
 	params,
 	parent,
-	locals: { articleService, lang, actorService, pageService }
+	locals: { articleService, lang, actorService }
 }) => {
 	const { translations, ...other } = await articleService.getOne(
 		params.username,
 		params.articleslug
 	);
 	const actor = await actorService.get();
-
-	let pageslug = '';
-	if ('pageslug' in params && typeof params.pageslug === 'string') {
-		pageslug = params.pageslug;
-	}
-	const themeSet = await pageService.getThemeSet(params.username, pageslug);
 
 	const { systemTranslations } = await parent();
 	const routeId = route.id;
@@ -32,7 +26,6 @@ export const load = (async ({
 
 	return {
 		...other,
-		themeSet,
 		routeId,
 		lang,
 		recordsTranslations: translations,

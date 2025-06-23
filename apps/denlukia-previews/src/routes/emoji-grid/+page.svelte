@@ -1,12 +1,6 @@
 <script lang="ts">
-	import {
-		CustomPreviewWrapper,
-		Layers,
-		Typography,
-		type TextSizes
-	} from '@plavna/design/components';
+	import { CustomPreviewWrapper, Layers } from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
-	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
@@ -23,9 +17,7 @@
 		prop_2: textColor,
 		prop_3: emojiBaseColorProp,
 		prop_4: emojiProp,
-		viewing_in_article,
-		themeSet,
-		dsThemeComponentSet
+		viewing_in_article
 	} = $derived(data);
 
 	let pointer = getPointerContext();
@@ -41,7 +33,7 @@
 				: 'transparent'
 	);
 
-	let titleSize = $derived(getTitleSizeAndTemplate(cols, rows));
+	let titleSize = $derived(viewing_in_article ? 'heading-1' : 'heading-2');
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
 	// Canvas-related state
@@ -51,21 +43,17 @@
 	let loadedFont: FontFace | null = null;
 	let imageSize = $state<string>('');
 
-	// Load font and create canvas when component mounts or dependencies change
-	$effect(async () => {
-		if (emoji && cols && rows) {
-			canvasReady = false; // Reset canvas ready state
-			await loadEmojiFont();
-			const { dataUrl, logicalSize } = await createEmojiCanvas(
-				emoji,
-				80,
-				viewing_in_article ? 9 : cols * 2,
-				viewing_in_article ? 5 : rows * 2
-			);
-			emojiCanvasDataUrl = `url('${dataUrl}')`;
-			imageSize = `${logicalSize.width}px ${logicalSize.height}px`;
-			canvasReady = true; // Mark canvas as ready
-		}
+	onMount(async () => {
+		await loadEmojiFont();
+		const { dataUrl, logicalSize } = await createEmojiCanvas(
+			emoji,
+			80,
+			viewing_in_article ? 9 : cols * 2,
+			viewing_in_article ? 5 : rows * 2
+		);
+		emojiCanvasDataUrl = `url('${dataUrl}')`;
+		imageSize = `${logicalSize.width}px ${logicalSize.height}px`;
+		canvasReady = true; // Mark canvas as ready
 	});
 
 	function getSpotlightFromPointer() {
@@ -156,17 +144,6 @@
 		return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
 	}
 
-	function getTitleSizeAndTemplate(cols: number, rows: number): TextSizes {
-		if (viewing_in_article) {
-			return 'heading-1';
-		}
-		if (cols > 1 && rows > 1) {
-			return 'heading-2';
-		} else {
-			return 'headline-short';
-		}
-	}
-
 	// Cleanup on destroy
 	onMount(() => {
 		return () => {
@@ -177,58 +154,56 @@
 	});
 </script>
 
-<ThemeContextProvider {themeSet} components={{ designSystem: dsThemeComponentSet }}>
-	<CustomPreviewWrapper>
-		{#snippet main()}
-			<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
-				<Layers stretch>
-					{#if canvasReady}
-						<div
-							class="emoji-layers fade-in-smooth"
-							bind:contentRect={rect}
-							style={`
+<CustomPreviewWrapper>
+	{#snippet main()}
+		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
+			<Layers stretch>
+				{#if canvasReady}
+					<div
+						class="emoji-layers fade-in-smooth"
+						bind:contentRect={rect}
+						style={`
 								--emoji-base-color: ${emojiBaseColor};
 								--image-url: ${emojiCanvasDataUrl}; 
 								--image-size: ${imageSize};
 							`}
-						>
-							<div class="emoji-base"></div>
-						</div>
+					>
+						<div class="emoji-base"></div>
+					</div>
 
-						{#if spotlight}
-							<div
-								out:fade={{ duration: 1000 }}
-								class="emoji-layers fade-in-smooth"
-								style={`
+					{#if spotlight}
+						<div
+							out:fade={{ duration: 1000 }}
+							class="emoji-layers fade-in-smooth"
+							style={`
 							--spotlight-x: ${spotlight.x.toFixed(0)}px;
 							--spotlight-y: ${spotlight.y.toFixed(0)}px;
 							--image-url: ${emojiCanvasDataUrl}; 
 							--image-size: ${imageSize};
 						`}
-							>
-								<div class="emoji-clear"></div>
-								<div class="emoji-rainbow"></div>
+						>
+							<div class="emoji-clear"></div>
+							<div class="emoji-rainbow"></div>
+						</div>
+					{/if}
+				{/if}
+
+				<div class="info global-fix-overflow">
+					<div class="top"></div>
+					<div class="title {titleSize}">
+						{#if title_translation}
+							<div class="custom-typography {titleSize}">
+								{title_translation}
 							</div>
 						{/if}
-					{/if}
-
-					<div class="info global-fix-overflow">
-						<div class="top"></div>
-						<div class="title {titleSize}">
-							{#if title_translation}
-								<div class="custom-typography {titleSize}">
-									{title_translation}
-								</div>
-							{/if}
-						</div>
 					</div>
+				</div>
 
-					<div class="shadow"></div>
-				</Layers>
-			</div>
-		{/snippet}
-	</CustomPreviewWrapper>
-</ThemeContextProvider>
+				<div class="shadow"></div>
+			</Layers>
+		</div>
+	{/snippet}
+</CustomPreviewWrapper>
 
 <style>
 	.preview {

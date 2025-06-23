@@ -7,7 +7,6 @@
 		GridCell,
 		GridContainer
 	} from '@plavna/design/components';
-	import { ThemeContextProvider } from '@plavna/design/theming/components';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
@@ -61,61 +60,59 @@
 	<title>{title}</title>
 </svelte:head>
 
-<ThemeContextProvider components={themeComponentSets} {themeSet}>
-	<div
-		class="back-button"
-		in:fade|global={{ duration: 400, delay: PAGE_INRO_DELAY_MS }}
-		out:fade|global={{ duration: 400 }}
-	>
-		<Button href={backToArticlesHref} kind="prominent">
-			↰ <Translation key="article.back_to_articles" />
+<div
+	class="back-button"
+	in:fade|global={{ duration: 400, delay: PAGE_INRO_DELAY_MS }}
+	out:fade|global={{ duration: 400 }}
+>
+	<Button href={backToArticlesHref} kind="prominent">
+		↰ <Translation key="article.back_to_articles" />
+	</Button>
+</div>
+
+<AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
+	<ColumnsContainer>
+		<article class="article">
+			{#if PreviewComponent}
+				<GridContainer>
+					<GridCell
+						cols={ARTICLE_OPENED_PREVIEW_COLS}
+						rows={ARTICLE_OPENED_PREVIEW_ROWS}
+						mobileCols={ARTICLE_OPENED_MOBILE_PREVIEW_COLS}
+						mobileRows={ARTICLE_OPENED_MOBILE_PREVIEW_ROWS}
+					>
+						<PreviewComponent
+							data={getPreviewData(
+								{ meta: article, tags, previewTemplateUrl },
+								recordsTranslations,
+								images,
+								user,
+								true,
+								lang
+							)}
+						/>
+					</GridCell>
+				</GridContainer>
+			{:else}
+				No preview
+			{/if}
+
+			<Column cols={2.5} style="margin-inline: auto;">
+				<div class="content">
+					<Translation recordKey={data.article.content_translation_key} markdown />
+				</div>
+			</Column>
+		</article>
+	</ColumnsContainer>
+</AnimatedPage>
+
+{#if actor && article.user_id === actor.id}
+	<div class="main-actions" out:fade|global>
+		<Button href={editHref} kind="secondary">
+			<Translation key="article_actor.edit" />
 		</Button>
 	</div>
-
-	<AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
-		<ColumnsContainer>
-			<article class="article">
-				{#if PreviewComponent}
-					<GridContainer>
-						<GridCell
-							cols={ARTICLE_OPENED_PREVIEW_COLS}
-							rows={ARTICLE_OPENED_PREVIEW_ROWS}
-							mobileCols={ARTICLE_OPENED_MOBILE_PREVIEW_COLS}
-							mobileRows={ARTICLE_OPENED_MOBILE_PREVIEW_ROWS}
-						>
-							<PreviewComponent
-								data={getPreviewData(
-									{ meta: article, tags, previewTemplateUrl },
-									recordsTranslations,
-									images,
-									user,
-									true,
-									lang
-								)}
-							/>
-						</GridCell>
-					</GridContainer>
-				{:else}
-					No preview
-				{/if}
-
-				<Column cols={2.5} style="margin-inline: auto;">
-					<div class="content">
-						<Translation recordKey={data.article.content_translation_key} markdown />
-					</div>
-				</Column>
-			</article>
-		</ColumnsContainer>
-	</AnimatedPage>
-
-	{#if actor && article.user_id === actor.id}
-		<div class="main-actions" out:fade|global>
-			<Button href={editHref} kind="secondary">
-				<Translation key="article_actor.edit" />
-			</Button>
-		</div>
-	{/if}
-</ThemeContextProvider>
+{/if}
 
 <style>
 	.main-actions {

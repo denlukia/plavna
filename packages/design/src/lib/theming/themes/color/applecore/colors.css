@@ -1,0 +1,185 @@
+:root {
+	/* ------ Palette ----- */
+	--warm-100: hsl(120, 50%, 10%);
+	--warm-900: hsl(120, 35%, 90%);
+	--warm-950: hsl(120, 31%, 95%);
+	/* --warm-950: red; */
+
+	--warm-300-transparent-100: hsla(120, 100%, 20%, 7%);
+	--warm-300-transparent-200: hsla(120, 100%, 30%, 11%);
+	--warm-300-transparent-300: hsla(120, 100%, 30%, 15%);
+	--warm-300-transparent-400: hsla(120, 100%, 30%, 20%);
+	--warm-300-transparent-500: hsla(120, 100%, 30%, 33%);
+	--warm-300-transparent-600: hsla(120, 70%, 30%, 60%);
+
+	--neutral-0: hsl(0, 0%, 0%);
+	--neutral-0-transparent-100: hsla(0, 0%, 0%, 10%);
+	--neutral-0-transparent-300: hsla(0, 0%, 0%, 25%);
+	--neutral-0-transparent-400: hsla(0, 0%, 0%, 40%);
+	--neutral-1000: hsl(0, 0%, 100%);
+	--neutral-1000-transparent-250: hsla(0, 0%, 100%, 25%);
+	--neutral-1000-transparent-500: hsla(0, 0%, 100%, 50%);
+
+	--red-200: hsl(0, 100%, 20%);
+	--red-900: hsl(0, 100%, 94%);
+	--red-800-transparent-500: hsl(0, 100%, 80%, 50%);
+	--red-300-transparent-50: hsla(0, 100%, 30%, 4%);
+	--red-300-transparent-100: hsla(0, 100%, 30%, 10%);
+	--red-300-transparent-200: hsla(0, 100%, 30%, 20%);
+	--red-300-transparent-500: hsla(0, 100%, 30%, 50%);
+	--red-200-transparent-500: hsla(0, 100%, 20%, 50%);
+
+	--orange-500: hsl(25deg, 100%, 45%);
+	--orange-500-transparent-100: hsla(25deg, 100%, 45%, 10%);
+
+	--cold-200: hsl(200, 70%, 30%);
+	--cold-200-transparent-100: hsla(200, 70%, 30%, 10%);
+	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
+
+	--colorful-light-1: hsl(32deg, 100%, 71%);
+	--colorful-light-2: hsl(162deg, 100%, 71%);
+	--colorful-light-3: hsl(338deg, 100%, 71%);
+
+	/* ------ Semantic ----- */
+	/* --- General --- */
+	--color-body-bg: var(--warm-900);
+	--color-text: var(--neutral-0);
+	--color-text-danger: var(--red-200);
+	--color-text-additional: var(--neutral-0-transparent-300);
+	--color-text-barely-visible: var(--neutral-0-transparent-100);
+
+	/* --- Main Layout */
+	--color-main-layout-bg: var(--warm-950);
+
+	/* --- Buttons --- */
+	--color-button-primary-bg: var(--neutral-1000);
+	--color-button-secondary-bg: var(--warm-300-transparent-200);
+	--color-button-prominent-bg: var(--neutral-0);
+	--color-button-destructive-bg: var(--red-900);
+	--color-button-translucent-bg: var(--neutral-0-transparent-400);
+	--color-button-translucent-destructive-bg: var(--red-200-transparent-500);
+
+	--color-button-primary-text: var(--neutral-0);
+	--color-button-secondary-text: var(--neutral-0);
+	--color-button-prominent-text: var(--neutral-1000);
+	--color-button-destructive-text: var(--red-200);
+	--color-button-translucent-text: var(--neutral-1000);
+	--color-button-translucent-destructive-text: var(--neutral-1000);
+
+	--color-button-primary-shadow-1: var(--warm-300-transparent-100);
+	--color-button-primary-shadow-2: var(--warm-300-transparent-100);
+	--color-button-prominent-shadow-1: var(--neutral-0-transparent-100);
+	--color-button-prominent-shadow-2: var(--neutral-0-transparent-100);
+	--color-button-destructive-shadow-1: var(--red-300-transparent-200);
+	--color-button-destructive-shadow-2: var(--red-300-transparent-100);
+	/* --color-button-translucent-shadow-1: var(--warm-300-transparent-100);
+	--color-button-translucent-shadow-2: var(--warm-300-transparent-100);
+	--color-button-translucent-destructive-shadow-1: var(--red-300-transparent-200);
+	--color-button-translucent-destructive-shadow-2: var(--red-300-transparent-100); */
+
+	--color-button-primary-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-button-secondary-layer-flashlight-hover: var(--neutral-1000-transparent-500);
+	--color-button-prominent-layer-flashlight-hover: var(--neutral-1000-transparent-250);
+	--color-button-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
+	--color-button-translucent-layer-flashlight-hover: var(--warm-300-transparent-100);
+	--color-button-translucent-destructive-layer-flashlight-hover: var(--red-300-transparent-100);
+
+	/* --- Button in Input */
+	--color-button-in-input-bg: var(--warm-950);
+	--color-button-in-input-shadow-1: var(--neutral-1000-transparent-500);
+	--color-button-in-input-shadow-2: var(--warm-300-transparent-400);
+	--color-button-in-input-layer-flashlight-hover: var(--neutral-1000);
+
+	/* -- Button in Tag */
+	--color-button-in-tag-bg: var(--warm-950);
+	--color-button-in-tag-shadow-1: var(--neutral-1000-transparent-500);
+	--color-button-in-tag-shadow-2: var(--warm-300-transparent-400);
+	--color-button-in-tag-layer-flashlight-hover: var(--neutral-1000);
+
+	/* --- Labeled --- */
+	--color-labeled-switch-with-bg-bg: var(--warm-300-transparent-200);
+
+	/* --- Input --- */
+	--color-input-bg: var(--warm-300-transparent-100);
+	--color-input-shadow-1: var(--warm-300-transparent-200);
+	--color-input-shadow-2: var(--neutral-1000);
+	--color-input-layer-flashlight-hover: var(--neutral-1000-transparent-500);
+	--color-input-color-picker-border: var(--neutral-1000);
+	--color-input-color-picker-shadow: var(--neutral-0-transparent-100);
+	--color-input-placeholder: var(--warm-300-transparent-500);
+
+	--color-input-invalid-bg: var(--red-300-transparent-100);
+
+	/* --- Dropdown --- */
+	--color-dropdown-bg: var(--neutral-1000);
+	--color-dropdown-text: var(--neutral-0);
+	--color-dropdown-shadow-1: var(--warm-300-transparent-100);
+	--color-dropdown-shadow-2: var(--warm-300-transparent-100);
+	--color-dropdown-layer-flashlight-hover: var(--warm-300-transparent-100);
+
+	/* --- Labeled Switch --- */
+	--color-labeled-switch-bg: var(--warm-300-transparent-100);
+
+	/* --- Switch --- */
+	--color-switch-bg: var(--warm-300-transparent-100);
+	--color-switch-shadow-1: var(--warm-300-transparent-400);
+	--color-switch-shadow-2: var(--neutral-1000);
+	--color-switch-layer-flashlight-hover: var(--neutral-1000-transparent-500);
+	--color-switch-checked-bg: var(--neutral-1000);
+	--color-switch-checked-shadow-1: var(--warm-300-transparent-200);
+	--color-switch-checked-layer-flashlight-hover: var(--warm-300-transparent-200);
+
+	/* --- Switch Handle --- */
+	--color-switch-handle-bg: transparent;
+	--color-switch-handle-shadow-1: var(--warm-300-transparent-400);
+	--color-switch-handle-border: var(--neutral-0);
+
+	/* --- Checkbox --- */
+	--color-checkbox-bg: var(--warm-300-transparent-100);
+	--color-checkbox-shadow-1: var(--warm-300-transparent-200);
+	--color-checkbox-shadow-2: var(--neutral-1000);
+	--color-checkbox-checked-bg: var(--neutral-1000);
+	--color-checkbox-checked-shadow-1: var(--warm-300-transparent-200);
+
+	--color-checkbox-lighter-bg: var(--neutral-1000-transparent-250);
+	--color-checkbox-lighter-shadow-1: var(--warm-300-transparent-200);
+	--color-checkbox-lighter-shadow-2: var(--neutral-1000);
+	--color-checkbox-lighter-checked-bg: var(--neutral-1000);
+	--color-checkbox-lighter-checked-shadow-1: var(--warm-300-transparent-200);
+
+	/* --- Tabs --- */
+	--color-tabs-bg: var(--warm-300-transparent-100);
+	--color-tabs-shadow-1: var(--warm-300-transparent-200);
+	--color-tabs-shadow-2: var(--neutral-1000);
+	--color-tabs-layer-flashlight-hover: var(--neutral-1000-transparent-500);
+
+	/* --- Tab Item --- */
+	--color-tab-item-active-bg: var(--neutral-1000);
+	--color-tab-item-active-shadow-1: var(--warm-300-transparent-100);
+	--color-tab-item-active-shadow-2: var(--warm-300-transparent-100);
+	--color-tab-item-active-layer-flashlight-hover: var(--warm-300-transparent-100);
+
+	/* --- Box --- */
+	--color-box-bg: var(--color-main-layout-bg);
+	--color-box-shadow-1: var(--warm-300-transparent-300);
+	--color-box-shadow-2: var(--warm-300-transparent-500);
+
+	/* --- Link --- */
+	--color-link: var(--cold-200);
+	--color-link-shadow: var(--cold-200-transparent-200);
+	--color-link-hovered: var(--orange-500);
+	--color-link-hovered-shadow: var(--orange-500-transparent-100);
+
+	/* --- Info Block --- */
+	--color-info-block-default-bg: var(--warm-300-transparent-100);
+	--color-info-block-default-text: var(--warm-100);
+
+	/* --- Loaders --- */
+	--color-loader-spinner-kind-primary-outer-bg: var(--neutral-1000);
+	--color-loader-spinner-kind-primary-line: var(--neutral-0);
+	--color-loader-spinner-kind-primary-shadow-1: var(--warm-300-transparent-200);
+
+	--color-loader-spinner-kind-translucent-outer-bg: var(--neutral-0-transparent-400);
+	--color-loader-spinner-kind-translucent-line: var(--neutral-1000);
+	--color-loader-spinner-kind-translucent-shadow-1: none;
+}
