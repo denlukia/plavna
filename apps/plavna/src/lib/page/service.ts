@@ -103,7 +103,11 @@ export class PageService {
 			throw this.selectErrorWithTranslation('delete', e);
 		}
 	}
-	async getThemeSet(username: string, pageslug: string): Promise<ThemeSet> {
+	async getThemeSet(username?: string, pageslug: string = ''): Promise<ThemeSet> {
+		if (!username) {
+			return defaultThemeSet;
+		}
+
 		const themes = await queryGetThemes(username, pageslug);
 
 		if (!themes) {

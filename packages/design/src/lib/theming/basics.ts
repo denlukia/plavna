@@ -4,7 +4,7 @@ export const typographyInterfaceThemes = ['inter', 'sequences', 'nyght'] as cons
 export const typographyMarkdownThemes = ['inter-markdown', 'sequences', 'nyght'] as const;
 
 export const allThemes = {
-	color: ['milk'],
+	color: ['milk', 'applecore'],
 	style: ['modern'],
 	typographyInterface: typographyInterfaceThemes,
 	typographyMarkdown: typographyMarkdownThemes
@@ -41,6 +41,9 @@ export const defaultThemeSet: ThemeSet = {
 	typographyMarkdown: 'inter-markdown'
 };
 
-export function getThemeClass(type: 'color' | 'style' | 'typography', id: string) {
+export function getThemeClass(type: 'color' | 'style' | 'typography', id?: string) {
+	if (!id) {
+		return '';
+	}
 	return `global-theme-${type}-${id}`;
 }

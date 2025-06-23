@@ -1,4 +1,3 @@
-import { defaultThemeSet } from '@plavna/design/theming/basics';
 import { selectProvider } from '@plavna/image-uploader/images';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -9,8 +8,9 @@ import { enrichLogo } from '$lib/layout/enricher.js';
 import { getSafeUserData } from '$lib/user/utils.js';
 
 export const load = async ({ params, locals }) => {
-	const { actor, lang } = locals;
-	const user = await getSafeUserData(params.username);
+	const { actor, lang, pageService } = locals;
+	const { username, pageslug } = params;
+	const user = await getSafeUserData(username);
 
 	const requiredSlices: SystemTranslationSliceKey[] = ['layout'];
 	let hasValidCredentialsSet = false;
@@ -24,11 +24,13 @@ export const load = async ({ params, locals }) => {
 
 	const logoTextSvg = await enrichLogo(lang);
 
+	const themeSet = await pageService.getThemeSet(username, pageslug);
+
 	return {
 		actor,
 		user,
 		logoTextSvg,
-		themeSet: defaultThemeSet,
+		themeSet,
 		imageProvider: {
 			hasValidCredentialsSet,
 			superValidated: await superValidate(actor, zod(imageProviderUpdateFormSchema))

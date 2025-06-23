@@ -11,7 +11,8 @@
 		RainbowLoader,
 		Typography
 	} from '@plavna/design/components';
-	import { ThemeContextProvider } from '@plavna/design/theming/components';
+	import { ThemeSetter } from '@plavna/design/theming/components';
+	import { createThemeContext } from '@plavna/design/theming/context';
 	// import { injectAnalytics } from '@vercel/analytics/sveltekit';
 
 	import { navigating, page } from '$app/state';
@@ -27,6 +28,7 @@
 	let { data, children } = $props();
 
 	let { themeSet, themeComponentSets } = $derived(data);
+	createThemeContext(themeSet);
 
 	let isNavigating = $derived(Boolean(navigating.to));
 
@@ -59,7 +61,7 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeContextProvider {themeSet} components={themeComponentSets}>
+<ThemeSetter {themeSet} {themeComponentSets}>
 	<div class="global-theme-root-element">
 		<div class="main-layout">
 			<div class="lights-wrapper">
@@ -89,7 +91,7 @@
 			</div>
 		{/if}
 	</div>
-</ThemeContextProvider>
+</ThemeSetter>
 
 <style>
 	.main-layout {

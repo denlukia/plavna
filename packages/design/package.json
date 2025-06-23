@@ -25,11 +25,11 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.28.2"
+		"svelte": "^5.34.7"
 	},
 	"devDependencies": {
 		"@plavna/common": "workspace:*",
-		"@sveltejs/kit": "^2.20.7",
+		"@sveltejs/kit": "^2.22.0",
 		"@sveltejs/package": "^2.3.1",
 		"publint": "0.3.12",
 		"svelte-check": "^4.0.5",
