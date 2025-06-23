@@ -302,6 +302,23 @@
 		color: var(--text-color);
 		text-shadow: 0 -1px 0px #fff6;
 		text-wrap-style: balance;
+
+			--size-xs: 2px;
+	--size-s: 4px;
+	--size-s-to-m: 6px;
+	--size-m: 8px;
+	--size-m-to-l: 12px;
+	--size-l: 16px;
+	--size-l-to-xl: 20px;
+	--size-xl: 24px;
+	--size-xl-to-2xl: 28px;
+	--size-2xl: 32px;
+	--size-3xl: 40px;
+	--size-3xl-to-4xl: 44px;
+	--size-4xl: 48px;
+	--size-5xl: 80px;
+	--size-6xl: 128px;
+	--size-full: 999px; 
 	}
 
 	.title.heading-1 {
