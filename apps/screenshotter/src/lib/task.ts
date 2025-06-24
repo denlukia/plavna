@@ -1,13 +1,13 @@
-import { and, asc, eq, isNull, lt, or, sql } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull, lt, or, sql } from 'drizzle-orm';
 import { ATTEMPT_REPROCESSING_AFTER_MS, MAX_PROCESSING_ATTEMPTS } from '$lib/constants';
 import { db } from '$lib/db';
 import { screenshotsQueue } from '$lib/db-schema';
 
-export async function assignYourselfTask() {
+export async function assignYourselfNTasks(n: number) {
 	// Atomically find and assign a task to this process in a single UPDATE statement
 	const minusNSeconds = new Date().getTime() - ATTEMPT_REPROCESSING_AFTER_MS;
 
-	const nextTask = db.$with('next_task').as(
+	const nextTasks = db.$with('next_task').as(
 		db
 			.select({ id: screenshotsQueue.id })
 			.from(screenshotsQueue)
@@ -21,20 +21,20 @@ export async function assignYourselfTask() {
 				)
 			)
 			.orderBy(asc(screenshotsQueue.queued_at))
-			.limit(1)
+			.limit(n)
 	);
 
 	const results = await db
-		.with(nextTask)
+		.with(nextTasks)
 		.update(screenshotsQueue)
 		.set({
 			processing_started_at: sql`(strftime('%s', 'now'))`,
 			processing_attempts: sql`${screenshotsQueue.processing_attempts} + 1`
 		})
-		.where(eq(screenshotsQueue.id, sql`(select id from ${nextTask})`))
+		.where(inArray(screenshotsQueue.id, sql`(select id from ${nextTasks})`))
 		.returning();
 
-	return results[0] || null;
+	return results;
 }
 
 export function clearTask(task: typeof screenshotsQueue.$inferSelect) {

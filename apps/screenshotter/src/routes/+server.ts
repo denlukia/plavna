@@ -5,7 +5,7 @@ import { MAX_TASKS_PER_CALL } from '$lib/constants';
 import { closePage, createPage, loadUrlOnPage } from '$lib/page';
 import { reportScreenshotUpload } from '$lib/reporter';
 import { getScreenshot } from '$lib/screenshotter';
-import { assignYourselfTask, clearTask } from '$lib/task';
+import { assignYourselfNTasks, clearTask } from '$lib/task';
 import { uploadScreenshot } from '$lib/uploader';
 import { validateRequest } from '$lib/validator';
 
@@ -16,17 +16,10 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const browser = await getBrowser();
 	let processedTasks = 0;
+	const tasks = await assignYourselfNTasks(MAX_TASKS_PER_CALL);
 
 	// Process up to MAX_TASKS_PER_CALL tasks
-	while (processedTasks < MAX_TASKS_PER_CALL) {
-		// Atomically assign yourself a task
-		const task = await assignYourselfTask();
-
-		if (!task) {
-			// No more tasks available
-			break;
-		}
-
+	for (const task of tasks) {
 		let page;
 		try {
 			// Create a fresh page for each task to avoid conflicts
