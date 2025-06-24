@@ -10,7 +10,7 @@
 	--size-main-grid-padding-inline: 16px;
 	--size-main-grid-max-width: calc(
 		var(--size-max-cell-width) * var(--size-cols-total) + var(--size-cell-gap) *
-			calc(var(--size-cols-total) - 1)
+			(var(--size-cols-total) - 1) + 2 * var(--size-main-grid-padding-inline)
 	);
 	--size-main-grid-width: calc(
 		min(var(--size-main-grid-max-width), 100vw) - 2 * var(--size-main-grid-padding-inline)

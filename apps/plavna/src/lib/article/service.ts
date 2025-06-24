@@ -10,7 +10,6 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
-import { defaultLang } from '$lib/i18n/utils';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';

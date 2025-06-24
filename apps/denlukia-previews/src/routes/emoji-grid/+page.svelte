@@ -6,8 +6,6 @@
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
 
-	import EmojiFont from './seguiemj-1.35-flat.ttf?inline';
-
 	let { data } = $props();
 
 	let {
@@ -40,19 +38,18 @@
 	let emoji = $derived(emojiProp || '👋 🌍 🚀');
 
 	// Canvas-related state
-	let fontLoaded = $state(false);
+
 	let emojiCanvasDataUrl = $state<string>('');
 	let canvasReady = $state(false);
 	let loadedFont: FontFace | null = null;
 	let imageSize = $state<string>('');
 
 	onMount(async () => {
-		await loadEmojiFont();
 		const { dataUrl, logicalSize } = await createEmojiCanvas(
 			emoji,
 			80,
-			viewing_in_article ? 9 : cols * 2,
-			viewing_in_article ? 5 : rows * 2
+			viewing_in_article ? 10 : cols * 2 + 1,
+			viewing_in_article ? 6 : rows * 2 + 1
 		);
 		emojiCanvasDataUrl = `url('${dataUrl}')`;
 		imageSize = `${logicalSize.width}px ${logicalSize.height}px`;
@@ -65,20 +62,6 @@
 			x: pointer.current.x - rect.width / 1.7,
 			y: pointer.current.y + rect.height / 6
 		};
-	}
-
-	async function loadEmojiFont(): Promise<void> {
-		if (loadedFont) return;
-
-		try {
-			loadedFont = new FontFace('CustomSegoeEmoji', `url(${EmojiFont})`);
-			await loadedFont.load();
-			document.fonts.add(loadedFont);
-			fontLoaded = true;
-		} catch (error) {
-			console.warn('Failed to load custom emoji font, falling back to system fonts:', error);
-			fontLoaded = true; // Continue with system fonts
-		}
 	}
 
 	async function createEmojiCanvas(
@@ -128,14 +111,14 @@
 			// Use pattern1 for odd rows (1, 3, 5...) and pattern2 for even rows (0, 2, 4...)
 			// This ensures the bottom row (row 0) uses pattern2, which will be offset,
 			// and row 1 uses pattern1, creating the desired alternating effect
-			const pattern = row % 2 === 1 ? pattern1 : pattern2;
+			const pattern = row % 2 === 0 ? pattern1 : pattern2;
 
 			// Calculate Y position from bottom: bottom of canvas minus row offset
-			const y = logicalHeight - (rows - 1 - row) * size * 1.3;
+			const y = logicalHeight - (rows - 1 - row) * size * 1.25;
 
 			for (let col = 0; col < cols; col++) {
 				const emojiChar = pattern[col % pattern.length];
-				const x = col * size * 1.5;
+				const x = col * size * 1.3;
 				ctx.fillText(emojiChar, x, y);
 			}
 		}
