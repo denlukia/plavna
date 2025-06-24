@@ -14,10 +14,10 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"devDependencies": {
-		"@plavna/design": "workspace:*",
-		"@plavna/common": "workspace:*",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
+		"@plavna/common": "workspace:*",
+		"@plavna/design": "workspace:*",
 		"@sveltejs/adapter-vercel": "^5.4.5",
 		"@sveltejs/kit": "^2.22.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
