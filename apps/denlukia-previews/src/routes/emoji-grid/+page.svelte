@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomPreviewWrapper, Layers } from '@plavna/design/components';
-	import { ThemeSetter } from '@plavna/design/theming/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
+	import { ThemeSetter } from '@plavna/design/theming/components';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
@@ -89,7 +89,6 @@
 	): Promise<{ dataUrl: string; logicalSize: { width: number; height: number } }> {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
-
 		if (!ctx) throw new Error('Could not get canvas context');
 
 		const dpr = 1.5;
@@ -126,7 +125,11 @@
 
 		// Create alternating lines - start from bottom
 		for (let row = 0; row < rows; row++) {
-			const pattern = row % 2 === 0 ? pattern1 : pattern2;
+			// Use pattern1 for odd rows (1, 3, 5...) and pattern2 for even rows (0, 2, 4...)
+			// This ensures the bottom row (row 0) uses pattern2, which will be offset,
+			// and row 1 uses pattern1, creating the desired alternating effect
+			const pattern = row % 2 === 1 ? pattern1 : pattern2;
+
 			// Calculate Y position from bottom: bottom of canvas minus row offset
 			const y = logicalHeight - (rows - 1 - row) * size * 1.3;
 
@@ -158,57 +161,57 @@
 </script>
 
 <ThemeSetter {themeSet} {themeComponentSets}>
-<CustomPreviewWrapper>
-	{#snippet main()}
-		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
-			<Layers stretch>
-				{#if canvasReady}
-					<div
-						class="emoji-layers fade-in-smooth"
-						bind:contentRect={rect}
-						style={`
+	<CustomPreviewWrapper>
+		{#snippet main()}
+			<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
+				<Layers stretch>
+					{#if canvasReady}
+						<div
+							class="emoji-layers fade-in-smooth"
+							bind:contentRect={rect}
+							style={`
 								--emoji-base-color: ${emojiBaseColor};
 								--image-url: ${emojiCanvasDataUrl}; 
 								--image-size: ${imageSize};
 							`}
-					>
-						<div class="emoji-base"></div>
-					</div>
+						>
+							<div class="emoji-base"></div>
+						</div>
 
-					{#if spotlight}
-						<div
-							out:fade={{ duration: 1000 }}
-							class="emoji-layers fade-in-smooth"
-							style={`
+						{#if spotlight}
+							<div
+								out:fade={{ duration: 1000 }}
+								class="emoji-layers fade-in-smooth"
+								style={`
 							--spotlight-x: ${spotlight.x.toFixed(0)}px;
 							--spotlight-y: ${spotlight.y.toFixed(0)}px;
 							--image-url: ${emojiCanvasDataUrl}; 
 							--image-size: ${imageSize};
 						`}
-						>
-							<div class="emoji-clear"></div>
-							<div class="emoji-rainbow"></div>
-						</div>
-					{/if}
-				{/if}
-
-				<div class="info global-fix-overflow">
-					<div class="top"></div>
-					<div class="title {titleSize}">
-						{#if title_translation}
-							<div class="custom-typography {titleSize}">
-								{title_translation}
+							>
+								<div class="emoji-clear"></div>
+								<div class="emoji-rainbow"></div>
 							</div>
 						{/if}
-					</div>
-				</div>
+					{/if}
 
-				<div class="shadow"></div>
-			</Layers>
-		</div>
-	{/snippet}
-</CustomPreviewWrapper>
-</ThemeSetter>		
+					<div class="info global-fix-overflow">
+						<div class="top"></div>
+						<div class="title {titleSize}">
+							{#if title_translation}
+								<div class="custom-typography {titleSize}">
+									{title_translation}
+								</div>
+							{/if}
+						</div>
+					</div>
+
+					<div class="shadow"></div>
+				</Layers>
+			</div>
+		{/snippet}
+	</CustomPreviewWrapper>
+</ThemeSetter>
 
 <style>
 	.preview {
@@ -308,22 +311,22 @@
 		text-shadow: 0 -1px 0px #fff6;
 		text-wrap-style: balance;
 
-			--size-xs: 2px;
-	--size-s: 4px;
-	--size-s-to-m: 6px;
-	--size-m: 8px;
-	--size-m-to-l: 12px;
-	--size-l: 16px;
-	--size-l-to-xl: 20px;
-	--size-xl: 24px;
-	--size-xl-to-2xl: 28px;
-	--size-2xl: 32px;
-	--size-3xl: 40px;
-	--size-3xl-to-4xl: 44px;
-	--size-4xl: 48px;
-	--size-5xl: 80px;
-	--size-6xl: 128px;
-	--size-full: 999px; 
+		--size-xs: 2px;
+		--size-s: 4px;
+		--size-s-to-m: 6px;
+		--size-m: 8px;
+		--size-m-to-l: 12px;
+		--size-l: 16px;
+		--size-l-to-xl: 20px;
+		--size-xl: 24px;
+		--size-xl-to-2xl: 28px;
+		--size-2xl: 32px;
+		--size-3xl: 40px;
+		--size-3xl-to-4xl: 44px;
+		--size-4xl: 48px;
+		--size-5xl: 80px;
+		--size-6xl: 128px;
+		--size-full: 999px;
 	}
 
 	.title.heading-1 {
