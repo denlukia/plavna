@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CustomPreviewWrapper, Layers } from '@plavna/design/components';
+	import { ThemeSetter } from '@plavna/design/theming/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -17,7 +18,9 @@
 		prop_2: textColor,
 		prop_3: emojiBaseColorProp,
 		prop_4: emojiProp,
-		viewing_in_article
+		viewing_in_article,
+		themeSet,
+		themeComponentSets
 	} = $derived(data);
 
 	let pointer = getPointerContext();
@@ -154,6 +157,7 @@
 	});
 </script>
 
+<ThemeSetter {themeSet} {themeComponentSets}>
 <CustomPreviewWrapper>
 	{#snippet main()}
 		<div class="preview" style="--bg-color: {backgroundColor}; --text-color: {textColor};">
@@ -204,6 +208,7 @@
 		</div>
 	{/snippet}
 </CustomPreviewWrapper>
+</ThemeSetter>		
 
 <style>
 	.preview {

@@ -1,16 +1,16 @@
 :root {
 	/* ------ Palette ----- */
-	--warm-100: hsl(120, 50%, 10%);
-	--warm-900: hsl(120, 35%, 90%);
-	--warm-950: hsl(120, 31%, 95%);
+	--warm-100: hsl(115, 50%, 10%);
+	--warm-900: hsl(115, 35%, 90%);
+	--warm-950: hsl(115, 31%, 95%);
 	/* --warm-950: red; */
 
-	--warm-300-transparent-100: hsla(120, 100%, 20%, 7%);
-	--warm-300-transparent-200: hsla(120, 100%, 30%, 11%);
-	--warm-300-transparent-300: hsla(120, 100%, 30%, 15%);
-	--warm-300-transparent-400: hsla(120, 100%, 30%, 20%);
-	--warm-300-transparent-500: hsla(120, 100%, 30%, 33%);
-	--warm-300-transparent-600: hsla(120, 70%, 30%, 60%);
+	--warm-300-transparent-100: hsla(115, 85%, 25%, 7%);
+	--warm-300-transparent-200: hsla(115, 85%, 25%, 11%);
+	--warm-300-transparent-300: hsla(115, 85%, 25%, 15%);
+	--warm-300-transparent-400: hsla(115, 85%, 25%, 20%);
+	--warm-300-transparent-500: hsla(115, 85%, 25%, 33%);
+	--warm-300-transparent-600: hsla(115, 50%, 25%, 60%);
 
 	--neutral-0: hsl(0, 0%, 0%);
 	--neutral-0-transparent-100: hsla(0, 0%, 0%, 10%);
