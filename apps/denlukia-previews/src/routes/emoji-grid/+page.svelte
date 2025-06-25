@@ -4,6 +4,7 @@
 	import { ThemeSetter } from '@plavna/design/theming/components';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { createEmojiCanvas } from '$lib/canvas-emojicdn.js';
 	import { interpolateHexColors } from '$lib/hex-interpolator';
 
 	let { data } = $props();
@@ -41,14 +42,13 @@
 
 	let emojiCanvasDataUrl = $state<string>('');
 	let canvasReady = $state(false);
-	let loadedFont: FontFace | null = null;
 	let imageSize = $state<string>('');
 
 	onMount(async () => {
 		const { dataUrl, logicalSize } = await createEmojiCanvas(
 			emoji,
 			80,
-			viewing_in_article ? 10 : cols * 2 + 1,
+			viewing_in_article ? 9 : cols * 2 + 1,
 			viewing_in_article ? 6 : rows * 2 + 1
 		);
 		emojiCanvasDataUrl = `url('${dataUrl}')`;
@@ -63,84 +63,6 @@
 			y: pointer.current.y + rect.height / 6
 		};
 	}
-
-	async function createEmojiCanvas(
-		emoji: string,
-		size: number,
-		cols: number,
-		rows: number
-	): Promise<{ dataUrl: string; logicalSize: { width: number; height: number } }> {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-		if (!ctx) throw new Error('Could not get canvas context');
-
-		const dpr = 1.5;
-
-		// Set logical canvas size
-		const logicalWidth = size * cols * 1.5;
-		const logicalHeight = size * rows * 1.3;
-
-		// Set actual canvas size for retina
-		canvas.width = logicalWidth * dpr;
-		canvas.height = logicalHeight * dpr;
-
-		// Set CSS size to maintain logical dimensions
-		canvas.style.width = `${logicalWidth}px`;
-		canvas.style.height = `${logicalHeight}px`;
-
-		// Scale the context to match device pixel ratio
-		ctx.scale(dpr, dpr);
-
-		// Set up font with scaled size
-		const fontFamily = loadedFont
-			? 'CustomSegoeEmoji, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif'
-			: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif';
-
-		ctx.font = `${size}px ${fontFamily}`;
-		ctx.textBaseline = 'bottom';
-		ctx.textAlign = 'left';
-		ctx.fillStyle = '#000'; // This will be masked anyway
-
-		// Split emoji into segments
-		const pattern1 = splitEmoji(emoji).filter((e) => e !== ' ');
-		const [first, ...other] = pattern1;
-		const pattern2 = other.concat(first);
-
-		// Create alternating lines - start from bottom
-		for (let row = 0; row < rows; row++) {
-			// Use pattern1 for odd rows (1, 3, 5...) and pattern2 for even rows (0, 2, 4...)
-			// This ensures the bottom row (row 0) uses pattern2, which will be offset,
-			// and row 1 uses pattern1, creating the desired alternating effect
-			const pattern = row % 2 === 0 ? pattern1 : pattern2;
-
-			// Calculate Y position from bottom: bottom of canvas minus row offset
-			const y = logicalHeight - (rows - 1 - row) * size * 1.25;
-
-			for (let col = 0; col < cols; col++) {
-				const emojiChar = pattern[col % pattern.length];
-				const x = col * size * 1.3;
-				ctx.fillText(emojiChar, x, y);
-			}
-		}
-
-		return {
-			dataUrl: canvas.toDataURL(),
-			logicalSize: { width: logicalWidth, height: logicalHeight }
-		};
-	}
-
-	function splitEmoji(string: string) {
-		return [...new Intl.Segmenter().segment(string)].map((x) => x.segment);
-	}
-
-	// Cleanup on destroy
-	onMount(() => {
-		return () => {
-			if (loadedFont) {
-				document.fonts.delete(loadedFont);
-			}
-		};
-	});
 </script>
 
 <ThemeSetter {themeSet} {themeComponentSets}>
