@@ -25,12 +25,6 @@ export const POST: RequestHandler = async ({ request }) => {
 			// Create a fresh page for each task to avoid conflicts
 			page = await createPage(browser);
 
-			// Replace preview URL if configured
-			if (env.REPLACE_PREVIEW_URL_IN && env.REPLACE_PREVIEW_URL_OUT) {
-				task.url = task.url.replace(env.REPLACE_PREVIEW_URL_IN, env.REPLACE_PREVIEW_URL_OUT);
-				console.log(task.url);
-			}
-
 			const element = await loadUrlOnPage(page, task.url, task.width, task.height);
 			const screenshot = await getScreenshot(element);
 			const imageProcessed = await uploadScreenshot(task, screenshot);
