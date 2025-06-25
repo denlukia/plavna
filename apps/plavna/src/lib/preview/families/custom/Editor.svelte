@@ -106,5 +106,8 @@
 	</Column>
 
 	<Spacer type="vertical" size="l" />
+	<Label tone="additional">
+		<Translation key="article_editor.previews.families.custom.takes_a_minute" />
+	</Label>
 	<Errors errors={$errors} />
 </form>

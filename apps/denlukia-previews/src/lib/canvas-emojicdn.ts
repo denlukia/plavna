@@ -218,7 +218,7 @@ export async function createEmojiCanvas(
 
 	// Create alternating lines - start from bottom
 	for (let row = 0; row < rows; row++) {
-		const pattern = row % 2 === 1 ? pattern1 : pattern2;
+		const pattern = row % 2 === (rows % 2 ? 0 : 1) ? pattern1 : pattern2;
 		const y = logicalHeight - (rows - 1 - row) * size * 1.3 - 10;
 
 		for (let col = 0; col < cols; col++) {

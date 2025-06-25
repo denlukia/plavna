@@ -202,7 +202,8 @@ export const EN = {
 					cols: 'Cols',
 					rows: 'Rows',
 					image_1: 'Image 1',
-					image_2: 'Image 2'
+					image_2: 'Image 2',
+					takes_a_minute: 'Custom previews take a minute to update'
 				}
 			}
 		}
