@@ -214,7 +214,7 @@
 	.title {
 		color: var(--text-color);
 		text-shadow: 0 -1px 0px #fff6;
-		text-wrap-style: balance;
+		text-wrap: balance;
 
 		--size-xs: 2px;
 		--size-s: 4px;
