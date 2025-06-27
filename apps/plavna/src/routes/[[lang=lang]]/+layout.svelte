@@ -13,8 +13,6 @@
 	} from '@plavna/design/components';
 	import { ThemeSetter } from '@plavna/design/theming/components';
 	import { createThemeContext } from '@plavna/design/theming/context';
-	// import { injectAnalytics } from '@vercel/analytics/sveltekit';
-
 	import { navigating, page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';

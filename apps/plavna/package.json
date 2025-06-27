@@ -41,6 +41,7 @@
 		"marked": "7.0.5",
 		"nanoid": "^5.0.7",
 		"oslo": "^1.2.1",
+		"posthog-js": "^1.255.1",
 		"rehype-katex": "^7.0.1",
 		"remark-math": "^6.0.0",
 		"svelte": "^5.34.7",

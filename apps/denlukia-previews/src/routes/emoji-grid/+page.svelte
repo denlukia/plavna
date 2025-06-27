@@ -36,7 +36,7 @@
 	);
 
 	let titleSize = $derived(viewing_in_article ? 'heading-1' : 'heading-2');
-	let emoji = $derived(emojiProp || '👋 🌍 🚀');
+	let emoji = $derived(emojiProp || '');
 
 	// Canvas-related state
 
