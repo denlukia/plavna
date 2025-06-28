@@ -93,13 +93,26 @@
 						/>
 					</GridCell>
 				</GridContainer>
-			{:else}
-				No preview
 			{/if}
 
 			<Column cols={2.5} style="margin-inline: auto;">
+				<div class="description">
+					<Translation
+						recordKey={data.article.description_translation_key}
+						wrapTranslation={(t) => `### ${t}`}
+						markdown
+						showNoTranslation={false}
+					/>
+				</div>
+			</Column>
+
+			<Column cols={2.5} style="margin-inline: auto;">
 				<div class="content">
-					<Translation recordKey={data.article.content_translation_key} markdown />
+					<Translation
+						recordKey={data.article.content_translation_key}
+						markdown
+						showNoTranslation={false}
+					/>
 				</div>
 			</Column>
 		</article>
@@ -142,9 +155,14 @@
 	.content {
 		margin-top: var(--size-xl);
 	}
-	.content :global(.paragraph) {
-		/* text-align: justify; */
-		/* text-wrap: balance; */
+
+	.description {
+		margin: 0 auto;
+	}
+
+	.description :global(*) {
+		margin-top: 0.5rem;
+		text-align: center;
 	}
 
 	.back-button {

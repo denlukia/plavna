@@ -27,9 +27,20 @@
 	type Props = {
 		markdown?: boolean | 'basic';
 		markdownRemoveEmptyLinks?: boolean;
+		wrapInTypography?: boolean;
+		showNoTranslation?: boolean;
+		wrapTranslation?: (md: string) => string;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
-	let { superValidated, key, recordKey, markdown = false }: Props = $props();
+	let {
+		superValidated,
+		key,
+		recordKey,
+		wrapInTypography,
+		showNoTranslation = true,
+		markdown = false,
+		wrapTranslation = (md) => md
+	}: Props = $props();
 
 	let noTranslationText = $derived(
 		getSystemTranslation('layout.no_translation', $page.data.systemTranslations) || '...'
@@ -43,22 +54,26 @@
 	}
 
 	let translation = $derived.by(getTranslation);
+
+	let wrappedTranslation = $derived(translation && wrapTranslation(translation));
 </script>
 
-{#if translation}
+{#if wrappedTranslation}
 	{#if markdown === 'basic'}
-		<BasicMarkdown source={translation} />
+		<BasicMarkdown source={wrappedTranslation} />
 	{:else if markdown}
-		<Markdown source={translation} />
+		<Markdown source={wrappedTranslation} />
 	{:else}
-		{@html translation}
+		{@html wrappedTranslation}
 	{/if}
-	<!-- {:else if markdown}
-	<Typography size="body" purpose="markdown" tone="additional">{noTranslationText}</Typography> -->
-{:else}
-	<span
-		class="global-text-additional {getGlobalTypographyClass(markdown ? 'markdown' : 'interface')}"
-	>
-		{noTranslationText}
-	</span>
+{:else if showNoTranslation}
+	{#if wrapInTypography}
+		<Typography size="body" tone="additional">{noTranslationText}</Typography>
+	{:else}
+		<span
+			class="global-text-additional {getGlobalTypographyClass(markdown ? 'markdown' : 'interface')}"
+		>
+			{noTranslationText}
+		</span>
+	{/if}
 {/if}

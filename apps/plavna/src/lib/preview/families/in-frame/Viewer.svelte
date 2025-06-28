@@ -88,9 +88,7 @@
 		padding: 20px;
 		background-color: var(--bg-color);
 	}
-	.in-article .mat {
-		padding: 40px;
-	}
+
 	.frame {
 		border: 7px solid var(--frame-color);
 		box-shadow:
@@ -98,9 +96,7 @@
 			inset 5px 5px 7px #0003,
 			inset -4px -4px 7px #fff3;
 	}
-	.in-article .frame {
-		border-width: 10px;
-	}
+
 	.light {
 		box-shadow:
 			inset 1px 1px 1px #fff5,
@@ -110,5 +106,22 @@
 		background: linear-gradient(135deg, #fff, #000);
 		opacity: 0.5;
 		mix-blend-mode: overlay;
+	}
+
+	.in-article {
+		transform: none;
+	}
+	.in-article .frame {
+		box-shadow: none;
+		border: none;
+	}
+	.in-article .mat {
+		padding: 0;
+		background-color: transparent;
+	}
+
+	.in-article .light,
+	.in-article .light-2 {
+		display: none;
 	}
 </style>

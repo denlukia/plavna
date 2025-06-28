@@ -37,8 +37,4 @@
 	.heading + :global(.heading) {
 		margin-top: 0.5em;
 	}
-
-	.heading.heading-1 + :global(.heading.heading-2) {
-		margin-top: 0.75em;
-	}
 </style>
