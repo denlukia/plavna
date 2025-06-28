@@ -6,6 +6,7 @@
 	import type { Plugin } from 'svelte-exmarkdown/types';
 
 	import { setMarkdownContext } from './markdown-context';
+	import Blockquote from './renderers/Blockquote.svelte';
 	import Em from './renderers/Em.svelte';
 	import H1 from './renderers/heading/H1.svelte';
 	import H2 from './renderers/heading/H2.svelte';
@@ -60,7 +61,8 @@
 				li: ListItem,
 				span: Span,
 				table: Table,
-				th: Th
+				th: Th,
+				blockquote: Blockquote
 			}
 		}
 	];
