@@ -10,7 +10,8 @@
 				"GITHUB_CLIENT_ID",
 				"GITHUB_PKG_AUTH_TOKEN",
 				"SCREENSHOTTER_ACCESS_TOKEN",
-				"ENABLE_EXPERIMENTAL_COREPACK"
+				"ENABLE_EXPERIMENTAL_COREPACK",
+				"SENTRY_AUTH_TOKEN"
 			],
 			"dependsOn": ["^build"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
