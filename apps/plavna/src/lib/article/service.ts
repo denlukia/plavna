@@ -782,6 +782,7 @@ export class ArticleService {
 			.leftJoin(
 				table_translations,
 				or(
+					eq(table_translations.key, table_articles.description_translation_key),
 					eq(table_translations.key, table_articles.content_translation_key),
 					eq(table_translations.key, table_tags.name_translation_key),
 					eq(table_translations.key, table_images.path_translation_key)
