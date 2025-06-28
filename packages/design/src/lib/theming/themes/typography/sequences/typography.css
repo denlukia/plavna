@@ -1,6 +1,6 @@
 :root {
 	--text-heading-font-family: 'Inter Variable', -system-ui, sans-serif;
-	--text-main-font-family: 'Source Serif 4 Variable', serif;
+	--text-main-font-family: 'EB Garamond Variable', serif;
 	--text-font-optical-sizing: auto;
 	--text-main-font-weight: 550;
 	--text-strong-font-weight: 650;
@@ -40,7 +40,7 @@
 	--text-body-font-family: var(--text-main-font-family);
 	--text-body-padding-top: 3px;
 	--text-body-padding-bottom: 1px;
-	--text-body-size: 20px;
+	--text-body-size: 22px;
 	--text-body-weight: var(--text-main-font-weight);
 	--text-body-line-height: 28px;
 	--text-body-letter-spacing: 0;
@@ -48,7 +48,7 @@
 	--text-body-short-font-family: var(--text-main-font-family);
 	--text-body-short-padding-top: 1px;
 	--text-body-short-padding-bottom: 3px;
-	--text-body-short-size: 20px;
+	--text-body-short-size: 22px;
 	--text-body-short-weight: var(--text-main-font-weight);
 	--text-body-short-line-height: 20px;
 	--text-body-short-letter-spacing: 0;
@@ -104,25 +104,25 @@
 
 		--text-body-padding-top: 3px;
 		--text-body-padding-bottom: 1px;
-		--text-body-size: 18px;
+		--text-body-size: 19px;
 		--text-body-line-height: 24px;
 		--text-body-letter-spacing: 0;
 
 		--text-body-short-padding-top: 1px;
 		--text-body-short-padding-bottom: 3px;
-		--text-body-short-size: 18px;
+		--text-body-short-size: 19px;
 		--text-body-short-line-height: 20px;
 		--text-body-short-letter-spacing: 0;
 
 		--text-small-padding-top: 1px;
 		--text-small-padding-bottom: 3px;
-		--text-small-size: 14px;
+		--text-small-size: 15px;
 		--text-small-line-height: 20px;
 		--text-small-letter-spacing: 0;
 
 		--text-small-short-padding-top: 2px;
 		--text-small-short-padding-bottom: 2px;
-		--text-small-short-size: 14px;
+		--text-small-short-size: 15px;
 		--text-small-short-line-height: 16px;
 		--text-small-short-letter-spacing: 0;
 	}

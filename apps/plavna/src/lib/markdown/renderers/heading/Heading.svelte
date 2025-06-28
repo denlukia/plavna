@@ -31,7 +31,7 @@
 		text-wrap: balance;
 	}
 	:global(.paragraph) + .heading {
-		margin-top: 1.25em;
+		margin-top: 1.5em;
 	}
 
 	.heading + :global(.heading) {

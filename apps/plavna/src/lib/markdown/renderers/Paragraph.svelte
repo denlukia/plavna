@@ -30,7 +30,7 @@
 		margin-top: 0.5em;
 	}
 	p {
-		margin-bottom: 0.75em;
+		margin-bottom: 1em;
 		hyphens: auto;
 		/* text-align: justify; */
 	}
