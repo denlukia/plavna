@@ -37,7 +37,7 @@
 	{onintrostart}
 	{onoutroend}
 	in:fade={{ duration: 0 }}
-	out:blur={{ duration: 750, amount: 10 }}
+	out:fade={{ duration: 750 }}
 	bind:this={iframe}
 	src={serializePreviewParams(url, data)}
 	class="iframe"
@@ -57,19 +57,17 @@
 		pointer-events: none;
 
 		opacity: 0;
-		filter: blur(10px);
+		/* filter: blur(10px); */
 
 		border: none;
 		transition:
-			filter 750ms 0ms,
-			opacity 750ms 375ms;
+			/* filter 750ms 0ms, */ opacity 750ms 375ms;
 	}
 
 	.iframe.ready {
 		opacity: 1;
-		filter: blur(0px);
+		/* filter: blur(0px); */
 		transition:
-			filter 750ms 0ms,
-			opacity 750ms 0ms;
+			/* filter 750ms 0ms, */ opacity 750ms 0ms;
 	}
 </style>
