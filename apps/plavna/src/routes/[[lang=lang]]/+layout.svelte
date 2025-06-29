@@ -62,6 +62,7 @@
 <ThemeSetter {themeSet} {themeComponentSets}>
 	<div class="global-theme-root-element">
 		<div class="main-layout">
+			<GridVisualizer />
 			<div class="lights-wrapper">
 				<RainbowLoader loading={isNavigating} />
 			</div>
@@ -72,7 +73,6 @@
 				</Layers>
 			</div>
 			<Footer logoTextSvg={data.logoTextSvg} />
-			<GridVisualizer />
 		</div>
 
 		{#if showAdaptivityWarning}
