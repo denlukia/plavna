@@ -13,8 +13,8 @@
 body {
 	line-height: 1.5;
 	font-synthesis: style;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	/* -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale; */
 }
 img,
 picture,
