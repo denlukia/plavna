@@ -7,11 +7,13 @@
 	--transition-layer-shift: transform 500ms;
 
 	/* --- Button --- */
-	--shadow-button-primary: 0 0px 2px var(--color-button-primary-shadow-1),
-		0 5px 10px var(--color-button-primary-shadow-2);
-	--shadow-button-prominent: 0 0px 2px var(--color-button-prominent-shadow-1),
+	--shadow-button-primary:
+		0 0px 2px var(--color-button-primary-shadow-1), 0 5px 10px var(--color-button-primary-shadow-2);
+	--shadow-button-prominent:
+		0 0px 2px var(--color-button-prominent-shadow-1),
 		0 5px 10px var(--color-button-prominent-shadow-2);
-	--shadow-button-destructive: 0 0px 2px var(--color-button-destructive-shadow-1),
+	--shadow-button-destructive:
+		0 0px 2px var(--color-button-destructive-shadow-1),
 		0 5px 10px var(--color-button-destructive-shadow-2);
 	/* --shadow-button-translucent: 0 0px 2px var(--color-button-translucent-shadow-1),
 		0 5px 10px var(--color-button-translucent-shadow-2); */
@@ -22,16 +24,19 @@
 	--transform-button-hover: translateY(-1px);
 	--transition-button: all 350ms var(--smooth-ease-out);
 
-	--shadow-button-hover-primary: 0 2px 4px var(--color-button-primary-shadow-1),
-		0 8px 10px var(--color-button-primary-shadow-2);
-	--shadow-button-hover-prominent: 0 2px 4px var(--color-button-prominent-shadow-1),
+	--shadow-button-hover-primary:
+		0 2px 4px var(--color-button-primary-shadow-1), 0 8px 10px var(--color-button-primary-shadow-2);
+	--shadow-button-hover-prominent:
+		0 2px 4px var(--color-button-prominent-shadow-1),
 		0 8px 10px var(--color-button-prominent-shadow-2);
-	--shadow-button-hover-destructive: 0 2px 4px var(--color-button-destructive-shadow-1),
+	--shadow-button-hover-destructive:
+		0 2px 4px var(--color-button-destructive-shadow-1),
 		0 8px 10px var(--color-button-destructive-shadow-2);
-	--shadow-button-hover-translucent: 0 2px 4px var(--color-button-translucent-shadow-1),
+	--shadow-button-hover-translucent:
+		0 2px 4px var(--color-button-translucent-shadow-1),
 		0 8px 10px var(--color-button-translucent-shadow-2);
-	--shadow-button-hover-translucent-destructive: 0 2px 4px
-			var(--color-button-translucent-destructive-shadow-1),
+	--shadow-button-hover-translucent-destructive:
+		0 2px 4px var(--color-button-translucent-destructive-shadow-1),
 		0 8px 10px var(--color-button-translucent-destructive-shadow-2);
 
 	--transform-button-active: translateY(1px);
@@ -40,23 +45,27 @@
 	--backdrop-filter-button-translucent-destructive: blur(10px);
 
 	/* --- Button in Input */
-	--shadow-button-in-input: inset 0 1px 1px var(--color-button-in-input-shadow-1),
+	--shadow-button-in-input:
+		inset 0 1px 1px var(--color-button-in-input-shadow-1),
 		0 1px 1px var(--color-button-in-input-shadow-2);
 	--transition-button-in-input: all 350ms var(--smooth-ease-out);
 
 	--transform-button-in-input-hover: translateY(-0.5px);
-	--shadow-button-in-input-hover: inset 0 1px 1px var(--color-button-in-input-shadow-1),
+	--shadow-button-in-input-hover:
+		inset 0 1px 1px var(--color-button-in-input-shadow-1),
 		0 2px 4px var(--color-button-in-input-shadow-2);
 
 	--transform-button-in-input-active: translateY(0.5px);
 
 	/* --- Button in Tag */
-	--shadow-button-in-tag: inset 0 1px 1px var(--color-button-in-tag-shadow-1),
+	--shadow-button-in-tag:
+		inset 0 1px 1px var(--color-button-in-tag-shadow-1),
 		0 1px 1px var(--color-button-in-tag-shadow-2);
 	--transition-button-in-tag: all 350ms var(--smooth-ease-out);
 
 	--transform-button-in-tag-hover: translateY(-0.5px);
-	--shadow-button-in-tag-hover: inset 0 1px 1px var(--color-button-in-tag-shadow-1),
+	--shadow-button-in-tag-hover:
+		inset 0 1px 1px var(--color-button-in-tag-shadow-1),
 		0 2px 4px var(--color-button-in-tag-shadow-2);
 
 	--transform-button-in-tag-active: translateY(0.5px);
@@ -65,26 +74,30 @@
 	--transition-labeled-input: all 400ms var(--smooth-ease-out);
 
 	/* --- Input --- */
-	--shadow-input: inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
+	--shadow-input:
+		inset 0 2px 4px var(--color-input-shadow-1), 0 1px 1px var(--color-input-shadow-2);
 	--border-input-color-picker: 3px solid var(--color-input-color-picker-border);
 	--shadow-input-color-picker: 0 2px 2px var(--color-input-color-picker-shadow);
 	--transition-input: all 250ms var(--smooth-ease-out);
 
 	/* --- Dropdown --- */
-	--shadow-dropdown: 0 1px 1px var(--color-dropdown-shadow-1),
-		0 5px 10px var(--color-dropdown-shadow-2);
-	--shadow-dropdown-hover: 0 2px 4px var(--color-dropdown-shadow-1),
-		0 8px 10px var(--color-dropdown-shadow-2);
+	--shadow-dropdown:
+		0 1px 1px var(--color-dropdown-shadow-1), 0 5px 10px var(--color-dropdown-shadow-2);
+	--shadow-dropdown-hover:
+		0 2px 4px var(--color-dropdown-shadow-1), 0 8px 10px var(--color-dropdown-shadow-2);
 	--transition-select: all 250ms var(--smooth-ease-out);
 	--transform-dropdown-hover: translateY(-1px);
 	--transform-dropdown-active: translateY(1px);
 
 	/* --- Switch --- */
-	--shadow-switch: inset 0 2px 4px var(--color-switch-shadow-1),
-		0 1px 1px var(--color-switch-shadow-2), 0 0 0 transparent;
-	--shadow-switch-checked: inset 0 0 0 transparent, 0 0px 2px var(--color-switch-checked-shadow-1),
+	--shadow-switch:
+		inset 0 2px 4px var(--color-switch-shadow-1), 0 1px 1px var(--color-switch-shadow-2),
+		0 0 0 transparent;
+	--shadow-switch-checked:
+		inset 0 0 0 transparent, 0 0px 2px var(--color-switch-checked-shadow-1),
 		0 5px 10px var(--color-switch-checked-shadow-1);
-	--shadow-switch-checked-hover: inset 0 0 0 transparent, 0 2px 4px var(--color-switch-shadow-1),
+	--shadow-switch-checked-hover:
+		inset 0 0 0 transparent, 0 2px 4px var(--color-switch-shadow-1),
 		0 8px 10px var(--color-switch-shadow-1);
 	--transition-switch-duration: 600ms;
 	--transition-switch-easing: var(--smooth-ease-out);
@@ -109,29 +122,34 @@
 	);
 
 	/* --- Checkbox --- */
-	--shadow-checkbox: inset 0 2px 4px var(--color-checkbox-shadow-1),
-		0 1px 1px var(--color-checkbox-shadow-2), 0 0 0 transparent;
-	--shadow-checkbox-checked: inset 0 0 0 transparent, 0 0px 2px var(--color-checkbox-shadow-1),
+	--shadow-checkbox:
+		inset 0 2px 4px var(--color-checkbox-shadow-1), 0 1px 1px var(--color-checkbox-shadow-2),
+		0 0 0 transparent;
+	--shadow-checkbox-checked:
+		inset 0 0 0 transparent, 0 0px 2px var(--color-checkbox-shadow-1),
 		0 5px 10px var(--color-checkbox-shadow-1);
-	--shadow-checkbox-checked-hover: inset 0 0 0 transparent,
-		0 2px 4px var(--color-checkbox-shadow-1), 0 8px 10px var(--color-checkbox-shadow-1);
+	--shadow-checkbox-checked-hover:
+		inset 0 0 0 transparent, 0 2px 4px var(--color-checkbox-shadow-1),
+		0 8px 10px var(--color-checkbox-shadow-1);
 	--tranform-checkbox-hover: translateY(-1px);
 	--tranform-checkbox-active: translateY(1px);
 	--transition-checkbox: all 100ms var(--smooth-ease-out);
-	--shadow-checkbox-lighter: inset 0 2px 4px var(--color-checkbox-lighter-shadow-1),
+	--shadow-checkbox-lighter:
+		inset 0 2px 4px var(--color-checkbox-lighter-shadow-1),
 		0 0.5px 1px var(--color-checkbox-lighter-shadow-2), 0 0 0 transparent;
-	--shadow-checkbox-lighter-checked: inset 0 0 0 transparent,
-		0 0px 2px var(--color-checkbox-lighter-shadow-1),
+	--shadow-checkbox-lighter-checked:
+		inset 0 0 0 transparent, 0 0px 2px var(--color-checkbox-lighter-shadow-1),
 		0 5px 10px var(--color-checkbox-lighter-shadow-1);
-	--shadow-checkbox-lighter-checked-hover: inset 0 0 0 transparent,
-		0 2px 4px var(--color-checkbox-lighter-shadow-1),
+	--shadow-checkbox-lighter-checked-hover:
+		inset 0 0 0 transparent, 0 2px 4px var(--color-checkbox-lighter-shadow-1),
 		0 8px 10px var(--color-checkbox-lighter-shadow-1);
 
 	/* --- Tabs --- */
 	--shadow-tabs: inset 0 2px 4px var(--color-tabs-shadow-1), 0 1px 1px var(--color-tabs-shadow-2);
 
 	/* --- Tab Item --- */
-	--shadow-tab-item-active: 0 1px 1px var(--color-tab-item-active-shadow-1),
+	--shadow-tab-item-active:
+		0 1px 1px var(--color-tab-item-active-shadow-1),
 		0 5px 10px var(--color-tab-item-active-shadow-2);
 
 	/* --- Box --- */
@@ -139,7 +157,7 @@
 
 	/* --- Link --- */
 	--shadow-link: inset 0 -1px 0px var(--color-link-shadow);
-	--shadow-link-hovered: inset 0 -1.5em 0px var(--color-link-hovered-shadow);
+	--shadow-link-hovered: inset 0 -1.1em 0px var(--color-link-hovered-shadow);
 	--transition-link: all 400ms var(--smooth-ease-out);
 	--transition-link-hovered: none;
 
