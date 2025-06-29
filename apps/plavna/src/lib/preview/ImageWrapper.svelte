@@ -56,7 +56,7 @@
 		pointer-events: none;
 
 		opacity: 0;
-		filter: blur(10px);
+		/* filter: blur(10px); */
 
 		transition:
 			filter 750ms 0ms,
@@ -65,7 +65,7 @@
 
 	.image-wrapper.visible {
 		opacity: 1;
-		filter: blur(0px);
+		/* filter: blur(0px); */
 		transition:
 			filter 750ms 0ms,
 			opacity 750ms 0ms;

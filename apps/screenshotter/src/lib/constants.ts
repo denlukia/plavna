@@ -1,3 +1,3 @@
 export const MAX_PROCESSING_ATTEMPTS = 3;
 export const ATTEMPT_REPROCESSING_AFTER_MS = 40000;
-export const MAX_TASKS_PER_CALL = 5;
+export const MAX_TASKS_PER_CALL = 6;
