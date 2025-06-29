@@ -31,14 +31,14 @@
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
 	{#snippet overflowing()}
 		<div class="preview">
-			<Layers stretch>
+			<Layers>
 				{#if !viewing_in_article && img_1}
 					<ImageWrapper>
 						<ImageCDN
 							objectFit="stretch"
 							pathAndMeta={img_1}
 							bgInset="{ARTISTIC_OVERFLOW}px"
-							style="height: 100%; width: 100%;"
+							fitAndCoverParent
 						/>
 					</ImageWrapper>
 				{/if}
@@ -49,7 +49,7 @@
 							objectFit="stretch"
 							pathAndMeta={oneOfImages}
 							bgInset="{ARTISTIC_OVERFLOW}px"
-							style="height: 100%; width: 100%;"
+							fitAndCoverParent
 						/>
 					</ImageWrapper>
 				{/if}
