@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   drizzle-orm:
-    hash: lbdjtsjvqmbe2onra3rwrvsy3y
+    hash: 5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117
     path: patches/drizzle-orm.patch
 
 importers:
@@ -120,7 +120,7 @@ importers:
         version: 0.15.4
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.1.0
-        version: 1.1.0(drizzle-orm@0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(lucia@3.2.2)
+        version: 1.1.0(drizzle-orm@0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(lucia@3.2.2)
       '@plavna/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -171,10 +171,10 @@ importers:
         version: 0.31.0
       drizzle-orm:
         specifier: ^0.44.2
-        version: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+        version: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       drizzle-zod:
         specifier: 0.7.1
-        version: 0.7.1(drizzle-orm@0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(zod@3.25.67)
+        version: 0.7.1(drizzle-orm@0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(zod@3.25.67)
       globals:
         specifier: ^16.0.0
         version: 16.2.0
@@ -259,7 +259,7 @@ importers:
         version: 3.3.4
       drizzle-orm:
         specifier: ^0.44.2
-        version: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+        version: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       imagekit:
         specifier: ^5.2.0
         version: 5.2.0
@@ -310,7 +310,7 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: ^0.44.2
-        version: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+        version: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       zod:
         specifier: ^3.23.8
         version: 3.25.67
@@ -459,7 +459,7 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: ^0.44.2
-        version: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+        version: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       extract-colors:
         specifier: ^4.0.6
         version: 4.2.0
@@ -3146,6 +3146,7 @@ packages:
 
   libsql@0.5.8:
     resolution: {integrity: sha512-+OopMI1wM/NvAJTHf3O3+beHd1YfKLnSVsOGBl3/7UBDZ4ydVadkbBk5Hjjs9d3ALC5rBaftMY59AvwyC8MzPw==}
+    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lilconfig@2.1.0:
@@ -5085,9 +5086,9 @@ snapshots:
   '@libsql/win32-x64-msvc@0.5.8':
     optional: true
 
-  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(lucia@3.2.2)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(lucia@3.2.2)':
     dependencies:
-      drizzle-orm: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+      drizzle-orm: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       lucia: 3.2.2
 
   '@mapbox/node-pre-gyp@2.0.0':
@@ -6102,7 +6103,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0):
+  drizzle-orm@0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250620.0
       '@libsql/client': 0.15.4
@@ -6110,9 +6111,9 @@ snapshots:
       '@types/pg': 8.6.1
       better-sqlite3: 11.10.0
 
-  drizzle-zod@0.7.1(drizzle-orm@0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(zod@3.25.67):
+  drizzle-zod@0.7.1(drizzle-orm@0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0))(zod@3.25.67):
     dependencies:
-      drizzle-orm: 0.44.2(patch_hash=lbdjtsjvqmbe2onra3rwrvsy3y)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+      drizzle-orm: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
       zod: 3.25.67
 
   eastasianwidth@0.2.0: {}
