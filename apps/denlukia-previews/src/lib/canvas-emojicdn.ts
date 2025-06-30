@@ -82,14 +82,14 @@ const getSegmentInfo = async (
 ): Promise<{ width: number; isEmoji: boolean; image?: HTMLImageElement }> => {
 	const cacheKey = `${segment}-${style}-${fontSize}`;
 
-	if (segment.length === 1) {
-		// Regular character
-		if (!segmentCache.has(cacheKey)) {
-			const width = context.measureText(segment).width;
-			segmentCache.set(cacheKey, { width, isEmoji: false });
-		}
-		return { ...segmentCache.get(cacheKey)!, image: undefined };
-	}
+	// if (segment.length === 1) {
+	// 	// Regular character
+	// 	if (!segmentCache.has(cacheKey)) {
+	// 		const width = context.measureText(segment).width;
+	// 		segmentCache.set(cacheKey, { width, isEmoji: false });
+	// 	}
+	// 	return { ...segmentCache.get(cacheKey)!, image: undefined };
+	// }
 
 	// Emoji segment
 	const url = encodeURI(`https://emojicdn.elk.sh/${segment}?style=${style}`);
@@ -122,7 +122,7 @@ const getSegmentInfo = async (
  * @param {number} y - y coordinate of the text.
  * @param {Style} style - The style of the emoji.
  */
-export const fillText = async (
+export const fillEmoji = async (
 	context: CanvasRenderingContext2D,
 	text: string,
 	x: number,
@@ -160,6 +160,7 @@ export const fillText = async (
 			width += info.width;
 		} else {
 			// Emoji that failed to load, fallback to text
+
 			context.fillText(segment, x + width, y);
 			width += context.measureText(segment).width;
 		}
@@ -226,7 +227,7 @@ export async function createEmojiCanvas(
 			const x = col * size * 1.5;
 
 			// Then draw the fill
-			await fillText(ctx, emojiChar, x, y, emojiProvider);
+			await fillEmoji(ctx, emojiChar, x, y, emojiProvider);
 		}
 	}
 
