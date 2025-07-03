@@ -21,7 +21,7 @@ npm run dev -- --open
 
 Implementing a feature folders structure in your SvelteKit project requires 3 commitments:
 
-1. Acknowledge that this structure is a good fit for a project that is hendled by a solo designer-developer. There's no backend and frontend for them. There's no things outside of their scope. Everything they do, whether it is a DB functionality or a Like functionality — is just a feature towards a working product.
+1. Acknowledge that this structure is a good fit for a project that is handled by a solo designer-developer. There's no backend and frontend for them. There's no things outside of their scope. Everything they do, whether it is a DB functionality or a Like functionality — is just a feature towards a working product.
 
 2. To imagine any part of your project as something that could be mentioned in a Bento grid. The one shown not to the user. The one dedicated not to designer. The one dedicated not to developer. But the one shown to a similar solo designer-developer. This grid can have everything as a feature. Boom: we implemented image storage in project. Boom: we implemented Tags. Everything is a feature.
 
