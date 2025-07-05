@@ -59,7 +59,11 @@ export class SectionService {
 		const lang = this.translationService.currentLang;
 
 		// 1. Query the DB
+		const beforeQuery = performance.now();
 		const queryResult = await queryGetOneSection(config, actor, lang);
+		console.log(
+			`--- Whole query for ${JSON.stringify(config)}: ${(performance.now() - beforeQuery).toFixed(2)} ms`
+		);
 
 		if (!queryResult) return null;
 

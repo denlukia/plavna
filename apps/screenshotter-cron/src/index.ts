@@ -30,6 +30,8 @@ export interface Env {
 	//
 	// Example binding to a D1 Database. Learn more at https://developers.cloudflare.com/workers/platform/bindings/#d1-database-bindings
 	// DB: D1Database
+	WARMUP_URL?: string;
+	WARMUP_INTERVAL_MINUTES?: string; // Default: 5 minutes
 	SCREENSHOTTER_URL: string;
 	SCREENSHOTTER_ACCESS_TOKEN: string;
 }
@@ -39,28 +41,55 @@ export default {
 		function wait(seconds: number) {
 			return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 		}
+
 		function triggerScreenshotter() {
 			fetch(env.SCREENSHOTTER_URL, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					accessToken: env.SCREENSHOTTER_ACCESS_TOKEN,
-				}),
+					accessToken: env.SCREENSHOTTER_ACCESS_TOKEN
+				})
 			});
 		}
 
+		async function triggerWarmup() {
+			if (!env.WARMUP_URL) return;
+
+			try {
+				await fetch(env.WARMUP_URL, {
+					method: 'GET',
+					headers: {
+						'User-Agent': 'Cloudflare-Worker-Warmup'
+					}
+				});
+				console.log('Warmup request sent successfully');
+			} catch (error) {
+				console.error('Warmup request failed:', error);
+			}
+		}
+
+		function shouldTriggerWarmup(): boolean {
+			if (!env.WARMUP_URL) return false;
+
+			const intervalMinutes = parseInt(env.WARMUP_INTERVAL_MINUTES || '4');
+			const currentMinute = new Date().getMinutes();
+
+			// Trigger warmup when current minute is divisible by interval
+			return currentMinute % intervalMinutes === 0;
+		}
+
+		// Always trigger screenshotter (3 requests with 20s intervals)
 		triggerScreenshotter();
 		await wait(20);
 		triggerScreenshotter();
 		await wait(20);
 		triggerScreenshotter();
-		// await wait(10);
-		// triggerScreenshotter();
-		// await wait(10);
-		// triggerScreenshotter();
-		// await wait(10);
-		// triggerScreenshotter();
-	},
+
+		// Conditionally trigger warmup based on interval
+		if (shouldTriggerWarmup()) {
+			await triggerWarmup();
+		}
+	}
 };
