@@ -52,6 +52,7 @@ export async function queryGetOneSection(
 		sectionOffset = config.sectionOffset;
 	}
 
+	const beforeSectionAndTranslation = performance.now();
 	const sectionAndTranslation = await db
 		.select({ meta: table_sections, translation: table_translations })
 		.from(table_sections)
@@ -60,6 +61,10 @@ export async function queryGetOneSection(
 		.offset(sectionOffset)
 		.limit(1)
 		.get();
+
+	console.log(
+		`---- sectionAndTranslation for ${JSON.stringify(config)}: ${(performance.now() - beforeSectionAndTranslation).toFixed(2)} ms`
+	);
 
 	if (!sectionAndTranslation) return null;
 	if (!sectionAndTranslation.translation[lang]) {
@@ -107,7 +112,11 @@ export async function queryGetOneSection(
 				eq(table_sections_to_tags.lang, lang)
 			)
 		);
+	const beforeSectionAndTags = performance.now();
 	const sectionAndTags = await sectionAndTagsQuery;
+	console.log(
+		`---- sectionAndTags for ${JSON.stringify(config)}: ${(performance.now() - beforeSectionAndTags).toFixed(2)} ms`
+	);
 	const dedupedSectionAndTags = dedupeQueryResult(sectionAndTagsQuery, sectionAndTags);
 
 	const articleIdsForSearch = dedupedSectionAndTags.section_tags_to_articles.map(
@@ -181,7 +190,11 @@ export async function queryGetOneSection(
 		)
 		.orderBy(desc(articlesSq.articles.publish_time));
 
+	const beforeArticlesAndAll = performance.now();
 	const articlesAndAll = await articlesAndAllQuery;
+	console.log(
+		`---- articlesAndAll for ${JSON.stringify(config)}: ${(performance.now() - beforeArticlesAndAll).toFixed(2)} ms`
+	);
 	const dedupedArticlesAndAll = dedupeQueryResult(articlesAndAllQuery, articlesAndAll, {
 		translations: (a, b) => a.key === b.key
 	});

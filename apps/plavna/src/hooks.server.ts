@@ -13,6 +13,8 @@ import { ActorService } from '$lib/user/service';
 export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
+	const beforeAuth = performance.now();
+
 	locals.lang = getLang(params.lang);
 	locals.session = null;
 	locals.actor = null;
@@ -64,7 +66,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 		locals.imageService
 	);
 
-	return await resolve(event, {
+	// 3. Timing the whole and restoring original fetch
+	const url = event.url.pathname;
+	console.log('--------- Perf for page:', url);
+	console.log(`Auth: ${(performance.now() - beforeAuth).toFixed(2)}ms`);
+
+	const beforeResolve = performance.now();
+	const response = await resolve(event, {
 		transformPageChunk: ({ html }) => html.replace('%lang%', locals.lang)
 	});
+	console.log(`Resolve: ${(performance.now() - beforeResolve).toFixed(2)}ms`);
+
+	return response;
 };

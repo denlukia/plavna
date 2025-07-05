@@ -154,6 +154,7 @@ export class PageService {
 		pageslug: string,
 		readerPageConfig: ReaderPageConfig | null
 	) {
+		const beforeEverything = performance.now();
 		const actor = await this.actorService.get();
 
 		// 0. Utilitary queries
@@ -178,10 +179,14 @@ export class PageService {
 			.where(and(eq(userIdSq, actor?.id || ''), eq(table_tags.user_id, userIdSq)))
 			.all();
 
+		const beforeTagsAndTranslations = performance.now();
 		const [pageInfo, tagsAndTheirTranslationsInfo] = await Promise.all([
 			pagePromise,
 			tagsAndTheirTranslationsPromise
 		]);
+		console.log(
+			`-- Tags and translations: ${(performance.now() - beforeTagsAndTranslations).toFixed(2)} ms`
+		);
 
 		const tagsTranslationsAsObject = Object.fromEntries(
 			tagsAndTheirTranslationsInfo.map(({ translation: { key, [lang]: translation } }) => [
@@ -203,14 +208,16 @@ export class PageService {
 			});
 		});
 
+		const beforeSections = performance.now();
 		const sectionsResponses = await Promise.all(sectionsPromises);
+		console.log(`-- Sections: ${(performance.now() - beforeSections).toFixed(2)} ms`);
 
 		const sectionsNonEmpty = sectionsResponses.filter(isNonNullable);
 
 		// TODO: Maybe replace such check with check by id
 		const canAddForms = actor?.username === username;
 
-		return {
+		const result = {
 			sections: {
 				items: sectionsNonEmpty.map((s) => s.section),
 				creationForm: canAddForms ? await superValidate(zod(sectionInsertSchema)) : null
@@ -226,5 +233,11 @@ export class PageService {
 			}, {} as ImagesDict),
 			tags: tagsAndTheirTranslationsInfo.map((t) => t.tag)
 		};
+
+		console.log(
+			`– getOneWithSectionsAndArticles: ${(performance.now() - beforeEverything).toFixed(2)} ms`
+		);
+
+		return result;
 	}
 }
