@@ -60,6 +60,7 @@
 					/>
 				</Labeled>
 			</Column>
+
 			<Column>
 				<Labeled>
 					<Label>
@@ -74,6 +75,18 @@
 						<Translation key="article_editor.previews.families.two-images.image_in_article" />
 					</Label>
 					<LanguagedImageInput name="preview_image_2" bind:image={preview_image_2} clientUpload />
+				</Labeled>
+			</Column>
+			<Column cols={2}>
+				<Labeled as="label">
+					<Label>
+						<Translation key="article_editor.previews.families.two-images.videos_folder" />
+					</Label>
+					<Input
+						placeholder="https://example.com/path/to/videos"
+						name="preview_prop_1"
+						bind:value={$form.preview_prop_1}
+					/>
 				</Labeled>
 			</Column>
 		</Column>

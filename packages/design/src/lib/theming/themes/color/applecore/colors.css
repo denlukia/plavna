@@ -36,9 +36,9 @@
 	--cold-200-transparent-100: hsla(200, 70%, 30%, 10%);
 	--cold-200-transparent-200: hsla(200, 70%, 30%, 20%);
 
-	--colorful-light-1: hsl(32deg, 100%, 71%);
-	--colorful-light-2: hsl(162deg, 100%, 71%);
-	--colorful-light-3: hsl(338deg, 100%, 71%);
+	--colorful-light-1: #ffba6b;
+	--colorful-light-2: #6bffd3;
+	--colorful-light-3: #ff6ba1;
 
 	/* ------ Semantic ----- */
 	/* --- General --- */
