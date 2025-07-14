@@ -191,7 +191,8 @@ export const UK = {
 					image_in_grid: 'Зображення у сітці',
 					image_in_article: 'Зображення у статті',
 					cols: 'Cтовпців',
-					rows: 'Рядків'
+					rows: 'Рядків',
+					videos_folder: 'Відео для програвання при наведенні (URL папки)'
 				},
 				custom: {
 					name: 'Власне',

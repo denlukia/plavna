@@ -191,7 +191,8 @@ export const EN = {
 					image_in_grid: 'Image in Grid',
 					image_in_article: 'Image in Article',
 					cols: 'Cols',
-					rows: 'Rows'
+					rows: 'Rows',
+					videos_folder: 'Videos to play on hover (folder URL)'
 				},
 				custom: {
 					name: 'Custom',

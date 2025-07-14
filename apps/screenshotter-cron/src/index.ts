@@ -61,7 +61,8 @@ export default {
 				await fetch(env.WARMUP_URL, {
 					method: 'GET',
 					headers: {
-						'User-Agent': 'Cloudflare-Worker-Warmup'
+						'User-Agent': 'Cloudflare-Worker-Warmup',
+						Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
 					}
 				});
 				console.log('Warmup request sent successfully');
