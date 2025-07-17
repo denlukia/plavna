@@ -1,7 +1,7 @@
 :root {
 	--text-main-font-family: 'Inter Variable', -system-ui, sans-serif;
 	--text-font-optical-sizing: auto;
-	--text-main-font-weight: 500;
+	--text-main-font-weight: 400;
 	--text-strong-font-weight: 700;
 
 	--text-heading-1-font-family: var(--text-main-font-family);
@@ -23,33 +23,33 @@
 	--text-headline-font-family: var(--text-main-font-family);
 	--text-headline-padding-top: 3px;
 	--text-headline-padding-bottom: 1px;
-	--text-headline-size: 18px;
+	--text-headline-size: 17px;
 	--text-headline-weight: 750;
-	--text-headline-line-height: 24px;
+	--text-headline-line-height: 28px;
 	--text-headline-letter-spacing: 0;
 
 	--text-headline-short-font-family: var(--text-main-font-family);
 	--text-headline-short-padding-top: 1px;
 	--text-headline-short-padding-bottom: 3px;
-	--text-headline-short-size: 18px;
+	--text-headline-short-size: 17px;
 	--text-headline-short-weight: 750;
-	--text-headline-short-line-height: 20px;
+	--text-headline-short-line-height: 24px;
 	--text-headline-short-letter-spacing: 0;
 
 	--text-body-font-family: var(--text-main-font-family);
 	--text-body-padding-top: 3px;
 	--text-body-padding-bottom: 1px;
-	--text-body-size: 18px;
+	--text-body-size: 17px;
 	--text-body-weight: var(--text-main-font-weight);
 	--text-body-line-height: 28px;
-	--text-body-letter-spacing: 0.01em;
+	--text-body-letter-spacing: 0;
 
 	--text-body-short-font-family: var(--text-main-font-family);
 	--text-body-short-padding-top: 1px;
 	--text-body-short-padding-bottom: 3px;
-	--text-body-short-size: 18px;
+	--text-body-short-size: 17px;
 	--text-body-short-weight: var(--text-main-font-weight);
-	--text-body-short-line-height: 20px;
+	--text-body-short-line-height: 24px;
 	--text-body-short-letter-spacing: 0;
 
 	--text-small-font-family: var(--text-main-font-family);
