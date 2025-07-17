@@ -1,3 +1,5 @@
+![Galaxy](./banner.png)
+
 # Plavna Universe
 
 A monorepo for Plavna apps and packages.
