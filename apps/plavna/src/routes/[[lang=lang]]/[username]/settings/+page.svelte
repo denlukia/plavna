@@ -49,6 +49,15 @@
 
 {#if !closedGreetings}
 	<Greetings>
+		<ol class="tips">
+			{#each [1, 2, 3] as const as tip}
+				<li class="tip">
+					<Typography size="body">
+						<Translation key="settings.tips.{tip}" />
+					</Typography>
+				</li>
+			{/each}
+		</ol>
 		<form use:enhance method="POST" action="?/close_greetings" class="close-greetings-form">
 			<Button kind="translucent"><Translation key="settings.setup_username" /></Button>
 		</form>
@@ -57,7 +66,53 @@
 
 <style>
 	.close-greetings-form {
+		margin-top: var(--size-xl);
 		animation: fade-in 500ms 4000ms backwards;
+	}
+
+	.tips {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		counter-reset: tip-counter;
+		color: white;
+		opacity: 0.8;
+	}
+
+	.tip {
+		position: relative;
+		padding-left: 3em;
+		margin-bottom: 1em;
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	.tip:nth-of-type(1) {
+		animation: fade-in 500ms 3250ms backwards;
+	}
+
+	.tip:nth-of-type(2) {
+		animation: fade-in 500ms 3500ms backwards;
+	}
+
+	.tip:nth-of-type(3) {
+		animation: fade-in 500ms 3750ms backwards;
+	}
+
+	.tip::before {
+		counter-increment: tip-counter;
+		content: counter(tip-counter);
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 2em;
+		height: 2em;
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.15);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	@keyframes fade-in {

@@ -213,6 +213,11 @@ export const EN = {
 		heading: 'My Settings',
 		username: 'Username',
 		save: 'Save',
-		setup_username: 'Setup username'
+		setup_username: 'Setup username',
+		tips: {
+			1: 'Create articles with tags in My > Articles and publish them',
+			2: 'Create pages in My > Pages or use the Default page already created there',
+			3: 'Add section to page and mention tags in section description — articles with the mentioned tags will be displayed in the section. Latest publications will be displayed first.'
+		}
 	}
 };

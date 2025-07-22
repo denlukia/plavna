@@ -1,17 +1,29 @@
 import * as THREE from 'three';
 
-export function convertPathToCurve(path: THREE.Path): THREE.Curve<THREE.Vector3> {
-	const length = path.getLength();
-	const pointsQuantity = Math.ceil(length);
-	const divisionsQuantity = 1;
-	const curve = new THREE.CatmullRomCurve3(
-		path.getPoints(pointsQuantity).map((point) => new THREE.Vector3(point.x, point.y, 0)),
-		false,
-		'centripetal',
-		0.5
-	);
-	curve.arcLengthDivisions = divisionsQuantity;
+export function convertPathToCurve(
+	points: THREE.Vector2[],
+	progress: number
+): THREE.Curve<THREE.Vector3> {
+	const length = points.length;
+
+	const progressedPoints: THREE.Vector3[] = [];
+	for (let i = 0; i < length; i++) {
+		const pointProgress = i / length;
+		if (pointProgress > progress) {
+			break;
+		}
+		const point2d = points[i];
+		const point3d = new THREE.Vector3(point2d.x, point2d.y, 0);
+		progressedPoints.push(point3d);
+	}
+
+	const curve = new THREE.CatmullRomCurve3(progressedPoints, false);
+
 	return curve;
+}
+
+export function getPointsFromPath(path: THREE.Path, resolution: number) {
+	return path.getPoints(resolution);
 }
 
 // path.currentPath?.curves.forEach((curve) => {
