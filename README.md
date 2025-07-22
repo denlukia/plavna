@@ -1,8 +1,10 @@
 ![Galaxy](./banner.png)
 
-# Plavna Universe
+<div align="center">
+  <h1>Plavna Universe</h1>
+  <p>A monorepo for Plavna apps and packages</p>
+</div>
 
-A monorepo for Plavna apps and packages.
 
 ## Structure
 
