@@ -2,11 +2,11 @@
 
 <div align="center">
   <h1>Plavna Universe</h1>
-  <p>A monorepo for Plavna apps and packages</p>
+  <h3>A monorepo for Plavna apps and packages</h3>
 </div>
 
 
-## Structure
+### Structure
 
 Apps:
 
