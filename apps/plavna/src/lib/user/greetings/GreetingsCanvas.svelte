@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { onMount, untrack } from 'svelte';
-	import { sineInOut, sineOut } from 'svelte/easing';
+	import { sineInOut } from 'svelte/easing';
 	import { Tween } from 'svelte/motion';
 	import * as THREE from 'three';
-	import { SVGLoader, type SVGResult } from 'three/examples/jsm/loaders/SVGLoader.js';
+	import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
+	import { getLang } from '$lib/i18n/utils';
 
 	import { convertPathToCurve, getPointsFromPath } from './paths';
-	import svg from './translations/uk.svg?raw';
 
 	let canvas: HTMLCanvasElement | null = null;
 	let canvasWrapper = $state({ width: 0, height: 0 });
 	let initialized = $state(false);
 	let progress = new Tween(0, { duration: 3500, easing: sineInOut });
+	let lang = $derived(getLang(page.params.lang));
 
 	let camera: THREE.OrthographicCamera;
 	let scene: THREE.Scene;
 	let renderer: THREE.WebGLRenderer;
-	let greetingsGroup: THREE.Group<THREE.Object3DEventMap>;
+	let greetingsGroup: THREE.Group<THREE.Object3DEventMap> | null = $state(null);
 	let pointsGroups: THREE.Vector2[][];
 
 	const material = new THREE.MeshPhysicalMaterial({
@@ -78,7 +80,7 @@
 		camera.updateProjectionMatrix();
 	}
 
-	export function init(canvas: HTMLCanvasElement, width: number, height: number) {
+	export async function init(canvas: HTMLCanvasElement, width: number, height: number) {
 		// 1. Scene setup
 		scene = new THREE.Scene();
 
@@ -91,6 +93,7 @@
 
 		// 2. Greeting curves setup
 		const loader = new SVGLoader();
+		const { default: svg } = await import(`./translations/${lang}.svg?raw`);
 		const svgData = loader.parse(svg);
 		const paths = svgData.paths
 			.map((path, i) => {
@@ -155,7 +158,7 @@
 				return;
 			}
 			const tubeRadius = 5;
-			const tubeRadialSegments = 8;
+			const tubeRadialSegments = 4;
 
 			const curve = convertPathToCurve(points, currentGroupIndex === i ? currentGroupProgress : 1);
 
@@ -235,7 +238,7 @@
 	});
 
 	$effect(() => {
-		if (initialized) {
+		if (initialized && greetingsGroup) {
 			updatePathsInGroup(greetingsGroup, pointsGroups, material, progress.current);
 			render();
 		}

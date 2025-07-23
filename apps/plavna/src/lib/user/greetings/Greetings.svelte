@@ -56,10 +56,10 @@
 	}
 
 	.video.visible {
-		transition: opacity 1000ms;
+		transition: opacity 3000ms;
 	}
 	.shade.hidden {
-		transition: opacity 1000ms 1000ms;
+		transition: opacity 1000ms 3000ms;
 	}
 
 	.shade {
