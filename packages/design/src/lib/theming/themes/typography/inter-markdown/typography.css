@@ -1,7 +1,7 @@
 :root {
 	--text-main-font-family: 'Inter Variable', -system-ui, sans-serif;
 	--text-font-optical-sizing: auto;
-	--text-main-font-weight: 400;
+	--text-main-font-weight: 425;
 	--text-strong-font-weight: 700;
 
 	--text-heading-1-font-family: var(--text-main-font-family);
