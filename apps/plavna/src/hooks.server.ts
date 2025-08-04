@@ -14,11 +14,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
 	const headers = event.request.headers;
-	console.log('Headers old:', headers);
+	console.log('Headers old:', ...headers.entries());
 	if (headers.get('user-agent')?.includes('Google') && !headers.has('accept')) {
 		headers.set('accept', 'text/html');
 	}
-	console.log('Headers new:', headers);
+	console.log('Headers new:', ...headers.entries());
 
 	const beforeAuth = performance.now();
 
