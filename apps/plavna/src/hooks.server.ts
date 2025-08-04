@@ -16,7 +16,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const headers = event.request.headers;
 	// console.log(route);
 	// console.log('Headers old:', ...headers.entries());
-	if (headers.get('user-agent')?.includes('Google') && route.id === '/[[lang=lang]]/[username]') {
+	if (
+		headers.get('user-agent')?.includes('Google') &&
+		route.id?.includes('/[[lang=lang]]/[username]')
+	) {
 		headers.set('accept', 'text/html');
 	}
 
