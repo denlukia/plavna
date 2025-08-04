@@ -13,6 +13,11 @@ import { ActorService } from '$lib/user/service';
 export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
+	const headers = event.request.headers;
+	if (headers.get('user-agent')?.includes('Googlebot') && !headers.has('accept')) {
+		headers.set('accept', 'text/html');
+	}
+
 	const beforeAuth = performance.now();
 
 	locals.lang = getLang(params.lang);
