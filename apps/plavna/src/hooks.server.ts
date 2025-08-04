@@ -14,7 +14,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, params } = event;
 
 	const headers = event.request.headers;
-	if (headers.get('user-agent')?.includes('Googlebot') && !headers.has('accept')) {
+	if (headers.get('user-agent')?.includes('Google') && !headers.has('accept')) {
 		headers.set('accept', 'text/html');
 	}
 
