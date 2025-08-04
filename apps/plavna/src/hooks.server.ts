@@ -11,14 +11,14 @@ import { lucia } from '$lib/user/auth';
 import { ActorService } from '$lib/user/service';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const { locals, cookies, params } = event;
+	const { locals, cookies, params, route } = event;
 
 	const headers = event.request.headers;
-	console.log('Headers old:', ...headers.entries());
-	if (headers.get('user-agent')?.includes('Google') && !headers.has('accept')) {
+	// console.log(route);
+	// console.log('Headers old:', ...headers.entries());
+	if (headers.get('user-agent')?.includes('Google') && route.id === '/[[lang=lang]]/[username]') {
 		headers.set('accept', 'text/html');
 	}
-	console.log('Headers new:', ...headers.entries());
 
 	const beforeAuth = performance.now();
 
