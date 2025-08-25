@@ -37,7 +37,7 @@
 	{onintrostart}
 	{onoutroend}
 	in:fade={{ duration: 0 }}
-	out:fade={{ duration: 750 }}
+	out:fade={{ duration: 750, delay: 400 }}
 	bind:this={iframe}
 	src={serializePreviewParams(url, data)}
 	class="iframe"
