@@ -34,6 +34,10 @@
 		grid-template-areas: 'a';
 		flex-grow: var(--layers-flex-grow);
 		border-radius: var(--layers-border-radius);
+
+		min-height: 0;
+		min-width: 0;
+		height: 100%;
 	}
 	.inline {
 		display: inline-grid;
@@ -44,6 +48,9 @@
 		grid-area: a;
 		max-width: 100%;
 		max-height: 100%;
+
+		min-height: 0;
+		min-width: 0;
 	}
 
 	.stretch {
