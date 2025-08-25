@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CustomPreviewWrapper, Layers } from '@plavna/design/components';
+	import { getPointerContext } from '@plavna/design/reactivity';
 
 	import AirplaneSVG from './airplane.svg?raw';
 	import NauhubImage from './HQ Screenshot.png';
@@ -19,6 +20,8 @@
 		themeComponentSets
 	} = $derived(data);
 
+	let pointer = getPointerContext();
+
 	let top = Math.floor(Math.random() * 60);
 	let base = viewing_in_article ? 150 : 100;
 	let scale = Math.random() > 0.5 ? base : -base;
@@ -30,9 +33,11 @@
 			<div class="preview">
 				<img src={NauhubImage} alt="Screenshot of NAUHUB" />
 			</div>
-			<div class="plane-wrapper" style={`--top:${top}%;--scale:${scale}%;`}>
-				{@html AirplaneSVG}
-			</div>
+			{#if pointer?.current}
+				<div class="plane-wrapper" style={`--top:${top}%;--scale:${scale}%;`}>
+					{@html AirplaneSVG}
+				</div>
+			{/if}
 		</Layers>
 	{/snippet}
 </CustomPreviewWrapper>
