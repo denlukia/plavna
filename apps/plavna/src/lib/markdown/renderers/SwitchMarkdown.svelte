@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { Layers, RainbowLoader, Switch } from '@plavna/design/components';
+	import { Layers, RainbowLoader, selectVariables, Switch } from '@plavna/design/components';
 	import { page } from '$app/stores';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { SECTION_RECONFIG_QUERY_PARAM_NAME } from '$lib/common/config';
 	import type { SectionContext, SectionRequest } from '$lib/section/types';
+
+	import { getTypographyContext } from './heading-context';
 
 	const loaderDelay = 500;
 
@@ -14,6 +16,7 @@
 	};
 
 	let { children, tagId }: Props = $props();
+
 	let sectionContext: SectionContext | undefined = getContext('section');
 	let initialState = $derived(
 		sectionContext?.activeTags.find((tag) => tag.id === tagId) ? true : false
@@ -71,6 +74,17 @@
 		const { checked } = e.target as HTMLInputElement;
 		sectionContext?.onTagSwitch?.(tagId, checked);
 	}
+
+	let typographyContext = getTypographyContext();
+	let size = $derived(typographyContext?.size);
+	let selectedVariables = $derived(
+		selectVariables(
+			size,
+			(size) => `
+		--size-tag-switch-positioner-transform: var(--size-tag-switch-${size}-positioner-transform);
+	`
+		)
+	);
 </script>
 
 <svelte:element
@@ -82,8 +96,8 @@
 	<Layers style="display: inline-grid; overflow: visible">
 		<span class="content">
 			{@render children()}
-			<span class="switch-positioner">
-				<Switch bind:checked onchange={onSwitchChange} purpose="interface" />
+			<span class="switch-positioner" style={selectedVariables}>
+				<Switch bind:checked onchange={onSwitchChange} customSize={size} />
 			</span>
 		</span>
 

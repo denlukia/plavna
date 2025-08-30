@@ -61,8 +61,13 @@
 	--text-small-short-line-height: 10px;
 
 	/* Switch */
-	--size-switch-handle-border-width: 3.5px;
-	--border-switch-handle: var(--size-switch-handle-border-width) solid
-		var(--color-switch-handle-border);
-	--size-tag-switch-positioner-transform: translateY(0.075em);
+
+	--border-switch-heading-1-handle: 3.5px solid var(--color-switch-handle-border);
+	--size-tag-switch-heading-1-positioner-transform: translateY(0.075em);
+
+	--border-switch-heading-2-handle: 3.5px solid var(--color-switch-handle-border);
+	--size-tag-switch-heading-2-positioner-transform: translateY(0.075em);
+
+	--border-switch-body-handle: 3.5px solid var(--color-switch-handle-border);
+	--size-tag-switch-body-positioner-transform: translateY(0.075em);
 }

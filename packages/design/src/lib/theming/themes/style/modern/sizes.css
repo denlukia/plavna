@@ -129,16 +129,36 @@
 	--size-tag-switch-border-radius: var(--size-full);
 
 	/* --- Switch --- */
-	--size-switch-width: var(--size-3xl);
-	--size-switch-border-radius: var(--size-full);
-	--size-switch-padding-to-handle: var(--size-s);
-	--size-switch-layer-flashlight-hover: 50px;
+	--size-switch-heading-1-width: var(--size-5xl);
+	--size-switch-heading-1-border-radius: var(--size-full);
+	--size-switch-heading-1-padding-to-handle: var(--size-m);
+	--size-switch-heading-1-layer-flashlight-hover: 50px;
+
+	--size-switch-heading-2-width: var(--size-3xl);
+	--size-switch-heading-2-border-radius: var(--size-full);
+	--size-switch-heading-2-padding-to-handle: var(--size-s);
+	--size-switch-heading-2-layer-flashlight-hover: 50px;
+
+	--size-switch-body-width: var(--size-3xl);
+	--size-switch-body-border-radius: var(--size-full);
+	--size-switch-body-padding-to-handle: var(--size-s);
+	--size-switch-body-layer-flashlight-hover: 50px;
 
 	/* --- Switch Handle */
-	--size-switch-handle-width: var(--size-l);
-	--size-switch-handle-height: var(--size-l);
-	--size-switch-handle-border-radius: var(--size-full);
-	--size-switch-handle-active-width: var(--size-l-to-xl);
+	--size-switch-heading-1-handle-width: var(--size-2xl);
+	--size-switch-heading-1-handle-height: var(--size-2xl);
+	--size-switch-heading-1-handle-border-radius: var(--size-full);
+	--size-switch-heading-1-handle-active-width: var(--size-l-to-xl);
+
+	--size-switch-heading-2-handle-width: var(--size-l);
+	--size-switch-heading-2-handle-height: var(--size-l);
+	--size-switch-heading-2-handle-border-radius: var(--size-full);
+	--size-switch-heading-2-handle-active-width: var(--size-l-to-xl);
+
+	--size-switch-body-handle-width: var(--size-l);
+	--size-switch-body-handle-height: var(--size-l);
+	--size-switch-body-handle-border-radius: var(--size-full);
+	--size-switch-body-handle-active-width: var(--size-l-to-xl);
 
 	/* --- Checkbox --- */
 	--size-checkbox-default: var(--size-l-to-xl);

@@ -43,7 +43,7 @@
 <style>
 	.description-viewer {
 		position: relative;
-		transition: opacity 250ms;
+		transition: opacity 500ms;
 	}
 	.info-block-wrapper {
 		padding-top: var(--size-description-viewer-padding-top);

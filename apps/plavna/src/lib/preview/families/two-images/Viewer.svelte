@@ -56,11 +56,11 @@
 	function onpointerenter() {
 		if (!videoEl) return;
 
-		console.log('onpointerenter - states:', {
-			isPlayingToMiddle,
-			isPlayingToEnd,
-			shouldPlayToEndThenMiddle
-		});
+		// console.log('onpointerenter - states:', {
+		// 	isPlayingToMiddle,
+		// 	isPlayingToEnd,
+		// 	shouldPlayToEndThenMiddle
+		// });
 
 		const middle = videoEl.duration / 2;
 
@@ -68,7 +68,7 @@
 			// If currently playing to end, set flag to play from 0 to middle after end
 			// DON'T clear listeners here - let the end listener finish its job
 			shouldPlayToEndThenMiddle = true;
-			console.log('Setting shouldPlayToEndThenMiddle = true, keeping end listener active');
+			// console.log('Setting shouldPlayToEndThenMiddle = true, keeping end listener active');
 			return;
 		}
 
@@ -81,14 +81,14 @@
 		shouldPlayToEndThenMiddle = false;
 		videoEl.currentTime = 0;
 
-		console.log('Starting play to middle, currentTime reset to 0');
+		// console.log('Starting play to middle, currentTime reset to 0');
 
 		// Ensure video plays
 		const playPromise = videoEl.play();
 		if (playPromise !== undefined) {
 			playPromise
 				.then(() => {
-					console.log('Video started playing successfully');
+					// console.log('Video started playing successfully');
 				})
 				.catch((error) => {
 					console.error('Error playing video:', error);
@@ -99,7 +99,7 @@
 		middleReachedListener = function () {
 			if (!videoEl) return;
 			if (videoEl.currentTime >= middle) {
-				console.log('Middle reached, pausing at:', videoEl.currentTime);
+				// console.log('Middle reached, pausing at:', videoEl.currentTime);
 				videoEl.pause();
 				isPlayingToMiddle = false;
 				if (middleReachedListener) {
@@ -115,11 +115,11 @@
 	function onpointerleave() {
 		if (!videoEl) return;
 
-		console.log('onpointerleave - states:', {
-			isPlayingToMiddle,
-			isPlayingToEnd,
-			shouldPlayToEndThenMiddle
-		});
+		// console.log('onpointerleave - states:', {
+		// 	isPlayingToMiddle,
+		// 	isPlayingToEnd,
+		// 	shouldPlayToEndThenMiddle
+		// });
 
 		const middle = videoEl.duration / 2;
 
@@ -131,12 +131,12 @@
 			isPlayingToMiddle = false;
 
 			if (videoEl.currentTime < middle) {
-				console.log("Haven't reached middle yet, continuing to middle first");
+				// console.log("Haven't reached middle yet, continuing to middle first");
 				// Haven't reached middle yet, play to middle first
 				middleReachedListener = function () {
 					if (!videoEl) return;
 					if (videoEl.currentTime >= middle) {
-						console.log('Middle reached during leave, now playing to end');
+						// console.log('Middle reached during leave, now playing to end');
 						if (middleReachedListener) {
 							videoEl.removeEventListener('timeupdate', middleReachedListener);
 							middleReachedListener = null;
@@ -146,12 +146,12 @@
 				};
 				videoEl.addEventListener('timeupdate', middleReachedListener);
 			} else {
-				console.log('Already at or past middle, playing to end');
+				// console.log('Already at or past middle, playing to end');
 				// Already at or past middle, play to end
 				playToEnd();
 			}
 		} else if (!isPlayingToEnd) {
-			console.log('Not currently playing, starting play to end');
+			// console.log('Not currently playing, starting play to end');
 			// If not currently playing anything, play to end from current position
 			playToEnd();
 		}
@@ -160,7 +160,7 @@
 	function playToEnd() {
 		if (!videoEl) return;
 
-		console.log('playToEnd called, currentTime:', videoEl.currentTime);
+		// console.log('playToEnd called, currentTime:', videoEl.currentTime);
 
 		isPlayingToEnd = true;
 		isPlayingToMiddle = false;
@@ -170,7 +170,7 @@
 		if (playPromise !== undefined) {
 			playPromise
 				.then(() => {
-					console.log('Video playing to end successfully');
+					// console.log('Video playing to end successfully');
 				})
 				.catch((error) => {
 					console.error('Error playing video to end:', error);
@@ -181,7 +181,7 @@
 			if (!videoEl) return;
 			if (videoEl.currentTime >= videoEl.duration - 0.1) {
 				// Small buffer for end detection
-				console.log('End reached, pausing at:', videoEl.currentTime);
+				// console.log('End reached, pausing at:', videoEl.currentTime);
 				videoEl.pause();
 				isPlayingToEnd = false;
 				if (endReachedListener) {
@@ -191,7 +191,7 @@
 
 				// Check if we need to play from 0 to middle after reaching end
 				if (shouldPlayToEndThenMiddle) {
-					console.log('Should play to end then middle, calling onpointerenter');
+					// console.log('Should play to end then middle, calling onpointerenter');
 					shouldPlayToEndThenMiddle = false;
 					setTimeout(() => {
 						if (!isPlayingToMiddle && !isPlayingToEnd) {

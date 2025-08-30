@@ -17,7 +17,7 @@
 	import { setContext } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
-	import TagSwitch from '$lib/markdown/renderers/TagSwitch.svelte';
+	import TagSwitch from '$lib/markdown/renderers/SwitchMarkdown.svelte';
 
 	let { data } = $props();
 
