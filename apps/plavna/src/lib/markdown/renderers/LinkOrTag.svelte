@@ -4,7 +4,7 @@
 	import type { Snippet } from 'svelte';
 	import { getAstNode, type HastNode } from 'svelte-exmarkdown';
 
-	import TagSwitch from './TagSwitch.svelte';
+	import TagSwitch from './SwitchMarkdown.svelte';
 
 	type Props = Omit<Tokens.Link, 'type'> & {
 		children: Snippet;

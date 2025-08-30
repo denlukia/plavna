@@ -4,7 +4,7 @@
 	import { type Snippet } from 'svelte';
 
 	import { getMarkdownContext } from '../../markdown-context';
-	import { depthToTypographySize } from '../heading-depth';
+	import { depthToTypographySize, setTypographyContext } from '../heading-context';
 
 	type Props = Omit<Tokens.Heading, 'type'> & {
 		children: Snippet;
@@ -15,6 +15,8 @@
 	let markdownContext = getMarkdownContext();
 
 	let size = $derived(depthToTypographySize(depth, markdownContext?.chooseShort));
+
+	setTypographyContext({ size });
 </script>
 
 {#if id !== 'footnote-label'}

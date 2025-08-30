@@ -3,16 +3,41 @@
 	import LayerFlashlight from '../ActiveElementFX/LayerFlashlight.svelte';
 	import Layers from '../ActiveElementFX/Layers.svelte';
 	import LayerShift from '../ActiveElementFX/LayerShift.svelte';
+	import { selectVariables } from './select-variables';
 	import type { SwitchProps } from './types';
 
-	let { checked = $bindable(), purpose = 'functional', ...attributes }: SwitchProps = $props();
+	let { checked = $bindable(), customSize = 'body', ...attributes }: SwitchProps = $props();
+
+	let selectedVariables = $derived(
+		selectVariables(
+			customSize,
+			(size) => `
+			--size-switch-width: var(--size-switch-${size}-width);
+			--size-switch-border-radius: var(--size-switch-${size}-border-radius);
+			--size-switch-padding-to-handle: var(--size-switch-${size}-padding-to-handle);
+			--size-switch-layer-flashlight-hover: var(--size-switch-${size}-layer-flashlight-hover);
+
+			--size-switch-handle-width: var(--size-switch-${size}-handle-width);
+			--size-switch-handle-height: var(--size-switch-${size}-handle-height);
+			--size-switch-handle-border-radius: var(--size-switch-${size}-handle-border-radius);
+			--size-switch-handle-active-width: var(--size-switch-${size}-handle-active-width);
+
+			--border-switch-handle: var(--border-switch-${size}-handle);
+
+			--transform-switch-checked-hover: var(--transform-switch-${size}-checked-hover);
+			--transform-switch-checked-active: var(--transform-switch-${size}-checked-active);
+			--transform-switch-handle-active: var(--transform-switch-${size}-handle-active);
+			--transform-switch-checked-handle-active: var(--transform-switch-${size}-checked-handle-active);
+			`
+		)
+	);
 
 	let { mouse, ...events } = createMouseWatcher();
 </script>
 
-<label class="switch global-reset-line-height {purpose}">
+<label class="switch global-reset-line-height" style={selectedVariables}>
 	<input bind:checked {...attributes} type="checkbox" />
-	<span class="switch-visualizer global-" {...events}>
+	<span class="switch-visualizer" {...events}>
 		<Layers>
 			<LayerFlashlight {mouse} />
 			<LayerShift {mouse}>
@@ -74,15 +99,8 @@
 		background: var(--color-switch-handle-bg);
 		transition: all var(--transition-switch-duration) var(--transition-switch-easing);
 		border-radius: var(--size-switch-handle-border-radius);
-
-		box-shadow: var(--shadow-switch-handle);
-	}
-
-	.functional .handle {
-		border: var(--borderswitch-handle);
-	}
-	.interface .handle {
 		border: var(--border-switch-handle);
+		box-shadow: var(--shadow-switch-handle);
 	}
 
 	input:checked + .switch-visualizer {

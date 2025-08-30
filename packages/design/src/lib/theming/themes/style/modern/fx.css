@@ -101,23 +101,55 @@
 		0 8px 10px var(--color-switch-shadow-1);
 	--transition-switch-duration: 600ms;
 	--transition-switch-easing: var(--smooth-ease-out);
-	--transform-switch-checked-hover: translateY(-1px);
-	--transform-switch-checked-active: translateY(1px);
+
+	--transform-switch-heading-1-checked-hover: translateY(-1px);
+	--transform-switch-heading-1-checked-active: translateY(1px);
+
+	--transform-switch-heading-2-checked-hover: translateY(-1px);
+	--transform-switch-heading-2-checked-active: translateY(1px);
+
+	--transform-switch-body-checked-hover: translateY(-1px);
+	--transform-switch-body-checked-active: translateY(1px);
 
 	/* --- Switch Handle --- */
-	--border-switch-handle: var(--size-switch-handle-border-width) solid
-		var(--color-switch-handle-border);
 	--shadow-switch-handle: 0 2px 2px var(--color-switch-handle-shadow-1);
-	--transform-switch-handle-active: translateX(
+
+	--transform-switch-heading-1-handle-active: translateX(
 		calc(
-			var(--size-switch-width) - var(--size-switch-padding-to-handle) * 2 -
-				var(--size-switch-handle-width)
+			var(--size-switch-heading-1-width) - var(--size-switch-heading-1-padding-to-handle) * 2 -
+				var(--size-switch-heading-1-handle-width)
 		)
 	);
-	--transform-switch-checked-handle-active: translateX(
+	--transform-switch-heading-1-checked-handle-active: translateX(
 		calc(
-			var(--size-switch-width) - var(--size-switch-padding-to-handle) * 2 -
-				var(--size-switch-handle-active-width)
+			var(--size-switch-heading-1-width) - var(--size-switch-heading-1-padding-to-handle) * 2 -
+				var(--size-switch-heading-1-handle-active-width)
+		)
+	);
+
+	--transform-switch-heading-2-handle-active: translateX(
+		calc(
+			var(--size-switch-heading-2-width) - var(--size-switch-heading-2-padding-to-handle) * 2 -
+				var(--size-switch-heading-2-handle-width)
+		)
+	);
+	--transform-switch-heading-2-checked-handle-active: translateX(
+		calc(
+			var(--size-switch-heading-2-width) - var(--size-switch-heading-2-padding-to-handle) * 2 -
+				var(--size-switch-heading-2-handle-active-width)
+		)
+	);
+
+	--transform-switch-body-handle-active: translateX(
+		calc(
+			var(--size-switch-body-width) - var(--size-switch-body-padding-to-handle) * 2 -
+				var(--size-switch-body-handle-width)
+		)
+	);
+	--transform-switch-body-checked-handle-active: translateX(
+		calc(
+			var(--size-switch-body-width) - var(--size-switch-body-padding-to-handle) * 2 -
+				var(--size-switch-body-handle-active-width)
 		)
 	);
 
