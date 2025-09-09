@@ -61,7 +61,7 @@
 <style>
 	.layer {
 		box-shadow:
-			inset 0 10px 20px hsla(10, 100%, 15%, 0.9),
+			inset 0 10px 20px hsla(10, 100%, 7%, 0.7),
 			0 2px 2px hsla(0, 0%, 100%, 0.25);
 	}
 	.layer-last {
@@ -70,7 +70,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 
-		font-size: 13px;
+		font-size: 12px;
 		color: hsl(32, 100%, 54%);
 		text-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.7);
 	}
