@@ -15,7 +15,7 @@
 	let radii = $derived(getRadii(radius));
 
 	let maskId = $derived(
-		`mask-r${radii.join('-').replace('.', 'd')}-s${String(smoothness).replace('.', 'd')}`
+		`mask-r${radii.join('-').replaceAll('.', 'd')}-s${String(smoothness).replace('.', 'd')}`
 	);
 
 	// It's actually used but Svelte doesn't see this
