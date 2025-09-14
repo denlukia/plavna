@@ -12,10 +12,6 @@ patchedDependencies:
 importers:
 
   .:
-    dependencies:
-      '@plavna/corners':
-        specifier: link:packages/corners
-        version: link:packages/corners
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -71,6 +67,9 @@ importers:
       '@plavna/common':
         specifier: workspace:*
         version: link:../../packages/common
+      '@plavna/corners':
+        specifier: workspace:*
+        version: link:../../packages/corners
       '@plavna/design':
         specifier: workspace:*
         version: link:../../packages/design

@@ -30,8 +30,5 @@
 		"patchedDependencies": {
 			"drizzle-orm": "patches/drizzle-orm.patch"
 		}
-	},
-	"dependencies": {
-		"@plavna/corners": "link:packages/corners"
 	}
 }
