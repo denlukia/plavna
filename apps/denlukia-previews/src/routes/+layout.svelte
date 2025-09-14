@@ -2,7 +2,12 @@
 	import '@plavna/design/theming/styles';
 	import '$lib/reset.css';
 
-	import { createPointerContext, updatePointerFromWindowMessages } from '@plavna/design/reactivity';
+	import {
+		createPointerContext,
+		updatePointerFromParam,
+		updatePointerFromWindowMessages
+	} from '@plavna/design/reactivity';
+	import { page } from '$app/state';
 	import { onMount, type Snippet } from 'svelte';
 
 	import type { LayoutData } from './$types';
@@ -13,13 +18,31 @@
 	};
 
 	let { children }: Props = $props();
+	let isDemoMode = $derived(page.url.searchParams.has('demo'));
 
 	createPointerContext();
 
 	onMount(() => {
-		const cleanup = updatePointerFromWindowMessages();
-		return cleanup;
+		if (!isDemoMode) {
+			const cleanup = updatePointerFromWindowMessages();
+			return cleanup;
+		}
 	});
+
+	function onpointermove(event: PointerEvent) {
+		if (isDemoMode) {
+			const { clientX, clientY } = event;
+			updatePointerFromParam({ x: clientX, y: clientY });
+		}
+	}
 </script>
 
-{@render children()}
+<div class="pointer-tracking-wrapper" {onpointermove}>
+	{@render children()}
+</div>
+
+<style>
+	.pointer-tracking-wrapper {
+		height: 100%;
+	}
+</style>

@@ -21,6 +21,10 @@ export function updatePointerFromWindowMessages() {
 	return () => window.removeEventListener('message', listener);
 }
 
+export function updatePointerFromParam(pointer: Pointer) {
+	pointerState.current = pointer;
+}
+
 export function getPointerContext() {
 	return getContext<typeof pointerState | undefined>(pointerContextName);
 }
