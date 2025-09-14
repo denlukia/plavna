@@ -118,6 +118,13 @@
 	function onPreviewPreviewRequest() {
 		// TODO
 	}
+
+	function isSelectedPreview(previewObject: PreviewObject) {
+		return (
+			currentPreviewObject.family === previewObject.family &&
+			currentPreviewObject.template === previewObject.template
+		);
+	}
 </script>
 
 {#snippet previewFamilyButton(
@@ -126,10 +133,8 @@
 	superValidated: SuperValidated<any> | undefined
 )}
 	<Button
-		kind={currentPreviewObject.family === previewObject.family ? 'primary' : 'secondary'}
-		customClass="preview-family-button {currentPreviewObject.family === previewObject.family
-			? 'active'
-			: 'inactive'}"
+		kind={isSelectedPreview(previewObject) ? 'primary' : 'secondary'}
+		customClass="preview-family-button {isSelectedPreview(previewObject) ? 'active' : 'inactive'}"
 		contentCustomClass="preview-family-button-content {superValidated ? 'editor' : ''}"
 		href={getPreviewSpecificLink($page.url, previewObject)}
 		onclick={(e: MouseEvent) => onPreviewClick(e, previewObject)}
@@ -178,8 +183,9 @@
 							<Popup
 								triggerType="button"
 								buttonProps={{
-									kind:
-										currentPreviewObject.template === template.meta.id ? 'secondary' : 'primary',
+									kind: isSelectedPreview({ family: 'custom', template: template.meta.id })
+										? 'secondary'
+										: 'primary',
 									size: 'small'
 								}}
 							>
