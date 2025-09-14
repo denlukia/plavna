@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@plavna/corners': link:packages/corners
-
 patchedDependencies:
   drizzle-orm:
     hash: 5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117
@@ -132,7 +129,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/common
       '@plavna/corners':
-        specifier: link:../../packages/corners
+        specifier: workspace:*
         version: link:../../packages/corners
       '@plavna/design':
         specifier: workspace:*
