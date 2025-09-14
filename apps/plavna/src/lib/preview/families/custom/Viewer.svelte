@@ -18,7 +18,9 @@
 		$derived(data);
 
 	let finalUrl = $derived(
-		dev ? url?.replace(env.PUBLIC_REPLACE_PREVIEW_URL_IN, env.PUBLIC_REPLACE_PREVIEW_URL_OUT) : url
+		dev && env.PUBLIC_REPLACE_PREVIEW_URL_IN && env.PUBLIC_REPLACE_PREVIEW_URL_OUT
+			? url?.replace(env.PUBLIC_REPLACE_PREVIEW_URL_IN, env.PUBLIC_REPLACE_PREVIEW_URL_OUT)
+			: url
 	);
 	let finalScreenshot = $derived(viewing_in_article ? screenshot_in_article : screenshot);
 	let overridenImageTransitionDuration: number | undefined = $state(undefined);

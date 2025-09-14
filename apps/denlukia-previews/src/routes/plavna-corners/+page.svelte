@@ -106,6 +106,7 @@
 								class="colorizer"
 								class:colorizer-zero={index === 0}
 								class:colorizer-last={index === 4}
+								class:in-article={viewing_in_article}
 								style="background-color: {backgroundColor}; border-radius: {borderRadiusString}"
 							>
 								{#if index === 4}
@@ -143,7 +144,7 @@
 		box-shadow: inset 0 10px 20px hsla(10, 100%, 7%, 0.7);
 	}
 	.colorizer-last {
-		padding: 20px;
+		padding: 10px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -172,5 +173,9 @@
 		box-shadow:
 			inset 2px 2px 3px hsla(0, 0%, 100%, 0.3),
 			inset -1px -1px 3px hsla(0, 0%, 0%, 0.2);
+	}
+
+	.in-article {
+		padding: 20px;
 	}
 </style>
