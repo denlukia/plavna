@@ -155,6 +155,18 @@
 	.top {
 		display: flex;
 		justify-content: space-between;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
 	}
 	.colorizer-zero {
 		box-shadow:
