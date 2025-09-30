@@ -3,7 +3,7 @@
 
 	let { data } = $props();
 
-	let { themeSet, themeComponentSets } = $derived(data);
+	let { themeSet, themeComponentLayers } = $derived(data);
 </script>
 
 <Page {data} />

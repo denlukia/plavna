@@ -16,14 +16,14 @@ export const load = (async ({ data }) => {
 	const recordsTranslationsState = createRecordsTranslationsState(recordsTranslations);
 	const imagesState = createImagesState(images);
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
+	const themeComponentLayers = await enrichThemeSets(themeSet, getAppThemeGlob());
 
 	return {
 		...other,
 		previewFamiliesState,
 		recordsTranslationsState,
 		imagesState,
-		themeComponentSets,
+		themeComponentLayers,
 		themeSet
 	};
 }) satisfies PageLoad;

@@ -1,1 +1,1 @@
-export { default as ContinuousCorners } from './ContinuousCorners.svelte';
+export { default as PlavnaCorners } from './PlavnaCorners.svelte';

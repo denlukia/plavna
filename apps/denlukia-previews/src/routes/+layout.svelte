@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '@plavna/design/theming/styles';
 	import '$lib/reset.css';
 
 	import {

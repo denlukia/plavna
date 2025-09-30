@@ -1,6 +1,6 @@
 import type { Component } from 'svelte';
 
-import type { ThemeComponentSet, ThemeComponentSets, ThemeSet } from './basics';
+import type { ThemeComponentLayers, ThemeComponentSet, ThemeSet } from './basics';
 
 export async function enrichThemes(
 	glob: Record<string, () => Promise<unknown>> | null,
@@ -40,14 +40,14 @@ export async function enrichThemeSets(
 
 	const fileSets = { designSystem: null, app: appStylesGlob };
 
-	const themeComponentSets = {} as ThemeComponentSets;
+	const themeComponentLayers = {} as ThemeComponentLayers;
 
 	for (const fileSet in fileSets) {
 		const fileSetKey = fileSet as keyof typeof fileSets;
 		const glob = fileSets[fileSetKey];
 
-		themeComponentSets[fileSetKey] = await enrichThemes(glob, themeSet);
+		themeComponentLayers[fileSetKey] = await enrichThemes(glob, themeSet);
 	}
 
-	return themeComponentSets;
+	return themeComponentLayers;
 }

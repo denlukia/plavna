@@ -15,7 +15,7 @@ export const load = (async ({ data }) => {
 
 	const { themeSet, ...other } = data;
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
+	const themeComponentLayers = await enrichThemeSets(themeSet, getAppThemeGlob());
 
-	return { themeComponentSets, themeSet, ...other };
+	return { themeComponentLayers, themeSet, ...other };
 }) satisfies LayoutLoad;

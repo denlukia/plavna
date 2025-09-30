@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mapRange } from '@plavna/common';
-	import { ContinuousCorners } from '@plavna/corners';
+	import { PlavnaCorners } from '@plavna/corners';
 	import { CustomPreviewWrapper, Layers } from '@plavna/design/components';
 	import { getPointerContext } from '@plavna/design/reactivity';
 	import { cubicInOut, sineOut } from 'svelte/easing';
@@ -20,7 +20,7 @@
 		prop_4: emojiProp,
 		viewing_in_article,
 		themeSet,
-		themeComponentSets
+		themeComponentLayers
 	} = $derived(data);
 
 	const maxRadius = 100;
@@ -101,7 +101,7 @@
 						style="margin: {inset}px; height: calc(100% - {inset *
 							2}px); border-radius: {borderRadiusString}"
 					>
-						<ContinuousCorners radius={layerRadii} style="height: 100%;">
+						<PlavnaCorners radius={layerRadii} style="height: 100%;">
 							<div
 								class="colorizer"
 								class:colorizer-zero={index === 0}
@@ -118,7 +118,7 @@
 									{@html logo}
 								{/if}
 							</div>
-						</ContinuousCorners>
+						</PlavnaCorners>
 					</div>
 				{/each}
 			</Layers>

@@ -15,6 +15,6 @@ export async function load({ url }) {
 	return {
 		...deserializePreviewParams(url.toString()),
 		themeSet,
-		themeComponentSets: { designSystem: dsThemeComponentSet, app: {} }
+		themeComponentLayers: { designSystem: dsThemeComponentSet, app: {} }
 	};
 }

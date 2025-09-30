@@ -15,7 +15,7 @@ export type StyleTheme = (typeof allThemes.style)[number];
 export type TypographyInterfaceTheme = (typeof typographyInterfaceThemes)[number];
 export type TypographyMarkdownTheme = (typeof typographyMarkdownThemes)[number];
 
-export type ThemeComponentSets = {
+export type ThemeComponentLayers = {
 	designSystem: ThemeComponentSet;
 	app: ThemeComponentSet;
 };

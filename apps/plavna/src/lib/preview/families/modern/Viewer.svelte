@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ARTISTIC_OVERFLOW } from '@plavna/common';
 	import type { PreviewDataProp } from '@plavna/common';
-	import { ContinuousCorners } from '@plavna/corners';
+	import { PlavnaCorners } from '@plavna/corners';
 	import { ImageCDN, Layers, PreviewFoundation, Typography } from '@plavna/design/components';
 	import type { TextSizes } from '@plavna/design/components';
 
@@ -65,7 +65,7 @@
 
 <PreviewFoundation artisticOverflow={ARTISTIC_OVERFLOW}>
 	{#snippet main()}
-		<ContinuousCorners radius={50} style="height: 100%;">
+		<PlavnaCorners radius={50} style="height: 100%;">
 			<div class="preview" style="--bg-color: {bgColor}; --text-color: {textColor};">
 				<Layers stretch>
 					{#if img_1}
@@ -85,7 +85,7 @@
 							{/each}
 						</div>
 						<div class="bottom">
-							<ContinuousCorners radius={headingRadius} style="height: 100%;">
+							<PlavnaCorners radius={headingRadius} style="height: 100%;">
 								<div class="texts {titleSize}">
 									{#if description_translation}
 										<div class="description">
@@ -97,12 +97,12 @@
 
 									<Typography size={titleSize} purpose="markdown">{title_translation}</Typography>
 								</div>
-							</ContinuousCorners>
+							</PlavnaCorners>
 						</div>
 					</div>
 				</Layers>
 			</div>
-		</ContinuousCorners>
+		</PlavnaCorners>
 	{/snippet}
 </PreviewFoundation>
 
