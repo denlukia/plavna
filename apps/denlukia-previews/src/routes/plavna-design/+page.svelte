@@ -14,8 +14,6 @@
 	} from '@plavna/design/components';
 	import Component from '$lib/Component.svelte';
 
-	import '@plavna/design/theming/styles';
-
 	import type { PageData } from './$types';
 
 	type Props = {

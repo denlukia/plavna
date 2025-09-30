@@ -17,7 +17,7 @@
 		prop_4: emojiProp,
 		viewing_in_article,
 		themeSet,
-		themeComponentSets
+		themeComponentLayers
 	} = $derived(data);
 
 	let pointer = getPointerContext();

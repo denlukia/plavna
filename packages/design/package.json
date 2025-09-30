@@ -1,7 +1,7 @@
 {
 	"name": "@plavna/design",
 	"repository": "https://github.com/denlukia/plavna/",
-	"version": "0.0.2",
+	"version": "0.0.11",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -14,21 +14,19 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"exports": {
-		"./theming/styles": {
-			"default": "./src/lib/theming/styles/index.css"
-		},
 		"./theming/*": {
-			"default": "./src/lib/theming/*.ts"
+			"types": "./dist/theming/*.d.ts",
+			"svelte": "./dist/theming/*.js"
 		},
 		"./*": {
-			"default": "./src/lib/*/index.ts"
+			"types": "./dist/*/index.d.ts",
+			"svelte": "./dist/*/index.js"
 		}
 	},
 	"peerDependencies": {
 		"svelte": "^5.34.7"
 	},
 	"devDependencies": {
-		"@plavna/common": "workspace:*",
 		"@sveltejs/kit": "^2.22.0",
 		"@sveltejs/package": "^2.3.1",
 		"publint": "0.3.12",
@@ -37,6 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@plavna/common": "^0.0.2",
 		"bezier-easing": "^2.1.0"
 	}
 }

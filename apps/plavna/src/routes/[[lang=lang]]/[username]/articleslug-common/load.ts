@@ -16,14 +16,14 @@ export const load = (async ({ data, depends }) => {
 	const imagesDict = Object.fromEntries(images.map(({ id, ...other }) => [id, other]));
 	const imagesState = createImagesState(imagesDict);
 
-	const themeComponentSets = await enrichThemeSets(themeSet, getAppThemeGlob());
+	const themeComponentLayers = await enrichThemeSets(themeSet, getAppThemeGlob());
 
 	return {
 		...other,
 		previewComponent,
 		recordsTranslationsState,
 		imagesState,
-		themeComponentSets,
+		themeComponentLayers,
 		themeSet
 	};
 }) satisfies PageLoad;

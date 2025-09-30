@@ -16,10 +16,10 @@ You can also not specify smoothness and it will be set to 4 by default.
 
 ```svelte
 <script lang="ts">
-	import { ContinuousCorners } from '@plavna/corners';
+	import { PlavnaCorners } from '@plavna/corners';
 </script>
 
-<ContinuousCorners radius={10} smoothness={4}>
+<PlavnaCorners radius={10} smoothness={4}>
 	<div class="quote">Every great leap forward has been driven by a new clarity of thought.</div>
-</ContinuousCorners>
+</PlavnaCorners>
 ```

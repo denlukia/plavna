@@ -37,7 +37,7 @@
 		previewComponent: PreviewComponent,
 		routeId,
 		lang,
-		themeComponentSets,
+		themeComponentLayers,
 		themeSet,
 		previewTemplateUrl
 	} = $derived(data);

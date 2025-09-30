@@ -1,6 +1,4 @@
 <script lang="ts">
-	// Global CSS from Plavna Design
-	import '@plavna/design/theming/styles';
 	// Global CSS
 	import '$lib/styles/index.css';
 
@@ -11,7 +9,7 @@
 		RainbowLoader,
 		Typography
 	} from '@plavna/design/components';
-	import { ThemeSetter } from '@plavna/design/theming/components';
+	import { ThemeProvider } from '@plavna/design/theming/components';
 	import { createThemeContext } from '@plavna/design/theming/context';
 	import { navigating, page } from '$app/state';
 	import { onMount } from 'svelte';
@@ -25,7 +23,7 @@
 
 	let { data, children } = $props();
 
-	let { themeSet, themeComponentSets } = $derived(data);
+	let { themeSet, themeComponentLayers } = $derived(data);
 	createThemeContext(themeSet);
 
 	let isNavigating = $derived(Boolean(navigating.to));
@@ -59,7 +57,7 @@
 	<meta name="theme-color" content="#AB948A" />
 </svelte:head>
 
-<ThemeSetter {themeSet} {themeComponentSets}>
+<ThemeProvider {themeSet} {themeComponentLayers}>
 	<div class="global-theme-root-element">
 		<div class="main-layout">
 			<div class="lights-wrapper">
@@ -89,7 +87,7 @@
 			</div>
 		{/if}
 	</div>
-</ThemeSetter>
+</ThemeProvider>
 
 <style>
 	.main-layout {

@@ -5,6 +5,8 @@
   <h3>A monorepo for Plavna apps and packages</h3>
 </div>
 
+> **Deep Alpha**
+> This is my first time publishing packages and a big repo in general. Expect parts that require more polishing.
 
 ### Structure
 
@@ -22,3 +24,11 @@ Packages:
 - [Plavna Animations](packages/animations) - gestures & animations WIP written for [Lubymo](https://plvn.app/lubymo)
 - [Plavna Image Uploader](packages/image-uploader) - image uploader for Plavna
 - [Plavna Common](packages/common) - common types & utils for Plavna and Screenshotter
+
+### To Do (Contributions Welcome)
+
+- Document Plavna Corners (easy)
+- Document Plavna Design (medium)
+- Additional themes from [video](https://www.youtube.com/watch?v=iKL7uO9oJB0) (medium)
+- Align more features with current state of [Svelte Feature Folders](./apps/plavna/README.md) (medium)
+- Implement page theme override for a reader (medium)
