@@ -5,7 +5,7 @@
   <h3>A monorepo for Plavna apps and packages</h3>
 </div>
 
-> **Deep Alpha**
+> [!IMPORTANT]
 > This is my first time publishing packages and a big repo in general. Expect parts that require more polishing.
 
 ### Structure
