@@ -432,6 +432,9 @@ importers:
 
   packages/design:
     dependencies:
+      '@plavna/common':
+        specifier: ^0.0.2
+        version: 0.0.2(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)(svelte@5.34.7)
       bezier-easing:
         specifier: ^2.1.0
         version: 2.1.0
@@ -439,9 +442,6 @@ importers:
         specifier: ^5.34.7
         version: 5.34.7
     devDependencies:
-      '@plavna/common':
-        specifier: workspace:*
-        version: link:../common
       '@sveltejs/kit':
         specifier: ^2.22.0
         version: 2.22.0(@sveltejs/vite-plugin-svelte@6.1.0(rolldown-vite@7.1.8(@types/node@24.0.3)(esbuild@0.25.5))(svelte@5.34.7))(rolldown-vite@7.1.8(@types/node@24.0.3)(esbuild@0.25.5))(svelte@5.34.7)
@@ -1721,6 +1721,11 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@plavna/common@0.0.2':
+    resolution: {integrity: sha512-cvmiyki03S+RS1yq9PNOXsZBybVs29KT8zA0kxWZbvfjE8Gt5m/tMa8YFH6TkbK4olALZoF8+zMAoRWarAzxag==}
+    peerDependencies:
+      svelte: ^5.34.7
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -5484,6 +5489,42 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@plavna/common@0.0.2(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)(svelte@5.34.7)':
+    dependencies:
+      drizzle-orm: 0.44.2(patch_hash=5221e0743ffa83de8be11242dae4c546297bbc18bef69ba452730d102410e117)(@cloudflare/workers-types@4.20250620.0)(@libsql/client@0.15.4)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.10.0)
+      svelte: 5.34.7
+      zod: 3.25.67
+    transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@op-engineering/op-sqlite'
+      - '@opentelemetry/api'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
+      - '@types/sql.js'
+      - '@upstash/redis'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - better-sqlite3
+      - bun-types
+      - expo-sqlite
+      - gel
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - postgres
+      - prisma
+      - sql.js
+      - sqlite3
 
   '@polka/url@1.0.0-next.29': {}
 
