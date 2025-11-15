@@ -1,5 +1,6 @@
 {
 	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
 	"tasks": {
 		"build": {
 			"env": [
@@ -18,6 +19,7 @@
 			"outputs": [".svelte-kit/**", ".vercel/**", "dist/**"]
 		},
 		"dev": {
+			"dependsOn": ["^build"],
 			"persistent": true,
 			"cache": false
 		}

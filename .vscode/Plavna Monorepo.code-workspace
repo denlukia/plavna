@@ -1,35 +1,35 @@
 {
 	"folders": [
 		{
-			"name": "App: Plavna Src",
-			"path": "../apps/plavna/src"
+			"name": "App: Plavna",
+			"path": "../apps/plavna"
 		},
 		{
-			"name": "App: Screenshotter Src",
-			"path": "../apps/screenshotter/src"
+			"name": "App: Screenshotter",
+			"path": "../apps/screenshotter"
 		},
 		{
-			"name": "App: Screenshotter Cron Src",
-			"path": "../apps/screenshotter-cron/src"
+			"name": "App: Screenshotter Cron",
+			"path": "../apps/screenshotter-cron"
 		},
 		{
-			"name": "App: Denlukia Previews Src",
-			"path": "../apps/denlukia-previews/src"
+			"name": "App: Denlukia Previews",
+			"path": "../apps/denlukia-previews"
 		},
 		{
-			"name": "Package: Design Src",
-			"path": "../packages/design/src"
+			"name": "Package: Design",
+			"path": "../packages/design"
 		},
 		{
-			"name": "Package: Animations Src",
-			"path": "../packages/animations/src"
+			"name": "Package: Animations",
+			"path": "../packages/animations"
 		},
 		{
-			"name": "Package: Image Uploader Src",
-			"path": "../packages/image-uploader/src"
+			"name": "Package: Image Uploader",
+			"path": "../packages/image-uploader"
 		},
-		{ "name": "Package: Common Src", "path": "../packages/common/src" },
-		{ "name": "Package: Corners Src", "path": "../packages/corners/src" },
+		{ "name": "Package: Common", "path": "../packages/common" },
+		{ "name": "Package: Corners", "path": "../packages/corners" },
 		{ "name": "Root", "path": ".." }
 	],
 	"settings": {}

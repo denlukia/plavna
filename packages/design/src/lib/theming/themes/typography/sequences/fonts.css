@@ -3,18 +3,14 @@
 	font-style: normal;
 	font-weight: 100 900;
 	font-display: swap;
-	src:
-		local('Inter Variable'),
-		url('../../fonts/Inter/InterVariable.woff2') format('woff2');
+	src: url('../../fonts/Inter/InterVariable.woff2') format('woff2');
 }
 @font-face {
 	font-family: 'Inter Variable';
 	font-style: italic;
 	font-weight: 100 900;
 	font-display: swap;
-	src:
-		local('Inter Variable'),
-		url('../../fonts/Inter/InterVariable-Italic.woff2') format('woff2');
+	src: url('../../fonts/Inter/InterVariable-Italic.woff2') format('woff2');
 }
 
 @font-face {
@@ -23,7 +19,6 @@
 	font-weight: 400 800;
 	font-display: swap;
 	src:
-		local('EB Garamond'),
 		url('../../fonts/EB Garamond/EBGaramond-VariableFont_wght.woff2') format('woff2'),
 		url('../../fonts/EB Garamond/EBGaramond-VariableFont_wght.woff') format('woff');
 }
@@ -33,28 +28,6 @@
 	font-weight: 400 800;
 	font-display: swap;
 	src:
-		local('EB Garamond'),
 		url('../../fonts/EB Garamond/EBGaramond-Italic-VariableFont_wght.woff2') format('woff2'),
 		url('../../fonts/EB Garamond/EBGaramond-Italic-VariableFont_wght.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Source Serif 4 Variable';
-	font-style: normal;
-	font-weight: 100 900;
-	font-display: swap;
-	src:
-		local('Source Serif 4'),
-		url('../../fonts/Source Serif 4/SourceSerif4Variable-Roman.otf.woff2') format('woff2'),
-		url('../../fonts/Source Serif 4/SourceSerif4Variable-Roman.otf.woff') format('woff');
-}
-@font-face {
-	font-family: 'Source Serif 4 Variable';
-	font-style: italic;
-	font-weight: 100 900;
-	font-display: swap;
-	src:
-		local('Source Serif 4'),
-		url('../../fonts/Source Serif 4/SourceSerif4Variable-Italic.otf.woff2') format('woff2'),
-		url('../../fonts/Source Serif 4/SourceSerif4Variable-Italic.otf.woff') format('woff');
 }
