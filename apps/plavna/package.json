@@ -33,7 +33,7 @@
 		"bezier-easing": "^2.1.0",
 		"devalue": "^5.1.1",
 		"drizzle-kit": "0.31.0",
-		"drizzle-orm": "^0.44.2",
+		"drizzle-orm": "^0.45.1",
 		"drizzle-zod": "0.7.1",
 		"globals": "^16.0.0",
 		"imagekit": "^5.2.0",
