@@ -12,21 +12,15 @@ import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
+
+
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
 import { detectConstraintError } from '../errors/detectors';
 import { ErrorWithTranslation } from '../errors/ErrorWithTranslation';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type {
-	RecordsTranslationsDict,
-	SystemTranslationKey,
-	TranslationFormsDict
-} from '../i18n/types';
-import {
-	translationInsertSchema,
-	translationUpdateAllowEmptySchema,
-	translationUpdateSchema
-} from '../i18n/validators';
+import type { RecordsTranslationsDict, SystemTranslationKey, TranslationFormsDict } from '../i18n/types';
+import { translationInsertSchema, translationUpdateAllowEmptySchema, translationUpdateSchema } from '../i18n/validators';
 import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
@@ -35,12 +29,7 @@ import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/validat
 import { previewFamilies } from '../preview/families';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { table_previewTemplates } from '../preview/schema';
-import {
-	articlePreviewUpdateSchema,
-	previewTemplateCreationFormSchema,
-	previewTemplateDeletionFormSchema,
-	previewTemplateEditingFormSchema
-} from '../preview/validators';
+import { articlePreviewUpdateSchema, previewTemplateCreationFormSchema, previewTemplateDeletionFormSchema, previewTemplateEditingFormSchema } from '../preview/validators';
 import { table_screenshotsQueue } from '../screenshot/schema';
 import { calculateDimensionsFromCellsTaken } from '../screenshot/utils';
 import type { ScreenshotsQueueInsertLocal } from '../screenshot/validators';
@@ -49,16 +38,7 @@ import { tagDeleteSchema, tagUpdateSchema } from '../tag/validators';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import { table_articles } from './schema';
-import {
-	articleSelectSchema,
-	articleSlugUpdateSchema,
-	type ArticleInsert,
-	type ArticlePreviewImageFileFieldNamesAll,
-	type ArticlePreviewImageHandlers,
-	type ArticlePreviewUpdate,
-	type ArticleSelect,
-	type ArticleSlugUpdate
-} from './validators';
+import { articleSelectSchema, articleSlugUpdateSchema, type ArticleInsert, type ArticlePreviewImageFileFieldNamesAll, type ArticlePreviewImageHandlers, type ArticlePreviewUpdate, type ArticleSelect, type ArticleSlugUpdate } from './validators';
 
 export class ArticleService {
 	private readonly actorService: ActorService;
@@ -455,7 +435,7 @@ export class ArticleService {
 	}
 	async updatePreview(
 		slug: string,
-		preview: ArticlePreviewUpdate,
+		previewUpdate: ArticlePreviewUpdate,
 		imageHandlers: ArticlePreviewImageHandlers,
 		keysForDeletion: string[]
 	) {
@@ -473,23 +453,22 @@ export class ArticleService {
 				source = provider.type;
 				providerData = provider.data;
 			}
-		} catch {
-			console.error('Error setting image uploader from user');
+		} catch (e) {
+			console.error('Error setting image uploader from user', e);
 		}
 		// 1. Article fields update
-		if (preview.preview_family && preview.preview_family !== 'custom') {
-			preview.preview_template_id = null;
+		if (previewUpdate.preview_family && previewUpdate.preview_family !== 'custom') {
+			previewUpdate.preview_template_id = null;
 		}
-		if (preview.preview_template_id) {
-			preview.preview_family = 'custom';
+		if (previewUpdate.preview_template_id) {
+			previewUpdate.preview_family = 'custom';
 		}
-		if (preview.preview_family === 'custom' && !preview.preview_template_id) {
+		if (previewUpdate.preview_family === 'custom' && !previewUpdate.preview_template_id) {
 			error(500);
 		}
 
 		const whereCondition = and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id));
-		const articleUpdatePromise = db.update(table_articles).set(preview).where(whereCondition).run();
-		const promisesToWaitFor: Promise<ResultSet | void>[] = [articleUpdatePromise];
+		await db.update(table_articles).set(previewUpdate).where(whereCondition).run();
 
 		// 2. Upload images if present and update records
 		// TODO: There were validImage field in ImageHandler, we replaced
@@ -533,7 +512,7 @@ export class ArticleService {
 		}
 
 		// 3. Enqueue preview screenshots if needed
-		if (preview.preview_family === 'custom' && preview.preview_template_id) {
+		if (previewUpdate.preview_family === 'custom' && previewUpdate.preview_template_id) {
 			const articleResult = await db
 				.select({
 					articles: table_articles,
@@ -544,7 +523,7 @@ export class ArticleService {
 				.from(table_articles)
 				.innerJoin(
 					table_previewTemplates,
-					eq(table_previewTemplates.id, preview.preview_template_id)
+					eq(table_previewTemplates.id, previewUpdate.preview_template_id)
 				)
 				.leftJoin(
 					table_images,
@@ -633,10 +612,10 @@ export class ArticleService {
 									likes_count: articleResult[0].articles.likes_count,
 									lang: this.translationService.currentLang,
 									publish_time: articleResult[0].articles.publish_time,
-									prop_1: preview.preview_prop_1 || null,
-									prop_2: preview.preview_prop_2 || null,
-									prop_3: preview.preview_prop_3 || null,
-									prop_4: preview.preview_prop_4 || null,
+									prop_1: previewUpdate.preview_prop_1 || null,
+									prop_2: previewUpdate.preview_prop_2 || null,
+									prop_3: previewUpdate.preview_prop_3 || null,
+									prop_4: previewUpdate.preview_prop_4 || null,
 									translation_1: preview_translation_1,
 									translation_2: preview_translation_2,
 									img_1: getImage(preview_image_1_id, lang),
@@ -725,17 +704,14 @@ export class ArticleService {
 						throw this.selectErrorWithTranslation({ type: 'at_least_one_title' });
 					}
 
-					const queueRecordsInserPromise = db
-						.insert(table_screenshotsQueue)
-						.values(queueRecordsForInsert)
-						.run();
-					promisesToWaitFor.push(queueRecordsInserPromise);
+					await db.insert(table_screenshotsQueue).values(queueRecordsForInsert).run();
 				}
 			}
 		} else {
 			// TODO: Delete any queues and images
 		}
-		return Promise.all(promisesToWaitFor);
+
+		return true;
 	}
 	async getOne(username: string, slug: string) {
 		const actor = await this.actorService.get();
