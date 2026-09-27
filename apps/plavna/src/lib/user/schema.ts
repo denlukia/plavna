@@ -9,6 +9,7 @@ export const table_users = sqliteTable(
 		id: text('id').primaryKey(),
 		github_id: integer('github_id').unique().notNull(),
 		username: text('username').unique().notNull(),
+		github_token: text('github_token'),
 		imagekit_public_key: text('imagekit_public_key'),
 		imagekit_private_key: text('imagekit_private_key'),
 		imagekit_url_endpoint: text('imagekit_url_endpoint')

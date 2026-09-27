@@ -27,6 +27,10 @@ export const EN = {
 		unknown_error: 'Unknown error',
 		cannot_delete: "Couldn't delete",
 		invalid_url: 'Invalid URL',
+		invalid_image_provider: 'Invalid image provider credentials',
+		github_token_required:
+			'GitHub refused access — add a token in Settings > GitHub Connection and try again',
+		md_fetch_failed: "Couldn't retrieve the file — check the URL and try again",
 		at_least_one_title: 'Article should have title at least in one language'
 	},
 	main: {
@@ -139,6 +143,18 @@ export const EN = {
 			delete: 'Delete',
 			view: 'View'
 		},
+		md_import: {
+			import_action: 'Import {lang} from .md',
+			sync_action: 'Sync {lang} from .md',
+			form_title: 'Import from Markdown',
+			url_label: 'Markdown URL',
+			url_hint:
+				'A direct link to a .md file or a GitHub file page link (a raw link is not required)',
+			url_placeholder: 'https://github.com/username/repo/blob/main/article.md',
+			submit: 'Import',
+			setup_github: 'Setup GitHub Connection',
+			edit_github: 'Edit GitHub Connection'
+		},
 		previews: {
 			editor_title: 'Preview Settings',
 			section_label: 'Preview',
@@ -214,6 +230,25 @@ export const EN = {
 		username: 'Username',
 		save: 'Save',
 		setup_username: 'Setup username',
+		github: {
+			token_label: 'GitHub access token',
+			instruction_button: 'Why and where?',
+			instruction_title: 'Why and where',
+			purpose:
+				'Connect GitHub to import articles from private repositories. Public files work without a token.',
+			step_1a: 'Open',
+			new_token_link: 'token settings',
+			step_1b: 'and create a fine-grained token:',
+			step_2:
+				'Give it a name, set an expiration, choose the repositories, then under Repository permissions use Add permissions to add Contents with Read-only access. Public repositories work without a token.',
+			step_3: 'Copy the token, paste it above and save.'
+		},
+		imagekit: {
+			url_endpoint: 'URL Endpoint',
+			public_key: 'Public Key',
+			private_key: 'Private Key',
+			delete: 'Delete'
+		},
 		tips: {
 			1: 'Create articles with tags in My > Articles and publish them',
 			2: 'Create pages in My > Pages or use the Default page already created there',

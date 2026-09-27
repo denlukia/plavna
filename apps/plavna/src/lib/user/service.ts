@@ -9,10 +9,13 @@ import { db } from '$lib/db/db';
 
 import { table_images } from '../image/schema';
 import type { ImageSelect } from '../image/validators';
+import { imageProviderUpdateFormSchema } from '../image/validators';
 import { table_users } from './schema';
 import {
+	githubConnectionFormSchema,
 	userSettingsFormSchema,
 	type Actor,
+	type GithubConnectionUpdate,
 	type ImageProviderUpdate,
 	type UserSettingsUpdate
 } from './validators';
@@ -87,5 +90,57 @@ export class ActorService {
 
 		// TODO: Only write allowed fields (and across all project)
 		return db.update(table_users).set(data).where(eq(table_users.id, actor.id)).returning().get();
+	}
+	async getGithubConnectionForm(username: Actor['username']) {
+		await this.checkOrThrow(null, username);
+		const actor = await db
+			.select({
+				github_token: table_users.github_token
+			})
+			.from(table_users)
+			.where(eq(table_users.username, username))
+			.get();
+		if (!actor) error(404);
+
+		return superValidate(actor, zod(githubConnectionFormSchema), {
+			id: 'github-connection'
+		});
+	}
+	async updateGithubConnection(data: GithubConnectionUpdate) {
+		const actor = await this.getOrThrow();
+		const github_token = data.github_token?.trim() ? data.github_token.trim() : null;
+
+		return db
+			.update(table_users)
+			.set({ github_token })
+			.where(eq(table_users.id, actor.id))
+			.returning({ github_token: table_users.github_token })
+			.get();
+	}
+	async getGithubToken(): Promise<Actor['github_token']> {
+		const actor = await this.getOrThrow();
+		const record = await db
+			.select({ github_token: table_users.github_token })
+			.from(table_users)
+			.where(eq(table_users.id, actor.id))
+			.get();
+		return record?.github_token ?? null;
+	}
+	async getImageProviderForm(username: Actor['username']) {
+		await this.checkOrThrow(null, username);
+		const actor = await db
+			.select({
+				imagekit_url_endpoint: table_users.imagekit_url_endpoint,
+				imagekit_public_key: table_users.imagekit_public_key,
+				imagekit_private_key: table_users.imagekit_private_key
+			})
+			.from(table_users)
+			.where(eq(table_users.username, username))
+			.get();
+		if (!actor) error(404);
+
+		return superValidate(actor, zod(imageProviderUpdateFormSchema), {
+			id: 'image-provider'
+		});
 	}
 }

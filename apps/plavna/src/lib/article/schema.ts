@@ -15,6 +15,7 @@ export const table_articles = sqliteTable(
 			.notNull()
 			.references(() => table_users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
 		slug: text('slug').notNull(),
+		md_source_url: text('md_source_url'),
 		title_translation_key: integer('title_translation_key')
 			.notNull()
 			.references(() => table_translations.key, { onDelete: 'cascade', onUpdate: 'cascade' }),

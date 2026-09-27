@@ -24,3 +24,8 @@ export const userSettingsFormSchema = createSelectSchema(table_users).pick({
 	username: true
 });
 export type UserSettingsUpdate = z.infer<typeof userSettingsFormSchema>;
+
+export const githubConnectionFormSchema = createSelectSchema(table_users).pick({
+	github_token: true
+});
+export type GithubConnectionUpdate = z.infer<typeof githubConnectionFormSchema>;

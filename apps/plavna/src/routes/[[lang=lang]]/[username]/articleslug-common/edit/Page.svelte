@@ -6,12 +6,14 @@
 		ColumnsContainer,
 		Label,
 		Labeled,
+		Popup,
 		Typography
 	} from '@plavna/design/components';
 	import { enhance } from '$app/forms';
 	import { beforeNavigate, invalidate, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
+	import MdImportForm from '$lib/article/md-import/MdImportForm.svelte';
 	import AutosavedInput from '$lib/common/components/AutosavedInput.svelte';
 	import { PAGE_INRO_DELAY_MS } from '$lib/common/config';
 	import { generatePath } from '$lib/common/links';
@@ -39,6 +41,14 @@
 
 	let publishTime = $derived(article.publish_time);
 
+	let importOpen = $state(false);
+	let editorNonce = $state(0);
+
+	let isSync = $derived.by(() => {
+		const contentForm = translationForms[article.content_translation_key];
+		return Boolean(contentForm?.data?.[lang]);
+	});
+
 	let viewHref = $derived(
 		generatePath('/[lang]/[username]/[pageslug]/[articleslug]', $page.params)
 	);
@@ -49,63 +59,95 @@
 </script>
 
 <AnimatedPage key={routeId + article.id + lang} introDelay={PAGE_INRO_DELAY_MS}>
-	<Typography size="heading-1">
-		<Translation key="article_editor.heading" />
-	</Typography>
+	<div class="heading-row">
+		<Typography size="heading-1">
+			<Translation key="article_editor.heading" />
+		</Typography>
+		<div class="md-import-button">
+			<Popup
+				triggerType="button"
+				bind:active={importOpen}
+				buttonProps={{ kind: 'primary' }}
+				style="width: 340px"
+			>
+				{#snippet label()}
+					<Translation
+						key={isSync
+							? 'article_editor.md_import.sync_action'
+							: 'article_editor.md_import.import_action'}
+						wrapTranslation={(text) => text.replace('{lang}', lang)}
+					/>
+				{/snippet}
+				{#snippet content()}
+					<MdImportForm
+						superValidated={data.mdImportSuperValidated}
+						hasGithubToken={data.hasGithubToken}
+						close={() => (importOpen = false)}
+						onImported={() => {
+							editorNonce += 1;
+							invalidateAll();
+						}}
+					/>
+				{/snippet}
+			</Popup>
+		</div>
+	</div>
 
-	<div class="page-editor">
-		<ColumnsContainer>
-			<Column cols={3}>
-				<Column cols={2}>
+	{#key editorNonce}
+		<div class="page-editor">
+			<ColumnsContainer>
+				<Column cols={3}>
+					<Column cols={2}>
+						<Labeled as="label">
+							<Label><Translation key="article_editor.title" /></Label>
+							<AutosavedInput
+								superValidated={translationForms[article.title_translation_key]}
+								action="?/update_translation"
+							/>
+						</Labeled>
+					</Column>
+					<Column cols={1}>
+						<Labeled as="label">
+							<Label><Translation key="article_editor.slug" /></Label>
+							<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
+						</Labeled>
+					</Column>
 					<Labeled as="label">
-						<Label><Translation key="article_editor.title" /></Label>
+						<Label><Translation key="article_editor.short_description" /></Label>
 						<AutosavedInput
-							superValidated={translationForms[article.title_translation_key]}
-							action="?/update_translation"
+							superValidated={translationForms[article.description_translation_key]}
+							action="?/update_translation_allow_empty"
+						/>
+					</Labeled>
+					<Labeled as="label">
+						<Label><Translation key="article_editor.content" /></Label>
+						<AutosavedInput
+							rows={20}
+							action="?/update_translation_allow_empty"
+							textarea
+							superValidated={translationForms[article.content_translation_key]}
 						/>
 					</Labeled>
 				</Column>
-				<Column cols={1}>
-					<Labeled as="label">
-						<Label><Translation key="article_editor.slug" /></Label>
-						<AutosavedInput superValidated={data.slugForm} action="?/update_slug" />
-					</Labeled>
-				</Column>
-				<Labeled as="label">
-					<Label><Translation key="article_editor.short_description" /></Label>
-					<AutosavedInput
-						superValidated={translationForms[article.description_translation_key]}
-						action="?/update_translation_allow_empty"
-					/>
-				</Labeled>
-				<Labeled as="label">
-					<Label><Translation key="article_editor.content" /></Label>
-					<AutosavedInput
-						rows={20}
-						action="?/update_translation_allow_empty"
-						textarea
-						superValidated={translationForms[article.content_translation_key]}
-					/>
-				</Labeled>
-			</Column>
 
-			<Column cols={2} customClass="article-editor-shifted-cell article-tags-list-cell">
-				<section class="row">
-					<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
-				</section>
-				<section class="row">
-					<PreviewsList {data} />
-				</section>
-				<section class="row">
-					<ImagesCollections
-						imageProvider={data.imageProvider}
-						articleId={article.id}
-						collections={{ common: data.commonImages, article: data.articleImages }}
-					/>
-				</section>
-			</Column>
-		</ColumnsContainer>
-	</div>
+				<Column cols={2} customClass="article-editor-shifted-cell article-tags-list-cell">
+					<section class="row">
+						<ArticleTagsList tags={tagInfos} {tagCreationSuperValidated} />
+					</section>
+					<section class="row">
+						<PreviewsList {data} />
+					</section>
+					<section class="row">
+						<ImagesCollections
+							imageProvider={data.imageProvider}
+							articleId={article.id}
+							collections={{ common: data.commonImages, article: data.articleImages }}
+						/>
+					</section>
+				</Column>
+			</ColumnsContainer>
+		</div>
+	{/key}
 </AnimatedPage>
 
 <form class="main-actions" use:enhance method="POST" out:fade|global>
@@ -147,6 +189,17 @@
 	.page-editor {
 		margin-top: var(--size-l);
 		margin-bottom: var(--size-4xl);
+	}
+
+	.heading-row {
+		display: flex;
+		align-items: center;
+		gap: var(--size-m);
+	}
+
+	.md-import-button {
+		margin-top: var(--size-m);
+		margin-inline-start: var(--size-l);
 	}
 
 	.row {

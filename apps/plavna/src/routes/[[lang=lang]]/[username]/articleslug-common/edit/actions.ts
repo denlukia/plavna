@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { edit_article } from '$lib/article/actions';
+import { mdImportFormSchema } from '$lib/article/md-import/validators';
 import {
 	articleSlugUpdateSchema,
 	type ArticlePreviewImageFileFieldsAll,
@@ -10,9 +11,9 @@ import {
 } from '$lib/article/validators';
 import { IMG_VALIDATION_CONFIG } from '$lib/common/config';
 import { generatePath } from '$lib/common/links';
-import { ERRORS } from '$lib/errors/errors';
 import { getActionFailure } from '$lib/errors/fail-with-form-error';
 import { createTranslationUpdater } from '$lib/i18n/actions';
+import { checkTranslationKey } from '$lib/i18n/utils';
 import {
 	translationInsertSchema,
 	translationUpdateAllowEmptySchema,
@@ -106,6 +107,34 @@ async function update_slug(event: RequestEvent) {
 			})
 		);
 	}
+}
+
+async function import_md(event: RequestEvent) {
+	const params = event.params;
+	const { articleslug } = params;
+	const form = await superValidate(event.request, zod(mdImportFormSchema));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const { articleService } = event.locals;
+
+	try {
+		const result = await articleService.importFromMd(articleslug, form.data.url);
+		if (result.slug) {
+			redirect(
+				302,
+				generatePath('/[lang]/[username]/[pageslug]/[articleslug]/edit', params, {
+					articleslug: result.slug
+				})
+			);
+		}
+	} catch (e) {
+		return getActionFailure(e, form, 'url');
+	}
+
+	return { form };
 }
 
 async function update_preview(event: RequestEvent) {
@@ -220,7 +249,7 @@ async function update_image_provider(event: RequestEvent) {
 	try {
 		await actorService.updateImageProvider(form.data);
 	} catch {
-		return setError(form, '', ERRORS.IMAGES.INVALID_PROVIDER_CREDS);
+		return setError(form, '', checkTranslationKey('actor_errors.invalid_image_provider'));
 	}
 	return { form };
 }
@@ -289,6 +318,7 @@ export const actions = {
 	create_tag,
 	delete_tag,
 	update_slug,
+	import_md,
 	publish: (event) => edit_article(event, 'publish'),
 	hide: (event) => edit_article(event, 'hide'),
 	delete: (event) => edit_article(event, 'delete'),

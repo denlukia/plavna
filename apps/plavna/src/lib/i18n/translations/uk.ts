@@ -28,6 +28,10 @@ export const UK = {
 		unknown_error: 'Невідома помилка',
 		cannot_delete: 'Не вдалося видалити',
 		invalid_url: 'Невірна адреса',
+		invalid_image_provider: 'Невірні дані провайдера зображень',
+		github_token_required:
+			'GitHub відхилив доступ — додайте токен у Налаштування > Зʼєднання з GitHub і спробуйте ще',
+		md_fetch_failed: 'Не вдалося отримати файл — перевірте адресу і спробуйте ще',
 		at_least_one_title: 'Стаття повинна містити заголовок хоча б однією мовою'
 	},
 	main: {
@@ -139,6 +143,18 @@ export const UK = {
 			delete: 'Видалити',
 			view: 'Переглянути'
 		},
+		md_import: {
+			import_action: 'Імпортувати {lang} з .md',
+			sync_action: 'Синхронізувати {lang} з .md',
+			form_title: 'Імпорт з Markdown',
+			url_label: 'URL Markdown',
+			url_hint:
+				'Пряме посилання на .md файл або посилання на файл у GitHub (raw-посилання не обовʼязкове)',
+			url_placeholder: 'https://github.com/username/repo/blob/main/article.md',
+			submit: 'Імпортувати',
+			setup_github: 'Налаштувати зʼєднання з GitHub',
+			edit_github: 'Редагувати зʼєднання з GitHub'
+		},
 		previews: {
 			editor_title: 'Налашт. передогляду',
 			section_label: 'Передогляд',
@@ -214,6 +230,25 @@ export const UK = {
 		username: "Ім'я користувача",
 		save: 'Зберегти',
 		setup_username: 'Налаштувати імʼя користувача',
+		github: {
+			token_label: 'Токен доступу GitHub',
+			instruction_button: 'Навіщо і де?',
+			instruction_title: 'Навіщо і де',
+			purpose:
+				'Підʼєднайте GitHub, щоб імпортувати статті з приватних репозиторіїв. Публічні файли працюють без токена.',
+			step_1a: 'Відкрийте',
+			new_token_link: 'налаштування токенів',
+			step_1b: 'та створіть деталізований токен:',
+			step_2:
+				'Дайте токену назву, встановіть термін дії, оберіть репозиторії, а потім у правах репозиторію (Repository permissions) через Add permissions додайте Contents із доступом Read-only. Для публічних репозиторіїв токен не потрібен.',
+			step_3: 'Скопіюйте токен, вставте вище і збережіть.'
+		},
+		imagekit: {
+			url_endpoint: 'URL Кінцева точка',
+			public_key: 'Публічний ключ',
+			private_key: 'Приватний ключ',
+			delete: 'Видалити'
+		},
 		tips: {
 			1: 'Створюйте статті з тегами в Мої > Статті та публікуйте їх',
 			2: 'Створюйте сторінки в Мої > Сторінки або використовуйте вже створену там Основну',

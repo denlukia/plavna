@@ -13,7 +13,7 @@
 		duration: 250
 	});
 
-	let { type, ...attributes }: InputProps = $props();
+	let { type, value = $bindable(), ...attributes }: InputProps = $props();
 
 	let animateOnTypeChange = $state(false);
 
@@ -41,7 +41,13 @@
 {/snippet}
 
 {#snippet trailing()}
-	<Button type="button" isInInput onclick={togglePswdVisibility} {leading} />
+	<Button type="button" placement="in-input" onclick={togglePswdVisibility} {leading} />
 {/snippet}
 
-<Input type={pswdVisible ? 'text' : 'password'} {trailing} {...attributes} animateOnTypeChange />
+<Input
+	type={pswdVisible ? 'text' : 'password'}
+	bind:value
+	{trailing}
+	{...attributes}
+	animateOnTypeChange
+/>

@@ -12,15 +12,22 @@ import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
-
-
 import { getNullAndDupFilter, isNonNullable } from '../common/utils';
+import { getBasicSlugValidator } from '../common/validators';
 import { detectConstraintError } from '../errors/detectors';
 import { ErrorWithTranslation } from '../errors/ErrorWithTranslation';
 import { table_translations } from '../i18n/schema';
 import type { TranslationService } from '../i18n/service';
-import type { RecordsTranslationsDict, SystemTranslationKey, TranslationFormsDict } from '../i18n/types';
-import { translationInsertSchema, translationUpdateAllowEmptySchema, translationUpdateSchema } from '../i18n/validators';
+import type {
+	RecordsTranslationsDict,
+	SystemTranslationKey,
+	TranslationFormsDict
+} from '../i18n/types';
+import {
+	translationInsertSchema,
+	translationUpdateAllowEmptySchema,
+	translationUpdateSchema
+} from '../i18n/validators';
 import { table_images } from '../image/schema';
 import type { ImageService } from '../image/service';
 import type { ImagesDict } from '../image/types';
@@ -29,7 +36,12 @@ import { imageCreationFormSchema, imageUpdateFormSchema } from '../image/validat
 import { previewFamilies } from '../preview/families';
 import type { PreviewFamiliesDict } from '../preview/families/types';
 import { table_previewTemplates } from '../preview/schema';
-import { articlePreviewUpdateSchema, previewTemplateCreationFormSchema, previewTemplateDeletionFormSchema, previewTemplateEditingFormSchema } from '../preview/validators';
+import {
+	articlePreviewUpdateSchema,
+	previewTemplateCreationFormSchema,
+	previewTemplateDeletionFormSchema,
+	previewTemplateEditingFormSchema
+} from '../preview/validators';
 import { table_screenshotsQueue } from '../screenshot/schema';
 import { calculateDimensionsFromCellsTaken } from '../screenshot/utils';
 import type { ScreenshotsQueueInsertLocal } from '../screenshot/validators';
@@ -37,8 +49,20 @@ import { table_tags, table_tags_to_articles } from '../tag/schema';
 import { tagDeleteSchema, tagUpdateSchema } from '../tag/validators';
 import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
+import { parseMdDocument } from './md-import/frontmatter';
+import { isGithubHostedMarkdownUrl, toRawMarkdownUrl } from './md-import/github-url';
+import { mdImportFormSchema } from './md-import/validators';
 import { table_articles } from './schema';
-import { articleSelectSchema, articleSlugUpdateSchema, type ArticleInsert, type ArticlePreviewImageFileFieldNamesAll, type ArticlePreviewImageHandlers, type ArticlePreviewUpdate, type ArticleSelect, type ArticleSlugUpdate } from './validators';
+import {
+	articleSelectSchema,
+	articleSlugUpdateSchema,
+	type ArticleInsert,
+	type ArticlePreviewImageFileFieldNamesAll,
+	type ArticlePreviewImageHandlers,
+	type ArticlePreviewUpdate,
+	type ArticleSelect,
+	type ArticleSlugUpdate
+} from './validators';
 
 export class ArticleService {
 	private readonly actorService: ActorService;
@@ -329,6 +353,12 @@ export class ArticleService {
 		return {
 			meta: articleSelectSchema.parse(articleResult),
 			slugForm: await superValidate(articleResult, zod(articleSlugUpdateSchema)),
+			mdImportSuperValidated: await superValidate(
+				{ url: articleResult.md_source_url ?? '' },
+				zod(mdImportFormSchema),
+				{ id: 'md-import' }
+			),
+			hasGithubToken: Boolean(actor.github_token),
 			previewEditorSuperValidated: await superValidate(
 				articleResult,
 				zod(articlePreviewUpdateSchema)
@@ -404,6 +434,101 @@ export class ArticleService {
 		} catch (e) {
 			throw this.selectErrorWithTranslation(e);
 		}
+	}
+	async importFromMd(slug: string, sourceUrl: string) {
+		const actor = await this.actorService.getOrThrow();
+		const lang = this.translationService.currentLang;
+
+		const article = await db
+			.select({
+				id: table_articles.id,
+				slug: table_articles.slug,
+				title_translation_key: table_articles.title_translation_key,
+				description_translation_key: table_articles.description_translation_key,
+				content_translation_key: table_articles.content_translation_key
+			})
+			.from(table_articles)
+			.where(and(eq(table_articles.slug, slug), eq(table_articles.user_id, actor.id)))
+			.get();
+		if (!article) {
+			error(404);
+		}
+
+		const fetchUrl = toRawMarkdownUrl(sourceUrl);
+		const fromGithub = isGithubHostedMarkdownUrl(fetchUrl);
+		const githubToken = fromGithub ? await this.actorService.getGithubToken() : null;
+
+		const loadText = async (withToken: boolean) => {
+			const headers: Record<string, string> = {};
+			if (withToken && githubToken) {
+				headers['Authorization'] = `Bearer ${githubToken}`;
+			}
+			const response = await fetch(fetchUrl, { headers });
+			if (!response.ok) {
+				return { text: null as string | null, status: response.status };
+			}
+			return { text: (await response.text()) as string | null, status: response.status };
+		};
+
+		let text: string | null;
+		let status: number | null;
+		try {
+			({ text, status } = await loadText(false));
+			if (text === null && fromGithub && githubToken) {
+				({ text, status } = await loadText(true));
+			}
+		} catch {
+			throw new ErrorWithTranslation('actor_errors.md_fetch_failed');
+		}
+		if (text === null) {
+			if (fromGithub && !githubToken && status && [401, 403, 404].includes(status)) {
+				throw new ErrorWithTranslation('actor_errors.github_token_required');
+			}
+			throw new ErrorWithTranslation('actor_errors.md_fetch_failed');
+		}
+
+		const doc = parseMdDocument(text);
+
+		let newSlug: string | null = null;
+		if (doc.slug && doc.slug !== article.slug) {
+			const parsedSlug = getBasicSlugValidator('article').safeParse(doc.slug);
+			if (!parsedSlug.success) {
+				throw new ErrorWithTranslation(
+					(parsedSlug.error.issues[0]?.message ??
+						'actor_errors.invalid_url') as SystemTranslationKey
+				);
+			}
+			newSlug = parsedSlug.data;
+		}
+
+		if (doc.title) {
+			await this.translationService.update({
+				key: article.title_translation_key,
+				[lang]: doc.title
+			});
+		}
+		if (doc.description) {
+			await this.translationService.update({
+				key: article.description_translation_key,
+				[lang]: doc.description
+			});
+		}
+		await this.translationService.update({
+			key: article.content_translation_key,
+			[lang]: doc.body || null
+		});
+
+		if (newSlug) {
+			await this.updateSlug(slug, { slug: newSlug });
+		}
+
+		await db
+			.update(table_articles)
+			.set({ md_source_url: sourceUrl })
+			.where(and(eq(table_articles.slug, newSlug ?? slug), eq(table_articles.user_id, actor.id)))
+			.run();
+
+		return { slug: newSlug };
 	}
 	async publish(slug: string) {
 		const actor = await this.actorService.getOrThrow();
