@@ -1,5 +1,7 @@
-import type { Element, Root } from 'hast';
+import type { Comment, Element, Root, Text } from 'hast';
+import { fromHtml } from 'hast-util-from-html';
 import { toHtml } from 'hast-util-to-html';
+import katex from 'katex';
 import type { Pluggable } from 'unified';
 import { visit } from 'unist-util-visit';
 
@@ -49,6 +51,41 @@ function fixDecimalCommas(root: Element) {
 		}
 	});
 }
+
+/**
+ * Renders TeX with KaTeX core directly (no rehype-katex: its isomorphic HTML
+ * parser resolves to a DOMParser build that crashes runtimes without DOM,
+ * such as our edge SSR). Emits MathML-only spans for the serializer below.
+ */
+export const rehypeKatexMathml: Pluggable = () => {
+	return (tree: Root): Root => {
+		visit(tree, 'element', (node) => {
+			if (node.tagName !== 'code') return;
+			const classes = classList(node);
+			if (!classes.includes('language-math')) return;
+			const display = classes.includes('math-display');
+			const tex = node.children.map((child) => (child.type === 'text' ? child.value : '')).join('');
+			let mathml: string;
+			try {
+				mathml = katex.renderToString(tex, {
+					displayMode: display,
+					output: 'mathml',
+					strict: false,
+					throwOnError: false
+				});
+			} catch {
+				return;
+			}
+			node.tagName = 'span';
+			node.properties = { className: [display ? 'katex-display' : 'katex'] };
+			node.children = fromHtml(mathml, { fragment: true }).children.filter(
+				(child): child is Comment | Element | Text =>
+					child.type === 'comment' || child.type === 'element' || child.type === 'text'
+			);
+		});
+		return tree;
+	};
+};
 
 /**
  * Serializes KaTeX output (and bare <math>) into raw HTML rendered via {@html}.

@@ -44,7 +44,6 @@
 		"nanoid": "^5.0.7",
 		"oslo": "^1.2.1",
 		"posthog-js": "^1.255.1",
-		"rehype-katex": "^7.0.1",
 		"rehype-raw": "^7.0.0",
 		"remark-math": "^6.0.0",
 		"svelte": "^5.34.7",
@@ -58,6 +57,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"hast-util-from-html": "^2.0.3",
 		"hast-util-to-html": "^9.0.5",
 		"unist-util-visit": "^5.1.0"
 	}

@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { getGlobalTypographyClass } from '@plavna/design/components';
-	import rehypeKatex from 'rehype-katex';
 	import rehypeRaw from 'rehype-raw';
 	import remarkMath from 'remark-math';
 	import Markdown from 'svelte-exmarkdown';
 	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
 	import type { Plugin } from 'svelte-exmarkdown/types';
 
-	import { rehypeKatexFormula } from './katex-formula';
+	import { rehypeKatexFormula, rehypeKatexMathml } from './katex-formula';
 	import { setMarkdownContext } from './markdown-context';
 	import Blockquote from './renderers/Blockquote.svelte';
 	import Em from './renderers/Em.svelte';
@@ -48,7 +47,7 @@
 	const plugins: Plugin[] = [
 		gfmPlugin(),
 		{ remarkPlugin: remarkMath },
-		{ rehypePlugin: [rehypeKatex, { strict: false }] },
+		{ rehypePlugin: rehypeKatexMathml },
 		{ rehypePlugin: rehypeKatexFormula },
 		...(allowHtml ? [{ rehypePlugin: rehypeRaw }] : []),
 		{
