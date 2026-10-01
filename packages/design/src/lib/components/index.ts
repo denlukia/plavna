@@ -15,6 +15,7 @@ export * from './Loaders';
 export * from './Popup';
 export * from './Preview';
 export * from './Spacer';
+export * from './ScrollEdgeIndicator';
 export * from './Switch';
 export * from './Tabs';
 export * from './Typography';
