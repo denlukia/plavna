@@ -48,7 +48,7 @@
 	const plugins: Plugin[] = [
 		gfmPlugin(),
 		{ remarkPlugin: remarkMath },
-		{ rehypePlugin: rehypeKatex },
+		{ rehypePlugin: [rehypeKatex, { strict: false }] },
 		{ rehypePlugin: rehypeKatexFormula },
 		...(allowHtml ? [{ rehypePlugin: rehypeRaw }] : []),
 		{
