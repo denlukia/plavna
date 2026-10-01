@@ -70,7 +70,7 @@
 	--text-small-short-letter-spacing: 0;
 
 	--text-formula-font-family: 'Libertinus Math', serif;
-	--text-formula-size: 22px;
+	--text-formula-size: 21px;
 	--text-formula-weight: 400;
 	--text-formula-line-height: 32px;
 	--text-formula-letter-spacing: 0;
@@ -137,7 +137,7 @@
 		--text-small-short-line-height: 16px;
 		--text-small-short-letter-spacing: 0;
 
-		--text-formula-size: 19px;
+		--text-formula-size: 18px;
 		--text-formula-line-height: 26px;
 	}
 }
