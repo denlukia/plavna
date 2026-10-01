@@ -68,6 +68,12 @@
 	--text-small-short-line-height: 12px;
 	--text-small-short-letter-spacing: 0;
 
+	--text-formula-font-family: 'Libertinus Math', serif;
+	--text-formula-size: 19px;
+	--text-formula-weight: 400;
+	--text-formula-line-height: 32px;
+	--text-formula-letter-spacing: 0;
+
 	/* Switch */
 
 	--border-switch-heading-1-handle: 10px solid var(--color-switch-handle-border);
@@ -125,5 +131,8 @@
 		--text-body-short-weight: var(--text-main-font-weight);
 		--text-body-short-line-height: 20px;
 		--text-body-short-letter-spacing: 0;
+
+		--text-formula-size: 18px;
+		--text-formula-line-height: 28px;
 	}
 }

@@ -8,7 +8,7 @@ import { alias } from 'drizzle-orm/sqlite-core';
 import type { User } from 'lucia';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { IMAGE_CREDENTIALS_PATH } from '$lib/common/config';
+import { IMAGE_CREDENTIALS_PATH, IMG_VALIDATION_CONFIG } from '$lib/common/config';
 import { db } from '$lib/db/db';
 import { ARTICLE_OPENED_PREVIEW_COLS, ARTICLE_OPENED_PREVIEW_ROWS } from '$lib/styles/grid';
 
@@ -51,6 +51,13 @@ import { table_users } from '../user/schema';
 import type { ActorService } from '../user/service';
 import { parseMdDocument } from './md-import/frontmatter';
 import { isGithubHostedMarkdownUrl, toRawMarkdownUrl } from './md-import/github-url';
+import { shiftHeadings } from './md-import/headings';
+import {
+	extractImageRefs,
+	resolveImageUrl,
+	rewriteImageRef,
+	type MdImportWarning
+} from './md-import/images';
 import { mdImportFormSchema } from './md-import/validators';
 import { table_articles } from './schema';
 import {
@@ -354,7 +361,10 @@ export class ArticleService {
 			meta: articleSelectSchema.parse(articleResult),
 			slugForm: await superValidate(articleResult, zod(articleSlugUpdateSchema)),
 			mdImportSuperValidated: await superValidate(
-				{ url: articleResult.md_source_url ?? '' },
+				{
+					url: articleResult.md_source_url ?? '',
+					heading_shift: articleResult.md_heading_shift ?? 0
+				},
 				zod(mdImportFormSchema),
 				{ id: 'md-import' }
 			),
@@ -435,7 +445,7 @@ export class ArticleService {
 			throw this.selectErrorWithTranslation(e);
 		}
 	}
-	async importFromMd(slug: string, sourceUrl: string) {
+	async importFromMd(slug: string, sourceUrl: string, headingShift: number = 0) {
 		const actor = await this.actorService.getOrThrow();
 		const lang = this.translationService.currentLang;
 
@@ -488,6 +498,14 @@ export class ArticleService {
 		}
 
 		const doc = parseMdDocument(text);
+		doc.body = shiftHeadings(doc.body, headingShift);
+
+		const { body, warnings } = await this.importImages({
+			rawDirUrl: fetchUrl.slice(0, fetchUrl.lastIndexOf('/') + 1),
+			body: doc.body,
+			articleId: article.id,
+			githubToken
+		});
 
 		let newSlug: string | null = null;
 		if (doc.slug && doc.slug !== article.slug) {
@@ -515,7 +533,7 @@ export class ArticleService {
 		}
 		await this.translationService.update({
 			key: article.content_translation_key,
-			[lang]: doc.body || null
+			[lang]: body || null
 		});
 
 		if (newSlug) {
@@ -524,11 +542,89 @@ export class ArticleService {
 
 		await db
 			.update(table_articles)
-			.set({ md_source_url: sourceUrl })
+			.set({ md_source_url: sourceUrl, md_heading_shift: headingShift })
 			.where(and(eq(table_articles.slug, newSlug ?? slug), eq(table_articles.user_id, actor.id)))
 			.run();
 
-		return { slug: newSlug };
+		return { slug: newSlug, warnings };
+	}
+	private async importImages({
+		rawDirUrl,
+		body,
+		articleId,
+		githubToken
+	}: {
+		rawDirUrl: string;
+		body: string;
+		articleId: number;
+		githubToken: string | null;
+	}): Promise<{ body: string; warnings: MdImportWarning[] }> {
+		const warnings: MdImportWarning[] = [];
+		const refs = extractImageRefs(body);
+		if (!refs.length) {
+			return { body, warnings };
+		}
+
+		const actor = await this.actorService.getOrThrow();
+		if (!actor.imagekit_url_endpoint || !actor.imagekit_public_key || !actor.imagekit_private_key) {
+			return {
+				body,
+				warnings: refs.map((ref) => ({
+					key: 'article_editor.md_import.images_no_provider',
+					file: ref.url
+				}))
+			};
+		}
+
+		const replacements: Array<{ ref: (typeof refs)[number]; id: number }> = [];
+		for (const ref of refs) {
+			const absolute = resolveImageUrl(ref.url, rawDirUrl);
+			if (!absolute) {
+				warnings.push({ key: 'article_editor.md_import.images_unsupported', file: ref.url });
+				continue;
+			}
+			let bytes: ArrayBuffer | null = null;
+			try {
+				const headers: Record<string, string> = {};
+				if (isGithubHostedMarkdownUrl(absolute) && githubToken) {
+					headers['Authorization'] = `Bearer ${githubToken}`;
+				}
+				const response = await fetch(absolute, { headers });
+				if (!response.ok) throw new Error(`status ${response.status}`);
+				bytes = await response.arrayBuffer();
+			} catch {
+				warnings.push({ key: 'article_editor.md_import.images_fetch_failed', file: ref.url });
+				continue;
+			}
+			try {
+				let name = 'image';
+				try {
+					const basename = decodeURIComponent(absolute.split('/').pop()?.split('?')[0] || '');
+					if (basename) name = basename;
+				} catch {
+					// keep fallback name
+				}
+				const imageHandler = new ServerImageHandlerVercelEdge();
+				await imageHandler.setImageFromEntry(new File([bytes], name), IMG_VALIDATION_CONFIG);
+				await imageHandler.setProviderAndUploader(actor, IMAGE_CREDENTIALS_PATH);
+				const record = await this.imageService.createRecord({
+					source: imageHandler.provider?.type ?? 'imagekit',
+					owning_article_id: articleId
+				});
+				const report = await imageHandler.upload({ imageId: record.id, lang: null });
+				await this.imageService.updatePath(report.record, null);
+				replacements.push({ ref, id: record.id });
+			} catch {
+				warnings.push({ key: 'article_editor.md_import.images_unsupported', file: ref.url });
+				continue;
+			}
+		}
+
+		let result = body;
+		for (const { ref, id } of replacements.sort((a, b) => b.ref.start - a.ref.start)) {
+			result = rewriteImageRef(result, ref, id);
+		}
+		return { body: result, warnings };
 	}
 	async publish(slug: string) {
 		const actor = await this.actorService.getOrThrow();
@@ -845,6 +941,9 @@ export class ArticleService {
 			.select({
 				articles: table_articles,
 				titleTranslationAlias,
+				author: {
+					allow_html: table_users.allow_html
+				},
 				translations: {
 					key: table_translations.key,
 					[this.translationService.currentLang]:
@@ -907,6 +1006,7 @@ export class ArticleService {
 		}
 		return {
 			article: query[0].articles,
+			authorAllowHtml: query[0].author?.allow_html ?? false,
 			previewTemplateUrl: query[0].previewTypes?.url || null,
 			translations: Object.fromEntries([
 				...query

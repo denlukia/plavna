@@ -1,10 +1,13 @@
 <script lang="ts">
-	// import rehypeKatex from 'rehype-katex';
-	// import remarkMath from 'remark-math';
+	import { getGlobalTypographyClass } from '@plavna/design/components';
+	import rehypeKatex from 'rehype-katex';
+	import rehypeRaw from 'rehype-raw';
+	import remarkMath from 'remark-math';
 	import Markdown from 'svelte-exmarkdown';
 	import { gfmPlugin } from 'svelte-exmarkdown/gfm';
 	import type { Plugin } from 'svelte-exmarkdown/types';
 
+	import { rehypeKatexFormula } from './katex-formula';
 	import { setMarkdownContext } from './markdown-context';
 	import Blockquote from './renderers/Blockquote.svelte';
 	import Em from './renderers/Em.svelte';
@@ -15,6 +18,7 @@
 	import H5 from './renderers/heading/H5.svelte';
 	import H6 from './renderers/heading/H6.svelte';
 	import ImageMarkdown from './renderers/ImageMarkdown.svelte';
+	import KatexFormula from './renderers/KatexFormula.svelte';
 	import LinkOrTag from './renderers/LinkOrTag.svelte';
 	import ListItem from './renderers/ListItem.svelte';
 	import OrderedList from './renderers/OrderedList.svelte';
@@ -31,17 +35,26 @@
 	type Props = {
 		source: string;
 		chooseShort?: boolean;
+		allowHtml?: boolean;
 	};
 
-	let { source, chooseShort = false }: Props = $props();
+	let { source, chooseShort = false, allowHtml = false }: Props = $props();
+
+	// Scope the whole markdown output to the markdown typography theme so
+	// top-level blocks (display formulas, loose list text) resolve the same
+	// text variables as paragraphs and headings, which scope themselves.
+	let markdownScopeClass = getGlobalTypographyClass('markdown');
 
 	const plugins: Plugin[] = [
 		gfmPlugin(),
-		// { remarkPlugin: remarkMath },
-		// { rehypePlugin: rehypeKatex },
+		{ remarkPlugin: remarkMath },
+		{ rehypePlugin: rehypeKatex },
+		{ rehypePlugin: rehypeKatexFormula },
+		...(allowHtml ? [{ rehypePlugin: rehypeRaw }] : []),
 		{
 			renderer: {
 				image: ImageMarkdown,
+				katexformula: KatexFormula,
 				p: Paragraph,
 				em: Em,
 				strong: Strong,
@@ -70,4 +83,13 @@
 	setMarkdownContext({ chooseShort: chooseShort });
 </script>
 
-<Markdown {plugins} md={source} />
+<div class="markdown-scope {markdownScopeClass}">
+	<Markdown {plugins} md={source} />
+</div>
+
+<style>
+	/* Scope only: must not affect layout. */
+	.markdown-scope {
+		display: contents;
+	}
+</style>

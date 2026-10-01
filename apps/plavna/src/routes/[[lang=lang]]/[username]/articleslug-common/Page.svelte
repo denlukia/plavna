@@ -101,6 +101,7 @@
 						recordKey={data.article.description_translation_key}
 						wrapTranslation={(t) => `### ${t}`}
 						markdown
+						allowHtml={data.authorAllowHtml}
 						showNoTranslation={false}
 					/>
 				</div>
@@ -111,6 +112,7 @@
 					<Translation
 						recordKey={data.article.content_translation_key}
 						markdown
+						allowHtml={data.authorAllowHtml}
 						showNoTranslation={false}
 					/>
 				</div>
@@ -150,10 +152,16 @@
 		margin-top: var(--size-4xl);
 		margin-inline: auto;
 		margin-bottom: var(--size-6xl);
+		/* Flex item of ColumnsContainer: allow shrinking below the widest
+		unbreakable content (long formulas), otherwise it stretches the page. */
+		min-width: 0;
+		max-width: 100%;
 	}
 
 	.content {
 		margin-top: var(--size-xl);
+		/* Flex item of Column's .inner: same shrink guard. */
+		min-width: 0;
 	}
 
 	.description {

@@ -121,7 +121,11 @@ async function import_md(event: RequestEvent) {
 	const { articleService } = event.locals;
 
 	try {
-		const result = await articleService.importFromMd(articleslug, form.data.url);
+		const result = await articleService.importFromMd(
+			articleslug,
+			form.data.url,
+			form.data.heading_shift
+		);
 		if (result.slug) {
 			redirect(
 				302,
@@ -130,11 +134,10 @@ async function import_md(event: RequestEvent) {
 				})
 			);
 		}
+		return { form, warnings: result.warnings };
 	} catch (e) {
 		return getActionFailure(e, form, 'url');
 	}
-
-	return { form };
 }
 
 async function update_preview(event: RequestEvent) {

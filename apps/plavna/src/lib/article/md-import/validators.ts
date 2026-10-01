@@ -16,7 +16,8 @@ export const mdImportFormSchema = z.object({
 				}
 			},
 			{ message: checkTranslationKey('actor_errors.invalid_url') }
-		)
+		),
+	heading_shift: z.coerce.number().int().min(-3).max(3)
 });
 
 export type MdImportForm = z.infer<typeof mdImportFormSchema>;

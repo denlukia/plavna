@@ -153,7 +153,13 @@ export const UK = {
 			url_placeholder: 'https://github.com/username/repo/blob/main/article.md',
 			submit: 'Імпортувати',
 			setup_github: 'Налаштувати зʼєднання з GitHub',
-			edit_github: 'Редагувати зʼєднання з GitHub'
+			edit_github: 'Редагувати зʼєднання з GitHub',
+			images_no_provider: 'Провайдер зображень не підʼєднано, зображення залишено посиланням',
+			images_unsupported: 'Непідтримуване зображення, залишено посиланням',
+			images_fetch_failed: 'Не вдалося завантажити зображення, залишено посиланням',
+			heading_shift: 'Зсув рівнів заголовків',
+			heading_shift_hint:
+				'Додає # до заголовків при додатному значенні, прибирає при відʼємному, напр. +1 перетворює ## на ###'
 		},
 		previews: {
 			editor_title: 'Налашт. передогляду',

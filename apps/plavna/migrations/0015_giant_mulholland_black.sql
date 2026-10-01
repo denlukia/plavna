@@ -1,0 +1,1 @@
+ALTER TABLE `auth_user` ADD `allow_html` integer DEFAULT false NOT NULL;

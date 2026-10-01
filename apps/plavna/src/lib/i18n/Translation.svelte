@@ -30,6 +30,7 @@
 		wrapInTypography?: boolean;
 		showNoTranslation?: boolean;
 		wrapTranslation?: (md: string) => string;
+		allowHtml?: boolean;
 	} & (FormTranslation | RecordTranslation | SystemTranslation);
 
 	let {
@@ -39,6 +40,7 @@
 		wrapInTypography,
 		showNoTranslation = true,
 		markdown = false,
+		allowHtml = false,
 		wrapTranslation = (md) => md
 	}: Props = $props();
 
@@ -62,7 +64,7 @@
 	{#if markdown === 'basic'}
 		<BasicMarkdown source={wrappedTranslation} />
 	{:else if markdown}
-		<Markdown source={wrappedTranslation} />
+		<Markdown source={wrappedTranslation} {allowHtml} />
 	{:else}
 		{@html wrappedTranslation}
 	{/if}

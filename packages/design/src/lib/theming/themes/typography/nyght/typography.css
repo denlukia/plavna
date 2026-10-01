@@ -60,6 +60,12 @@
 	--text-small-short-weight: var(--main-font-weight);
 	--text-small-short-line-height: 10px;
 
+	--text-formula-font-family: 'Libertinus Math', serif;
+	--text-formula-size: 20px;
+	--text-formula-weight: 400;
+	--text-formula-line-height: 30px;
+	--text-formula-letter-spacing: 0;
+
 	/* Switch */
 
 	--border-switch-heading-1-handle: 3.5px solid var(--color-switch-handle-border);

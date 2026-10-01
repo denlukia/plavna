@@ -1,0 +1,84 @@
+.simple-formula {
+	text-align: center;
+	text-align-last: unset;
+	margin-block: 1em;
+	margin-inline: 1.5em;
+}
+
+.align-left {
+	text-align: left;
+	text-align-last: left;
+}
+.align-center {
+	text-align: center;
+	text-align-last: center;
+}
+.align-right {
+	text-align: right;
+	text-align-last: right;
+}
+
+/* Formulas render as native MathML (KaTeX HTML is hidden) so the browser
+lays them out with a proper math font, including Cyrillic. */
+span.katex > span.katex-mathml {
+	position: static;
+	clip: auto;
+	-webkit-clip-path: none;
+	clip-path: none;
+	height: auto;
+	width: auto;
+	overflow: visible;
+}
+
+/* The raw TeX source inside <annotation> must never render as text —
+it duplicates every formula (e.g. P(X) next to \mathbb{P}(X)) and its
+long unbreakable strings stretch the whole article column. */
+math annotation {
+	display: none !important;
+}
+
+/* KaTeX scales its wrapper 1.21x for its own HTML glyphs, which we hide —
+neutralize it so native MathML sizes exactly as specified below. */
+span.katex {
+	font-size: 1em;
+}
+
+math {
+	font-family: var(--text-formula-font-family);
+	/* All formulas (inline and display) match the surrounding text size. */
+	font-size: 1em;
+	font-weight: var(--text-formula-weight);
+	line-height: var(--text-formula-line-height);
+	letter-spacing: var(--text-formula-letter-spacing);
+	-webkit-text-stroke: var(--text-formula-text-stroke);
+	text-stroke: var(--text-formula-text-stroke);
+}
+
+/* Display blocks sit outside paragraphs, so they don't inherit body text
+size — use the theme's formula size. */
+.katex-display math {
+	font-size: var(--text-formula-size);
+}
+
+.katex-display {
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+/* Article images must never stretch the main column wider than the
+viewport: cap the whole wrapper chain, the <img> keeps its aspect. */
+.markdown-image {
+	max-width: 100%;
+}
+
+.markdown-image .positioner,
+.markdown-image .image-wrapper {
+	max-width: 100%;
+}
+
+.markdown-image img {
+	max-width: 100%;
+	height: auto;
+}

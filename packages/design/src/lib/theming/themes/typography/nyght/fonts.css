@@ -77,3 +77,12 @@
 		url('../../fonts/Nyght Serif/NyghtSerif-LightItalic.woff2') format('woff2'),
 		url('../../fonts/Nyght Serif/NyghtSerif-LightItalic.woff') format('woff');
 }
+@font-face {
+	font-family: 'Libertinus Math';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src:
+		local('Libertinus Math'),
+		url('../../fonts/Libertinus Math/LibertinusMath-Regular.woff2') format('woff2');
+}

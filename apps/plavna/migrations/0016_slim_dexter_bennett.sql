@@ -1,0 +1,1 @@
+ALTER TABLE `articles` ADD `md_heading_shift` integer DEFAULT 0 NOT NULL;

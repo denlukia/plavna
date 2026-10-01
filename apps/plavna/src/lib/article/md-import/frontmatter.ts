@@ -35,32 +35,55 @@ function stripInlineMarkdown(value: string): string {
 		.trim();
 }
 
-function titleFromFirstHeading(body: string): string | null {
-	for (const line of body.split('\n')) {
-		const trimmed = line.trim();
+function titleFromFirstHeading(
+	lines: string[],
+	start: number
+): { title: string; next: number } | null {
+	for (let i = start; i < lines.length; i++) {
+		const trimmed = lines[i].trim();
 		if (!trimmed) continue;
 		const match = trimmed.match(/^#{1,6}\s+(.+?)\s*#*\s*$/);
 		if (match) {
 			const title = stripInlineMarkdown(match[1]);
-			return title || null;
+			return title ? { title, next: i + 1 } : null;
 		}
 		return null;
 	}
 	return null;
 }
 
+function stripLeadingBlankLines(body: string): string {
+	return body.replace(/^(?:[ \t]*\r?\n)+/, '');
+}
+
 export function parseMdDocument(source: string): MdDocument {
 	const frontmatterMatch = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
 	const frontmatter = frontmatterMatch ? parseFrontmatterBlock(frontmatterMatch[1]) : {};
-	const body = frontmatterMatch ? source.slice(frontmatterMatch[0].length) : source;
+	let body = frontmatterMatch ? source.slice(frontmatterMatch[0].length) : source;
 
 	const fromFrontmatter = (key: string): string | null => {
 		const value = frontmatter[key]?.trim();
 		return value ? value : null;
 	};
 
+	let title = fromFrontmatter('title');
+	if (title) {
+		body = stripLeadingBlankLines(body);
+	} else {
+		// The heading the title is taken from is dropped with surrounding empty
+		// lines, so imported content neither duplicates the heading nor starts blank.
+		const lines = body.split('\n');
+		const found = titleFromFirstHeading(lines, 0);
+		if (found) {
+			title = found.title;
+			body = stripLeadingBlankLines(lines.slice(found.next).join('\n'));
+		} else {
+			body = stripLeadingBlankLines(body);
+		}
+	}
+
 	return {
-		title: fromFrontmatter('title') ?? titleFromFirstHeading(body),
+		title,
 		slug: fromFrontmatter('slug'),
 		description: fromFrontmatter('description'),
 		body

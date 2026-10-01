@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Global CSS
 	import '$lib/styles/index.css';
+	import 'katex/dist/katex.min.css';
 
 	import {
 		GridVisualizer,

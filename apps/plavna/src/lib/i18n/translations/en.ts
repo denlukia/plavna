@@ -153,7 +153,13 @@ export const EN = {
 			url_placeholder: 'https://github.com/username/repo/blob/main/article.md',
 			submit: 'Import',
 			setup_github: 'Setup GitHub Connection',
-			edit_github: 'Edit GitHub Connection'
+			edit_github: 'Edit GitHub Connection',
+			images_no_provider: 'No image provider connected, image left as a link',
+			images_unsupported: 'Unsupported image, left as a link',
+			images_fetch_failed: 'Could not download the image, left as a link',
+			heading_shift: 'Heading level shift',
+			heading_shift_hint:
+				'Adds # to headings when positive, removes them when negative, e.g. +1 turns ## into ###'
 		},
 		previews: {
 			editor_title: 'Preview Settings',

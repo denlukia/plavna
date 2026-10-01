@@ -106,6 +106,20 @@
       "when": 1790537761040,
       "tag": "0014_elite_maelstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "6",
+      "when": 1790881253263,
+      "tag": "0015_giant_mulholland_black",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1790883415252,
+      "tag": "0016_slim_dexter_bennett",
+      "breakpoints": true
     }
   ]
 }

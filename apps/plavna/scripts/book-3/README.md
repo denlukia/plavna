@@ -25,6 +25,11 @@ One-off scripts that build the 3rd book ("Машина у духові") from th
 - `renumber-book3.mjs` — renumbers titles per-book from 1 (intro + interlude
   stay unnumbered), cancels all book-3 queue rows and enqueues fresh ones
   with the new titles (screenshot URLs embed titles)
+- `reimport-images.mjs` — re-fetches articles with image refs, uploads each
+  image to the author's ImageKit storage and rewrites refs to Plavna
+  `![alt](id)` codes (trailing `## Далі:`/`## Кінець` blocks preserved)
+- `trim-contents.mjs` — trims leading blank lines of contents (translation
+  rows only, previews untouched)
 - `rename-tags.mjs` — renames existing tags to `КН1 …` / `КН2 …`
 
 ## Usage (from `apps/plavna`)
