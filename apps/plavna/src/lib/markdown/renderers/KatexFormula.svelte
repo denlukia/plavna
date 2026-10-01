@@ -27,12 +27,28 @@
 <style>
 	:global(.formula-scroll) {
 		flex: none;
+		margin-bottom: 1em;
 	}
 
 	.formula-viewport {
 		max-width: 100%;
 		overflow-x: auto;
 		overflow-y: hidden;
+		scrollbar-width: thin;
+		scrollbar-color: color-mix(in srgb, currentColor 35%, transparent) transparent;
+	}
+
+	.formula-viewport::-webkit-scrollbar {
+		height: 6px;
+	}
+
+	.formula-viewport::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.formula-viewport::-webkit-scrollbar-thumb {
+		background: color-mix(in srgb, currentColor 35%, transparent);
+		border-radius: 3px;
 	}
 
 	.formula-viewport > :global(.katex-display) {

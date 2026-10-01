@@ -60,11 +60,12 @@ size — use the theme's formula size. */
 	font-size: var(--text-formula-size);
 }
 
-.katex-display {
+span.katex-display {
 	display: block;
 	max-width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
+	margin: 0.2em 0;
 }
 
 /* Article images must never stretch the main column wider than the
