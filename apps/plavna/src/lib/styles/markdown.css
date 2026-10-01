@@ -65,7 +65,7 @@ span.katex-display {
 	max-width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
-	margin: 0.2em 0;
+	margin: 0.1em 0 0.4em;
 }
 
 /* Article images must never stretch the main column wider than the
