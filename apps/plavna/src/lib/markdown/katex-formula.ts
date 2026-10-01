@@ -28,6 +28,28 @@ function stripKatexHtml(node: Element) {
 	});
 }
 
+function elementText(node: Element): string {
+	return node.children.map((child) => (child.type === 'text' ? child.value : '')).join('');
+}
+
+/**
+ * Ukrainian decimal commas (0,9) must not get separator spacing — KaTeX marks
+ * every comma as a separator and browsers pad it like a list comma. Only
+ * commas directly between digits are tightened; list commas keep spacing.
+ */
+function fixDecimalCommas(root: Element) {
+	visit(root, 'element', (node, _index, parent) => {
+		if (node.tagName !== 'mo' || elementText(node) !== ',') return;
+		if (typeof parent !== 'object' || parent === null || parent.type !== 'element') return;
+		const siblings = parent.children.filter((child): child is Element => child.type === 'element');
+		const prev = siblings[siblings.indexOf(node) - 1];
+		const next = siblings[siblings.indexOf(node) + 1];
+		if (prev?.tagName === 'mn' && next?.tagName === 'mn') {
+			node.properties = { ...node.properties, lspace: '0', rspace: '0' };
+		}
+	});
+}
+
 /**
  * Serializes KaTeX output (and bare <math>) into raw HTML rendered via {@html}.
  * svelte-exmarkdown mounts unknown elements with `document.createElement`,
@@ -49,6 +71,7 @@ export const rehypeKatexFormula: Pluggable = () => {
 		});
 		for (const node of matches) {
 			stripKatexHtml(node);
+			fixDecimalCommas(node);
 			const html = toHtml(node);
 			node.tagName = 'katexformula';
 			node.properties = { html };
