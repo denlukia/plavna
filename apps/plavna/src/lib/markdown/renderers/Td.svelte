@@ -22,7 +22,7 @@
 		vertical-align: top;
 		border-left: none;
 		border-right: none;
-		padding-inline: var(--size-s);
+		padding-inline: 4px;
 		text-wrap: balance;
 	}
 </style>
