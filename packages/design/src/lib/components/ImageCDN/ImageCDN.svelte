@@ -11,7 +11,6 @@
 		zoomOut?: boolean;
 		transitionDuration?: number;
 		objectFit?: 'cover' | 'contain' | 'stretch';
-		objectPosition?: string;
 		width?: number | null;
 		height?: number | null;
 		flexibleHeight?: boolean;
@@ -27,7 +26,6 @@
 		zoomOut = true,
 		transitionDuration = 1000,
 		objectFit = 'cover',
-		objectPosition = 'center',
 		width,
 		height,
 		flexibleHeight,
@@ -110,7 +108,7 @@
 		<img
 			style="--initial-opacity: {initialOpacity}; initial-scale: {zoomOut
 				? 1.05
-				: 1}; --duration: {transitionDuration}ms; --object-fit: {objectFit}; --object-position: {objectPosition}"
+				: 1}; --duration: {transitionDuration}ms; --object-fit: {objectFit}"
 			bind:this={imgElement}
 			class="image {mode}"
 			class:revealed
@@ -162,7 +160,6 @@
 		max-width: 100%;
 		max-height: 100%;
 		object-fit: var(--object-fit);
-		object-position: var(--object-position);
 
 		--initial-blur: 15px;
 

@@ -229,8 +229,7 @@
 				{#if image && videoCurrentTime === 0}
 					<ImageWrapper inArticle={viewing_in_article}>
 						<ImageCDN
-							objectFit="contain"
-							objectPosition="bottom"
+							objectFit="stretch"
 							pathAndMeta={image}
 							bgInset="{ARTISTIC_OVERFLOW}px"
 							fitAndCoverParent
@@ -253,7 +252,6 @@
 	.preview {
 		height: 100%;
 		pointer-events: all;
-		padding: 16px;
 	}
 	.video {
 		object-fit: contain;
