@@ -28,6 +28,7 @@
 	import Sub from './renderers/Sub.svelte';
 	import Sup from './renderers/Sup.svelte';
 	import Table from './renderers/Table.svelte';
+	import Td from './renderers/Td.svelte';
 	import Th from './renderers/Th.svelte';
 	import UnorderedList from './renderers/UnorderedList.svelte';
 
@@ -74,6 +75,7 @@
 				span: Span,
 				table: Table,
 				th: Th,
+				td: Td,
 				blockquote: Blockquote
 			}
 		}

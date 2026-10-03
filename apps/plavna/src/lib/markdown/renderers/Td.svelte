@@ -5,16 +5,14 @@
 	type Props = {
 		children: Snippet;
 		align?: 'left' | 'center' | 'right' | null;
+		bold?: boolean;
 	};
 
-	let { children, align = 'left' }: Props = $props();
+	let { children, align = 'left', bold = false }: Props = $props();
 </script>
 
-<th style="text-align: {align ?? 'left'};">
-	<Typography purpose="markdown" size="body-short" bold>
+<td style="text-align: {align ?? 'left'};">
+	<Typography purpose="markdown" size="body-short" {bold}>
 		{@render children()}
 	</Typography>
-</th>
-
-<style>
-</style>
+</td>

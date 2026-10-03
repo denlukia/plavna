@@ -15,5 +15,6 @@
 <style>
 	.table {
 		width: 100%;
+		margin-bottom: 1em;
 	}
 </style>
