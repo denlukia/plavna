@@ -20,5 +20,9 @@
 <style>
 	td {
 		vertical-align: top;
+		border-left: none;
+		border-right: none;
+		padding-inline: var(--size-s);
+		text-wrap: balance;
 	}
 </style>

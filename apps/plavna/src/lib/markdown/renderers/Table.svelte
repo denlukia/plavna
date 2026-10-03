@@ -16,5 +16,6 @@
 	.table {
 		width: 100%;
 		margin-bottom: 1em;
+		border-collapse: collapse;
 	}
 </style>

@@ -20,5 +20,9 @@
 	th {
 		vertical-align: top;
 		border-bottom: 1px solid currentColor;
+		border-left: none;
+		border-right: none;
+		padding-inline: var(--size-s);
+		text-wrap: balance;
 	}
 </style>
