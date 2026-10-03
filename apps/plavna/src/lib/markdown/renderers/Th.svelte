@@ -11,10 +11,14 @@
 </script>
 
 <th style="text-align: {align ?? 'left'};">
-	<Typography purpose="markdown" size="body-short" bold>
+	<Typography purpose="markdown" size="small" bold>
 		{@render children()}
 	</Typography>
 </th>
 
 <style>
+	th {
+		vertical-align: top;
+		border-bottom: 1px solid currentColor;
+	}
 </style>

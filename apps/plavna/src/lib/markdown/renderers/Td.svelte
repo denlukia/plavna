@@ -12,7 +12,13 @@
 </script>
 
 <td style="text-align: {align ?? 'left'};">
-	<Typography purpose="markdown" size="body-short" {bold}>
+	<Typography purpose="markdown" size="small" {bold}>
 		{@render children()}
 	</Typography>
 </td>
+
+<style>
+	td {
+		vertical-align: top;
+	}
+</style>
