@@ -253,6 +253,7 @@
 	.preview {
 		height: 100%;
 		pointer-events: all;
+		padding: 16px;
 	}
 	.video {
 		object-fit: contain;
