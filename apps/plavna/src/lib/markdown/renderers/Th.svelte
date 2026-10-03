@@ -11,7 +11,7 @@
 </script>
 
 <th style="text-align: {align ?? 'left'};">
-	<Typography purpose="markdown" size="small" bold>
+	<Typography purpose="markdown" size="small-short" bold>
 		{@render children()}
 	</Typography>
 </th>
