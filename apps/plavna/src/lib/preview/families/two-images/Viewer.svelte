@@ -229,7 +229,8 @@
 				{#if image && videoCurrentTime === 0}
 					<ImageWrapper inArticle={viewing_in_article}>
 						<ImageCDN
-							objectFit="stretch"
+							objectFit="contain"
+							objectPosition="bottom"
 							pathAndMeta={image}
 							bgInset="{ARTISTIC_OVERFLOW}px"
 							fitAndCoverParent
