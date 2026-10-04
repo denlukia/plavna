@@ -9,7 +9,7 @@
 </script>
 
 <blockquote class="blockquote">
-	{@render children()}
+	{@render children?.()}
 </blockquote>
 
 <style>

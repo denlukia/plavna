@@ -31,6 +31,7 @@
 	import Td from './renderers/Td.svelte';
 	import Th from './renderers/Th.svelte';
 	import UnorderedList from './renderers/UnorderedList.svelte';
+	import { rehypeDropEmptyThead } from './table';
 
 	type Props = {
 		source: string;
@@ -50,6 +51,7 @@
 		{ remarkPlugin: remarkMath },
 		{ rehypePlugin: rehypeKatexMathml },
 		{ rehypePlugin: rehypeKatexFormula },
+		{ rehypePlugin: rehypeDropEmptyThead },
 		...(allowHtml ? [{ rehypePlugin: rehypeRaw }] : []),
 		{
 			renderer: {

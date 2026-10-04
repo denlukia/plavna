@@ -21,7 +21,7 @@
 		? 'small'
 		: 'body'}"
 >
-	{@render children()}
+	{@render children?.()}
 </ul>
 
 <style>

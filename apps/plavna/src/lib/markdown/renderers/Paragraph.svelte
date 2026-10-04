@@ -18,11 +18,11 @@
 {#if !listContext?.list && !sectionContext?.section}
 	<p class="paragraph">
 		<Typography purpose="markdown">
-			{@render children()}
+			{@render children?.()}
 		</Typography>
 	</p>
 {:else}
-	{@render children()}
+	{@render children?.()}
 {/if}
 
 <style>

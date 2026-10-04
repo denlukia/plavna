@@ -9,7 +9,7 @@
 </script>
 
 <table class="table">
-	{@render children()}
+	{@render children?.()}
 </table>
 
 <style>

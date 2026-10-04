@@ -11,5 +11,5 @@
 </script>
 
 <Heading depth={5} {...other}>
-	{@render children()}
+	{@render children?.()}
 </Heading>

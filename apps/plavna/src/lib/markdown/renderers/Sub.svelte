@@ -10,5 +10,5 @@
 </script>
 
 <sub class="{getGlobalTypographyClass('markdown')} global-text-small-short">
-	{@render children()}
+	{@render children?.()}
 </sub>

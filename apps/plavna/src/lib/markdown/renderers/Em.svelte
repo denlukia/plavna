@@ -10,5 +10,5 @@
 </script>
 
 <em class="global-text-em">
-	{@render children()}
+	{@render children?.()}
 </em>

@@ -22,7 +22,7 @@
 {#if id !== 'footnote-label'}
 	<svelte:element this={`h${depth}`} class="heading {size}">
 		<Typography {size} purpose="markdown">
-			{@render children()}
+			{@render children?.()}
 		</Typography>
 	</svelte:element>
 {/if}

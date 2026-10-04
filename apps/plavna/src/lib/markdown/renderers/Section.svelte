@@ -14,7 +14,7 @@
 </script>
 
 <section class="section {getGlobalTypographyClass('markdown')} global-text-small">
-	{@render children()}
+	{@render children?.()}
 </section>
 
 <style>

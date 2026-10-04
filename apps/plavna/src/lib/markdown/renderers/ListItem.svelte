@@ -9,7 +9,7 @@
 </script>
 
 <li class="list-item" {...attributes}>
-	{@render children()}
+	{@render children?.()}
 </li>
 
 <style>

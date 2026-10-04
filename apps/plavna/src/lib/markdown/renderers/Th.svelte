@@ -12,7 +12,7 @@
 
 <th style="text-align: {align ?? 'left'};">
 	<Typography purpose="markdown" size="small-short" bold>
-		{@render children()}
+		{@render children?.()}
 	</Typography>
 </th>
 

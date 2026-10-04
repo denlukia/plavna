@@ -33,11 +33,11 @@
 {#if hasNonEmptyText}
 	{#if tagId !== null}
 		<TagSwitch {tagId} {...other}>
-			{@render children()}
+			{@render children?.()}
 		</TagSwitch>
 	{:else}
 		<Link {href} {...other}>
-			{@render children()}
+			{@render children?.()}
 		</Link>
 	{/if}
 {/if}

@@ -95,7 +95,7 @@
 >
 	<Layers style="display: inline-grid; overflow: visible">
 		<span class="content">
-			{@render children()}
+			{@render children?.()}
 			<span class="switch-positioner" style={selectedVariables}>
 				<Switch bind:checked onchange={onSwitchChange} customSize={size} />
 			</span>
