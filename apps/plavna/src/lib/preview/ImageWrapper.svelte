@@ -2,6 +2,8 @@
 	import { ARTISTIC_OVERFLOW } from '@plavna/common';
 	import type { Snippet } from 'svelte';
 
+	import RippleMask from './RippleMask.svelte';
+
 	type Props = {
 		children: Snippet;
 		inArticle?: boolean;
@@ -9,15 +11,47 @@
 	};
 
 	let { children, inArticle = false, visible = true }: Props = $props();
+
+	let element: HTMLElement | null = $state(null);
+	let content: HTMLElement | null = $state(null);
+	let origin: { x: number; y: number } | null = $state(null);
+
+	// The wrapper itself is pointer-events: none, so it never receives pointer
+	// events directly. Track the live pointer on the parent (the hovered
+	// preview) instead and translate it into wrapper-local coordinates.
+	// The ripple snapshots this position when its animation starts.
+	$effect(() => {
+		const target = element;
+		if (!target) return;
+		const parent = target.parentElement;
+		if (!parent) return;
+		const handler = (event: PointerEvent) => {
+			const rect = target.getBoundingClientRect();
+			origin = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+		};
+		parent.addEventListener('pointerenter', handler);
+		parent.addEventListener('pointermove', handler);
+		return () => {
+			parent.removeEventListener('pointerenter', handler);
+			parent.removeEventListener('pointermove', handler);
+		};
+	});
+
+	// Live pointer position; the ripple snapshots it when its animation starts
+	// (the wrapper itself is pointer-events: none).
 </script>
 
 <span
 	class="image-wrapper"
 	class:in-article={inArticle}
 	class:visible
+	bind:this={element}
 	style="--artistic-overflow: {ARTISTIC_OVERFLOW}px"
 >
-	{@render children()}
+	<span class="image-content" bind:this={content}>
+		{@render children()}
+	</span>
+	<RippleMask target={content} active={!visible} {origin} />
 </span>
 
 <style>
@@ -45,6 +79,9 @@
 
 		display: block;
 		position: absolute;
+		/* Above the revealed layer underneath: the mask hole gates what shows
+		through, so the final component only ever appears inside the ripple. */
+		z-index: 1;
 
 		margin-left: var(--inset);
 		margin-top: var(--inset);
@@ -54,21 +91,13 @@
 		overflow: hidden;
 
 		pointer-events: none;
-
-		opacity: 0;
-		/* filter: blur(10px); */
-
-		transition:
-			filter 750ms 0ms,
-			opacity 750ms 375ms;
 	}
 
-	.image-wrapper.visible {
-		opacity: 1;
-		/* filter: blur(0px); */
-		transition:
-			filter 750ms 0ms,
-			opacity 750ms 0ms;
+	.image-content {
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 	}
 
 	@media (max-width: 1024px) {
