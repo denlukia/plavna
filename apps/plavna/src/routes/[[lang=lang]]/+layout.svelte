@@ -45,6 +45,26 @@
 
 	let title = $derived(getTitle(page.params));
 
+	let canonical = $derived.by(() => {
+		const pathname = page.url.pathname.replace(/\/+$/, '') || '/';
+		return page.url.origin + pathname;
+	});
+
+	let robotsContent = $derived.by(() => {
+		const routeId = page.route.id ?? '';
+		const isPrivate = [
+			'/edit',
+			'/settings',
+			'/new',
+			'/sign-in',
+			'/design',
+			'/automations'
+		].some((segment) => routeId.includes(segment));
+		return isPrivate ? 'noindex, nofollow' : 'index, follow';
+	});
+
+	let description = $derived(`${title} — personal page on Plavna`);
+
 	$effect(() => {
 		const lang = getLang(page.params.lang);
 		document.documentElement.lang = lang;
@@ -56,6 +76,16 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="theme-color" content="#AB948A" />
+	<link rel="canonical" href={canonical} />
+	<meta name="description" content={description} />
+	<meta name="robots" content={robotsContent} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
 </svelte:head>
 
 <ThemeProvider {themeSet} {themeComponentLayers}>
